@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+  Carnegie Mellon University, Human Computer Interaction Institute
+  Copyright 2005-2007
+  All Rights Reserved
+
+  $Revision: 12897 $
+  Last modified by - $Author: hcheng $
+  Last modified on - $Date: 2016-02-02 00:28:49 -0500 (Tue, 02 Feb 2016) $
+  $KeyWordsOff: $
+-->
+
+<beans>
+
+    <bean id="analysisDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <description>Default data source that uses C3PO as a pool implementation</description>
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/analysis_db</value></property>
+        <property name="initialPoolSize"><value>5</value></property>
+        <property name="minPoolSize"><value>5</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+        <property name="maxIdleTime"><value>14400</value></property>
+        <property name="idleConnectionTestPeriod"><value>14400</value> </property>
+        <property name="properties">
+             <props>
+                 <prop key="user">datashop</prop>
+                 <prop key="password">datashop</prop>
+                 <prop key="zeroDateTimeBehavior">convertToNull</prop>
+                 <prop key="characterEncoding">UTF-8</prop>
+                 <prop key="useUnicode">true</prop>
+                 <prop key="connectionCollation">utf8_bin</prop>
+                 <prop key="autoReconnect">true</prop>
+                 <prop key="autoReconnectForPools">true</prop>
+                 <prop key="useCursorFetch">true</prop>
+             </props>
+        </property>
+    </bean>
+
+    <bean id="logDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <description>Default data source that uses C3PO as a pool implementation</description>
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/log</value></property>
+        <property name="initialPoolSize"><value>5</value></property>
+        <property name="minPoolSize"><value>5</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+        <property name="properties">
+             <props>
+                 <prop key="user">datashop</prop>
+                 <prop key="password">datashop</prop>
+                 <prop key="zeroDateTimeBehavior">convertToNull</prop>
+                 <prop key="characterEncoding">UTF-8</prop>
+                 <prop key="useUnicode">true</prop>
+                 <prop key="connectionCollation">utf8_bin</prop>
+                 <prop key="autoReconnect">true</prop>
+                 <prop key="autoReconnectForPools">true</prop>
+             </props>
+        </property>
+    </bean>
+
+    <bean id="importDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <description>Default data source that uses C3PO as a pool implementation</description>
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/import_db</value></property>
+        <property name="initialPoolSize"><value>5</value></property>
+        <property name="minPoolSize"><value>5</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+        <property name="maxIdleTime"><value>14400</value></property>
+        <property name="idleConnectionTestPeriod"><value>14400</value> </property>
+
+        <property name="properties">
+             <props>
+                 <prop key="user">datashop</prop>
+                 <prop key="password">datashop</prop>
+                 <prop key="zeroDateTimeBehavior">convertToNull</prop>
+                 <prop key="characterEncoding">UTF-8</prop>
+                 <prop key="useUnicode">true</prop>
+                 <prop key="connectionCollation">utf8_bin</prop>
+                 <prop key="autoReconnect">true</prop>
+                 <prop key="autoReconnectForPools">true</prop>
+             </props>
+        </property>
+    </bean>
+
+    <bean id="sourceDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <description>Default data source that uses C3PO as a pool implementation</description>
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/adb_source</value></property>
+        <property name="initialPoolSize"><value>5</value></property>
+        <property name="minPoolSize"><value>5</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+        <property name="maxIdleTime"><value>14400</value></property>
+        <property name="idleConnectionTestPeriod"><value>14400</value> </property>
+
+        <property name="properties">
+             <props>
+                 <prop key="user">datashop</prop>
+                 <prop key="password">datashop</prop>
+                 <prop key="zeroDateTimeBehavior">convertToNull</prop>
+                 <prop key="characterEncoding">UTF-8</prop>
+                 <prop key="useUnicode">true</prop>
+                 <prop key="connectionCollation">utf8_bin</prop>
+                 <prop key="autoReconnect">true</prop>
+                 <prop key="autoReconnectForPools">true</prop>
+             </props>
+        </property>
+    </bean>
+
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="analysisDataSource"/></property>
+        <property name="mappingResources">
+            <list>
+                <value>edu/cmu/pslc/datashop/item/AccessReport.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AccessRequestHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AccessRequestStatus.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Action.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AlphaScore.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AttemptAction.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AttemptInput.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/AttemptSelection.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Authorization.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Class.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Condition.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Curriculum.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/CustomField.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/CfTxLevel.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Dataset.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetLevel.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetLevelEvent.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetLevelSequence.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetLevelSequenceMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetSystemLog.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetUsage.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetUserLog.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetUserTermsOfUseMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Domain.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ExternalAnalysis.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ExternalLink.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ExternalTool.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ExternalToolFileMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Feedback.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/File.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Filter.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ImportQueue.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ImportQueueMode.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ImportQueueStatusHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Irb.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Input.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Instructor.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Learnlab.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/MetricReport.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/MetricByDomain.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/MetricByLearnlab.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/MetricByDomainReport.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/MetricByLearnlabReport.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Message.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/OliDiscussion.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/OliFeedback.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/OliLog.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Paper.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/PasswordReset.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/PcConversion.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/PcConversionDatasetMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/PcProblem.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Problem.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ProblemEvent.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Project.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ProjectIrbMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ProjectShareabilityHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ProjectTermsOfUseHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ProjectTermsOfUseMap.hbm.xml</value>
+
+                <value>edu/cmu/pslc/datashop/item/DataShopInstance.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetInstanceMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/RemoteDatasetInfo.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/RemoteInstance.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/RemoteSkillModel.hbm.xml</value>
+
+                <value>edu/cmu/pslc/datashop/item/ResearcherType.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ResearcherTypeResearchGoalMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ResearchGoal.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/ResearchGoalDatasetPaperMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Sample.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/SampleHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/SampleMetric.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/School.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Selection.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Session.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Set.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Skill.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/SkillModel.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/StepRollup.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Student.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Subgoal.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/SubgoalAttempt.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/TermsOfUse.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/TermsOfUseVersion.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/TransactionSkillEvent.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/TutorTransaction.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/User.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/UserRole.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/UserTermsOfUseHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/UserTermsOfUseMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/Workflow.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowHistory.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowFileMap.hbm.xml</value>
+
+                <value>edu/cmu/pslc/datashop/item/Interpretation.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/InterpretationAttempt.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/CognitiveStep.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/CogStepSeq.hbm.xml</value>
+
+                <!-- Datalab. Likely move into own app eventually... -->
+                <value>edu/cmu/datalab/item/Analysis.hbm.xml</value>
+                <value>edu/cmu/datalab/item/CorrelationValue.hbm.xml</value>
+                <value>edu/cmu/datalab/item/CronbachsAlpha.hbm.xml</value>
+                <value>edu/cmu/datalab/item/Item.hbm.xml</value>
+                <value>edu/cmu/datalab/item/DlStudent.hbm.xml</value>
+                <value>edu/cmu/datalab/item/Value.hbm.xml</value>
+                
+                <!-- Resource use. Likely move into own app eventually... -->
+                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliTransactionFile.hbm.xml</value>
+                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliTransaction.hbm.xml</value>
+                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliUserSessFile.hbm.xml</value>
+                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliUserSess.hbm.xml</value>
+           
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props> <!-- Set all hibernate specific properties here. -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.connection.release_mode">auto</prop>
+                <prop key="hibernate.c3p0.min_size">5</prop>
+                <prop key="hibernate.c3p0.max_size">20</prop>
+                <prop key="hibernate.c3p0.timeout">100</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="logSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="logDataSource"/></property>
+        <property name="mappingResources">
+        <list>
+         <value>edu/cmu/pslc/datashop/oli/item/LogAction.hbm.xml</value>
+         <value>edu/cmu/pslc/datashop/oli/item/LogSession.hbm.xml</value>
+         </list>
+         </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="importSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="importDataSource"/></property>
+        <property name="mappingResources">
+        <list>
+         <value>edu/cmu/pslc/datashop/importdb/item/ImportFileInfo.hbm.xml</value>
+         <value>edu/cmu/pslc/datashop/importdb/item/ImportStatus.hbm.xml</value>
+         </list>
+         </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="sourceSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="sourceDataSource"/></property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="logHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="logSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="importHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="importSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="sourceHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="sourceSessionFactory"/>
+        </property>
+    </bean>
+
+    <!-- Can use this manager instead for container managed transactions -->
+    <!--
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+         <property name="transactionManagerName">
+             <value>javax.transaction.TransactionManager</value>
+         </property>
+    </bean>
+    -->
+
+    <!-- using interceptors instead of transaction managers at this time
+         might need this when we get to actual writing of information to the DB. -->
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+        <property name="nestedTransactionAllowed">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <bean id="accessReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AccessReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="accessRequestHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AccessRequestHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="accessRequestStatusDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AccessRequestStatusDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="actionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ActionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="alphaScoreDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AlphaScoreDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="attemptActionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AttemptActionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="attemptInputDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AttemptInputDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="attemptSelectionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AttemptSelectionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="authorizationDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.AuthorizationDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="classDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ClassDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="cognitiveStepDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.CognitiveStepDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="cogStepSeqDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.CogStepSeqDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="conditionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ConditionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="curriculumDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.CurriculumDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="customFieldDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.CustomFieldDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="cfTxLevelDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.CfTxLevelDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetInfoReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetInfoReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetLevelDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetLevelDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetLevelEventDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetLevelEventDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetLevelSequenceDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetLevelSequenceDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetLevelSequenceMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetLevelSequenceMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetSystemLogDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetSystemLogDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetUsageDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetUsageDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetUserLogDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetUserLogDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="datasetUserTermsOfUseMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DatasetUserTermsOfUseMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="dbMergeDao"
+        class="edu.cmu.pslc.datashop.dao.hibernate.DBMergeDaoHibernate">
+            <property name="hibernateTemplate">
+                <ref bean="hibernateTemplate"/>
+            </property>
+    </bean>
+
+    <bean id="domainDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.DomainDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="errorReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ErrorReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="externalAnalysisDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ExternalAnalysisDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="externalLinkDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ExternalLinkDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="externalToolDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ExternalToolDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="externalToolFileMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ExternalToolFileMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="feedbackDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.FeedbackDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="fileDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.FileDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="filterDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.FilterDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="importQueueDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ImportQueueDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="importQueueModeDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ImportQueueModeDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="importQueueStatusHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ImportQueueStatusHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="inputDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.InputDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="interpretationDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.InterpretationDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="interpretationAttemptDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.InterpretationAttemptDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="instructorDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.InstructorDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="irbDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.IrbDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="learningCurveDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.LearningCurveDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="learnlabDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.LearnlabDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+
+    <bean id="metricReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MetricReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="metricByDomainDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MetricByDomainDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="metricByLearnlabDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MetricByLearnlabDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    <bean id="metricByDomainReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MetricByDomainReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    <bean id="metricByLearnlabReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MetricByLearnlabReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="paperDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PaperDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="passwordResetDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PasswordResetDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="pcConversionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PcConversionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="pcConversionDatasetMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PcConversionDatasetMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="pcProblemDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PcProblemDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="performanceProfilerDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.PerformanceProfilerDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="problemDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProblemDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="problemEventDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProblemEventDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectInfoReportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectInfoReportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectIrbMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectIrbMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectShareabilityHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectShareabilityHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectTermsOfUseHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectTermsOfUseHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="projectTermsOfUseMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ProjectTermsOfUseMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="researcherTypeDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ResearcherTypeDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="researcherTypeResearchGoalMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ResearcherTypeResearchGoalMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="researchGoalDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ResearchGoalDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="researchGoalDatasetPaperMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ResearchGoalDatasetPaperMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="sampleDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SampleDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="sampleHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SampleHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="sampleMetricDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SampleMetricDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="schoolDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SchoolDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="selectionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SelectionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="sessionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SessionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="setDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SetDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="skillDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SkillDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="skillModelDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SkillModelDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="studentDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.StudentDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="subgoalAttemptDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SubgoalAttemptDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="subgoalDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.SubgoalDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="termsOfUseDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.TermsOfUseDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="termsOfUseVersionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.TermsOfUseVersionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="stepRollupDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.StepRollupDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="studentProblemRollupDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.StudentProblemRollupDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="transactionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.TransactionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="transactionSkillEventDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.TransactionSkillEventDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="userDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.UserDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="userRoleDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.UserRoleDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="userTermsOfUseHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.UserTermsOfUseHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="userTermsOfUseMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.UserTermsOfUseMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowHistoryDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowHistoryDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowFileMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowFileMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="oliDiscussionDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.OliDiscussionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="oliFeedbackDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.OliFeedbackDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="oliLogDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.OliLogDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="messageDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.MessageDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <!-- The following DAOs are in the OLI package. -->
+
+    <bean id="logActionDao"
+      class="edu.cmu.pslc.datashop.oli.dao.hibernate.LogActionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="logHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="logSessionDao"
+      class="edu.cmu.pslc.datashop.oli.dao.hibernate.LogSessionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="logHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="myTxInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributeSource">
+            <value>
+            edu.cmu.pslc.datashop.extractors.LogLoader.parse*=PROPAGATION_REQUIRED
+            </value>
+        </property>
+    </bean>
+
+    <!-- AOP Method interceptor.  Wraps a method with the session. -->
+    <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+         <property name="sessionFactory">
+           <ref bean="sessionFactory"/>
+         </property>
+    </bean>
+
+<!-- All beans that will need a session -->
+
+<!--  WorkflowHelper -->
+
+    <bean id="workflowHelper" class="edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper"></bean>
+    <bean id="workflowHelperProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="interceptorNames"><list><value>hibernateInterceptor</value></list></property>
+         <property name="target"><ref bean="workflowHelper"/></property>
+    </bean>
+
+
+<!-- Step Rollup Export Helper -->
+
+    <bean id="stepRollupExportHelper" class="edu.cmu.pslc.datashop.servlet.export.StepRollupExportHelper">
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+        <property name="stepRollupDao"><ref bean="stepRollupDao"/></property>
+    </bean>
+
+<!-- Student Problem Rollup Export Helper -->
+
+    <bean id="studentProblemExportHelper" class="edu.cmu.pslc.datashop.servlet.export.StudentProblemExportHelper">
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+        <property name="studentProblemRollupDao"><ref bean="studentProblemRollupDao"/></property>
+    </bean>
+
+
+<!-- Transaction Export Helper -->
+
+    <bean id="transactionExportHelper" class="edu.cmu.pslc.datashop.servlet.export.TransactionExportHelper">
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+        <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
+    </bean>
+
+
+<!-- KC Model Export Helper -->
+
+    <bean id="kcModelHelper" class="edu.cmu.pslc.datashop.servlet.kcmodel.KCModelHelper">
+        <property name="skillModelDao"><ref bean="skillModelDao"/></property>
+        <property name="skillDao"><ref bean="skillDao"/></property>
+        <property name="sampleMetricDao"><ref bean="sampleMetricDao"/></property>
+    </bean>
+
+    <bean id="kcModelHelperProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames"><list><value>hibernateInterceptor</value></list></property>
+        <property name="target"><ref bean="kcModelHelper"/></property>
+    </bean>
+
+
+
+
+
+<!-- Configuration of programatical transaction management of tutorMessageConvert -->
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+    </bean>
+
+    <bean id="tutorMessageConverter" class="edu.cmu.pslc.datashop.extractors.TutorMessageConverter">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="fileLoader" class="edu.cmu.pslc.datashop.extractors.FileLoader">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="purgeDeletedDatasets" class="edu.cmu.pslc.datashop.extractors.PurgeDeletedDatasets">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="logLoader" class="edu.cmu.pslc.datashop.extractors.LogLoader">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="importTool" class="edu.cmu.pslc.datashop.extractors.DatasetImportTool">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="modelExportDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.ModelExportDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+   <bean id="dataFixer" class="edu.cmu.pslc.datashop.extractors.DataFixer">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+   <bean id="cfg" class="edu.cmu.pslc.datashop.extractors.CachedExportFileGenerator"/>
+
+   <bean id="dbMerge" class="edu.cmu.pslc.datashop.extractors.DatabaseMerge"/>
+
+   <bean id="flatFileImporter" class="edu.cmu.pslc.datashop.extractors.ffi.FlatFileImporter">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+   </bean>
+
+   <bean id="workflow" class="edu.cmu.pslc.datashop.workflows.Workflow">
+   </bean>
+
+   <bean id="importQueue" class="edu.cmu.pslc.datashop.extractors.ffi.ImportQueue"/>
+
+   <bean id="tutorShopConverter"
+         class="edu.cmu.pslc.datashop.problemcontent.tutorshop.TutorShopConverter"/>
+
+   <bean id="populatePcTables"
+         class="edu.cmu.pslc.datashop.problemcontent.PopulatePcTables"/>
+
+   <bean id="tutorShopMapper"
+         class="edu.cmu.pslc.datashop.problemcontent.tutorshop.TutorShopMapper"/>
+
+    <!-- The following DAOs are in the importdb package. -->
+
+    <bean id="importFileInfoDao"
+      class="edu.cmu.pslc.datashop.importdb.dao.hibernate.ImportFileInfoDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="importHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="importStatusDao"
+      class="edu.cmu.pslc.datashop.importdb.dao.hibernate.ImportStatusDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="importHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <!-- The following DAOs are in the sourcedb package. -->
+
+    <bean id="flatFileImporterDao"
+      class="edu.cmu.pslc.datashop.sourcedb.dao.hibernate.FlatFileImporterDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="sourceHibernateTemplate"/>
+        </property>
+    </bean>
+
+
+    <!-- Datalab. Likely move into own app eventually... -->
+    <bean id="analysisImporterDao"
+      class="edu.cmu.datalab.dao.hibernate.AnalysisImporterDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="sourceHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="analysisDao"
+      class="edu.cmu.datalab.dao.hibernate.AnalysisDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="correlationValueDao"
+      class="edu.cmu.datalab.dao.hibernate.CorrelationValueDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="cronbachsAlphaDao"
+      class="edu.cmu.datalab.dao.hibernate.CronbachsAlphaDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="itemDao"
+      class="edu.cmu.datalab.dao.hibernate.ItemDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="dlStudentDao"
+      class="edu.cmu.datalab.dao.hibernate.DlStudentDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="valueDao"
+      class="edu.cmu.datalab.dao.hibernate.ValueDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+   <bean id="analysisImporter" class="edu.cmu.datalab.importer.AnalysisImporter"/>
+   <bean id="analysisMain" class="edu.cmu.datalab.importer.AnalysisMain"/>
+
+
+
+
+<!-- Export Beans -->
+
+    <bean id="txExportBean" class="edu.cmu.pslc.datashop.servlet.export.TxExportBean" singleton="false">
+        <property name="transactionExportHelper"><ref bean="transactionExportHelper"/></property>
+        <property name="sampleDao"><ref bean="sampleDao"/></property>
+        <property name="sampleMetricDao"><ref bean="sampleMetricDao"/></property>
+        <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
+    </bean>
+
+    <bean id="kcModelExportBean" class="edu.cmu.pslc.datashop.servlet.kcmodel.KCModelExportBean" singleton="false">
+        <property name="modelHelper"><ref bean="kcModelHelper"/></property>
+    </bean>
+
+    <bean id="kcModelImportBean" class="edu.cmu.pslc.datashop.servlet.kcmodel.KCModelImportBean" singleton="false">
+        <property name="modelHelper"><ref bean="kcModelHelper"/></property>
+        <property name="skillModelDao"><ref bean="skillModelDao"/></property>
+        <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
+    </bean>
+
+    <bean id="stepRollupExportBean" class="edu.cmu.pslc.datashop.servlet.export.StepRollupExportBean" singleton="false">
+        <property name="stepRollupExportHelper"><ref bean="stepRollupExportHelper"/></property>
+        <property name="sampleDao"><ref bean="sampleDao"/></property>
+        <property name="stepRollupDao"><ref bean="stepRollupDao"/></property>
+    </bean>
+
+    <bean id="stepExportBean" class="edu.cmu.pslc.datashop.servlet.export.StepExportBean" singleton="false" />
+
+    <bean id="studentProblemExportBean" class="edu.cmu.pslc.datashop.servlet.export.StudentProblemExportBean" singleton="false">
+        <property name="sampleDao"><ref bean="sampleDao"/></property>
+        <property name="studentProblemRollupDao"><ref bean="studentProblemRollupDao"/></property>
+        <property name="studentProblemExportHelper"><ref bean="studentProblemExportHelper"/></property>
+    </bean>
+
+    <bean id="aggregatorBean" class="edu.cmu.pslc.datashop.servlet.export.AggregatorBean" singleton="false">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="kcModelAggregatorBean" class="edu.cmu.pslc.datashop.servlet.kcmodel.KCModelAggregatorBean" singleton="false">
+        <property name="transactionTemplate">
+            <ref bean="transactionTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="kcModelImportControllerBean" class="edu.cmu.pslc.datashop.servlet.kcmodel.KCModelImportControllerBean" singleton="false">
+        <property name="importBean"><ref bean="kcModelImportBean"/></property>
+        <property name="aggregatorBean"><ref bean="kcModelAggregatorBean"/></property>
+    </bean>
+
+    <bean id="problemContentMappingBean" class="edu.cmu.pslc.datashop.servlet.problemcontent.ProblemContentMappingBean" singleton="false">
+        <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
+    </bean>
+
+   <!-- ResourceUse.-->
+    <bean id="resourceUseOliImporterDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliImporterDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="resourceUseOliTransactionFileDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionFileDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    
+    <bean id="resourceUseOliTransactionDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    
+    <bean id="resourceUseOliUserSessFileDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessFileDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    
+    <bean id="resourceUseOliUserSessDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+</beans>

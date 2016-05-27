@@ -1,0 +1,25 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Component #1</component_id_human>
+    <workflow_id>1</workflow_id>
+    <component_name>TabDelimited</component_name>
+    <component_type>Import</component_type>
+    <left>68</left>
+    <connections>
+        <connection>
+            <to>Component2</to>
+        </connection>
+    </connections>
+    <options>
+        <files>
+            <tab-delimited>
+                <file_path>test/test_data/ds96_tx_export_example.txt
+                </file_path>
+                <file_name>ds96_tx_export_example.txt</file_name>
+                <index>0</index>
+                <label>tab-delimited</label>
+            </tab-delimited>
+        </files>
+    </options>
+    <top>106</top>
+</component>

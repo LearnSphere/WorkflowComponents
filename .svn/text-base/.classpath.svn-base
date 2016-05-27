@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="AnalysisAfm/source"/>
+	<classpathentry kind="src" path="AnalysisBkt/source"/>
+	<classpathentry kind="src" path="ImportStudentStep/source"/>
+	<classpathentry kind="src" path="ImportTransaction/source"/>
+	<classpathentry kind="src" path="VisualizationLearningCurves/source"/>
+	<classpathentry kind="src" path="ExportZip/source"/>
+	<classpathentry kind="src" path="DebugComponent/source"/>
+	<classpathentry kind="src" path="TransformJoin/source"/>
+	<classpathentry kind="src" path="OLIResourceUseDataGenerator/source"/>
+	<classpathentry kind="src" path="GeneratePfaFeatures/source"/>
+	<classpathentry kind="src" path="ImportDiscourseExample/source"/>
+	<classpathentry kind="src" path="ImportDiscourseDB/source"/>
+	<classpathentry kind="src" path="ImportUserMap/source"/>
+	<classpathentry kind="src" path="TransformDeidentify/source"/>
+	<classpathentry kind="src" path="ImportOutcome/source"/>
+	<classpathentry kind="src" path="CourseraResourceUseDataGenerator/source"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="CommonLibraries/c3p0-0.9.1-pre6.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/collections-generic-4.01.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/colt.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-beanutils-core-1.8.3.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-fileupload-1.2.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-logging.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-math-1.0.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/commons-primitives-1.0.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/darwinsys.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/dhbnumerics-1.0.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/gnujaxp.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jdom-contrib.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jdom.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jfreechart-1.0.1.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/json.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jung-1.7.6.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/junit-addons-1.4.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/junit.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/lfa-5.0.jar" sourcepath="/LFA/src"/>
+	<classpathentry kind="lib" path="CommonLibraries/libLinear.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/mysql-connector-java-5.0.7-bin.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/servlet-api.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/sizeofag.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/statisticalCorrectnessModeling.jar" sourcepath="/Modeling_StatisticalCorrectnessModeling/src"/>
+	<classpathentry kind="lib" path="CommonLibraries/weka3-4-9.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/spring/spring.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/ant-antlr-1.6.5.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/asm-attrs.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/asm.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/cglib-2.1.3.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/hibernate/jta.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/jaxen-1.1.6.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="CommonLibraries/datashop.jar" sourcepath="/DataShopRelease/java/source"/>
+	<classpathentry kind="lib" path="CommonLibraries/tika-app-1.12.jar"/>
+	<classpathentry kind="output" path="unit_test/classes"/>
+</classpath>

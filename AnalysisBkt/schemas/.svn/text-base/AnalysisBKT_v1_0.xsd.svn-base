@@ -1,0 +1,114 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="student-step"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="student-step" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:simpleType name="structureType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="bySkill" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="solverType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Baum-Welch" />
+      <xs:enumeration value="GradientDescent" />
+      <xs:enumeration value="ConjugateGradientDescent" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="conjugateGradientDescentType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Polak-Ribiere" />
+      <xs:enumeration value="Fletcher-Reeves" />
+      <xs:enumeration value="Hestenes-Stiefel" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:all>
+      <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" />
+      <xs:element type="structureType" name="structure" id="Structure" default="bySkill" />
+      <xs:element type="solverType" name="solver" id="Solver" default="GradientDescent" />
+      <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
+        minOccurs="0"  default="None" />
+      <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />
+      <xs:element type="xs:integer" name="maxIterations" id="Max_Iterations" default="200" />
+      <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
+        default="1" />
+      <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
+      <xs:element type="xs:double" name="tolerance" id="Tolerance" default="0.01" />
+      <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
+      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0,0,0,0" />
+      <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0"  />
+        <xs:element name="outputs" type="OutputType" minOccurs="0"  />
+        <xs:element name="options" type="OptionsType" minOccurs="0"  />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

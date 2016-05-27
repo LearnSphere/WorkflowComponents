@@ -1,0 +1,51 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <workflow_id>1</workflow_id>
+  <component_id_human>Export #1</component_id_human>
+  <component_name>Zip</component_name>
+  <component_type>Export</component_type>
+  <left>802</left>
+  <connections>
+    <connection>
+      <from>Component0</from>
+    </connection>
+  </connections>
+  <options />
+  <top>537</top>
+  <inputs>
+    <input0>
+      <component_id>Component2</component_id>
+      <component_id_human>Component #2</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>bkt</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <file>
+              <file_path>test/example_student_step/ds96_student_step_export.txt</file_path>
+              <file_name>ds96_student_step_export.txt</file_name>
+              <index>0</index>
+              <label>Student Step</label>
+          </file>
+      </files>
+      <someOtherElement>Some value</someOtherElement>
+    </input0>
+    <input0>
+      <component_id>Component3</component_id>
+      <component_id_human>Component #3</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>bkt</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <student-step>
+              <file_path>test/example_student_step/ds1_student_step_export.txt</file_path>
+              <file_name>ds1_student_step_export.txt</file_name>
+              <index>1</index>
+              <label>Student Step</label>
+          </student-step>
+      </files>
+      <model>Default</model>
+    </input0>
+  </inputs>
+</component>

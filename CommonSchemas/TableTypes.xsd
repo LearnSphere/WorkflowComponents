@@ -1,0 +1,61 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="fileMetadataType">
+    <xs:sequence>
+        <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FileContainer">
+    <xs:all>
+      <xs:element type="xs:string" name="file_path" minOccurs="0" />
+      <xs:element type="xs:string" name="file_name" minOccurs="0" />
+      <xs:element type="xs:string" name="index" />
+      <xs:element type="xs:string" name="label" />
+
+      <xs:element name="metadata" type="fileMetadataType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+
+  <!-- All of the following are types of "file" elements.
+       If the subheading you want doesn't exist, either create a new one with a unique name
+       or use a more generic type, like "text" or "image".  -->
+
+
+  <xs:element name="file" type="FileContainer" />
+  <xs:element name="text" substitutionGroup="file" />
+  <xs:element name="tab-delimited" substitutionGroup="text" />
+  <xs:element name="analysis-summary" substitutionGroup="text" />
+  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
+  <xs:element name="user-map" substitutionGroup="tab-delimited" />
+  <xs:element name="resource-use" substitutionGroup="tab-delimited" />
+  <xs:element name="outcome" substitutionGroup="tab-delimited" />
+  <xs:element name="resource-use-to-outcome" substitutionGroup="tab-delimited" />
+  <xs:element name="student-step" substitutionGroup="tab-delimited" />
+  <xs:element name="transaction" substitutionGroup="tab-delimited" />
+  <xs:element name="student-problem" substitutionGroup="tab-delimited" />
+  <xs:element name="csv" substitutionGroup="text" />
+  <xs:element name="xml" substitutionGroup="text" />
+  <xs:element name="html" substitutionGroup="text" />
+  <xs:element name="ctat-log" substitutionGroup="xml" />
+  <xs:element name="sql" substitutionGroup="text" />
+  <xs:element name="discoursedb" substitutionGroup="text" />
+
+  <xs:element name="image" substitutionGroup="file" />
+  <xs:element name="png" substitutionGroup="image" />
+  <xs:element name="jpg" substitutionGroup="image" />
+  <xs:element name="gif" substitutionGroup="image" />
+  <xs:element name="psd" substitutionGroup="image" />
+  <xs:element name="bmp" substitutionGroup="image" />
+
+  <xs:element name="compressed" substitutionGroup="file" />
+  <xs:element name="zip" substitutionGroup="compressed" />
+  <xs:element name="bz2" substitutionGroup="compressed" />
+  <xs:element name="gz" substitutionGroup="compressed" />
+  <xs:element name="_7z" substitutionGroup="compressed" />
+
+
+
+
+</xs:schema>

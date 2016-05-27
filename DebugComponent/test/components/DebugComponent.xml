@@ -1,0 +1,39 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <workflow_id>2</workflow_id>
+  <component_name>Afm</component_name>
+  <component_type>analysis</component_type>
+  <left>395</left>
+  <top>23</top>
+  <connections>
+    <connection>
+      <from>Import-1-x948793</from>
+    </connection>
+    <connection>
+      <to>Visualization-1-x967745</to>
+    </connection>
+  </connections>
+  <options />
+  <inputs>
+    <input0>
+      <component_id>Import-1-x948793</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Transaction</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <file_path>test/example_transaction/ds96_tx_export_example.txt</file_path>
+          <file_name>ds96_tx_export_example.txt</file_name>
+          <index>0</index>
+          <label>Transaction</label>
+          <metadata />
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>

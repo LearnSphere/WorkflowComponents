@@ -1,0 +1,98 @@
+<project name="AnalysisAfm" default="dist" basedir=".">
+    <description>
+        Java-based AnalysisAfm workflow component.
+    </description>
+
+    <!-- set global properties for this build -->
+    <property file="build.properties" />
+    <property name="source" location="${basedir}/source" />
+    <property name="build" location="${basedir}/build" />
+    <property name="dist" location="${basedir}/dist" />
+    <property name="lib" location="../CommonLibraries" />
+    <property name="javadoc" location="${basedir}/javadoc" />
+
+    <property name="version" value="1.0" />
+
+    <property name="component.id" value="AnalysisAfm" />
+    <property name="component.version" value="v${version} 2015" />
+
+    <property name="ToolTemplate.jar" value="${dist}/${component.id}-${version}.jar" />
+
+    <path id="lib.path">
+        <fileset dir="${lib}">
+            <include name="**/**.jar" />
+        </fileset>
+    </path>
+
+    <target name="dist" depends="compile" description="generate the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}" />
+
+        <path id="build-classpath">
+            <fileset dir="${lib}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+        <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
+            <classpath refid="build-classpath" />
+        </manifestclasspath>
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/afm/**">
+            <manifest>
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.afm.AFMMain" />
+                <attribute name="Class-Path" value="${lib.list}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <path id="run.classpath">
+        <pathelement path="${ToolTemplate.jar}" />
+        <path refid="lib.path" />
+        <pathelement path="." />
+    </path>
+
+    <target name="init">
+        <!-- Create the time stamp in DSTAMP -->
+        <tstamp />
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}" />
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="compile" depends="init" description="compile the source ">
+        <!-- Compile the java code from ${source} into ${build} -->
+        <javac srcdir="${source}" destdir="${build}" debug="on">
+            <classpath refid="lib.path" />
+        </javac>
+    </target>
+
+    <!-- Delete the temporary directories. -->
+    <target name="clean" description="clean up">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+        <delete dir="${javadoc}" />
+    </target>
+
+    <target name="javadoc" depends="compile" description="Create javadoc documentation">
+        <mkdir dir="${javadoc}" />
+        <javadoc sourcepath="${source}" destdir="${javadoc}" packagenames="*.*" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.id} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.id} (Version ${component.version})">
+            <classpath refid="lib.path" />
+        </javadoc>
+    </target>
+
+    <target name="runComponent" depends="clean, compile, dist" description="executes AnalysisAfm">
+        <java classname="edu.cmu.pslc.learnsphere.analysis.afm.AFMMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentAFM.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/AnalysisAFM_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+            <!-- <arg value="-preprocess" /> Use this flag to test component pre-processing. -->
+
+        </java>
+    </target>
+</project>
