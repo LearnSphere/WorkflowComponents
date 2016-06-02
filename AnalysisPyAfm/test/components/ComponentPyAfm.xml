@@ -16,7 +16,7 @@
   </connections>
   <options>
     <model>AFM+S</model>
-    <kc_model>Default</kc_model>
+    <kc_model>KC (Default)</kc_model>
     <ft>student_step</ft>
   </options>
   <inputs>

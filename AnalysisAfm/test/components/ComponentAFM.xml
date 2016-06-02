@@ -179,7 +179,7 @@
     </input0>
   </inputs>
   <options>
-    <model>Input 0 - Column 25 - KC (Default)</model>
+    <model>KC (Default)</model>
     <xValidationFolds>10</xValidationFolds>
   </options>
 

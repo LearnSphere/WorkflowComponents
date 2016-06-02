@@ -72,7 +72,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             errorMessages.add("Step export file cannot be read.");
         }
 
-
         if (this.getOptionAsString("model") == null) {
             errorMessages.add("No Predicted Error Rate was found.");
         }
@@ -85,10 +84,10 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
 
         visualizationOptions = new LearningCurveVisualizationOptions();
 
-        if (modelOption != null && modelOption.matches(".* - .*")) {
-            String[] split = modelOption.split(" - ");
-            modelName = split[split.length - 1].replaceAll("\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
-            logger.debug("Model name: " + modelName);
+        if (modelOption != null) {
+
+            modelName = modelOption.replaceAll("(?i)\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
+
             visualizationOptions.setPrimaryModelName(modelName);
 
         }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=/cygdrive/c/dev/WorkflowComponents/
+dir=/cygdrive/c/dev/WorkflowComponentsTrunk/
 
 cd $dir
 

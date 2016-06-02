@@ -229,16 +229,9 @@ public class BKTMain extends AbstractComponent {
 
         analysisOptions = new BKTOptions();
 
-        String modelOption = this.getOptionAsString("model");
-        logger.debug("Model option: " + modelOption);
 
-        if (modelOption != null && modelOption.matches(".* - .*")) {
-
-            String[] split = modelOption.split(" - ");
-            modelName = split[split.length - 1].replaceAll("\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
-
-            logger.debug("Model name: " + modelName);
-
+        if (this.getOptionAsString("model") != null) {
+            modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
         }
 
         String structure = this.getOptionAsString("structure");

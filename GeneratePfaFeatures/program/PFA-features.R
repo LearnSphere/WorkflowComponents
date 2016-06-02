@@ -3,6 +3,7 @@ ech<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
+print("MCK")
 print(args)
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
@@ -54,7 +55,7 @@ studycount <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))         #co
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,val$KC..Default.,sep="-")
 #val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
-val<-val[order(val$Anon.Student.Id, val$Time),] 
+val<-val[order(val$Anon.Student.Id, val$Time),]
 
 # cat("\nnow adding cor\n")
 val$CF..cor.<-corcount(val,val$CF..KCindex.)

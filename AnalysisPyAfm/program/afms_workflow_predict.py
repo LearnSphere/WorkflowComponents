@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from __future__ import division
 import argparse
+import re
 
 import numpy as np
 from scipy.sparse import hstack
@@ -10,6 +11,8 @@ from sklearn.feature_extraction import DictVectorizer
 
 from custom_logistic import CustomLogistic
 from bounded_logistic import BoundedLogistic
+def printErr(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 def read_datashop_student_step(step_file, kc_model, ft):
     headers = step_file.readline().rstrip().split('\t')
@@ -88,8 +91,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     ssr_file = args.file0
+    patternC = re.compile('\\s*KC\\s*\\(( .* )\\s*\\)', re.VERBOSE)
+    kc_model = patternC.sub(r'\1', args.kc_model)
+    print("MCK: " + kc_model)
 
-    kcs, opps, y, stu, student_label, item_label, original_headers, original_step_data = read_datashop_student_step(ssr_file, args.kc_model, args.ft)
+    kcs, opps, y, stu, student_label, item_label, original_headers, original_step_data = read_datashop_student_step(ssr_file, kc_model, args.ft)
 
     sv = DictVectorizer()
     qv = DictVectorizer()
@@ -123,7 +129,7 @@ if __name__ == "__main__":
     else:
         raise ValueError("Model type not supported")
 
-    headers = original_headers + ["Predicted Error Rate (%s)" % args.kc_model]
+    headers = original_headers + ["Predicted Error Rate (%s)" % kc_model]
     outfilePath = args.workingDir + "/output.txt"
     outfile = open(outfilePath, 'w')
     outfile.write("\t".join(headers) + "\n")

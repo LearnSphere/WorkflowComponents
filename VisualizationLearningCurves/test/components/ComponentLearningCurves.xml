@@ -14,7 +14,7 @@
   <top>106</top>
   <options>
     <learningCurve>Knowledge Components</learningCurve>
-    <model>Input 0 - Column 19 - KC (Default)</model>
+    <model>Predicted Error Rate (Default)</model>
     <stdDevCutOff>0</stdDevCutOff>
     <opportunityCutOffMin>0</opportunityCutOffMin>
     <opportunityCutOffMax>INF</opportunityCutOffMax>

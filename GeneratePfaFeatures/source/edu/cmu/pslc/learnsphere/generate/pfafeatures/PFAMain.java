@@ -6,7 +6,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
 public class PFAMain extends AbstractComponent {
 
-
     /** Component option (model). */
     String modelName = null;
 
@@ -23,16 +22,9 @@ public class PFAMain extends AbstractComponent {
 
     @Override
     protected void parseOptions() {
-        String modelOption = this.getOptionAsString("model");
-        logger.debug("Model option: " + modelOption);
 
-        if (modelOption != null && modelOption.matches(".* - .*")) {
-
-            String[] split = modelOption.split(" - ");
-            modelName = split[split.length - 1].replaceAll("\\s*KC\\s*\\((.*)\\)\\s*", "$1");
-
-            logger.debug("Model name: " + modelName);
-
+        if (this.getOptionAsString("model") != null) {
+            modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
         }
 
     }
@@ -58,6 +50,7 @@ public class PFAMain extends AbstractComponent {
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "transaction";
+            System.err.println("Added file: " + outputFile.getAbsolutePath());
             this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
         }
 

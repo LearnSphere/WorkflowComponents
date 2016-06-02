@@ -65,7 +65,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-      <xs:element type="FileInputHeader" name="kc_model" id="KC_Model" default="KC\s*(.*)\s*" />
+      <xs:element type="FileInputHeader" name="kc_model" id="KC_Model" default="\s*KC\s*\((.*)\)\s*" />
       <xs:element type="modelType" name="model" id="Model" default="AFM+S" />
       <xs:element type="fileType" name="ft" id="File_Type" default="student_step" />
     </xs:all>
