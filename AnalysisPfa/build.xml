@@ -89,7 +89,7 @@
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/AnalysisPFA_v1_0.xsd" />
+            <arg value="${basedir}/schemas/AnalysisPfa_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>
