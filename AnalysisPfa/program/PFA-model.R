@@ -21,7 +21,7 @@ inputFile<-args[12]
 # Get data
 outputFilePath<- paste(workingDirectory, "pfa-model.txt", sep="")
 
-val<-read.table(inputFile,sep="\t", header=TRUE,quote="\"")
+val<-read.table(inputFile,sep="\t", header=TRUE,quote=FALSE)
 
 # Creates output log fille
 clean <- file(paste(workingDirectory, "PFA-log.txt", sep=""))
