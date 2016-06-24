@@ -24,8 +24,14 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited" />
+      <xs:element ref="csv" />
     </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OptionsType">
+    <xs:all >
+      <xs:element type="xs:string" name="coursename" id="Course_Name" default="coursera_emnlp_2014" />
+    </xs:all>
   </xs:complexType>
 
   <xs:element name="component">

@@ -1,6 +1,6 @@
 /*
  
- Copyright (c) 2012, Michael (Mikhail) Yudelson
+ Copyright (c) 2012-2015, Michael (Mikhail) Yudelson
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,9 @@
  
  */
 
+//
+//  The main executable of hte input conversion utility
+//
 
 #include "utils.h"
 #include "InputUtil.h"
@@ -42,6 +45,8 @@ void exit_with_help() {
 		   "options:\n"
 		   "-s : source file format 't' - text, 'b' - binary  (default is 't' - text)\n"
 		   "-t : target file format 't' - text, 'b' - binary  (default is 'b' - binary)\n"
+           "-d : delimiter for multiple skills per observation; 0-single skill per\n"
+           "     observation (default), otherwise -- delimiter character, e.g. '-d ~'.\n"
 		   );
 	exit(1);
 }
@@ -106,7 +111,6 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *output_
 int main (int argc, char ** argv) {
     
 	clock_t tm0 = clock();
-    printf("starting conversion...\n");
 	char input_file[1024];
 	char output_file[1024];
     
@@ -120,7 +124,6 @@ int main (int argc, char ** argv) {
     else {
         InputUtil::readBin(input_file, &param);
     }
-    
 	// free data
 	destroy_input_data(&param);
 	

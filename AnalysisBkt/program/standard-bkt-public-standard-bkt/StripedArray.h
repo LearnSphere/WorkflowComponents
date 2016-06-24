@@ -1,6 +1,6 @@
 /*
  
- Copyright (c) 2012, Michael (Mikhail) Yudelson
+ Copyright (c) 2012-2015, Michael (Mikhail) Yudelson
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,10 @@
  
  */
 
-// StripedArray is an array that grows in chunks, just to save time and not do
-// one extra linear scon of the data
+/*
+ * helper auto-expanded array without re-allocating the memory, by allocating 
+ * chunks - stripes
+ */
 
 #include <limits.h>
 #include <stdlib.h>
@@ -36,18 +38,19 @@
 #include <memory.h>
 #include <math.h>
 
+
 #ifndef STRIPEDARRAY_H
 #define STRIPEDARRAY_H
 
+#define NDAT_MAX INT_MAX
 typedef signed int NDAT;  // number of data rows, now 4 bill max
 
 template <typename T>
 class StripedArray {
 public:
 	StripedArray();
-	StripedArray(NDAT _size, bool a_complex); // predefined size
+	StripedArray(NDAT _size); // predefined size
 	StripedArray(FILE *f, NDAT N);
-	StripedArray(bool a_complex);
 	~StripedArray();
 	NDAT getSize();
 	void add(T value);
@@ -56,12 +59,13 @@ public:
 	void set(NDAT idx, T value);
 	void clear();
     NDAT toBinFile(FILE* f);
+    static NDAT arrayToBinFile(T* ar, NDAT size, FILE* f);
+    T* toArray();
 private:
 	NDAT size; // linear
 	NDAT stripe_size;
 	NDAT nstripes;
 	NDAT size_last_stripe;
-    bool complex; // element stored is a pointer to an array (should be deleted further)
 	T** stripes;
 	void addStripe();
 };
@@ -74,14 +78,12 @@ StripedArray<T>::StripedArray() {
 	this->nstripes = 0;
 	this->size_last_stripe = 0;
 	this->stripes = NULL;
-    this->complex = false;
 }
 
 // predefined size
 template <typename T>
-StripedArray<T>::StripedArray(NDAT _size, bool a_complex) {
+StripedArray<T>::StripedArray(NDAT _size) {
 	stripe_size = 20000;
-    complex = a_complex;
 	size = _size;
 	nstripes = (NDAT)ceil((double)size/stripe_size);
 	size_last_stripe = (NDAT)fmod(size, (size_t)stripe_size);
@@ -97,7 +99,6 @@ StripedArray<T>::StripedArray(NDAT _size, bool a_complex) {
 template <typename T>
 StripedArray<T>::StripedArray(FILE *f, NDAT N) {
 	stripe_size = 20000;
-    complex = false;
 	size = N;
 	nstripes = (NDAT)ceil((double)N/stripe_size);
 	size_last_stripe = (NDAT)fmod(N, stripe_size);
@@ -116,21 +117,8 @@ StripedArray<T>::StripedArray(FILE *f, NDAT N) {
 }
 
 template <typename T>
-StripedArray<T>::StripedArray(bool a_complex) {
-	size = 0;
-	stripe_size = 20000;
-	nstripes = 0;
-	size_last_stripe = 0;
-	stripes = NULL;
-    complex = a_complex;
-}
-
-template <typename T>
 StripedArray<T>::~StripedArray() {
 	for(NDAT i=0; i<this->nstripes;i++) {
-        if(this->complex)
-            for(NDAT j=0; j<( (i<(this->nstripes-1))?this->stripe_size:this->size_last_stripe );j++)
-                free(  (void *)(this->stripes[i][j]) );
 		free(this->stripes[i]);
     }
 	free(this->stripes);
@@ -141,7 +129,7 @@ StripedArray<T>::~StripedArray() {
 
 template <typename T>
 void StripedArray<T>::add(T value) {
-	if(this->size == (ULONG_MAX-1)) {
+	if(this->size == (NDAT_MAX-1)) {
 		fprintf(stderr, "Error! Maximum array size reached.\n");
 		return;
 	}
@@ -253,6 +241,22 @@ NDAT StripedArray<T>::toBinFile(FILE *f) {
         }
     }
     return all_nwrit;
+}
+
+template <typename T>
+NDAT StripedArray<T>::arrayToBinFile(T* ar, NDAT size, FILE* f) {
+    return (NDAT)fwrite (ar, sizeof(T), (size_t)size, f);
+}
+
+template <typename T>
+T* StripedArray<T>::toArray() {
+    T *result = (T*)malloc( (size_t)this->size*sizeof(T));
+    for(NDAT i=0; i<this->nstripes; i++) {
+        T* dest = &result[ i*this->stripe_size ];
+        size_t sz = sizeof(T)*( (i<(this->nstripes-1))?this->stripe_size:this->size_last_stripe );
+        memcpy( dest, this->stripes[i], sz );
+    }
+    return result;
 }
 
 #endif

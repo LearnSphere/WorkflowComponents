@@ -12,9 +12,8 @@
         </connection>
     </connections>
     <options>
-      <model>KC..Default.</model>
-      <flags>Simple</flags>
-      <n>1</n>
+      <model>KC (Default)</model>
+      <analysis>Simple</analysis>
     </options>
     <inputs>
     <input0>

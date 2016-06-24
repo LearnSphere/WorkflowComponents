@@ -74,7 +74,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-      <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" />
+      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
       <xs:element type="structureType" name="structure" id="Structure" default="bySkill" />
       <xs:element type="solverType" name="solver" id="Solver" default="GradientDescent" />
       <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
@@ -84,7 +84,6 @@
       <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
         default="1" />
       <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
-      <xs:element type="xs:double" name="tolerance" id="Tolerance" default="0.01" />
       <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
       <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0,0,0,0" />
       <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />

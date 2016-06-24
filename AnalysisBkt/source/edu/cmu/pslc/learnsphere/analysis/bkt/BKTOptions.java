@@ -181,8 +181,7 @@ public class BKTOptions {
     private ConjugateGradientDescentOption conjugateGradientDescentOption;
     /** The "fit as one skill" option. */
     FitAsOneSkillOption fitAsOneSkillOption;
-    /** Tolerance. */
-    private Double tolerance;
+
     /** Max iterations. */
     private Integer maxIterations;
     /** Number of hidden states. */
@@ -296,20 +295,6 @@ public class BKTOptions {
      */
     public void setFitAsOneSkillOption(FitAsOneSkillOption fitAsOneSkillOptions) {
         this.fitAsOneSkillOption = fitAsOneSkillOption;
-    }
-
-    /**
-     * @return the tolerance
-     */
-    public Double getTolerance() {
-        return tolerance;
-    }
-
-    /**
-     * @param tolerance the tolerance to set
-     */
-    public void setTolerance(Double tolerance) {
-        this.tolerance = tolerance;
     }
 
     /**
@@ -568,9 +553,6 @@ public class BKTOptions {
 
         if (fitAsOneSkillOption != null) {
             returnParamString.append(" -f " + fitAsOneSkillOption.getId());
-        }
-        if (tolerance != null) {
-            returnParamString.append(" -t " + tolerance);
         }
         if (maxIterations != null) {
             returnParamString.append(" -i " + maxIterations);

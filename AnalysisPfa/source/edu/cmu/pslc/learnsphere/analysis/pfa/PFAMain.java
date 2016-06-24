@@ -48,6 +48,7 @@ public class PFAMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/pfa-model.txt");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/AUC.png");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/PFA-log.txt");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
@@ -60,6 +61,11 @@ public class PFAMain extends AbstractComponent {
                 Integer fileIndex1 = 0;
                 String label1 = "image";
                 this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
+
+                Integer nodeIndex2 = 2;
+                Integer fileIndex2 = 0;
+                String label2 = "text";
+                this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
 
             } else {
                 this.addErrorMessage("An unknown error has occurred with the PFA component.");

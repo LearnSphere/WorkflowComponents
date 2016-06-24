@@ -1,6 +1,6 @@
 /*
  
- Copyright (c) 2012, Michael (Mikhail) Yudelson
+ Copyright (c) 2012-2015, Michael (Mikhail) Yudelson
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,7 @@ using namespace std;
 #define COLUMNS 4
 
 struct param param;
-//static int max_line_length;
-//static NDAT global_predict_N;
+static char *line = NULL;
 NUMBER* metrics;
 map<string,NCAT> data_map_group_fwd;
 map<NCAT,string> data_map_group_bwd;
@@ -67,7 +66,7 @@ int main (int argc, char ** argv) {
 	char predict_file[1024];
 	
 	parse_arguments(argc, argv, input_file, model_file, predict_file);
-    param.predictions = 2; // force it on, since we, you know, predictinng :)
+    // param.predictions = 2; // do not force it on
 
     // read data
     if(param.binaryinput==0) {
@@ -94,27 +93,50 @@ int main (int argc, char ** argv) {
 //    else
 //        readSolverInfo(fid, &initparam, &line_no);
     
+    // copy partial info from param_model to param
+    if(param.nO==0) param.nO = param_model.nO;
+	
+    // copy number of states from the model
+    param.nS = param_model.nS;
+    
+    // if number of states or observations >2, then no check
+    if( param.nO>2 || param.nS>2)
+        param.do_not_check_constraints = 1;
+    
+    //
+    // create hmm Object
+    //
+    HMMProblem *hmm = NULL;
+    switch(param.structure)
+    {
+        case STRUCTURE_SKILL: // Conjugate Gradient Descent
+        case STRUCTURE_GROUP: // Conjugate Gradient Descent
+            hmm = new HMMProblem(&param);
+            break;
+    }
     // read model body
-    HMMProblem * hmm = new HMMProblem(&param);
     hmm->readModelBody(fid, &param_model, &line_no, overwrite);
   	fclose(fid);
 	free(line);
-
+    
 	if(param.quiet == 0)
         printf("input read, nO=%d, nG=%d, nK=%d, nI=%d\n",param.nO, param.nG, param.nK, param.nI);
 	
 	clock_t tm = clock();
-    if(param.metrics>0 || param.predictions>0) {
+//    if(param.metrics>0 || param.predictions>0) {
         metrics = Calloc(NUMBER, (size_t)7);// LL, AIC, BIC, RMSE, RMSEnonull, Acc, Acc_nonull;
-    }
-    hmm->predict(metrics, predict_file, param.dat_obs, param.dat_group, param.dat_skill, param.dat_multiskill, false/*only unlabelled*/);
+//    }
+	HMMProblem::predict(metrics, predict_file, param.dat_obs, param.dat_group, param.dat_skill, param.dat_skill_stacked, param.dat_skill_rcount, param.dat_skill_rix, &hmm, 1, NULL);
 //    predict(predict_file, hmm);
 	if(param.quiet == 0)
 		printf("predicting is done in %8.6f seconds\n",(NUMBER)(clock()-tm)/CLOCKS_PER_SEC);
-    // THERE IS NO METRICS, WE PREDICT UNKNOWN, however, if we force prediction of all we do
-    if( param.predictions>0 ) {
-        printf("predicted model LL=%15.7f, AIC=%8.6f, BIC=%8.6f, RMSE=%8.6f (%8.6f), Acc=%8.6f (%8.6f)\n",metrics[0], metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], metrics[6]);
-    }
+    //if( param.predictions>0 ) {
+        printf("trained model LL=%15.7f (%15.7f), AIC=%8.6f, BIC=%8.6f, RMSE=%8.6f (%8.6f), Acc=%8.6f (%8.6f)\n",
+               metrics[0], metrics[1], // ll's
+               2*hmm->getNparams() + 2*metrics[0], hmm->getNparams()*safelog(param.N) + 2*metrics[0],
+               metrics[2], metrics[3], // rmse's
+               metrics[4], metrics[5]); // acc's
+    //}
     free(metrics);
     
 	destroy_input_data(&param);
@@ -133,8 +155,23 @@ void exit_with_help() {
            "-d : delimiter for multiple skills per observation; 0-single skill per\n"
            "     observation (default), otherwise -- delimiter character, e.g. '-d ~'.\n"
            "-b : treat input file as binary input file (specifications TBA).\n"
-           "-p : produce model predictions for all rows, not just ones with unknown\n"
-           "     observations.\n"
+           "-p : report model predictions on the train set 0-no (default), 1-yes; 2-yes,\n"
+           "     plus output state probability; works with -v and -m parameters.\n"
+           "-U : controls how update to the probability distribution of the states is\n"
+           "     updated. Takes the following format '-U r|g[,t|g]', where first\n"
+           "     character controls how prediction treats known observations, second -- how\n"
+           "     prediction treats unknown observations, and third -- whether to output\n"
+           "     probabilities of priors. Dealing with known observations 'r' - reveal\n"
+           "     actual observations for the update of state probability distribution (makes\n"
+           "     sense for modeling how an actual system would work), 'g' - 'guessing' the\n"
+           "     observation based on the predicted outcomes (arg max) -- more appropriate\n"
+           "     when comparing models (so that no information about observation is never\n"
+           "     revealed). Dealing with unknown observations (marked as '.' -- dot): 't' --\n"
+           "     use transition matrix only, 'g' -- 'guess' the observation.\n"
+           "     Default (if ommitted) is '-U r,t'.\n"
+           "     For examle, '-U g,g would require 'guessing' of what the observation was\n"
+           "     using model parameters and the running value of the probabilities of state\n"
+           "     distributions.\n"
 		   );
 	exit(1);
 }
@@ -143,7 +180,7 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *model_f
 	// parse command line options, starting from 1 (0 is path to executable)
 	// go in pairs, looking at whether first in pair starts with '-', if not, stop parsing arguments
 	int i;
-//    char * ch;
+    char * ch;
 	for(i=1;i<argc;i++)
 	{
 		if(argv[i][0] != '-') break; // end of options stop parsing
@@ -158,14 +195,6 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *model_f
 					exit_with_help();
 				}
 				break;
-//			case 'n':
-//				param.nS = (NPAR)atoi(argv[i]);
-//				if(param.nS<2) {
-//					fprintf(stderr,"ERROR! Number of hidden states should be at least 2\n");
-//					exit_with_help();
-//				}
-//				//fprintf(stdout, "fit single skill=%d\n",param.quiet);
-//				break;
             case  'd':
 				param.multiskill = argv[i][0]; // just grab first character (later, maybe several)
                 break;
@@ -174,10 +203,21 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *model_f
                 break;
             case  'p':
 				param.predictions = atoi(argv[i]);
-				if(param.predictions<0 || param.predictions>1) {
-					fprintf(stderr,"a flag of whether to report predictions for training data (-p) should be 0 or 1\n");
+				if(param.predictions<0 || param.predictions>2) {
+					fprintf(stderr,"a flag of whether to report predictions for training data (-p) should be 0, 1 or 2\n");
 					exit_with_help();
 				}
+                break;
+            case  'U':
+                param.update_known = *strtok(argv[i],",\t\n\r");
+                ch = strtok(NULL, ",\t\n\r");
+                param.update_unknown = ch[0];
+                
+                if( (param.update_known!='r' && param.update_known!='g') ||
+                   (param.update_unknown!='t' && param.update_unknown!='g') ) {
+                    fprintf(stderr,"specification of how probabilities of states should be updated (-U) is incorrect, it sould be r|g[,t|g] \n");
+                    exit_with_help();
+                }
                 break;
 			default:
 				fprintf(stderr,"unknown option: -%c\n", argv[i-1][1]);
@@ -202,9 +242,13 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *model_f
 	}
 	else {
 		strcpy(model_file_name,argv[i++]); // copy and advance
-		if(i>=argc) // no prediction file name specified
-			strcpy(predict_file_name,"predict_hmm.txt"); // the predict file too
-		else
+		if(i>=argc) {// no prediction file name specified
+			//strcpy(predict_file_name,"predict_hmm.txt"); // the predict file too
+            param.predictions = 0;
+        }
+		else {
+            // param.predictions = 1;
 			strcpy(predict_file_name,argv[i]);
+        }
 	}
 }

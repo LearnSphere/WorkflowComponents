@@ -27,8 +27,13 @@ public class PyAfmMain extends AbstractComponent {
         // plus one extra column for Predicted Error Rate, if it doesn't already exist.
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        this.addMetaDataFromInput("student-step", 0, 0, ".*");
-        this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "Predicted Error Rate (" + modelName + ")");
+        String fileType = "student-step";
+        Integer inputNodeIndex = 0;
+        Integer outputNodeIndex = 0;
+        Integer fileIndex = 0;
+
+        this.addMetaDataFromInput(fileType, inputNodeIndex, outputNodeIndex, ".*");
+        this.addMetaData(fileType, outputNodeIndex, META_DATA_LABEL, "label0", fileIndex, "Predicted Error Rate (" + modelName + ")");
     }
 
     @Override
@@ -49,9 +54,19 @@ public class PyAfmMain extends AbstractComponent {
         Integer fileIndex = 0;
         String fileLabel = "student-step";
 
-        File file0 = new File(outputDirectory.getAbsolutePath() + "/output.txt");
+        File stuStepFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
 
-        this.addOutputFile(file0, nodeIndex, fileIndex, fileLabel);
+        this.addOutputFile(stuStepFile, nodeIndex, fileIndex, fileLabel);
+
+
+        nodeIndex = 1;
+        fileIndex = 0;
+        fileLabel = "tab-delimited";
+
+        File fitStatsFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
+
+        this.addOutputFile(fitStatsFile, nodeIndex, fileIndex, fileLabel);
+
         // Send the component output bakc to the workflow.
         System.out.println(this.getOutput());
     }

@@ -94,7 +94,6 @@ public class BKTMain extends AbstractComponent {
                 doubleValues.add(doubleValue);
 
             }
-
             File generatedFile = this.createFile("Step-values-with-predictions", ".txt");
 
             String newLineChar = "\n";
@@ -137,7 +136,7 @@ public class BKTMain extends AbstractComponent {
                     String predictedValueString = decimalFormat
                             .format(doubleValues.get(lineCount));
                     String[] valueArray = line.split("\t");
-
+                    
                     Integer colIndex = 0;
                     for (String value : valueArray) {
                         byte[] bytes = null;
@@ -307,8 +306,6 @@ public class BKTMain extends AbstractComponent {
                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.YES);
             }
         }
-
-        analysisOptions.setTolerance(this.getOptionAsDouble("tolerance"));
 
         analysisOptions.setMaxIterations(this.getOptionAsInteger("maxIterations"));
 
@@ -504,7 +501,6 @@ public class BKTMain extends AbstractComponent {
             addErrorMessage("Error occurred in BKT: " + ex.getMessage());
             logger.error("Error occured in BKT: " + ex.getMessage());
         }
-
         return resultString;
     }
 
@@ -674,9 +670,9 @@ public class BKTMain extends AbstractComponent {
 
             String[] runWords = tempRunResult.split("\\s+");
 
-            // based on trainhmm output, size of (model2DStr - 6) gives how many
+            // based on trainhmm output, size of (model2DStr - 7) gives how many
             // skills
-            int skillCnt = (model2DStr.length - 6) / 4;
+            int skillCnt = (model2DStr.length - 7) / 4;
             int skillCntAlt = -1;
             try {
                 skillCntAlt = Integer
@@ -692,21 +688,20 @@ public class BKTMain extends AbstractComponent {
             String[][] skills = new String[skillCnt][6];
             String[][] parameters = new String[5][2];
             for (int i = 0; i < skillCnt; i++) {
-                if (model2DStr[i * 4 + 6].length != 2
-                        || model2DStr[i * 4 + 7].length != 3
-                        || model2DStr[i * 4 + 8].length != 5
-                        || model2DStr[i * 4 + 9].length != 5) {
+                if (model2DStr[i * 4 + 7].length != 2
+                        || model2DStr[i * 4 + 8].length != 3
+                        || model2DStr[i * 4 + 9].length != 5
+                        || model2DStr[i * 4 + 10].length != 5) {
                     addErrorMessage("Format error found in model file: " + modelFile);
                 } else {
                     skills[i][0] = "" + (i + 1);
-                    skills[i][1] = model2DStr[i * 4 + 6][1];
-                    skills[i][2] = model2DStr[i * 4 + 7][1];
-                    skills[i][3] = model2DStr[i * 4 + 8][3];
-                    skills[i][4] = model2DStr[i * 4 + 9][2];
-                    skills[i][5] = model2DStr[i * 4 + 9][3];
+                    skills[i][1] = model2DStr[i * 4 + 7][1];
+                    skills[i][2] = model2DStr[i * 4 + 8][1];
+                    skills[i][3] = model2DStr[i * 4 + 9][3];
+                    skills[i][4] = model2DStr[i * 4 + 10][2];
+                    skills[i][5] = model2DStr[i * 4 + 10][3];
                 }
             }
-
             boolean hasLL = false;
             boolean hasAIC = false;
             boolean hasBIC = false;
@@ -747,7 +742,6 @@ public class BKTMain extends AbstractComponent {
                 resultSb.append(parameters[i][0] + "\t" + parameters[i][1]
                         + "\n");
             }
-
             if ((gRMSE != null && !gRMSE.equals(""))
                     || (iRMSE != null && !iRMSE.equals(""))
                     || (nRMSE != null && !nRMSE.equals("")))
@@ -766,11 +760,11 @@ public class BKTMain extends AbstractComponent {
                         + skills[i][4] + "\t" + skills[i][5] + "\n");
             }
             resultSb.append("\nFitted values:\n");
-
+            
             for (int i = 0; i < prediction2DStr.length; i++) {
                 resultSb.append(prediction2DStr[i][0] + "\n");
             }
-
+            
         } else {
             addErrorMessage("Can't write model file " + modelFile
                     + " or prediction file " + predictionFile + ".");
@@ -779,7 +773,6 @@ public class BKTMain extends AbstractComponent {
         for (String msg : this.errorMessages) {
             logger.error(msg);
         }
-
         return resultSb.toString();
     }
 
@@ -931,8 +924,7 @@ public class BKTMain extends AbstractComponent {
         ZipInputStream zipInputStream = null;
         ZipEntry zipEntry;
         try {
-            zipInputStream = new ZipInputStream(
-                new FileInputStream(zipFileName));
+            zipInputStream = new ZipInputStream(new FileInputStream(zipFileName));
 
             zipEntry = zipInputStream.getNextEntry();
 

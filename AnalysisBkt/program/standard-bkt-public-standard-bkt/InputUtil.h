@@ -1,6 +1,6 @@
 /*
  
- Copyright (c) 2012, Michael (Mikhail) Yudelson
+ Copyright (c) 2012-2015, Michael (Mikhail) Yudelson
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -29,26 +29,28 @@
 
 //
 //  InputUtil.h
-//  This class is a utility that reads input text for HMM, converts it
-//  to a more compact binary file, and reads the binary file too
+//  This is a support class that helps read input text for HMM, convert it
+//  to a more compact binary file, and read the binary file as well
 //  HMM
 
 #ifndef __HMM__InputUtil__
 #define __HMM__InputUtil__
 
 #include "utils.h"
+
 //#define bin_input_file_verstion 1
-#define bin_input_file_verstion 2 // increase number of skills students to 4 bytes
+//#define bin_input_file_verstion 2 // increase number of skills/students to a 4 byte integer
+#define bin_input_file_verstion 3 // added Nstacked, changed how multi-skills are stored and added slices (single and multi-coded)
 
 class InputUtil {
 public:
     static bool readTxt(const char *fn, struct param * param); // read txt into param
     static bool readBin(const char *fn, struct param * param); // read bin into param
     static bool toBin(struct param * param, const char *fn);// writes data in param to bin file
+    // experimental
+    static void writeInputMatrix(const char *filename, struct param* p, NCAT xndat, struct data** x_data);
 private:
     static void writeString(FILE *f, string str);
     static string readString(FILE *f);
-    static NDAT writeMultiSkill(FILE *f, struct param * param);
-    static NDAT  readMultiSkill(FILE *f, struct param * param, char version);
 };
 #endif /* defined(__HMM__InputUtil__) */

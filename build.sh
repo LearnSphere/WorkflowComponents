@@ -1,12 +1,12 @@
 #!/bin/bash
 
-dir=/cygdrive/c/dev/WorkflowComponentsTrunk/
+dir=/cygdrive/c/dev/WorkflowComponentsSvn/
 
 cd $dir
 
 rm -R */dist
 
-for cdir in `ls -1`; do
+for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
   cd $cdir
 
   if [ -f build.xml ]; then

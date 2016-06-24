@@ -17,7 +17,7 @@
     </connection>
   </connections>
   <options>
-    <model>Input 0 - Column 10 - Predicted Error Rate (Default)</model>
+    <model>KC (Default)</model>
     <structure>bySkill</structure>
     <xValidationPredictState>1</xValidationPredictState>
     <xValidationFolds>10</xValidationFolds>
@@ -25,7 +25,6 @@
     <solver>Baum-Welch</solver>
     <upperBoundaries>0,0,1,0,0,0,0,0.3,0.3,0</upperBoundaries>
     <conjugateGradientDescentOption>None</conjugateGradientDescentOption>
-    <tolerance>0.01</tolerance>
     <hiddenStates>2</hiddenStates>
     <initialParameters>0.5,1.0,0.4,0.8,0.2</initialParameters>
     <lowerBoundaries>0,0,1,0,0,0,0,0,0,0</lowerBoundaries>

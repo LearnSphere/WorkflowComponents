@@ -15,13 +15,12 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 flags<- args[6]
 KCmodel <- args[8]
-n <- as.integer(args[10])
-inputFile<-args[12]
+inputFile<-args[10]
 
 # Get data
 outputFilePath<- paste(workingDirectory, "pfa-model.txt", sep="")
 
-val<-read.table(inputFile,sep="\t", header=TRUE,quote=FALSE)
+val<-read.table(inputFile,sep="\t", header=TRUE,quote="")
 
 # Creates output log fille
 clean <- file(paste(workingDirectory, "PFA-log.txt", sep=""))
@@ -59,7 +58,13 @@ print(summary(x1))
 cat(paste("\nR^2 = ",cor(method="spearman",predict(x1,type="response"),dat$CF..ansbin.)^2,"\n"))
 
 library(pROC)
-png(paste(workingDirectory, "AUC.png", sep=""), width=2000, height=2000, res=300)
+
+switch(Sys.info()[['sysname']],
+Linux  = { bitmap(paste(workingDirectory, "AUC.png", sep=""),"png16m") },
+Windows= { png(paste(workingDirectory, "AUC.png", sep=""), width=2000, height=2000, res=300) },
+Darwin = { png(paste(workingDirectory, "AUC.png", sep=""), width=2000, height=2000, res=300) })
+
+
 print(auc(dat$CF..ansbin.,predict(x1,type="response")))
 plot.roc(dat$CF..ansbin.,predict(x1,type="response"),smooth=FALSE)
 dev.off()

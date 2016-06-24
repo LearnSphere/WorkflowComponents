@@ -52,7 +52,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-        <xs:element type="xs:string" name="d" id="Dependend_variables" minOccurs="0"/>
+        <xs:element type="xs:string" name="d" id="Dependent_variables" minOccurs="0"/>
         <xs:element type="xs:string" name="i" id="Independent_variables" minOccurs="0" />
     </xs:all>
   </xs:complexType>

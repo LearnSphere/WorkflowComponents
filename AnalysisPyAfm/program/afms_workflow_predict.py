@@ -93,7 +93,7 @@ if __name__ == "__main__":
     ssr_file = args.file0
     patternC = re.compile('\\s*KC\\s*\\(( .* )\\s*\\)', re.VERBOSE)
     kc_model = patternC.sub(r'\1', args.kc_model)
-    print("MCK: " + kc_model)
+    #print("KC Model: " + kc_model)
 
     kcs, opps, y, stu, student_label, item_label, original_headers, original_step_data = read_datashop_student_step(ssr_file, kc_model, args.ft)
 

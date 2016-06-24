@@ -131,13 +131,10 @@ public class JoinMain extends AbstractComponent {
 
         // Options
         String joinTypeString = this.getOptionAsString("join");
-        String file1ColumnNameSplit = this.getOptionAsString("file1ColumnName");
-        String[] split1 = file1ColumnNameSplit.split(" - ");
-        String file1ColumnName = split1[split1.length - 1];
 
-        String file2ColumnNameSplit = this.getOptionAsString("file2ColumnName");
-        String[] split2 = file2ColumnNameSplit.split(" - ");
-        String file2ColumnName = split2[split2.length - 1];
+        String file1ColumnName = this.getOptionAsString("file1ColumnName");
+
+        String file2ColumnName = this.getOptionAsString("file2ColumnName");
 
         String caseSensitiveString = this.getOptionAsString("caseSensitive");
         String delimiterString = this.getOptionAsString("delimiterPattern");

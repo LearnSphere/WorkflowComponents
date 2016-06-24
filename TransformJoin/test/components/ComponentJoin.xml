@@ -15,10 +15,10 @@
   </connections>
   <top>178</top>
   <options>
-    <file2ColumnName>Input 0 - Column 10 - Anon Student Id</file2ColumnName>
     <delimiterPattern>\t</delimiterPattern>
     <caseSensitive>false</caseSensitive>
-    <file1ColumnName>Input 0 - Column 10 - Anon Student Id</file1ColumnName>
+    <file1ColumnName>Anon Student Id</file1ColumnName>
+    <file2ColumnName>Anon Student Id</file2ColumnName>
     <join>inner</join>
   </options>
   <inputs>
