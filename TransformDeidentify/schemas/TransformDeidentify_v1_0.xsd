@@ -93,9 +93,9 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-        <xs:element type="xs:string" name="mapActualIdColumnName" id="User_Map_Actual_User_ID_Column_Name" default="" />
-          <xs:element type="xs:string" name="mapAnonIdColumnName" id="User_Map_Anonymous_User_ID_Column_Name" default="" />
-          <xs:element type="xs:string" name="fileActualIdColumnName" id="File_Actual_User_ID_Column_Name" default="" />
+        <xs:element type="FileInputHeader" name="mapActualIdColumnName" id="User_Map_Actual_User_ID_Column_Name" default=".*" />
+          <xs:element type="FileInputHeader" name="mapAnonIdColumnName" id="User_Map_Anonymous_User_ID_Column_Name" default=".*" />
+          <xs:element type="FileInputHeader" name="fileActualIdColumnName" id="File_Actual_User_ID_Column_Name" default=".*" />
           <xs:element type="xs:boolean" name="caseSensitive" id="Cas_Sensitive" default="false" />
           <xs:element type="xs:string" name="delimiterPattern" id="Delimiter_Pattern" default="\t" />
     </xs:all>

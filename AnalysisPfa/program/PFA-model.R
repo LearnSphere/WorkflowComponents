@@ -14,13 +14,13 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 
 flags<- args[6]
-KCmodel <- args[8]
+KCmodel <- gsub("[ ()]", ".", args[8])
 inputFile<-args[10]
 
 # Get data
 outputFilePath<- paste(workingDirectory, "pfa-model.txt", sep="")
 
-val<-read.table(inputFile,sep="\t", header=TRUE,quote="")
+val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
 # Creates output log fille
 clean <- file(paste(workingDirectory, "PFA-log.txt", sep=""))
@@ -36,26 +36,29 @@ dat<-val[val$CF..ansbin.>-1,]
 
 library(lme4)
 if(grepl("Full",flags)){
-x1<-glmer(CF..ansbin.~
-            KC..Default.+
-            CF..cor.:KC..Default.+
-            CF..incor.:KC..Default.+
-            (1|Anon.Student.Id),
+x1<-glmer(as.formula(paste("CF..ansbin.~
+            ",KCmodel,"+
+            CF..cor.:",KCmodel,"+
+            CF..incor.:",KCmodel,"+
+            (1|Anon.Student.Id)")),
             data=dat,family=binomial(logit))}
+
 if(grepl("Simple",flags)){
-x1<-glmer(CF..ansbin.~
+x1<-glmer(as.formula(paste("CF..ansbin.~
             CF..cor.+
             CF..incor.+
-            (1|KC..Default.)+
-            (1|Anon.Student.Id)
+            (1|",KCmodel,")+
+            (1|Anon.Student.Id)"))
             ,data=dat,family=binomial(logit))}
-
 
 # Output text summary
 cat("model summary\n")
 print(summary(x1))
 
 cat(paste("\nR^2 = ",cor(method="spearman",predict(x1,type="response"),dat$CF..ansbin.)^2,"\n"))
+
+#cat("\nrandom effects\n")
+#print(ranef(x1))
 
 library(pROC)
 
@@ -69,8 +72,8 @@ print(auc(dat$CF..ansbin.,predict(x1,type="response")))
 plot.roc(dat$CF..ansbin.,predict(x1,type="response"),smooth=FALSE)
 dev.off()
 
-cat("\nrandom effects\n")
-print(ranef(x1))
+#cat("\nrandom effects\n")
+#print(ranef(x1))
 
 # What are the variables in the data frame
 str(dat)

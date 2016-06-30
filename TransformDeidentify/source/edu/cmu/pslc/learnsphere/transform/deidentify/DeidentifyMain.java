@@ -1,10 +1,8 @@
 package edu.cmu.pslc.learnsphere.transform.deidentify;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,14 +21,14 @@ import java.util.Scanner;
 
 
 
+
+
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 
 import edu.cmu.pslc.datashop.util.SpringContext;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.dao.DaoFactory;
 import edu.cmu.pslc.datashop.dao.StudentDao;
-import edu.cmu.pslc.datashop.dao.UserDao;
 import edu.cmu.pslc.datashop.item.StudentItem;
 
 public class DeidentifyMain extends AbstractComponent {
@@ -51,6 +49,12 @@ public class DeidentifyMain extends AbstractComponent {
     private Boolean caseSensitive = false;
     private String delimiter = DEFAULT_DELIMITER;
     private String outputDelimiter = DEFAULT_DELIMITER;
+
+
+    String mapAnonIdColName = null;
+    String mapActualIdColName = null;
+    String fileActualIdColName = null;
+
     /**
      * Main method.
      * @param args the arguments
@@ -60,12 +64,41 @@ public class DeidentifyMain extends AbstractComponent {
             DeidentifyMain tool = new DeidentifyMain();
             tool.startComponent(args);
     }
-
     /**
      * This class deidentify student and generate user map
      */
     public DeidentifyMain() {
         super();
+    }
+
+    @Override
+    protected void processOptions() {
+        logger.info("Processing Options");
+        // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+        this.addMetaDataFromInput("user-map", 0, 0, ".*");
+        this.addMetaDataFromInput("transaction", 1, 0, ".*");
+
+    }
+
+    /**
+     * Parse the options list.
+     */
+    @Override protected void parseOptions() {
+        if (this.getOptionAsString("mapAnonIdColumnName") != null) {
+            mapAnonIdColName = this.getOptionAsString("mapAnonIdColumnName").replaceAll("(?i)\\s*(.*)\\s*", "$1");
+        }
+        if (this.getOptionAsString("mapActualIdColumnName") != null) {
+            mapActualIdColName = this.getOptionAsString("mapActualIdColumnName").replaceAll("(?i)\\s*(.*)\\s*", "$1");
+        }
+        if (this.getOptionAsString("fileActualIdColumnName") != null) {
+            fileActualIdColName = this.getOptionAsString("fileActualIdColumnName").replaceAll("(?i)\\s*(.*)\\s*", "$1");
+        }
+        if (this.getOptionAsBoolean("caseSensitive") != null) {
+            caseSensitive = this.getOptionAsBoolean("caseSensitive");
+        }
+        if (this.getOptionAsString("delimiterPattern") != null) {
+            delimiter = this.getOptionAsString("delimiterPattern");
+        }
     }
 
     //set/get methods
@@ -147,11 +180,7 @@ public class DeidentifyMain extends AbstractComponent {
         File deidentifiedFile = this.createFile("Deidentified", ".txt");
         File newUserMapFile = this.createFile("newUserMap", ".txt");
         // Options
-        String mapAnonIdColName = this.getOptionAsString("mapAnonIdColumnName");
-        String mapActualIdColName = this.getOptionAsString("mapActualIdColumnName");
-        String fileActualIdColName = this.getOptionAsString("fileActualIdColumnName");
-        String caseSensitiveString = this.getOptionAsString("caseSensitive");
-        String delimiterString = this.getOptionAsString("delimiterPattern");
+
 
         //set column index for actual id and anon id for map and fileToDeidentify
         if (mapAnonIdColName != null && !mapAnonIdColName.equals("")) {
@@ -181,8 +210,6 @@ public class DeidentifyMain extends AbstractComponent {
                         return;
                 }
         }
-        caseSensitive = caseSensitiveString.equalsIgnoreCase("true") ? true : false;
-        delimiter = delimiterString != null ? delimiterString : delimiter;
 
         // Processing
         //hashmap that stores actual id as the key and anonymous id as the value

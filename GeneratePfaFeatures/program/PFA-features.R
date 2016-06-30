@@ -3,8 +3,9 @@ ech<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
-print("MCK")
-print(args)
+
+#print(args)
+
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
 # This dir is the working dir for the component instantiation.
@@ -12,16 +13,16 @@ workingDirectory = args[4]
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-KCmodel <- args[6]
+KCmodel <- gsub("[ ()]", ".", args[6])
 n <- as.integer(args[8])
 inputFile<-args[10]
 outputFilePath<- paste(workingDirectory, "output-features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")
-val<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="")
+val<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 
-# Creates output log fille (use .wfl extension if you want the file to be treated as a logging file)
+# Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "PFA-features-log.wfl", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
@@ -53,8 +54,8 @@ studycount <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))         #co
 
 # Feature creation
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
-val$CF..KCindex.<-  paste(val$Anon.Student.Id,val$KC..Default.,sep="-")
-#val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
+#val$CF..KCindex.<-  paste(val$Anon.Student.Id,val$KC..Default.,sep="-")
+val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
 val<-val[order(val$Anon.Student.Id, val$Time),]
 
 # cat("\nnow adding cor\n")
