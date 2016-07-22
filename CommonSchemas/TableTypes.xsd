@@ -42,6 +42,8 @@
   <xs:element name="ctat-log" substitutionGroup="xml" />
   <xs:element name="sql" substitutionGroup="text" />
   <xs:element name="discoursedb" substitutionGroup="text" />
+  <xs:element name="model-values" substitutionGroup="tab-delimited" />
+  <xs:element name="intercepts" substitutionGroup="tab-delimited" />
 
   <xs:element name="image" substitutionGroup="file" />
   <xs:element name="png" substitutionGroup="image" />
