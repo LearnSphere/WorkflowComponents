@@ -37,9 +37,9 @@ dat<-val[val$CF..ansbin.>-1,]
 library(lme4)
 if(grepl("Full",flags)){
 x1<-glmer(as.formula(paste("CF..ansbin.~
-            ",KCmodel,"+
             CF..cor.:",KCmodel,"+
             CF..incor.:",KCmodel,"+
+            (1|",KCmodel,")+
             (1|Anon.Student.Id)")),
             data=dat,family=binomial(logit))}
 

@@ -1,0 +1,1625 @@
+ERROR: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,093 - The system cannot find the path specified
+ERROR: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,093 - Cannot write to file C:\dev\WorkflowComponentsSvn\AnalysisLsa\test\ComponentTestOutput\output\Step-values-with-predictions-Analysis_2--050716-125053-093.txt
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,109 - Getting component output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,109 - isInitialized = true
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Getting component options.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Process file input for metadata.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Input file found: <transaction>
+  <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+  <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+  <index>0</index>
+  <label>Transaction</label>
+  <metadata>
+    <header>
+      <id>header0</id>
+      <index>17</index>
+      <name>Corrects</name>
+    </header>
+    <header>
+      <id>header1</id>
+      <index>18</index>
+      <name>Condition</name>
+    </header>
+    <header>
+      <id>header2</id>
+      <index>8</index>
+      <name>First Transaction Time</name>
+    </header>
+    <header>
+      <id>header3</id>
+      <index>7</index>
+      <name>Step Start Time</name>
+    </header>
+    <header>
+      <id>header4</id>
+      <index>3</index>
+      <name>Problem Hierarchy</name>
+    </header>
+    <header>
+      <id>header5</id>
+      <index>12</index>
+      <name>Correct Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header6</id>
+      <index>6</index>
+      <name>Step Name</name>
+    </header>
+    <header>
+      <id>header7</id>
+      <index>5</index>
+      <name>Problem View</name>
+    </header>
+    <header>
+      <id>header8</id>
+      <index>10</index>
+      <name>Step End Time</name>
+    </header>
+    <header>
+      <id>header9</id>
+      <index>9</index>
+      <name>Correct Transaction Time</name>
+    </header>
+    <header>
+      <id>header10</id>
+      <index>20</index>
+      <name>Opportunity (Default)</name>
+    </header>
+    <header>
+      <id>header11</id>
+      <index>22</index>
+      <name>KC (Single-KC)</name>
+    </header>
+    <header>
+      <id>header12</id>
+      <index>11</index>
+      <name>Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header13</id>
+      <index>26</index>
+      <name>Opportunity (Unique-step)</name>
+    </header>
+    <header>
+      <id>header14</id>
+      <index>13</index>
+      <name>Error Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header15</id>
+      <index>21</index>
+      <name>Predicted Error Rate (Default)</name>
+    </header>
+    <header>
+      <id>header16</id>
+      <index>4</index>
+      <name>Problem Name</name>
+    </header>
+    <header>
+      <id>header17</id>
+      <index>24</index>
+      <name>Predicted Error Rate (Single-KC)</name>
+    </header>
+    <header>
+      <id>header18</id>
+      <index>2</index>
+      <name>Anon Student Id</name>
+    </header>
+    <header>
+      <id>header19</id>
+      <index>16</index>
+      <name>Hints</name>
+    </header>
+    <header>
+      <id>header20</id>
+      <index>1</index>
+      <name>Sample</name>
+    </header>
+    <header>
+      <id>header21</id>
+      <index>27</index>
+      <name>Predicted Error Rate (Unique-step)</name>
+    </header>
+    <header>
+      <id>header22</id>
+      <index>23</index>
+      <name>Opportunity (Single-KC)</name>
+    </header>
+    <header>
+      <id>header23</id>
+      <index>25</index>
+      <name>KC (Unique-step)</name>
+    </header>
+    <header>
+      <id>header24</id>
+      <index>15</index>
+      <name>Incorrects</name>
+    </header>
+    <header>
+      <id>header25</id>
+      <index>0</index>
+      <name>Row</name>
+    </header>
+    <header>
+      <id>header26</id>
+      <index>14</index>
+      <name>First Attempt</name>
+    </header>
+    <header>
+      <id>header27</id>
+      <index>19</index>
+      <name>KC (Default)</name>
+    </header>
+  </metadata>
+</transaction>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Adding file output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Adding option meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Option meta-data found: <simfunc>cosine</simfunc>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Option meta-data found: <header1>CF (ansbin)</header1>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Option meta-data found: <header2>CF (incor)</header2>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Option meta-data found: <returnvals>col</returnvals>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Option meta-data found: <lag>0</lag>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Adding input meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Input meta-data found: <input0>
+  <component_id>Import-1-x948793</component_id>
+  <component_id_human>Import #1</component_id_human>
+  <component_type>import</component_type>
+  <component_name>Transaction</component_name>
+  <elapsed_seconds>0</elapsed_seconds>
+  <errors />
+  <files>
+    <transaction>
+      <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+      <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+      <index>0</index>
+      <label>Transaction</label>
+      <metadata>
+        <header>
+          <id>header0</id>
+          <index>17</index>
+          <name>Corrects</name>
+        </header>
+        <header>
+          <id>header1</id>
+          <index>18</index>
+          <name>Condition</name>
+        </header>
+        <header>
+          <id>header2</id>
+          <index>8</index>
+          <name>First Transaction Time</name>
+        </header>
+        <header>
+          <id>header3</id>
+          <index>7</index>
+          <name>Step Start Time</name>
+        </header>
+        <header>
+          <id>header4</id>
+          <index>3</index>
+          <name>Problem Hierarchy</name>
+        </header>
+        <header>
+          <id>header5</id>
+          <index>12</index>
+          <name>Correct Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header6</id>
+          <index>6</index>
+          <name>Step Name</name>
+        </header>
+        <header>
+          <id>header7</id>
+          <index>5</index>
+          <name>Problem View</name>
+        </header>
+        <header>
+          <id>header8</id>
+          <index>10</index>
+          <name>Step End Time</name>
+        </header>
+        <header>
+          <id>header9</id>
+          <index>9</index>
+          <name>Correct Transaction Time</name>
+        </header>
+        <header>
+          <id>header10</id>
+          <index>20</index>
+          <name>Opportunity (Default)</name>
+        </header>
+        <header>
+          <id>header11</id>
+          <index>22</index>
+          <name>KC (Single-KC)</name>
+        </header>
+        <header>
+          <id>header12</id>
+          <index>11</index>
+          <name>Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header13</id>
+          <index>26</index>
+          <name>Opportunity (Unique-step)</name>
+        </header>
+        <header>
+          <id>header14</id>
+          <index>13</index>
+          <name>Error Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header15</id>
+          <index>21</index>
+          <name>Predicted Error Rate (Default)</name>
+        </header>
+        <header>
+          <id>header16</id>
+          <index>4</index>
+          <name>Problem Name</name>
+        </header>
+        <header>
+          <id>header17</id>
+          <index>24</index>
+          <name>Predicted Error Rate (Single-KC)</name>
+        </header>
+        <header>
+          <id>header18</id>
+          <index>2</index>
+          <name>Anon Student Id</name>
+        </header>
+        <header>
+          <id>header19</id>
+          <index>16</index>
+          <name>Hints</name>
+        </header>
+        <header>
+          <id>header20</id>
+          <index>1</index>
+          <name>Sample</name>
+        </header>
+        <header>
+          <id>header21</id>
+          <index>27</index>
+          <name>Predicted Error Rate (Unique-step)</name>
+        </header>
+        <header>
+          <id>header22</id>
+          <index>23</index>
+          <name>Opportunity (Single-KC)</name>
+        </header>
+        <header>
+          <id>header23</id>
+          <index>25</index>
+          <name>KC (Unique-step)</name>
+        </header>
+        <header>
+          <id>header24</id>
+          <index>15</index>
+          <name>Incorrects</name>
+        </header>
+        <header>
+          <id>header25</id>
+          <index>0</index>
+          <name>Row</name>
+        </header>
+        <header>
+          <id>header26</id>
+          <index>14</index>
+          <name>First Attempt</name>
+        </header>
+        <header>
+          <id>header27</id>
+          <index>19</index>
+          <name>KC (Default)</name>
+        </header>
+      </metadata>
+    </transaction>
+  </files>
+  <inputmeta />
+  <optionmeta />
+</input0>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - End of getOutput method.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 05 Jul 2016 12:50:53,124 - Output XML: <output0>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <component_type>analysis</component_type>
+  <component_name>Lsa</component_name>
+  <elapsed_seconds>74</elapsed_seconds>
+  <errors>The system cannot find the path specified</errors>
+  <inputmeta />
+  <optionmeta>
+    <simfunc>cosine</simfunc>
+    <header1>CF (ansbin)</header1>
+    <header2>CF (incor)</header2>
+    <returnvals>col</returnvals>
+    <lag>0</lag>
+  </optionmeta>
+</output0>
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,191 - Command-line args: [-componentXmlFile, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml, -workflowDir, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/, -toolDir, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/, -schemaFile, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd]
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,230 - Setting argument: -componentXmlFile = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,230 - Setting argument: -workflowDir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,232 - Setting argument: -toolDir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,232 - Setting argument: -schemaFile = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,232 - Initializing workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - System properties: 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	java.runtime.name = Java(TM) SE Runtime Environment
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	sun.boot.library.path = C:\jdk\jre\bin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	java.vm.version = 24.45-b08
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	java.vm.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	java.vendor.url = http://java.oracle.com/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	path.separator = ;
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	java.vm.name = Java HotSpot(TM) Client VM
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	file.encoding.pkg = sun.io
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	user.country = US
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	user.script = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,233 - 	sun.java.launcher = SUN_STANDARD
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	sun.os.patch.level = Service Pack 1
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.vm.specification.name = Java Virtual Machine Specification
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	user.dir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.runtime.version = 1.7.0_45-b18
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	component.program.path = program/LSA.exe
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.awt.graphicsenv = sun.awt.Win32GraphicsEnvironment
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.endorsed.dirs = C:\jdk\jre\lib\endorsed
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	os.arch = x86
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.io.tmpdir = C:\Users\mkomisin\AppData\Local\Temp\
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	line.separator = 
+
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.vm.specification.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	user.variant = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	os.name = Windows 7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	sun.jnu.encoding = Cp1252
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.library.path = C:\jdk\jre\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:/Program Files (x86)/Java/jre1.8.0_45/bin/client;C:/Program Files (x86)/Java/jre1.8.0_45/bin;C:/Program Files (x86)/Java/jre1.8.0_45/lib/i386;C:\Program Files (x86)\Python35-32\Scripts\;C:\Program Files (x86)\Python35-32\;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\MIT\Kerberos\bin;C:\Program Files\OpenAFS\Common;C:\Program Files\OpenAFS\Client\Program;C:\Program Files (x86)\OpenAFS\Common;C:\Program Files (x86)\OpenAFS\Client\Program;C:\jdk\bin;C:\Program Files\MySQL\MySQL Server 5.1\bin;C:\Program Files\TortoiseSVN\bin;C:\apps\cygwin64\bin;c:\apps\ant\bin;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia AUX;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia AUX\Support binaries;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia Broker;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia Client;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\TortoiseGit\bin;C:\apps\mars;;.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.specification.name = Java Platform API Specification
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	java.class.version = 51.0
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	sun.management.compiler = HotSpot Client Compiler
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,234 - 	os.version = 6.1
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	user.home = C:\Users\mkomisin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	user.timezone = America/New_York
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.awt.printerjob = sun.awt.windows.WPrinterJob
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	file.encoding = Cp1252
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.specification.version = 1.7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.class.path = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\dist\AnalysisLsa-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\c3p0-0.9.1-pre6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\collections-generic-4.01.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\colt.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-beanutils-core-1.8.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-codec-1.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-collections-3.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-fileupload-1.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-io-1.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-lang-2.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-logging.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-math-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-primitives-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\darwinsys.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\datashop.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\dhbnumerics-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\gnujaxp.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\ant-antlr-1.6.5.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\antlr-2.7.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\asm-attrs.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\asm.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\cglib-2.1.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\commons-collections-2.1.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\dom4j-1.6.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\ehcache-1.2.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\hibernate3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\jta.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jaxen-1.1.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jcommon-1.0.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jdom-contrib.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jdom.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jfreechart-1.0.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\json.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jung-1.7.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\junit-addons-1.4.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\junit.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\lfa-5.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\libLinear.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\log4j-1.2.13.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\mysql-connector-java-5.0.7-bin.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\servlet-api.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\sizeofag.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\spring\spring.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\statisticalCorrectnessModeling.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\tika-app-1.12.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\weka3-4-9.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\xercesImpl.jar;C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	user.name = mkomisin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.vm.specification.version = 1.7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	sun.java.command = edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain -componentXmlFile C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml -workflowDir C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/ -toolDir C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/ -schemaFile C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.home = C:\jdk\jre
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	sun.arch.data.model = 32
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	user.language = en
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.specification.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	awt.toolkit = sun.awt.windows.WToolkit
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	component.interpreter.path = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.vm.info = mixed mode
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.version = 1.7.0_45
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.ext.dirs = C:\jdk\jre\lib\ext;C:\windows\Sun\Java\lib\ext
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	sun.boot.class.path = C:\jdk\jre\lib\resources.jar;C:\jdk\jre\lib\rt.jar;C:\jdk\jre\lib\sunrsasign.jar;C:\jdk\jre\lib\jsse.jar;C:\jdk\jre\lib\jce.jar;C:\jdk\jre\lib\charsets.jar;C:\jdk\jre\lib\jfr.jar;C:\jdk\jre\classes
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,235 - 	java.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	file.separator = \
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	java.vendor.url.bug = http://bugreport.sun.com/bugreport/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	sun.io.unicode.encoding = UnicodeLittle
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	sun.cpu.endian = little
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	sun.desktop = windows
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - 	sun.cpu.isalist = pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,236 - Attempting to read XML file: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 11:09:01,365 - Reading C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 11:09:01,365 - File absolute path: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\test\components\ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 11:09:01,365 - File canonical path: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\test\components\ComponentLsa.xml
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,398 - Initializing component inputs.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,406 - Existing options: <options>
+  <simfunc>cosine</simfunc>
+  <header1>CF (ansbin)</header1>
+  <header2>CF (incor)</header2>
+  <returnvals>col</returnvals>
+  <lag>0</lag>
+</options>
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,406 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,406 - Using existing component options.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,488 - Found files element.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - KEY: 0
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - Creating component: component_id = Analysis #2, component_type = analysis, component_name = Lsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - Attachments are valid? true
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - End of preliminary component initialization.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - Finished component initialization.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,505 - Validating workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,508 - Validating XML: <?xml version="1.0" encoding="UTF-8"?>
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <workflow_id>2</workflow_id>
+  <component_name>Lsa</component_name>
+  <component_type>analysis</component_type>
+  <left>395</left>
+  <top>23</top>
+  <connections>
+    <connection>
+      <from>Import-1-x948793</from>
+    </connection>
+    <connection>
+      <to>Visualization-1-x967745</to>
+    </connection>
+  </connections>
+  <options>
+    <simfunc>cosine</simfunc>
+    <header1>CF (ansbin)</header1>
+    <header2>CF (incor)</header2>
+    <returnvals>col</returnvals>
+    <lag>0</lag>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x948793</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Transaction</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+          <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+          <index>0</index>
+          <label>Transaction</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>17</index>
+              <name>Corrects</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>18</index>
+              <name>Condition</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>8</index>
+              <name>First Transaction Time</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>7</index>
+              <name>Step Start Time</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>3</index>
+              <name>Problem Hierarchy</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>12</index>
+              <name>Correct Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>6</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>5</index>
+              <name>Problem View</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>10</index>
+              <name>Step End Time</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>9</index>
+              <name>Correct Transaction Time</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>20</index>
+              <name>Opportunity (Default)</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>22</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>11</index>
+              <name>Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>26</index>
+              <name>Opportunity (Unique-step)</name>
+            </header>
+            <header>
+              <id>header14</id>
+              <index>13</index>
+              <name>Error Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header15</id>
+              <index>21</index>
+              <name>Predicted Error Rate (Default)</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>4</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>24</index>
+              <name>Predicted Error Rate (Single-KC)</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>2</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header19</id>
+              <index>16</index>
+              <name>Hints</name>
+            </header>
+            <header>
+              <id>header20</id>
+              <index>1</index>
+              <name>Sample</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>27</index>
+              <name>Predicted Error Rate (Unique-step)</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>23</index>
+              <name>Opportunity (Single-KC)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>25</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>15</index>
+              <name>Incorrects</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>14</index>
+              <name>First Attempt</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>19</index>
+              <name>KC (Default)</name>
+            </header>
+          </metadata>
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,745 - Is valid XML? : true
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,745 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:09:01,745 - Executing workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,375 - Adding output file to XML output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,375 - Reading C:/Users/mkomisin/git/WorkflowComponents//CommonSchemas/TableTypes.xsd
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,379 - Adding or updating files.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,379 - No preliminary meta-data. Column Delim: '	'
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 11:10:18,380 - First line: CF (ansbin)	CF (incor)	Similarity value
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 11:10:18,380 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,380 - Getting component output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,380 - isInitialized = true
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,382 - Getting component options.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,382 - Process file input for metadata.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Input file found: <transaction>
+  <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+  <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+  <index>0</index>
+  <label>Transaction</label>
+  <metadata>
+    <header>
+      <id>header0</id>
+      <index>17</index>
+      <name>Corrects</name>
+    </header>
+    <header>
+      <id>header1</id>
+      <index>18</index>
+      <name>Condition</name>
+    </header>
+    <header>
+      <id>header2</id>
+      <index>8</index>
+      <name>First Transaction Time</name>
+    </header>
+    <header>
+      <id>header3</id>
+      <index>7</index>
+      <name>Step Start Time</name>
+    </header>
+    <header>
+      <id>header4</id>
+      <index>3</index>
+      <name>Problem Hierarchy</name>
+    </header>
+    <header>
+      <id>header5</id>
+      <index>12</index>
+      <name>Correct Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header6</id>
+      <index>6</index>
+      <name>Step Name</name>
+    </header>
+    <header>
+      <id>header7</id>
+      <index>5</index>
+      <name>Problem View</name>
+    </header>
+    <header>
+      <id>header8</id>
+      <index>10</index>
+      <name>Step End Time</name>
+    </header>
+    <header>
+      <id>header9</id>
+      <index>9</index>
+      <name>Correct Transaction Time</name>
+    </header>
+    <header>
+      <id>header10</id>
+      <index>20</index>
+      <name>Opportunity (Default)</name>
+    </header>
+    <header>
+      <id>header11</id>
+      <index>22</index>
+      <name>KC (Single-KC)</name>
+    </header>
+    <header>
+      <id>header12</id>
+      <index>11</index>
+      <name>Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header13</id>
+      <index>26</index>
+      <name>Opportunity (Unique-step)</name>
+    </header>
+    <header>
+      <id>header14</id>
+      <index>13</index>
+      <name>Error Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header15</id>
+      <index>21</index>
+      <name>Predicted Error Rate (Default)</name>
+    </header>
+    <header>
+      <id>header16</id>
+      <index>4</index>
+      <name>Problem Name</name>
+    </header>
+    <header>
+      <id>header17</id>
+      <index>24</index>
+      <name>Predicted Error Rate (Single-KC)</name>
+    </header>
+    <header>
+      <id>header18</id>
+      <index>2</index>
+      <name>Anon Student Id</name>
+    </header>
+    <header>
+      <id>header19</id>
+      <index>16</index>
+      <name>Hints</name>
+    </header>
+    <header>
+      <id>header20</id>
+      <index>1</index>
+      <name>Sample</name>
+    </header>
+    <header>
+      <id>header21</id>
+      <index>27</index>
+      <name>Predicted Error Rate (Unique-step)</name>
+    </header>
+    <header>
+      <id>header22</id>
+      <index>23</index>
+      <name>Opportunity (Single-KC)</name>
+    </header>
+    <header>
+      <id>header23</id>
+      <index>25</index>
+      <name>KC (Unique-step)</name>
+    </header>
+    <header>
+      <id>header24</id>
+      <index>15</index>
+      <name>Incorrects</name>
+    </header>
+    <header>
+      <id>header25</id>
+      <index>0</index>
+      <name>Row</name>
+    </header>
+    <header>
+      <id>header26</id>
+      <index>14</index>
+      <name>First Attempt</name>
+    </header>
+    <header>
+      <id>header27</id>
+      <index>19</index>
+      <name>KC (Default)</name>
+    </header>
+  </metadata>
+</transaction>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Adding file output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Adding option meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Option meta-data found: <simfunc>cosine</simfunc>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Option meta-data found: <header1>CF (ansbin)</header1>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Option meta-data found: <header2>CF (incor)</header2>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,383 - Option meta-data found: <returnvals>col</returnvals>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,384 - Option meta-data found: <lag>0</lag>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,384 - Adding input meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,384 - Input meta-data found: <input0>
+  <component_id>Import-1-x948793</component_id>
+  <component_id_human>Import #1</component_id_human>
+  <component_type>import</component_type>
+  <component_name>Transaction</component_name>
+  <elapsed_seconds>0</elapsed_seconds>
+  <errors />
+  <files>
+    <transaction>
+      <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+      <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+      <index>0</index>
+      <label>Transaction</label>
+      <metadata>
+        <header>
+          <id>header0</id>
+          <index>17</index>
+          <name>Corrects</name>
+        </header>
+        <header>
+          <id>header1</id>
+          <index>18</index>
+          <name>Condition</name>
+        </header>
+        <header>
+          <id>header2</id>
+          <index>8</index>
+          <name>First Transaction Time</name>
+        </header>
+        <header>
+          <id>header3</id>
+          <index>7</index>
+          <name>Step Start Time</name>
+        </header>
+        <header>
+          <id>header4</id>
+          <index>3</index>
+          <name>Problem Hierarchy</name>
+        </header>
+        <header>
+          <id>header5</id>
+          <index>12</index>
+          <name>Correct Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header6</id>
+          <index>6</index>
+          <name>Step Name</name>
+        </header>
+        <header>
+          <id>header7</id>
+          <index>5</index>
+          <name>Problem View</name>
+        </header>
+        <header>
+          <id>header8</id>
+          <index>10</index>
+          <name>Step End Time</name>
+        </header>
+        <header>
+          <id>header9</id>
+          <index>9</index>
+          <name>Correct Transaction Time</name>
+        </header>
+        <header>
+          <id>header10</id>
+          <index>20</index>
+          <name>Opportunity (Default)</name>
+        </header>
+        <header>
+          <id>header11</id>
+          <index>22</index>
+          <name>KC (Single-KC)</name>
+        </header>
+        <header>
+          <id>header12</id>
+          <index>11</index>
+          <name>Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header13</id>
+          <index>26</index>
+          <name>Opportunity (Unique-step)</name>
+        </header>
+        <header>
+          <id>header14</id>
+          <index>13</index>
+          <name>Error Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header15</id>
+          <index>21</index>
+          <name>Predicted Error Rate (Default)</name>
+        </header>
+        <header>
+          <id>header16</id>
+          <index>4</index>
+          <name>Problem Name</name>
+        </header>
+        <header>
+          <id>header17</id>
+          <index>24</index>
+          <name>Predicted Error Rate (Single-KC)</name>
+        </header>
+        <header>
+          <id>header18</id>
+          <index>2</index>
+          <name>Anon Student Id</name>
+        </header>
+        <header>
+          <id>header19</id>
+          <index>16</index>
+          <name>Hints</name>
+        </header>
+        <header>
+          <id>header20</id>
+          <index>1</index>
+          <name>Sample</name>
+        </header>
+        <header>
+          <id>header21</id>
+          <index>27</index>
+          <name>Predicted Error Rate (Unique-step)</name>
+        </header>
+        <header>
+          <id>header22</id>
+          <index>23</index>
+          <name>Opportunity (Single-KC)</name>
+        </header>
+        <header>
+          <id>header23</id>
+          <index>25</index>
+          <name>KC (Unique-step)</name>
+        </header>
+        <header>
+          <id>header24</id>
+          <index>15</index>
+          <name>Incorrects</name>
+        </header>
+        <header>
+          <id>header25</id>
+          <index>0</index>
+          <name>Row</name>
+        </header>
+        <header>
+          <id>header26</id>
+          <index>14</index>
+          <name>First Attempt</name>
+        </header>
+        <header>
+          <id>header27</id>
+          <index>19</index>
+          <name>KC (Default)</name>
+        </header>
+      </metadata>
+    </transaction>
+  </files>
+  <inputmeta />
+  <optionmeta />
+</input0>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,385 - End of getOutput method.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 11:10:18,385 - Output XML: <output0>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <component_type>analysis</component_type>
+  <component_name>Lsa</component_name>
+  <elapsed_seconds>77</elapsed_seconds>
+  <errors />
+  <files>
+    <student-step>
+      <file_path>C:/Users/mkomisin/git/WorkflowComponents/AnalysisLsa/test/ComponentTestOutput/output/Step-values-with-predictions-Analysis_2--270716-111018-341.txt</file_path>
+      <file_name>Step-values-with-predictions-Analysis_2--270716-111018-341.txt</file_name>
+      <index>0</index>
+      <label>student-step</label>
+      <metadata>
+        <header>
+          <id>header0</id>
+          <index>1</index>
+          <name>CF (incor)</name>
+        </header>
+        <header>
+          <id>header1</id>
+          <index>0</index>
+          <name>CF (ansbin)</name>
+        </header>
+        <header>
+          <id>header2</id>
+          <index>2</index>
+          <name>Similarity value</name>
+        </header>
+      </metadata>
+    </student-step>
+  </files>
+  <inputmeta />
+  <optionmeta>
+    <simfunc>cosine</simfunc>
+    <header1>CF (ansbin)</header1>
+    <header2>CF (incor)</header2>
+    <returnvals>col</returnvals>
+    <lag>0</lag>
+  </optionmeta>
+</output0>
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,760 - Command-line args: [-componentXmlFile, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml, -workflowDir, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/, -toolDir, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/, -schemaFile, C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd]
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,761 - Setting argument: -componentXmlFile = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,761 - Setting argument: -workflowDir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,762 - Setting argument: -toolDir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,762 - Setting argument: -schemaFile = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,762 - Initializing workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - System properties: 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	java.runtime.name = Java(TM) SE Runtime Environment
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	sun.boot.library.path = C:\jdk\jre\bin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	java.vm.version = 24.45-b08
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	java.vm.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	java.vendor.url = http://java.oracle.com/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	path.separator = ;
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	java.vm.name = Java HotSpot(TM) Client VM
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	file.encoding.pkg = sun.io
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	user.country = US
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	user.script = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	sun.java.launcher = SUN_STANDARD
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,763 - 	sun.os.patch.level = Service Pack 1
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.vm.specification.name = Java Virtual Machine Specification
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	user.dir = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.runtime.version = 1.7.0_45-b18
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	component.program.path = program/LSA.exe
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.awt.graphicsenv = sun.awt.Win32GraphicsEnvironment
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.endorsed.dirs = C:\jdk\jre\lib\endorsed
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	os.arch = x86
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.io.tmpdir = C:\Users\mkomisin\AppData\Local\Temp\
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	line.separator = 
+
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.vm.specification.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	user.variant = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	os.name = Windows 7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	sun.jnu.encoding = Cp1252
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.library.path = C:\jdk\jre\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:/Program Files (x86)/Java/jre1.8.0_45/bin/client;C:/Program Files (x86)/Java/jre1.8.0_45/bin;C:/Program Files (x86)/Java/jre1.8.0_45/lib/i386;C:\Program Files (x86)\Python35-32\Scripts\;C:\Program Files (x86)\Python35-32\;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\MIT\Kerberos\bin;C:\Program Files\OpenAFS\Common;C:\Program Files\OpenAFS\Client\Program;C:\Program Files (x86)\OpenAFS\Common;C:\Program Files (x86)\OpenAFS\Client\Program;C:\jdk\bin;C:\Program Files\MySQL\MySQL Server 5.1\bin;C:\Program Files\TortoiseSVN\bin;C:\apps\cygwin64\bin;c:\apps\ant\bin;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia AUX;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia AUX\Support binaries;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia Broker;C:\Program Files (x86)\SSH Communications Security\SSH Tectia\SSH Tectia Client;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\TortoiseGit\bin;C:\apps\mars;;.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.specification.name = Java Platform API Specification
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	java.class.version = 51.0
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	sun.management.compiler = HotSpot Client Compiler
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,764 - 	os.version = 6.1
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	user.home = C:\Users\mkomisin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	user.timezone = America/New_York
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.awt.printerjob = sun.awt.windows.WPrinterJob
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	file.encoding = Cp1252
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.specification.version = 1.7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.class.path = C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\dist\AnalysisLsa-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\c3p0-0.9.1-pre6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\collections-generic-4.01.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\colt.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-beanutils-core-1.8.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-codec-1.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-collections-3.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-fileupload-1.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-io-1.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-lang-2.2.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-logging.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-math-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\commons-primitives-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\darwinsys.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\datashop.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\dhbnumerics-1.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\gnujaxp.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\ant-antlr-1.6.5.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\antlr-2.7.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\asm-attrs.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\asm.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\cglib-2.1.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\commons-collections-2.1.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\dom4j-1.6.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\ehcache-1.2.3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\hibernate3.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\hibernate\jta.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jaxen-1.1.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jcommon-1.0.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jdom-contrib.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jdom.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jfreechart-1.0.1.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\json.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\jung-1.7.6.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\junit-addons-1.4.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\junit.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\lfa-5.0.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\libLinear.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\log4j-1.2.13.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\mysql-connector-java-5.0.7-bin.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\servlet-api.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\sizeofag.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\spring\spring.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\statisticalCorrectnessModeling.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\tika-app-1.12.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\weka3-4-9.jar;C:\Users\mkomisin\git\WorkflowComponents\CommonLibraries\xercesImpl.jar;C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	user.name = mkomisin
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.vm.specification.version = 1.7
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	sun.java.command = edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain -componentXmlFile C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml -workflowDir C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/ -toolDir C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/ -schemaFile C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/schemas/AnalysisLsa_v1_0.xsd
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.home = C:\jdk\jre
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	sun.arch.data.model = 32
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	user.language = en
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.specification.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	awt.toolkit = sun.awt.windows.WToolkit
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	component.interpreter.path = 
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.vm.info = mixed mode
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.version = 1.7.0_45
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.ext.dirs = C:\jdk\jre\lib\ext;C:\windows\Sun\Java\lib\ext
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	sun.boot.class.path = C:\jdk\jre\lib\resources.jar;C:\jdk\jre\lib\rt.jar;C:\jdk\jre\lib\sunrsasign.jar;C:\jdk\jre\lib\jsse.jar;C:\jdk\jre\lib\jce.jar;C:\jdk\jre\lib\charsets.jar;C:\jdk\jre\lib\jfr.jar;C:\jdk\jre\classes
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,765 - 	java.vendor = Oracle Corporation
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	file.separator = \
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	java.vendor.url.bug = http://bugreport.sun.com/bugreport/
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	sun.io.unicode.encoding = UnicodeLittle
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	sun.cpu.endian = little
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	sun.desktop = windows
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - 	sun.cpu.isalist = pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,766 - Attempting to read XML file: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 12:36:40,894 - Reading C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa/test/components/ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 12:36:40,894 - File absolute path: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\test\components\ComponentLsa.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 12:36:40,894 - File canonical path: C:\Users\mkomisin\git\WorkflowComponents\AnalysisLsa\test\components\ComponentLsa.xml
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,925 - Initializing component inputs.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,932 - Existing options: <options>
+  <simfunc>cosine</simfunc>
+  <header1>CF (ansbin)</header1>
+  <header2>CF (incor)</header2>
+  <returnvals>col</returnvals>
+  <lag>0</lag>
+</options>
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,932 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:40,932 - Using existing component options.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,000 - Found files element.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - KEY: 0
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - Creating component: component_id = Analysis #2, component_type = analysis, component_name = Lsa
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - Attachments are valid? true
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - End of preliminary component initialization.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - Finished component initialization.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,007 - Validating workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,010 - Validating XML: <?xml version="1.0" encoding="UTF-8"?>
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <workflow_id>2</workflow_id>
+  <component_name>Lsa</component_name>
+  <component_type>analysis</component_type>
+  <left>395</left>
+  <top>23</top>
+  <connections>
+    <connection>
+      <from>Import-1-x948793</from>
+    </connection>
+    <connection>
+      <to>Visualization-1-x967745</to>
+    </connection>
+  </connections>
+  <options>
+    <simfunc>cosine</simfunc>
+    <header1>CF (ansbin)</header1>
+    <header2>CF (incor)</header2>
+    <returnvals>col</returnvals>
+    <lag>0</lag>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x948793</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Transaction</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+          <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+          <index>0</index>
+          <label>Transaction</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>17</index>
+              <name>Corrects</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>18</index>
+              <name>Condition</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>8</index>
+              <name>First Transaction Time</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>7</index>
+              <name>Step Start Time</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>3</index>
+              <name>Problem Hierarchy</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>12</index>
+              <name>Correct Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>6</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>5</index>
+              <name>Problem View</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>10</index>
+              <name>Step End Time</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>9</index>
+              <name>Correct Transaction Time</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>20</index>
+              <name>Opportunity (Default)</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>22</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>11</index>
+              <name>Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>26</index>
+              <name>Opportunity (Unique-step)</name>
+            </header>
+            <header>
+              <id>header14</id>
+              <index>13</index>
+              <name>Error Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header15</id>
+              <index>21</index>
+              <name>Predicted Error Rate (Default)</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>4</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>24</index>
+              <name>Predicted Error Rate (Single-KC)</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>2</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header19</id>
+              <index>16</index>
+              <name>Hints</name>
+            </header>
+            <header>
+              <id>header20</id>
+              <index>1</index>
+              <name>Sample</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>27</index>
+              <name>Predicted Error Rate (Unique-step)</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>23</index>
+              <name>Opportunity (Single-KC)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>25</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>15</index>
+              <name>Incorrects</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>14</index>
+              <name>First Attempt</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>19</index>
+              <name>KC (Default)</name>
+            </header>
+          </metadata>
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,240 - Is valid XML? : true
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,240 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:36:41,240 - Executing workflow component.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,268 - Adding output file to XML output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,268 - Reading C:/Users/mkomisin/git/WorkflowComponents//CommonSchemas/TableTypes.xsd
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,272 - Adding or updating files.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,272 - No preliminary meta-data. Column Delim: '	'
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 12:37:54,273 - First line: CF (ansbin)	CF (incor)	Similarity value
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 27 Jul 2016 12:37:54,273 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,273 - Getting component output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,273 - isInitialized = true
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,275 - Getting component options.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,275 - Process file input for metadata.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Input file found: <transaction>
+  <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+  <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+  <index>0</index>
+  <label>Transaction</label>
+  <metadata>
+    <header>
+      <id>header0</id>
+      <index>17</index>
+      <name>Corrects</name>
+    </header>
+    <header>
+      <id>header1</id>
+      <index>18</index>
+      <name>Condition</name>
+    </header>
+    <header>
+      <id>header2</id>
+      <index>8</index>
+      <name>First Transaction Time</name>
+    </header>
+    <header>
+      <id>header3</id>
+      <index>7</index>
+      <name>Step Start Time</name>
+    </header>
+    <header>
+      <id>header4</id>
+      <index>3</index>
+      <name>Problem Hierarchy</name>
+    </header>
+    <header>
+      <id>header5</id>
+      <index>12</index>
+      <name>Correct Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header6</id>
+      <index>6</index>
+      <name>Step Name</name>
+    </header>
+    <header>
+      <id>header7</id>
+      <index>5</index>
+      <name>Problem View</name>
+    </header>
+    <header>
+      <id>header8</id>
+      <index>10</index>
+      <name>Step End Time</name>
+    </header>
+    <header>
+      <id>header9</id>
+      <index>9</index>
+      <name>Correct Transaction Time</name>
+    </header>
+    <header>
+      <id>header10</id>
+      <index>20</index>
+      <name>Opportunity (Default)</name>
+    </header>
+    <header>
+      <id>header11</id>
+      <index>22</index>
+      <name>KC (Single-KC)</name>
+    </header>
+    <header>
+      <id>header12</id>
+      <index>11</index>
+      <name>Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header13</id>
+      <index>26</index>
+      <name>Opportunity (Unique-step)</name>
+    </header>
+    <header>
+      <id>header14</id>
+      <index>13</index>
+      <name>Error Step Duration (sec)</name>
+    </header>
+    <header>
+      <id>header15</id>
+      <index>21</index>
+      <name>Predicted Error Rate (Default)</name>
+    </header>
+    <header>
+      <id>header16</id>
+      <index>4</index>
+      <name>Problem Name</name>
+    </header>
+    <header>
+      <id>header17</id>
+      <index>24</index>
+      <name>Predicted Error Rate (Single-KC)</name>
+    </header>
+    <header>
+      <id>header18</id>
+      <index>2</index>
+      <name>Anon Student Id</name>
+    </header>
+    <header>
+      <id>header19</id>
+      <index>16</index>
+      <name>Hints</name>
+    </header>
+    <header>
+      <id>header20</id>
+      <index>1</index>
+      <name>Sample</name>
+    </header>
+    <header>
+      <id>header21</id>
+      <index>27</index>
+      <name>Predicted Error Rate (Unique-step)</name>
+    </header>
+    <header>
+      <id>header22</id>
+      <index>23</index>
+      <name>Opportunity (Single-KC)</name>
+    </header>
+    <header>
+      <id>header23</id>
+      <index>25</index>
+      <name>KC (Unique-step)</name>
+    </header>
+    <header>
+      <id>header24</id>
+      <index>15</index>
+      <name>Incorrects</name>
+    </header>
+    <header>
+      <id>header25</id>
+      <index>0</index>
+      <name>Row</name>
+    </header>
+    <header>
+      <id>header26</id>
+      <index>14</index>
+      <name>First Attempt</name>
+    </header>
+    <header>
+      <id>header27</id>
+      <index>19</index>
+      <name>KC (Default)</name>
+    </header>
+  </metadata>
+</transaction>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Adding file output.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Adding option meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Option meta-data found: <simfunc>cosine</simfunc>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Option meta-data found: <header1>CF (ansbin)</header1>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,276 - Option meta-data found: <header2>CF (incor)</header2>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,277 - Option meta-data found: <returnvals>col</returnvals>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,277 - Option meta-data found: <lag>0</lag>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,277 - Adding input meta-data.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,278 - Input meta-data found: <input0>
+  <component_id>Import-1-x948793</component_id>
+  <component_id_human>Import #1</component_id_human>
+  <component_type>import</component_type>
+  <component_name>Transaction</component_name>
+  <elapsed_seconds>0</elapsed_seconds>
+  <errors />
+  <files>
+    <transaction>
+      <file_path>test/example_transactions/ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_path>
+      <file_name>ds1462_tx_All_Data_61_2016_0121_231536_partial.txt</file_name>
+      <index>0</index>
+      <label>Transaction</label>
+      <metadata>
+        <header>
+          <id>header0</id>
+          <index>17</index>
+          <name>Corrects</name>
+        </header>
+        <header>
+          <id>header1</id>
+          <index>18</index>
+          <name>Condition</name>
+        </header>
+        <header>
+          <id>header2</id>
+          <index>8</index>
+          <name>First Transaction Time</name>
+        </header>
+        <header>
+          <id>header3</id>
+          <index>7</index>
+          <name>Step Start Time</name>
+        </header>
+        <header>
+          <id>header4</id>
+          <index>3</index>
+          <name>Problem Hierarchy</name>
+        </header>
+        <header>
+          <id>header5</id>
+          <index>12</index>
+          <name>Correct Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header6</id>
+          <index>6</index>
+          <name>Step Name</name>
+        </header>
+        <header>
+          <id>header7</id>
+          <index>5</index>
+          <name>Problem View</name>
+        </header>
+        <header>
+          <id>header8</id>
+          <index>10</index>
+          <name>Step End Time</name>
+        </header>
+        <header>
+          <id>header9</id>
+          <index>9</index>
+          <name>Correct Transaction Time</name>
+        </header>
+        <header>
+          <id>header10</id>
+          <index>20</index>
+          <name>Opportunity (Default)</name>
+        </header>
+        <header>
+          <id>header11</id>
+          <index>22</index>
+          <name>KC (Single-KC)</name>
+        </header>
+        <header>
+          <id>header12</id>
+          <index>11</index>
+          <name>Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header13</id>
+          <index>26</index>
+          <name>Opportunity (Unique-step)</name>
+        </header>
+        <header>
+          <id>header14</id>
+          <index>13</index>
+          <name>Error Step Duration (sec)</name>
+        </header>
+        <header>
+          <id>header15</id>
+          <index>21</index>
+          <name>Predicted Error Rate (Default)</name>
+        </header>
+        <header>
+          <id>header16</id>
+          <index>4</index>
+          <name>Problem Name</name>
+        </header>
+        <header>
+          <id>header17</id>
+          <index>24</index>
+          <name>Predicted Error Rate (Single-KC)</name>
+        </header>
+        <header>
+          <id>header18</id>
+          <index>2</index>
+          <name>Anon Student Id</name>
+        </header>
+        <header>
+          <id>header19</id>
+          <index>16</index>
+          <name>Hints</name>
+        </header>
+        <header>
+          <id>header20</id>
+          <index>1</index>
+          <name>Sample</name>
+        </header>
+        <header>
+          <id>header21</id>
+          <index>27</index>
+          <name>Predicted Error Rate (Unique-step)</name>
+        </header>
+        <header>
+          <id>header22</id>
+          <index>23</index>
+          <name>Opportunity (Single-KC)</name>
+        </header>
+        <header>
+          <id>header23</id>
+          <index>25</index>
+          <name>KC (Unique-step)</name>
+        </header>
+        <header>
+          <id>header24</id>
+          <index>15</index>
+          <name>Incorrects</name>
+        </header>
+        <header>
+          <id>header25</id>
+          <index>0</index>
+          <name>Row</name>
+        </header>
+        <header>
+          <id>header26</id>
+          <index>14</index>
+          <name>First Attempt</name>
+        </header>
+        <header>
+          <id>header27</id>
+          <index>19</index>
+          <name>KC (Default)</name>
+        </header>
+      </metadata>
+    </transaction>
+  </files>
+  <inputmeta />
+  <optionmeta />
+</input0>
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,278 - End of getOutput method.
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.lsa.LsaMain 27 Jul 2016 12:37:54,278 - Output XML: <output0>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <component_type>analysis</component_type>
+  <component_name>Lsa</component_name>
+  <elapsed_seconds>74</elapsed_seconds>
+  <errors />
+  <files>
+    <student-step>
+      <file_path>C:/Users/mkomisin/git/WorkflowComponents/AnalysisLsa/test/ComponentTestOutput/output/Step-values-with-predictions-Analysis_2--270716-123754-242.txt</file_path>
+      <file_name>Step-values-with-predictions-Analysis_2--270716-123754-242.txt</file_name>
+      <index>0</index>
+      <label>student-step</label>
+      <metadata>
+        <header>
+          <id>header0</id>
+          <index>1</index>
+          <name>CF (incor)</name>
+        </header>
+        <header>
+          <id>header1</id>
+          <index>0</index>
+          <name>CF (ansbin)</name>
+        </header>
+        <header>
+          <id>header2</id>
+          <index>2</index>
+          <name>Similarity value</name>
+        </header>
+      </metadata>
+    </student-step>
+  </files>
+  <inputmeta />
+  <optionmeta>
+    <simfunc>cosine</simfunc>
+    <header1>CF (ansbin)</header1>
+    <header2>CF (incor)</header2>
+    <returnvals>col</returnvals>
+    <lag>0</lag>
+  </optionmeta>
+</output0>

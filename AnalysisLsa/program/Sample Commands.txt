@@ -1,0 +1,19 @@
+Comparing two columns for entries one-to-one:
+ 
+LSA ds1465_tx_All_Data_64_2016_0121_231957_1.txt,simfunc=“cosine”,returnvals = “col”,header1=“CF (Correct Answer)”,header2=“Input”,outFile="col_comp.log"
+
+Comparing two columns with lag on header2:
+ 
+LSA ds1465_tx_All_Data_64_2016_0121_231957_1.txt,simfunc=“cosine”,returnvals = “col”,header1=“CF (Correct Answer)”,header2=“Input”,outFile="col_double_lag.log",lag=2
+
+Comparing values in single columns with lag: (specify header2 same as header1 is optinal)
+ 
+LSA ds1465_tx_All_Data_64_2016_0121_231957_1.txt,simfunc=“cosine”,returnvals = “col”,header1=“CF (Correct Answer)”,outFile="col_single_lag.log",lag=2
+
+Comparing two columns as unique matrix:
+ 
+LSA ds1465_tx_All_Data_64_2016_0121_231957_1.txt,simfunc=“cosine”,returnvals = “uniqmat”,header1=“CF (Correct Answer)”,header2=“Input”,outFile="uniqmat_double.log"
+
+Comparing single column as unique matrix (comparing each with others):
+ 
+LSA ds1465_tx_All_Data_64_2016_0121_231957_1.txt,simfunc=“cosine”,returnvals = “uniqmat”,header2=“Input”,outFile="uniqmat_single.log"
