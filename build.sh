@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=/cygdrive/c/dev/WorkflowComponentsSvn/
+dir=`pwd`
 
 cd $dir
 
