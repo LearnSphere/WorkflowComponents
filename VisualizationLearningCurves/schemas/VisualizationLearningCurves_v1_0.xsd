@@ -2,7 +2,6 @@
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
-
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -14,16 +13,21 @@
     </xs:complexContent>
   </xs:complexType>
 
-
   <xs:complexType name="InputType">
     <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited" minOccurs="0" />
+      <xs:element ref="file" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 

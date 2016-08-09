@@ -13,16 +13,21 @@
     </xs:complexContent>
   </xs:complexType>
 
-
   <xs:complexType name="InputType">
     <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -69,8 +74,10 @@
         <xs:element type="xs:double" name="left"  />
         <xs:element type="xs:double" name="top"  />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
-    <xs:element name="inputs" type="InputType" minOccurs="0" />
-    <xs:element name="options" type="OptionsType"/>
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" /
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="options" type="OptionsType"/>
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
 
 
