@@ -156,7 +156,7 @@ public class DeidentifyMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-            String appContextPath = this.getToolDir() + "/applicationContext.xml";
+            String appContextPath = this.getApplicationContextPath();
             logger.info("appContextPath: " + appContextPath);
             //System.out.println("appContextPath: " + appContextPath);
 

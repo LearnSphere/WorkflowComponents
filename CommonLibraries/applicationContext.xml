@@ -5,9 +5,9 @@
   Copyright 2005-2007
   All Rights Reserved
 
-  $Revision: 12947 $
-  Last modified by - $Author: hcheng $
-  Last modified on - $Date: 2016-02-23 10:07:00 -0500 (Tue, 23 Feb 2016) $
+  $Revision: 12485 $
+  Last modified by - $Author: mkomisin $
+  Last modified on - $Date: 2015-07-31 14:32:37 -0400 (Fri, 31 Jul 2015) $
   $KeyWordsOff: $
 -->
 
@@ -205,7 +205,7 @@
                 <value>edu/cmu/pslc/datashop/workflows/Workflow.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/workflows/WorkflowHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/workflows/WorkflowFileMap.hbm.xml</value>
-
+                <value>edu/cmu/pslc/datashop/item/FileType.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Interpretation.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/InterpretationAttempt.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/CognitiveStep.hbm.xml</value>
@@ -218,13 +218,6 @@
                 <value>edu/cmu/datalab/item/Item.hbm.xml</value>
                 <value>edu/cmu/datalab/item/DlStudent.hbm.xml</value>
                 <value>edu/cmu/datalab/item/Value.hbm.xml</value>
-                
-                <!-- Resource use. Likely move into own app eventually... -->
-                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliTransactionFile.hbm.xml</value>
-                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliTransaction.hbm.xml</value>
-                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliUserSessFile.hbm.xml</value>
-                <value>edu/cmu/pslc/learnsphere/analysis/resourceuse/oli/item/ResourceUseOliUserSess.hbm.xml</value>
-           
             </list>
         </property>
         <property name="hibernateProperties">
@@ -985,6 +978,13 @@
         </property>
     </bean>
 
+    <bean id="fileTypeDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.FileTypeDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
     <bean id="oliDiscussionDao"
       class="edu.cmu.pslc.datashop.dao.hibernate.OliDiscussionDaoHibernate">
         <property name="hibernateTemplate">
@@ -1306,42 +1306,6 @@
 
     <bean id="problemContentMappingBean" class="edu.cmu.pslc.datashop.servlet.problemcontent.ProblemContentMappingBean" singleton="false">
         <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
-    </bean>
-
-   <!-- ResourceUse.-->
-    <bean id="resourceUseOliImporterDao"
-      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliImporterDaoHibernate">
-        <property name="hibernateTemplate">
-            <ref bean="hibernateTemplate"/>
-        </property>
-    </bean>
-
-    <bean id="resourceUseOliTransactionFileDao"
-      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionFileDaoHibernate">
-        <property name="hibernateTemplate">
-            <ref bean="hibernateTemplate"/>
-        </property>
-    </bean>
-    
-    <bean id="resourceUseOliTransactionDao"
-      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionDaoHibernate">
-        <property name="hibernateTemplate">
-            <ref bean="hibernateTemplate"/>
-        </property>
-    </bean>
-    
-    <bean id="resourceUseOliUserSessFileDao"
-      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessFileDaoHibernate">
-        <property name="hibernateTemplate">
-            <ref bean="hibernateTemplate"/>
-        </property>
-    </bean>
-    
-    <bean id="resourceUseOliUserSessDao"
-      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessDaoHibernate">
-        <property name="hibernateTemplate">
-            <ref bean="hibernateTemplate"/>
-        </property>
     </bean>
 
 </beans>
