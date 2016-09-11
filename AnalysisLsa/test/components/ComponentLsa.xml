@@ -16,8 +16,8 @@
   </connections>
   <options>
     <simfunc>cosine</simfunc>
-    <header1>CF (ansbin)</header1>
-    <header2>CF (incor)</header2>
+    <header1>CF (Correct Answer)</header1>
+    <header2>Input</header2>
     <returnvals>col</returnvals>
     <lag>0</lag>
   </options>

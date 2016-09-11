@@ -40,7 +40,7 @@ public class CourseraDataGenerator extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Dao-enabled components require an applicationContext.xml in the component directory,
-        String appContextPath = this.getToolDir() + "/applicationContext.xml";
+        String appContextPath = this.getApplicationContextPath();
         logger.info("appContextPath: " + appContextPath);
         //System.out.println("appContextPath: " + appContextPath);
 
