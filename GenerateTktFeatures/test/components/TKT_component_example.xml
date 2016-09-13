@@ -26,8 +26,8 @@
       <files>
         <transaction>
           <index>0</index>
-          <file_path>test/example_transactions/partial_ds2033_tx_All_Data_56_2015_1208_144924.txt</file_path>
-          <file_name>partial_ds2033_tx_All_Data_56_2015_1208_144924.txt</file_name>
+          <file_path>test/example_transactions/ds1465_tx_All_Data_64_2016_0720_222352.txt</file_path>
+          <file_name>ds1465_tx_All_Data_64_2016_0720_222352.txt</file_name>
           <label>transaction</label>
           <metadata>
             <header>

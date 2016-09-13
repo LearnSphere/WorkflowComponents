@@ -1,6 +1,0 @@
-Error in parse(text = paste("val$", KCmodelsub, sep = "")) : 
-  <text>:1:5: unexpected numeric constant
-1: val$1
-        ^
-Calls: paste -> eval -> parse
-Execution halted
