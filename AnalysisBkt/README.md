@@ -12,13 +12,14 @@ I. Dependencies
 
     git clone https://github.com/PSLCDataShop/WorkflowComponents WorkflowComponents
 
-4. Since his component contains a compiled program, you may have to run
+4. BKT contains executables which may need to be rebuilt for your system.
+
+From the command-line in WorkflowComponents/AnalysisBkt/program/standard-bkt-public-standard-bkt
 
     make
 
-from the command-line WorkflowComponents/AnalysisBkt/program/standard-bkt-public-standard-bkt
-
 Then, copy the predicthmm.exe and trainhmm.exe to the "AnalysisBkt/program" directory.
+
 
 II. Documentation
 
