@@ -7,10 +7,18 @@ I. Dependencies
 1. Ant 1.9 or greater
 2. Java Enterprise Edition Software Development Kit (J2EE SDK)
 2. Eclipse or Cygwin
+
 3. Git
 
     git clone https://github.com/PSLCDataShop/WorkflowComponents WorkflowComponents
 
+4. Since his component contains a compiled program, you may have to run
+
+    make
+
+from the command-line WorkflowComponents/AnalysisBkt/program/standard-bkt-public-standard-bkt
+
+Then, copy the predicthmm.exe and trainhmm.exe to the "AnalysisBkt/program" directory.
 
 II. Documentation
 
