@@ -38,7 +38,6 @@ public class BKTMain extends AbstractComponent {
      * http://docs.oracle.com/javase/7/docs/api/java/lang/String.html. */
     private static final Integer PATTERN_NO_LIMIT = -1;
 
-
     private BKTOptions analysisOptions;
 
     /** The buffered reader buffer size. */
@@ -46,6 +45,32 @@ public class BKTMain extends AbstractComponent {
     /** The file delimiter. */
     private static final String STEP_EXPORT_SEPARATOR = "\\t";
 
+    /** LogLikelihood for the specified model. */
+    Double logLikelihoodValue = null;
+
+    /** AIC for the specified model. */
+    Double aicValue = null;
+
+    /** BIC for the specified model. */
+    Double bicValue = null;
+
+    /** RMSE for the specified model. */
+    Double rmseValue = null;
+
+    /** Accuracy for the specified model. */
+    Double accuracyValue = null;
+
+    /** Cross-validation: student-stratified. */
+    Double studentStratifiedValue = null;
+
+    /** Cross-validation: item-stratified. */
+    Double itemStratifiedValue = null;
+
+    /** Cross-validation: non-stratified. */
+    Double nonStratifiedValue = null;
+
+    /** Decimal format used for predicted error rates. */
+    private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
 
     /**
      * Main method.
@@ -73,8 +98,6 @@ public class BKTMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-        DecimalFormat decimalFormat = new DecimalFormat("0.0000");
-
         // Get the predicted error rates
         logger.debug("Running BKT on file = " + this.getAttachment(0, 0) + ", model = " + this.modelName);
         String resultsString = calculatePredictedValues(this.getAttachment(0, 0),
@@ -95,10 +118,12 @@ public class BKTMain extends AbstractComponent {
 
             }
             File generatedFile = this.createFile("Step-values-with-predictions", ".txt");
+	    File modelValuesFile = this.createFile("Model-values", ".txt");
 
             String newLineChar = "\n";
 
             // Java 7 try-with-resources
+	    // Write the predicted error rates to the first output file.
             try (OutputStream outputStream = new FileOutputStream(generatedFile);
                 FileInputStream inStream = new FileInputStream(this.getAttachment(0, 0));
                 BufferedReader bufferedReader = new BufferedReader(
@@ -170,12 +195,17 @@ public class BKTMain extends AbstractComponent {
 
             }
 
+            // Now, write the model values to the second output file.
+            modelValuesFile = populateModelValuesFile(modelValuesFile);
+
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "student-step";
-
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
-
+            nodeIndex = 1;
+            fileLabel = "model-values";
+            this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileLabel);
+	    
             System.out.println(this.getOutput());
         }
     }
@@ -481,6 +511,33 @@ public class BKTMain extends AbstractComponent {
                 Boolean saveLines = false;
 
                 for (String resultLine : strResult.toString().split("\\n")) {
+		    String[] splitLine;
+		    if (resultLine.startsWith("loglikelihood:")) {
+			splitLine = resultLine.split("\\t");
+			logLikelihoodValue = Double.parseDouble(splitLine[1]);
+		    }
+		    if (resultLine.startsWith("AIC:")) {
+			splitLine = resultLine.split("\\t");
+			aicValue = Double.parseDouble(splitLine[1]);
+		    }
+		    if (resultLine.startsWith("BIC:")) {
+			splitLine = resultLine.split("\\t");
+			bicValue = Double.parseDouble(splitLine[1]);
+		    }
+		    if (resultLine.startsWith("RMSE:")) {
+			splitLine = resultLine.split("\\t");
+			rmseValue = Double.parseDouble(splitLine[1]);
+		    }
+		    if (resultLine.startsWith("Accuracy:")) {
+			splitLine = resultLine.split("\\t");
+			accuracyValue = Double.parseDouble(splitLine[1]);
+		    }
+		    if (resultLine.startsWith("Student Stratified")) {
+			splitLine = resultLine.split("\\t");
+			studentStratifiedValue = Double.parseDouble(splitLine[0].split(" ")[2]);;
+			itemStratifiedValue = Double.parseDouble(splitLine[1].split(" ")[2]);
+			nonStratifiedValue = Double.parseDouble(splitLine[2].split(" ")[1]);
+		    }
                     if (resultLine.matches("Fitted values:")) {
                         saveLines = true;
                     } else if (saveLines) {
@@ -631,7 +688,7 @@ public class BKTMain extends AbstractComponent {
                 hasRMSE = true;
             }
             if (runWords[i].indexOf("Acc=") != -1) {
-                parameters[4][0] = "A':";
+                parameters[4][0] = "Accuracy:";
                 parameters[4][1] = runWords[i].substring(4);
                 hasA = true;
             }
@@ -714,13 +771,17 @@ public class BKTMain extends AbstractComponent {
                     hasLL = true;
                 }
                 if (runWords[i].indexOf("AIC=") != -1) {
+		    // Sigh. String ends with ','
+		    int index = runWords[i].indexOf(',');
                     parameters[1][0] = "AIC:";
-                    parameters[1][1] = runWords[i].substring(4);
+                    parameters[1][1] = runWords[i].substring(4, index);
                     hasAIC = true;
                 }
                 if (runWords[i].indexOf("BIC=") != -1) {
+		    // Sigh. String ends with ','
+		    int index = runWords[i].indexOf(',');
                     parameters[2][0] = "BIC:";
-                    parameters[2][1] = runWords[i].substring(4);
+                    parameters[2][1] = runWords[i].substring(4, index);
                     hasBIC = true;
                 }
                 if (runWords[i].indexOf("RMSE=") != -1) {
@@ -729,7 +790,7 @@ public class BKTMain extends AbstractComponent {
                     hasRMSE = true;
                 }
                 if (runWords[i].indexOf("Acc=") != -1) {
-                    parameters[4][0] = "A':";
+                    parameters[4][0] = "Accuracy:";
                     parameters[4][1] = runWords[i].substring(4);
                     hasA = true;
                 }
@@ -948,4 +1009,112 @@ public class BKTMain extends AbstractComponent {
         return zipFileName.replace("zip", "txt");
     }
 
+    // Constant
+    private static final String NEW_LINE_CHAR = "\n";
+
+    // Constant
+    private static final String TAB_CHAR = "\t";
+
+    /**
+     * Write the Model values to a file.
+     * @param theFile the File to write to
+     * @return the populated file
+     */
+    private File populateModelValuesFile(File theFile) {
+
+        // Are these all or nothing?
+        if (logLikelihoodValue == null || aicValue == null || bicValue == null || rmseValue == null) {
+            this.addErrorMessage("Model value results from BKT were empty.");            
+            return theFile;
+        }
+
+        String prefix = "Model Values for '" + modelName + "' model: ";
+
+        // Java try-with-resources
+        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+
+                // Write values to export
+                byte[] label = null;
+                byte[] value = null;
+
+                // Log Likelihood
+                label = (prefix + "Log Likelihood" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (logLikelihoodValue != null) {
+		    value = (decimalFormat.format(logLikelihoodValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // AIC
+                label = (prefix + "AIC" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (aicValue != null) {
+		    value = (decimalFormat.format(aicValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // BIC
+                label = (prefix + "BIC" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (bicValue != null) {
+		    value = (decimalFormat.format(bicValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // RMSE
+                label = (prefix + "RMSE" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (rmseValue != null) {
+		    value = (decimalFormat.format(rmseValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Accuracy
+                label = (prefix + "Accuracy" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (accuracyValue != null) {
+		    value = (decimalFormat.format(accuracyValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+		prefix = "Cross validation ";
+                // Student-stratified CV
+                label = (prefix + "student-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (studentStratifiedValue != null) {
+		    value = (decimalFormat.format(studentStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Item-stratified CV
+                label = (prefix + "item-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (itemStratifiedValue != null) {
+		    value = (decimalFormat.format(itemStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Non-stratified CV
+                label = (prefix + "non-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (nonStratifiedValue != null) {
+		    value = (decimalFormat.format(nonStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+            } catch (Exception e) {
+                // This will be picked up by the workflows platform and relayed to the user.
+                e.printStackTrace();
+            }
+
+        return theFile;
+    }
 }
