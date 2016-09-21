@@ -61,7 +61,7 @@
 
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="intercepts" />
+      <xs:element ref="parameters" />
     </xs:choice>
   </xs:complexType>
 

@@ -118,7 +118,7 @@ public class AFMMain extends AbstractComponent {
 
         File predictedErrorRateFile = this.createFile("Step-values-with-predictions", ".txt");
         File modelValuesFile = this.createFile("KC-model-values", ".txt");
-        File interceptsFile = this.createFile("Intercept-and-slope-values", ".txt");
+        File parametersFile = this.createFile("Parameter-estimate-values", ".txt");
 
         // The decimal format for predicted error rates.
         decimalFormat = new DecimalFormat("0.000#");
@@ -150,8 +150,8 @@ public class AFMMain extends AbstractComponent {
             // Now, write the model values to the second output file.
             modelValuesFile = populateModelValuesFile(modelValuesFile, theModel);
 
-            // Finally, write the intercept values to the third output file.
-            interceptsFile = populateInterceptsFile(interceptsFile, theModel);
+            // Finally, write the parameter estimate values to the third output file.
+            parametersFile = populateParametersFile(parametersFile, theModel);
 
         } else {
             this.addErrorMessage("The results from AFM were empty.");
@@ -168,8 +168,8 @@ public class AFMMain extends AbstractComponent {
             fileType = "model-values";
             this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileType);
             nodeIndex = 2;
-            fileType = "intercepts";
-            this.addOutputFile(interceptsFile, nodeIndex, fileIndex, fileType);
+            fileType = "parameters";
+            this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileType);
         }
 
         System.out.println(this.getOutput());
@@ -371,12 +371,12 @@ public class AFMMain extends AbstractComponent {
      * @param model the PenalizedAFMTransferModel
      * @return the populated file
      */
-    private File populateInterceptsFile(File theFile, AFMTransferModel model) {
+    private File populateParametersFile(File theFile, AFMTransferModel model) {
 
         AFMDataObject ado = model.getAFMDataObject();
 
         if (ado == null) {
-            this.addErrorMessage("Intercept results from AFM were empty.");            
+            this.addErrorMessage("Parameter estimate results from AFM were empty.");            
             return theFile;
         }
 

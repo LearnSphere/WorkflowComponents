@@ -40,7 +40,7 @@
 	  <xs:element name="transaction" substitutionGroup="tab-delimited" />
 	  <xs:element name="student-problem" substitutionGroup="tab-delimited" />
 	  <xs:element name="model-values" substitutionGroup="tab-delimited" />
-	  <xs:element name="intercepts" substitutionGroup="tab-delimited" />
+	  <xs:element name="parameters" substitutionGroup="tab-delimited" />
 
   <xs:element name="analysis-summary" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
