@@ -151,6 +151,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     private static final Stroke ERROR_BAR_STROKE = new BasicStroke(1.25f);
     /** The X axis label, i.e. opportunity. */
     private static final String OPPORTUNITY_LABEL = "opportunity";
+    
+    /** Constant to convert error rates to percentages. */
+    private static final Integer ONE_HUNDRED = 100;
 
     private LearningCurveVisualizationOptions lcOptions = null;
 
@@ -270,7 +273,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
                     // high and low are the same for X values...
                     double theX = graphPoint.getOpportunityNumber().doubleValue();
-                    Double theY = graphPoint.getErrorRates();
+                    Double theY = graphPoint.getErrorRates() * ONE_HUNDRED;
                     Double lowY = theY - offset;
                     Double highY = theY + offset;
                     series.add(theX, theY, lowY, highY);
@@ -282,7 +285,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                         Double lfaScore = graphPoint.getPredictedErrorRate();
                         if (lfaScore != null) {
                             Double lfaX = graphPoint.getOpportunityNumber().doubleValue();
-                            Double lfaY = lfaScore;
+                            Double lfaY = lfaScore * ONE_HUNDRED;
                             lfaSeries.add(lfaX, lfaY, lfaY, lfaY);
                             logDebug("Adding LFA point to dataset: Y-Value=", lfaScore,
                                     " X-Value=", graphPoint.getOpportunityNumber());

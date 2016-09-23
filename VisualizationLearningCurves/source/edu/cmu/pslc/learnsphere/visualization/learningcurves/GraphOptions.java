@@ -249,7 +249,7 @@ public class GraphOptions {
         lcGraphOptions.setMinX(0.0);
         lcGraphOptions.setMaxX(50.0);
         lcGraphOptions.setMinY(0.0);
-        lcGraphOptions.setMaxY(1.0);
+        lcGraphOptions.setMaxY(100.0);
         lcGraphOptions.setTickUnit("1");
         lcGraphOptions.setShowAxisX(true);
         lcGraphOptions.setTitle("");
