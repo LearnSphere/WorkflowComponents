@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import edu.cmu.pslc.afm.dataObject.AFMDataObject;
@@ -40,8 +41,6 @@ public class AFMMain extends AbstractComponent {
 
     /** Component option (model). */
     String modelName = null;
-    /** Component option (xValidationFolds). */
-    Integer xValidationFolds = null;
 
     /**
      * Main method.
@@ -70,21 +69,6 @@ public class AFMMain extends AbstractComponent {
     protected Boolean test() {
         Boolean passing = true;
 
-        // Constrain the xValidationFolds options to be between 2 and 100.
-        Integer xValidationFolds = this.getOptionAsInteger("xValidationFolds");
-
-        if (xValidationFolds < 2 || xValidationFolds > 100) {
-
-            // Add local debugging info
-            logger.error("Cross-validation folds " + xValidationFolds
-                + " must be between 2 and 100, inclusive.");
-
-            // Add the error to the user interface
-            this.addErrorMessage("Cross-validation folds " + xValidationFolds
-                + " must be between 2 and 100, inclusive.");
-            passing = false;
-        }
-
         return passing;
     }
 
@@ -105,8 +89,6 @@ public class AFMMain extends AbstractComponent {
         if (this.getOptionAsString("model") != null) {
             modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
         }
-        xValidationFolds = this.getOptionAsInteger("xValidationFolds");
-
     }
 
     /**
@@ -126,13 +108,17 @@ public class AFMMain extends AbstractComponent {
         integerFormat = new DecimalFormat("#,###");
 
         AFMTransferModel theModel = null;
+        List<Long> invalidLines = new ArrayList<Long>();
 
         try {
             // Instantiate the AFM class
             PenalizedAFMTransferModel penalizedAFMTransferModel = new PenalizedAFMTransferModel();
 
             // Run the Penalized AFM Transfer Model
-            theModel = penalizedAFMTransferModel.runAFM(this.getAttachment(0, 0), modelName);
+            File steprollup =this.getAttachment(0, 0);
+
+            theModel = penalizedAFMTransferModel.runAFM(
+                steprollup, modelName, Collections.synchronizedList(invalidLines));
 
         } catch (Exception e) {
             logger.error("Exception caused by AFM." + e);
@@ -140,12 +126,13 @@ public class AFMMain extends AbstractComponent {
         }
 
         TrainingResult trainingResult = theModel.getTrainingResult();
+        ;
 
         if ((theModel != null) && (trainingResult != null)) {
 
             // Write the predicted error rates to the first output file.
             predictedErrorRateFile = populatePredictedErrorRateFile(predictedErrorRateFile,
-                                                                    trainingResult);
+                trainingResult, invalidLines);
 
             // Now, write the model values to the second output file.
             modelValuesFile = populateModelValuesFile(modelValuesFile, theModel);
@@ -194,7 +181,8 @@ public class AFMMain extends AbstractComponent {
      * @param tr the AFMTransferModel Training Result
      * @return the populated file
      */
-    private File populatePredictedErrorRateFile(File theFile, TrainingResult tr) {
+    private File populatePredictedErrorRateFile(File theFile, TrainingResult tr,
+            List<Long> invalidLines) {
 
         double[] pe = tr.getPredictedError();
 
@@ -213,8 +201,8 @@ public class AFMMain extends AbstractComponent {
                                                          // strings allowed,
                                                          // e.g. 3, 4, , 5 is interpreted as
                                                          // "3","4","","5"
+
         for (String stringValue : stringValues) {
-            logger.info("S: " + stringValue);
             doubleValues.add(Double.parseDouble(stringValue));
         }
 
@@ -249,16 +237,35 @@ public class AFMMain extends AbstractComponent {
 
                 // Write values to export
                 String line = bufferedReader.readLine();
-                Integer lineCount = 0;
-                while (line != null) {
+                Long lineCount = 0L;
+                Long validLineCount = -1L;
 
-                    String predictedValueString = decimalFormat
-                            .format(doubleValues.get(lineCount));
+                while (line != null) {
+                    Boolean isValidLine = true;
+                    lineCount++; // because we already read the header line
+
+                    if (invalidLines.contains(lineCount)) {
+                        isValidLine = false;
+                    } else {
+                        validLineCount++;
+                    }
+
+                    String predictedValueString = null;
+
+                    if (isValidLine) {
+                        Integer validLineIndex = validLineCount.intValue();
+                        predictedValueString = decimalFormat
+                            .format(doubleValues.get(validLineIndex));
+                    } else {
+                        predictedValueString = "";
+                    }
                     String[] valueArray = line.split(TAB_CHAR);
+
 
                     Integer colIndex = 0;
                     for (String value : valueArray) {
                         byte[] bytes = null;
+
                         if (replaceHeaderIndex < valueArray.length
                                 && replaceHeaderIndex == colIndex) {
                             bytes = (predictedValueString + TAB_CHAR)
@@ -266,6 +273,7 @@ public class AFMMain extends AbstractComponent {
                         } else {
                             bytes = (value + TAB_CHAR).getBytes("UTF-8");
                         }
+
                         outputStream.write(bytes);
                         colIndex++;
                     }
@@ -276,7 +284,6 @@ public class AFMMain extends AbstractComponent {
 
                     outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
                     line = bufferedReader.readLine();
-                    lineCount++;
                 }
             } catch (Exception e) {
                 // This will be picked up by the workflows platform and relayed to the user.
@@ -305,7 +312,7 @@ public class AFMMain extends AbstractComponent {
 
         // Are these all or nothing?
         if (ado == null || logLikelihood == null || aic == null || bic == null) {
-            this.addErrorMessage("Model value results from AFM were empty.");            
+            this.addErrorMessage("Model value results from AFM were empty.");
             return theFile;
         }
 
@@ -376,7 +383,7 @@ public class AFMMain extends AbstractComponent {
         AFMDataObject ado = model.getAFMDataObject();
 
         if (ado == null) {
-            this.addErrorMessage("Parameter estimate results from AFM were empty.");            
+            this.addErrorMessage("Parameter estimate results from AFM were empty.");
             return theFile;
         }
 
