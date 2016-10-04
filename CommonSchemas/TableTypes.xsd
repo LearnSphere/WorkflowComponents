@@ -41,6 +41,9 @@
 	  <xs:element name="student-problem" substitutionGroup="tab-delimited" />
 	  <xs:element name="model-values" substitutionGroup="tab-delimited" />
 	  <xs:element name="parameters" substitutionGroup="tab-delimited" />
+	  <xs:element name="gradebook" substitutionGroup="tab-delimited" />
+	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
+	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
 
   <xs:element name="analysis-summary" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
