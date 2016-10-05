@@ -59,7 +59,14 @@
     </xs:complexContent>
   </xs:complexType>
 
+
   <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="model-values" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList2">
     <xs:choice>
       <xs:element ref="parameters" />
     </xs:choice>
@@ -76,11 +83,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="OutFileList2">
-    <xs:choice>
-      <xs:element ref="model-values" />
-    </xs:choice>
-  </xs:complexType>
 
   <xs:complexType name="OutputType">
     <xs:sequence>
