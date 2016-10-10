@@ -13,6 +13,8 @@
 
 <outputs>
 <b>Student-Step</b>
+<b>Parameter estimate values</b>
+<b>Model values</b>
 </outputs>
 
 <options>

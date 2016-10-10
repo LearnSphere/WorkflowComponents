@@ -21,7 +21,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="gradebook" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -29,6 +29,13 @@
     <xs:choice>
       <xs:element ref="file" minOccurs="0" />
     </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OptionsType">
+    <xs:all>
+      <xs:element type="xs:boolean" name="summary_column_present"
+                  id="Is_Summary_Column_Present" default="false" />
+    </xs:all>
   </xs:complexType>
 
   <xs:complexType name="OutputDefinition0">
@@ -44,58 +51,14 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="student-step" />
+      <xs:element ref="correlation" />
     </xs:choice>
   </xs:complexType>
-
-  <xs:complexType name="OutputDefinition1">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList1" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-
-  <xs:complexType name="OutFileList1">
-    <xs:choice>
-      <xs:element ref="model-values" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="OutFileList2">
-    <xs:choice>
-      <xs:element ref="parameters" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="OutputDefinition2">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList2" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
 
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
-      <xs:element name="output1" type="OutputDefinition1" />
-      <xs:element name="output2" type="OutputDefinition2" />
     </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="OptionsType">
-    <xs:all>
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-    </xs:all>
   </xs:complexType>
 
   <xs:element name="component">
