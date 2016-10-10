@@ -8,15 +8,15 @@
 <description>TKT is a generalization of the additive factors model (AFM). Experimental.</description>
 
 <inputs>
-<b>Transaction export with TKT features</b>
+<b>Transaction export</b>
 </inputs>
 
 <outputs>
-<b>Transaction export, R model output</b>
+<b>Transaction export with TKT features</b>
 </outputs>
 
 <options>
-Ignored.
+Requires 2 KC models, subordinate and superordinate.
 </options>
 
 </info>

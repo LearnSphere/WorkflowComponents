@@ -57,27 +57,11 @@ print(summary(x1))
 
 cat(paste("\nR^2 = ",cor(method="spearman",predict(x1,type="response"),dat$CF..ansbin.)^2,"\n"))
 
-#cat("\nrandom effects\n")
-#print(ranef(x1))
-
-library(pROC)
-
-switch(Sys.info()[['sysname']],
-Linux  = { bitmap(paste(workingDirectory, "AUC.png", sep=""),"png16m") },
-Windows= { png(paste(workingDirectory, "AUC.png", sep=""), width=2000, height=2000, res=300) },
-Darwin = { png(paste(workingDirectory, "AUC.png", sep=""), width=2000, height=2000, res=300) })
-
-
-print(auc(dat$CF..ansbin.,predict(x1,type="response")))
-plot.roc(dat$CF..ansbin.,predict(x1,type="response"),smooth=FALSE)
-dev.off()
-
-#cat("\nrandom effects\n")
-#print(ranef(x1))
+cat("\nrandom effects\n")
+print(ranef(x1))
 
 # What are the variables in the data frame
 str(dat)
-
 
 # Save predictions in file without hints/studies
 val<-dat

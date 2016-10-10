@@ -50,8 +50,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:all >
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />      
-      <xs:element type="FileInputHeader" name="modelsub" id="ModelSub" default="\s*KC\s*\((.*)\)\s*" />
+      <xs:element type="FileInputHeader" name="model" id="Superordinate_Model" default="\s*KC\s*\((.*)\)\s*" />      
+      <xs:element type="FileInputHeader" name="modelsub" id="Subordinate_Model" default="\s*KC\s*\((.*)\)\s*" />
      </xs:all>
   </xs:complexType>
 
