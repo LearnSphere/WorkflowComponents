@@ -13,7 +13,7 @@ cd ${dir}
 
 
 # Delete component dirs
-sudo find . -maxdepth 1 -type d \( ! -iname ".git" \) -exec rm -R {} \;
+sudo find . -maxdepth 1 -type d \( ! -iname ".git" ! -iname "." \) -exec rm -R {} \;
 
 # Git latest
 git reset --hard
@@ -80,3 +80,4 @@ sudo find -type f -name "*.xsd" -exec dos2unix {} \;
 sudo find -type f -name "*.xml" -exec dos2unix {} \;
 sudo find . -name \*.jar -exec chmod ug+x {} \;
 
+sudo sed -i 's/REPLACEPASSWORD/${MYSQL_PWD}/g' CommonLibraries/applicationContext.xml

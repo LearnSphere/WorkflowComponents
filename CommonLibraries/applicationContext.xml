@@ -25,7 +25,7 @@
         <property name="properties">
              <props>
                  <prop key="user">datashop</prop>
-                 <prop key="password">datashop</prop>
+                 <prop key="password">REPLACEPASSWORD</prop>
                  <prop key="zeroDateTimeBehavior">convertToNull</prop>
                  <prop key="characterEncoding">UTF-8</prop>
                  <prop key="useUnicode">true</prop>
@@ -47,7 +47,7 @@
         <property name="properties">
              <props>
                  <prop key="user">datashop</prop>
-                 <prop key="password">datashop</prop>
+                 <prop key="password">REPLACEPASSWORD</prop>
                  <prop key="zeroDateTimeBehavior">convertToNull</prop>
                  <prop key="characterEncoding">UTF-8</prop>
                  <prop key="useUnicode">true</prop>
@@ -71,7 +71,7 @@
         <property name="properties">
              <props>
                  <prop key="user">datashop</prop>
-                 <prop key="password">datashop</prop>
+                 <prop key="password">REPLACEPASSWORD</prop>
                  <prop key="zeroDateTimeBehavior">convertToNull</prop>
                  <prop key="characterEncoding">UTF-8</prop>
                  <prop key="useUnicode">true</prop>
@@ -95,7 +95,7 @@
         <property name="properties">
              <props>
                  <prop key="user">datashop</prop>
-                 <prop key="password">datashop</prop>
+                 <prop key="password">REPLACEPASSWORD</prop>
                  <prop key="zeroDateTimeBehavior">convertToNull</prop>
                  <prop key="characterEncoding">UTF-8</prop>
                  <prop key="useUnicode">true</prop>
@@ -111,7 +111,6 @@
         <property name="dataSource"><ref local="analysisDataSource"/></property>
         <property name="mappingResources">
             <list>
-                <value>edu/cmu/pslc/datashop/item/AccessReport.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/AccessRequestHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/AccessRequestStatus.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Action.hbm.xml</value>
@@ -126,6 +125,7 @@
                 <value>edu/cmu/pslc/datashop/item/CustomField.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/CfTxLevel.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Dataset.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DatasetInstanceMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/DatasetLevel.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/DatasetLevelEvent.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/DatasetLevelSequence.hbm.xml</value>
@@ -134,20 +134,25 @@
                 <value>edu/cmu/pslc/datashop/item/DatasetUsage.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/DatasetUserLog.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/DatasetUserTermsOfUseMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DataShopInstance.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DiscourseImportQueueMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/DiscourseInstanceMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Domain.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ExternalAnalysis.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ExternalLink.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ExternalTool.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ExternalToolFileMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Feedback.hbm.xml</value>
-                <value>edu/cmu/pslc/datashop/item/File.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Filter.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/File.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/FileType.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ImportQueue.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ImportQueueMode.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ImportQueueStatusHistory.hbm.xml</value>
-                <value>edu/cmu/pslc/datashop/item/Irb.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Input.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Instructor.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/Irb.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/KCModelStepExport.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/Learnlab.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/MetricReport.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/MetricByDomain.hbm.xml</value>
@@ -170,13 +175,10 @@
                 <value>edu/cmu/pslc/datashop/item/ProjectShareabilityHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ProjectTermsOfUseHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ProjectTermsOfUseMap.hbm.xml</value>
-
-                <value>edu/cmu/pslc/datashop/item/DataShopInstance.hbm.xml</value>
-                <value>edu/cmu/pslc/datashop/item/DatasetInstanceMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/RemoteDatasetInfo.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/item/RemoteDiscourseInfo.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/RemoteInstance.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/RemoteSkillModel.hbm.xml</value>
-
                 <value>edu/cmu/pslc/datashop/item/ResearcherType.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ResearcherTypeResearchGoalMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/ResearchGoal.hbm.xml</value>
@@ -203,9 +205,15 @@
                 <value>edu/cmu/pslc/datashop/item/UserTermsOfUseHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/UserTermsOfUseMap.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/workflows/Workflow.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowPersistence.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/workflows/WorkflowHistory.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/workflows/WorkflowFileMap.hbm.xml</value>
-                <value>edu/cmu/pslc/datashop/item/FileType.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowComponent.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowComponentInstance.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowComponentInstancePersistence.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowDatasetMap.hbm.xml</value>
+                <value>edu/cmu/pslc/datashop/workflows/WorkflowUserFeedback.hbm.xml</value>
+
                 <value>edu/cmu/pslc/datashop/item/Interpretation.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/InterpretationAttempt.hbm.xml</value>
                 <value>edu/cmu/pslc/datashop/item/CognitiveStep.hbm.xml</value>
@@ -218,6 +226,9 @@
                 <value>edu/cmu/datalab/item/Item.hbm.xml</value>
                 <value>edu/cmu/datalab/item/DlStudent.hbm.xml</value>
                 <value>edu/cmu/datalab/item/Value.hbm.xml</value>
+
+                <!-- Need this for the DiscourseImportQueueMap to work. -->
+                <value>edu/cmu/pslc/datashop/discoursedb/item/Discourse.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
