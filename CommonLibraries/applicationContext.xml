@@ -975,6 +975,13 @@
         </property>
     </bean>
 
+    <bean id="workflowPersistenceDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowPersistenceDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
     <bean id="workflowHistoryDao"
       class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowHistoryDaoHibernate">
         <property name="hibernateTemplate">
@@ -984,6 +991,41 @@
 
     <bean id="workflowFileMapDao"
       class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowFileMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowComponentDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowComponentDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowComponentInstanceDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowComponentInstanceDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowComponentInstancePersistenceDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowComponentInstancePersistenceDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowDatasetMapDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowDatasetMapDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="workflowUserFeedbackDao"
+      class="edu.cmu.pslc.datashop.dao.hibernate.WorkflowUserFeedbackDaoHibernate">
         <property name="hibernateTemplate">
             <ref bean="hibernateTemplate"/>
         </property>
