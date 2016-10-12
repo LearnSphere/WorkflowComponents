@@ -11,6 +11,14 @@ dir=${BASE}/workflow_components
 
 cd ${dir}
 
+
+# Delete component dirs
+sudo find . -maxdepth 1 -type d \( ! -iname ".git" \) -exec rm -R {} \;
+
+# Git latest
+git reset --hard
+git pull
+
 cat > ImportDiscourseDB/build.properties <<EOF
 component.interpreter.path=
 component.program.path=program/run.sh
@@ -63,9 +71,12 @@ cp trainhmm.exe ../
 chmod ../predicthmm.exe ug+rx
 chmod ../trainhmm.exe ug+rx
 
-find -type f -name "*.sh" -exec dos2unix {} \;
-find -type f -name "*.py" -exec dos2unix {} \;
-find -type f -name "*.xsd" -exec dos2unix {} \;
-find -type f -name "*.xml" -exec dos2unix {} \;
 
+cd ${dir}
+sudo chown -R nobody:datashop .
+sudo find -type f -name "*.sh" -exec dos2unix {} \;
+sudo find -type f -name "*.py" -exec dos2unix {} \;
+sudo find -type f -name "*.xsd" -exec dos2unix {} \;
+sudo find -type f -name "*.xml" -exec dos2unix {} \;
+sudo find . -name \*.jar -exec chmod ug+x {} \;
 
