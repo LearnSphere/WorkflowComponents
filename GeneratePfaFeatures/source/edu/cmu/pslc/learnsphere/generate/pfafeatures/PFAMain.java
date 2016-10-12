@@ -50,7 +50,7 @@ public class PFAMain extends AbstractComponent {
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "transaction";
-            System.err.println("Added file: " + outputFile.getAbsolutePath());
+            logger.info("Added file: " + outputFile.getAbsolutePath());
             this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
         }
 
