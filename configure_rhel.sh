@@ -54,3 +54,18 @@ cat > RTemplate/build.properties <<EOF
 component.interpreter.path=/usr/local/bin/Rscript
 component.program.path=program/DataShop-AFM.R
 EOF
+
+# Compile BKT's programs for this platform
+cd AnalysisBkt/program/standard-bkt-public-standard-bkt
+make
+cp predicthmm.exe ../
+cp trainhmm.exe ../
+chmod ../predicthmm.exe ug+rx
+chmod ../trainhmm.exe ug+rx
+
+find -type f -name "*.sh" -exec dos2unix {} \;
+find -type f -name "*.py" -exec dos2unix {} \;
+find -type f -name "*.xsd" -exec dos2unix {} \;
+find -type f -name "*.xml" -exec dos2unix {} \;
+
+
