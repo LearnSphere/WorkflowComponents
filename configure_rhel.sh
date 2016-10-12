@@ -4,6 +4,7 @@
 #
 # Purpose: Creates the build.properties <<EOF for CMU RHEL servers.
 #
+# RUN as ROOT
 
 source /datashop/tools/variables.sh
 
@@ -13,7 +14,7 @@ cd ${dir}
 
 
 # Delete component dirs
-sudo find . -maxdepth 1 -type d \( ! -iname ".git" ! -iname "." \) -exec rm -R {} \;
+find . -maxdepth 1 -type d \( ! -iname ".git" ! -iname "." \) -exec rm -R {} \;
 
 # Git latest
 git reset --hard
@@ -73,11 +74,12 @@ chmod ../trainhmm.exe ug+rx
 
 
 cd ${dir}
-sudo chown -R nobody:datashop .
-sudo find -type f -name "*.sh" -exec dos2unix {} \;
-sudo find -type f -name "*.py" -exec dos2unix {} \;
-sudo find -type f -name "*.xsd" -exec dos2unix {} \;
-sudo find -type f -name "*.xml" -exec dos2unix {} \;
-sudo find . -name \*.jar -exec chmod ug+x {} \;
 
-sudo sed -i 's/REPLACEPASSWORD/${MYSQL_PWD}/g' CommonLibraries/applicationContext.xml
+sed -i 's/REPLACEPASSWORD/${MYSQL_PWD}/g' CommonLibraries/applicationContext.xml
+chown -R nobody:datashop .
+find -type f -name "*.sh" -exec dos2unix {} \;
+find -type f -name "*.py" -exec dos2unix {} \;
+find -type f -name "*.xsd" -exec dos2unix {} \;
+find -type f -name "*.xml" -exec dos2unix {} \;
+find . -name \*.jar -exec chmod ug+x {} \;
+
