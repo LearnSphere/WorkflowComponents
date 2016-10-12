@@ -69,8 +69,8 @@ cd AnalysisBkt/program/standard-bkt-public-standard-bkt
 make
 cp predicthmm.exe ../
 cp trainhmm.exe ../
-chmod ../predicthmm.exe ug+rx
-chmod ../trainhmm.exe ug+rx
+chmod ug+rx ../predicthmm.exe
+chmod ug+rx ../trainhmm.exe
 
 
 cd ${dir}
