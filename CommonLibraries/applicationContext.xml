@@ -1211,8 +1211,7 @@
         </property>
    </bean>
 
-   <bean id="workflow" class="edu.cmu.pslc.datashop.workflows.Workflow">
-   </bean>
+   <bean id="workflow" class="edu.cmu.pslc.datashop.workflows.Workflow" singleton="false" />
 
    <bean id="importQueue" class="edu.cmu.pslc.datashop.extractors.ffi.ImportQueue"/>
 
