@@ -75,11 +75,12 @@ chmod ug+rx ../trainhmm.exe
 
 cd ${dir}
 
-sed -i 's/REPLACEPASSWORD/${MYSQL_PWD}/g' CommonLibraries/applicationContext.xml
-chown -R nobody:datashop .
+sed -i "s/REPLACEPASSWORD/${MYSQL_PWD}/g" CommonLibraries/applicationContext.xml
+
 find -type f -name "*.sh" -exec dos2unix {} \;
 find -type f -name "*.py" -exec dos2unix {} \;
 find -type f -name "*.xsd" -exec dos2unix {} \;
 find -type f -name "*.xml" -exec dos2unix {} \;
 find . -name \*.jar -exec chmod ug+x {} \;
 
+chown -R nobody:datashop .
