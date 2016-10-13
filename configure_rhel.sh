@@ -67,8 +67,8 @@ EOF
 # Compile BKT's programs for this platform
 cd AnalysisBkt/program/standard-bkt-public-standard-bkt
 make
-cp predicthmm.exe ../
-cp trainhmm.exe ../
+cp predicthmm ../predicthmm.exe
+cp trainhmm ../trainhmm.exe
 chmod ug+rx ../predicthmm.exe
 chmod ug+rx ../trainhmm.exe
 
