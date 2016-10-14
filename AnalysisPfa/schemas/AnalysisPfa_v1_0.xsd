@@ -62,7 +62,7 @@
 
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="image" />
+      <xs:element ref="text" />
     </xs:choice>
   </xs:complexType>
 
