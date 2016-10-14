@@ -1304,9 +1304,78 @@
    <bean id="analysisMain" class="edu.cmu.datalab.importer.AnalysisMain"/>
 
 
+   <!-- ResourceUse.-->
+    <bean id="resourceUseOliImporterDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliImporterDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="resourceUseOliTransactionFileDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionFileDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="resourceUseOliTransactionDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliTransactionDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="resourceUseOliUserSessFileDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessFileDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="resourceUseOliUserSessDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.ResourceUseOliUserSessDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <!-- coursera -->
+    <bean id="courseraClickstreamDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dao.hibernate.CourseraClickstreamDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="courseraHibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="courseraClickstreamVideoDao"
+      class="edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dao.hibernate.CourseraClickstreamVideoDaoHibernate">
+        <property name="hibernateTemplate">
+            <ref bean="courseraHibernateTemplate"/>
+        </property>
+    </bean>
 
 
-<!-- Export Beans -->
+    <!-- coursera -->
+    <bean id="courseraHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="courseraSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="discourseHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="discourseSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="discourseSrcHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="discourseSrcSessionFactory"/>
+        </property>
+    </bean>
+
+    <!-- Export Beans -->
 
     <bean id="txExportBean" class="edu.cmu.pslc.datashop.servlet.export.TxExportBean" singleton="false">
         <property name="transactionExportHelper"><ref bean="transactionExportHelper"/></property>
