@@ -22,23 +22,24 @@ outputFilePath<- paste(workingDirectory, "pfa-model.txt", sep="")
 
 outputFilePath2<- paste(workingDirectory, "randomEffects.txt", sep="")
 
+outputFilePath3<- paste(workingDirectory, "results.xml", sep="")
+
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
 # Creates output log file
-clean <- file(paste(workingDirectory, "PFA-log.txt", sep=""))
+clean <- file(paste(workingDirectory, "pfa-summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
-print(length(val$Outcome))
-
 #Run the model
-print(" transactions \nrun model\n")
 dat<-val[val$CF..ansbin.>-1,]
 
+library(XML)
 library(lme4)
+library(MuMIn)
 if(grepl("Full",flags)){
-x1<-glmer(as.formula(paste("CF..ansbin.~
+x<-glmer(as.formula(paste("CF..ansbin.~
             CF..cor.:",KCmodel,"+
             CF..incor.:",KCmodel,"+
             (1|",KCmodel,")+
@@ -46,34 +47,39 @@ x1<-glmer(as.formula(paste("CF..ansbin.~
             data=dat,family=binomial(logit))}
 
 if(grepl("Simple",flags)){
-x1<-glmer(as.formula(paste("CF..ansbin.~
+x<-glmer(as.formula(paste("CF..ansbin.~
             CF..cor.+
             CF..incor.+
             (1|",KCmodel,")+
             (1|Anon.Student.Id)"))
             ,data=dat,family=binomial(logit))}
 
+
 # Output text summary
-print("model summary\n")
-print(summary(x1))
+print(summary(x))
 
-print(paste("\nR^2 = ",cor(method="spearman",predict(x1,type="response"),dat$CF..ansbin.)^2,"\n"))
+randomEffectsDataFrame = as.data.frame(do.call(rbind, ranef(x)))
+write.table(randomEffectsDataFrame,file=outputFilePath2,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = TRUE)
 
-print("\nrandom effects\n")
+Nres<-length(val$Outcome)
+R2<-r.squaredGLMM(x)
+pred<-predict(x,type="response")
 
-randomEffectsDataFrame = as.data.frame(do.call(rbind, ranef(x1)))
-
-write.table(randomEffectsDataFrame,file=outputFilePath2,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
-print(randomEffectsDataFrame)
-
-# What are the variables in the data frame
-str(dat)
+top <- newXMLNode("model_output")
+newXMLNode("N", Nres, parent = top)
+newXMLNode("Loglikelihood", round(logLik(x),5), parent = top)
+newXMLNode("Parameters",attr(logLik(x), "df") , parent = top)
+newXMLNode("RMSE", round(sqrt(mean((pred-dat$CF..ansbin.)^2)),5), parent = top)
+newXMLNode("Accuracy", round(sum(dat$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
+newXMLNode("glmmR2fixed", round(R2[1],5) , parent = top)
+newXMLNode("glmmR2random", round(R2[2]-R2[1],5), parent = top)
+newXMLNode("r2ML", round(r.squaredLR(x)[1],5) , parent = top)
+newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
+saveXML(top, file=outputFilePath3)
 
 # Save predictions in file without hints/studies
 val<-dat
-val$CF..modbin.<-predict(x1,type="response")
-
-print("\nnow writing table\n")
+val$CF..modbin.<-pred
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
@@ -85,9 +91,6 @@ headers<-gsub("[.][.]"," (",headers)
 headers<-gsub("[.]$",")",headers)
 headers<-gsub("[.]"," ",headers)
 headers<-paste(headers,collapse="\t")
-
-print("headers\n")
-print(headers)
 write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 write.table(val,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 

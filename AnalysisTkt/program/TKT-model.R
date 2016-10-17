@@ -7,6 +7,8 @@ args <- commandArgs(trailingOnly = TRUE)
 #load library
 library(caTools)
 library(TTR)
+library(XML)
+library(MuMIn)
 
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
@@ -21,10 +23,11 @@ inputFile<-args[10]
 
 # Get data
 outputFilePath<- paste(workingDirectory, "tkt-model.txt", sep="")
+outputFilePath2<- paste(workingDirectory, "results.xml", sep="")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
 # Creates output log fille
-clean <- file(paste(workingDirectory, "TKT-log.txt", sep=""))
+clean <- file(paste(workingDirectory, "tkt-summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
@@ -49,25 +52,34 @@ decmod <- function(tem) {
               #I(CF..baselevel.*log(CF..cltcnt.+1)*(CF..meanspacingint.^k)) + 
               I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.)*(CF..meanspacingint.^k))
             ,data=dat,family=binomial(logit))
-  print(paste(j," ",k," ",f," ",-logLik(x)[1]))
+  # future option should allow this line > print(paste(j," ",k," ",f," ",-logLik(x)[1]))
   -logLik(x)[1]}
 
 optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = 2, control = list(maxit = 1000))
 names(x$coefficients)<-substr(names(x$coefficients),1,75)
 
 #Output text summary
-cat("model summary\n\n")
 print(summary(x))
-cat(paste("R^2 = ",cor(predict(x,type="response"),dat$CF..ansbin.)^2),"\n\n")
 
-# What are the variables in the data frame
-cat(str(dat),"\n\n")
+Nres<-length(val$Outcome)
+R2<-r.squaredGLMM(x)
+pred<-predict(x,type="response")
 
+top <- newXMLNode("model_output")
+newXMLNode("N", Nres, parent = top)
+newXMLNode("Loglikelihood", round(logLik(x),5), parent = top)
+newXMLNode("Parameters",3+attr(logLik(x), "df") , parent = top)
+newXMLNode("RMSE", round(sqrt(mean((pred-dat$CF..ansbin.)^2)),5), parent = top)
+newXMLNode("Accuracy", round(sum(dat$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
+newXMLNode("glmmR2fixed", round(R2[1],5) , parent = top)
+newXMLNode("glmmR2random", round(R2[2]-R2[1],5), parent = top)
+newXMLNode("r2ML", round(r.squaredLR(x)[1],5) , parent = top)
+newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
+saveXML(top, file=outputFilePath2)
+
+# Save predictions in file without hints/studies
 val<-dat
-#save prediction
-dat$CF..modbin.<-predict(x,type="response")
-
-cat("\nnow writing table\n")
+dat$CF..modbin.<-pred
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(dat))
@@ -79,7 +91,6 @@ headers<-gsub("[.][.]"," (",headers)
 headers<-gsub("[.]$",")",headers)
 headers<-gsub("[.]"," ",headers)
 headers<-paste(headers,collapse="\t")
-cat(headers)
 write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 write.table(dat,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 
