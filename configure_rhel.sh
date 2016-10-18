@@ -76,7 +76,9 @@ chmod ug+rx ../trainhmm.exe
 cd ${dir}
 
 # Copy the app context for components which use the DataShop DAO
-cp ${DEPLOY}/applicationContext.xml CommonLibraries/applicationContext.xml
+cp ${DEPLOY}/applicationContext.xml CommonLibraries/
+cp ${DEPLOY}/datashop.jar CommonLibraries/
+cp ${DEPLOY}/datalab.jar CommonLibraries/
 
 find -type f -name "*.sh" -exec dos2unix {} \;
 find -type f -name "*.py" -exec dos2unix {} \;
