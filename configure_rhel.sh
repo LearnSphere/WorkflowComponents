@@ -75,7 +75,8 @@ chmod ug+rx ../trainhmm.exe
 
 cd ${dir}
 
-sed -i "s/REPLACEPASSWORD/${MYSQL_PWD}/g" CommonLibraries/applicationContext.xml
+# Copy the app context for components which use the DataShop DAO
+cp ${DEPLOY}/applicationContext.xml CommonLibraries/applicationContext.xml
 
 find -type f -name "*.sh" -exec dos2unix {} \;
 find -type f -name "*.py" -exec dos2unix {} \;
