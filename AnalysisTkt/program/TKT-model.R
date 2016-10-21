@@ -61,7 +61,7 @@ names(x$coefficients)<-substr(names(x$coefficients),1,75)
 #Output text summary
 print(summary(x))
 
-Nres<-length(val$Outcome)
+Nres<-length(dat$Outcome)
 R2<-r.squaredGLMM(x)
 pred<-predict(x,type="response")
 
@@ -78,8 +78,10 @@ newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
 saveXML(top, file=outputFilePath2)
 
 # Save predictions in file without hints/studies
-val<-dat
 dat$CF..modbin.<-pred
+val$CF..modbin.<-NA
+val$CF..baselevel.<-NA
+dat<-rbind(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(dat))
