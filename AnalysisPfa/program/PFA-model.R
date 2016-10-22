@@ -78,7 +78,6 @@ saveXML(top, file=outputFilePath3)
 # Save predictions in file
 dat$CF..modbin.<-pred
 val$CF..modbin.<-NA
-val$CF..baselevel.<-NA
 dat<-rbind(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 
 # Export modified data frame for reimport after header attachment
