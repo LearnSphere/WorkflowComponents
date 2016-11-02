@@ -5,10 +5,10 @@ echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 
 #load libraries
-library(caTools)
-library(TTR)
-library(XML)
-library(MuMIn)
+suppressMessages(library(caTools))
+suppressMessages(library(lme4))
+suppressMessages(library(XML))
+suppressMessages(library(MuMIn))
 
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
