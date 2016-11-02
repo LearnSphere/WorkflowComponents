@@ -47,8 +47,9 @@ public class PFAMain extends AbstractComponent {
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/pfa-model.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/randomEffects.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/PFA-log.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/pfa-summary.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/randomEffects.txt");
+            File file3 = new File(outputDirectory.getAbsolutePath() + "/results.xml");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
@@ -66,6 +67,11 @@ public class PFAMain extends AbstractComponent {
                 Integer fileIndex2 = 0;
                 String label2 = "text";
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
+                
+                Integer nodeIndex3 = 3;
+                Integer fileIndex3 = 0;
+                String label3 = "text";
+                this.addOutputFile(file3, nodeIndex3, fileIndex3, label3);
 
             } else {
                 this.addErrorMessage("An unknown error has occurred with the PFA component.");

@@ -1,14 +1,14 @@
 # Run TKT models
 
-ech<-FALSE
+echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 
-#load library
-library(caTools)
-library(TTR)
-library(XML)
-library(MuMIn)
+#load libraries
+suppressMessages(library(caTools))
+suppressMessages(library(lme4))
+suppressMessages(library(XML))
+suppressMessages(library(MuMIn))
 
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
@@ -26,13 +26,14 @@ outputFilePath<- paste(workingDirectory, "tkt-model.txt", sep="")
 outputFilePath2<- paste(workingDirectory, "results.xml", sep="")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
-# Creates output log fille
+# Creates output log file
 clean <- file(paste(workingDirectory, "tkt-summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
-dat<-val[as.numeric(val$CF..ansbin.)>-1,] # & val$Condition.Name.3==0,]
+#Run the model
+dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,] 
 
 baselevel <-
   function(df, rate, f) {
@@ -61,7 +62,7 @@ names(x$coefficients)<-substr(names(x$coefficients),1,75)
 #Output text summary
 print(summary(x))
 
-Nres<-length(val$Outcome)
+Nres<-length(dat$Outcome)
 R2<-r.squaredGLMM(x)
 pred<-predict(x,type="response")
 
@@ -77,9 +78,11 @@ newXMLNode("r2ML", round(r.squaredLR(x)[1],5) , parent = top)
 newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
 saveXML(top, file=outputFilePath2)
 
-# Save predictions in file without hints/studies
-val<-dat
+# Save predictions in file
 dat$CF..modbin.<-pred
+val$CF..modbin.<-NA
+val$CF..baselevel.<-NA
+dat<-rbind(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(dat))

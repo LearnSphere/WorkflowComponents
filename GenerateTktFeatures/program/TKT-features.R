@@ -63,19 +63,19 @@ KCage <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))              #ad
                             return(temp)}
 
 meanspacing <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing 
-for (i in unique(index)){print(i)
+for (i in unique(index)){
   j<-length(temp[index==i])
-  if(j>1){temp[index==i][2]<-1}
-if(j==2){temp[index==i][3]<-max(df$CF..KCclusterspacing.[index==i][2]-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}
+if(j>1){temp[index==i][2]<-1}
+if(j==3){temp[index==i][3]<-max(df$CF..KCclusterspacing.[index==i][2]-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}
   if(j>3){temp[index==i][3:j]<-pmax(runmean(df$CF..KCclusterspacing.[index==i][2:(j-1)],
                                       k=25,alg=c("exact"),align=c("right"))-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}}
 return(temp)}
 
 meanspacingint <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing 
-for (i in unique(index)){print(i)
+for (i in unique(index)){
   j<-length(temp[index==i])
   if(j>1){temp[index==i][2]<-1}
-if(j==2){temp[index==i][3]<-max(df$CF..KCintspacing.[index==i][2]-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}
+if(j==3){temp[index==i][3]<-max(df$CF..KCintspacing.[index==i][2]-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}
   if(j>3){temp[index==i][3:j]<-pmax(runmean(df$CF..KCintspacing.[index==i][2:(j-1)],
                                       k=25,alg=c("exact"),align=c("right"))-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}}
 return(temp)}
@@ -104,7 +104,7 @@ KCageint <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))              
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..KCclusterindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodelsuper,sep=""))),sep="-")
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodelsub,sep=""))),sep="-")
-val$CF..Correct.Answer.<-tolower(gsub(" ","",val$CF..Correct.Answer.))
+#val$CF..Correct.Answer.<-tolower(gsub(" ","",val$CF..Correct.Answer.))
 val$CF..answerindex.<-  paste(val$Anon.Student.Id,val$CF..Correct.Answer.,sep="-")
 val<-val[order(val$Anon.Student.Id, val$Time),] 
 val$Duration..sec.<-as.numeric(as.character(val$Duration..sec.))
