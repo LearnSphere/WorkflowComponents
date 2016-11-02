@@ -10,6 +10,8 @@ install.packages("pROC", lib="C:/R-3.2.3/library")
 install.packages("minqa", lib="C:/R-3.2.3/library")
 install.packages("Rcpp", lib="C:/R-3.2.3/library")
 install.packages("nloptr", lib="C:/R-3.2.3/library")
+install.packages("TTR", lib="C:/R-3.2.3/library")
+install.packages("caTools", lib="C:/R-3.2.3/library")
 install.packages("XML", lib="C:/R-3.2.3/library")
 install.packages("MuMIn", lib="C:/R-3.2.3/library")
 
