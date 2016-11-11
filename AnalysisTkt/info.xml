@@ -5,7 +5,7 @@
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisTkt</url>
 <date>2016-07-14</date>
 <abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model performs a logistic regression over the "error rate" learning curve data.</abstract>
-<description>TKT is a generalization of the additive factors model (AFM). Experimental.</description>
+<details>TKT is a generalization of the additive factors model (AFM). Experimental.</details>
 
 <inputs>
 <b>Transaction export with TKT features</b>
