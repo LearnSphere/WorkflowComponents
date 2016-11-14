@@ -9,6 +9,7 @@ library(caTools)
 library(TTR)
 library(XML)
 library(MuMIn)
+library(plyr)
 
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
@@ -49,6 +50,13 @@ for(run in 1:5){
         for(fold in 1:2){    
         print(paste("fold " , fold))
             testfold <<- dat[ as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]], ]
+
+eval(parse(text=paste(sep="",
+            "dat$CF..run",
+             run,
+            "fold",
+             fold,".",
+    "<-ifelse(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]],\"test\",\"train\")")))
             trainfold <<- dat[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]), ]
             baselevel <-
               function(df, rate, f) {
@@ -70,7 +78,7 @@ for(run in 1:5){
                         ,data=trainfold,family=binomial(logit))
                #print(paste(j," ",k," ",f," ",-logLik(fitmodel)[1]))
               -logLik(fitmodel)[1]}
-            fitoptim <- optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = 2, control = list(maxit = 10))
+            fitoptim <- optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = 2, control = list(maxit = 25))
             print(summary(fitmodel))
             print(fitoptim)
             Nresfit<-length(trainfold$Outcome)
@@ -78,6 +86,11 @@ for(run in 1:5){
             R2fit<-r.squaredGLMM(fitmodel)
             predfit<-predict(fitmodel,trainfold,type="response")
             predtest<-predict(fitmodel,testfold,re.form = NULL, type = "response",allow.new.levels=TRUE)
+
+
+eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.<-NA")))
+eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]]<-predtest")))
+eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]])]<-predfit")))
 
             bot <- newXMLNode(paste("model_output_fold",fold,"run",run,sep="_"),parent=top)
             newXMLNode("N", Nresfit, parent = bot)
@@ -96,6 +109,24 @@ for(run in 1:5){
 }
 saveXML(top, file=outputFilePath2)
 }
+
+
+# Save predictions in file
+dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
+dat<-dat[order(dat$Anon.Student.Id, dat$Time),] 
+# Export modified data frame for reimport after header attachment
+headers<-gsub("Unique[.]step","Unique-step",colnames(dat))
+headers<-gsub("[.]1","",headers)
+headers<-gsub("[.]2","",headers)
+headers<-gsub("[.]3","",headers)
+headers<-gsub("Single[.]KC","Single-KC",headers)
+headers<-gsub("[.][.]"," (",headers)
+headers<-gsub("[.]$",")",headers)
+headers<-gsub("[.]"," ",headers)
+headers<-paste(headers,collapse="\t")
+write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(dat,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+
 
 
 
