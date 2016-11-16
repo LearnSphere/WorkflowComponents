@@ -108,7 +108,8 @@ val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmod
 val$CF..answerindex.<-  paste(val$Anon.Student.Id,val$CF..Correct.Answer.,sep="-")
 val<-val[order(val$Anon.Student.Id, val$Time),] 
 val$Duration..sec.<-as.numeric(as.character(val$Duration..sec.))
-val$Duration..sec.<-(val$CF..End.Latency. + val$CF..Review.Latency.)/1000
+if("CF..End.Latency." %in% colnames(val))
+{val$Duration..sec.<-(val$CF..End.Latency. + val$CF..Review.Latency.)/1000}
 
 val$CF..cor.<-corcount(val,val$CF..KCindex.)
 val$CF..incor.<-incorcount(val,val$CF..KCindex.)

@@ -56,7 +56,7 @@ decmod <- function(tem) {
   # future option should allow this line > print(paste(j," ",k," ",f," ",-logLik(x)[1]))
   -logLik(x)[1]}
 
-optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = 2, control = list(maxit = 1000))
+optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
 names(x$coefficients)<-substr(names(x$coefficients),1,75)
 
 #Output text summary
