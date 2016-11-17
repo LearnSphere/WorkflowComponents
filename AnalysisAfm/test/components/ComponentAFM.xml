@@ -27,9 +27,9 @@
       <files>
         <student-step>
           <index>0</index>
-          <file_path>test/example_student_step/ds5_student_step_All_Data_107_2014_0812_155834.txt</file_path>
+          <file_path>test/example_student_step/ds96_student_step_export.txt</file_path>
           <label>student-step</label>
-          <file_name>ds5_student_step_All_Data_107_2014_0812_155834.txt</file_name>
+          <file_name>ds96_student_step_export.txt</file_name>
           <metadata>
             <header>
               <id>header0</id>
