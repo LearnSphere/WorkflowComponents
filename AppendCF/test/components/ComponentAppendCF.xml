@@ -19,7 +19,7 @@
   <options>
     <appendAllCF>true</appendAllCF>
     <cfColumnName>CF (oli_highStakes)</cfColumnName>
-    <cfAppendMode>Student Step and Problem View Level</cfAppendMode>
+    <cfAppendMode>Student-problem Level</cfAppendMode>
   </options>
   <inputs>
   <input0>

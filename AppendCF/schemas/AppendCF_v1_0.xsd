@@ -77,15 +77,15 @@
   
   <xs:simpleType name="appendModeType" final="restriction">
 	<xs:restriction base="xs:string">
-		<xs:enumeration value="Student Problem Level"/>
-		<xs:enumeration value="Student Step Level"/>
-		<xs:enumeration value="Student Step and Problem View Level"/>
+		<xs:enumeration value="Student-problem Level"/>
+		<xs:enumeration value="Student-step Level"/>
+		<xs:enumeration value="Student-step-problem view Level"/>
 	</xs:restriction>
    </xs:simpleType>
 
   <xs:complexType name="OptionsType">
     <xs:all>
-      <xs:element type="appendModeType" name="cfAppendMode" id="Append_by" default="Student Problem Level"/>
+      <xs:element type="appendModeType" name="cfAppendMode" id="Append_by" default="Student-problem Level"/>
       <xs:element type="xs:boolean" name="appendAllCF" id="Append_All_CF" default="false" />
       <xs:element type="FileInputHeader" name="cfColumnName" id="Custom_Field_Column_Name" default="\s*CF\s*\((.*)\)\s*"/>
       

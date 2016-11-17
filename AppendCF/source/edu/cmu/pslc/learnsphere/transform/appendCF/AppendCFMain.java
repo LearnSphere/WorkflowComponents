@@ -42,9 +42,9 @@ public class AppendCFMain extends AbstractComponent {
     private static final String PROBLEM_VIEW = "Problem View";
     private static final String STUDENT_NAME = "Anon Student Id";
     
-    private static final String APPEND_BY_PROBLEM = "Student Problem Level";
-    private static final String APPEND_BY_STEP = "Student Step Level";
-    private static final String APPEND_BY_STEP_AND_PROBLEM_VIEW = "Student Step and Problem View Level";
+    private static final String APPEND_BY_PROBLEM = "Student-problem Level";
+    private static final String APPEND_BY_STEP = "Student-step Level";
+    private static final String APPEND_BY_STEP_AND_PROBLEM_VIEW = "Student-step-problem view Level";
     
     private int studentStepFileColLength;
     
