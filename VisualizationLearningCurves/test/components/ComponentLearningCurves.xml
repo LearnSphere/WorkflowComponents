@@ -14,12 +14,13 @@
   <top>106</top>
   <options>
     <learningCurve>Knowledge Components</learningCurve>
-    <model>Predicted Error Rate (Default)</model>
+    <model>Predicted Error Rate (principles_of_computing_1_10)</model>
     <stdDevCutOff>0</stdDevCutOff>
     <opportunityCutOffMin>0</opportunityCutOffMin>
     <opportunityCutOffMax>INF</opportunityCutOffMax>
     <learningCurveMetric>Error Rate</learningCurveMetric>
     <errorBar>No Error Bars</errorBar>
+    <highStakesCF>oli:highStakes</highStakesCF>
   </options>
   <inputs>
     <input0>
@@ -31,8 +32,8 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/example_student_step/ds96_student_step_export_afm.txt</file_path>
-          <file_name>ds96_student_step_export_afm.txt</file_name>
+          <file_path>test/example_student_step/ds1806_student_step_with_CF.txt</file_path>
+          <file_name>ds1806_student_step_with_CF.txt</file_name>
           <index>0</index>
           <label>student-step</label>
           <metadata>

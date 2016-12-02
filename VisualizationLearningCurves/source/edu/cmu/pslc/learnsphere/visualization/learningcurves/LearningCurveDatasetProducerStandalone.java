@@ -4,6 +4,7 @@ package edu.cmu.pslc.learnsphere.visualization.learningcurves;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.io.File;
 import java.io.Serializable;
@@ -39,8 +40,7 @@ import org.jfree.ui.HorizontalAlignment;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.VerticalAlignment;
-
-
+import org.jfree.util.ShapeUtilities;
 
 import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
 import edu.cmu.pslc.datashop.item.SkillItem;
@@ -75,6 +75,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     public static final String PREDICTED = "lfa_predicted";
     /** String constant for secondary LFA predicted curves */
     public static final String SECONDARY_PREDICTED = "lfa_predicted_2";
+    /** String constant for highstakes error rate point */
+    public static final String HIGHSTAKES = "highstakes";
 
     /** Number format for to include commas but no decimals. */
     private static final DecimalFormat COMMA_DF = new DecimalFormat("#,###,##0");
@@ -209,12 +211,14 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
         // LC graph options.
         Boolean createObservationTable = lcGraphOptions.getCreateObservationTable();
         Boolean viewPredicted = lcGraphOptions.getViewPredicted();
+        Boolean viewHighStakes = (lcGraphOptions.getViewHighStakes()
+                                  && (lcMetric.equals(LearningCurveMetric.ERROR_RATE)));
 
         //  Timing variables for debug.
         Date time = new Date();
 
         dataset = new YIntervalSeriesCollection();
-        YIntervalSeries series, lfaSeries;
+        YIntervalSeries series, lfaSeries, hsSeries;
         if (createObservationTable) {
             observationTableMap.clear();
         }
@@ -237,6 +241,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 + lcOptions.getPrimaryModelName() + " (Predicted)", true, false);
         lfaSeries.setDescription(PREDICTED);
 
+        hsSeries = new YIntervalSeries(lcGraphOptions.getTitle() + " - HighStakes", true, false);
+        hsSeries.setDescription(HIGHSTAKES);
+
         Integer maxOppCount = 30;
         if (lcMetric.equals(LearningCurveMetric.STEP_DURATION)
                 || lcMetric.equals(LearningCurveMetric.CORRECT_STEP_DURATION)) {
@@ -252,10 +259,16 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             }
         }
 
+        Integer hsErrorRateOpp = 0;
+        Double highStakes = null;
         for (Iterator<LearningCurvePoint> pointsIt
                 = lcPointList.iterator(); pointsIt.hasNext();) {
             LearningCurvePoint graphPoint = pointsIt.next();
 
+            if (graphPoint.getHighStakesErrorRate() != null) {
+                highStakes = graphPoint.getHighStakesErrorRate() * ONE_HUNDRED;
+                hsErrorRateOpp = graphPoint.getOpportunityNumber();
+            }
             Double offset = 0.0;
 
             if (errorBarType != null) {
@@ -423,6 +436,16 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             dataset.addSeries(lfaSeries);
         }
 
+        if (viewHighStakes) {
+            // Only defined for a single opportunity...
+            if (highStakes != null) {
+                hsSeries.add(hsErrorRateOpp.doubleValue(), highStakes, highStakes, highStakes);
+                logDebug("Adding highStakes point: "
+                         + highStakes + "@" + hsErrorRateOpp.doubleValue());
+                dataset.addSeries(hsSeries);
+            }
+        }
+
         Date now = new Date();
         logDebug("Retrieved ", lcPointList.size(), " graph points", " type id of ",
                 lcMetric.toString(), " in ", (now.getTime() - time.getTime()), "ms ");
@@ -582,7 +605,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 }
             }
             if (maxX > 0) {
-                xAxis.setRange(0.0, maxX);
+                xAxis.setRange(0.0, maxX + 1);
             }
 
             NumberAxis yAxis = new NumberAxis();
@@ -770,6 +793,12 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                     renderer.setSeriesShapesVisible(i, false);
                 }
                 renderer.setSeriesStroke(i, PREDICTED_STROKE_2);
+            } else if (HIGHSTAKES.equals(aSeries.getDescription())) {
+                renderer.setSeriesLinesVisible(i, false);
+                renderer.setSeriesShapesVisible(i, true);
+                Shape diamond = ShapeUtilities.createDiamond(new Float(5.0));
+                renderer.setSeriesShape(i, diamond);
+                if (isThumb) { renderer.setSeriesShapesVisible(i, false); }
             } else {
                 logger.warn("Unknown description on xy data series :: "
                         + aSeries.getDescription());
@@ -990,6 +1019,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 htmlBuffer.append("<caption>" + sampleName + "</caption>");
 
                 for (LearningCurvePoint graphPoint : graphPoints) {
+                    // Ignore the highStakesErrorRate point
+                    if (graphPoint.getHighStakesErrorRate() != null) { continue; }
+
                     if (count % OBS_TABLE_LENGTH == 0) {
                         if (!firstPass) {
                             closeTheRow();
