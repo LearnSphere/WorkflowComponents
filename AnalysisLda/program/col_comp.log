@@ -1,0 +1,100 @@
+CF (Correct Answer)	Input	Similarity value
+mean	[timeout]	-0.03138116
+dividing	dividing	1
+sum	sum	1
+measure|represent|describe	measure	0.7689974
+standard error	variance	0.1191269
+measure|represent|describe	measure	0.7689974
+density	range	0.02520213
+1		NA
+mean	mode	0.03771314
+mean	timeout	-0.03138116
+multiple|many	timeout	0.05981871
+variability	mode	-0.07712495
+range|set	rane	0
+standard error	variance	0.1191269
+standard deviation	standard deviation	1
+density	density	1
+different|far|variable	[timeout]	0.05748892
+mean	mean	1
+root mean squared error	mode	0.07997418
+divided	divided	1
+range	range	1
+2	1	0
+observations	[timeout]	-0.119301
+mean	mean	1
+standard error	[timeout]	-0.00784567
+standard deviation	standard deviation	1
+count	sum	-0.01366364
+dividing	dividing	1
+individual|single	different	0.1370365
+mean	mean	1
+observations	[timeout]	-0.119301
+mean|sample mean|average	variance	0.1582229
+root mean squared error	[timeout]	-0.03382654
+standard deviation	standard deviation	1
+observations	observations	1
+mean	mean	1
+equal	[timeout]	-0.001709098
+observations	observations	1
+sample	observation	0.07037972
+population	observation	-0.0004977721
+variance	statistic	0.2755168
+population	population	1
+sum	sum	1
+observations	observations	1
+mean	mean	1
+equal	equal	1
+observations	observations	1
+population	population	1
+participated	participate	0.2836498
+count	count	1
+root mean squared error	standard error	0.3351437
+population	population	1
+range|set	sample	0.1380402
+range|set	range	0.7634179
+equal	equal	1
+observations	observations	1
+participated	participate	0.2836498
+sample	population	0.1951308
+observations	observations	1
+mean|sample mean|average	mean	0.6531504
+mean	squared standard root error	0.1188113
+sample	sample	1
+root mean squared error	[timeout]	-0.03382654
+mean|sample mean|average	[timeout]	-0.007223518
+mean	mean	1
+observations	observations	1
+equal	equal	1
+observations	observations	1
+represents|describes|shows	measures	0.0535334
+normal	error	0.1889067
+multiple|many	normal	0.03408523
+divided	dividing	0.2106339
+range|set	population	-0.02867169
+mean	[timeout]	-0.03138116
+mean	mean	1
+range|set	range	0.7634179
+statistic	[timeout]	-0.02000074
+measure|represent|describe	[timeout]	-0.04530828
+population	population	1
+root mean squared error	[timeout]	-0.03382654
+dividing	[timeout]	-0.06684689
+normal	sample	-0.0742522
+normal	normal	1
+standard deviation	variance	0.04290871
+participated	[timeout]	-0.05299957
+2	[timeout]	0
+statistic	[timeout]	-0.02000074
+root mean squared error	standard error normal distribution	0.2744102
+population	population	1
+probability	sample	0.2392952
+sample mean|mean	mean	0.8250651
+variability	variance	0.09235277
+probability|likelihood|chance	[timeout]	0.04769977
+participated	participated	1
+99.7	normal	0
+range	range	1
+range|set	population	-0.02867169
+mean	mean	1
+mean|sample mean|average	mean	0.6531504

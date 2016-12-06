@@ -1,0 +1,16 @@
+﻿
+Comparing two columns for entries one-to-one:
+LSA ds1462_tx_All_Data_61_2016_0121_231536.txt,simfunc=“cosine”,returnvals = “col”,header1=“CF (Correct Answer)”,header2=“Input”,outFile="phil col_comp.log"
+	match student and ideal answers
+
+Comparing values in single columns with lag: (specify header2 same as header1 is optinal)
+LSA ds1462_tx_All_Data_61_2016_0121_231536.txt, simfunc=“cosine”,returnvals = “col”,header1=“KC (Cluster)”,outFile="phil test.log",lag=1
+	lagged values are model features if needed
+ 
+Comparing two columns as unique matrix:
+LSA ds1462_tx_All_Data_61_2016_0121_231536.txt,simfunc=“cosine”,returnvals = “uniqmat”,header1=“KC (Cluster)”,header2=“Input”,outFile="phil uniqmat_double.log"
+	To examine the knowledge relations by crossing two columns uniqe inputs
+
+Comparing single column as unique matrix (comparing each with others):
+LSA ds1462_tx_All_Data_61_2016_0121_231536.txt,simfunc=“cosine”,returnvals = “uniqmat”,header1=“CF (Correct Answer)”,outFile="phil uniqmat_single.log"
+	To examine knowledge relations within a single column
