@@ -16,7 +16,6 @@
     <learningCurve>Knowledge Components</learningCurve>
     <model>Predicted Error Rate (principles_of_computing_1_10)</model>
     <stdDevCutOff>0</stdDevCutOff>
-    <opportunityCutOffMin>0</opportunityCutOffMin>
     <opportunityCutOffMax>INF</opportunityCutOffMax>
     <learningCurveMetric>Error Rate</learningCurveMetric>
     <errorBar>No Error Bars</errorBar>

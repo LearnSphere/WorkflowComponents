@@ -88,8 +88,10 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         // Since we want to be able to use INF for max cutoff, then we
         // define it as xs:double in the XSD even though we convert it to
         // an integer value here.
-        Double minCutoff = (this.getOptionAsDouble("opportunityCutOffMin"));
-        visualizationOptions.setOpportunityCutOffMin(minCutoff.intValue());
+	//
+	// 12-05-2016: For now, remove minCutoff option until correctly implemented.
+	//        Double minCutoff = (this.getOptionAsDouble("opportunityCutOffMin"));
+	//        visualizationOptions.setOpportunityCutOffMin(minCutoff.intValue());
 
         Double maxCutoff = (this.getOptionAsDouble("opportunityCutOffMax"));
         visualizationOptions.setOpportunityCutOffMax(maxCutoff.intValue());
