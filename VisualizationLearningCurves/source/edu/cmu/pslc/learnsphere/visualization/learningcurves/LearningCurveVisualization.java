@@ -163,6 +163,7 @@ public class LearningCurveVisualization {
             // Read and process the data
             Hashtable<String, Integer> validRowCounts = new Hashtable<String, Integer>();
             Hashtable<String, Integer> hsCounts = new Hashtable<String, Integer>();
+	    Hashtable<String, Integer> lsCounts = new Hashtable<String, Integer>();
 
             String kcModel = "KC (" + lcOptions.getPrimaryModelName() + ")";
             String opportunityName = "Opportunity (" + lcOptions.getPrimaryModelName() + ")";
@@ -174,12 +175,16 @@ public class LearningCurveVisualization {
             HashSet<String> criteriaSet = new HashSet<String>();
 
             String highStakesName = lcOptions.getHighStakesCFName();
-            if (!highStakesName.startsWith("CF (")) {
-                highStakesName = "CF (" + highStakesName + ")";
-            }
-            if (headingMap.get(highStakesName) == null) {
-                logger.debug("Failed to find CF column for: " + highStakesName);
-            }
+	    if (highStakesName != null) {
+		if (!highStakesName.startsWith("CF (")) {
+		    highStakesName = "CF (" + highStakesName + ")";
+		}
+		if (headingMap.get(highStakesName) == null) {
+		    logger.debug("Failed to find CF column for: " + highStakesName);
+		}
+	    } else {
+		logger.debug("highStakesErrorRate not requested.");
+	    }
 
             Integer lineIndex = -1;
             while ((line = br.readLine())
@@ -256,6 +261,10 @@ public class LearningCurveVisualization {
                         maxOpportunities.put(hsCriteria, new Integer(0));
                     }
                     
+                    if (!lsCounts.containsKey(criteria)) {
+                        lsCounts.put(criteria, new Integer(0));
+                    }
+
                     if (!hsCounts.containsKey(hsCriteria)) {
                         hsCounts.put(hsCriteria, new Integer(0));
                     }
@@ -370,18 +379,26 @@ public class LearningCurveVisualization {
                     criteriaSet.add(criteria);
                     criteriaSet.add(hsCriteria);
 
+		    Boolean highStakesPresent = false;
+		    Integer headingMapIndex = null;
+		    if (highStakesName != null) {
+			headingMapIndex = headingMap.get(highStakesName);
+			if ((headingMapIndex != null) && (fields.length > headingMapIndex)) {
+			    highStakesPresent = true;
+			}
+		    }
+
                     // Handle required fields
                     avgAssistanceScore.put(criteria,
                         (avgAssistanceScore.get(criteria) + incorrects + hints));
-                    avgErrorRate.put(criteria,
-                        (avgErrorRate.get(criteria) + errorRate));
                     avgIncorrects.put(criteria,
                         (avgIncorrects.get(criteria) + incorrects));
                     avgHints.put(criteria,
                         (avgHints.get(criteria) + hints));
-                    avgPredictedErrorRate.put(criteria,
-                        (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
-
+		    if (predictedErrorRate != null) {
+			avgPredictedErrorRate.put(criteria,
+						  (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
+		    }
 
                     // Handle missing values which are allowed for some fields
                     if (stepDuration != null) {
@@ -431,18 +448,25 @@ public class LearningCurveVisualization {
                     }
 
                     // If present, note highStakes errorRate.
-                    Integer headingMapIndex = headingMap.get(highStakesName);
-                    if (headingMapIndex != null) {
-                        if ((fields.length > headingMapIndex)
-                            && (!fields[headingMapIndex].isEmpty())) {
+		    if (highStakesPresent) {
+			// Ignore row (w.r.t. errorRate) if highStakes is empty
+			if (!fields[headingMapIndex].isEmpty()) {
                             Boolean highStakes = Boolean.parseBoolean(fields[headingMapIndex]);
                             if (highStakes) {
                                 hsErrorRate.put(hsCriteria,
                                                 (hsErrorRate.get(hsCriteria) + errorRate));
                                 hsCounts.put(hsCriteria, hsCounts.get(hsCriteria) + 1);
-                            }
+                            } else {
+				avgErrorRate.put(criteria,
+						 avgErrorRate.get(criteria) + errorRate);
+				lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+			    }
                         }
-                    }
+                    } else {
+			// If no 'highStakes' CF, revert to normal errorRate behavior.
+			avgErrorRate.put(criteria, avgErrorRate.get(criteria) + errorRate);
+			lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+		    }
 
                 } // end of skillNamesSplit loop
 
@@ -495,9 +519,11 @@ public class LearningCurveVisualization {
                     avgAssistanceScore.get(criteria) / new Double(validRowCount);
                 avgAssistanceScore.put(criteria, avgAssistanceScoreResult);
 
-                Double avgErrorRateResult =
-                    avgErrorRate.get(criteria) / new Double(validRowCount);
-                avgErrorRate.put(criteria, avgErrorRateResult);
+		if ((avgErrorRate.get(criteria) != null) && (lsCounts.get(criteria) > 0)) {
+		    Double avgErrorRateResult =
+			avgErrorRate.get(criteria) / new Double(lsCounts.get(criteria));
+		    avgErrorRate.put(criteria, avgErrorRateResult);
+		}
 
                 Double avgIncorrectsResult =
                     avgIncorrects.get(criteria) / new Double(validRowCount);
