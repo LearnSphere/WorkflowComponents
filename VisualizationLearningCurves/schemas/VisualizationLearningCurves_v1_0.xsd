@@ -99,7 +99,7 @@
         default="No Error Bars" />
       <xs:element type="learningCurveMetricType" name="learningCurveMetric" id="Learning_Curve_Metric"
         default="Error Rate" />
-      <xs:element type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
+      <xs:element minOccurs="0" type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
     </xs:all>
   </xs:complexType>
 
