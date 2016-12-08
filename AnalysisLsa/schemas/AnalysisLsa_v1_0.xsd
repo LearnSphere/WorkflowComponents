@@ -22,7 +22,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -51,7 +51,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="text" />
+      <xs:element ref="transaction" />
     </xs:choice>
   </xs:complexType>
 
