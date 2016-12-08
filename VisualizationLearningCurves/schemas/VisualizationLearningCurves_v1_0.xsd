@@ -93,15 +93,13 @@
         default="Knowledge Components" />
       <xs:element type="xs:double" name="stdDevCutOff" id="Standard_Deviation_Cutoff"
         default="0" />
-      <xs:element type="xs:double" name="opportunityCutOffMin" id="Min_Opportunities"
-        default="0" />
       <xs:element type="xs:double" name="opportunityCutOffMax" id="Max_Opportunities"
         default="INF" />
       <xs:element type="errorBarType" name="errorBar" id="Error_Bar_Type"
         default="No Error Bars" />
       <xs:element type="learningCurveMetricType" name="learningCurveMetric" id="Learning_Curve_Metric"
         default="Error Rate" />
-      <xs:element type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
+      <xs:element minOccurs="0" type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
     </xs:all>
   </xs:complexType>
 
