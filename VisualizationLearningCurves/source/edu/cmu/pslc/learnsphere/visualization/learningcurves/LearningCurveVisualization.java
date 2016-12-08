@@ -117,6 +117,7 @@ public class LearningCurveVisualization {
         Map<String, String> opportunities = new Hashtable<String, String>();
         Map<String, Double> avgAssistanceScore = new Hashtable<String, Double>();
         Map<String, Double> avgErrorRate = new Hashtable<String, Double>();
+        Map<String, Double> hsErrorRate = new Hashtable<String, Double>();        
         Map<String, Double> avgIncorrects = new Hashtable<String, Double>();
         Map<String, Double> avgHints = new Hashtable<String, Double>();
         Map<String, Double> avgStepDuration = new Hashtable<String, Double>();
@@ -131,6 +132,7 @@ public class LearningCurveVisualization {
         Map<String, HashSet<String>> countSkills = new Hashtable<String, HashSet<String>>();
         Map<String, HashSet<String>> countStudents = new Hashtable<String, HashSet<String>>();
         Map<String, HashSet<String>> countProblems = new Hashtable<String, HashSet<String>>();
+        Map<String, Integer> maxOpportunities = new Hashtable<String, Integer>();
 
         Map<String, String> aggregateBy = new Hashtable<String, String>();
 
@@ -160,13 +162,29 @@ public class LearningCurveVisualization {
 
             // Read and process the data
             Hashtable<String, Integer> validRowCounts = new Hashtable<String, Integer>();
+            Hashtable<String, Integer> hsCounts = new Hashtable<String, Integer>();
+	    Hashtable<String, Integer> lsCounts = new Hashtable<String, Integer>();
 
             String kcModel = "KC (" + lcOptions.getPrimaryModelName() + ")";
             String opportunityName = "Opportunity (" + lcOptions.getPrimaryModelName() + ")";
             String predictedErrorRateName = "Predicted Error Rate (" + lcOptions.getPrimaryModelName() + ")";
+            Integer maxOpportunityCutoff = lcOptions.getOpportunityCutOffMax();
+
             Vector<String> skillsSelected = new Vector<String>();
             Vector<String> studentsSelected = new Vector<String>();
             HashSet<String> criteriaSet = new HashSet<String>();
+
+            String highStakesName = lcOptions.getHighStakesCFName();
+	    if (highStakesName != null) {
+		if (!highStakesName.startsWith("CF (")) {
+		    highStakesName = "CF (" + highStakesName + ")";
+		}
+		if (headingMap.get(highStakesName) == null) {
+		    logger.debug("Failed to find CF column for: " + highStakesName);
+		}
+	    } else {
+		logger.debug("highStakesErrorRate not requested.");
+	    }
 
             Integer lineIndex = -1;
             while ((line = br.readLine())
@@ -174,27 +192,27 @@ public class LearningCurveVisualization {
                 lineIndex++;
                 // Grab next line
                 String fields[] = line.split(STEP_EXPORT_SEPARATOR);
+
                 // Student-Step values
-                logger.debug("Reading First Attempt value.");
                 String firstAttempt = fields[headingMap.get("First Attempt")];
 
                 // Because someone made the wise decision to roll multiple skills/error rates/opportunitiesSplit
                 // into single columns, we now have to unroll them to do something simple, like calculate averages.
                 // Without a solid set of requirements and good design, there is no such thing as the right way.
-                logger.info("Reading Skill Name value for model = " + kcModel);
-                String multipleSkillsPossible = fields[headingMap.get(kcModel)];
-                String[] skillNamesSplit = multipleSkillsPossible.split("~~", NO_PATTERN_LIMIT);
+                int mapIndex = 0;
 
-                logger.debug("Reading Opportunity value.");
-                String multipleopportunitiesSplitPossible = fields[headingMap.get(opportunityName)];
-                String[] opportunitiesSplit = multipleopportunitiesSplitPossible.split("~~", NO_PATTERN_LIMIT);
-                logger.debug("Reading Anon Student Id value.");
+                mapIndex = headingMap.get(kcModel);
+                String[] skillNamesSplit = new String[0];
+                String[] opportunitiesSplit = new String[0];
+                if (fields.length > mapIndex) {
+                    skillNamesSplit = fields[mapIndex].split("~~", NO_PATTERN_LIMIT);
+                    opportunitiesSplit =
+                        fields[headingMap.get(opportunityName)].split("~~", NO_PATTERN_LIMIT);
+                }
+
                 String anonStudentId = fields[headingMap.get("Anon Student Id")];
-                logger.debug("Reading Step Name value.");
                 String stepName = fields[headingMap.get("Step Name")];
-                logger.debug("Reading Problem Name value.");
                 String problemName = fields[headingMap.get("Problem Name")];
-                logger.debug("Reading Sample value.");
                 String sampleName = fields[headingMap.get("Sample")];
                 Double incorrects = null;
                 Double hints = null;
@@ -202,22 +220,30 @@ public class LearningCurveVisualization {
                 Double errorStepDuration = null;
                 Double correctStepDuration = null;
 
-                logger.debug("Reading Duration and (In)Correct values.");
+                String criteria = null;
+                
                 for (int skillCounter = 0; skillCounter < skillNamesSplit.length; skillCounter++) {
 
-                    String criteria = null;
+                    String hsCriteria = null;
+                    criteria = null;
                     // Which criteria to use for aggregation, i.e. the "View By":
                     // 2) by Opportunity, 2) by Step, or 3) by Student
                     if (learningCurveType != null
                             && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
+                        // For 'By Student', across all students
                         criteria = sampleName + "_" + opportunitiesSplit[skillCounter];
                         aggregateBy.put(criteria, lcOptions.getPrimaryModelName());
+                        hsCriteria = lcOptions.getPrimaryModelName();
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES)) {
+                        // For 'By KC'
                         criteria = sampleName + "_" + skillNamesSplit[skillCounter] + "_" + opportunitiesSplit[skillCounter];
                         aggregateBy.put(criteria, skillNamesSplit[skillCounter]);
+                        hsCriteria = skillNamesSplit[skillCounter];
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENTS_OPPORTUNITIES)) {
+                        // For individual student...
                         criteria = sampleName + "_" + anonStudentId + "_" + opportunitiesSplit[skillCounter];
                         aggregateBy.put(criteria, anonStudentId);
+                        hsCriteria = anonStudentId;
                     }
 
                     // The predicted error rate is set later to prevent exceptions during type casting
@@ -230,6 +256,22 @@ public class LearningCurveVisualization {
                     // Create new values for the criteria if they do not exist
                     if (!validRowCounts.containsKey(criteria))
                         validRowCounts.put(criteria, new Integer(0));
+
+                    if (!maxOpportunities.containsKey(hsCriteria)) {
+                        maxOpportunities.put(hsCriteria, new Integer(0));
+                    }
+                    
+                    if (!lsCounts.containsKey(criteria)) {
+                        lsCounts.put(criteria, new Integer(0));
+                    }
+
+                    if (!hsCounts.containsKey(hsCriteria)) {
+                        hsCounts.put(hsCriteria, new Integer(0));
+                    }
+                    
+                    if (!hsErrorRate.containsKey(hsCriteria)) {
+                        hsErrorRate.put(hsCriteria, new Double(0));
+                    }
 
                     if (!avgAssistanceScore.containsKey(criteria))
                         avgAssistanceScore.put(criteria, new Double(0));
@@ -317,8 +359,13 @@ public class LearningCurveVisualization {
                         continue;
                     }
 
-                    // Values derived from the step export
+                    Integer opp = Integer.parseInt(opportunity);
+
+                    // Note maxOpportunity cut-off...
+                    if (opp > maxOpportunityCutoff) { continue; }
+
                     Double errorRate = null;
+                    // Values derived from the step export
                     if (incorrects + hints > 0) {
                         errorRate = 1.0;
                     } else {
@@ -330,19 +377,28 @@ public class LearningCurveVisualization {
 
                     // Criteria for groupings
                     criteriaSet.add(criteria);
+                    criteriaSet.add(hsCriteria);
+
+		    Boolean highStakesPresent = false;
+		    Integer headingMapIndex = null;
+		    if (highStakesName != null) {
+			headingMapIndex = headingMap.get(highStakesName);
+			if ((headingMapIndex != null) && (fields.length > headingMapIndex)) {
+			    highStakesPresent = true;
+			}
+		    }
 
                     // Handle required fields
                     avgAssistanceScore.put(criteria,
                         (avgAssistanceScore.get(criteria) + incorrects + hints));
-                    avgErrorRate.put(criteria,
-                        (avgErrorRate.get(criteria) + errorRate));
                     avgIncorrects.put(criteria,
                         (avgIncorrects.get(criteria) + incorrects));
                     avgHints.put(criteria,
                         (avgHints.get(criteria) + hints));
-                    avgPredictedErrorRate.put(criteria,
-                        (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
-
+		    if (predictedErrorRate != null) {
+			avgPredictedErrorRate.put(criteria,
+						  (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
+		    }
 
                     // Handle missing values which are allowed for some fields
                     if (stepDuration != null) {
@@ -366,7 +422,7 @@ public class LearningCurveVisualization {
 
 
                     // Observations
-                        // "Your most unhappy customers are your greatest source of learning." --Bill Gates
+                    // "Your most unhappy customers are your greatest source of learning." --Bill Gates
                     countObservations.put(criteria,
                         (countObservations.get(criteria) + 1.0f));
                     // Counts
@@ -386,14 +442,65 @@ public class LearningCurveVisualization {
                     problemSet.add(problemName);
                     countProblems.put(criteria, problemSet);
 
-                }
-            }
+                    // Keep track of max opportunity for this curve.
+                    if (opp > maxOpportunities.get(hsCriteria)) {
+                        maxOpportunities.put(hsCriteria, opp);
+                    }
+
+                    // If present, note highStakes errorRate.
+		    if (highStakesPresent) {
+			// Ignore row (w.r.t. errorRate) if highStakes is empty
+			if (!fields[headingMapIndex].isEmpty()) {
+                            Boolean highStakes = Boolean.parseBoolean(fields[headingMapIndex]);
+                            if (highStakes) {
+                                hsErrorRate.put(hsCriteria,
+                                                (hsErrorRate.get(hsCriteria) + errorRate));
+                                hsCounts.put(hsCriteria, hsCounts.get(hsCriteria) + 1);
+                            } else {
+				avgErrorRate.put(criteria,
+						 avgErrorRate.get(criteria) + errorRate);
+				lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+			    }
+                        }
+                    } else {
+			// If no 'highStakes' CF, revert to normal errorRate behavior.
+			avgErrorRate.put(criteria, avgErrorRate.get(criteria) + errorRate);
+			lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+		    }
+
+                } // end of skillNamesSplit loop
+
+            }   // end of while loop
 
             // Now, run the averages with the data we collected.
             logger.debug("Result headers: " + Arrays.toString(resultHeaders));
 
-
             for (String criteria : criteriaSet) {
+
+                // If not null, this is the 'highStakesErrorRate' criteria.
+                if (hsCounts.get(criteria) != null) {
+                    logger.debug("*** getting hsErrorRate for criteria = " + criteria);
+                    Integer hsCount = hsCounts.get(criteria);
+
+                    if ((hsErrorRate.get(criteria) != null) && (hsCount > 0)) {
+                        Double hsErrorRateResult = hsErrorRate.get(criteria) / new Double(hsCount);
+
+                        LearningCurvePoint lcp = new LearningCurvePoint();
+                        lcp.setOpportunityNumber(maxOpportunities.get(criteria));
+
+                        lcp.setHighStakesErrorRate(hsErrorRateResult);
+
+                        Vector<LearningCurvePoint> lcDataList = lcData.get(criteria);
+                        if (lcDataList == null) {
+                            lcDataList = new Vector<LearningCurvePoint>();
+                        }
+                        lcDataList.add(lcp);
+                        lcData.put(criteria, lcDataList);
+                    }
+
+                    continue;
+                }
+
                 Integer validRowCount = validRowCounts.get(criteria);
 
                 Double avgStepDurationResult =
@@ -412,9 +519,11 @@ public class LearningCurveVisualization {
                     avgAssistanceScore.get(criteria) / new Double(validRowCount);
                 avgAssistanceScore.put(criteria, avgAssistanceScoreResult);
 
-                Double avgErrorRateResult =
-                    avgErrorRate.get(criteria) / new Double(validRowCount);
-                avgErrorRate.put(criteria, avgErrorRateResult);
+		if ((avgErrorRate.get(criteria) != null) && (lsCounts.get(criteria) > 0)) {
+		    Double avgErrorRateResult =
+			avgErrorRate.get(criteria) / new Double(lsCounts.get(criteria));
+		    avgErrorRate.put(criteria, avgErrorRateResult);
+		}
 
                 Double avgIncorrectsResult =
                     avgIncorrects.get(criteria) / new Double(validRowCount);
@@ -538,7 +647,6 @@ public class LearningCurveVisualization {
                 logger.fatal("Result: " + Arrays.toString(result));
             }
 
-
             if (br != null) {
                 br.close();
             }
@@ -595,53 +703,4 @@ public class LearningCurveVisualization {
 
         return imageFiles;
     }
-
-    private final static String AFM_SEPARATOR = "[\\s\\t:,]+";
-    private final static Vector<String> afmValueLabels = new Vector<String>();
-    private Hashtable<String, Double> afmValues = new Hashtable<String, Double>();
-    public Vector<Object> readAfmData(String filePath) {
-        afmValueLabels.add("LL");
-        afmValueLabels.add("AIC");
-        afmValueLabels.add("BIC");
-        afmValueLabels.add("RMSE");
-
-        BufferedReader br = null;
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(new File(filePath));
-            br = new BufferedReader(
-                new InputStreamReader(inputStream, UTF8), IS_READER_BUFFER);
-            String line = null;
-            Integer rowCount = 0;
-            while ((line = br.readLine()) != null) {
-                // Read line and split by AFM_SEPARATOR pattern
-                String[] fields = line.split(AFM_SEPARATOR, NO_PATTERN_LIMIT);
-                logger.debug("Fields: " + Arrays.toString(fields));
-
-                if (rowCount == 0) {
-                    for (int i = 0; i < fields.length; i += 2) {
-                        Double d = Double.parseDouble(fields[i+1]);
-                        afmValues.put(fields[i], d);
-                    }
-                } else {
-
-                }
-
-
-
-                rowCount++;
-            }
-
-            if (br != null) {
-                br.close();
-            }
-        } catch (IOException e) {
-            logger.error("Failed to read AFM data: " + filePath);
-        }
-        return null;
-    }
-
-
-
-
 }

@@ -5,13 +5,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
-
-
-
-
-
-
-
 /* if we want access to dao and helpers, simply enable the hibernate/spring class paths in the build.xml */
 /*
 import edu.cmu.pslc.datashop.dao.DaoFactory;
@@ -19,7 +12,7 @@ import edu.cmu.pslc.datashop.dao.UserDao;
 import edu.cmu.pslc.datashop.item.UserItem;
 import edu.cmu.pslc.datashop.servlet.HelperFactory;
 */
-/* import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper; */
+
 import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
@@ -43,7 +36,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
     public static void main(String[] args) {
         VisualizationLearningCurvesMain tool = new VisualizationLearningCurvesMain();
         tool.startComponent(args);
-
     }
 
     /**
@@ -85,11 +77,9 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         visualizationOptions = new LearningCurveVisualizationOptions();
 
         if (modelOption != null) {
-
-            modelName = modelOption.replaceAll("(?i)\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
-
+            modelName =
+                modelOption.replaceAll("(?i)\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
             visualizationOptions.setPrimaryModelName(modelName);
-
         }
 
 
@@ -98,8 +88,10 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         // Since we want to be able to use INF for max cutoff, then we
         // define it as xs:double in the XSD even though we convert it to
         // an integer value here.
-        Double minCutoff = (this.getOptionAsDouble("opportunityCutOffMin"));
-        visualizationOptions.setOpportunityCutOffMin(minCutoff.intValue());
+	//
+	// 12-05-2016: For now, remove minCutoff option until correctly implemented.
+	//        Double minCutoff = (this.getOptionAsDouble("opportunityCutOffMin"));
+	//        visualizationOptions.setOpportunityCutOffMin(minCutoff.intValue());
 
         Double maxCutoff = (this.getOptionAsDouble("opportunityCutOffMax"));
         visualizationOptions.setOpportunityCutOffMax(maxCutoff.intValue());
@@ -134,7 +126,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             visualizationOptions.setErrorBarType(ErrorBarType.ERROR_BAR_TYPE_NONE);
         }
 
-
         logger.debug("Model name: " + modelName);
 
         String learningCurveMetricAttribute = this.getOptionAsString("learningCurveMetric");
@@ -162,6 +153,9 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             visualizationOptions.setSelectedMetric(LearningCurveMetric.STEP_DURATION);
         }
 
+        String highStakesCFName = this.getOptionAsString("highStakesCF");
+        visualizationOptions.setHighStakesCFName(highStakesCFName);
+        
         LearningCurveVisualization lcPrototype = new LearningCurveVisualization();
         logger.debug("Parsing visualization options for component "
                 + componentId + ".");

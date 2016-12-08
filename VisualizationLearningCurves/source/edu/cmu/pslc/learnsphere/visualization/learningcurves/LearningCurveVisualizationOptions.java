@@ -191,6 +191,9 @@ public class LearningCurveVisualizationOptions {
     /** Type of error bar being displayed. */
     private ErrorBarType errorBarType = ErrorBarType.ERROR_BAR_TYPE_STANDARD_ERROR;
 
+    /** Name of the CustomField that hold highStakes info. */
+    private String highStakesCFName;
+
     public LearningCurveVisualizationOptions() {
 
     }
@@ -415,5 +418,15 @@ public class LearningCurveVisualizationOptions {
         this.learningCurveType = learningCurveType;
     }
 
+    /**
+     * Get the name of the CustomField that defines highStakes items.
+     * @return CF name
+     */
+    public String getHighStakesCFName() { return highStakesCFName; }
 
+    /**
+     * Set the name of the CustomField that defines highStakes items.
+     * @param cfName the name of the CF
+     */
+    public void setHighStakesCFName(String cfName) { this.highStakesCFName = cfName; }
 }
