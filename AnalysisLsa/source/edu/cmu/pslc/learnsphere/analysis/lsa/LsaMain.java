@@ -140,7 +140,7 @@ public class LsaMain extends AbstractComponent {
                 indexCol2 = indexCol1;
             }
 
-            sw.write(col1 + "\t" + col2 + "\t" + "Similarity value");
+            sw.write(line1+"\tCF(Similarity value of "+col1+" and "+col2+")");
             sw.newLine();
             // Console.WriteLine(col1 + "\t" + col2 + "\t" +
             // "Similarity value");
@@ -161,7 +161,7 @@ public class LsaMain extends AbstractComponent {
                     String term1 = st[indexCol1].trim();
                     String term2 = st[indexCol2].trim();
                     if (term1.equals("") || term2.equals("")) {
-                        sw.write(term1 + "\t" + term2 + "\t" + "NA");
+                        sw.write(line + "\t" + "NA");
                         sw.newLine();
                     } else {
                         float x;
@@ -172,8 +172,7 @@ public class LsaMain extends AbstractComponent {
                             return;
                         }
 
-                        sw.write(term1 + "\t" + term2 + "\t"
-                                + String.valueOf(x));
+                        sw.write(line+ "\t"+ String.valueOf(x));
                         sw.newLine();
                     }
                     line = sr.readLine();
@@ -233,14 +232,14 @@ public class LsaMain extends AbstractComponent {
                     if (!student.equals(lines3.get(i))) {
                         student = lines3.get(i);
                         l = 1;
-                        sw.write("\t\t" + "NA");
+                        sw.write(line+"\t" + "NA");
                         sw.newLine();
                         continue;
                     }
 
                     if (l < lac) {
                         l++;
-                        sw.write("\t\t" + "NA");
+                        sw.write(line+"\t" + "NA");
                         sw.newLine();
                         continue;
                     }
@@ -248,7 +247,7 @@ public class LsaMain extends AbstractComponent {
                     String v = lines2.get(i).trim();
                     String u = lines1.get(i - lac).trim();
                     if (i < lac || u.equals("") || v.equals("")) {
-                        sw.write(u + "\t" + v + "\t" + "NA");
+                        sw.write(line + "\t" + "NA");
                         sw.newLine();
                     } else {
                         float x = 0;
@@ -258,7 +257,7 @@ public class LsaMain extends AbstractComponent {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
                         }
-                        sw.write(u + "\t" + v + "\t" + String.valueOf(x));
+                        sw.write(line + "\t" + String.valueOf(x));
                         sw.newLine();
                     }
                 }
