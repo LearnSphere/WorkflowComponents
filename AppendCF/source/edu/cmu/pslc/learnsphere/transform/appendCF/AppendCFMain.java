@@ -132,7 +132,6 @@ public class AppendCFMain extends AbstractComponent {
         
         File transactionFile = isTransactionFile(file1Type)
                         ? file1 : file2;
-        logger.debug("transactionFile:" + transactionFile);
         
         // Options
         String cfColumnName = this.getOptionAsString("cfColumnName");
@@ -376,9 +375,12 @@ public class AppendCFMain extends AbstractComponent {
                             }
                             lineCnt++;
                             while (line != null) {
+                                line = line.trim();
                                 String row[] = line.split(DEFAULT_DELIMITER, -1);
                                 String studentStepRow = line.replaceAll("[\r\n]", "");
-                              //when a row is missing last column(s), fill with tab
+                                //when a row is missing last column(s), fill with tab
+                                logger.debug("row.length: " + row.length);
+                                logger.debug("studentStepFileColLength: " + studentStepFileColLength);
                                 if (row.length < studentStepFileColLength) {
                                         for (int i = 0; i < (studentStepFileColLength - row.length); i++ ) {
                                                 studentStepRow += "\t";
