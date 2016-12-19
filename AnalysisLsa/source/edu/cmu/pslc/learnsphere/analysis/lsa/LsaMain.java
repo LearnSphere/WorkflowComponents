@@ -35,7 +35,7 @@ public class LsaMain extends AbstractComponent {
         File inputFile = null;
         String col1 = null;
         String col2 = null;
-        File corpus = null;
+        //File corpus = null;
         int lag = 0;
         String returnvals = null;
         String simfunc = null;
@@ -45,7 +45,7 @@ public class LsaMain extends AbstractComponent {
         returnvals = this.getOptionAsString("returnvals");
         lag = this.getOptionAsInteger("lag");
         returnvals = this.getOptionAsString("returnvals");
-        corpus = this.getAttachment(1, 0);
+        //corpus = this.getAttachment(1, 0);
         simfunc = this.getOptionAsString("simfunc");
 
         inputFile = this.getAttachment(0,  0);
