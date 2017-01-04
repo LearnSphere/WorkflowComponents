@@ -1,7 +1,4 @@
 package edu.cmu.pslc.learnsphere.analysis.lsa;
-//
-// Translated by CS2J (http://www.cs2j.com): 6/20/2016 1:15:57 PM
-//
 
 import java.io.*;
 import java.nio.ByteBuffer;
