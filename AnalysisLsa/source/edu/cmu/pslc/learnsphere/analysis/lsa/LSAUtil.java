@@ -68,6 +68,12 @@ public class LSAUtil
         float[] v2 = this.getVector(getTokens(text2,this.language));
         return (float)cosine(v1,v2);
     }
+    
+    public float getEuclidean(String text1, String text2) throws Exception {
+        float[] v1 = this.getVector(getTokens(text1,this.language));
+        float[] v2 = this.getVector(getTokens(text2,this.language));
+        return (float)euclidean(v1,v2);
+    }
 
     public float getChineseCosineByChar(String text1, String text2) throws Exception {
         float[] v1 = this.getVector(getChars(text1));
@@ -233,6 +239,14 @@ public class LSAUtil
             return 0;
 
         return prod / Math.sqrt(norm1 * norm2);
+    }
+    
+    private double euclidean(float[] a, float[] b) {
+        double diff_square_sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            diff_square_sum += (a[i] - b[i]) * (a[i] - b[i]);
+        }
+        return Math.sqrt(diff_square_sum);
     }
 
     private String[] getEnglishTokens(String text) throws Exception {
