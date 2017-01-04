@@ -55,14 +55,28 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:simpleType name="similarityAlgType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="cosine" />
+      <xs:enumeration value="Information radius" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="returnvalsType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="col" />
+      <xs:enumeration value="uniqmat" />
+    </xs:restriction>
+  </xs:simpleType>
+  
 
   <xs:complexType name="OptionsType">
     <xs:all>
     <xs:element type="FileInputHeader" name="header1" id="header1" default=".*" />
     <xs:element type="FileInputHeader" name="header2" id="header2" default=".*" />
-      <xs:element type="xs:string" name="simfunc" id="simfunc" default="cosine" />
-      <xs:element type="xs:string" name="returnvals" id="returnvals" default="col" />
-      <xs:element type="xs:integer" name="lag" id="lag" default="0" />
+    <xs:element type="similarityAlgType" name="simfunc" id="simfunc" default="cosine" />
+    <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col" />
+    <xs:element type="xs:integer" name="lag" id="lag" default="0" />
     </xs:all>
   </xs:complexType>
 
