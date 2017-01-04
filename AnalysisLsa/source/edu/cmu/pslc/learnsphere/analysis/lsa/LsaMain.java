@@ -337,7 +337,7 @@ public class LsaMain extends AbstractComponent {
                     if (simfunc.equals("cosine")) {
                         x.add(lsa.getCosine(u, v));
                     } else if(simfunc.equals("euclidean")){
-                            x = lsa.getEuclidean(u, v);
+                        x.add(lsa.getEuclidean(u, v));
                     } else {
                         this.addErrorMessage("Requested Similarity function not available");
                         return;
