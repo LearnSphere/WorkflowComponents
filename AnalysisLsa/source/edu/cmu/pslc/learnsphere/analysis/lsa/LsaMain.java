@@ -167,8 +167,10 @@ public class LsaMain extends AbstractComponent {
                         float x;
                         if (simfunc.equals("cosine")) {
                             x = lsa.getCosine(term1, term2);
-                        } else {
-                            this.addErrorMessage("Requested Similarity function not available");
+                        } else if(simfunc.equals("euclidean")){
+                            x = lsa.getEuclidean(term1, term2);
+                        }else {
+                            this.addErrorMessage("Requested Similarity function not available");  
                             return;
                         }
 
@@ -253,6 +255,8 @@ public class LsaMain extends AbstractComponent {
                         float x = 0;
                         if (simfunc.equals("cosine")) {
                             x = lsa.getCosine(u, v);
+                        } else if(simfunc.equals("euclidean")){
+                            x = lsa.getEuclidean(term1, term2);
                         } else {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
@@ -332,6 +336,8 @@ public class LsaMain extends AbstractComponent {
                     v.trim();
                     if (simfunc.equals("cosine")) {
                         x.add(lsa.getCosine(u, v));
+                    } else if(simfunc.equals("euclidean")){
+                            x = lsa.getEuclidean(term1, term2);
                     } else {
                         this.addErrorMessage("Requested Similarity function not available");
                         return;
