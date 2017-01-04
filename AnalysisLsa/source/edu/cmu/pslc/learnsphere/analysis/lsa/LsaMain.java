@@ -116,7 +116,7 @@ public class LsaMain extends AbstractComponent {
                     "Anon Student Id");
 
 
-        } catch (Exception __dummyCatchVar1) {
+        } catch (Exception e) {
             if (col1 != null)
                 indexCol1 = Arrays.asList(st1).indexOf(col1);
             else
@@ -256,7 +256,7 @@ public class LsaMain extends AbstractComponent {
                         if (simfunc.equals("cosine")) {
                             x = lsa.getCosine(u, v);
                         } else if(simfunc.equals("euclidean")){
-                            x = lsa.getEuclidean(term1, term2);
+                            x = lsa.getEuclidean(u, v);
                         } else {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
@@ -337,7 +337,7 @@ public class LsaMain extends AbstractComponent {
                     if (simfunc.equals("cosine")) {
                         x.add(lsa.getCosine(u, v));
                     } else if(simfunc.equals("euclidean")){
-                            x = lsa.getEuclidean(term1, term2);
+                            x = lsa.getEuclidean(u, v);
                     } else {
                         this.addErrorMessage("Requested Similarity function not available");
                         return;
