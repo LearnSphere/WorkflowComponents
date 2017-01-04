@@ -58,8 +58,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-    <xs:element type="FileInputHeader" name="header1" id="header1" default="Ideal Answer" />
-      <xs:element type="xs:string" name="header2" id="header2" default="student Input" />
+    <xs:element type="FileInputHeader" name="header1" id="header1" default=".*" />
+    <xs:element type="FileInputHeader" name="header2" id="header2" default=".*" />
       <xs:element type="xs:string" name="simfunc" id="simfunc" default="cosine" />
       <xs:element type="xs:string" name="returnvals" id="returnvals" default="col" />
       <xs:element type="xs:integer" name="lag" id="lag" default="0" />
