@@ -58,7 +58,8 @@ public class LsaMain extends AbstractComponent {
         }
         //loding semantic space to the program from given directory
         try {
-            lsa.loadSpace(this.getToolDir() + "/program");
+            //lsa.loadSpace(this.getToolDir() + "/program");
+        	lsa.loadSpace("/datashop/SemanticSpace");  
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -195,7 +196,8 @@ public class LsaMain extends AbstractComponent {
                     this.addErrorMessage("Anon Student Id required for this operation");
                     return;
                 }
-
+                
+                List<String> allLines = new ArrayList<String>();
                 List<String> lines1 = new ArrayList<String>();
                 List<String> lines2 = new ArrayList<String>();
                 List<String> lines3 = new ArrayList<String>();
@@ -206,6 +208,7 @@ public class LsaMain extends AbstractComponent {
                     line = line.trim();
                     if (line.equals(""))
                         continue;
+                    allLines.add(line);
 
                     String[] st = line.split("\t");
                     String term1;
@@ -234,14 +237,14 @@ public class LsaMain extends AbstractComponent {
                     if (!student.equals(lines3.get(i))) {
                         student = lines3.get(i);
                         l = 1;
-                        sw.write(line+"\t" + "NA");
+                        sw.write(allLines.get(i)+"\t" + "NA");
                         sw.newLine();
                         continue;
                     }
 
                     if (l < lac) {
                         l++;
-                        sw.write(line+"\t" + "NA");
+                        sw.write(allLines.get(i)+"\t" + "NA");
                         sw.newLine();
                         continue;
                     }
@@ -249,7 +252,7 @@ public class LsaMain extends AbstractComponent {
                     String v = lines2.get(i).trim();
                     String u = lines1.get(i - lac).trim();
                     if (i < lac || u.equals("") || v.equals("")) {
-                        sw.write(line + "\t" + "NA");
+                        sw.write(allLines.get(i) + "\t" + "NA");
                         sw.newLine();
                     } else {
                         float x = 0;
@@ -261,7 +264,7 @@ public class LsaMain extends AbstractComponent {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
                         }
-                        sw.write(line + "\t" + String.valueOf(x));
+                        sw.write(allLines.get(i) + "\t" + String.valueOf(x));
                         sw.newLine();
                     }
                 }
@@ -281,9 +284,16 @@ public class LsaMain extends AbstractComponent {
             if (indexCol2 == -1) {
                 indexCol2 = indexCol1;
             }
+            
+            //Use HashSet for unique value
 
-            HashSet<String> lin1 = new HashSet<String>();
-            HashSet<String> lin2 = new HashSet<String>();
+            //HashSet<String> lin1 = new HashSet<String>();
+            //HashSet<String> lin2 = new HashSet<String>();
+            
+            List<String> lin1 = new ArrayList<String>();
+            List<String> lin2 = new ArrayList<String>();
+
+            
             String line = sr.readLine();
             while (line != null) {
                 line = line.trim();
@@ -295,21 +305,22 @@ public class LsaMain extends AbstractComponent {
                 String term2;
                 try {
                     term1 = st[indexCol1].trim();
-                } catch (Exception __dummyCatchVar2) {
+                } catch (Exception e) {
                     term1 = "";
                 }
 
                 try {
                     term2 = st[indexCol2].trim();
-                } catch (Exception __dummyCatchVar3) {
+                } catch (Exception e) {
                     term2 = "";
                 }
+                
+                if (!term1.equals("") && !lin1.contains(term1))
+                    lin1.add(term1);
+                
+                if (!term2.equals("") && !lin2.contains(term2))
+                    lin2.add(term2);
 
-                if (!term1.trim().equals(""))
-                    lin1.add(term1.trim());
-
-                if (!term2.trim().equals(""))
-                    lin2.add(term2.trim());
                 line = sr.readLine();
             }
             if (lin1.size() < 1) {
@@ -321,11 +332,12 @@ public class LsaMain extends AbstractComponent {
                 this.addErrorMessage("No entry in given column2");
                 return;
             }
-
-            for (int i = 0; i < lin2.size(); i++) {
-                sw.write("\tC2T_" + (i + 1));
+            
+            for (String v : lin2) {
+                sw.write(v +"\t");
             }
             sw.newLine();
+
             HashMap<Integer, List<Float>> matrix = new HashMap<Integer, List<Float>>();
             int h = 0;
             for (String u : lin1) {
@@ -347,25 +359,12 @@ public class LsaMain extends AbstractComponent {
                 h++;
             }
             for (int i = 0; i < lin1.size(); i++) {
-                sw.write("C1T_" + (i + 1) + "");
+                sw.write(lin1.get(i)+"\t");
                 for (int j = 0; j < lin2.size(); j++) {
-                    sw.write("\t" + matrix.get(i).get(j));
+                    sw.write( matrix.get(i).get(j)+"\t");
                 }
                 sw.newLine();
             }
-            sw.newLine();
-            int c = 0;
-            for (String u : lin1) {
-                sw.write("C1T_" + (c + 1) + "\t" + u + "\n");
-                c++;
-            }
-            sw.newLine();
-            c = 0;
-            for (String v : lin2) {
-                sw.write("C2T_" + (c + 1) + "\t" + v + "\n");
-                c++;
-            }
-            sw.newLine();
             break;
         default:
             this.addErrorMessage("Invalid returnvals type");
