@@ -58,7 +58,7 @@
   <xs:simpleType name="similarityAlgType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="cosine" />
-      <xs:enumeration value="Information radius" />
+      <xs:enumeration value="euclidean" />
     </xs:restriction>
   </xs:simpleType>
   
