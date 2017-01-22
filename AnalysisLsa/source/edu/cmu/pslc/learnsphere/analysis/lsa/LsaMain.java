@@ -35,7 +35,7 @@ public class LsaMain extends AbstractComponent {
         File inputFile = null;
         String col1 = null;
         String col2 = null;
-        //File corpus = null;
+        String corpus = null;
         int lag = 0;
         String returnvals = null;
         String simfunc = null;
@@ -45,7 +45,7 @@ public class LsaMain extends AbstractComponent {
         returnvals = this.getOptionAsString("returnvals");
         lag = this.getOptionAsInteger("lag");
         returnvals = this.getOptionAsString("returnvals");
-        //corpus = this.getAttachment(1, 0);
+        corpus = this.getOptionAsString("corpus");
         simfunc = this.getOptionAsString("simfunc");
 
         inputFile = this.getAttachment(0,  0);
@@ -59,7 +59,7 @@ public class LsaMain extends AbstractComponent {
         //loding semantic space to the program from given directory
         try {
             //lsa.loadSpace(this.getToolDir() + "/program");
-        	lsa.loadSpace("/datashop/SemanticSpace");  
+        	lsa.loadSpace("/datashop/SemanticSpace"+corpus);  
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
