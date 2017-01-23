@@ -67,6 +67,7 @@
       <xs:enumeration value="TASA1" />
       <xs:enumeration value="TASA7" />
       <xs:enumeration value="Wiki1" />
+      <xs:enumeration value="Wiki4" />
     </xs:restriction>
   </xs:simpleType>
   
@@ -80,12 +81,12 @@
 
   <xs:complexType name="OptionsType">
     <xs:all>
-    <xs:element type="FileInputHeader" name="Column1" id="header1" default=".*" />
-    <xs:element type="FileInputHeader" name="Column2" id="header2" default=".*" />
+    <xs:element type="FileInputHeader" name="header1" id="header1" default=".*" />
+    <xs:element type="FileInputHeader" name="header2" id="header2" default=".*" />
     <xs:element type="similarityAlgType" name="simfunc" id="simfunc" default="cosine" />
     <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col" />
-    <xs:element type="semanticSpaceType" name="Semantic Space" id="corpus" default="TASA1" />
-    <xs:element type="xs:integer" name="Lagged Comparison (on column 2)" id="lag" default="0" />
+    <xs:element type="semanticSpaceType" name="corpus" id="corpus" default="TASA1" />
+    <xs:element type="xs:integer" name="lag" id="lag" default="0" />
     </xs:all>
   </xs:complexType>
 

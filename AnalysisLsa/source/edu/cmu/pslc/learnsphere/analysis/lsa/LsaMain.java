@@ -59,7 +59,7 @@ public class LsaMain extends AbstractComponent {
         //loding semantic space to the program from given directory
         try {
             //lsa.loadSpace(this.getToolDir() + "/program");
-        	lsa.loadSpace("/datashop/SemanticSpace"+corpus);  
+        	lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

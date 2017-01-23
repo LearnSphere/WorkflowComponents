@@ -13,16 +13,42 @@
 </description>
 
 <inputs>
-<b>Transaction export</b>
+Transaction export
 </inputs>
 
 <outputs>
-<b>Text similarity values of selected columns</b>
+Text similarity values of selected columns added to the input dataset
 </outputs>
 
 <options>
-<b>col</b> - Option col (returnvals) format returns a column of LSA scores corresponding to the string values in header1 and header2 respectively (if  header1 and  header2 are both specified).<br/>
-<b>uniqmat</b> - Option (returnvals) uniqmat format returns an MxN similarity matrix corresponding to the M and N unique string values in header1 and header2 respectively (if  header1 and  header2 are both specified).<br/>
+<b>Header1</b><br/>
+<p> Select the column to calculate semantic similarity by row </p><br/>
+<b>Header2</b><br/>
+<p> Select the column to calculate semantic similarity by row </p><br/>
+
+<b>Simfunc</b><br/>
+<ul>
+	<li><b>cosine</b> - Computes text similarity based on cosine similarity</li><br/>
+	<li><b>euclidean</b> - Computes text similarity based on euclidean distance</li><br/>
+</ul>
+
+<b>Returnvals</b><br/>
+<ul>
+	<li><b>col</b> - Returns a column of LSA scores corresponding to the string values in header1 and header2 respectively (if  header1 and  header2 are both specified).</li><br/>
+	<li><b>uniqmat</b> - Returns output as a new text file contains MxN similarity matrix corresponding to the M and N unique string values in header1 and header2 respectively (if  header1 and  header2 are both specified).</li><br/>
+</ul>
+
+<b>Corpus</b><br/>
+<ul>
+	<li><b>TASA1</b> - A small portion of TASA corpus is used to build semantic space</li><br/>
+	<li><b>TASA7</b> - all the words in TASA corpus as they appear in documents were considered</li><br/>
+	<li><b>Wiki1</b> - From complete Wikipedia corpus only the lemmas of content words were considered, occurring at least 7 times (in this way we filtered out spelling errors or exceptionally rare words, but still keeping a vocabulary of over 1 Million). Stop-words were excluded, and so were the light verbs (e.g. take, have, make, etc.) as they are often used in expressions that completely change their original sense. (Space size is more than 6GB. Will need much time to load and execute )</li><br/>
+	<li><b>Wiki4</b> - From complete Wikipedia corpus only the lemmas of content words were considered, as long as they could be found as literals in Princeton WordNet. Also the adjectives and the adverbs were filtered out.  </li><br/>
+</ul>
+
+<b>Lag</b><br/>
+<p> Lagged value used to compare two columns of text by row. Lagged on Header2 </p><br/>
+
 </options>
 
 </info>
