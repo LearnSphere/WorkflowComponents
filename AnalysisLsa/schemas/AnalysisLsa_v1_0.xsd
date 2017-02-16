@@ -51,7 +51,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="transaction" />
+      <xs:element ref="file" />
     </xs:choice>
   </xs:complexType>
 

@@ -333,6 +333,7 @@ public class LsaMain extends AbstractComponent {
                 return;
             }
             
+            sw.write("\t");
             for (String v : lin2) {
                 sw.write(v +"\t");
             }
@@ -363,7 +364,7 @@ public class LsaMain extends AbstractComponent {
                 for (int j = 0; j < lin2.size(); j++) {
                     sw.write( matrix.get(i).get(j)+"\t");
                 }
-                sw.newLine();
+                if (i < lin1.size()){sw.newLine();}
             }
             break;
         default:
@@ -376,12 +377,20 @@ public class LsaMain extends AbstractComponent {
 
         if (this.isCancelled()) {
             this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
+        } else{
+        	if (returnvals.equals("col")){
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "student-step";
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+        	}
+            else if (returnvals.equals("uniqmat"))  {
+	            Integer nodeIndex = 0;
+	            Integer fileIndex = 0;
+	            String fileType = "text";
+	            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+            }
+            else{this.addErrorMessage("No output Generated for return type: "+returnvals);}
         }
-    }
 
 }
