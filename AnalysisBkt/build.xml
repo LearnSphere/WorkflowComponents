@@ -70,6 +70,7 @@
         <delete dir="${build}" />
         <delete dir="${dist}" />
         <delete dir="${javadoc}" />
+        <delete file="WorkflowComponent.log" />
     </target>
 
     <target name="javadoc" depends="compile" description="Create javadoc documentation">
