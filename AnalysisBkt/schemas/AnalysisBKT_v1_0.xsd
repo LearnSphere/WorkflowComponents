@@ -72,20 +72,24 @@
     </xs:sequence>
   </xs:complexType>
 
+  <!-- Yudelson: obsolete
   <xs:simpleType name="structureType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="bySkill" />
     </xs:restriction>
-  </xs:simpleType>
+  </xs:simpleType>-->
 
   <xs:simpleType name="solverType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Baum-Welch" />
-      <xs:enumeration value="GradientDescent" />
-      <xs:enumeration value="ConjugateGradientDescent" />
+      <xs:enumeration value="Gradient Descent" />
+      <xs:enumeration value="Conjugate Gradient Descent, Polak-Ribiere" />
+      <xs:enumeration value="Conjugate Gradient Descent, Fletcher-Reeves" />
+      <xs:enumeration value="Conjugate Gradient Descent, Hestenes-Stiefel" />
     </xs:restriction>
   </xs:simpleType>
 
+  <!-- Yudelson: obsolete
   <xs:simpleType name="conjugateGradientDescentType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None" />
@@ -93,15 +97,15 @@
       <xs:enumeration value="Fletcher-Reeves" />
       <xs:enumeration value="Hestenes-Stiefel" />
     </xs:restriction>
-  </xs:simpleType>
+  </xs:simpleType> -->
 
   <xs:complexType name="OptionsType">
     <xs:all>
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="structureType" name="structure" id="Structure" default="bySkill" />
+      <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
       <xs:element type="solverType" name="solver" id="Solver" default="GradientDescent" />
-      <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
-        minOccurs="0"  default="None" />
+      <!-- <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
+        minOccurs="0"  default="None" /> Yudelson: obsolete-->
       <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />
       <xs:element type="xs:integer" name="maxIterations" id="Max_Iterations" default="200" />
       <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"

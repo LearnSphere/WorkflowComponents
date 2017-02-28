@@ -25,7 +25,7 @@ import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescent
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ReportModelPredictionsOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.SolverType;
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.StructureType;
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.StructureType; // Yudelson: obsolete
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.ArrayUtils;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.IOUtil;
 
@@ -263,21 +263,23 @@ public class BKTMain extends AbstractComponent {
             modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
         }
 
-        String structure = this.getOptionAsString("structure");
-        if (structure != null) {
-            if (structure
-                    .equalsIgnoreCase(
-                            StructureType.BY_SKILL.toString())) {
-                analysisOptions.setStructure(StructureType.BY_SKILL);
-            } else if (structure
-                    .equalsIgnoreCase(
-                            StructureType.BY_USER.toString())) {
-                analysisOptions.setStructure(StructureType.BY_USER);
-            }
-        } else {
-            // Default structure
-            analysisOptions.setStructure(StructureType.BY_SKILL);
-        }
+		// Yudelson: obsolete
+//         String structure = this.getOptionAsString("structure");
+//         if (structure != null) {
+//             if (structure
+//                     .equalsIgnoreCase(
+//                             StructureType.BY_SKILL.toString())) {
+//                 analysisOptions.setStructure(StructureType.BY_SKILL);
+//             } 
+//             else if (structure
+//                     .equalsIgnoreCase(
+//                             StructureType.BY_USER.toString())) {
+//                 analysisOptions.setStructure(StructureType.BY_USER);
+//             }
+//         } else {
+//             // Default structure
+//             analysisOptions.setStructure(StructureType.BY_SKILL);
+//         }
 
         String solver = this.getOptionAsString("solver");
         String conjugateGradientDescentOption = null;
