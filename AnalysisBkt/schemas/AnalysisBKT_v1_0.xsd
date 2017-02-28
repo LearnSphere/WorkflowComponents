@@ -103,7 +103,7 @@
     <xs:all>
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
       <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
-      <xs:element type="solverType" name="solver" id="Solver" default="GradientDescent" />
+      <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
       <!-- <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
         minOccurs="0"  default="None" /> Yudelson: obsolete-->
       <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />
