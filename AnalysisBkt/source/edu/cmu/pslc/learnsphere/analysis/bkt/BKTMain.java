@@ -21,7 +21,7 @@ import java.util.zip.ZipInputStream;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions;
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption;
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption; // Yudelson: obsolete
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ReportModelPredictionsOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.SolverType;
@@ -282,7 +282,7 @@ public class BKTMain extends AbstractComponent {
 //         }
 
         String solver = this.getOptionAsString("solver");
-        String conjugateGradientDescentOption = null;
+//         String conjugateGradientDescentOption = null; // Yudelson: obsolete
         if (solver != null) {
             if (solver
                     .equalsIgnoreCase(
@@ -294,29 +294,42 @@ public class BKTMain extends AbstractComponent {
                 analysisOptions.setSolver(SolverType.GRADIENT_DESCENT);
             } else if (solver
                     .equalsIgnoreCase(
-                            SolverType.CONJUGATE_GRADIENT_DESCENT.toString())) {
-                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT);
-
-                conjugateGradientDescentOption = this.getOptionAsString("conjugateGradientDescentOption");
-                if (conjugateGradientDescentOption != null) {
-                    if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.POLAK_RIBIERE.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
-                    } else if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.FLETCHER_REEVES.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.FLETCHER_REEVES);
-                    } else if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.HESTENES_STIEFEL.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.HESTENES_STIEFEL);
-                    }
-                } else {
-                    // Default conjugate gradient descent option
-                    analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
-                }
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL);
             }
+//             else if (solver
+//                     .equalsIgnoreCase(
+//                             SolverType.CONJUGATE_GRADIENT_DESCENT.toString())) {
+//                 analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT);
+// 
+//                 conjugateGradientDescentOption = this.getOptionAsString("conjugateGradientDescentOption");
+//                 if (conjugateGradientDescentOption != null) {
+//                     if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.POLAK_RIBIERE.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
+//                     } else if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.FLETCHER_REEVES.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.FLETCHER_REEVES);
+//                     } else if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.HESTENES_STIEFEL.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.HESTENES_STIEFEL);
+//                     }
+//                 } else {
+//                     // Default conjugate gradient descent option
+//                     analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
+//                 }
+//             }
         } else {
             // Default solver
             analysisOptions.setSolver(SolverType.BAUM_WELCH);

@@ -50,19 +50,19 @@ public class BKTOptions {
             }
 
         },
-        CONJUGATE_GRADIENT_DESCENT("1.3.1") {
+        CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE("1.3.1") {
             public String toString() {
                 return "Conjugate Gradient Descent, Polak-Ribiere";
             }
 
         },
-        CONJUGATE_GRADIENT_DESCENT("1.3.2") {
+        CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES("1.3.2") {
             public String toString() {
                 return "Conjugate Gradient Descent, Fletcher-Reeves";
             }
 
         },
-        CONJUGATE_GRADIENT_DESCENT("1.3.3") {
+        CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL("1.3.3") {
             public String toString() {
                 return "Conjugate Gradient Descent, Hestenes-Stiefel";
             }
@@ -83,40 +83,39 @@ public class BKTOptions {
     };
 
     /** The Conjugate Gradient Descent option. */
-    /* Yudelson: obsolete
-    public enum ConjugateGradientDescentOption {
-        POLAK_RIBIERE(1) {
-            public String toString() {
-                return "Polak-Ribiere";
-            }
-
-        },
-        FLETCHER_REEVES(2) {
-            public String toString() {
-                return "Fletcher-Reeves";
-            }
-
-        },
-        HESTENES_STIEFEL(3) {
-            public String toString() {
-                return "Hestenes-Stiefel";
-            }
-
-        };
-
-        private int value;
-        private ConjugateGradientDescentOption(int value) {
-            this.value = value;
-        }
-
-        /** Provides string IDs for backwards compatibility.
-         * @return the string ID for backwards compatibility
-         */
-        public Integer getId() {
-            return value;
-        }
-    };
-    */
+// 	Yudelson: obsolete
+//     public enum ConjugateGradientDescentOption {
+//         POLAK_RIBIERE(1) {
+//             public String toString() {
+//                 return "Polak-Ribiere";
+//             }
+// 
+//         },
+//         FLETCHER_REEVES(2) {
+//             public String toString() {
+//                 return "Fletcher-Reeves";
+//             }
+// 
+//         },
+//         HESTENES_STIEFEL(3) {
+//             public String toString() {
+//                 return "Hestenes-Stiefel";
+//             }
+// 
+//         };
+// 
+//         private int value;
+//         private ConjugateGradientDescentOption(int value) {
+//             this.value = value;
+//         }
+// 
+//         /** Provides string IDs for backwards compatibility.
+//          * @return the string ID for backwards compatibility
+//          */
+//         public Integer getId() {
+//             return value;
+//         }
+//     };
 
     /** The "fit as one skill" option. */
     public enum FitAsOneSkillOption {
@@ -240,9 +239,10 @@ public class BKTOptions {
     public List<String> checkOptions() {
         errorMessages = new ArrayList<String>();
 
-        if (structure == null) {
-            errorMessages.add("The structure parameter is required." + lineBreak);
-        }
+		// Yudelson: obsolete
+//         if (structure == null) {
+//             errorMessages.add("The structure parameter is required." + lineBreak);
+//         }
         if (solver == null) {
             errorMessages.add("The solver parameter is required." + lineBreak);
         }
