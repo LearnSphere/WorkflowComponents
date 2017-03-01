@@ -25,7 +25,7 @@
     <upperBoundaries>0,0,1,0,0,0,0,0.3,0.3,0</upperBoundaries>
     <hiddenStates>2</hiddenStates>
     <initialParameters>0.5,1.0,0.4,0.8,0.2</initialParameters>
-    <lowerBoundaries>0,0,1,0,0,0,0,0,0,0</lowerBoundaries>
+    <lowerBoundaries>0,0,1,0,0,0,0.7,0,0,0.7</lowerBoundaries>
   </options>
   <top>233</top>
   <inputs>

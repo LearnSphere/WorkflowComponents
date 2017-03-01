@@ -112,7 +112,7 @@
         default="1" />
       <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
       <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
-      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0,0,0,0" />
+      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0.7,0,0,0.7" />
       <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />
     </xs:all>
   </xs:complexType>
