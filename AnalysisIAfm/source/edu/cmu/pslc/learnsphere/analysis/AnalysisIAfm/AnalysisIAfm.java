@@ -22,7 +22,7 @@ public class AnalysisIAfm extends AbstractComponent {
     @Override
     protected void parseOptions() {
 	logger.info("Parsing options");
-        // Don't really need the following, but it can be useful for debugging.
+
         if (this.getOptionAsString("model") != null) {
             modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
             logger.debug("modelName = " + modelName);
@@ -32,6 +32,9 @@ public class AnalysisIAfm extends AbstractComponent {
     @Override
     protected void processOptions() {
         logger.info("Processing Options");
+
+        this.addMetaDataFromInput("student-step", 0, 0, ".*");
+        this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "KC (" + modelName + ")");
     }
 
     @Override
