@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto;
+package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -135,7 +135,7 @@ public class XMLExtractedDataObject{
                                         if (selections != null && selections.size() > 0) {
                                                 for (AttemptSelectionItem selItem : selections) {
                                                         //selection exist
-                                                        if (selItem.getType() != null && selItem.getType().equals(OLIIntermediateDataObject.XML_SELECTION_TYPE_MEDIA_FILE))
+                                                        if (selItem.getType() != null && selItem.getType().equals(OliUserTransactionWithXmlDTO.XML_SELECTION_TYPE_MEDIA_FILE))
                                                                 mediaFileName = selItem.getSelection();
                                                 }
                                         }
@@ -174,7 +174,7 @@ public class XMLExtractedDataObject{
                                         if (selections != null && selections.size() > 0) {
                                                 for (SelectionItem selItem : selections) {
                                                         //selection exist
-                                                        if (selItem.getType() != null && selItem.getType().equals(OLIIntermediateDataObject.XML_SELECTION_TYPE_MEDIA_FILE))
+                                                        if (selItem.getType() != null && selItem.getType().equals(OliUserTransactionWithXmlDTO.XML_SELECTION_TYPE_MEDIA_FILE))
                                                                 mediaFileName = selItem.getSelection();
                                                         
                                                 }

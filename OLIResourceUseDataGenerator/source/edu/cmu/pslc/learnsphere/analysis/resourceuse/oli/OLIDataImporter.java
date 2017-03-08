@@ -57,11 +57,11 @@ public class OLIDataImporter {
         /** The name of this tool, used in displayUsage method. */
         private static final String TOOL_NAME = OLIDataImporter.class.getSimpleName();
         /** Success prefix string. */
-        private static final String SUCCESS_PREFIX = TOOL_NAME + " - ";
+        private static final String SUCCESS_PREFIX = "SUCCESS: " + TOOL_NAME + " - ";
         /** Warning prefix string. */
-        private static final String WARN_PREFIX = "WARN " + TOOL_NAME + " - ";
+        private static final String WARN_PREFIX = "WARN: " + TOOL_NAME + " - ";
         /** Error prefix string. */
-        private static final String ERROR_PREFIX = "ERROR " + TOOL_NAME + " - ";
+        private static final String ERROR_PREFIX = "ERROR: " + TOOL_NAME + " - ";
         
         /** Default Delimiter */
         private static final String DEFAULT_DELIMITER = "\\t";
@@ -210,174 +210,103 @@ public class OLIDataImporter {
          * This is where the control of the overall process to import OLI resource use data.
          */
         public void importData() throws ResourceUseOliException {
-                //record import info in import db
-                ImportStatusItem importStatusItem = null;
-                ImportFileInfoItem txnImportFileInfo = null;
-                ImportFileInfoItem userSessImportFileInfo = null;
-                // create a row in the import_db.import_status table
-                importStatusItem = createEntryInImportStatusTable();
-                      
-                // process transaction file
-                txnImportFileInfo = getImportFileInfoItem(importStatusItem, transactionFileName);
-                File txnFile = new File(transactionFileName);
-                //validate transaction file headers
-                if (txnImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_QUEUED))
-                        validateTransactionImportFileHeaders(txnFile, txnImportFileInfo);
-                txnImportFileInfo = getImportFileInfoItem((Integer)txnImportFileInfo.getId());
-                importStatusItem = getImportStatusItem((Integer)importStatusItem.getId());
-                if (txnImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_QUEUED)) {
-                        // change status to LOADING
-                        txnImportFileInfo.setStatus(ImportStatusItem.STATUS_LOADING);
-                        updateImportFileInfo(txnImportFileInfo);
-                        importStatusItem.setStatus(ImportStatusItem.STATUS_LOADING);
-                        updateImportStatus(importStatusItem);
-                        
-                        //save to resource_use_oli_transaction_file
-                        resourceUseOliTransactionFileItem = saveTransactionFile();
-                        //System.out.print("resourceUseOliTransactionFileItem:" + resourceUseOliTransactionFileItem);
-                        //load data
-                        txnImportFileInfo = getImportFileInfoItem((Integer)txnImportFileInfo.getId());
-                        if (!txnImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_ERROR)) {
-                                runLoadData(txnImportFileInfo, IMPORT_FILE_TYPE_TRANSACTION, (Integer)resourceUseOliTransactionFileItem.getId());
-                                txnImportFileInfo = getImportFileInfoItem((Integer)txnImportFileInfo.getId());
-                                txnImportFileInfo.setTimeEnd(new Date());
-                                txnImportFileInfo.setStatus(ImportFileInfoItem.STATUS_LOADED);
-                                this.updateImportFileInfo(txnImportFileInfo);
-                        }
+                //verify both files: replace slashes, check headers and check exist
+                validateUserSessFile();
+                validateTransactionFile();
+                resourceUseOliUserSessFileItem = saveUserSessFile();
+                if (resourceUseOliUserSessFileItem != null 
+                                && resourceUseOliUserSessFileItem.getId() != null)
+                        logger.info(SUCCESS_PREFIX + "Save user-sess file: " + userSessFileName + ", with new ID: " + resourceUseOliUserSessFileItem.getId());
+                else {
+                        logger.info(ERROR_PREFIX + "Failed saving user-sess file: " + userSessFileName);
+                        throw ResourceUseOliException.userSessFileSaveFailException(userSessFileName);
                 }
-                
-                // process user_sess file
-                userSessImportFileInfo = getImportFileInfoItem(importStatusItem, userSessFileName);
-                File userSessFile = new File(userSessFileName);
-                //validate userSess file headers
-                if (userSessImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_QUEUED))
-                        validateUserSessImportFileHeaders(userSessFile, userSessImportFileInfo);
-                userSessImportFileInfo = getImportFileInfoItem((Integer)userSessImportFileInfo.getId());
-                importStatusItem = getImportStatusItem((Integer)importStatusItem.getId());
-                if (userSessImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_QUEUED)) {
-                        // change status to LOADING
-                        userSessImportFileInfo.setStatus(ImportStatusItem.STATUS_LOADING);
-                        updateImportFileInfo(txnImportFileInfo);
-                        importStatusItem.setStatus(ImportStatusItem.STATUS_LOADING);
-                        updateImportStatus(importStatusItem);
-                        
-                        //save to resource_use_oli_user_sess_file
-                        resourceUseOliUserSessFileItem = saveUserSessFile();
-                        //System.out.print("resourceUseOliUserSessFileItem:" + resourceUseOliUserSessFileItem);
-                        //load data
-                        userSessImportFileInfo = getImportFileInfoItem((Integer)userSessImportFileInfo.getId());
-                        if (!userSessImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_ERROR)) {
-                                runLoadData(userSessImportFileInfo, IMPORT_FILE_TYPE_USER_SESS, (Integer)resourceUseOliUserSessFileItem.getId());
-                                userSessImportFileInfo = getImportFileInfoItem((Integer)userSessImportFileInfo.getId());
-                                userSessImportFileInfo.setTimeEnd(new Date());
-                                userSessImportFileInfo.setStatus(ImportFileInfoItem.STATUS_LOADED);
-                                this.updateImportFileInfo(userSessImportFileInfo);
-                        }
+                resourceUseOliTransactionFileItem = saveTransactionFile();
+                if (resourceUseOliTransactionFileItem != null 
+                                && resourceUseOliTransactionFileItem.getId() != null)
+                        logger.info(SUCCESS_PREFIX + "Save transaction file: " + transactionFileName + ", with new ID: " + resourceUseOliTransactionFileItem.getId());
+                else {
+                        logger.info(ERROR_PREFIX + "Failed saving transaction file: " + transactionFileName);
+                        throw ResourceUseOliException.transactionFileSaveFailException(transactionFileName);
                 }
-                
-                //update import status
-                String msg = "Importing files ";
-                if (resourceUseOliTransactionFileItem != null)
-                        msg += "for resource use OLI transaction file id: " + resourceUseOliTransactionFileItem.getId() + "; ";
-                if (resourceUseOliUserSessFileItem != null)
-                        msg += "for resource use OLI user-sess file id: " + resourceUseOliUserSessFileItem.getId() + ". ";
-                ImportStatusDao importStatusDao = ImportDbDaoFactory.DEFAULT.getImportStatusDao();
-                boolean txnHasError = false;
-                if (txnImportFileInfo != null) {
-                        if (txnImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_ERROR)) {
-                                msg += "Error found in loading transaction file: " + txnImportFileInfo.getFileName() + ". ";
-                                txnHasError = true;
-                        } else {
-                                msg += "Successful loading for transaction file: " + txnImportFileInfo.getFileName() + ". ";                                 
-                        }
+                runLoadData(resourceUseOliUserSessFileItem.getFileName(), IMPORT_FILE_TYPE_USER_SESS, (Integer)resourceUseOliUserSessFileItem.getId());
+                runLoadData(resourceUseOliTransactionFileItem.getFileName(), IMPORT_FILE_TYPE_TRANSACTION, (Integer)resourceUseOliTransactionFileItem.getId());
+        }
+                    
+        //verify transaction files: replace slashes in file name, check headers and check file exist
+        private void validateTransactionFile() throws ResourceUseOliException {
+                // if windows operation system, replace slashes in path
+                String osName = System.getProperty("os.name").toLowerCase();
+                if (osName.indexOf("win") >= 0) {
+                        transactionFileName = transactionFileName.replaceAll("\\\\", "\\/");
+                        logger.info("Transaction file name is changed to: " + transactionFileName);
                 }
-                boolean userSessHasError = false;
-                if (userSessImportFileInfo != null) {
-                        if (userSessImportFileInfo.getStatus().equals(ImportFileInfoItem.STATUS_ERROR)) {
-                                msg += "Error found in loading user_sess file: " + userSessImportFileInfo.getFileName() + ". ";
-                                userSessHasError = true;
-                        } else {
-                                msg += "Successful loading for user_sess file: " + userSessImportFileInfo.getFileName() + ". ";                                 
-                        }
+                File txnFile =  new File(transactionFileName);
+                if (!txnFile.exists()) {
+                        throw ResourceUseOliException.fileNotFoundException(txnFile);
                 }
-                
-                if(txnImportFileInfo != null || userSessImportFileInfo != null){
-                        importStatusItem.setTimeEnd(new Date());
-                        if (txnHasError || userSessHasError) {
-                                reportImportStatusError(importStatusItem, msg);
-                        } else {
-                                importStatusItem.setStatus(ImportStatusItem.STATUS_IMPORTED);
-                                importStatusItem.setWarningMessage(msg);
-                                importStatusDao.saveOrUpdate(importStatusItem);
-                        }
+                String[] headers = helper.getHeaderFromFile(txnFile, DEFAULT_DELIMITER);
+                for (int i = 0; i < headers.length; i++) {
+                        if (!headers[i].equals(ACTION_LOG_COLUMN_NAMES[i])) 
+                                throw ResourceUseOliException.wrongHeaderFormatException(txnFile, IMPORT_FILE_TYPE_TRANSACTION);
                 }
         }
 
+        //verify user_sess files: replace slashes in file name, check headers and check file exist
+        private void validateUserSessFile() throws ResourceUseOliException {
+                // if windows operation system, replace slashes in path
+                String osName = System.getProperty("os.name").toLowerCase();
+                if (osName.indexOf("win") >= 0) {
+                        userSessFileName = userSessFileName.replaceAll("\\\\", "\\/");
+                        logger.info("User-sess file name is: " + userSessFileName);
+                }
+                File userSessFile =  new File(userSessFileName);
+                if (!userSessFile.exists()) {
+                        throw ResourceUseOliException.fileNotFoundException(userSessFile);
+                }
+                String[] headers = helper.getHeaderFromFile(userSessFile, DEFAULT_DELIMITER);
+                for (int i = 0; i < headers.length; i++) {
+                        if (!headers[i].equals(USER_SESS_COLUMN_NAMES[i])) 
+                                throw ResourceUseOliException.wrongHeaderFormatException(userSessFile, IMPORT_FILE_TYPE_USER_SESS);
+                }
+        }
         
         /**
          * Load the data from the files into table, and save the file to the system
-         * @param importStatusItem the given import status item
+         * @param String fileName including full path
          * @param importFileInfoItem the import file info item
          * @param importFileType either transaction or user_sess
          * @param toBeSavedFilePath the system file path where the file will be saved to
          * @param toBeSaveFileName the file name which the file will be saved to
          * @return true if successful, false otherwise
          */
-        private boolean runLoadData(ImportFileInfoItem importFileInfoItem, String importFileType, int refId ) 
+        private int runLoadData(String fileName, String importFileType, int refId) 
                                         throws ResourceUseOliException {
-                boolean successFlag = true;
-                String importedFileName = importFileInfoItem.getFileName();
-                //don't replace back splash. because the import file has it in info field
-                //successFlag = processBackslashInFile(importedFileName);
-                if (!successFlag) {
-                        String errorMessage = ERROR_PREFIX + "Failed to process backslash for file " + importedFileName;
-                        importFileInfoItem.setTimeEnd(new Date());
-                        reportImportFileInfoError(importFileInfoItem, errorMessage);
-                        successFlag = false;
-                } else {
-                        helper.logInfo(SUCCESS_PREFIX, "Loading data in file ", importedFileName);
-                        File theOriginalFile = new File(importedFileName);
-                        String lineTerminator = getLineTerminator(theOriginalFile);
-                        ResourceUseOliImporterDao riDao = DaoFactory.DEFAULT.getResourceUseOliImporterDao();
+                logger.info("Loading data in file " + fileName);
+                File theOriginalFile = new File(fileName);
+                String lineTerminator = getLineTerminator(theOriginalFile);
+                ResourceUseOliImporterDao riDao = DaoFactory.DEFAULT.getResourceUseOliImporterDao();
                 int numRows = 0;
                 try {
                         if (importFileType.equals(IMPORT_FILE_TYPE_TRANSACTION))
-                                numRows = riDao.loadTransactionData(importedFileName, refId, lineTerminator, ACTION_LOG_TABLE_COLUMN_NAMES, ACTION_LOG_TABLE_NULLABLE_DATETIME_COLUMN_NAMES);
+                                numRows = riDao.loadTransactionData(fileName, refId, lineTerminator, ACTION_LOG_TABLE_COLUMN_NAMES, ACTION_LOG_TABLE_NULLABLE_DATETIME_COLUMN_NAMES);
                         else if (importFileType.equals(IMPORT_FILE_TYPE_USER_SESS))
-                                numRows = riDao.loadUserSessData(importedFileName, refId, lineTerminator, USER_SESS_TABLE_COLUMN_NAMES);
+                                numRows = riDao.loadUserSessData(fileName, refId, lineTerminator, USER_SESS_TABLE_COLUMN_NAMES);
                 } catch (SQLException exception) {
-                    String errorMessage = ERROR_PREFIX + "Exception caught in loading data for file " + importedFileName;
-                    importFileInfoItem.setTimeEnd(new Date());
-                    reportImportFileInfoError(importFileInfoItem, errorMessage, exception);
-                    successFlag = false;
+                        throw ResourceUseOliException.loadingSQLException(fileName, importFileType, refId, exception);
                 }
-                
-                if (numRows <= 0) {
-                    String errorMessage = ERROR_PREFIX + "Zero rows loaded for file " + importedFileName;
-                    importFileInfoItem.setTimeEnd(new Date());
-                    reportImportFileInfoError(importFileInfoItem, errorMessage);
-                    successFlag = false;
-                } else {
-                    importFileInfoItem.setTimeEnd(new Date());
-                    importFileInfoItem.setStatus(ImportFileInfoItem.STATUS_LOADED);
-                    updateImportFileInfo(importFileInfoItem);
-                }
-            }
-
-            if (successFlag) {
-                helper.logInfo(SUCCESS_PREFIX, "Data loaded successfully.");
-            } else {
-                helper.logInfo(ERROR_PREFIX, "Data loading has error.");
-            }
-
-            helper.logDebug("runLoadData is done: ", successFlag);
-            return successFlag;
+                if (numRows <= 0)
+                        throw ResourceUseOliException.noRowsLoadedException(fileName, importFileType, refId);
+                else
+                        logger.info("Number of rows loaded: " + numRows); 
+                return numRows;
         }
         
         //save to resource_use_oli_transaction_file
         private ResourceUseOliTransactionFileItem saveTransactionFile() {
                 //insert resource_use_oli_transaction_file
                 ResourceUseOliTransactionFileItem resourceUseOliTransactionFileItem = new ResourceUseOliTransactionFileItem();
+                resourceUseOliTransactionFileItem.setFileName(transactionFileName);
                 ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = DaoFactory.DEFAULT.getResourceUseOliTransactionFileDao();
                 resourceUseOliTransactionFileDao.saveOrUpdate(resourceUseOliTransactionFileItem);
                 return resourceUseOliTransactionFileItem;
@@ -386,6 +315,7 @@ public class OLIDataImporter {
         //save to resource_use_oli_user_sess_file
         private ResourceUseOliUserSessFileItem saveUserSessFile() {
                 ResourceUseOliUserSessFileItem resourceUseOliUserSessFileItem = new ResourceUseOliUserSessFileItem();
+                resourceUseOliUserSessFileItem.setFileName(userSessFileName);
                 ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = DaoFactory.DEFAULT.getResourceUseOliUserSessFileDao();
                 resourceUseOliUserSessFileDao.saveOrUpdate(resourceUseOliUserSessFileItem);
                 return resourceUseOliUserSessFileItem;
@@ -403,7 +333,7 @@ public class OLIDataImporter {
                 ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = DaoFactory.DEFAULT.getResourceUseOliTransactionFileDao();
                 int deletedTxnFileRowCnt = resourceUseOliTransactionFileDao.clear(resourceUseOliTransactionFileId);
                 helper.logInfo(WARN_PREFIX, deletedTxnRowCnt + " records are deleted from resource_use_oli_transaction; and " +
-                                deletedTxnFileRowCnt + " records are deleted from resource_use_oli_transaction_file.");
+                                deletedTxnFileRowCnt + " records are deleted from resource_use_oli_transaction_file for transactionFile: " + resourceUseOliTransactionFileId);
                 
         }
         
@@ -414,7 +344,7 @@ public class OLIDataImporter {
                 ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = DaoFactory.DEFAULT.getResourceUseOliUserSessFileDao();
                 int deletedUserSessFileCnt = resourceUseOliUserSessFileDao.clear(resourceUseOliUserSessFileId);
                 helper.logInfo(WARN_PREFIX, deletedUserSessCnt + " records are deleted from resource_use_oli_user_sess; and " +
-                                deletedUserSessFileCnt + " records are deleted from resource_use_oli_user_sess_file.");
+                                deletedUserSessFileCnt + " records are deleted from resource_use_oli_user_sess_file for userSessFile: " + resourceUseOliUserSessFileId);
         }
 
         /**
@@ -563,253 +493,6 @@ public class OLIDataImporter {
                 }
             }
             return lineTerminator;
-        }
-             
-        private ImportFileInfoItem getImportFileInfoItem(int importFileInfoId) {
-                ImportFileInfoDao importFileInfoDao = ImportDbDaoFactory.DEFAULT.getImportFileInfoDao();
-                return importFileInfoDao.get(importFileInfoId);
-        }
-        
-        private ImportStatusItem getImportStatusItem(int importStatusId) {
-                ImportStatusDao importStatusDao = ImportDbDaoFactory.DEFAULT.getImportStatusDao();
-                return importStatusDao.get(importStatusId);
-        }
-
-        private void validateTransactionImportFileHeaders (File txnFile, ImportFileInfoItem txnImportFileInfo)  {
-                boolean valid = true;
-                String errorMsg = "";
-                try {
-                        String[] headers = helper.getHeaderFromFile(txnFile, DEFAULT_DELIMITER);
-                        for (int i = 0; i < headers.length; i++) {
-                                if (!headers[i].equals(ACTION_LOG_COLUMN_NAMES[i])) {
-                                        valid = false;
-                                        errorMsg = "validateTransactionImportFileHeaders found error for column: "
-                                                        + headers[i] + " in " + txnFile.getName();
-                                        break;
-                                }
-                        }
-                        
-                    } catch (ResourceUseOliException exception) {
-                            valid = false;
-                            errorMsg = "validateTransactionImportFileHeaders:IOException occurred. "
-                                            + txnFile.getName() + exception.getMessage();
-                    }
-                if (!valid) {
-                        txnImportFileInfo.setTimeEnd(new Date());
-                        reportImportFileInfoError(txnImportFileInfo, errorMsg);
-                }
-        }
-        
-        private void validateUserSessImportFileHeaders (File userSessFile, ImportFileInfoItem userSessImportFileInfo) 
-                                throws ResourceUseOliException {
-                boolean valid = true;
-                String errorMsg = "";
-                try {
-                        String[] headers = helper.getHeaderFromFile(userSessFile, DEFAULT_DELIMITER);
-                        for (int i = 0; i < headers.length; i++) {
-                                if (!headers[i].equals(USER_SESS_COLUMN_NAMES[i])) {
-                                        valid = false;
-                                        errorMsg = "validateTransactionImportFileHeaders found error for column: "
-                                                        + headers[i] + " in " + userSessFile.getName();
-                                        break;
-                                }
-                        }
-                        
-                    } catch (ResourceUseOliException exception) {
-                            valid = false;
-                            errorMsg = "validateTransactionImportFileHeaders:IOException occurred. "
-                                            + userSessFile.getName() + exception.getMessage();
-                    }
-                if (!valid) {
-                        userSessImportFileInfo.setTimeEnd(new Date());
-                        reportImportFileInfoError(userSessImportFileInfo, errorMsg); 
-                }
-        }
-         
-        /**
-         * Create a row in the import_db.import_status table for this run.
-         * Set the time_start to now and the status to 'QUEUED'.
-         *  
-         * @return the status item just created if success, exception otherwise
-         */
-        private ImportStatusItem createEntryInImportStatusTable() {
-            ImportStatusDao importStatusDao = ImportDbDaoFactory.DEFAULT.getImportStatusDao();
-            ImportStatusItem statusItem = new ImportStatusItem();
-            String tmpDatasetName = FileUtils.removePathFromFileName(this.transactionFileName) + "; " + FileUtils.removePathFromFileName(this.userSessFileName);
-            if (tmpDatasetName.length() > 100)
-                    tmpDatasetName = tmpDatasetName.substring(0, 100);
-            statusItem.setDatasetName(tmpDatasetName);
-            statusItem.setDomainName(TOOL_NAME);
-            statusItem.setTimeStart(new Date());
-            statusItem.setStatus(ImportStatusItem.STATUS_QUEUED);
-            importStatusDao.saveOrUpdate(statusItem);
-            return statusItem;
-        }
-
-        /**
-         * Create a row in the import_db.import_file_info table for the given file.
-         * Set the file name, status, as well as,
-         * the time_start to now.
-         * @param importStatusItem the high level status row in the database (FK)
-         * @param fileName the name of file to load
-         * @param status expecting ERROR or QUEUED
-         * @return the status item just created if success, exception otherwise
-         */
-        private ImportFileInfoItem createEntryInImportFileInfoTable(
-                ImportStatusItem importStatusItem, String fileName, String status, String errorMsg) {
-            ImportFileInfoDao importFileInfoDao = ImportDbDaoFactory.DEFAULT.getImportFileInfoDao();
-            ImportFileInfoItem importFileInfoItem = new ImportFileInfoItem();
-            importFileInfoItem.setImportStatus(importStatusItem);
-            importFileInfoItem.setFileName(fileName);
-            Date now = new Date();
-            importFileInfoItem.setTimeStart(now);
-            if (status.equals(ImportFileInfoItem.STATUS_ERROR)) {
-                    importFileInfoItem.setTimeEnd(now);
-                    if (errorMsg != null)
-                            importFileInfoItem.setErrorMessage(errorMsg);
-            }
-            importFileInfoItem.setStatus(status);
-            importFileInfoDao.saveOrUpdate(importFileInfoItem);
-            return importFileInfoItem;
-        }
-        
-        /**
-         * Returns a ImportFileInfoItem object for the specified file name.
-         * @param importStatusItem the given status item
-         * @param fileName the file name
-         * @return an importFileInfoItem if the file is valid, null otherwise
-         */
-        private ImportFileInfoItem getImportFileInfoItem(ImportStatusItem importStatusItem, String fileName) {
-            ImportFileInfoItem importFileInfoItem = null;
-            // if windows operation system, replace slashes in path
-            boolean winFlag = false;
-            String osName = System.getProperty("os.name").toLowerCase();
-            if (osName.indexOf("win") >= 0) {
-                winFlag = true;
-                helper.logInfo(SUCCESS_PREFIX,
-                        "Replacing slashes path of file name, os.name: ",
-                        osName);
-            } else {
-                    helper.logInfo(SUCCESS_PREFIX,
-                        "NOT Replacing slashes path of file name, os.name: ",
-                        osName);
-            }
-
-            if (fileName != null) {
-                if (winFlag) {
-                    fileName = fileName.replaceAll("\\\\", "\\/");
-                }
-
-                File theFile =  new File(fileName);
-
-                if (!theFile.exists()) {
-                    String fixedName = FileUtils.removePathFromFileName(theFile.getName());
-                    String errorMsg = "File " + fixedName + " does not exist.";
-                    reportImportStatusError(importStatusItem, errorMsg);
-                    importFileInfoItem = createEntryInImportFileInfoTable(importStatusItem,
-                                                                      fileName,
-                                                                      ImportFileInfoItem.STATUS_ERROR, errorMsg);
-                } else {
-                    if (theFile.getName().endsWith(".txt")) {
-                            helper.logInfo(SUCCESS_PREFIX, "File ", fileName, " found.");
-                        importFileInfoItem =
-                            createEntryInImportFileInfoTable(importStatusItem,
-                                                             fileName,
-                                                             ImportFileInfoItem.STATUS_QUEUED, null);
-                    } else {
-                        String fixedName = FileUtils.removePathFromFileName(theFile.getName());
-                        String errorMsg = "File " + fixedName + " does not have a .txt extension.";
-                        reportImportStatusError(importStatusItem, errorMsg);
-                        importFileInfoItem =
-                            createEntryInImportFileInfoTable(importStatusItem,
-                                                             fileName,
-                                                             ImportFileInfoItem.STATUS_ERROR, errorMsg);
-                    }
-                }
-            } else {
-                    String errorMsg = "File name is null";
-                    importFileInfoItem =
-                                    createEntryInImportFileInfoTable(importStatusItem,
-                                                                     fileName,
-                                                                     ImportFileInfoItem.STATUS_ERROR, errorMsg);
-            }
-
-            return importFileInfoItem;
-        }
-
-        
-        /**
-         * Report the current error on the import_file_info.
-         *  
-         * @param importFileInfoItem the import file level status row in the database (FK)
-         * @param message the new message
-         * @param exception if there is one so that it can be put in the debug logging
-         */
-        private void reportImportFileInfoError(ImportFileInfoItem importFileInfoItem,
-                                 String message, Exception exception) {
-            ImportFileInfoDao importFileInfoDao = ImportDbDaoFactory.DEFAULT.getImportFileInfoDao();
-            importFileInfoDao.saveErrorMessage(importFileInfoItem, message);
-            if (exception == null) {
-                    helper.logError(ERROR_PREFIX, message);
-            } else {
-                    helper.logError(ERROR_PREFIX + message, exception);
-            }
-        }
-        /**
-         * Calls the other report error method without an exception.
-         * @param importFileInfoItem the file level status row in the database (FK)
-         * @param message the new message
-         */
-        private void reportImportFileInfoError(ImportFileInfoItem importFileInfoItem, String message) {
-                reportImportFileInfoError(importFileInfoItem, message, null);
-        }
-
-        /**
-         * Report the current error on the import_status and write error message/exception to error log
-         *  
-         * @param importStatusItem the high level status row in the database (FK)
-         * @param message the new message
-         * @param exception if there is one so that it can be put in the debug logging
-         */
-        private void reportImportStatusError(ImportStatusItem importStatusItem,
-                                 String message, Exception exception) {
-            ImportStatusDao importStatusDao = ImportDbDaoFactory.DEFAULT.getImportStatusDao();
-            importStatusDao.saveErrorMessage(importStatusItem, message);
-
-            if (exception == null) {
-                    helper.logError(ERROR_PREFIX, message);
-            } else {
-                    helper.logError(ERROR_PREFIX + message, exception);
-            }
-        }
-        /**
-         * Calls the other report error method without an exception.
-         * @param importStatusItem the high level status row in the database (FK)
-         * @param message the new message
-         */
-        private void reportImportStatusError(ImportStatusItem importStatusItem, String message) {
-                reportImportStatusError(importStatusItem, message, null);
-        }
-        
-        /**
-         * update importStatusItem.
-         * @param importStatusItem the high level status row in the database
-         * @param message the new message
-         */
-        private void updateImportStatus(ImportStatusItem importStatusItem) {
-                ImportStatusDao importStatusDao = ImportDbDaoFactory.DEFAULT.getImportStatusDao();
-                importStatusDao.saveOrUpdate(importStatusItem);
-                
-        }
-        
-        /**
-         * update importFileInfoItem.
-         * @param importStatusItem the high level status row in the database
-         * @param message the new message
-         */
-        private void updateImportFileInfo(ImportFileInfoItem importFileInfoItem) {
-                ImportFileInfoDao importFileInfoDao = ImportDbDaoFactory.DEFAULT.getImportFileInfoDao();
-                importFileInfoDao.saveOrUpdate(importFileInfoItem);
         }
 
         public String getTransactionFileName () {

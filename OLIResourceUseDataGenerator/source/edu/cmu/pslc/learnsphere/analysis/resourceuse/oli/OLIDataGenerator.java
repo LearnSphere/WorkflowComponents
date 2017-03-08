@@ -7,6 +7,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -59,7 +60,7 @@ public class OLIDataGenerator extends AbstractComponent {
         // If you want to add all headers from a previous component, try one of these:
         //this.addMetaDataFromInput("transaction", 0, 0, ".*");
         //this.addMetaDataFromInput("user-session-map", 1, 0, ".*");
-
+        
         // Instead, we already know the headers we plan to create
         this.addMetaData(FILE_TYPE_RESOURCE_USE, 0, META_DATA_HEADER, "header0", 0, "student");
         this.addMetaData(FILE_TYPE_RESOURCE_USE, 0, META_DATA_HEADER, "header1", 1, "student");
@@ -86,7 +87,6 @@ public class OLIDataGenerator extends AbstractComponent {
 
         String appContextPath = this.getApplicationContextPath();
         logger.info("appContextPath: " + appContextPath);
-        //System.out.println("appContextPath: " + appContextPath);
 
         // Do not follow symbolic links so we can prevent unwanted directory traversals if someone
         // does manage to create a symlink to somewhere dangerous (like /datashop/deploy/)
@@ -97,11 +97,9 @@ public class OLIDataGenerator extends AbstractComponent {
         //in the test xml file, the transaction file (node 0, file 0) is specified first
         // and user-sess (node 1, file 0) is specified second
         oliImporter.setTransactionFileName(this.getAttachment(0, 0).getAbsolutePath());
-        logger.info("transaction file: " + oliImporter.getTransactionFileName());
-        //System.out.println("transaction file: " + oliImporter.getTransactionFileName());
+        logger.info("Transaction file: " + oliImporter.getTransactionFileName());
         oliImporter.setUserSessFileName(this.getAttachment(1, 0).getAbsolutePath());
-        logger.info("user sess file: " + oliImporter.getUserSessFileName());
-        //System.out.println("user sess file: " + oliImporter.getUserSessFileName());
+        logger.info("User sess file: " + oliImporter.getUserSessFileName());
 
         try {
                 // do the work
@@ -109,42 +107,31 @@ public class OLIDataGenerator extends AbstractComponent {
                 logger.info("OLI importer imported data, transaction file id: " +
                                 oliImporter.getResourceUseOliTransactionFileId() + "; user-sess file id: " +
                                 oliImporter.getResourceUseOliUserSessFileId());
-                if (oliImporter.getResourceUseOliTransactionFileId() != null && oliImporter.getResourceUseOliUserSessFileId() != null) {
-                        logger.info("OLI data generator, aggregation started...");
-                        //System.out.println("OLI data generator, aggregation started...");
-                        oliDataAggregator.setResourceUseOliTransactionFileId(oliImporter.getResourceUseOliTransactionFileId());
-                        oliDataAggregator.setResourceUseOliUserSessFileId(oliImporter.getResourceUseOliUserSessFileId());
-                        String resourceUseAggregatedData = oliDataAggregator.aggregateData();
-                        //make File and write content
-                        File componentOutputFile = this.createFile(FILE_TYPE_RESOURCE_USE, ".txt");
-                        FileUtils.dumpToFile(resourceUseAggregatedData, componentOutputFile, true);
-                        logger.info("OLI importer, file created: " + componentOutputFile.getAbsolutePath());
-                        //System.out.println("OLI importer, file created: " + componentOutputFile.getAbsolutePath());
-                        Integer nodeIndex = 0;
-                        Integer fileIndex = 0;
-                        String fileLabel = FILE_TYPE_RESOURCE_USE;
-                        this.addOutputFile(componentOutputFile, nodeIndex, fileIndex, fileLabel);
-                        oliImporter.clearData();
-                        System.out.println(this.getOutput());
-                } else {
-                        String errorMsg = "Error: OLI importer, NULL ID for either transaction file id: " +
-                                        oliImporter.getResourceUseOliTransactionFileId() + "; or user-sess file id: " +
-                                        oliImporter.getResourceUseOliUserSessFileId();
-                        logger.error(errorMsg);
-                        //System.out.println(errorMsg);                        this.addErrorMessage(errorMsg);;
-                }
+                logger.info("OLI data generator, aggregation started...");
+                //System.out.println("OLI data generator, aggregation started...");
+                oliDataAggregator.setResourceUseOliTransactionFileId(oliImporter.getResourceUseOliTransactionFileId());
+                oliDataAggregator.setResourceUseOliUserSessFileId(oliImporter.getResourceUseOliUserSessFileId());
+                String resourceUseAggregatedData = oliDataAggregator.aggregateData();
+                logger.info("OLI data generator, aggregation ended...");
+                //make File and write content
+                File componentOutputFile = this.createFile(FILE_TYPE_RESOURCE_USE, ".txt");
+                FileUtils.dumpToFile(resourceUseAggregatedData, componentOutputFile, true);
+                logger.info("OLI importer, file created: " + componentOutputFile.getAbsolutePath());
+                Integer nodeIndex = 0;
+                Integer fileIndex = 0;
+                String fileLabel = FILE_TYPE_RESOURCE_USE;
+                this.addOutputFile(componentOutputFile, nodeIndex, fileIndex, fileLabel);
+                oliImporter.clearData();
+                System.out.println(this.getOutput());
         } catch (ResourceUseOliException exception) {
-                String errorMsg = "OLIDataImporter/Aggregator exception: " + exception.getErrorMessage();
+                String errorMsg = "OLIDataImporter/Aggregator exception caught: " + exception.getErrorMessage();
                 logger.error(errorMsg);
-                //System.out.println(errorMsg);
                 this.addErrorMessage(errorMsg);
         } catch (Throwable throwable) {
             logger.error("Unknown error in main method.", throwable);
             this.addErrorMessage("Unknown error in main method." + throwable);
-            //System.out.println("Unknown error in main method." + throwable);
         } finally {
             logger.info("OLIDataGenerator done.");
-            //System.out.println("OLIDataGenerator done.");
         }
 
         // WorkflowHelper can also be used for a lot of convenient java methods dealing with xml and json.

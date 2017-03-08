@@ -1,12 +1,14 @@
-package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto;
+package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliResourceUseDTOInterface;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliUserTransactionDTO;
+
 /**
- * Represent an OLI intermediate data object. Fields are
- *      Course
+ * Represent an OLI summary data object. Fields are
  *      Student
  *      actionCount
  *      actionTime (in seconds)
@@ -31,24 +33,24 @@ public class OLIViewActionDataObject{
         private Integer pageViewToActionTime;
         private Integer endOfMediaPlayToViewPageCount;
         private Integer endOfMediaPlayToViewPageTime;
-        private OLIIntermediateDataObject lastViewActionOLIIntermediateDataObject;
-        private OLIIntermediateDataObject lastProcessedOLIIntermediateDataObject;
+        private OliResourceUseDTOInterface lastViewActionDataObject;
+        private OliResourceUseDTOInterface lastProcessedDataObject;
         private String currContextMessageId;
         
         public OLIViewActionDataObject () {}
         
-        public void setLastViewActionOLIIntermediateDataObject (OLIIntermediateDataObject lastViewActionOLIIntermediateDataObject) {
-                this.lastViewActionOLIIntermediateDataObject = lastViewActionOLIIntermediateDataObject;
+        public void setLastViewActionDataObject (OliResourceUseDTOInterface lastViewActionDataObject) {
+                this.lastViewActionDataObject = lastViewActionDataObject;
         }
-        public OLIIntermediateDataObject getLastViewActionOLIIntermediateDataObject () {
-                return this.lastViewActionOLIIntermediateDataObject;
+        public OliResourceUseDTOInterface getLastViewActionDataObject () {
+                return this.lastViewActionDataObject;
         }
         
-        public void setLastProcessedOLIIntermediateDataObject (OLIIntermediateDataObject lastProcessedOLIIntermediateDataObject) {
-                this.lastProcessedOLIIntermediateDataObject = lastProcessedOLIIntermediateDataObject;
+        public void setLastProcessedDataObject (OliResourceUseDTOInterface lastProcessedDataObject) {
+                this.lastProcessedDataObject = lastProcessedDataObject;
         }
-        public OLIIntermediateDataObject getLastProcessedOLIIntermediateDataObject () {
-                return this.lastProcessedOLIIntermediateDataObject;
+        public OliResourceUseDTOInterface getLastProcessedDataObject () {
+                return this.lastProcessedDataObject;
         }
         
         public void setStudent (String student) {
@@ -72,7 +74,8 @@ public class OLIViewActionDataObject{
                 return this.actionCount;
         }
         public String getActionCountForDisplay () {
-                if (actionCount == null)
+                if (actionCount == null || 
+                                (actionTime == null || actionTime == 0))
                         return "0";
                 else 
                         return actionCount.toString();
@@ -95,7 +98,8 @@ public class OLIViewActionDataObject{
                 return this.actionTime;
         }
         public String getActionTimeForDisplay () {
-                if (actionTime == null)
+                if (actionTime == null 
+                                || (actionCount == null || actionCount == 0))
                         return "0";
                 else 
                         return actionTime.toString();
@@ -113,7 +117,8 @@ public class OLIViewActionDataObject{
                 return this.pageViewCount;
         }
         public String getPageViewCountForDisplay () {
-                if (pageViewCount == null)
+                if (pageViewCount == null ||
+                                pageViewTime == null || pageViewCount == 0)
                         return "0";
                 else 
                         return pageViewCount.toString();
@@ -141,7 +146,8 @@ public class OLIViewActionDataObject{
                 return this.pageViewTime;
         }
         public String getPageViewTimeForDisplay () {
-                if (pageViewTime == null)
+                if (pageViewTime == null ||
+                                pageViewCount == null || pageViewCount == 0)
                         return "0";
                 else 
                         return pageViewTime.toString();
@@ -164,7 +170,8 @@ public class OLIViewActionDataObject{
                 return this.actionToPageViewCount;
         }
         public String getActionToPageViewCountForDisplay () {
-                if (actionToPageViewCount == null)
+                if (actionToPageViewCount == null
+                                || actionToPageViewTime == null || actionToPageViewTime == 0)
                         return "0";
                 else 
                         return actionToPageViewCount.toString();
@@ -187,7 +194,8 @@ public class OLIViewActionDataObject{
                 return this.actionToPageViewTime;
         }
         public String getActionToPageViewTimeForDisplay () {
-                if (actionToPageViewTime == null)
+                if (actionToPageViewTime == null 
+                                || actionToPageViewCount == null || actionToPageViewCount == 0)
                         return "0";
                 else 
                         return actionToPageViewTime.toString();
@@ -205,7 +213,8 @@ public class OLIViewActionDataObject{
                 return this.pageViewToActionCount;
         }
         public String getPageViewToActionCountForDisplay () {
-                if (pageViewToActionCount == null)
+                if (pageViewToActionCount == null 
+                                || pageViewToActionTime == null || pageViewToActionTime == 0)
                         return "0";
                 else 
                         return pageViewToActionCount.toString();
@@ -228,7 +237,8 @@ public class OLIViewActionDataObject{
                 return this.pageViewToActionTime;
         }
         public String getPageViewToActionTimeForDisplay () {
-                if (pageViewToActionTime == null)
+                if (pageViewToActionTime == null
+                                || pageViewToActionCount == null || pageViewToActionCount == 0)
                         return "0";
                 else 
                         return pageViewToActionTime.toString();
@@ -290,72 +300,126 @@ public class OLIViewActionDataObject{
                 else return false;
         }
         
-        public void processOLIIntermediateDataObject (OLIIntermediateDataObject currViewActionOLIIntermediateDataObject) {
+        public void processOLIDataObject (OliResourceUseDTOInterface oliDataObject) {
                 //for view page: add nextTime to veiw page time and count
                 //if previous action is action, add prevTime to action_to_view and count
                 //for action: if previous is view_page, add preTime to view_to_action and count; subtract prevTime from view time and count
                 //for just action: add prevTime to action; add 1 to count only when it's first try in context block or start_attempt
-                if (currViewActionOLIIntermediateDataObject.isViewPage()) {
-                        Integer nextTime = currViewActionOLIIntermediateDataObject.getNextTimeDiff();
-                        if (nextTime != null && nextTime.intValue() != 0) {
-                                addToPageViewTime(nextTime);
-                                incrementPageViewCount();
-                        }
-                        Integer prevTime = currViewActionOLIIntermediateDataObject.getPrevTimeDiff();
-                        if (prevTime != null && prevTime.intValue() != 0) {
-                                if (lastProcessedOLIIntermediateDataObject != null) {
-                                        if (lastProcessedOLIIntermediateDataObject.isPlainAction() || lastProcessedOLIIntermediateDataObject.isXMLAction()) {
-                                                addToActionToPageViewTime(prevTime);
-                                                incrementActionToPageViewCount();
-                                        } else if (lastProcessedOLIIntermediateDataObject.isPlainMediaStopAction() || lastProcessedOLIIntermediateDataObject.isXMLMediaStopAction()) {
-                                                addToEndOfMediaPlayToViewPageTime(prevTime);
-                                                incrementEndOfMediaPlayToViewPageCount();
+                
+                //when current obj has no XMLin info field 
+                if (oliDataObject instanceof OliUserTransactionDTO) {
+                        OliUserTransactionDTO currObj = (OliUserTransactionDTO)oliDataObject;
+                        //when current action is a view page action
+                        if (currObj.isViewPage()) {
+                                Integer nextTime = currObj.getNextTimeDiff();
+                                if (nextTime != null && nextTime.intValue() != 0) {
+                                        addToPageViewTime(nextTime);
+                                        incrementPageViewCount();
+                                }
+                                Integer prevTime = currObj.getPrevTimeDiff();
+                                if (prevTime != null && prevTime.intValue() != 0) {
+                                        if (lastProcessedDataObject != null) {
+                                                //when last process object is action with/or without xml
+                                                if (lastProcessedDataObject instanceof OliUserTransactionDTO) {
+                                                        //when last processed object is action
+                                                        if (((OliUserTransactionDTO)lastProcessedDataObject).isPlainAction()
+                                                                        || ((OliUserTransactionDTO)lastProcessedDataObject).isCombinedViewSaveAttemptAction()
+                                                                        || ((OliUserTransactionDTO)lastProcessedDataObject).isSubmitAttempt()) {
+                                                                addToActionToPageViewTime(prevTime);
+                                                                incrementActionToPageViewCount();
+                                                        } else if (((OliUserTransactionDTO)lastProcessedDataObject).isPlainMediaStopAction()) {
+                                                                addToEndOfMediaPlayToViewPageTime(prevTime);
+                                                                incrementEndOfMediaPlayToViewPageCount();
+                                                        }
+                                                } else if (lastProcessedDataObject instanceof OliUserTransactionWithXmlDTO) {
+                                                        if (((OliUserTransactionWithXmlDTO)lastProcessedDataObject).isXMLAction()) {
+                                                                addToActionToPageViewTime(prevTime);
+                                                                incrementActionToPageViewCount();
+                                                        } else if (((OliUserTransactionWithXmlDTO)lastProcessedDataObject).isXMLMediaStopAction()) {
+                                                                addToEndOfMediaPlayToViewPageTime(prevTime);
+                                                                incrementEndOfMediaPlayToViewPageCount();
+                                                        }
+                                                }
                                         }
                                 }
-                        }
-                } else if (currViewActionOLIIntermediateDataObject.isPlainAction() ||
-                                currViewActionOLIIntermediateDataObject.isXMLAction()) {
-                        if (lastProcessedOLIIntermediateDataObject != null && lastProcessedOLIIntermediateDataObject.isViewPage()) {
-                                Integer prevTime = currViewActionOLIIntermediateDataObject.getPrevTimeDiff();
-                                if (prevTime != null && prevTime.intValue() != 0) {
-                                        addToPageViewToActionTime(prevTime);
-                                        incrementPageViewToActionCount();
-                                        //subtract prevTime from viewPage
-                                        if (pageViewTime >= prevTime) {
-                                                subtractFromPageViewTime(prevTime);
+                        } //when current obj is action or view-saveAttempt aka checkpoint/quiz
+                        else if (currObj.isPlainAction() || currObj.isCombinedViewSaveAttemptAction()) {
+                                //last action is view page
+                                if (lastProcessedDataObject != null 
+                                                && (lastProcessedDataObject instanceof OliUserTransactionDTO) 
+                                                && (((OliUserTransactionDTO)lastProcessedDataObject).isViewPage() 
+                                                                || ((OliUserTransactionDTO)lastProcessedDataObject).isViewPreface())) {
+                                        Integer prevTime = currObj.getPrevTimeDiff();
+                                        if (prevTime != null && prevTime.intValue() != 0) {
+                                                addToPageViewToActionTime(prevTime);
+                                                incrementPageViewToActionCount();
+                                                //subtract prevTime from viewPage
+                                                if (pageViewTime != null && pageViewTime >= prevTime) {
+                                                        subtractFromPageViewTime(prevTime);
+                                                }
+                                                if (pageViewCount != null && pageViewCount >= 1) {
+                                                        decrementPageViewCount();
+                                                }
                                         }
-                                        if (pageViewCount >= 1) {
-                                                decrementPageViewCount();
-                                        }
-                                }
-                        } else {
-                                Integer prevTime = currViewActionOLIIntermediateDataObject.getPrevTimeDiff();
-                                if (prevTime != null && prevTime.intValue() != 0) {
-                                        addToActionTime(prevTime);
-                                        if (currViewActionOLIIntermediateDataObject.isPlainAction() &&
-                                                        currViewActionOLIIntermediateDataObject.isPlainActionStartSessionOrAttempt()) {
-                                                /*if (lastProcessedOLIIntermediateDataObject == null || lastProcessedOLIIntermediateDataObject.isPlainMediaAction() || lastProcessedOLIIntermediateDataObject.isXMLMediaAction()) {
+                                }//last action is an action 
+                                else {
+                                        Integer prevTime = currObj.getPrevTimeDiff();
+                                        if (prevTime != null && prevTime.intValue() != 0) {
+                                                addToActionTime(prevTime);
+                                                //only add to count of it is start attempt or start session (after combined two rows with the same info and time
+                                                if ((currObj.isPlainAction() && currObj.isPlainActionStartSessionOrAttempt())
+                                                                || currObj.getAction().equals(OliUserTransactionDTO.COMBINED_START_ATTEMPT_VIEW_SAVE_ATTEMPT)) {
                                                         incrementActionCount();
-                                                } else if (lastProcessedOLIIntermediateDataObject != null &&
-                                                                currViewActionOLIIntermediateDataObject.getInfo() != null &&
-                                                                lastProcessedOLIIntermediateDataObject.getInfo() != null &&
-                                                                !currViewActionOLIIntermediateDataObject.getInfo().equals(lastProcessedOLIIntermediateDataObject.getInfo())) {
-                                                        incrementActionCount();
-                                                } else if (lastViewActionOLIIntermediateDataObject == null)
+                                                }//avoid situation action time is not 0 but count is 0
+                                                /*else if (actionCount == null || actionCount == 0)
                                                         incrementActionCount();*/
-                                                incrementActionCount();
-                                        } else if (currViewActionOLIIntermediateDataObject.isXMLAction()){
-                                                //increment only once for the entire context block
-                                                if (currContextMessageId == null || !currContextMessageId.equals(currViewActionOLIIntermediateDataObject.getXmlExtractedDataObject().getContextMessageId()))
-                                                        incrementActionCount();
+                                        }
+                                }
+                        }//end of current obj is view/or action/or view-saveAttempt aka checkpoint/quiz
+                }//end of oliDataObject instanceof OliUserTransactionDTO
+                else if (oliDataObject instanceof OliUserTransactionWithXmlDTO) {
+                        OliUserTransactionWithXmlDTO currObj = (OliUserTransactionWithXmlDTO)oliDataObject;
+                        //current obj is action with xml
+                        if (currObj.isXMLAction()) {
+                                //last obj is view without xml
+                                if (lastProcessedDataObject != null 
+                                                && (lastProcessedDataObject instanceof OliUserTransactionDTO) 
+                                                && ((OliUserTransactionDTO)lastProcessedDataObject).isViewPage()) {
+                                        Integer prevTime = currObj.getPrevTimeDiff();
+                                        if (prevTime != null && prevTime.intValue() != 0) {
+                                                addToPageViewToActionTime(prevTime);
+                                                incrementPageViewToActionCount();
+                                                //subtract prevTime from viewPage
+                                                if (pageViewTime != null && pageViewTime >= prevTime) {
+                                                        subtractFromPageViewTime(prevTime);
+                                                } else
+                                                        pageViewTime = 0;
+                                                if (pageViewCount != null && pageViewCount >= 1) {
+                                                        decrementPageViewCount();
+                                                }
+                                        }
+                                } //last action is an action
+                                else {
+                                        Integer prevTime = currObj.getPrevTimeDiff();
+                                        if (prevTime != null && prevTime.intValue() != 0) {
+                                                addToActionTime(prevTime);
+                                                if (currObj.isXMLAction()){
+                                                        //increment only once for the entire context block
+                                                        if (currContextMessageId == null || !currContextMessageId.equals(currObj.getXmlExtractedDataObject().getContextMessageId()))
+                                                                incrementActionCount();
+                                                        //avoid situation action time is not 0 but count is 0
+                                                        /*else if (actionCount == null || actionCount == 0)
+                                                                incrementActionCount();*/
+                                                }
                                         }
                                 }
                         }
-                }
-                setLastViewActionOLIIntermediateDataObject(currViewActionOLIIntermediateDataObject);
-                if (currViewActionOLIIntermediateDataObject.getXmlExtractedDataObject() != null &&
-                                currViewActionOLIIntermediateDataObject.getXmlExtractedDataObject().getContextMessageId() != null)
-                        setCurrContextMessageId(currViewActionOLIIntermediateDataObject.getXmlExtractedDataObject().getContextMessageId());
+                } //end of oliDataObject instanceof OliUserTransactionWithXmlDTO
+                setLastViewActionDataObject(oliDataObject);
+                if ((oliDataObject instanceof OliUserTransactionWithXmlDTO) 
+                                && ((OliUserTransactionWithXmlDTO)oliDataObject).getXmlExtractedDataObject() != null 
+                                && ((OliUserTransactionWithXmlDTO)oliDataObject).getXmlExtractedDataObject().getContextMessageId() != null)
+                        setCurrContextMessageId(((OliUserTransactionWithXmlDTO)oliDataObject).getXmlExtractedDataObject().getContextMessageId());
         }
 
         public String toString() {
@@ -371,8 +435,8 @@ public class OLIViewActionDataObject{
                 sb.append("pageViewToActionTime: " + pageViewToActionTime + "\t");
                 sb.append("endOfMediaPlayToViewPageCount: " + endOfMediaPlayToViewPageCount + "\t");
                 sb.append("endOfMediaPlayToViewPageTime: " + endOfMediaPlayToViewPageTime + "\n");
-                sb.append("lastViewActionOLIIntermediateDataObject: " + lastViewActionOLIIntermediateDataObject + "\n");
-                sb.append("lastProcessedOLIIntermediateDataObject: " + lastProcessedOLIIntermediateDataObject);
+                sb.append("lastViewActionDataObject: " + lastViewActionDataObject + "\n");
+                sb.append("lastProcessedDataObject: " + lastProcessedDataObject);
                 
                 return sb.toString();
         }
