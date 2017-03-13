@@ -38,12 +38,12 @@ public class DssppMain extends AbstractComponent {
         //File corpus = null;
         int lag = 0;
         String returnvals = null;
-        String simfunc = null;
+        String simfunc = "cosine";
         
-        double minWeight = 0;
-        double minStrength = 0;
-        double minRankby = 0;
-        String category = null;
+        //double minWeight = 0;
+        //double minStrength = 0;
+        //double minRankby = 0;
+        //String category = null;
         String SS = null;
         String domain = null;
 
@@ -53,14 +53,14 @@ public class DssppMain extends AbstractComponent {
         lag = this.getOptionAsInteger("lag");
         //returnvals = this.getOptionAsString("returnvals");
         //corpus = this.getAttachment(1, 0);
-        simfunc = this.getOptionAsString("simfunc");
+        //simfunc = this.getOptionAsString("simfunc");
         
-        category = this.getOptionAsString("category");
+        //category = this.getOptionAsString("category");
         SS = this.getOptionAsString("SS");
         domain = this.getOptionAsString("domain");
-        minWeight = this.getOptionAsDouble("minWeight");
-        minStrength = this.getOptionAsDouble("minStrength");
-        minRankby = this.getOptionAsDouble("minRankby");
+        //minWeight = this.getOptionAsDouble("minWeight");
+        //minStrength = this.getOptionAsDouble("minStrength");
+        //minRankby = this.getOptionAsDouble("minRankby");
 
         inputFile = this.getAttachment(0,  0);
 
@@ -73,7 +73,8 @@ public class DssppMain extends AbstractComponent {
 
         //Generating required out
         try {
-        	dssppSimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc, minWeight , minStrength , minRankby , category , SS , domain);
+        	//dssppSimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc, minWeight , minStrength , minRankby , category , SS , domain);
+        	dssppSimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc, SS , domain);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -91,8 +92,9 @@ public class DssppMain extends AbstractComponent {
 
 
     public void dssppSimilarityCalc(File inputFile, String col1,
-            String col2, int lac, String returnvals, String simfunc,double minWeight ,double minStrength ,double minRankby ,String category ,String SS ,String domain)
-            throws Exception {
+            //String col2, int lac, String returnvals, String simfunc,double minWeight ,double minStrength ,double minRankby ,String category ,String SS ,String domain)
+            String col2, int lac, String returnvals, String simfunc,String SS ,String domain)
+            		throws Exception {
         if (inputFile == null) {
             this.addErrorMessage("Invalid Input File.");
             return;
@@ -178,7 +180,7 @@ public class DssppMain extends AbstractComponent {
                     } else {
 						double x;
 						if (simfunc.equals("cosine")) {
-							x = dsspp.getSimilarity(term1, term2, minWeight,minStrength,minRankby,category,SS,domain );
+							x = dsspp.getSimilarity(term1, term2, SS,domain );
                         } else {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
@@ -265,7 +267,7 @@ public class DssppMain extends AbstractComponent {
                         if (simfunc.equals("cosine")) {
 					String[] v1 = v.toLowerCase().split("[,\\s\\-:\\?\\|]");
 					String[] u1 = u.toLowerCase().split("[,\\s\\-:\\?\\|]");
-                            x = dsspp.getSimilarity(u1, v1, minWeight,minStrength,minRankby,category,SS,domain);
+                            x = dsspp.getSimilarity(u1, v1, SS,domain);
                         } else {
                             this.addErrorMessage("Requested Similarity function not available");
                             return;
@@ -346,7 +348,7 @@ public class DssppMain extends AbstractComponent {
                     if (simfunc.equals("cosine")) {
                         String[] term1 = u.split("[,\\s\\-:\\?\\|]");
 						String[] term2 = v.split("[,\\s\\-:\\?\\|]");
-						x.add(dsspp.getSimilarity(term1, term2, minWeight,minStrength,minRankby,category,SS,domain));
+						x.add(dsspp.getSimilarity(term1, term2, SS,domain));
 
                     } else {
                         this.addErrorMessage("Requested Similarity function not available");
@@ -387,11 +389,20 @@ public class DssppMain extends AbstractComponent {
 
         if (this.isCancelled()) {
             this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
+        } else{
+        	if (returnvals.equals("col")){
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "student-step";
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+        	}
+            else if (returnvals.equals("uniqmat"))  {
+	            Integer nodeIndex = 0;
+	            Integer fileIndex = 0;
+	            String fileType = "text";
+	            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+            }
+            else{this.addErrorMessage("No output Generated for return type: "+returnvals);}
         }
     }
 

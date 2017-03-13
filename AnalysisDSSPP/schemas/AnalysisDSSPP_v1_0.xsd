@@ -49,26 +49,73 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="OutFileList0">
-    <xs:choice>
-      <xs:element ref="text" />
-    </xs:choice>
-  </xs:complexType>
+ <xs:complexType name="OutFileList0">
+	<xs:choice>
+		<xs:element ref="file"/>
+	</xs:choice>
+ </xs:complexType>
+
+ <xs:simpleType name="domainType" final="restriction">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="combineall"/>
+		<xs:enumeration value="ALL"/>
+		<xs:enumeration value="common"/>
+		<xs:enumeration value="Arts_and_Humanities"/>
+		<xs:enumeration value="Beauty_and_Style"/>
+		<xs:enumeration value="Cars_and_Transportation"/>
+		<xs:enumeration value="Computers_and_Internet"/>
+		<xs:enumeration value="Consumer_Electronics"/>
+		<xs:enumeration value="Environment"/>
+		<xs:enumeration value="Family_and_Relationships"/>
+		<xs:enumeration value="Food_and_Drink"/>
+		<xs:enumeration value="Games_and_Recreation"/>
+		<xs:enumeration value="Health"/>
+		<xs:enumeration value="Home_and_Garden"/>
+		<xs:enumeration value="Local_Business"/>
+		<xs:enumeration value="News_and_Events"/>
+		<xs:enumeration value="Pets"/>
+		<xs:enumeration value="Politics"/>
+		<xs:enumeration value="Science_and_Mathematics"/>
+		<xs:enumeration value="Social_Science"/>
+		<xs:enumeration value="Society_and_Culture"/>
+		<xs:enumeration value="Sports"/>
+		<xs:enumeration value="Travel"/>
+		<xs:enumeration value="nodomain"/>
+	</xs:restriction>
+ </xs:simpleType>
+ 
+ <xs:simpleType name="semanticSpaceType" final="restriction">
+	<xs:restriction base="xs:string">
+	 <xs:enumeration value="tasalsa500"/> 
+	 <xs:enumeration value="tasalsa3rd"/> 
+	 <xs:enumeration value="tasalsa6th"/>
+	 <xs:enumeration value="tasalsa9th"/>
+	 <xs:enumeration value="tasalsa12th"/>
+	 <xs:enumeration value="wordnetlsa"/>
+	 <xs:enumeration value="encyclopedialsa"/>
+	 <xs:enumeration value="narrative347lsa"/>
+	 <xs:enumeration value="physicslsa"/>
+	 <xs:enumeration value="fa" />
+	</xs:restriction>
+ </xs:simpleType>
+ 
+ <xs:simpleType name="returnvalsType" final="restriction">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="col"/>
+		<xs:enumeration value="uniqmat"/>
+	</xs:restriction>
+ </xs:simpleType>
+
 
 
   <xs:complexType name="OptionsType">
     <xs:all>
-    <xs:element type="FileInputHeader" name="header1" id="Correct_Answer_Custom_Field" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="xs:string" name="header2" id="header2" default="Input" />
-      <xs:element type="xs:string" name="simfunc" id="simfunc" default="cosine" />
-      <xs:element type="xs:string" name="returnvals" id="returnvals" default="col" />
-      <xs:element type="xs:integer" name="lag" id="lag" default="0" />
-      <xs:element type="xs:double" name="minWeight" id="minWeight" default="0" />
-      <xs:element type="xs:double" name="minStrength" id="minStrength" default="0" />
-      <xs:element type="xs:double" name="minRankby" id="minRankby" default="0.02" />
-      <xs:element type="xs:string" name="category" id="category" default="news" />
-      <xs:element type="xs:string" name="SS" id="SS" default="fa" />
-      <xs:element type="xs:string" name="domain" id="domain" default="nodomain" />
+	  <xs:element type="FileInputHeader" name="header1" id="header1" default=".*"/>
+	  <xs:element type="FileInputHeader" name="header2" id="header2" default=".*"/>
+	  <xs:element type="domainType" name="domain" id="domain" default="combineall"/>
+	  <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col"/>
+	  <xs:element type="semanticSpaceType" name="ss" id="ss" default="tasalsa500"/>
+	  <xs:element type="xs:integer" name="lag" id="lag" default="0"/>
     </xs:all>
   </xs:complexType>
 
