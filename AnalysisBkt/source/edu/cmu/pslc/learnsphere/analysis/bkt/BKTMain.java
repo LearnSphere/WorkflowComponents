@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions;
 // import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption; // Yudelson: obsolete
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption;
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption; // Yudelson: non really needed
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ReportModelPredictionsOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.SolverType;
 // import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.StructureType; // Yudelson: obsolete
@@ -335,22 +335,23 @@ public class BKTMain extends AbstractComponent {
             analysisOptions.setSolver(SolverType.BAUM_WELCH);
         }
 
-        String fitAsOneSkill = this.getOptionAsString("fitAsOneSkill");
-        if (fitAsOneSkill != null) {
-            if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.NO.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.NO);
-            } else if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL);
-            } else if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.YES.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.YES);
-            }
-        }
+		// Yudelson: non really needed
+//         String fitAsOneSkill = this.getOptionAsString("fitAsOneSkill");
+//         if (fitAsOneSkill != null) {
+//             if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.NO.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.NO);
+//             } else if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL);
+//             } else if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.YES.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.YES);
+//             }
+//         }
 
         analysisOptions.setMaxIterations(this.getOptionAsInteger("maxIterations"));
 

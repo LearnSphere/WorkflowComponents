@@ -15,17 +15,12 @@
     </connection>
   </connections>
   <options>
-    <simfunc>cosine</simfunc>
     <header1>CF (Correct Answer)</header1>
     <header2>Input</header2>
     <returnvals>col</returnvals>
     <lag>0</lag>
-    <minWeight>0</minWeight>
-    <minStrength>0</minStrength>
-    <minRankby>0.02</minRankby>
-    <category>news</category>
-    <SS>fa</SS>
-    <domain>nodomain</domain>
+    <ss>tasalsa500</ss>
+    <domain>combineall</domain>
   </options>
   <inputs>
     <input0>

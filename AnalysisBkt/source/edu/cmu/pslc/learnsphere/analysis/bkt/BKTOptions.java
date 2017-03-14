@@ -118,38 +118,39 @@ public class BKTOptions {
 //     };
 
     /** The "fit as one skill" option. */
-    public enum FitAsOneSkillOption {
-        NO(0) {
-            public String toString() {
-                return "No";
-            }
-
-        },
-        FIT_AS_ONE_WITH_MULTISKILL(1) {
-            public String toString() {
-                return "FitAsOneWithMultiskill";
-            }
-
-        },
-        YES(2) {
-            public String toString() {
-                return "ForceOneSkill";
-            }
-
-        };
-
-        private int value;
-        private FitAsOneSkillOption(int value) {
-            this.value = value;
-        }
-
-        /** Provides string IDs for backwards compatibility.
-         * @return the string ID for backwards compatibility
-         */
-        public Integer getId() {
-            return value;
-        }
-    };
+    // Yudelson: non really needed
+//     public enum FitAsOneSkillOption {
+//         NO(0) {
+//             public String toString() {
+//                 return "No";
+//             }
+// 
+//         },
+//         FIT_AS_ONE_WITH_MULTISKILL(1) {
+//             public String toString() {
+//                 return "FitAsOneWithMultiskill";
+//             }
+// 
+//         },
+//         YES(2) {
+//             public String toString() {
+//                 return "ForceOneSkill";
+//             }
+// 
+//         };
+// 
+//         private int value;
+//         private FitAsOneSkillOption(int value) {
+//             this.value = value;
+//         }
+// 
+//         /** Provides string IDs for backwards compatibility.
+//          * @return the string ID for backwards compatibility
+//          */
+//         public Integer getId() {
+//             return value;
+//         }
+//     };
 
     /** The "report model predictions on the training set" option. */
     public enum ReportModelPredictionsOption {
@@ -194,7 +195,7 @@ public class BKTOptions {
     /** The conjugate gradient descent option. */
 //     private ConjugateGradientDescentOption conjugateGradientDescentOption; // Yudelson: obsolete
     /** The "fit as one skill" option. */
-    FitAsOneSkillOption fitAsOneSkillOption;
+//     FitAsOneSkillOption fitAsOneSkillOption; // Yudelson: non really needed
 
     /** Max iterations. */
     private Integer maxIterations;
@@ -306,16 +307,18 @@ public class BKTOptions {
     /**
      * @return the fitAsOneSkillOption
      */
-    public FitAsOneSkillOption getFitAsOneSkillOption() {
-        return fitAsOneSkillOption;
-    }
+	// Yudelson: non really needed
+//     public FitAsOneSkillOption getFitAsOneSkillOption() {
+//         return fitAsOneSkillOption;
+//     }
 
     /**
      * @param fitAsOneSkillOption the fitAsOneSkillOption to set
      */
-    public void setFitAsOneSkillOption(FitAsOneSkillOption fitAsOneSkillOptions) {
-        this.fitAsOneSkillOption = fitAsOneSkillOption;
-    }
+    // Yudelson: non really needed
+//     public void setFitAsOneSkillOption(FitAsOneSkillOption fitAsOneSkillOptions) {
+//         this.fitAsOneSkillOption = fitAsOneSkillOption;
+//     }
 
     /**
      * @return the maxIterations
@@ -573,9 +576,9 @@ public class BKTOptions {
             returnParamString.append(" -s " + structureSolver);
         }
 
-        if (fitAsOneSkillOption != null) {
-            returnParamString.append(" -f " + fitAsOneSkillOption.getId());
-        }
+//         if (fitAsOneSkillOption != null) {
+//             returnParamString.append(" -f " + fitAsOneSkillOption.getId());
+//         }
         if (maxIterations != null) {
             returnParamString.append(" -i " + maxIterations);
         }

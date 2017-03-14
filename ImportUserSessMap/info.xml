@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Datashop</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ImportUserSessMap</url>
+<date>2017-03-10</date>
+<abstract>The <b>Usee Session Map</b> allows import a mapping file for users and sessions. The only acceptable column headers for user session map are in the following order: user_sess, user_id.</abstract>
+<description>This component allows import a mapping file for users and sessions map.</description>
+
+<inputs>
+<b>A tab delimited file containing mappings for users and sessions</b>
+</inputs>
+
+<outputs>
+<b></b>
+</outputs>
+
+<options>
+</options>
+
+</info>

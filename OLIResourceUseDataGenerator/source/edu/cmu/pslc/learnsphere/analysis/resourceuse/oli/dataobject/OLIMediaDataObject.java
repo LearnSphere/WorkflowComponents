@@ -1,8 +1,11 @@
-package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto;
+package edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliResourceUseDTOInterface;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliUserTransactionDTO;
 
 /**
  * Represent an OLI media data object. Fields are
@@ -20,23 +23,23 @@ public class OLIMediaDataObject{
         private Integer mediaTime;
         private Integer actionToMediaPlayCount;
         private Integer actionToMediaPlayTime;
-        private OLIIntermediateDataObject lastMediaPlayOLIIntermediateDataObject;
-        private OLIIntermediateDataObject lastProcessedOLIIntermediateDataObject;
+        private OliResourceUseDTOInterface lastMediaPlayDataObject;
+        private OliResourceUseDTOInterface lastProcessedDataObject;
         
         public OLIMediaDataObject () {}
         
-        public void setLastMediaPlayOLIIntermediateDataObject (OLIIntermediateDataObject lastMediaPlayOLIIntermediateDataObject) {
-                this.lastMediaPlayOLIIntermediateDataObject = lastMediaPlayOLIIntermediateDataObject;
+        public void setLastMediaPlayDataObject (OliResourceUseDTOInterface lastMediaPlayDataObject) {
+                this.lastMediaPlayDataObject = lastMediaPlayDataObject;
         }
-        public OLIIntermediateDataObject getLastMediaPlayOLIIntermediateDataObject () {
-                return this.lastMediaPlayOLIIntermediateDataObject;
+        public OliResourceUseDTOInterface getLastMediaPlayDataObject () {
+                return this.lastMediaPlayDataObject;
         }
         
-        public void setLastProcessedOLIIntermediateDataObject (OLIIntermediateDataObject lastProcessedOLIIntermediateDataObject) {
-                this.lastProcessedOLIIntermediateDataObject = lastProcessedOLIIntermediateDataObject;
+        public void setLastProcessedDataObject (OliResourceUseDTOInterface lastProcessedDataObject) {
+                this.lastProcessedDataObject = lastProcessedDataObject;
         }
-        public OLIIntermediateDataObject getLastProcessedOLIIntermediateDataObject () {
-                return this.lastProcessedOLIIntermediateDataObject;
+        public OliResourceUseDTOInterface getLastProcessedDataObject () {
+                return this.lastProcessedDataObject;
         }
         
         public void setStudent (String student) {
@@ -136,60 +139,44 @@ public class OLIMediaDataObject{
                        return false;
         }
         
-        public void processOLIIntermediateDataObject (OLIIntermediateDataObject currMediaPlayOLIIntermediateDataObject) {
+        public void processOLIDataObject (OliResourceUseDTOInterface oliDataObject) {
                 //when action is "PLAY", or "MUTE", or "UNMUTE"
-                if (currMediaPlayOLIIntermediateDataObject.isPlainMediaAction()) {
-                        Integer nextTime = currMediaPlayOLIIntermediateDataObject.getNextTimeDiff();
+                //current obj is media play without XML
+                if ((oliDataObject instanceof OliUserTransactionDTO) 
+                                && ((OliUserTransactionDTO)oliDataObject).isPlainMediaAction()){
+                        Integer nextTime = oliDataObject.getNextTimeDiff();
                         if (nextTime != null && nextTime.intValue() != 0) {
                                 addToMediaTime(nextTime);
                                 //add to count as long as it is a play action
-                                if (currMediaPlayOLIIntermediateDataObject.isPlainMediaPlayAction())
+                                if (((OliUserTransactionDTO)oliDataObject).isPlainMediaPlayAction())
                                         incrementMediaCount();
                         }
-                        /*if (lastProcessedOLIIntermediateDataObject == null || 
-                                        (!lastProcessedOLIIntermediateDataObject.isPlainMediaAction() && !lastProcessedOLIIntermediateDataObject.isXMLMediaAction()))
-                                incrementMediaCount();
-                        else if (lastMediaPlayOLIIntermediateDataObject != null &&
-                                        currMediaPlayOLIIntermediateDataObject.getInfoFileName() != null &&
-                                        lastMediaPlayOLIIntermediateDataObject.getInfoFileName() != null &&
-                                        !currMediaPlayOLIIntermediateDataObject.getInfoFileName().equals(lastMediaPlayOLIIntermediateDataObject.getInfoFileName())) {
-                                incrementMediaCount();
-                        } else if (lastMediaPlayOLIIntermediateDataObject == null)
-                                incrementMediaCount();*/
-                } else if (currMediaPlayOLIIntermediateDataObject.isXMLMediaAction()) {
-                        if (currMediaPlayOLIIntermediateDataObject.isMediaPlayRecordableActionForXML()) {
-                                Integer nextTime = currMediaPlayOLIIntermediateDataObject.getNextTimeDiff();
+                } //current obj is media play with xml
+                else if ((oliDataObject instanceof OliUserTransactionWithXmlDTO)
+                                && ((OliUserTransactionWithXmlDTO)oliDataObject).isXMLMediaAction()) {
+                        if (((OliUserTransactionWithXmlDTO)oliDataObject).isMediaPlayRecordableActionForXML()) {
+                                Integer nextTime = oliDataObject.getNextTimeDiff();
                                 if (nextTime != null && nextTime.intValue() != 0) {
+                                        //add time for any media related
                                         addToMediaTime(nextTime);
-                                        if (currMediaPlayOLIIntermediateDataObject.isMediaPlayActionForXML())
+                                        //add count only for play action
+                                        if (((OliUserTransactionWithXmlDTO)oliDataObject).isMediaPlayActionForXML())
                                                 incrementMediaCount();
                                 }
-                                /*if (lastProcessedOLIIntermediateDataObject == null ||
-                                                (!lastProcessedOLIIntermediateDataObject.isPlainMediaAction() && !lastProcessedOLIIntermediateDataObject.isXMLMediaAction())) {
-                                        incrementMediaCount();
-                                } else if (lastMediaPlayOLIIntermediateDataObject != null && !lastMediaPlayOLIIntermediateDataObject.isXMLMediaAction()) {
-                                        incrementMediaCount();
-                                } else if (lastMediaPlayOLIIntermediateDataObject != null &&
-                                                currMediaPlayOLIIntermediateDataObject.getXmlExtractedDataObject().getMediaFileName() != null &&
-                                                lastMediaPlayOLIIntermediateDataObject.getXmlExtractedDataObject().getMediaFileName() != null &&
-                                                !currMediaPlayOLIIntermediateDataObject.getXmlExtractedDataObject().getMediaFileName().equals(lastMediaPlayOLIIntermediateDataObject.getXmlExtractedDataObject().getMediaFileName())) {
-                                        incrementMediaCount();
-                                } else if (lastMediaPlayOLIIntermediateDataObject == null) {
-                                        incrementMediaCount();
-                                }*/
                         }
                 }
 
-                Integer prevTime = currMediaPlayOLIIntermediateDataObject.getPrevTimeDiff();
+                Integer prevTime = oliDataObject.getPrevTimeDiff();
                 if (prevTime != null && prevTime.intValue() != 0) {
-                        if (lastProcessedOLIIntermediateDataObject != null) {
-                                if (lastProcessedOLIIntermediateDataObject.isPlainAction() || lastProcessedOLIIntermediateDataObject.isXMLAction()) {
+                        if (lastProcessedDataObject != null) {
+                                if ((lastProcessedDataObject instanceof OliUserTransactionDTO && ((OliUserTransactionDTO)lastProcessedDataObject).isPlainAction())
+                                                || (lastProcessedDataObject instanceof OliUserTransactionWithXmlDTO && ((OliUserTransactionWithXmlDTO)lastProcessedDataObject).isXMLAction())) {
                                         addToActionToMediaPlayTime(prevTime);
                                         incrementActionToMediaPlayCount();
                                 }
                         }
                 }
-                this.setLastMediaPlayOLIIntermediateDataObject(currMediaPlayOLIIntermediateDataObject);
+                this.setLastMediaPlayDataObject(oliDataObject);
         }
         
         public String toString() {
@@ -199,8 +186,8 @@ public class OLIMediaDataObject{
                 sb.append("mediaTime: " + mediaTime + "\t");
                 sb.append("actionToMediaPlayCount: " + actionToMediaPlayCount + "\t");
                 sb.append("actionToMediaPlayTime: " + actionToMediaPlayTime + "\n");
-                sb.append("lastMediaPlayOLIIntermediateDataObject: " + lastMediaPlayOLIIntermediateDataObject + "\n");
-                sb.append("lastProcessedOLIIntermediateDataObject: " + lastProcessedOLIIntermediateDataObject);
+                sb.append("lastMediaPlayDataObject: " + lastMediaPlayDataObject + "\n");
+                sb.append("lastProcessedDataObject: " + lastProcessedDataObject);
                 
                 return sb.toString();
         }

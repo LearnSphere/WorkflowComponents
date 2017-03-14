@@ -14,28 +14,28 @@ public class DssppUtil {
 
 	//Creating query
 	
-	public double getSimilarity(String[] text1, String[] text2, double minWeight ,double minStrength ,double minRankby ,String category ,String SS ,String domain) throws Exception {
+	public double getSimilarity(String[] text1, String[] text2, String SS ,String domain) throws Exception {
 		String payload = null;
 		//String url = "http://dsspp.skoonline.org/comparetext?";
 		String url = "//dsspp.skoonline.org/comparetext?";
 
 		payload = "json={";
-		payload += "\"type\":2,";
-		payload += "\"minWeight\":" + minWeight +",";
+		payload += "\"type\":1,";
+		//payload += "\"minWeight\":" + minWeight +",";
 		payload += "\"text1\":\"" + generateString(text1).trim() + "\",";
 		payload += "\"text2\":\"" + generateString(text2).trim() + "\",";
-		payload += "\"minStrength\":" + minStrength +",";
-		payload += "\"wc\":0,";
-		payload += "\"etop\":10,";
-		payload += "\"category\":\"" + category + "\",";
-		payload += "\"ttop\":50,";
+		//payload += "\"minStrength\":" + minStrength +",";
+		//payload += "\"wc\":0,";
+		//payload += "\"etop\":10,";
+		//payload += "\"category\":\"" + category + "\",";
+		//payload += "\"ttop\":50,";
 		payload += "\"SS\":\"" + SS + "\",";
-		payload += "\"userGuid\":\"3ae566a4-3208-4715-bd48-dd73808fe350\",";
-		payload += "\"minRankby\":" + minRankby +",";
-		payload += "\"include_ttop\":true,";
+		//payload += "\"userGuid\":\"3ae566a4-3208-4715-bd48-dd73808fe350\",";
+		//payload += "\"minRankby\":" + minRankby +",";
+		//payload += "\"include_ttop\":true,";
 		payload += "\"guid\":\"3ae566a4-3208-4715-bd48-dd73808fe350\",";
-		payload += "\"include_etop\":true,";
-		payload += "\"format\":\"json\",";
+		//payload += "\"include_etop\":true,";
+		//payload += "\"format\":\"json\",";
 		payload += "\"domain\":\"" + domain + "\"}";
 
 		String urlTotal = url + payload;

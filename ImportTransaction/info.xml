@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Carnegie Mellon University</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/ImportTransaction</url>
+<date>2017-03-09</date>
+<abstract>The <b>Transaction</b> Export is one of three DataShop formats.</abstract>
+<details>You can find more information in our help pages under <a href="https://pslcdatashop.web.cmu.edu/help?page=export">Export: Getting Data Out</a></details>
+
+<inputs>
+</inputs>
+
+<outputs>
+<b>Transaction export</b>
+</outputs>
+
+<options>
+<b>Upload</b> or <b>Import existing file</b>
+</options>
+
+</info>
