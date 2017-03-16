@@ -1,0 +1,32 @@
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,020 - Command-line args: [-componentXmlFile, E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml, -workflowDir, E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI/test/, -toolDir, E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI/, -schemaFile, E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI/schemas/ImportXAPI_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,022 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 15 Mar 2017 01:52:44,262 - Reading E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 15 Mar 2017 01:52:44,266 - File absolute path: E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI\test\components\ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 15 Mar 2017 01:52:44,267 - File canonical path: E:\DIBBs\WorkFlowGit\WorkflowComponents\ImportXAPI\test\components\ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,288 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,299 - WFXML: <component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Component #1</component_id_human>
+  <workflow_id>1</workflow_id>
+  <component_name>XAPI</component_name>
+  <component_type>Import</component_type>
+  <left>68</left>
+  <connections>
+    <connection>
+      <to>Component2</to>
+    </connection>
+  </connections>
+  <options>
+    <filter>filterByVerb</filter>
+    <url>https://lrs.adlnet.gov/xAPI</url>
+    <username>SKOAdmin</username>
+    <password>password</password>
+    <filterValue>helo</filterValue>
+    <customFilter>Null</customFilter>
+  </options>
+  <top>106</top>
+</component>
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,299 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,425 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,674 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 15 Mar 2017 01:52:44,674 - Executing workflow component.
