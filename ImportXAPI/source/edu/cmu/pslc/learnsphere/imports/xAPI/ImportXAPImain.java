@@ -8,7 +8,9 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -138,7 +140,16 @@ public class ImportXAPImain extends AbstractComponent {
 	    	JsonFlattener parser = new JsonFlattener();
 	    	TabTextWriter writer = new TabTextWriter();
 	        List<Map<String, String>> flatJson = parser.parseJson(jsonTxt);
- 	        writer.writeAsTxt(flatJson, "sample.txt");
+ 	        //writer.writeAsTxt(flatJson, "sample.txt");
+	        File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
+	        FileWriter oStream = new FileWriter(generatedFile);
+	        BufferedWriter sw = new BufferedWriter(oStream);
+	        sw.write(writer.writeAsTxt(flatJson));
+	        
+	        Integer nodeIndex = 0;
+            Integer fileIndex = 0;
+            String fileType = "text";
+            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
 	    }
 
 }

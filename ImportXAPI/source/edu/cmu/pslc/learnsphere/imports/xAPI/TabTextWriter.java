@@ -10,13 +10,14 @@ import java.util.*;
 
 public class TabTextWriter {
 
-    public void writeAsTxt(List<Map<String, String>> flatJson, String fileName) throws FileNotFoundException {
+    public String writeAsTxt(List<Map<String, String>> flatJson) throws FileNotFoundException {
         Set<String> headers = collectHeaders(flatJson);
         String output = StringUtils.join(headers.toArray(), "\t") + "\n";
         for (Map<String, String> map : flatJson) {
             output = output + getCommaSeperatedRow(headers, map) + "\n";
         }
-        writeToFile(output, fileName);
+        //writeToFile(output, fileName);
+        return output;
     }
 
     private void writeToFile(String output, String fileName) throws FileNotFoundException {
