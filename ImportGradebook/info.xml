@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Carnegie Mellon University</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ImportStudentStep</url>
+<date>2017-03-20</date>
+<abstract>
+The <b>Gradebook</b> import is a tab-delimited text file containing gradebook values for each student and item.
+</abstract>
+
+<details>
+<ul>
+<li>The first <b>row</b> contains the gradebook item names.</li>
+<li>The first <b>column</b> contains unique student IDs.</li>
+<li>All other cells are numbers -- the score the student (row) had on this item (column).</li>
+</ul>
+<br/>
+Optionally, the last column can be a summary column, containing the student's total score.
+</details>
+
+<inputs>
+</inputs>
+
+<outputs>
+Gradebook file suitable for use in <b>Correlation</b> or <b>Cronbach's Alpha</b> Analysis components.
+</outputs>
+
+<options>
+<b>Upload</b> or <b>Import existing file</b>
+</options>
+
+</info>

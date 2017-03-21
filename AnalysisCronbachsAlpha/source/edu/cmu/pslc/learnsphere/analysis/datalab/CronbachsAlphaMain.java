@@ -46,36 +46,46 @@ public class CronbachsAlphaMain extends AbstractComponent {
     }
 
     /**
-     * Processes the student-step file and associated model name to generate
-     * the inputs to the next component.
+     * Processes the gradebook file.
      */
     @Override
     protected void runComponent() {
 
-        File outputFile = this.createFile("CronbachsAlpha", ".txt");
+        Array2DRowRealMatrix data = null;
 
-        Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
+        try {
+            Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
 
-        Array2DRowRealMatrix data = gradebook.getData();
-        headers = gradebook.getHeaders();
-        students = gradebook.getStudents();
-        numItems = headers.length - 1;  // don't include student column
-        numStudents = students.length;
+            data = gradebook.getData();
+            headers = gradebook.getHeaders();
+            students = gradebook.getStudents();
+            numItems = headers.length - 1;  // don't include student column
+            numStudents = students.length;
 
-        Boolean summaryColPresent =
-            this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
-        logger.info("*** summaryColPresent = " + summaryColPresent);
+            Boolean summaryColPresent =
+                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+
+        } catch (Exception e) {
+            String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e; 
+            logger.info(msg);
+            this.addErrorMessage(msg);
+        }
 
         // Write the output file.
-        outputFile = populateCronbachsAlphaFile(outputFile, data);
+        File outputFile = populateCronbachsAlphaFile(data);
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "cronbachs-alpha";
-            this.addOutputFile(outputFile, nodeIndex, fileIndex, fileType);
+        // If we haven't seen any errors yet...
+        if (this.errorMessages.size() == 0) {
+            if (this.isCancelled()) {
+                this.addErrorMessage("Cancelled workflow during component execution.");
+            } else if (outputFile == null) {
+                this.addErrorMessage("Failed to create output Cronbach's alpha file.");
+            } else {
+                Integer nodeIndex = 0;
+                Integer fileIndex = 0;
+                String fileType = "cronbachs-alpha";
+                this.addOutputFile(outputFile, nodeIndex, fileIndex, fileType);
+            }
         }
 
         System.out.println(this.getOutput());
@@ -96,14 +106,17 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
     /**
      * Write the CronbachsAlpha values to a file.
-     * @param theFile the File to write to
      * @param data the matrix of data
      * @return the populated file
      */
-    private File populateCronbachsAlphaFile(File theFile, Array2DRowRealMatrix data) {
+    private File populateCronbachsAlphaFile(Array2DRowRealMatrix data) {
+
+        if (data == null) { return null; }
+
+        File outputFile = this.createFile("CronbachsAlpha", ".txt");
 
         // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
                 
                 // Write values to export
                 Double[] cronbachValues = getCronbachValues(data);
@@ -124,7 +137,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
                 e.printStackTrace();
             }
 
-        return theFile;
+        return outputFile;
     }
 
     /**

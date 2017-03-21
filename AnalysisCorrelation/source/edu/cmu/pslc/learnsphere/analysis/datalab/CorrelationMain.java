@@ -48,45 +48,54 @@ public class CorrelationMain extends AbstractComponent {
     }
 
     /**
-     * Processes the student-step file and associated model name to generate
-     * the inputs to the next component.
+     * Processes the gradebook file.
      */
     @Override
     protected void runComponent() {
 
-        File correlationFile = this.createFile("Correlation", ".txt");
+        Array2DRowRealMatrix data = null;
 
-        Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
+        try {
+            Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
 
-        Array2DRowRealMatrix data = gradebook.getData();
-        headers = gradebook.getHeaders();
-        students = gradebook.getStudents();
-        numItems = headers.length - 1;  // don't include student column
-        numStudents = students.length;
+            data = gradebook.getData();
+            headers = gradebook.getHeaders();
+            students = gradebook.getStudents();
+            numItems = headers.length - 1;  // don't include student column
+            numStudents = students.length;
 
-        Boolean summaryColPresent =
-            this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+            Boolean summaryColPresent =
+                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+
+        } catch (Exception e) {
+            String msg = "Failed to parse gradebook and compute correlation. " + e; 
+            logger.info(msg);
+            this.addErrorMessage(msg);
+        }
 
         // Write the correlation file.
-        correlationFile = populateCorrelationFile(correlationFile, data);
+        File correlationFile = populateCorrelationFile(data);
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "correlation";
-            this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+        // If we haven't seen any errors yet...
+        if (this.errorMessages.size() == 0) {
+            if (this.isCancelled()) {
+                this.addErrorMessage("Cancelled workflow during component execution.");
+            } else if (correlationFile == null) {
+                this.addErrorMessage("Failed to create output correlation file.");
+            } else {
+                Integer nodeIndex = 0;
+                Integer fileIndex = 0;
+                String fileType = "correlation";
+                this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+            }
         }
 
         System.out.println(this.getOutput());
-
 
         for (String err : this.errorMessages) {
             // These will also be picked up by the workflows platform and relayed to the user.
             System.err.println(err);
         }
-
     }
 
     // Constant
@@ -97,14 +106,17 @@ public class CorrelationMain extends AbstractComponent {
 
     /**
      * Write the Correlation values to a file.
-     * @param theFile the File to write to
      * @param data the matrix of data
      * @return the populated file
      */
-    private File populateCorrelationFile(File theFile, Array2DRowRealMatrix data) {
+    private File populateCorrelationFile(Array2DRowRealMatrix data) {
+
+        if (data == null) { return null; }
+
+        File correlationFile = this.createFile("Correlation", ".txt");
 
         // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+        try (OutputStream outputStream = new FileOutputStream(correlationFile)) {
                 
                 // Write header to export
                 for (int i = 0; i < headers.length; i++) {
@@ -134,7 +146,7 @@ public class CorrelationMain extends AbstractComponent {
                 e.printStackTrace();
             }
 
-        return theFile;
+        return correlationFile;
     }
 
     /**
