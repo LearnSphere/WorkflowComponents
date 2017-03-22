@@ -38,7 +38,7 @@
         </manifestclasspath>
         <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/DSSPP/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.DSSPP.DSSPPMain" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.DSSPP.DssppMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
