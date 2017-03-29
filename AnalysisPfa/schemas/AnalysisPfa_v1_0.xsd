@@ -120,7 +120,7 @@
   <xs:complexType name="OptionsType">
     <xs:all >
       <xs:element type="analysisType" name="analysis" id="Analysis" default="Simple" />
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
+      <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Random_Effect" default="\s*KC\s*\((.*)\)\s*" />
     </xs:all>
   </xs:complexType>
 

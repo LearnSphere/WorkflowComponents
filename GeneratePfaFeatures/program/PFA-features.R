@@ -13,10 +13,9 @@ workingDirectory = args[4]
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-KCmodel <- gsub("[ ()]", ".", args[6])
-n <- as.integer(args[8])
-inputFile<-args[10]
-outputFilePath<- paste(workingDirectory, "output-features.txt", sep="")
+KCmodel <- gsub("[ ()-]", ".", args[6])
+inputFile<-args[8]
+outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")
@@ -64,7 +63,8 @@ val$CF..cor.<-corcount(val,val$CF..KCindex.)
 val$CF..incor.<-incorcount(val,val$CF..KCindex.)
 # cat("now adding study\n")
 val$CF..study.<-studycount(val,val$CF..KCindex.)
-
+#remove no KC lines
+eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 # cat("now writing table\n")
 
 # Export modified data frame for reimport after header attachment
