@@ -46,10 +46,10 @@ public class PFAMain extends AbstractComponent {
         File outputDirectory = this.runExternalMultipleFileOuput();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/pfa-model.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/pfa-summary.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/randomEffects.txt");
-            File file3 = new File(outputDirectory.getAbsolutePath() + "/results.xml");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction file output.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/random effect parameters.txt");
+            File file3 = new File(outputDirectory.getAbsolutePath() + "/model result values.xml");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
