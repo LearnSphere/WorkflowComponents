@@ -71,6 +71,14 @@ public class BKTMain extends AbstractComponent {
 
     /** Decimal format used for predicted error rates. */
     private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
+    
+    /** Keep track of the rows that have no skills*/
+    private List<Integer> rowsMissingSkill;
+    
+    /** Keep track of the rows that have multiple skills, key is the number of row, value is how many skills*/
+    private Map<Integer, Integer> rowsWithMultipleSkills;
+    
+    private int maxRowNumber = 0;
 
     /**
      * Main method.
@@ -88,7 +96,8 @@ public class BKTMain extends AbstractComponent {
      */
     public BKTMain() {
         super();
-
+        rowsMissingSkill = new ArrayList<Integer>();
+        rowsWithMultipleSkills = new Hashtable<Integer, Integer>();
     }
 
 
@@ -156,10 +165,30 @@ public class BKTMain extends AbstractComponent {
                 // Write values to export
                 String line = bufferedReader.readLine();
                 Integer lineCount = 0;
+                int predictionValueRead = 0;
                 while (line != null) {
-
-                    String predictedValueString = decimalFormat
-                            .format(doubleValues.get(lineCount));
+                        String predictedValueString = "";
+                        //if this row missed skill
+                        if (rowsMissingSkill.contains(lineCount)) {
+                                predictedValueString = "\t";
+                        } //if this row has multiple skills 
+                        else if (rowsWithMultipleSkills.containsKey(lineCount)){
+                                int howManyValues = rowsWithMultipleSkills.get(lineCount);
+                                for (int i = 0; i < howManyValues - 1; i++) {
+                                        predictedValueString += decimalFormat
+                                                        .format(doubleValues.get(predictionValueRead)) + "~~";
+                                        predictionValueRead++;
+                                }
+                                predictedValueString += decimalFormat
+                                                .format(doubleValues.get(predictionValueRead));
+                                predictionValueRead++;                        
+                        } //single value
+                        else {
+                                predictedValueString = decimalFormat
+                                                .format(doubleValues.get(predictionValueRead));
+                                predictionValueRead++;
+                        }
+                    
                     String[] valueArray = line.split("\t");
                     
                     Integer colIndex = 0;
@@ -861,6 +890,7 @@ public class BKTMain extends AbstractComponent {
     private static final int SKILL_SSSVS_COLUMN = 3;
     /**
      * Creates the BKT SSSS given a student-step export file and the desired model name.
+     * Need to populate rowsMissingSkill, rowsWithMultipleSkills and rowCount
      * @param stepRollupFile the student-step export file
      * @param modelName the desired model name
      * @return the 2d array of String values for the BKT SSSS table
@@ -942,19 +972,26 @@ public class BKTMain extends AbstractComponent {
                 if (!firstAttempt.equalsIgnoreCase("correct")
                         && !firstAttempt.equalsIgnoreCase("incorrect")
                         && !firstAttempt.equalsIgnoreCase("hint")) {
+                        rowsMissingSkill.add(lineIndex);  
                     continue;
                 } else if (firstOpportunity.isEmpty()) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 } else if (!skillsSelected.isEmpty()
                         && !skillsSelected.contains(firstSkillName)) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 } else if (!studentsSelected.isEmpty()
                         && !studentsSelected.contains(anonStudentId)) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 }
 
                 if (multipleSkillsPossible != null && !multipleSkillsPossible.equals("") && !multipleSkillsPossible.equals(".")) {
                     String[] kcs = multipleSkillsPossible.split("~~");
+                    if (kcs.length > 1) {
+                            rowsWithMultipleSkills.put(lineIndex, kcs.length);
+                    }
                     for (int j = 0; j < kcs.length; j++) {
                         String[] thisSSSSRow = new String[4];
                         thisSSSSRow[STUDENT_SSSVS_COLUMN] = anonStudentId;
@@ -977,6 +1014,7 @@ public class BKTMain extends AbstractComponent {
             if (br != null) {
                 br.close();
             }
+            maxRowNumber = lineIndex;
         } catch (IOException e) {
             // "A consistency proof for [any sufficiently powerful] system ...
             // can be carried out only by means of modes of inference that are not formalized in the system ... itself." --Noam Chomsky

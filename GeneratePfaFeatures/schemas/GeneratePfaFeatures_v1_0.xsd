@@ -19,15 +19,9 @@
     </xs:all>
   </xs:complexType>
 
-  <xs:complexType name="InputLabel">
-    <xs:all>
-      <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
-    </xs:all>
-  </xs:complexType>
-
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="file" minOccurs="0" />
+      <xs:element ref="transaction" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -56,8 +50,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all >
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="xs:integer" name="n" id="n" default="1" />
+      <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Performance_Tracing" default="\s*KC\s*\((.*)\)\s*" />
     </xs:all>
   </xs:complexType>
 
@@ -74,7 +67,6 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1" type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0" />
-        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
 
