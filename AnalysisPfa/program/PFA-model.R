@@ -9,16 +9,74 @@ suppressMessages(library(lme4))
 suppressMessages(library(XML))
 suppressMessages(library(MuMIn))
 
-# This dir is the root dir of the component code.
-componentDirectory = args[2]
-# This dir is the working dir for the component instantiation.
-workingDirectory = args[4]
+# initialize variables
+inputFile = NULL
+KCmodel = NULL
+workingDirectory = NULL
+componentDirectory = NULL
+flags = NULL
+
+# parse commandline args
+i = 1
+while (i <= length(args)) {
+    if (args[i] == "-file0") {
+       if (length(args) == i) {
+          stop("input file name must be specified")
+       }
+       inputFile = args[i+1]
+       i = i+1
+    } else if (args[i] == "-model") {
+       if (length(args) == i) {
+          stop("model name must be specified")
+       }
+       KCmodel <- gsub("[ ()]", ".", args[i+1])
+       i = i+1
+    } else if (args[i] == "-workingDir") {
+       if (length(args) == i) {
+          stop("workingDir name must be specified")
+       }
+       # This dir is the working dir for the component instantiation.
+       workingDirectory = args[i+1]
+       i = i+1
+    } else if (args[i] == "-programDir") {
+       if (length(args) == i) {
+          stop("programDir name must be specified")
+       }
+       # This dir is the root dir of the component code.
+       componentDirectory = args[i+1]
+       i = i+1
+    } else if (args[i] == "-analysis") {
+       if (length(args) == i) {
+          stop("analysis type (Full or Simple) must be specified")
+       }
+       flags = args[i+1]
+       i = i+1
+    }
+    i = i+1
+}
+
+if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.null(componentDirectory) || is.null(flags)) {
+   if (is.null(inputFile)) {
+      warning("Missing required input parameter: -file0")
+   }
+   if (is.null(KCmodel)) {
+      warning("Missing required input parameter: -model")
+   }
+   if (is.null(workingDirectory)) {
+      warning("Missing required input parameter: -workingDir")
+   }
+   if (is.null(componentDirectory)) {
+      warning("Missing required input parameter: -programDir")
+   }
+   if (is.null(flags)) {
+      warning("Missing required input parameter: -analysis")
+   }
+
+   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -model kc_model -analysis analysis_type")
+}
+
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
-
-flags<- args[6]
-KCmodel <- gsub("[ ()]", ".", args[8])
-inputFile<-args[10]
 
 # Get data
 outputFilePath<- paste(workingDirectory, "transaction file output.txt", sep="")
