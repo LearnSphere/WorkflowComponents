@@ -6,15 +6,68 @@ args <- commandArgs(trailingOnly = TRUE)
 
 #print(args)
 
+# initialize variables
+inputFile = NULL
+KCmodel = NULL
+workingDirectory = NULL
+componentDirectory = NULL
+flags = NULL
+
+# parse commandline args
+i = 1
+while (i <= length(args)) {
+    if (args[i] == "-file0") {
+       if (length(args) == i) {
+          stop("input file name must be specified")
+       }
+       inputFile = args[i+1]
+       i = i+1
+    } else if (args[i] == "-model") {
+       if (length(args) == i) {
+          stop("model name must be specified")
+       }
+       KCmodel <- gsub("[ ()-]", ".", args[i+1])
+       i = i+1
+    } else if (args[i] == "-workingDir") {
+       if (length(args) == i) {
+          stop("workingDir name must be specified")
+       }
+       # This dir is the working dir for the component instantiation.
+       workingDirectory = args[i+1]
+       i = i+1
+    } else if (args[i] == "-programDir") {
+       if (length(args) == i) {
+          stop("programDir name must be specified")
+       }
 # This dir is the root dir of the component code.
-componentDirectory = args[2]
-# This dir is the working dir for the component instantiation.
-workingDirectory = args[4]
+       componentDirectory = args[i+1]
+       i = i+1
+    } 
+    i = i+1
+}
+
+if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.null(componentDirectory) ) {
+   if (is.null(inputFile)) {
+      warning("Missing required input parameter: -file0")
+   }
+   if (is.null(KCmodel)) {
+      warning("Missing required input parameter: -model")
+   }
+   if (is.null(workingDirectory)) {
+      warning("Missing required input parameter: -workingDir")
+   }
+   if (is.null(componentDirectory)) {
+      warning("Missing required input parameter: -programDir")
+   }
+
+
+   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -model kc_model")
+}
+
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-KCmodel <- gsub("[ ()-]", ".", args[6])
-inputFile<-args[8]
+# Get data
 outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
 
 # Get data
@@ -77,8 +130,6 @@ headers<-gsub("[.][.]"," (",headers)
 headers<-gsub("[.]$",")",headers)
 headers<-gsub("[.]"," ",headers)
 headers<-paste(headers,collapse="\t")
-#cat(headers)
-
 write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",append=FALSE,col.names=FALSE,row.names = FALSE)
 write.table(val,file=outputFilePath,sep="\t",quote=FALSE,na = "",append=TRUE,col.names=FALSE,row.names = FALSE)
 
