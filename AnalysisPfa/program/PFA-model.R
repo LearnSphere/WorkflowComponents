@@ -29,7 +29,7 @@ while (i <= length(args)) {
        if (length(args) == i) {
           stop("model name must be specified")
        }
-       KCmodel <- gsub("[ ()]", ".", args[i+1])
+       KCmodel <- gsub("[ ()-]", ".", args[i+1])
        i = i+1
     } else if (args[i] == "-workingDir") {
        if (length(args) == i) {
