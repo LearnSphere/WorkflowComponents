@@ -25,10 +25,10 @@
       <errors/>
       <files>
           <transaction>
-        <file_path>C:\Users\ppavl\Documents\NetBeansProjects\WorkflowComponents\GeneratePfaFeatures\test\ComponentTestOutput\output\transaction file with added features.txt</file_path>
-              <file_name>transaction file with added features.txt</file_name>
-              <index>0</index>
-              <label>transaction</label>
+            <file_path>test/example_transactions/GeneratePfaFeatures_output.txt</file_path>
+            <file_name>GeneratePfaFeatures_output.txt</file_name>
+            <index>0</index>
+            <label>transaction</label>
           </transaction>
       </files>
     </input0>
