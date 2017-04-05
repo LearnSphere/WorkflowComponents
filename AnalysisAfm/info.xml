@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Hui Cheng</author>
+<author>Hui Cheng
+  <email>hcheng@cs.cmu.edu</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisAfm</url>
 <date>2016-06-08</date>
 <abstract>The <b>Additive Factor Model</b> (AFM) performs a logistic regression over the "error rate" learning curve data.</abstract>

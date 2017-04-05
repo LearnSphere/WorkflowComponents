@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Md Iqbal Hossain</author>
+<author>Md Iqbal Hossain
+  <email>iqbaleric@gmail.com</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisLsa</url>
 <date>2016-08-14</date>
 <abstract>The <b>Domain specific semantic processing portal </b> (DSSPP) performs semantic comparision of natural language inputs (i.e. Student input and ideal answer) </abstract>

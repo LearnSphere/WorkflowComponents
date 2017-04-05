@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Ran Liu</author>
+<author>Ran Liu
+  <email>ranliu@andrew.cmu.edu</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/dev/AnalysisIAfm</url>
 <date>2017-02-28</date>
 <abstract>The <b>Additive Factor Model</b> (AFM) performs a logistic regression over the "error rate" learning curve data.</abstract>

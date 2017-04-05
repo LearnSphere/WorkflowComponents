@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Philip Pavlik (email ppavlik@memphis.edu directly with bug reprots for this component)</author>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisTkt</url>
 <date>2016-07-14</date>
 <abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model performs a logistic regression over the "error rate" learning curve data.</abstract>
-<description>TKT is a generalization of the additive factors model (AFM). Experimental.</description>
+<description>TKT is a generalization of the additive factors model (AFM). Experimental. <br/><br/> Email the author directly with bug reports for this component.</description>
 
 <inputs>
 <b>Transaction export</b>

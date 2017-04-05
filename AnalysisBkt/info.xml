@@ -2,7 +2,9 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <info>
-<author>Hui Cheng</author>
+<author>Hui Cheng
+  <email>hcheng@cs.cmu.edu</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisBkt</url>
 <date>2016-06-08</date>
 <abstract>The <b>Bayesian Knowledge Tracing</b> (BKT) performs inference from time-series data of student attempts to apply their knowledge.</abstract>

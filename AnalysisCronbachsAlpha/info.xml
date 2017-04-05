@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Cindy Tipper</author>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisCronbachsAlpha</url>
 <date>2016-10-08</date>
 <abstract>The <b>Cronbach's Alpha</b> calculates a reliability values for items (columns) in a gradebook.</abstract>
