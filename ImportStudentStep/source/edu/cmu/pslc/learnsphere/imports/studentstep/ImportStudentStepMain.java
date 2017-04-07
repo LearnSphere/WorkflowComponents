@@ -11,14 +11,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.LineIterator;
-
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.FileHelper;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
-import static edu.cmu.pslc.datashop.util.FileUtils.updateFilePermissions;
+import static edu.cmu.pslc.datashop.util.FileUtils.truncateFile;
 
 public class ImportStudentStepMain extends AbstractComponent {
 
@@ -67,25 +64,7 @@ public class ImportStudentStepMain extends AbstractComponent {
         File shortFile = null;
         try {
             // truncate file...
-            LineIterator it = FileUtils.lineIterator(inputFile, null);
-
-            String shortFileName = "head_" + inputFile.getName();
-            shortFile = new File(inputFile.getParent(), shortFileName);
-        
-            if (it != null) {
-                List<String> lines = new ArrayList<String>();
-                try {
-                    int count = 0;
-                    while (it.hasNext() && (count++ <= NUM_INPUT_LINES_TO_CHECK)) {
-                        lines.add(it.nextLine());
-                    }
-                } finally {
-                    it.close();
-                }
-
-                FileUtils.writeLines(shortFile, null, lines);
-                updateFilePermissions(shortFile, "chmod 664");
-            }
+            shortFile = truncateFile(inputFile, NUM_INPUT_LINES_TO_CHECK);
 
             // Get list of model names present in file
             List<String> modelNames = getKCModelNames(shortFile);
@@ -94,18 +73,22 @@ public class ImportStudentStepMain extends AbstractComponent {
 
             // Verify for each model
             for (String modelName : modelNames) {
-                File sssvsFile = FileHelper.getSSSVSFromStepRollupExport(shortFile, modelName, false, invalidLines);
-                if (sssvsFile != null && sssvsFile.length() > 0 && sssvsFile.exists() && sssvsFile.canRead()) {
+                File sssvsFile = FileHelper.getSSSVSFromStepRollupExport(shortFile, modelName,
+                                                                         false, invalidLines);
+                if (sssvsFile != null && sssvsFile.length() > 0
+                    && sssvsFile.exists() && sssvsFile.canRead()) {
                     logger.debug("File verified for KC: " + modelName);
                 }
             }
         } catch (Exception e) {
             throw e;
         } finally {
-            try {
-                shortFile.delete();
-            } catch (SecurityException e) {
-                logger.error("Failed to delete temporary file.");
+            if (shortFile != null) {
+                try {
+                    shortFile.delete();
+                } catch (SecurityException e) {
+                    logger.error("Failed to delete temporary file.");
+                }
             }
         }
     }
