@@ -65,6 +65,25 @@
     </xs:choice>
   </xs:complexType>
 
+  <!-- Yudelson: BKT parameters VVV -->
+  <xs:complexType name="OutFileList2">
+    <xs:choice>
+      <xs:element ref="parameters" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList2" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Yudelson: BKT parameters ^^^ -->
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
