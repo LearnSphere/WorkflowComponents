@@ -221,7 +221,7 @@ public class BKTMain extends AbstractComponent {
                 bufferedReader.close();
 
             } catch (Exception exception) {
-
+				logger.error("Error occured in BKT: " + exception.getMessage());
                 this.addErrorMessage(exception.getMessage());
 
             }
@@ -809,6 +809,7 @@ public class BKTMain extends AbstractComponent {
                 skillCntAlt = Integer
                         .parseInt(model2DStr[model2DStr.length - 4][0]) + 1;
             } catch (NumberFormatException ne) {
+				logger.error("Number format exception.");
                 addErrorMessage("Number format exception.");
             }
 
@@ -1048,6 +1049,7 @@ public class BKTMain extends AbstractComponent {
             // "A consistency proof for [any sufficiently powerful] system ...
             // can be carried out only by means of modes of inference that are not formalized in the system ... itself." --Noam Chomsky
             logger.error("Failed to read Student-Step data: " + stepRollupFile.getAbsolutePath());
+            addErrorMessage("Failed to read Student-Step data: " + stepRollupFile.getAbsolutePath());
         }
         return ArrayUtils.listArraysOfStringToArray2D(return_l);
     }
@@ -1087,7 +1089,8 @@ public class BKTMain extends AbstractComponent {
             zipInputStream.closeEntry();
             zipInputStream.close();
         } catch (IOException exception) {
-			this.addErrorMessage(exception.getMessage()); // Yudelson, need this one too
+//         	logger.error("Error occured in BKT: " + exception.getMessage());
+// 			addErrorMessage(exception.getMessage()); // Yudelson, need this one too
         }
         return zipFileName.replace("zip", "txt");
     }
@@ -1196,7 +1199,8 @@ public class BKTMain extends AbstractComponent {
             } catch (Exception e) {
                 // This will be picked up by the workflows platform and relayed to the user.
 //                 e.printStackTrace();
-                this.addErrorMessage(exception.getMessage()); // Yudelson for uniformity
+				logger.error("Error occured in BKT: " + e.getMessage());
+                addErrorMessage(e.getMessage()); // Yudelson for uniformity
             }
 
         return theFile;
@@ -1228,7 +1232,8 @@ public class BKTMain extends AbstractComponent {
 		} catch (Exception e) {
 			// This will be picked up by the workflows platform and relayed to the user.
 // 			e.printStackTrace();
-			this.addErrorMessage(exception.getMessage()); // Yudelson, for uniformity
+			logger.error("Error occured in BKT: " + e.getMessage());
+			addErrorMessage(e.getMessage()); // Yudelson, for uniformity
 		}
 
         return theFile;
