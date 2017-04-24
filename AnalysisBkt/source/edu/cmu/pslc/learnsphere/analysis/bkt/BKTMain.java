@@ -1087,7 +1087,7 @@ public class BKTMain extends AbstractComponent {
             zipInputStream.closeEntry();
             zipInputStream.close();
         } catch (IOException exception) {
-
+			this.addErrorMessage(exception.getMessage()); // Yudelson, need this one too
         }
         return zipFileName.replace("zip", "txt");
     }
@@ -1195,7 +1195,8 @@ public class BKTMain extends AbstractComponent {
 
             } catch (Exception e) {
                 // This will be picked up by the workflows platform and relayed to the user.
-                e.printStackTrace();
+//                 e.printStackTrace();
+                this.addErrorMessage(exception.getMessage()); // Yudelson for uniformity
             }
 
         return theFile;
@@ -1226,7 +1227,8 @@ public class BKTMain extends AbstractComponent {
 
 		} catch (Exception e) {
 			// This will be picked up by the workflows platform and relayed to the user.
-			e.printStackTrace();
+// 			e.printStackTrace();
+			this.addErrorMessage(exception.getMessage()); // Yudelson, for uniformity
 		}
 
         return theFile;
