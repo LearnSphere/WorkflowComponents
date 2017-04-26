@@ -40,6 +40,18 @@
 #include <map>
 
 HMMProblem::HMMProblem() {
+    // set fields to null that you don't want to be messing up the code in the overriding classes
+    // e.g., *sliced* classses would redefine A and possibly B and the HMMProblem descroy method
+    // would still try to free the "old" A or B that were never initialized
+    this->pi = NULL;
+    this->A = NULL;
+    this->B = NULL;
+    this->lbPI = NULL;
+    this->lbA = NULL;
+    this->lbB = NULL;
+    this->ubPI = NULL;
+    this->ubA = NULL;
+    this->ubB = NULL;
 }
 
 HMMProblem::HMMProblem(struct param *param) {
@@ -49,10 +61,10 @@ HMMProblem::HMMProblem(struct param *param) {
             for(i=0; i<3; i++) this->sizes[i] = param->nK;
             this->n_params = param->nK * 4;
             break;
-        case STRUCTURE_GROUP: // Gradient Descent by group
-            for(i=0; i<3; i++) this->sizes[i] = param->nG;
-            this->n_params = param->nG * 4;
-            break;
+//        case STRUCTURE_GROUP: // Gradient Descent by group
+//            for(i=0; i<3; i++) this->sizes[i] = param->nG;
+//            this->n_params = param->nG * 4;
+//            break;
         default:
             fprintf(stderr,"Structure specified is not supported and should have been caught earlier\n");
             break;
@@ -263,9 +275,9 @@ NUMBER HMMProblem::getPI(struct data* dt, NPAR i) {
         case STRUCTURE_SKILL:
             return this->pi[dt->k][i];
             break;
-        case STRUCTURE_GROUP:
-            return this->pi[dt->g][i];
-            break;
+//        case STRUCTURE_GROUP:
+//            return this->pi[dt->g][i];
+//            break;
         default:
             fprintf(stderr,"Solver specified is not supported.\n");
             exit(1);
@@ -280,9 +292,9 @@ NUMBER HMMProblem::getA (struct data* dt, NPAR i, NPAR j) {
         case STRUCTURE_SKILL:
             return this->A[dt->k][i][j];
             break;
-        case STRUCTURE_GROUP:
-            return this->A[dt->g][i][j];
-            break;
+//        case STRUCTURE_GROUP:
+//            return this->A[dt->g][i][j];
+//            break;
         default:
             fprintf(stderr,"Solver specified is not supported.\n");
             exit(1);
@@ -301,9 +313,9 @@ NUMBER HMMProblem::getB (struct data* dt, NPAR i, NPAR m) {
         case STRUCTURE_SKILL:
             return this->B[dt->k][i][m];
             break;
-        case STRUCTURE_GROUP:
-            return this->B[dt->g][i][m];
-            break;
+//        case STRUCTURE_GROUP:
+//            return this->B[dt->g][i][m];
+//            break;
         default:
             fprintf(stderr,"Solver specified is not supported.\n");
             exit(1);
@@ -457,7 +469,7 @@ NDAT HMMProblem::computeAlphaAndPOParam(NCAT xndat, struct data** x_data) {
 		for(t=0; t<x_data[x]->n; t++) {
 //			o = x_data[x]->obs[t];
 			o = this->p->dat_obs[ x_data[x]->ix[t] ];//->get( x_data[x]->ix[t] );
-
+			x_data[x]->t = x_data[x]->ix[t]; // statefullness
             if(t==0) { // it's alpha(1,i)
                 // compute \alpha_1(i) = \pi_i b_i(o_1)
 				for(i=0; i<nS; i++) {
@@ -471,6 +483,8 @@ NDAT HMMProblem::computeAlphaAndPOParam(NCAT xndat, struct data** x_data) {
 						x_data[x]->alpha[t][i] += x_data[x]->alpha[t-1][j] * getA(x_data[x],j,i);
 					}
 					x_data[x]->alpha[t][i] *= ((o<0)?1:getB(x_data[x],i,o)); // if observatiob unknown use 1
+//                    if( x_data[x]->alpha[t][i] < 0 || x_data[x]->alpha[t][i] > 1)
+//                        fprintf(stderr, "ERROR! alpha value is not within [0, 1] range!\n");
                     if(this->p->scaled==1) x_data[x]->c[t] += x_data[x]->alpha[t][i];
 				}
 			}
@@ -486,10 +500,15 @@ NDAT HMMProblem::computeAlphaAndPOParam(NCAT xndat, struct data** x_data) {
         else {
             x_data[x]->p_O_param = 0; // 0 for non-scaled
             for(i=0; i<nS; i++) x_data[x]->p_O_param += x_data[x]->alpha[x_data[x]->n-1][i];
+//            if( x_data[x]->p_O_param < 0 || x_data[x]->p_O_param >1 )
+//                fprintf(stderr, "ERROR! p(O|param) not within [0, 1] range!\n");
             x_data[x]->loglik = -safelog(x_data[x]->p_O_param);
+//            if( x_data[x]->loglik < 0)
+//                fprintf(stderr, "ERROR! -log( p(O|param) ) is negative!\n");
         }
 	} // for all groups in skill
-    return ndat;
+    return ndat; //TODO, figure out a diff way to sum it, and not multiple times
+    // especially for parallel version
 }
 
 void HMMProblem::computeBeta(NCAT xndat, struct data** x_data) {
@@ -502,6 +521,7 @@ void HMMProblem::computeBeta(NCAT xndat, struct data** x_data) {
         NPAR i, j, o;
 		if( x_data[x]->cnt!=0 ) continue; // ... and the thing has not been computed yet (e.g. from group to skill)
 		for(t=(NDAT)(x_data[x]->n)-1; t>=0; t--) {
+			x_data[x]->t = x_data[x]->ix[t]; // statefullness
 			if( t==(x_data[x]->n-1) ) { // last \beta
 				// \beta_T(i) = 1
 				for(i=0; i<nS; i++)
@@ -564,7 +584,7 @@ void HMMProblem::setGradPI(FitBit *fb){
         ndat += dt->n;
         o = this->p->dat_obs[ dt->ix[t] ];//->get( dt->ix[t] );
         for(i=0; i<this->p->nS; i++) {
-            fb->gradPI[i] -= dt->beta[t][i] * ((o<0)?1:getB(dt,i,o)) / safe0num(dt->p_O_param);
+            fb->gradPI[i] -= dt->beta[t][i] * ((o<0)?1:fb->B[i][o]) / safe0num(dt->p_O_param);
         }
     }
     if( this->p->Cslices>0 ) // penalty
@@ -584,7 +604,7 @@ void HMMProblem::setGradA (FitBit *fb){
             o = this->p->dat_obs[ dt->ix[t] ];//->get( dt->ix[t] );
             for(i=0; i<this->p->nS; i++)
                 for(j=0; j<this->p->nS; j++)
-                    fb->gradA[i][j] -= dt->beta[t][j] * ((o<0)?1:getB(dt,j,o)) * dt->alpha[t-1][i] / safe0num(dt->p_O_param);
+                    fb->gradA[i][j] -= dt->beta[t][j] * ((o<0)?1:fb->B[j][o]) * dt->alpha[t-1][i] / safe0num(dt->p_O_param);
         }
     }
     if( this->p->Cslices>0 ) // penalty
@@ -594,24 +614,27 @@ void HMMProblem::setGradA (FitBit *fb){
 void HMMProblem::setGradB (FitBit *fb){
     if(this->p->block_fitting[2]>0) return;
     NDAT t, ndat = 0;
-    NPAR o, o0, i, j;
+	NPAR o, o0, i;//, j;
     struct data* dt;
     for(NCAT x=0; x<fb->xndat; x++) {
         dt = fb->x_data[x];
         if( dt->cnt!=0 ) continue;
         ndat += dt->n;
+//        for(t=0; t<dt->n; t++) { // old
         for(t=0; t<dt->n; t++) { // Levinson MMFST
             o  = this->p->dat_obs[ dt->ix[t] ];//->get( dt->ix[t] );
             o0 = this->p->dat_obs[ dt->ix[0] ];//->get( dt->ix[t] );
             if(o<0) // if no observation -- skip
                 continue;
-            for(j=0; j<this->p->nS; j++)
-                if(t==0) {
-                    fb->gradB[j][o] -= (o0==o) * getPI(dt,j) * dt->beta[0][j];
-                } else {
-                    for(i=0; i<this->p->nS; i++)
-                        fb->gradB[j][o] -= ( dt->alpha[t-1][i] * getA(dt,i,j) * dt->beta[t][j] /*+ (o0==o) * getPI(dt,j) * dt->beta[0][j]*/ ) / safe0num(dt->p_O_param); // Levinson MMFST
-                }
+            for(i=0; i<this->p->nS; i++)
+                fb->gradB[i][o] -= dt->alpha[t][i] * dt->beta[t][i] / safe0num(dt->p_O_param * fb->B[i][o]); // old
+//            for(j=0; j<this->p->nS; j++)
+//                if(t==0) {
+//                    fb->gradB[j][o] -= (o0==o) * fb->pi[j] * dt->beta[0][j];
+//                } else {
+//                    for(i=0; i<this->p->nS; i++)
+//                        fb->gradB[j][o] -= ( dt->alpha[t-1][i] * fb->A[i][j] * dt->beta[t][j] /*+ (o0==o) * getPI(dt,j) * dt->beta[0][j]*/ ) / safe0num(dt->p_O_param); // Levinson MMFST
+//                }
         }
     }
     if( this->p->Cslices>0 ) // penalty
@@ -630,15 +653,48 @@ NDAT HMMProblem::computeGradients(FitBit *fb){
     return ndat;
 } // computeGradients()
 
+NDAT HMMProblem::computeGradientsBig(FitBit **fbs, NCAT nfbs){
+    NCAT xndat = this->p->nSeq;
+    struct data** x_data = this->p->k_data;
+//    NPAR kg_flag = -1;
+   
+	NCAT x;
+    
+//    switch(this->p->structure)
+//    {
+//        case STRUCTURE_SKILL:
+//            kg_flag = 0;
+//            break;
+//        case STRUCTURE_GROUP:
+//            kg_flag = 1;
+//            break;
+//    }
+
+    // there are as many fbs as skills or groups in this setup
+    for(x=0; x<nfbs; x++)
+        fbs[x]->toZero(FBS_GRAD);
+    
+    NDAT ndat = computeAlphaAndPOParam(xndat, x_data);
+    computeBeta(xndat, x_data);
+
+    
+	for(x=0; x<nfbs; x++) {
+        if(fbs[x]->pi != NULL && this->p->block_fitting[0]==0) setGradPI(fbs[x]);
+        if(fbs[x]->A  != NULL && this->p->block_fitting[1]==0) setGradA (fbs[x]);
+        if(fbs[x]->B  != NULL && this->p->block_fitting[2]==0) setGradB (fbs[x]);
+    }// for all sequences
+    return ndat;
+} // computeGradients()
+
 void HMMProblem::toFile(const char *filename) {
     switch(this->p->structure)
     {
         case STRUCTURE_SKILL:
             toFileSkill(filename);
             break;
-        case STRUCTURE_GROUP:
-            toFileGroup(filename);
-            break;
+//        case STRUCTURE_GROUP:
+//            toFileGroup(filename);
+//            break;
         default:
             fprintf(stderr,"Solver specified is not supported.\n");
             break;
@@ -713,10 +769,29 @@ void HMMProblem::toFileGroup(const char *filename) {
 	fclose(fid);
 }
 
-void HMMProblem::producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt) {
+//void HMMProblem::producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt) {
+void HMMProblem::producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NDAT t) {
     NPAR m, i;
     NCAT k;
     NUMBER *local_pred_inner = init1D<NUMBER>(this->p->nO);
+    char f_multiskill = this->p->multiskill;
+    
+    struct data* dt = new data;
+    NCAT *ks;
+    int nks;
+    if(f_multiskill==0) {
+        k = this->p->dat_skill[t];
+        ks = &k;
+        nks = 1;
+    } else {
+        NDAT rix = this->p->dat_skill_rix[t];
+        k = this->p->dat_skill_stacked[ rix ];
+        ks = &this->p->dat_skill_stacked[ rix ];
+        nks = this->p->dat_skill_rcount[t];
+    }
+    
+    dt->g = this->p->dat_group[t];
+    dt->t = t; // statefulness
     for(m=0; m<this->p->nO; m++) local_pred[m] = 0.0;
     for(int l=0; l<nks; l++) {
         for(m=0; m<this->p->nO; m++) local_pred_inner[m] = 0.0;
@@ -732,13 +807,66 @@ void HMMProblem::producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, 
         for(m=0; m<this->p->nO; m++)
             local_pred[m] /= nks;
     }
+    
+    delete(dt);
+//    NUMBER sum=0;
+//    for(m=0; m<this->p->nO; m++)
+//        sum+=local_pred[m];
+//    if( fabs(sum-1)>SAFETY ) {
+//        int a = 0;
+//    }
+    
     free(local_pred_inner);
 }
+
+//void HMMProblem::producePDObs(NUMBER*** group_skill_map, NUMBER* local_pred, struct data* dt) {
+//	NPAR m, i;
+//	for(m=0; m<this->p->nO; m++) {
+//		local_pred[m] = 0.0;
+//		for(m=0; m<this->p->nO; m++)
+//			for(i=0; i<this->p->nS; i++)
+//				local_pred[m] += group_skill_map[dt->g][dt->k][i] * getB(dt,i,m);
+//	}
+//}
+
+//void HMMProblem::producePCorrectBoost(boost::numeric::ublas::mapped_matrix<NUMBER*> *group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt) {//BOOST
+//    NPAR m, i;//BOOST
+//    NCAT k;//BOOST
+//    NUMBER *local_pred_inner = init1D<NUMBER>(this->p->nO);//BOOST
+//    for(m=0; m<this->p->nO; m++) local_pred[m] = 0.0;//BOOST
+//    for(int l=0; l<nks; l++) {//BOOST
+//        for(m=0; m<this->p->nO; m++) local_pred_inner[m] = 0.0;//BOOST
+//        k = ks[l];//BOOST
+//        dt->k = k;//BOOST
+//        NUMBER *pLbit = (*group_skill_map)(dt->g,k);//BOOST
+//        for(m=0; m<this->p->nO; m++)//BOOST
+//            for(i=0; i<this->p->nS; i++)//BOOST
+//                local_pred_inner[m] += pLbit[i] * getB(dt,i,m);//B[i][m];//BOOST
+//        for(m=0; m<this->p->nO; m++)//BOOST
+//            local_pred[m] += local_pred_inner[m]; // local_pred[m] = 0.0;//BOOST
+//    }//BOOST
+//    if(nks>1) {//BOOST
+//        for(m=0; m<this->p->nO; m++)//BOOST
+//            local_pred[m] /= nks;//BOOST
+//    }//BOOST
+//    free(local_pred_inner);//BOOST
+//}//BOOST
+
+//void HMMProblem::producePDObsBoost(boost::numeric::ublas::mapped_matrix<NUMBER*> *group_skill_map, NUMBER* local_pred, struct data* dt) {//BOOST
+//	NPAR m, i;//BOOST
+//	for(m=0; m<this->p->nO; m++) local_pred[m] = 0.0;//BOOST
+//	NUMBER *pLbit = (*group_skill_map)(dt->g,dt->k);//BOOST
+//	for(m=0; m<this->p->nO; m++)//BOOST
+//		for(i=0; i<this->p->nS; i++)//BOOST
+//			local_pred[m] += pLbit[i] * getB(dt,i,m);//B[i][m];//BOOST
+//}//BOOST
+
 
 //void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, NCAT *dat_group, NCAT *dat_skill, StripedArray<NCAT*> *dat_multiskill) {
 void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, NCAT *dat_group, NCAT *dat_skill, NCAT *dat_skill_stacked, NCAT *dat_skill_rcount, NDAT *dat_skill_rix, HMMProblem **hmms, NPAR nhmms, NPAR *hmm_idx) {
 	NDAT t;
 	NCAT g, k;
+//	NCAT it;
 	NPAR i, j, m, o, isTarget = 0;
 	
 	NPAR nS = hmms[0]->p->nS, nO = hmms[0]->p->nO;
@@ -749,10 +877,10 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 	char f_update_known = hmms[0]->p->update_known;
 	char f_update_unknown = hmms[0]->p->update_unknown;
 	int f_predictions = hmms[0]->p->predictions;
-	char f_metrics_target_obs = hmms[0]->p->metrics_target_obs;
+	int f_metrics_target_obs = hmms[0]->p->metrics_target_obs;
 	for(i=1; i<nhmms; i++) {
 		if( nS != hmms[i]->p->nS || nO != hmms[i]->p->nO || nK != hmms[i]->p->nK ||
-		   nG != hmms[i]->p->nG || hmms[i]->p->N != hmms[i]->p->N || hmms[i]->p->N_null != hmms[i]->p->N_null ||
+		   nG != hmms[i]->p->nG || N != hmms[i]->p->N || N_null != hmms[i]->p->N_null ||
 		   f_multiskill != hmms[i]->p->multiskill ||
 		   f_update_known != hmms[i]->p->update_known ||
 		   f_update_unknown != hmms[i]->p->update_unknown ||
@@ -766,7 +894,8 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 	NUMBER *local_pred = init1D<NUMBER>(nO); // local prediction
 	NUMBER *pLe = init1D<NUMBER>(nS);// p(L|evidence);
 	NUMBER pLe_denom; // p(L|evidence) denominator
-	NUMBER ***group_skill_map = init3D<NUMBER>(nG, nK, nS);
+	NUMBER ***group_skill_map = init3D<NUMBER>(nG, nK, nS);//UNBOOST
+//   ::boost::numeric::ublas::mapped_matrix<NUMBER*> gsm (nG, nK);//BOOST
 	
 	NUMBER ll = 0.0, ll_no_null = 0.0, rmse = 0.0, rmse_no_null = 0.0, accuracy = 0.0, accuracy_no_null = 0.0;
 	NUMBER p;
@@ -795,6 +924,7 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 		o = dat_obs[t];
 		g = dat_group[t];
 		dt->g = g;
+        dt->t = t; // statefulness
 		
 		hmm = (nhmms==1)?hmms[0]:hmms[hmm_idx[t]]; // if just one hmm, use 0's, otherwise take the index value
 		
@@ -811,6 +941,26 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 			n = dat_skill_rcount[t];
 		}
 		
+//		// prescriptive pretest
+//		it = this->p->dat_item[t];
+//		string item_s = this->p->map_step_bwd->find((NCAT)it)->second;
+//		std::size_t found_prev = 0, found = item_s.find("PINIT-MANUAL-SET");
+//		if (found!=std::string::npos) { // set manually
+//			// find last divider
+//			found = item_s.find("__");
+//			while(found!=std::string::npos) {
+//				found_prev = found;
+//				found = item_s.find("__", found+1);
+//			}
+//			// get number
+//			NUMBER newPLearn = (NUMBER)atof( item_s.substr(found_prev+2, item_s.length()-2).c_str() );
+//			group_skill_map[g][ ar[0] ][0] = newPLearn;
+//			for(i=1; i<nS; i++) {
+//				group_skill_map[g][ ar[0] ][i] = (1-newPLearn)/(nS-1);
+//			}
+//			continue;
+//		}
+		
 		// deal with null skill
 		if(ar[0]<0) { // if no skill label
 			isTarget = hmm->null_skill_obs==o;
@@ -819,33 +969,55 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 //			rmse += pow(isTarget - hmm->null_skill_obs_prob,2);
 //			accuracy += isTarget == (hmm->null_skill_obs_prob>=0.5);
 			ll -= isTarget*safelog(hmm->null_skill_obs_prob) + (1-isTarget)*safelog(1 - hmm->null_skill_obs_prob);
-//			if(this->p->predictions>0 && output_this) // write predictions file if it was opened
-			for(m=0; m<nO; m++) {
-				fprintf(fid,"%12.10f%s",hmm->null_obs_ratio[m],(m<(nO-1))?"\t":"\n");//PRINTNOW
-//				d = (NDAT)m*N + t;
-//				dat_predict[ d ] = hmm->null_obs_ratio[m];
-			}
-			
+            if(f_predictions>0 /*&& output_this*/) { // write predictions file if it was opened
+                for(m=0; m<nO; m++) {
+                    fprintf(fid,"%12.10f%s",hmm->null_obs_ratio[m],(m<(nO-1))?"\t":"\n");
+    //				d = (NDAT)m*N + t;
+    //				dat_predict[ d ] = hmm->null_obs_ratio[m];
+                }
+            }
 			continue;
 		}
 		// check if {g,k}'s were initialized
 		for(int l=0; l<n; l++) {
 			k = ar[l];
-			if( group_skill_map[g][k][0]==0)
+//          NUMBER *z = gsm(g,k); //BOOST
+//          if( z==NULL )//BOOST
+			if( group_skill_map[g][k][0]==0)//UNBOOST
 			{
 				dt->k = k;
+//                NUMBER * pLbit = Calloc(NUMBER, nS);//BOOST
 				
 				for(i=0; i<nS; i++) {
-					group_skill_map[g][k][i] = hmm->getPI(dt,i);
+					group_skill_map[g][k][i] = hmm->getPI(dt,i);//UNBOOST
+//                    pLbit[i] = hmm->getPI(dt,i);//BOOST
 					count++;
 				}
+//              gsm(g,k) = pLbit; //BOOST
 			}// pLo/pL not set
 		}// for all skills at this transaction
 		
 		// produce prediction and copy to result
-		hmm->producePCorrect(group_skill_map, local_pred, ar, n, dt); 
+//        hmm->producePCorrect(group_skill_map, local_pred, ar, n, dt); //UNBOOST
+        hmm->producePCorrect(group_skill_map, local_pred, t); //UNBOOST
+//		hmm->producePCorrectBoost(&gsm, local_pred, t); //BOOST
 		projectsimplex(local_pred, nO); // addition to make sure there's not side effects
 		
+        // write prediction out (before pKnown update)
+        if(f_predictions>0 /*&& output_this*/) { // write predictions file if it was opened
+            for(m=0; m<nO; m++) {
+                fprintf(fid,"%12.10f%s",local_pred[m],(m<(nO-1))?"\t": ((f_predictions==1)?"\n":"\t") );// if we print states of KCs, continut
+                //				d = (NDAT)m*N + t;
+                //				dat_predict[ d ] = local_pred[m];
+            }
+            if(f_predictions==2) { // if we print out states of KC's as welll
+                for(int l=0; l<n; l++) { // all KC here
+                    fprintf(fid,"%12.10f%s",group_skill_map[g][ ar[l] ][0], (l==(n-1) && l==(n-1))?"\n":"\t"); // nnon boost // if end of all states: end line//UNBOOST
+                    //					fprintf(fid,"%12.10f%s",gsm(g, ar[l] )[0], (l==(n-1) && l==(n-1))?"\n":"\t"); // if end of all states: end line //BOOST
+                }
+            }
+        }
+        
 		// if necessary guess the obsevaion using Pi and B
 		if(f_update_known=='g') {
 			NUMBER max_local_pred=0;
@@ -863,48 +1035,44 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 		for(int l=0; l<n; l++) {
 			k = ar[l];
 			dt->k = k;
+//          NUMBER* pLbit = gsm(g,k); //BOOST
 			
 			if(o>-1) { // known observations //
 				// update p(L)
 				pLe_denom = 0.0;
 				// 1. pLe =  (L .* B(:,o)) ./ ( L'*B(:,o)+1e-8 );
 				for(i=0; i<nS; i++)
-					pLe_denom += group_skill_map[g][k][i] * hmm->getB(dt,i,o);  // TODO: this is local_pred[o]!!!
+					pLe_denom += group_skill_map[g][k][i] * hmm->getB(dt,i,o);  // TODO: this is local_pred[o]!!!//UNBOOST
+//                  pLe_denom += pLbit[i] * hmm->getB(dt,i,o); //BOOST
 				for(i=0; i<nS; i++)
-					pLe[i] = group_skill_map[g][k][i] * hmm->getB(dt,i,o) / safe0num(pLe_denom); 
+					pLe[i] = group_skill_map[g][k][i] * hmm->getB(dt,i,o) / safe0num(pLe_denom); //UNBOOST
+//                  pLe[i] = pLbit[i] * hmm->getB(dt,i,o) / safe0num(pLe_denom); //BOOST
 				// 2. L = (pLe'*A)';
 				for(i=0; i<nS; i++)
-					group_skill_map[g][k][i]= 0.0; 
+					group_skill_map[g][k][i]= 0.0; //UNBOOST
+//                  pLbit[i]= 0.0; //BOOST
 				for(j=0; j<nS; j++)
 					for(j=0; j<nS; j++)
 						for(i=0; i<nS; i++)
-							group_skill_map[g][k][j] += pLe[i] * hmm->getA(dt,i,j);//A[i][j]; 
+							group_skill_map[g][k][j] += pLe[i] * hmm->getA(dt,i,j);//A[i][j]; //UNBOOST
+//                          pLbit[j] += pLe[i] * hmm->getA(dt,i,j);//A[i][j]; //BOOST
 			} else { // unknown observation
 				// 2. L = (pL'*A)';
 				for(i=0; i<nS; i++)
-					pLe[i] = group_skill_map[g][k][i]; // copy first; 
+					pLe[i] = group_skill_map[g][k][i]; // copy first; //UNBOOST
+//                  pLe[i] = pLbit[i]; // copy first; //BOOST
 				for(i=0; i<nS; i++)
-					group_skill_map[g][k][i] = 0.0; // erase old value 
+					group_skill_map[g][k][i] = 0.0; // erase old value //UNBOOST
+//                  pLbit[i] = 0.0; // erase old value //BOOST
 				for(j=0; j<nS; j++)
 					for(i=0; i<nS; i++)
-						group_skill_map[g][k][j] += pLe[i] * hmm->getA(dt,i,j);
+						group_skill_map[g][k][j] += pLe[i] * hmm->getA(dt,i,j);//UNBOOST
+//               pLbit[j] += pLe[i] * hmm->getA(dt,i,j);//BOOST
 			}// observations
-			projectsimplex(group_skill_map[g][k], nS); // addition to make sure there's not side effects 
+			projectsimplex(group_skill_map[g][k], nS); // addition to make sure there's not side effects //UNBOOST
+//            projectsimplex(pLbit, nS); // addition to make sure there's not side effects //BOOST
 		}
 		
-		// write prediction out (after update)
-		if(f_predictions>0 /*&& output_this*/) { // write predictions file if it was opened
-			for(m=0; m<nO; m++) {
-				fprintf(fid,"%12.10f%s",local_pred[m],(m<(nO-1))?"\t": ((hmm->p->predictions==1)?"\n":"\t") );// if we print states of KCs, continut
-//				d = (NDAT)m*N + t;
-//				dat_predict[ d ] = local_pred[m];
-			}
-//			if(f_predictions==2) { // if we print out states of KC's as welll
-//				for(int l=0; l<n; l++) { // all KC here
-//					fprintf(fid,"%12.10f%s",group_skill_map[g][ ar[l] ][0], (l==(n-1) && l==(n-1))?"\n":"\t"); // nnon boost // if end of all states: end line
-//				}
-//			}
-		}
 		rmse += pow(isTarget-local_pred[f_metrics_target_obs],2);
 		rmse_no_null += pow(isTarget-local_pred[f_metrics_target_obs],2);
 		accuracy += isTarget == (local_pred[f_metrics_target_obs]==maxn(local_pred,nO) && local_pred[f_metrics_target_obs]>1/nO);
@@ -912,13 +1080,34 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 		p = safe01num(local_pred[f_metrics_target_obs]);
 		ll -= safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget);
 		ll_no_null -= safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget);
+		
+		// temporary experimental
+//		for(int l=0; hmm->p->per_kc_rmse_acc && hmm->p->kc_counts!=NULL && l<n; l++) {
+//			k = ar[l];
+//			hmm->p->kc_counts[k]++;
+//			hmm->p->kc_rmse[k] += pow(isTarget-local_pred[hmm->p->metrics_target_obs],2);
+//			hmm->p->kc_acc[k]  += isTarget == (local_pred[hmm->p->metrics_target_obs]>=0.5);
+//		}
 	} // for all data
+	
+	// temporary experimental
+//	for(int k=0; hmm->p->per_kc_rmse_acc && hmm->p->kc_counts!=NULL && k<nK; k++) {
+//		hmm->p->kc_rmse[k] = sqrt(hmm->p->kc_rmse[k] / hmm->p->kc_counts[k]);
+//		hmm->p->kc_acc[k]  =      hmm->p->kc_acc[k]  / hmm->p->kc_counts[k];
+//	}
 	
 	delete(dt);
 	free(local_pred);
 	free(pLe);
-	free3D<NUMBER>(group_skill_map, nG, nK);
-
+	free3D<NUMBER>(group_skill_map, nG, nK);//UNBOOST
+	
+//    gsm.clear();//BOOST
+//    typedef boost::numeric::ublas::mapped_matrix<NUMBER *>::iterator1 it1_t;//BOOST
+//    typedef boost::numeric::ublas::mapped_matrix<NUMBER *>::iterator2 it2_t;//BOOST
+//    for (it1_t itgsm1 = gsm.begin1(); itgsm1 != gsm.end1(); itgsm1++)//BOOST
+//       for (it2_t itgsm2 = itgsm1.begin(); itgsm2 != itgsm1.end(); itgsm2++)//BOOST
+//           free( gsm( itgsm2.index1(), itgsm2.index2() ) );//BOOST
+	
 	rmse = sqrt(rmse / N);
 	rmse_no_null = sqrt(rmse_no_null / (N - N_null));
 	if(metrics != NULL) {
@@ -931,7 +1120,7 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 	}
 	
 	
-//	if(f_predictions>0) {
+//	if(f_predictions>0) { // close predictions file if it was opened
 //		ofstream fout(filename,ios::out);
 //		char str[1024];
 //		if(!fout)
@@ -969,11 +1158,381 @@ void HMMProblem::predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, N
 //		fout.close();
 //	}
 //	free(dat_predict);
-	
+//	
 	
 	if(f_predictions>0) // close predictions file if it was opened
 		fclose(fid);
 }
+
+/*
+void HMMProblem::predictNEW(NUMBER* metrics, const char *filename, NPAR* dat_obs, NCAT *dat_group, NCAT *dat_skill, NCAT *dat_skill_stacked, NCAT *dat_skill_rcount, NDAT *dat_skill_rix) {
+	NDAT t, t_stacked=0;
+	//	NCAT g, k;
+	NPAR i, j, m, o;
+	NPAR nS = this->p->nS, nO = this->p->nO; NCAT nK = this->p->nK, nG = this->p->nG;
+	NUMBER *local_pred = init1D<NUMBER>(nO); // local prediction//SEQ
+	NUMBER *pLe = init1D<NUMBER>(nS);// p(L|evidence);//SEQ
+//	    NUMBER *local_pred = NULL; // local prediction//PAR
+//	    NUMBER *pLe = NULL;// p(L|evidence);//PAR
+	NUMBER pLe_denom; // p(L|evidence) denominator
+	NUMBER ***group_skill_map = init3D<NUMBER>(nG, nK, nS);//UNBOOST
+//	//   ::boost::numeric::ublas::mapped_matrix<NUMBER*> gsm (nG, nK);//BOOST
+	
+	NUMBER ll = 0.0, ll_no_null = 0.0, rmse = 0.0, rmse_no_null = 0.0, accuracy = 0.0, accuracy_no_null = 0.0;
+	NUMBER p;
+	//    FILE *fid = NULL; // file for storing prediction should that be necessary
+	//    if(this->p->predictions>0) {
+	//        fid = fopen(filename,"w");
+	//        if(fid == NULL)
+	//        {
+	//            fprintf(stderr,"Can't write output model file %s\n",filename);
+	//            exit(1);
+	//        }
+	//    }
+	
+	NUMBER *dat_predict = NULL;
+	NUMBER *dat_predict_stacked = NULL;
+	NUMBER *dat_known = NULL;
+	NUMBER *dat_known_stacked = NULL;
+	// if we write prediction
+	if(this->p->predictions>0 || this->p->multiskill!=0) { // write predictions file if it was opened
+		//		dat_predict =  Calloc(NUMBER, (size_t)( this->p->N * (NDAT)this->p->nO ) );
+		if (this->p->multiskill==0) dat_predict =  Calloc(NUMBER, (size_t)( this->p->N * (NDAT)nO ) );
+		else dat_predict_stacked = Calloc(NUMBER, (size_t)( this->p->Nstacked * (NDAT)this->p->nO ) );
+		
+		if(this->p->predictions==2) {
+			if (this->p->multiskill==0) dat_known = Calloc(NUMBER, (size_t)( this->p->N * (NDAT)nS ) );
+			else dat_known_stacked = Calloc(NUMBER, (size_t)( this->p->Nstacked * (NDAT)nS ) );
+		}
+	}
+	
+	// initialize
+	NDAT count = 0;
+	NDAT d = 0;
+//    NUMBER *var = NULL, v;
+//    NDAT ix = 0;
+
+//    int parallel_now = this->p->parallel==1; //PAR
+
+//    #pragma omp parallel if(parallel_now) private(i,j,m,t,d,dt,var,v,o,g,k,ar,ix,n,isTarget,pLe_denom,pLe,local_pred) shared(group_skill_map,nS,nO,nK,nG,starts,threads,dat_predict,dat_known,dat_known_stacked) // num_threads(2)//PAR
+//
+//    {//PAR
+//    #pragma omp for schedule(dynamic) reduction(+:rmse,rmse_no_null,accuracy,accuracy_no_null,ll,ll_no_null) //PAR
+	
+
+//    for(t=0; t<this->p->N; t++) {
+	
+	for(NCAT x=-1; x<nK; x++) { // for all skill sequences
+		struct data* dts = NULL;
+		struct data* dt  = NULL;
+		NCAT ndt = 0;
+		if(x>-1) {
+			dts = this->p->k_data[x];
+			ndt = this->p->k_numg[x];
+		} else {
+			dts = this->p->null_skills;
+			ndt = this->p->n_null_skill_group;
+		}
+		
+		for(NCAT q=0; q<ndt; q++) { // for all individual sequences within dts
+			dt = &dts[q];
+			
+			local_pred = init1D<NUMBER>(nO); // local prediction
+			pLe = init1D<NUMBER>(nS);// p(L|evidence)
+			
+			for(NDAT w=0; w<dt->n; w++) {
+				//				t = (this->p->multiskill==0)?dt->ix[w]:dt->ix_stacked[w];
+				t = dt->ix[w]; // non-stacked, since we want it for observations only
+				if(this->p->multiskill!=0)
+					t_stacked = dt->ix_stacked[w];
+				
+				// we are setting it to the actual prediction (could be unknown), but
+				// we might end up not using it later
+				o = dat_obs[t];//[t];
+				
+				// deal with null skill
+				if(x==-1) { // if no skill label
+					
+					if(this->p->predictions>0 || this->p->metrics > 0) { // form predictions and known
+						for(m=0; m<nO; m++) {
+							if (this->p->multiskill==0) {
+								d = (NDAT)m*this->p->N + t; // save all obs 1 first, then obs 2, then on.
+								dat_predict[d] = this->null_obs_ratio[m];
+							} else {
+								d = (NDAT)m*this->p->Nstacked + t_stacked; // save all obs 1 first, then obs 2, then on.
+								dat_predict_stacked[d] = this->null_obs_ratio[m];
+							}
+						}
+						if(this->p->predictions==2) {
+							for(i=0; i<nS; i++) {
+								if (this->p->multiskill==0) {
+									d = (NDAT)i*this->p->N + t; // save all known 1 first, then known 2, then on.
+									dat_known[d] = 0; // default
+								} else {
+									d = (NDAT)i*this->p->Nstacked + t_stacked; // save all known 1 first, then known 2, then on.
+									dat_known_stacked[d] = 0;
+								}
+							}
+						}
+					} // form predictions and known
+					continue;
+				}
+				
+				
+				// check if {g,k}'s were initialized
+//			  NUMBER *z = gsm(g,k); //BOOST
+//			  if( z==NULL ) {//BOOST
+				if( group_skill_map[dt->g][dt->k][0]==0) { //UNBOOST
+//				NUMBER * pLbit = Calloc(NUMBER, nS);//BOOST
+				
+					for(i=0; i<nS; i++) {
+						group_skill_map[dt->g][dt->k][i] = getPI(dt,i);//UNBOOST
+//						pLbit[i] = getPI(dt,i);//BOOST
+						count++;
+					}
+//              gsm(g,k) = pLbit; //BOOST
+				}// pLo/pL not set
+				
+				// produce prediction and copy to result
+//                producePCorrect(group_skill_map, local_pred, ar, n, dt); // old unboost version for multi skills
+				producePDObs(group_skill_map, local_pred, dt); //UNBOOST
+//				producePCorrectBoost(&gsm, local_pred, ar, n, dt); // old boos version
+//				producePCorrectBoost(&gsm, local_pred, dt); //BOOST
+				projectsimplex(local_pred, nO); // addition to make sure there's not side effects
+				
+				// if necessary guess the obsevaion using Pi and B
+				if(this->p->update_known=='g') {
+					NUMBER max_local_pred=0;
+					NPAR ix_local_pred=0;
+					for(m=0; m<nO; m++) {
+						if( local_pred[m]>max_local_pred ) {
+							max_local_pred = local_pred[m];
+							ix_local_pred = m;
+						}
+					}
+					o = ix_local_pred;
+				}
+				
+				// update pL
+//				NUMBER* pLbit = gsm(g,k); //BOOST
+			
+				// known observation (both if 'reveal' or 'guess'), or uknown and 'guess' anyway
+				if(o>-1 || this->p->update_unknown=='g') {
+					// update p(L)
+					pLe_denom = 0.0;
+					// 1. pLe =  (L .* B(:,o)) ./ ( L'*B(:,o)+1e-8 );
+					for(i=0; i<nS; i++)
+						pLe_denom += group_skill_map[dt->g][dt->k][i] * getB(dt,i,o);  // TODO: this is local_pred[o]!!!//UNBOOST
+//						pLe_denom += pLbit[i] * getB(dt,i,o); //BOOST
+					for(i=0; i<nS; i++)
+						pLe[i] = group_skill_map[dt->g][dt->k][i] * getB(dt,i,o) / safe0num(pLe_denom); //UNBOOST
+//					//                  pLe[i] = pLbit[i] * getB(dt,i,o) / safe0num(pLe_denom); //BOOST
+					// 2. L = (pLe'*A)';
+					for(i=0; i<nS; i++)
+						group_skill_map[dt->g][dt->k][i]= 0.0; //UNBOOST
+//						pLbit[i]= 0.0; //BOOST
+					for(j=0; j<nS; j++)
+						for(i=0; i<nS; i++)
+							group_skill_map[dt->g][dt->k][j] += pLe[i] * getA(dt,i,j);//A[i][j]; //UNBOOST
+//							pLbit[j] += pLe[i] * getA(dt,i,j);//A[i][j]; //BOOST
+				} else { // unknown observation and 'transition' (not 'guess')
+					// 2. L = (pL'*A)';
+					for(i=0; i<nS; i++)
+						pLe[i] = group_skill_map[dt->g][dt->k][i]; // copy first; //UNBOOST
+//						pLe[i] = pLbit[i]; // copy first; //BOOST
+					for(i=0; i<nS; i++)
+						group_skill_map[dt->g][dt->k][i] = 0.0; // erase old value //UNBOOST
+//						pLbit[i] = 0.0; // erase old value //BOOST
+					for(j=0; j<nS; j++)
+						for(i=0; i<nS; i++)
+							group_skill_map[dt->g][dt->k][j] += pLe[i] * getA(dt,i,j);//UNBOOST
+//							pLbit[j] += pLe[i] * getA(dt,i,j);//BOOST
+				}// observations
+				projectsimplex(group_skill_map[dt->g][dt->k], nS); // addition to make sure there's not side effects // UNBOOST
+				//            projectsimplex(pLbit, nS); // addition to make sure there's not side effects // BOOST
+				
+				// write prediction (after update)
+				if(this->p->predictions>0 || this->p->metrics > 0) { // form prediction and known
+					for(m=0; m<nO; m++) {
+						if (this->p->multiskill==0) {
+							d = (NDAT)m*this->p->N + t; // save all obs 1 first, then obs 2, then on.
+							dat_predict[d] = local_pred[m];
+						} else {
+							d = (NDAT)m*this->p->Nstacked + t_stacked; // save all obs 1 first, then obs 2, then on.
+							dat_predict_stacked[d] = local_pred[m];
+						}
+					}
+					if(this->p->predictions==2) {
+						for(i=0; i<nS; i++) {
+							if (this->p->multiskill==0) {
+								d = (NDAT)i*this->p->N + t; // save all known 1 first, then known 2, then on.
+								dat_known[d] = group_skill_map[dt->g][ dt->k ][i];//UNBOOST
+//								//								dat_known[d] = gsm(dt->g, dt->k)[i];//BOOST
+							} else {
+								d = (NDAT)i*this->p->Nstacked + t_stacked; // save all known 1 first, then known 2, then on.
+								dat_known_stacked[d] = group_skill_map[dt->g][ dt->k ][i];//UNBOOST
+//								//								dat_known_stacked[d] = gsm(dt->g, dt->k)[i];//BOOST
+							}
+						}
+					}
+				}// form prediction and known
+				
+				// delay RMSE, accuracy et al. to take averages of predictions later
+				//                rmse += pow(isTarget-local_pred[this->p->metrics_target_obs],2); // MOVED
+				//                rmse_no_null += pow(isTarget-local_pred[this->p->metrics_target_obs],2); // MOVED
+				//                accuracy += isTarget == (local_pred[this->p->metrics_target_obs]>=(1/nO)); // MOVED
+				//                accuracy_no_null += isTarget == (local_pred[this->p->metrics_target_obs]>=(1/nO)); // MOVED
+				//                p = safe01num(local_pred[this->p->metrics_target_obs]); // MOVED
+				//                ll += - (  safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget)  ); // MOVED
+				//                ll_no_null += - (  safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget)  ); // MOVED
+			}
+		}// for all sequiences within skill / null skill
+		
+		free(local_pred);
+		free(pLe);
+	} // for all skill sequences
+	
+//	    }//#omp //PAR
+	
+	// recycly non-sparse skill map
+	free3D<NUMBER>(group_skill_map, nG, nK);//UNBOOST
+	
+	// recycle BOOST skill map
+//	//    gsm.clear();//BOOST
+//	//    typedef boost::numeric::ublas::mapped_matrix<NUMBER *>::iterator1 it1_t;//BOOST
+//	//    typedef boost::numeric::ublas::mapped_matrix<NUMBER *>::iterator2 it2_t;//BOOST
+//	//    for (it1_t itgsm1 = gsm.begin1(); itgsm1 != gsm.end1(); itgsm1++)//BOOST
+//	//        for (it2_t itgsm2 = itgsm1.begin(); itgsm2 != itgsm1.end(); itgsm2++)//BOOST
+//	//            free( gsm( itgsm2.index1(), itgsm2.index2() ) );//BOOST
+	
+	// writing predictions and or computing metrics
+	if(this->p->predictions>0 || this->p->metrics > 0) { // close predictions file if it was opened
+		ofstream fout(filename,ios::out);
+		char str[1024];
+		if(!fout)
+		{
+			fprintf(stderr,"Can't write output model file %s\n",filename);
+			exit(1);
+		}
+		
+		NCAT k = 0;
+		NCAT *kar;
+		NUMBER w, **war = Calloc(NUMBER*, nS);// known
+		NUMBER c, **car = Calloc(NUMBER*, nO);// corect
+		NUMBER *local_obs = Calloc(NUMBER, nO);
+		NDAT t_stacked_0 = 0 // first index in stacked progression;
+		int n;
+		NPAR isTarget = 0, obsMax = 0, l;
+		NUMBER valObsMax = 0;
+		
+		for(NDAT t=0; t<this->p->N; t++) {
+			n = 1;
+			t_stacked_0 = (this->p->multiskill==0)?t:dat_skill_rix[t]; // index in stacked on non-stacked row
+			o = dat_obs[t];
+			
+			// car - corrects, nO pointers to n=1 or more observation corrects
+			// war - knowns, nS pointers to n=1 or more skill knowns
+			// whether skill(s) is(are) supplied or not, it does not matter
+			// non-multiskill - as is
+			//     multiskill - average over n
+			if(this->p->multiskill==0) {
+				k = dat_skill[t];
+				kar = &k; // skill
+				for(i = 0; i<nS; i++) {
+					d = (NDAT)i*this->p->N + t;
+					w = dat_known[d];
+					war[i] = &w;
+				}
+				for(m = 0; m<nO; m++) {
+					d = (NDAT)m*this->p->N + t;
+					c = dat_predict[d];
+					car[m] = &c;
+				}
+			} else {
+				n = dat_skill_rcount[t];
+				k = dat_skill_stacked[t_stacked_0];
+				kar = &k; // skill
+				if(this->p->predictions==2) {
+					for(i = 0; i<nS; i++) {
+						d = (NDAT)i*this->p->Nstacked + t_stacked_0; // first pointer
+						w = dat_known_stacked[d];
+						war[i] = &w;
+					}
+				}
+				for(m = 0; m<nO; m++) {
+					d = (NDAT)m*this->p->Nstacked + t_stacked_0; // first pointer
+					c = dat_predict_stacked[d];
+					car[m] = &c;
+				}
+			}
+			for(m=0; m<nO; m++) {
+				local_obs[m] = 0;
+				for(l=0; l<n; l++)
+					local_obs[m] += car[m][l];
+			}
+			obsMax = 0;
+			valObsMax = local_obs[0];
+			for(m=1; m<nO; m++) {
+				if( valObsMax < local_obs[m]) {
+					obsMax = m;
+					valObsMax = local_obs[m];
+				}
+			}
+			
+			isTarget = this->p->metrics_target_obs == o;
+			accuracy += ( isTarget == (this->p->metrics_target_obs==obsMax) );
+			rmse += pow(isTarget-local_obs[this->p->metrics_target_obs],2);
+			p = safe01num(local_obs[this->p->metrics_target_obs]);
+			ll += - (  safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget)  );
+			
+			//			isTarget = this->p->metrics_target_obs == o;
+			//			accuracy += isTarget == (local_pred[this->p->metrics_target_obs]>=0.5);
+			//			rmse += pow(isTarget-local_pred[this->p->metrics_target_obs],2);
+			
+			if(kar[0]!=-1) {
+				accuracy_no_null += ( isTarget == (this->p->metrics_target_obs==obsMax) );
+				rmse_no_null += pow(isTarget-local_obs[this->p->metrics_target_obs],2);
+				ll_no_null += - (  safelog(  p)*   isTarget  +  safelog(1-p)*(1-isTarget)  );
+			}
+			// print predictions of observations
+			if(this->p->predictions>0)
+				for(m=0; m<nO; m++) {
+					sprintf(str,"%12.10f%s",local_obs[m],(m<(nO-1))?"\t": ((this->p->predictions==1)?"\n":"\t") );
+					fout << str;
+				}
+			// print all knowns if necessary
+			if(this->p->predictions==2) {
+				for(int l=0; l<n && kar[0]>-1; l++) // all KCs
+					for(i=0; i<nS; i++) {
+						sprintf(str,"%12.10f%s",war[i][l], (l==(n-1) && l==(n-1))?"\n":"\t");
+						fout << str;
+					}
+			}
+		} // all non-stacked t
+		if(this->p->predictions>0) fout.close();
+		
+		free(war);
+		free(car);
+		free(local_obs);
+	}
+	
+	// incorporate N into the metrics
+	rmse = sqrt(rmse / this->p->N);
+	rmse_no_null = sqrt(rmse_no_null / (this->p->N - this->p->N_null));
+	if(metrics != NULL) {
+		metrics[0] = ll;
+		metrics[1] = ll_no_null;
+		metrics[2] = rmse;
+		metrics[3] = rmse_no_null;
+		metrics[4] = accuracy/this->p->N;
+		metrics[5] = accuracy_no_null/(this->p->N-this->p->N_null);
+	}
+	
+	free(dat_predict);
+	if(dat_known != NULL) free(dat_known);
+	if(dat_known_stacked != NULL) free(dat_known_stacked);
+}
+*/
 
 NUMBER HMMProblem::getLogLik() { // get log likelihood of the fitted model
     return neg_log_lik;
@@ -1024,11 +1583,13 @@ void HMMProblem::FitNullSkill(NUMBER* loglik_rmse, bool keep_SE) {
         dat = &this->p->null_skills[g];
         if(dat->cnt != 0)
             continue; // observe block
-        count_all_null_skill += dat->n;
+//        count_all_null_skill += dat->n; // does not work for item- and non- stratified cross-validations
         for(t=0; t<dat->n; t++) {
             o = this->p->dat_obs[ dat->ix[t] ];//->get( dat->ix[t] );
-            if(((int)o)>=0) // -1 we skip \xff in char notation
+            if(((int)o)>=0) { // -1 we skip \xff in char notation
                 this->null_obs_ratio[ o ]++;
+                count_all_null_skill++; // crude, but works properly for all cross validations
+            }
         }
     }
     // produce means
@@ -1105,6 +1666,7 @@ FitResult HMMProblem::GradientDescentBit(FitBit *fb) {
             fr->pOmid = fr->pO0;
         }
         // copy parameter values
+//        fb->copy(FBS_PAR, FBS_PARm1);
         // make ste-
         if( this->p->solver==METHOD_GD || (fr->iter==1 && this->p->solver==METHOD_CGD)  || (fr->iter==1 && this->p->solver==METHOD_GBB) )
             fr->pO = doLinearStep(fb); // step for linked skill 0
@@ -1117,6 +1679,7 @@ FitResult HMMProblem::GradientDescentBit(FitBit *fb) {
         // converge?
         fr->conv = fb->checkConvergence(fr);
         // copy parameter values after we already compared step t-1 with currently computed step t
+//        if( this->p->solver==METHOD_GBB )
         fb->copy(FBS_PARm1, FBS_PARm2); // do this for all in order to capture oscillation, e.g. if new param at t is close to param at t-2 (tolerance)
         fb->copy(FBS_PAR, FBS_PARm1);
         // report if converged
@@ -1143,6 +1706,70 @@ FitResult HMMProblem::GradientDescentBit(FitBit *fb) {
     // cleanup
     RecycleFitData(xndat, x_data, this->p); // recycle memory (Alpha, Beta, p_O_param, Xi, Gamma)
     fr->iter--;
+    // this is the case when 2 steps lead to step back to the initial value, i.e. oscillation
+    if(fr->iter==2 && fr->conv && fb->checkConvergenceSingle(fr) ) {
+        // decrease iteration counter to 1
+        fr->iter--;
+    }
+    
+    res.iter = fr->iter;
+    res.pO0  = fr->pO0;
+    res.pO   = fr->pO;
+    res.conv = fr->conv;
+    res.ndat = fr->ndat;
+    delete fr;
+    return res;
+}
+
+FitResult HMMProblem::GradientDescentBitBig(FitBit **fbs, NCAT nfbs) {
+    NCAT q;
+    FitResult res;
+    FitResult *fr = new FitResult;
+    fr->iter = 1;
+    fr->pO0  = 0.0;
+    fr->pO   = 0.0;
+    fr->conv = 0; // converged
+    fr->ndat = 0;
+    NUMBER crit;
+
+    while( fr->conv==0 && fr->iter<=this->p->maxiter ) {
+        fr->ndat = computeGradientsBig(fbs, nfbs);//a_gradPI, a_gradA, a_gradB);
+        
+        if(fr->iter==1) {
+            fr->pO0 = HMMProblem::getSumLogPOPara(this->p->nSeq, this->p->k_data);
+            fr->pOmid = fr->pO0;
+        }
+        
+        for(q=0; q<nfbs; q++) {
+            fbs[q]->copy(FBS_PAR, FBS_PARm1);
+        }
+        // make step
+        if( fr->iter==1 || this->p->solver!=METHOD_CGD)
+            fr->pO = doLinearStepBig(fbs, nfbs); // step for linked skill 0
+        else
+            fr->pO= doConjugateLinearStepBig(fbs, nfbs); /* NOT FINISHED*/
+        
+        fr->conv = checkConvergenceBig(fbs, nfbs, this->p->tol, &crit);
+        
+        if(fr->conv || fr->iter==this->p->maxiter) {
+            if(!this->p->quiet) {
+                if( !this->p->quiet )
+                    printf("skill %5d, seq %5d, dat %8d, iter#%3d p(O|param)= %15.7f >> %15.7f, conv=%d\n", q, this->p->nSeq, fr->ndat, fr->iter, fr->pO0, fr->pO, fr->conv);
+            }
+        } else {
+            for(q=0; q<nfbs; q++) {
+                if (this->p->solver==METHOD_CGD) {
+                    if( fr->iter==1 ) fbs[q]->copy(FBS_GRAD, FBS_DIRm1);
+                    else              fbs[q]->copy(FBS_DIR,  FBS_DIRm1);
+                    fbs[q]->copy(FBS_GRAD, FBS_GRADm1);
+                }
+            }
+        }
+        fr->iter ++;
+        fr->pOmid = fr->pO;
+    }// single skill loop
+
+    RecycleFitData(this->p->nSeq, this->p->k_data, this->p); // recycle memory (Alpha, Beta, p_O_param, Xi, Gamma)
     
     res.iter = fr->iter;
     res.pO0  = fr->pO0;
@@ -1157,12 +1784,13 @@ NUMBER HMMProblem::GradientDescent() {
 	NCAT x, nX;
     if(this->p->structure==STRUCTURE_SKILL)
         nX = this->p->nK;
-    else if (this->p->structure==STRUCTURE_GROUP)
-        nX = this->p->nG;
+//    else if (this->p->structure==STRUCTURE_GROUP)
+//        nX = this->p->nG;
     else
         exit(1);
     NUMBER loglik = 0.0;
 
+    if(true){
 	//
 	// fit all as 1 skill first
 	//
@@ -1220,9 +1848,9 @@ NUMBER HMMProblem::GradientDescent() {
             if(this->p->structure==STRUCTURE_SKILL) {
                 xndat = this->p->k_numg[x];
                 x_data = this->p->k_g_data[x];
-            } else if(this->p->structure==STRUCTURE_GROUP) {
-                xndat = this->p->g_numk[x];
-                x_data = this->p->g_k_data[x];
+//            } else if(this->p->structure==STRUCTURE_GROUP) {
+//                xndat = this->p->g_numk[x];
+//                x_data = this->p->g_k_data[x];
             } else {
                 xndat = 0;
                 x_data = NULL;
@@ -1257,7 +1885,41 @@ NUMBER HMMProblem::GradientDescent() {
         } // for all skills
     }// if not force single skill
 //    }//#omp //PAR
- 
+        
+    }
+    
+    if(false){
+    FitBit **fbs = Calloc(FitBit*, (size_t)nX);
+    for(x=0;x<nX;x++) {
+        NCAT xndat;
+        struct data** x_data;
+        if(this->p->structure==STRUCTURE_SKILL) {
+            xndat = this->p->k_numg[x];
+            x_data = this->p->k_g_data[x];
+//        } else if(this->p->structure==STRUCTURE_GROUP) {
+//            xndat = this->p->g_numk[x];
+//            x_data = this->p->g_k_data[x];
+        } else {
+            xndat = 0;
+            x_data = NULL;
+        }
+        fbs[x] = new FitBit(this->p->nS, this->p->nO, this->p->nK, this->p->nG, this->p->tol, this->p->tol_mode);
+        fbs[x]->link( this->getPI(x), this->getA(x), this->getB(x), xndat, x_data);
+
+        fbs[x]->init(FBS_PARm1);
+        fbs[x]->init(FBS_GRAD);
+        if(this->p->solver==METHOD_CGD) {
+            fbs[x]->init(FBS_DIR);
+            fbs[x]->init(FBS_DIRm1);
+            fbs[x]->init(FBS_GRADm1);
+        }
+    }
+    /*FitResult fr=*/GradientDescentBitBig(fbs, nX);
+    
+    for(x=0;x<nX;x++) delete fbs[x];
+    if(fbs!=NULL) free(fbs);
+    }
+    
     return loglik;
 }
 
@@ -1379,7 +2041,7 @@ FitResult HMMProblem::BaumWelchBit(FitBit *fb) {
 NUMBER HMMProblem::doLinearStep(FitBit *fb) {
 	NPAR i,j,m;
     NPAR nS = fb->nS, nO = this->p->nO;
-    fb->doLog10ScaleGentle(FBS_GRAD);
+    fb->doLog10ScaleGentleByRow(FBS_GRAD);
 	
     NCAT xndat = fb->xndat;
     struct data **x_data = fb->x_data;
@@ -1459,8 +2121,8 @@ NUMBER HMMProblem::doLinearStep(FitBit *fb) {
         
         // compute Wolfe 2
         NUMBER p_k_by_neg_p_kp1 = 0;
-        computeGradients(fb);
-        fb->doLog10ScaleGentle(FBS_GRAD);
+        NDAT ndat = computeGradients(fb);
+        fb->doLog10ScaleGentleByRow(FBS_GRAD);
         for(i=0; i<nS; i++)
         {
             if(fb->pi != NULL) p_k_by_neg_p_kp1 -= fb->gradPIcopy[i]*fb->gradPI[i];
@@ -1477,6 +2139,9 @@ NUMBER HMMProblem::doLinearStep(FitBit *fb) {
 		e /= (compliesArmijo && compliesWolfe2)?1:this->p->ArmijoReduceFactor;
 		iter++;
 	} // armijo loop
+    
+//    fb->copy(FBS_GRADcopy, FBS_GRAD); // return the original gradient in its place // unnecessary
+    
     if(!compliesArmijo) { // we couldn't step away from current, copy the inital point back
         e = 0;
         fb->copy(FBS_PARcopy, FBS_PAR);
@@ -1604,11 +2269,92 @@ NUMBER HMMProblem::doLagrangeStep(FitBit *fb) {
     return ll;
 } // doLagrangeStep
 
+NUMBER HMMProblem::doLinearStepBig(FitBit **fbs, NCAT nfbs) {
+	NPAR i,j,m;
+    NCAT q;
+    NUMBER e;
+    NUMBER f_xk = 0;
+    NUMBER f_xkplus1 = 0;
+    NUMBER p_k_by_neg_p_k = 0;
+
+    bool compliesArmijo = false;
+    
+    e = this->p->ArmijoSeed; // step seed
+    f_xk = HMMProblem::getSumLogPOPara(this->p->nSeq, this->p->k_data);
+    p_k_by_neg_p_k = 0;
+    int iter = 0; // limit iter steps to 20, via ArmijoMinStep (now 10)
+    for(q=0; q<nfbs; q++) {
+        fbs[q]->doLog10ScaleGentleByRow(FBS_GRAD);
+        fbs[q]->init(FBS_PARcopy);
+        fbs[q]->copy(FBS_PAR, FBS_PARcopy);
+        for(i=0; i<fbs[q]->nS; i++)
+        {
+            if(fbs[q]->pi != NULL) p_k_by_neg_p_k -= fbs[q]->gradPI[i]*fbs[q]->gradPI[i];
+            if(fbs[q]->A  != NULL) for(j=0; j<fbs[q]->nS; j++) p_k_by_neg_p_k -= fbs[q]->gradA[i][j]*fbs[q]->gradA[i][j];
+            if(fbs[q]->B  != NULL) for(m=0; m<fbs[q]->nO; m++) p_k_by_neg_p_k -= fbs[q]->gradB[i][m]*fbs[q]->gradB[i][m];
+        }
+    }
+    
+    while( !compliesArmijo && e > this->p->ArmijoMinStep) {
+        for(q=0;q<nfbs;q++) { // apply step
+            // update
+            for(i=0; i<fbs[q]->nS; i++) {
+                if(fbs[q]->pi != NULL) fbs[q]->pi[i] = fbs[q]->PIcopy[i] - e * fbs[q]->gradPI[i];
+                if(fbs[q]->A  != NULL)
+                    for(j=0; j<fbs[q]->nS; j++)
+                        fbs[q]->A[i][j] = fbs[q]->Acopy[i][j] - e * fbs[q]->gradA[i][j];
+                if(fbs[q]->B  != NULL)
+                    for(m=0; m<fbs[q]->nO; m++)
+                        fbs[q]->B[i][m] = fbs[q]->Bcopy[i][m] - e * fbs[q]->gradB[i][m];
+            }
+            // project parameters to simplex if needs be
+            if(fbs[q]->projecttosimplex==1) {
+                // scale
+                if( !this->hasNon01Constraints() ) {
+                    if(fbs[q]->pi != NULL) projectsimplex(fbs[q]->pi, fbs[q]->nS);
+                    for(i=0; i<fbs[q]->nS; i++) {
+                        if(fbs[q]->A  != NULL) projectsimplex(fbs[q]->A[i], fbs[q]->nS);
+                        if(fbs[q]->B  != NULL) projectsimplex(fbs[q]->B[i], fbs[q]->nO);
+                    }
+                } else {
+                    if(fbs[q]->pi != NULL) projectsimplexbounded(fbs[q]->pi, this->getLbPI(), this->getUbPI(), fbs[q]->nS);
+                    
+                    for(i=0; i<fbs[q]->nS; i++) {
+                        if(fbs[q]->A  != NULL) projectsimplexbounded(fbs[q]->A[i], this->getLbA()[i], this->getUbA()[i], fbs[q]->nS);
+                        if(fbs[q]->B  != NULL) projectsimplexbounded(fbs[q]->B[i], this->getLbB()[i], this->getUbB()[i], fbs[q]->nO);
+                    }
+                }
+            }
+        } // apply step
+        
+        // recompute alpha and p(O|param)
+        computeAlphaAndPOParam(this->p->nSeq, this->p->k_data);
+        
+        // compute f(x_{k+1})
+        f_xkplus1 = HMMProblem::getSumLogPOPara(this->p->nSeq, this->p->k_data);
+        // compute Armijo compliance
+        compliesArmijo = (f_xkplus1 <= (f_xk + (this->p->ArmijoC1 * e * p_k_by_neg_p_k)));
+        e /= (compliesArmijo)?1:this->p->ArmijoReduceFactor;
+        iter++;
+    } // armijo loop
+    if(!compliesArmijo) { // we couldn't step away from current, copy the inital point back
+        e = 0;
+        for(q=0;q<nfbs;q++) { // apply step
+            fbs[q]->copy(FBS_PARcopy, FBS_PAR);
+        }
+    }
+    for(q=0;q<nfbs;q++) { // apply step
+        fbs[q]->destroy(FBS_PARcopy);
+    }
+
+    return f_xkplus1;
+} // doLinearStep
+
 NUMBER HMMProblem::doConjugateLinearStep(FitBit *fb) {
 	NPAR i=0, j=0, m=0;
     NPAR nS = this->p->nS, nO = this->p->nO;
 	// first scale down gradients
-    fb->doLog10ScaleGentle(FBS_GRAD);
+    fb->doLog10ScaleGentleByRow(FBS_GRAD);
     
     // compute beta_gradient_direction
     NUMBER beta_grad = 0, beta_grad_num = 0, beta_grad_den = 0;
@@ -1705,7 +2451,7 @@ NUMBER HMMProblem::doConjugateLinearStep(FitBit *fb) {
 		if(fb->B  != NULL) for(m=0; m<nO; m++) fb->dirB[i][m] = -fb->gradB[i][m] + beta_grad * fb->dirBm1[i][m];
 	}
 	// scale direction
-    fb->doLog10ScaleGentle(FBS_DIR);
+    fb->doLog10ScaleGentleByRow(FBS_DIR);
     
 	NUMBER e = this->p->ArmijoSeed; // step seed
 	bool compliesArmijo = false;
@@ -1763,7 +2509,7 @@ NUMBER HMMProblem::doConjugateLinearStep(FitBit *fb) {
         // compute Wolfe 2
         NUMBER p_k_by_neg_p_kp1 = 0;
         computeGradients(fb);
-        fb->doLog10ScaleGentle(FBS_GRAD);
+        fb->doLog10ScaleGentleByRow(FBS_GRAD);
         for(i=0; i<nS; i++)
         {
             if(fb->pi != NULL) p_k_by_neg_p_kp1 += fb->dirPI[i]*fb->gradPI[i];
@@ -1838,17 +2584,171 @@ NUMBER HMMProblem::doConjugateLinearStep(FitBit *fb) {
     return f_xkplus1;
 } // doLinearStep
 
+NUMBER HMMProblem::doConjugateLinearStepBig(FitBit **fbs, NCAT nfbs) {
+	NPAR i=0, j=0, m=0;
+    NPAR nS = this->p->nS, nO = this->p->nO;
+    NCAT q=0;
+    
+    // compute beta_gradient_direction
+    NUMBER beta_grad = 0, beta_grad_num = 0, beta_grad_den = 0;
+
+    for(q=0;q<nfbs;q++) {
+	// first scale down gradients
+        fbs[q]->doLog10ScaleGentleByRow(FBS_GRAD);
+    
+        
+        switch (this->p->solver_setting) {
+            case 1: // Fletcher-Reeves
+                for(i=0; i<nS; i++)
+                {
+                    if(fbs[q]->pi != NULL) {
+                        beta_grad_num += fbs[q]->gradPI  [i]*fbs[q]->gradPI  [i];
+                        beta_grad_den += fbs[q]->gradPIm1[i]*fbs[q]->gradPIm1[i];
+                    }
+                    if(fbs[q]->A  != NULL)
+                        for(j=0; j<nS; j++) {
+                            beta_grad_num += fbs[q]->gradA  [i][j]*fbs[q]->gradA  [i][j];
+                            beta_grad_den += fbs[q]->gradAm1[i][j]*fbs[q]->gradAm1[i][j];
+                        }
+                    if(fbs[q]->B  != NULL)
+                        for(m=0; m<nO; m++) {
+                            beta_grad_num += fbs[q]->gradB  [i][m]*fbs[q]->gradB  [i][m];
+                            beta_grad_den += fbs[q]->gradBm1[i][m]*fbs[q]->gradBm1[i][m];
+                        }
+                }
+                break;
+            case 2: // Polak–Ribiere
+                for(i=0; i<nS; i++)
+                {
+                    if(fbs[q]->pi != NULL) {
+                        beta_grad_num += -fbs[q]->gradPI[i]*(-fbs[q]->gradPI[i] + fbs[q]->gradPIm1[i]);
+                        beta_grad_den +=  fbs[q]->gradPIm1[i]*fbs[q]->gradPIm1[i];
+                    }
+                    if(fbs[q]->A != NULL)
+                        for(j=0; j<nS; j++) {
+                            beta_grad_num += -fbs[q]->gradA[i][j]*(-fbs[q]->gradA[i][j] + fbs[q]->gradAm1[i][j]);
+                            beta_grad_den +=  fbs[q]->gradAm1[i][j]*fbs[q]->gradAm1[i][j];
+                        }
+                    if(fbs[q]->B  != NULL)
+                        for(m=0; m<nO; m++) {
+                            beta_grad_num += -fbs[q]->gradB[i][j]*(-fbs[q]->gradB[i][j] + fbs[q]->gradBm1[i][j]);
+                            beta_grad_den +=  fbs[q]->gradBm1[i][m]*fbs[q]->gradBm1[i][m];
+                        }
+                }
+                break;
+            case 3: // Hestenes-Stiefel
+                for(i=0; i<nS; i++)
+                {
+                    if(fbs[q]->pi != NULL) {
+                        beta_grad_num += -fbs[q]->gradPI[i]*( -fbs[q]->gradPI[i] + fbs[q]->gradPIm1[i]);
+                        beta_grad_den +=  fbs[q]->dirPIm1[i]*(-fbs[q]->gradPI[i] + fbs[q]->gradPIm1[i]);
+                    }
+                    if(fbs[q]->A  != NULL)
+                        for(j=0; j<nS; j++) {
+                            beta_grad_num += -fbs[q]->gradA[i][j]*( -fbs[q]->gradA[i][j] + fbs[q]->gradAm1[i][j]);
+                            beta_grad_den +=  fbs[q]->dirAm1[i][j]*(-fbs[q]->gradA[i][j] + fbs[q]->gradAm1[i][j]);
+                        }
+                    if(fbs[q]->B  != NULL)
+                        for(m=0; m<nO; m++) {
+                            beta_grad_num += -fbs[q]->gradB[i][j]*( -fbs[q]->gradB[i][j] + fbs[q]->gradBm1[i][j]);
+                            beta_grad_den +=  fbs[q]->dirBm1[i][m]*(-fbs[q]->gradB[i][j] + fbs[q]->gradBm1[i][j]);
+                        }
+                }
+                break;
+            default:
+                fprintf(stderr,"Wrong stepping algorithm (%d) specified for Conjugate Gradient Descent\n",this->p->solver_setting);
+                break;
+        }
+        beta_grad = beta_grad_num / safe0num(beta_grad_den);
+        beta_grad = (beta_grad>=0)?beta_grad:0;
+        
+        // compute new direction (in place of old)
+        for(i=0; i<nS; i++)
+        {
+            if(fbs[q]->pi != NULL) fbs[q]->dirPIm1[i] = -fbs[q]->gradPI[i] + beta_grad * fbs[q]->dirPIm1[i];
+            if(fbs[q]->A  != NULL) for(j=0; j<nS; j++) fbs[q]->dirAm1[i][j] = -fbs[q]->gradA[i][j] + beta_grad * fbs[q]->dirAm1[i][j];
+            if(fbs[q]->B  != NULL) for(m=0; m<nO; m++) fbs[q]->dirBm1[i][m] = -fbs[q]->gradB[i][m] + beta_grad * fbs[q]->dirBm1[i][m];
+        }
+        // scale down direction
+        fbs[q]->doLog10ScaleGentleByRow(FBS_DIRm1);
+        
+        fbs[q]->init(FBS_PARcopy);
+    }// all fbs
+        
+	NUMBER e = this->p->ArmijoSeed; // step seed
+	bool compliesArmijo = false;
+	NUMBER f_xk = HMMProblem::getSumLogPOPara(this->p->nSeq, this->p->k_data);
+	NUMBER f_xkplus1 = 0;
+	
+	NUMBER p_k_by_neg_p_k = 0;
+    for(q=0;q<nfbs;q++) {
+        fbs[q]->copy(FBS_PAR, FBS_PARcopy);
+        // compute p_k * -p_k >>>> now current gradient by current direction
+        for(i=0; i<nS; i++)
+        {
+            if(fbs[q]->pi != NULL) p_k_by_neg_p_k = fbs[q]->gradPI[i]*fbs[q]->dirPIm1[i];
+            if(fbs[q]->A  != NULL) for(j=0; j<nS; j++) p_k_by_neg_p_k = fbs[q]->gradA[i][j]*fbs[q]->dirAm1[i][j];
+            if(fbs[q]->B  != NULL) for(m=0; m<nO; m++) p_k_by_neg_p_k = fbs[q]->gradB[i][m]*fbs[q]->dirBm1[i][m];
+        }
+    }
+    
+	int iter = 0; // limit iter steps to 20, actually now 10, via ArmijoMinStep
+	while( !compliesArmijo && e > this->p->ArmijoMinStep) {
+        for(q=0;q<nfbs;q++) {
+            // update
+            for(i=0; i<nS; i++) {
+                if(fbs[q]->pi != NULL) fbs[q]->pi[i] = fbs[q]->PIcopy[i] + e * fbs[q]->dirPIm1[i];
+                if(fbs[q]->A  != NULL)
+                    for(j=0; j<nS; j++)
+                        fbs[q]->A[i][j] = fbs[q]->Acopy[i][j] + e * fbs[q]->dirAm1[i][j];
+                if(fbs[q]->B  != NULL)
+                    for(m=0; m<nO; m++)
+                        fbs[q]->B[i][m] = fbs[q]->Bcopy[i][m] + e * fbs[q]->dirBm1[i][m];
+            }
+            // scale
+            if( !this->hasNon01Constraints() ) {
+                if(fbs[q]->pi != NULL) projectsimplex(fbs[q]->pi, nS);
+                for(i=0; i<nS; i++) {
+                    if(fbs[q]->A != NULL) projectsimplex(fbs[q]->A[i], nS);
+                    if(fbs[q]->B != NULL) projectsimplex(fbs[q]->B[i], nO);
+                }
+            } else {
+                if(fbs[q]->pi != NULL) projectsimplexbounded(fbs[q]->pi, this->getLbPI(), this->getUbPI(), nS);
+                for(i=0; i<nS; i++) {
+                    if(fbs[q]->A != NULL) projectsimplexbounded(fbs[q]->A[i], this->getLbA()[i], this->getUbA()[i], nS);
+                    if(fbs[q]->B != NULL) projectsimplexbounded(fbs[q]->B[i], this->getLbB()[i], this->getUbB()[i], nO);
+                }
+            }
+        }
+		// recompute alpha and p(O|param)
+		computeAlphaAndPOParam(this->p->nSeq, this->p->k_data);
+		// compute f(x_{k+1})
+		f_xkplus1 = HMMProblem::getSumLogPOPara(this->p->nSeq, this->p->k_data);
+		// compute Armijo compliance
+		compliesArmijo = (f_xkplus1 <= (f_xk + (this->p->ArmijoC1 * e * p_k_by_neg_p_k)));
+		e /= (compliesArmijo)?1:this->p->ArmijoReduceFactor;
+		iter++;
+	} // armijo loop
+    if(!compliesArmijo) { // failed to step away from initial, reinstate the inital parameters
+        e = 0;
+        for(q=0;q<nfbs;q++) fbs[q]->copy(FBS_PARcopy, FBS_PAR);
+    }
+    //    RecycleFitData(xndat, x_data, this->p);
+    return f_xkplus1;
+} // doLinearStep
+
 
 NUMBER HMMProblem::doBarzilaiBorweinStep(FitBit *fb) {
+//NUMBER HMMProblem::doBarzilaiBorweinStep(NCAT xndat, struct data** x_data, NUMBER *a_PI, NUMBER **a_A, NUMBER **a_B, NUMBER *a_PI_m1, NUMBER **a_A_m1, NUMBER **a_B_m1, NUMBER *a_gradPI_m1, NUMBER **a_gradA_m1, NUMBER **a_gradB_m1, NUMBER *a_gradPI, NUMBER **a_gradA, NUMBER **a_gradB, NUMBER *a_dirPI_m1, NUMBER **a_dirA_m1, NUMBER **a_dirB_m1) {
 	NPAR i,j,m;
     NPAR nS = this->p->nS, nO = this->p->nO;
 	// first scale down gradients
-    fb->doLog10ScaleGentle(FBS_GRAD);
+    fb->doLog10ScaleGentleByRow(FBS_GRAD);
     
     // compute s_k_m1
   	NUMBER *s_k_m1_PI = init1D<NUMBER>((NDAT)nS);
 	NUMBER **s_k_m1_A = init2D<NUMBER>((NDAT)nS, (NDAT)nS);
-	NUMBER **s_k_m1_B = init2D<NUMBER>((NDAT)nS, (NDAT)nS);
+	NUMBER **s_k_m1_B = init2D<NUMBER>((NDAT)nS, (NDAT)nO);
 	for(i=0; i<nS; i++)
 	{
 		s_k_m1_PI[i] = fb->PIm1[i] - fb->PIm2[i];
@@ -1922,15 +2822,19 @@ NUMBER HMMProblem::doBaumWelchStep(FitBit *fb) {
 	NUMBER ** b_A_den = NULL;
 	NUMBER ** b_B_num = NULL;
 	NUMBER ** b_B_den = NULL;
+//    NUMBER ** c_A     = NULL;  // A,B average across sequences
+//    NUMBER ** c_B     = NULL;  // A,B average across sequences
     if(fb->pi != NULL)
         b_PI = init1D<NUMBER>((NDAT)nS);
     if(fb->A != NULL) {
         b_A_num = init2D<NUMBER>((NDAT)nS, (NDAT)nS);
         b_A_den = init2D<NUMBER>((NDAT)nS, (NDAT)nS);
+//        c_A     = init2D<NUMBER>((NDAT)nS, (NDAT)nS);  // A,B average across sequences
     }
     if(fb->B != NULL) {
         b_B_num = init2D<NUMBER>((NDAT)nS, (NDAT)nO);
         b_B_den = init2D<NUMBER>((NDAT)nS, (NDAT)nO);
+//        c_B     = init2D<NUMBER>((NDAT)nS, (NDAT)nO);  // A,B average across sequences
     }
 
     // compute sums PI
@@ -1938,58 +2842,107 @@ NUMBER HMMProblem::doBaumWelchStep(FitBit *fb) {
 	for(x=0; x<xndat; x++) {
         if( x_data[x]->cnt!=0 ) continue;
         
-        if(fb->pi != NULL)
-            for(i=0; i<nS; i++)
+//        toZero2D(b_A_num, (NDAT)nS, (NDAT)nS); // A,B average across sequences
+//        toZero2D(b_A_den, (NDAT)nS, (NDAT)nS); // A,B average across sequences
+//        toZero2D(b_B_num, (NDAT)nS, (NDAT)nO); // A,B average across sequences
+//        toZero2D(b_B_den, (NDAT)nS, (NDAT)nO); // A,B average across sequences
+        
+        if(fb->pi != NULL) {
+            for(i=0; i<nS; i++) {
                 b_PI[i] += x_data[x]->gamma[0][i] / xndat;
+            }
+        }
 		
 		for(t=0;t<(x_data[x]->n-1);t++) {
             //			o = x_data[x]->obs[t];
             o = this->p->dat_obs[ x_data[x]->ix[t] ];//->get( x_data[x]->ix[t] );
 			for(i=0; i<nS; i++) {
-                if(fb->A != NULL)
+                if(fb->A != NULL) {
                     for(j=0; j<nS; j++){
                         b_A_num[i][j] += x_data[x]->xi[t][i][j];
                         b_A_den[i][j] += x_data[x]->gamma[t][i];
                     }
-                if(fb->B != NULL)
+                }
+                if(fb->B != NULL) {
                     for(m=0; m<nO; m++) {
                         b_B_num[i][m] += (m==o) * x_data[x]->gamma[t][i];
                         b_B_den[i][m] += x_data[x]->gamma[t][i];
                     }
+                }
 			}
 		}
+//        if(fb->A != NULL)  // A,B average across sequences
+//            for(j=0; j<nS; j++)  // A,B average across sequences
+//                c_A[i][j] += b_A_num[i][j] / safe0num(b_A_den[i][j]);  // A,B average across sequences
+//        if(fb->B != NULL)  // A,B average across sequences
+//            for(m=0; m<nO; m++)  // A,B average across sequences
+//                c_B[i][m] = b_B_num[i][m] / safe0num(b_B_den[i][m]);  // A,B average across sequences
 	} // for all groups within a skill
 	// set params
 	for(i=0; i<nS; i++) {
-        if(fb->pi != NULL)
+        if(fb->pi != NULL) {
             fb->pi[i] = b_PI[i];
-        if(fb->A != NULL)
-            for(j=0; j<nS; j++)
+        }
+        if(fb->A != NULL) {
+            for(j=0; j<nS; j++) {
                 fb->A[i][j] = b_A_num[i][j] / safe0num(b_A_den[i][j]);
-        if(fb->B != NULL)
-            for(m=0; m<nO; m++)
+//                fb->A[i][j] = c_A[i][j] / xndat; // A,B average across sequences
+            }
+        }
+        if(fb->B != NULL) {
+            for(m=0; m<nO; m++) {
                 fb->B[i][m] = b_B_num[i][m] / safe0num(b_B_den[i][m]);
+//                fb->B[i][m] = c_B[i][m] / xndat; // A,B average across sequences
+            }
+        }
 	}
     // scale
     if( !this->hasNon01Constraints() ) {
-        if(fb->pi != NULL)
+        if(fb->pi != NULL) {
             projectsimplex(fb->pi, nS);
+        }
         for(i=0; i<nS; i++) {
-            if(fb->A != NULL)
+            if(fb->A != NULL) {
                 projectsimplex(fb->A[i], nS);
-            if(fb->B != NULL)
+            }
+            if(fb->B != NULL) {
                 projectsimplex(fb->B[i], nO);
+            }
         }
     } else {
-        if(fb->pi != NULL)
+        if(fb->pi != NULL) {
             projectsimplexbounded(fb->pi, this->getLbPI(), this->getUbPI(), nS);
+        }
         for(i=0; i<nS; i++) {
-            if(fb->A != NULL)
+            if(fb->A != NULL) {
                 projectsimplexbounded(fb->A[i], this->getLbA()[i], this->getUbA()[i], nS);
-            if(fb->B != NULL)
+            }
+            if(fb->B != NULL) {
                 projectsimplexbounded(fb->B[i], this->getLbB()[i], this->getUbB()[i], nO);
+            }
         }
     }
+    
+//    NUMBER sumP=0, sumA=0, sumB=0;
+//    for(i=0; i<nS; i++) {
+//        sumP += fb->pi[i];
+//        sumA=0;
+//        for(j=0; j<nS; j++)
+//            sumA += fb->A[i][j];
+//        if(fabs(sumA-1)>SAFETY) {
+//            int a = 0;
+//        }
+//        sumB=0;
+//        for(m=0; m<nO; m++)
+//            sumB += fb->B[i][m];
+//        if(fabs(sumB-1)>SAFETY) {
+//            int a = 0;
+//        }
+//    }
+//    if(fabs(sumP-1)>SAFETY) {
+//        int a = 0;
+//    }
+    
     // compute LL
     computeAlphaAndPOParam(fb->xndat, fb->x_data);
     ll = HMMProblem::getSumLogPOPara(fb->xndat, fb->x_data);
@@ -2000,6 +2953,8 @@ NUMBER HMMProblem::doBaumWelchStep(FitBit *fb) {
 	if(b_A_den != NULL) free2D<NUMBER>(b_A_den, nS);
 	if(b_B_num != NULL) free2D<NUMBER>(b_B_num, nS);
 	if(b_B_den != NULL) free2D<NUMBER>(b_B_den, nS);
+//    if(c_A     != NULL) free2D<NUMBER>(c_A, nS); // A,B average across sequences
+//    if(c_B     != NULL) free2D<NUMBER>(c_B, nS); // A,B average across sequences
     return ll;
 }
 
@@ -2135,3 +3090,44 @@ void HMMProblem::readModelBody(FILE *fid, struct param* param, NDAT *line_no,  b
         (*line_no)++;
 	} // for all k
 }
+
+
+bool HMMProblem::checkConvergenceBig0(FitBit** fbs, NCAT nfbs, NUMBER tol, NUMBER *criterion) {
+    for(NCAT x=0; x<nfbs; x++)
+    {
+        for(NPAR i=0; i<fbs[x]->nS; i++)
+        {
+            if(fbs[x]->pi != NULL) *criterion += pow( fbs[x]->pi[i]-fbs[x]->PIm1[i], 2 )/*:0*/;
+            for(NPAR j=0; (fbs[x]->A != NULL) && j<fbs[x]->nS; j++) {
+                *criterion += pow(fbs[x]->A[i][j] - fbs[x]->Am1[i][j],2);
+            }
+            for(NPAR k=0; (fbs[x]->B != NULL) && k<fbs[x]->nO; k++) {
+                *criterion += pow(fbs[x]->B[i][k] - fbs[x]->Bm1[i][k],2);
+            }
+        }
+    }
+    *criterion = sqrt(*criterion);
+	return (*criterion) < tol; // double the truth or false
+}
+
+bool HMMProblem::checkConvergenceBig(FitBit** fbs, NCAT nfbs, NUMBER tol, NUMBER *criterion) {
+    NUMBER critetion_bit;
+    for(NCAT x=0; x<nfbs; x++)
+    {
+        critetion_bit = 0;
+        for(NPAR i=0; i<fbs[x]->nS; i++)
+        {
+            if(fbs[x]->pi != NULL) critetion_bit += pow( fbs[x]->pi[i]-fbs[x]->PIm1[i], 2 )/*:0*/;
+            for(NPAR j=0; (fbs[x]->A != NULL) && j<fbs[x]->nS; j++) {
+                critetion_bit+= pow(fbs[x]->A[i][j] - fbs[x]->Am1[i][j],2);
+            }
+            for(NPAR k=0; (fbs[x]->B != NULL) && k<fbs[x]->nO; k++) {
+                critetion_bit += pow(fbs[x]->B[i][k] - fbs[x]->Bm1[i][k],2);
+            }
+        }
+        *criterion += sqrt(critetion_bit);
+    }
+    *criterion/=nfbs;
+	return (*criterion) < tol; // double the truth or false
+}
+
