@@ -129,7 +129,7 @@ public class BKTMain extends AbstractComponent {
             }
             File generatedFile = this.createFile("Step-values-with-predictions", ".txt");
 	    	File modelValuesFile = this.createFile("Model-values", ".txt");
-			File parametersFile = this.createFile("Parameter-estimate-values", ".txt"); // Yudelson, parameters file
+ 			File parametersFile = this.createFile("Parameter-estimate-values", ".txt"); // Yudelson, parameters file
 			
             String newLineChar = "\n";
 
@@ -467,16 +467,16 @@ public class BKTMain extends AbstractComponent {
             if (tempDataFile.exists() && tempDataFile.canWrite()) {
                 // Build the options for student stratified CV.
                 ArrayList<String> params1 = new ArrayList<String>();
-                params1.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-//                 params1.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+//                 params1.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+                params1.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params1.addAll(handleBKTOptions(analysisOptions.toArray(), "g"));
                 params1.add(tempDataFile.getAbsolutePath());
 
                 logger.debug("Command-line params: " + Arrays.toString(params1.toArray()));
                 // Run the BKT for student stratified CV.
-//                 logger.debug("before student-stratified run"); // Yudelson
+                logger.debug("before student-stratified run"); // Yudelson debug
                 Process process = new ProcessBuilder(params1).start();
-//                 logger.debug("after student-stratified run"); // Yudelson
+                logger.debug("after student-stratified run"); // Yudelson debug
 
                 InputStream is1 = process.getInputStream();
                 InputStreamReader isr = new InputStreamReader(is1);
@@ -494,8 +494,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for item stratified CV.
                 ArrayList<String> params2 = new ArrayList<String>();
-                params2.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-//                 params2.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+//                 params2.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+                params2.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params2.addAll(handleBKTOptions(analysisOptions.toArray(), "i"));
                 params2.add(tempDataFile.getAbsolutePath());
 
@@ -514,8 +514,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for non-stratified CV.
                 ArrayList<String> params3 = new ArrayList<String>();
-                params3.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-//                 params3.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+//                 params3.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+                params3.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params3.addAll(handleBKTOptions(analysisOptions.toArray(), "n"));
                 params3.add(tempDataFile.getAbsolutePath());
 
@@ -540,8 +540,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for prediction.
                 ArrayList<String> params4 = new ArrayList<String>();
-                params4.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-//                 params4.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+//                 params4.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+                params4.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params4.addAll(handleBKTOptions(analysisOptions.toArray(), null));
                 params4.add(tempDataFile.getAbsolutePath());
                 params4.add(resultModelFile.getAbsolutePath());
@@ -801,9 +801,8 @@ public class BKTMain extends AbstractComponent {
 
             String[] runWords = tempRunResult.split("\\s+");
 
-            // based on trainhmm output, size of (model2DStr - 7) gives how many
             // skills
-            int skillCnt = (model2DStr.length - 6) / 4; // Yudelson, in the current code version, 6 lines is the header
+            int skillCnt = (model2DStr.length - 7) / 4; // Yudelson, in the current code version, 7 lines is the header
             int skillCntAlt = -1;
             try {
                 skillCntAlt = Integer
@@ -819,19 +818,19 @@ public class BKTMain extends AbstractComponent {
             String[][] skills = new String[skillCnt][6];
             String[][] parameters = new String[5][2];
             for (int i = 0; i < skillCnt; i++) {
-            	// Yudelson, in the current code version, 6 lines is the header
-                if (model2DStr[i * 4 + 6].length != 2
-                        || model2DStr[i * 4 + 7].length != 3
-                        || model2DStr[i * 4 + 8].length != 5
-                        || model2DStr[i * 4 + 9].length != 5) {
+            	// Yudelson, in the current code version, 7 lines is the header
+                if (model2DStr[i * 4 + 7].length != 2
+                        || model2DStr[i * 4 +  8].length != 3
+                        || model2DStr[i * 4 +  9].length != 5
+                        || model2DStr[i * 4 + 10].length != 5) {
                     addErrorMessage("Format error found in model file: " + modelFile);
                 } else {
                     skills[i][0] = "" + (i + 1);             // skill number
-                    skills[i][1] = model2DStr[i * 4 + 6][1]; // skill name
-                    skills[i][2] = model2DStr[i * 4 + 7][1]; // p-init
-                    skills[i][3] = model2DStr[i * 4 + 8][3]; // p-learn
-                    skills[i][4] = model2DStr[i * 4 + 9][2]; // p-slip
-                    skills[i][5] = model2DStr[i * 4 + 9][3]; // p-guess
+                    skills[i][1] = model2DStr[i * 4 +  7][1]; // skill name
+                    skills[i][2] = model2DStr[i * 4 +  8][1]; // p-init
+                    skills[i][3] = model2DStr[i * 4 +  9][3]; // p-learn
+                    skills[i][4] = model2DStr[i * 4 + 10][2]; // p-slip
+                    skills[i][5] = model2DStr[i * 4 + 11][3]; // p-guess
                 }
             }
             boolean hasLL = false;
@@ -1218,25 +1217,15 @@ public class BKTMain extends AbstractComponent {
             this.addErrorMessage("Parameter value results from BKT were empty.");            
             return theFile;
         }
-
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
-
-// 			BufferedReader br = new BufferedReader(isr);
-// 		    StringBuffer sbRunResult = new StringBuffer();
-//                 String line = null;
-//                 while ((line = br.readLine()) != null) {
-//                     sbRunResult.append(line + "\n");
-//                 }
-			outputStream.write( parameterTable.toString().getBytes("UTF-8") );
-
-		} catch (Exception e) {
-			// This will be picked up by the workflows platform and relayed to the user.
-// 			e.printStackTrace();
-			logger.error("Error occured in BKT: " + e.getMessage());
-			addErrorMessage(e.getMessage()); // Yudelson, for uniformity
-		}
-
-        return theFile;
-    }
+ 
+         try (OutputStream outputStream = new FileOutputStream(theFile)) {
+ 			outputStream.write( parameterTable.toString().getBytes("UTF-8") );
+ 		} catch (Exception e) {
+ 			logger.error("Error occured in BKT: " + e.getMessage());
+ 			addErrorMessage(e.getMessage()); // Yudelson, for uniformity
+ 		}
+ 
+         return theFile;
+     }
 	// Yudelson ^^^^
 }
