@@ -51,7 +51,7 @@ public class TKTMain extends AbstractComponent {
         File outputDirectory = this.runExternalMultipleFileOuput();
         // Attach the output files to the component output: file_type = "analysis-summary", label = ""
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/output-features.txt");
+            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/transaction file with added features.txt");
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "transaction";

@@ -13,10 +13,10 @@ workingDirectory = args[4]
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-KCmodelsuper <- gsub("[ ()]", ".", args[6])
-KCmodelsub <- gsub("[ ()]", ".", args[8])
+KCmodelsuper <- gsub("[ ()-]", ".", args[6])
+KCmodelsub <- gsub("[ ()-]", ".", args[8])
 inputFile<-args[10]
-outputFilePath<- paste(workingDirectory, "output-features.txt", sep="")
+outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")

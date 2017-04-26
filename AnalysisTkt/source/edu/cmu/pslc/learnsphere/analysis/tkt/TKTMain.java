@@ -23,12 +23,7 @@ public class TKTMain extends AbstractComponent {
     @Override
     protected void parseOptions() {
 
-        if (this.getOptionAsString("model") != null) {
-            modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
-        }
-    if (this.getOptionAsString("modelsub") != null) {
-            modelsubName = this.getOptionAsString("modelsub").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
-        }
+  
     }
 
     @Override
@@ -39,9 +34,8 @@ public class TKTMain extends AbstractComponent {
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
         this.addMetaDataFromInput("transaction", 0, 0, ".*");
-        this.addMetaData("transaction", 0, META_DATA_LABEL, "label0", 0, "KC (" + modelName + ")");
-        this.addMetaData("transaction", 0, META_DATA_LABEL, "label1", 0,"KC (" + modelsubName + ")");
     }
+
 
     @Override
     protected void runComponent() {
@@ -49,9 +43,9 @@ public class TKTMain extends AbstractComponent {
         File outputDirectory = this.runExternalMultipleFileOuput();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/tkt-model.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/tkt-summary.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/results.xml");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction file output.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/model result values.xml");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 

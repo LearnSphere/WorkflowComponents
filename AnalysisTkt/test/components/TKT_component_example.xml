@@ -12,9 +12,9 @@
         </connection>
     </connections>
     <options>
-      <model>KC (Default)</model>
-      <modelsub>KC (Default)</modelsub>
-    </options>
+    <usedParameters>1,1,1,1,1,0,1</usedParameters>
+    <fixedParameters>0,0,0,0,0,0,0</fixedParameters>
+  </options>
     <inputs>
     <input0>
       <component_id>ImportTransaction1</component_id>
@@ -25,8 +25,8 @@
       <errors/>
       <files>
           <transaction>
-              <file_path>test/ComponentTestOutput/output/output-features.txt</file_path>
-              <file_name>output-features.txt</file_name>
+              <file_path>test/example_transactions/tkt-model.txt</file_path>
+              <file_name>tkt-model.txt</file_name>
               <index>0</index>
               <label>transaction</label>
           </transaction>

@@ -102,8 +102,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:all >
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="FileInputHeader" name="modelsub" id="ModelSub" default="\s*KC\s*\((.*)\)\s*" />
+      <xs:element type="xs:string" name="usedParameters" id="Used_Parameters_boolean" default="1,1,1,1,1,0,1" />
+      <xs:element type="xs:string" name="fixedParameters" id="Fixed_Parameter_values" default="0,0,0,0,0,0,0" />
     </xs:all>
   </xs:complexType>
 

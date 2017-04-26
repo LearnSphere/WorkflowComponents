@@ -9,25 +9,84 @@ suppressMessages(library(caTools))
 suppressMessages(library(lme4))
 suppressMessages(library(XML))
 suppressMessages(library(MuMIn))
+# initialize variables
+inputFile = NULL
+workingDirectory = NULL
+componentDirectory = NULL
 
+# parse commandline args
+i = 1
+while (i <= length(args)) {
+    if (args[i] == "-file0") {
+       if (length(args) == i) {
+          stop("input file name must be specified")
+       }
+       inputFile = args[i+1]
+       i = i+1
+    }  else if (args[i] == "-usedParameters") {
+       if (length(args) == i) {
+          stop("usedParameters name must be specified")
+       }
+       # This dir is the root dir of the component code.
+       usedParameters = args[i+1]
+       i = i+1
+    } else if (args[i] == "-fixedParameters") {
+       if (length(args) == i) {
+          stop("fixedParameters name must be specified")
+       }
+       # This dir is the root dir of the component code.
+       fixedParameters = args[i+1]
+       i = i+1
+    } else if (args[i] == "-workingDir") {
+       if (length(args) == i) {
+          stop("workingDir name must be specified")
+       }
+       # This dir is the working dir for the component instantiation.
+       workingDirectory = args[i+1]
+       i = i+1
+    } else if (args[i] == "-programDir") {
+       if (length(args) == i) {
+          stop("programDir name must be specified")
+       }
+       # This dir is the root dir of the component code.
+       componentDirectory = args[i+1]
+       i = i+1
+    } 
+    i = i+1
+}
+
+if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirectory)) {
+   if (is.null(inputFile)) {
+      warning("Missing required input parameter: -file0")
+   }
+   
+   if (is.null(workingDirectory)) {
+      warning("Missing required input parameter: -workingDir")
+   }
+   if (is.null(componentDirectory)) {
+      warning("Missing required input parameter: -programDir")
+   }
+  
+   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file  ")
+}
 # This dir is the root dir of the component code.
 componentDirectory = args[2]
 # This dir is the working dir for the component instantiation.
 workingDirectory = args[4]
+
+
+
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-flags<- args[6]
-KCmodel <- gsub("[ ()]", ".", args[8])
-inputFile<-args[10]
 
 # Get data
-outputFilePath<- paste(workingDirectory, "tkt-model.txt", sep="")
-outputFilePath2<- paste(workingDirectory, "results.xml", sep="")
+outputFilePath<- paste(workingDirectory, "transaction file output.txt", sep="")
+outputFilePath2<- paste(workingDirectory, "model result values.xml", sep="")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
 # Creates output log file
-clean <- file(paste(workingDirectory, "tkt-summary.txt", sep=""))
+clean <- file(paste(workingDirectory, "R output model summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
@@ -40,18 +99,34 @@ baselevel <-
     temp <- rep(0, length(df$CF..ansbin.))              
     temp <- (df$CF..KCageint. + (df$CF..KCage. - df$CF..KCageint.) * f) ^ -rate
     return(temp)}
+print(usedParameters)
+vec<- eval(parse(text=paste("c(",usedParameters,")",sep="")))
+pars<- eval(parse(text=paste("c(",fixedParameters,")",sep="")))
+
+terms<- c("log((2+CF..cor.)/(2+CF..incor.))",
+              "log((2+CF..czcor.)/(2+CF..czincor.))",
+              "log((10+CF..totcor.)/(10+CF..totincor.))",
+              "I((!CF..KCclusterspacing.==0)*(1+CF..KCclusterspacing.)^-j)", 
+              "I(CF..baselevel.*log(CF..tests.+1)*(CF..meanspacingint.^k))",
+              "I(CF..baselevel.*log(CF..cltcnt.+1)*(CF..meanspacingint.^k))",
+              "I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.)*(CF..meanspacingint.^k))")
+
+composedform <- "CF..ansbin.~ "
+
+for(v in 1:7){
+composedform <- paste(composedform,ifelse(vec[v],
+                    ifelse(pars[v]>0,paste("offset(I(",pars[1],"*",terms[v],"))",sep=""),paste(terms[v],sep=""))
+                ,""),sep="")
+if(v<7){composedform <- paste(composedform,"+",sep="")}
+}
+composedform
 
 decmod <- function(tem) {
   j<<-tem[1]
   k<<-tem[2]
   f<<-tem[3]
   dat$CF..baselevel. <<- baselevel(dat,j,f) 
-  x <<- glm(CF..ansbin.~ 
-              log((2+CF..cor.)/(2+CF..incor.))+log((2+CF..czcor.)/(2+CF..czincor.))+log((10+CF..totcor.)/(10+CF..totincor.))+
-              I((!CF..KCclusterspacing.==0)*(1+CF..KCclusterspacing.)^-j)+ 
-              I(CF..baselevel.*log(CF..tests.+1)*(CF..meanspacingint.^k)) +
-              #I(CF..baselevel.*log(CF..cltcnt.+1)*(CF..meanspacingint.^k)) + 
-              I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.)*(CF..meanspacingint.^k))
+  x <<- glm(as.formula(composedform)
             ,data=dat,family=binomial(logit))
   # future option should allow this line > print(paste(j," ",k," ",f," ",-logLik(x)[1]))
   -logLik(x)[1]}
@@ -77,6 +152,7 @@ newXMLNode("glmmR2random", round(R2[2]-R2[1],5), parent = top)
 newXMLNode("r2ML", round(r.squaredLR(x)[1],5) , parent = top)
 newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
 saveXML(top, file=outputFilePath2)
+print(top[[1]][[1]])
 
 # Save predictions in file
 dat$CF..modbin.<-pred
