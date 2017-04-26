@@ -73,6 +73,21 @@ typedef signed int NDAT;  // number of data rows, now 2 bill max
 typedef double NUMBER;    // numeric float format
 const NUMBER pi = 3.141592653589793;
 
+//enum SOLVER { // deprecating
+//    BKT_NULL     =  0, // 0 unassigned
+//    BKT_CGD      =  1, // 1 - Conjugate Gradient Descent by skill
+//    BKT_GD       =  2, // 2 - Gradient Descent by skill
+//    BKT_BW       =  3, // 3 - Baum Welch  by skill
+//    BKT_GD_BW    =  4, // 4 - Gradient Descent then Expectation Maximization (Baum-Welch) by skill
+//    BKT_BW_GD    =  5, // 5 - Expectation Maximization (Baum-Welch) then Gradient Descent by skill
+//    BKT_GD_G     =  6, // 6 - Gradient Descent by group
+//    BKT_GD_PIg   =  7, // 7 - Gradient Descent: PI by group, A,B by skill
+//    BKT_GD_PIgk  =  8, // 8 - Gradient Descent, PI=logit(skill,group), other by skill
+//    BKT_GD_APIgk =  9, // 9 - Gradient Descent, PI=logit(skill,group), A=logit(skill,group), B by skill
+//    BKT_GD_Agk   = 10, //10 - Gradient Descent, A=logit(skill,group), PI,B by skill
+//    BKT_GD_T     = 11  //11 - Gradient Descent by skill with transfer matrix
+//};
+
 // Fitting method
 enum METHOD {
     METHOD_BW   = 1,  // 1 - Baum Welch (expectation maximization)
@@ -91,7 +106,18 @@ enum CROSS_VALIDATION {
 // "Structure" of the model we are fitting with a method
 enum STRUCTURE {
     STRUCTURE_SKILL   = 1,  // 1 - all by skill
-    STRUCTURE_GROUP   = 2  // 2 - all by group (user)
+//  STRUCTURE_GROUP   = 2,  // 2 - all by group (user) // doesn't make sense anymore
+    STRUCTURE_PIg     = 3,  // 3 - PI by group, A,B by skill
+    STRUCTURE_SKABslc = 11, // all by skill - sliced A and B
+    STRUCTURE_SKAslc  = 12, // all by skill - sliced A
+    STRUCTURE_PIgk    = 4,  // 4 - PI by skll&group, A,B by skill
+    STRUCTURE_PIgkww  = 10, // 4 - PI by skll&group with weights, A,B by skill
+    STRUCTURE_PIAgk   = 5,  // 5 - PI, A by skll&group, B by skill
+    STRUCTURE_Agk     = 6,  // 6 - A by skll&group, PI,B by skill
+    STRUCTURE_PIABgk  = 7,  // 5 - PI, A, B by skll&group
+    STRUCTURE_SKILL_T = 8,  // 6 - by skill with transfer matrix
+	STRUCTURE_Agki    = 9,  //     A by skll&group & interaction, PI,B by skill
+	STRUCTURE_COMP    = 13  // Compensatory BKT for multi-skill rows
 };
 
 // return type cummrizing a result of a fir of the [subset of the] data
@@ -108,10 +134,12 @@ struct FitResult {
 struct data {
 	NDAT n; // number of data points (observations)
 	NDAT cnt;  // help counter, used for building the data and "banning" data from being fit when cross-valudating based on group
+    NDAT t; // to be used to as an absolute 1..N pointer to a current transaction, or simply a "state" of an otherwise stateless data structure
     //	NPAR *obs; // onservations array - will become the pointer array to the big data
     NDAT *ix; // these are 'ndat' indices to the through arrays (e.g. param.dat_obs and param.dat_item)
     NDAT *ix_stacked; // these are 'ndat' indices to the stacked version through arrays (for example the case of multi-skills per row)
 	NUMBER *c; // nS  - scaling factor vector
+//    int *time;
 	NUMBER **alpha; // ndat x nS
 	NUMBER **beta;  // ndat x nS
 	NUMBER **gamma; // ndat x nS
@@ -133,6 +161,7 @@ struct param {
     NPAR tol_mode; // tolerance mode: by prameter change, or by loglikelihood change
     NPAR scaled;
     NPAR do_not_check_constraints;
+    NPAR sliced; // 1-read slice data from 5th column (0-default), slices - different versions of A and B matrices
     NPAR duplicate_console; // output to file in addition to putputting to console
 	int maxiter; // maximum iterations (200 by default)
 	NPAR quiet;   // quiet mode (no outputs)
@@ -164,6 +193,7 @@ struct param {
     NCAT *dat_skill_rcount;  // if multiskill==1, for each multi-skill row count of skills in it
     NDAT *dat_skill_rix;     // if multiskill==1, for each data skill row, index into first element in stacked array
     NCAT *dat_item;
+//    StripedArray< NCAT* > *dat_multiskill;
     NPAR *dat_slice;         // slices - alternative slots of A, B matrices
 	// derived from data
     NDAT   N;       // number of ALL data rows
@@ -207,8 +237,17 @@ struct param {
 	NUMBER ArmijoReduceFactor;		// Reduction to the step if rule is not satisfied
 	NUMBER ArmijoSeed;				// Seed step
 	NUMBER ArmijoMinStep;			// Minimum step to consider before abandoing reducing it
+    // coord descend
+    NPAR first_iteration_qualify; // at what iteration to start considering parameter for "graduating" (converging) >=0
+    NPAR iterations_to_qualify;   // how many interations of stable parameter values qualify it for "graduating" (converging)
+    // experimental and temporary
     NPAR block_fitting_type; // 0 - none, 1 - by PI, A, B - three flags, 2 - individual parameter, nS*(nS+1+nO)
     NPAR block_fitting[3]; // array of flags to block PI, A, B in this order - TODO, enable diff block types
+    bool per_kc_rmse_acc; // experimental
+    NUMBER *kc_rmse;  // per-kc RMSE
+    NUMBER *kc_acc;  // per-kc Accuracy
+    NDAT *kc_counts;// number of kc datapoints
+	NDAT tag1; // helper tag for stateful processing of data
 };
 
 void destroy_input_data(struct param *param);
@@ -376,9 +415,17 @@ template<typename T> void swap4D(T**** source, T**** target, NDAT size1, NDAT si
     free4D<T>(buffer, size1, size2, size3);
 }
 
+// helper functions for real numbers
 NUMBER safe01num(NUMBER val); // convert number to a safe [0, 1] range
 NUMBER safe0num(NUMBER val); // convert number to a safe (0, inf) or (-inf, 0) range
+NUMBER itself(NUMBER val);
+NUMBER logit(NUMBER val);
+NUMBER sigmoid(NUMBER val);
+NUMBER deprecated_fsafelog(NUMBER val); // fast and safe log for params
 NUMBER safelog(NUMBER val); // safe log for prediction
+NUMBER sgn(NUMBER val);
+NUMBER pairing(NUMBER p, NUMBER q); // computes sigmoid( logit(p) + logit(q) )
+//NUMBER squishing(NUMBER* p, NCAT n); // computes sigmoid( logit(p1) + logit(p2) + ... )
 
 NUMBER maxn(NUMBER *ar, NDAT n); // max value of n
 
@@ -399,14 +446,48 @@ NUMBER doLog10Scale3DGentle(NUMBER ***grad, NUMBER ***par, NPAR size1, NPAR size
 void zeroLabels(NCAT xdat, struct data** x_data); // for skill of group
 void zeroLabels(struct param* param); // set counts in all data sequences to zero
 
+//http://bozeman.genome.washington.edu/compbio/mbt599_2006/hmm_scaling_revised.pdf
+#define LOGZERO -1e10
+NUMBER eexp(NUMBER x);
+NUMBER eln(NUMBER x);
+NUMBER elnsum(NUMBER eln_x, NUMBER eln_y);
+NUMBER elnprod(NUMBER eln_x, NUMBER eln_y);
+
+
 //
 // The heavy end - common functionality
 //
 void set_param_defaults(struct param *param);
 void RecycleFitData(NCAT xndat, struct data** x_data, struct param *param);
 
+//
+// working with time
+//
+
+// limits are the borders of time bins, there are nlimits+1 bins total
+NPAR sec_to_linear_interval(int time, int *limits, NPAR nlimits);
+// 8 categories: <20m, <1h, same day, next day, same week, next week, <30d, >=30d
+NPAR sec_to_9cat(int time1, int time2, int *limits, NPAR nlimits);
+// write time intervals to file
+void write_time_interval_data(param* param, const char *file_name);
+
 // penalties
+//NUMBER penalty_offset = 0.5;
+//NUMBER L2penalty(param* param, NUMBER w);
+//NUMBER L2penalty(param* param, NUMBER w, NUMBER penalty_offset);
 NUMBER L2penalty(NUMBER C, NUMBER w, NUMBER Ccenter);
+
+// for fitting larger portions first
+struct sortbit {
+    NDAT id; // true id of k or g
+    NDAT n; // number of sequences
+    NDAT ndat; // number of datapoints
+};
+
+int compareSortBitInv(const void * a, const void * b);
+
+// random NUMBER in range
+NUMBER NRand(NUMBER NMin, NUMBER NMax);
 
 #endif
 

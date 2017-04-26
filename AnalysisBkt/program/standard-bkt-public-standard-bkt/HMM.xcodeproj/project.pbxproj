@@ -46,7 +46,6 @@
 		71A39C9F179DAAC6000F9610 /* inputconvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = inputconvert.cpp; sourceTree = "<group>"; };
 		71A39CA9179DB04F000F9610 /* inputconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = inputconvert; sourceTree = BUILT_PRODUCTS_DIR; };
 		71AF7DF4176F6C3F000C7E96 /* trainhmm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = trainhmm; sourceTree = BUILT_PRODUCTS_DIR; };
-		71B056FD17A29AAC007D146C /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		71C72ED71B388391004124A8 /* par2seq.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = par2seq.sh; sourceTree = "<group>"; };
 		71C72ED81B388391004124A8 /* seq2par.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = seq2par.sh; sourceTree = "<group>"; };
 		71D234A417540A7C006985EB /* HMMProblem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMMProblem.cpp; sourceTree = "<group>"; };
@@ -59,6 +58,7 @@
 		EB02599C162C61B600442454 /* makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
 		EB32E9C7157F9D2E002F3FFB /* predicthmm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = predicthmm.cpp; sourceTree = "<group>"; };
 		EB32E9F4157FA159002F3FFB /* predicthmm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = predicthmm; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB353C731E6356A2004E7144 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
 		EB5D9029158B7C8C007ECB58 /* StripedArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StripedArray.h; sourceTree = "<group>"; };
 		EB5D902A158B7C8C007ECB58 /* StripedArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StripedArray.cpp; sourceTree = "<group>"; };
 		EB6DCE0F1CA1B9730023A052 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
@@ -95,8 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				EB02599C162C61B600442454 /* makefile */,
+				EB353C731E6356A2004E7144 /* COPYRIGHT */,
 				EB6DCE0F1CA1B9730023A052 /* readme.md */,
-				71B056FD17A29AAC007D146C /* readme.txt */,
 				715BD81017AB35E700C9B6D3 /* toy_data.txt */,
 				715BD82117B0118000C9B6D3 /* toy_data_test.txt */,
 				71C72ED71B388391004124A8 /* par2seq.sh */,

@@ -31,6 +31,8 @@
 #include "FitBit.h"
 #include "StripedArray.h"
 
+//#include <boost/numeric/ublas/matrix_sparse.hpp>//BOOST
+//#include <boost/numeric/ublas/io.hpp>//BOOST
 
 #ifndef _HMMPROBLEM_H
 #define _HMMPROBLEM_H
@@ -69,10 +71,17 @@ public:
     // fitting (the only public method)
     virtual void fit(); // return -LL for the model
     // predicting
-	virtual void producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt);
+//    virtual void producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt);
+    virtual void producePCorrect(NUMBER*** group_skill_map, NUMBER* local_pred, NDAT t);
+//    virtual void producePCorrectBoost(boost::numeric::ublas::mapped_matrix<NUMBER*> *group_skill_map, NUMBER* local_pred, NCAT* ks, NCAT nks, struct data* dt);//BOOST
+//	virtual void producePDObs(NUMBER*** group_skill_map, NUMBER* local_pred, struct data* dt); // probability distribution of observations, single skill label
+//	virtual void producePDObsBoost(boost::numeric::ublas::mapped_matrix<NUMBER*> *group_skill_map, NUMBER* local_pred, struct data* dt);//BOOST
     static void predict(NUMBER* metrics, const char *filename, NPAR* dat_obs, NCAT *dat_group, NCAT *dat_skill, NCAT *dat_skill_stacked, NCAT *dat_skill_rcount, NDAT *dat_skill_rix, HMMProblem **hmms, NPAR nhmms, NPAR *hmm_idx);
+	
+	void predictNEW(NUMBER* metrics, const char *filename, NPAR* dat_obs, NCAT *dat_group, NCAT *dat_skill, NCAT *dat_skill_stacked, NCAT *dat_skill_rcount, NDAT *dat_skill_rix);
     void readModel(const char *filename, bool overwrite);
     virtual void readModelBody(FILE *fid, struct param* param, NDAT *line_no, bool overwrite);
+//    virtual void reorderSequences(NDAT *newnK, NDAT *newnG, bool sort); /*place larger skill and group sequences closer to the beginning*/
 protected:
 	//
 	// Givens
@@ -98,7 +107,7 @@ protected:
 	// Derived
 	//
 	virtual void init(struct param *param); // non-fit specific initialization
-	virtual void destroy(); // non-fit specific descruction
+    virtual void destroy(); // non-fit specific descruction
 	void initAlpha(NCAT xndat, struct data** x_data); // generic
 	void initXiGamma(NCAT xndat, struct data** x_data); // generic
 	void initBeta(NCAT xndat, struct data** x_data); // generic
@@ -120,7 +129,16 @@ protected:
     NUMBER doBaumWelchStep(FitBit *fb);
     FitResult GradientDescentBit(FitBit *fb); // for 1 skill or 1 group, all 1 skill for all data
     FitResult BaumWelchBit(FitBit *fb);
+	// predicting big
+    virtual NDAT computeGradientsBig(FitBit **fbs, NCAT nfbs);// global, for all
+    NUMBER doLinearStepBig(FitBit **fbs, NCAT nfbs); //
+    NUMBER doConjugateLinearStepBig(FitBit **fbs, NCAT nfbs); //
+    FitResult GradientDescentBitBig(FitBit **fbs, NCAT nfbs); //
+    bool checkConvergenceBig0(FitBit** fbs, NCAT nfbs, NUMBER tol, NUMBER *criterion);
+    bool checkConvergenceBig(FitBit** fbs, NCAT nfbs, NUMBER tol, NUMBER *criterion);
+    
     NUMBER doBarzilaiBorweinStep(FitBit *fb);
+//    NUMBER doBarzilaiBorweinStep(NCAT xndat, struct data** x_data, NUMBER *a_PI, NUMBER **a_A, NUMBER **a_B, NUMBER *a_PI_m1, NUMBER **a_A_m1, NUMBER **a_B_m1, NUMBER *a_gradPI_m1, NUMBER **a_gradA_m1, NUMBER **a_gradB_m1, NUMBER *a_gradPI, NUMBER **a_gradA, NUMBER **a_gradB, NUMBER *a_dirPI_m1, NUMBER **a_dirA_m1, NUMBER **a_dirB_m1);
     virtual NUMBER GradientDescent(); // return -LL for the model
     NUMBER BaumWelch(); // return -LL for the model
     void readNullObsRatio(FILE *fid, struct param* param, NDAT *line_no);

@@ -428,8 +428,8 @@ void FitBit::add(enum FIT_BIT_SLOT sourse_fbs, enum FIT_BIT_SLOT target_fbs) {
 }
 
 bool FitBit::checkConvergence(FitResult *fr) {
-
-	NUMBER criterion = 0;
+    
+    NUMBER criterion = 0;
     NUMBER criterion_oscil = 0; // oscillation between PAR and PARm1, i.e. PAR is close to PARm2
     bool res = false;
     switch (this->tol_mode) {
@@ -468,55 +468,137 @@ bool FitBit::checkConvergence(FitResult *fr) {
     }
     return res;
 }
+// without checking for oscillation, actually, afer copying t-1 to t-2 and t to t-1, it is used to check for oscillation
+bool FitBit::checkConvergenceSingle(FitResult *fr) {
+    
+    NUMBER criterion = 0;
+    bool res = false;
+    switch (this->tol_mode) {
+        case 'p':
+            for(NPAR i=0; i<this->nS; i++)
+            {
+                if(this->pi != NULL) criterion += pow( this->pi[i]-this->PIm1[i], 2 )/*:0*/;
+                for(NPAR j=0; (this->A != NULL) && j<this->nS; j++) {
+                    criterion += pow(this->A[i][j] - this->Am1[i][j],2);
+                }
+                for(NPAR k=0; (this->B != NULL) && k<this->nO; k++) {
+                    criterion += pow(this->B[i][k] - this->Bm1[i][k],2);
+                }
+            }
+            
+        case 'l':
+            criterion = (fr->pOmid-fr->pO)/fr->ndat;
+            res = criterion < this->tol;
+            break;
+    }
+    return res;
+}
 
 void FitBit::doLog10ScaleGentle(enum FIT_BIT_SLOT fbs) {
-//    // fbs - gradient or direction
-    NUMBER *a_PI = NULL;
-    NUMBER **a_A = NULL;
-    NUMBER **a_B = NULL;
-    get(fbs, a_PI, a_A, a_B);
-    
-    
-    NPAR nS = this->nS, nO = this->nO;
-    NDAT n = (  (this->pi != NULL)*1 + (this->A != NULL)*nS + (this->B != NULL)*nO  ) * nS;
-    NUMBER* grad = Calloc(NUMBER, n);
-    NUMBER* par = Calloc(NUMBER, n);
-    NDAT cpar = 0, cgrad = 0;
-    for(NPAR i=0; i<nS; i++) {
-        if(this->pi != NULL) { par[cpar++] = this->pi[i]; grad[cgrad++] = a_PI[i]; }
-        if(this->A  != NULL) for(NPAR j=0; j<nS; j++) { par[cpar++] = this->A[i][j]; grad[cgrad++] = a_A[i][j]; }
-        if(this->B  != NULL) for(NPAR m=0; m<nO; m++) { par[cpar++] = this->B[i][m]; grad[cgrad++] = a_B[i][m]; }
-    }
-    
-    NUMBER scale = doLog10Scale1DGentle(grad, par, (NPAR)n);
-    
-    for(NPAR i=0; i<nS; i++) {
-        if(this->pi != NULL) { a_PI[i] *= scale; }
-        if(this->A  != NULL) for(NPAR j=0; j<nS; j++) { a_A[i][j] *= scale; }
-        if(this->B  != NULL) for(NPAR m=0; m<nO; m++) { a_B[i][m] *= scale; }
-    }
-    free(grad);
-    free(par);
+	//    // fbs - gradient or direction
+	NUMBER *a_PI = NULL;
+	NUMBER **a_A = NULL;
+	NUMBER **a_B = NULL;
+	get(fbs, a_PI, a_A, a_B);
+	
+	
+	NPAR nS = this->nS, nO = this->nO;
+	NDAT n = (  (this->pi != NULL)*1 + (this->A != NULL)*nS + (this->B != NULL)*nO  ) * nS;
+	NUMBER* grad = Calloc(NUMBER, n);
+	NUMBER* par = Calloc(NUMBER, n);
+	NDAT cpar = 0, cgrad = 0;
+	for(NPAR i=0; i<nS; i++) {
+		if(this->pi != NULL) { par[cpar++] = this->pi[i]; grad[cgrad++] = a_PI[i]; }
+		if(this->A  != NULL) for(NPAR j=0; j<nS; j++) { par[cpar++] = this->A[i][j]; grad[cgrad++] = a_A[i][j]; }
+		if(this->B  != NULL) for(NPAR m=0; m<nO; m++) { par[cpar++] = this->B[i][m]; grad[cgrad++] = a_B[i][m]; }
+	}
+	
+	NUMBER scale = doLog10Scale1DGentle(grad, par, (NPAR)n);
+	
+	for(NPAR i=0; i<nS; i++) {
+		if(this->pi != NULL) { a_PI[i] *= scale; }
+		if(this->A  != NULL) for(NPAR j=0; j<nS; j++) { a_A[i][j] *= scale; }
+		if(this->B  != NULL) for(NPAR m=0; m<nO; m++) { a_B[i][m] *= scale; }
+	}
+	free(grad);
+	free(par);
+	
+	//	if(this->pi != NULL) doLog10Scale1DGentle(a_PI, this->pi, this->nS);
+	//	if(this->A  != NULL) doLog10Scale2DGentle(a_A,  this->A,  this->nS, this->nS);
+	//	if(this->B  != NULL) doLog10Scale2DGentle(a_B,  this->B,  this->nS, this->nO);
+}
+
+void FitBit::doLog10ScaleGentleByRow(enum FIT_BIT_SLOT fbs) {
+	//    // fbs - gradient or direction
+	NUMBER *a_PI = NULL;
+	NUMBER **a_A = NULL;
+	NUMBER **a_B = NULL;
+	get(fbs, a_PI, a_A, a_B);
+	
+	
+	NPAR nS = this->nS, nO = this->nO;
+	NPAR n_scales = 2*nS + 1;
+	NUMBER* scales = Calloc(NUMBER, n_scales);
+	
+	
+	if(this->pi != NULL)
+		scales[0] = doLog10Scale1DGentle(a_PI, this->pi, nS);
+	if(this->A  != NULL) {
+		for(NPAR i=0; i<nS; i++) {
+			scales[i+1] = doLog10Scale1DGentle(a_A[i], this->A[i], nS);
+		}
+	}
+	if(this->B  != NULL) {
+		for(NPAR i=0; i<nS; i++) {
+			scales[i+1+nS] = doLog10Scale1DGentle(a_B[i], this->B[i], nO);
+		}
+	}
+	
+	for(NPAR i=0; i<nS; i++) {
+		if(this->pi != NULL) { a_PI[i] *= scales[0]; }
+		if(this->A  != NULL) for(NPAR j=0; j<nS; j++) { a_A[i][j] *= scales[i+1]; }
+		if(this->B  != NULL) for(NPAR m=0; m<nO; m++) { a_B[i][m] *= scales[i+1+nS]; }
+	}
+	
+	free(scales);
 }
 
 void FitBit::addL2Penalty(enum FIT_BIT_VAR fbv, param* param, NUMBER factor) {
     NPAR i, j, m;
+    int matrixOff, rowOff;
     if(param->Cslices==0) return;
     NUMBER C = param->Cw[this->Cslice];
+    int nCenters = (param->nS + param->nS*param->nS + param->nS*param->nO); // centers per slice
     switch (fbv) {
         case FBV_PI:
-            for(i=0; i<this->nS; i++)
-                this->gradPI[i] += factor * L2penalty(C, this->pi[i], param->Ccenters[ this->Cslice * 3 + 0] );
+            for(i=0; i<this->nS; i++) {
+                // single center of gravity per matrix
+//                this->gradPI[i] += factor * L2penalty(C, this->pi[i], param->Ccenters[ this->Cslice * 3 + 0] );
+                // center of gravity per parameter of matrix
+                this->gradPI[i] += factor * L2penalty(C, this->pi[i], param->Ccenters[ this->Cslice * nCenters + i] );
+            }
             break;
         case FBV_A:
             for(i=0; i<this->nS; i++)
-                for(j=0; j<this->nS; j++)
-                    this->gradA[i][j] += factor * L2penalty(C, this->A[i][j], param->Ccenters[ this->Cslice * 3 + 1] );
+                for(j=0; j<this->nS; j++) {
+                    // single center of gravity per matrix
+//                    this->gradA[i][j] += factor * L2penalty(C, this->A[i][j], param->Ccenters[ this->Cslice * 3 + 1] );
+                    // center of gravity per parameter of matrix
+                    matrixOff = this->nS;
+                    rowOff = i*this->nS;
+                    this->gradA[i][j] += factor * L2penalty(C, this->A[i][j], param->Ccenters[ this->Cslice * nCenters + matrixOff + rowOff + j] );
+                }
             break;
         case FBV_B:
             for(i=0; i<this->nS; i++)
-                for(m=0; m<this->nO; m++)
-                    this->gradB[i][m] += factor * L2penalty(C, this->B[i][m], param->Ccenters[ this->Cslice * 3 + 2] );
+                for(m=0; m<this->nO; m++) {
+                    // single center of gravity per matrix
+//                    this->gradB[i][m] += factor * L2penalty(C, this->B[i][m], param->Ccenters[ this->Cslice * 3 + 2] );
+                    // center of gravity per parameter of matrix
+                    matrixOff = this->nS + this->nS*this->nS;
+                    rowOff = i*this->nS;
+                    this->gradB[i][m] += factor * L2penalty(C, this->B[i][m], param->Ccenters[ this->Cslice * nCenters + matrixOff + rowOff + m] );
+                }
             break;
             
         default:
