@@ -18,12 +18,12 @@
   </connections>
   <options>
     <model>KC (Default)</model>
-    <xValidationPredictState>1</xValidationPredictState>
+    <!-- <xValidationPredictState>1</xValidationPredictState> Yudelson: too advanced-->
     <xValidationFolds>10</xValidationFolds>
     <maxIterations>200</maxIterations>
     <solver>Baum-Welch</solver>
     <upperBoundaries>0,0,1,0,0,0,0,0.3,0.3,0</upperBoundaries>
-    <hiddenStates>2</hiddenStates>
+    <!-- <hiddenStates>2</hiddenStates>  Yudelson: too advanced-->
     <initialParameters>0.5,1.0,0.4,0.8,0.2</initialParameters>
     <lowerBoundaries>0,0,1,0,0,0,0.7,0,0,0.7</lowerBoundaries>
   </options>

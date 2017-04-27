@@ -127,10 +127,10 @@
       <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
       <!-- <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
         minOccurs="0"  default="None" /> Yudelson: obsolete-->
-      <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />
+      <!-- <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />  Yudelson: too advanced -->
       <xs:element type="xs:integer" name="maxIterations" id="Max_Iterations" default="200" />
-      <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
-        default="1" />
+      <!-- <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
+        default="1" /> Yudelson: too advanced -->
       <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
       <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
       <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0.7,0,0,0.7" />

@@ -392,7 +392,7 @@ public class BKTMain extends AbstractComponent {
 
         analysisOptions.setMaxIterations(this.getOptionAsInteger("maxIterations"));
 
-        analysisOptions.setHiddenStates(this.getOptionAsInteger("hiddenStates"));
+        analysisOptions.setHiddenStates(2); // this.getOptionAsInteger("hiddenStates")); // Yudelson: too advanced
 
 
         String initialParametersAttribute = this.getOptionAsString("initialParameters");
@@ -429,7 +429,7 @@ public class BKTMain extends AbstractComponent {
 
         analysisOptions.setxValidationFolds(this.getOptionAsInteger("xValidationFolds"));
 
-        analysisOptions.setxValidationPredictState(this.getOptionAsInteger("xValidationPredictState"));
+        analysisOptions.setxValidationPredictState(1); // this.getOptionAsInteger("xValidationPredictState")); // Yudelson, too advanced
 
         // Do not allow this option to be set in the interface.
         Boolean reportModelFittingMetrics = true;
