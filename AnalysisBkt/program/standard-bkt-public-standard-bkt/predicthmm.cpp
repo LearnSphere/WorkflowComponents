@@ -39,12 +39,13 @@
 #include "utils.h"
 #include "HMMProblem.h"
 #include "InputUtil.h"
+
 using namespace std;
 
 #define COLUMNS 4
 
 struct param param;
-static char *line = NULL;
+//static char *line = NULL;
 NUMBER* metrics;
 map<string,NCAT> data_map_group_fwd;
 map<NCAT,string> data_map_group_bwd;
@@ -95,7 +96,10 @@ int main (int argc, char ** argv) {
     
     // copy partial info from param_model to param
     if(param.nO==0) param.nO = param_model.nO;
-	
+    param.structure = param_model.structure;
+    param.solver = param_model.solver;
+    param.solver_setting = param_model.solver_setting;
+    
     // copy number of states from the model
     param.nS = param_model.nS;
     
@@ -103,24 +107,26 @@ int main (int argc, char ** argv) {
     if( param.nO>2 || param.nS>2)
         param.do_not_check_constraints = 1;
     
+	// copy number of slices from the model
+	param.nZ = param_model.nZ;
     //
     // create hmm Object
     //
     HMMProblem *hmm = NULL;
-    switch(param.structure)
-    {
-        case STRUCTURE_SKILL: // Conjugate Gradient Descent
-        case STRUCTURE_GROUP: // Conjugate Gradient Descent
-            hmm = new HMMProblem(&param);
-            break;
-    }
+	switch(param.structure)
+	{
+		case STRUCTURE_SKILL: // Conjugate Gradient Descent
+//            case STRUCTURE_GROUP: // Conjugate Gradient Descent
+			hmm = new HMMProblem(&param);
+			break;
+	}
     // read model body
     hmm->readModelBody(fid, &param_model, &line_no, overwrite);
   	fclose(fid);
 	free(line);
-    
+	
 	if(param.quiet == 0)
-        printf("input read, nO=%d, nG=%d, nK=%d, nI=%d\n",param.nO, param.nG, param.nK, param.nI);
+        printf("input read, nO=%d, nG=%d, nK=%d, nI=%d, nZ=%d\n",param.nO, param.nG, param.nK, param.nI, param.nZ);
 	
 	clock_t tm = clock();
 //    if(param.metrics>0 || param.predictions>0) {
@@ -208,6 +214,13 @@ void parse_arguments(int argc, char **argv, char *input_file_name, char *model_f
 					exit_with_help();
 				}
                 break;
+			case 't':
+				param.sliced = (NPAR)atoi(argv[i]);
+				if(param.sliced!=0 && param.sliced!=1) {
+					fprintf(stderr,"ERROR! Time parameter should be either 0 (off) or 1(on)\n");
+					exit_with_help();
+				}
+				break;
             case  'U':
                 param.update_known = *strtok(argv[i],",\t\n\r");
                 ch = strtok(NULL, ",\t\n\r");

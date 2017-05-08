@@ -8,134 +8,149 @@ public class BKTOptions {
     List<String> errorMessages = null;
 
     /** The structure type. */
-    public enum StructureType {
-        BY_SKILL(1) {
-            public String toString() {
-                return "bySkill";
-            }
-
-        },
-        BY_USER(2) {
-            public String toString() {
-                return "byUser";
-            }
-
-        };
-
-        private int value;
-        private StructureType(int value) {
-            this.value = value;
-        }
-
-        /** Provides string IDs for backwards compatibility.
-         * @return the string ID for backwards compatibility
-         */
-        public Integer getId() {
-            return value;
-        }
-    };
+    // Yudelson: the one below doesn't make sense, just flip columns in the data
+//     public enum StructureType {
+//         BY_SKILL("1") {
+//             public String toString() {
+//                 return "bySkill";
+//             }
+// 
+//         },
+//         BY_USER(2) {
+//             public String toString() {
+//                 return "byUser";
+//             }
+// 
+//         };
+// 
+//         private String value;
+//         private StructureType(String value) {
+//             this.value = value;
+//         }
+// 
+//         /** Provides string IDs for backwards compatibility.
+//          * @return the string ID for backwards compatibility
+//          */
+//         public String getId() {
+//             return value;
+//         }
+//     };
 
     /** The solver type. */
     public enum SolverType {
-        BAUM_WELCH(1) {
+        BAUM_WELCH("1.1") {
             public String toString() {
                 return "Baum-Welch";
             }
 
         },
-        GRADIENT_DESCENT(2) {
+        GRADIENT_DESCENT("1.2") {
             public String toString() {
-                return "GradientDescent";
+                return "Gradient Descent";
             }
 
         },
-        CONJUGATE_GRADIENT_DESCENT(3) {
+        CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE("1.3.1") {
             public String toString() {
-                return "ConjugateGradientDescent";
+                return "Conjugate Gradient Descent, Polak-Ribiere";
+            }
+
+        },
+        CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES("1.3.2") {
+            public String toString() {
+                return "Conjugate Gradient Descent, Fletcher-Reeves";
+            }
+
+        },
+        CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL("1.3.3") {
+            public String toString() {
+                return "Conjugate Gradient Descent, Hestenes-Stiefel";
             }
 
         };
 
-        private int value;
-        private SolverType(int value) {
+        private String value;
+        private SolverType(String value) {
             this.value = value;
         }
 
         /** Provides string IDs for backwards compatibility.
          * @return the string ID for backwards compatibility
          */
-        public Integer getId() {
+        public String getId() {
             return value;
         }
     };
 
     /** The Conjugate Gradient Descent option. */
-    public enum ConjugateGradientDescentOption {
-        POLAK_RIBIERE(1) {
-            public String toString() {
-                return "Polak-Ribiere";
-            }
-
-        },
-        FLETCHER_REEVES(2) {
-            public String toString() {
-                return "Fletcher-Reeves";
-            }
-
-        },
-        HESTENES_STIEFEL(3) {
-            public String toString() {
-                return "Hestenes-Stiefel";
-            }
-
-        };
-
-        private int value;
-        private ConjugateGradientDescentOption(int value) {
-            this.value = value;
-        }
-
-        /** Provides string IDs for backwards compatibility.
-         * @return the string ID for backwards compatibility
-         */
-        public Integer getId() {
-            return value;
-        }
-    };
+// 	Yudelson: obsolete
+//     public enum ConjugateGradientDescentOption {
+//         POLAK_RIBIERE(1) {
+//             public String toString() {
+//                 return "Polak-Ribiere";
+//             }
+// 
+//         },
+//         FLETCHER_REEVES(2) {
+//             public String toString() {
+//                 return "Fletcher-Reeves";
+//             }
+// 
+//         },
+//         HESTENES_STIEFEL(3) {
+//             public String toString() {
+//                 return "Hestenes-Stiefel";
+//             }
+// 
+//         };
+// 
+//         private int value;
+//         private ConjugateGradientDescentOption(int value) {
+//             this.value = value;
+//         }
+// 
+//         /** Provides string IDs for backwards compatibility.
+//          * @return the string ID for backwards compatibility
+//          */
+//         public Integer getId() {
+//             return value;
+//         }
+//     };
 
     /** The "fit as one skill" option. */
-    public enum FitAsOneSkillOption {
-        NO(0) {
-            public String toString() {
-                return "No";
-            }
-
-        },
-        FIT_AS_ONE_WITH_MULTISKILL(1) {
-            public String toString() {
-                return "FitAsOneWithMultiskill";
-            }
-
-        },
-        YES(2) {
-            public String toString() {
-                return "ForceOneSkill";
-            }
-
-        };
-
-        private int value;
-        private FitAsOneSkillOption(int value) {
-            this.value = value;
-        }
-
-        /** Provides string IDs for backwards compatibility.
-         * @return the string ID for backwards compatibility
-         */
-        public Integer getId() {
-            return value;
-        }
-    };
+    // Yudelson: non really needed
+//     public enum FitAsOneSkillOption {
+//         NO(0) {
+//             public String toString() {
+//                 return "No";
+//             }
+// 
+//         },
+//         FIT_AS_ONE_WITH_MULTISKILL(1) {
+//             public String toString() {
+//                 return "FitAsOneWithMultiskill";
+//             }
+// 
+//         },
+//         YES(2) {
+//             public String toString() {
+//                 return "ForceOneSkill";
+//             }
+// 
+//         };
+// 
+//         private int value;
+//         private FitAsOneSkillOption(int value) {
+//             this.value = value;
+//         }
+// 
+//         /** Provides string IDs for backwards compatibility.
+//          * @return the string ID for backwards compatibility
+//          */
+//         public Integer getId() {
+//             return value;
+//         }
+//     };
 
     /** The "report model predictions on the training set" option. */
     public enum ReportModelPredictionsOption {
@@ -174,13 +189,13 @@ public class BKTOptions {
     /** The line break characters. */
     private String lineBreak = "\r\n";
     /** The structure type. */
-    private StructureType structure;
+//     private StructureType structure; // Yudelson: obsolete
     /** The solver type. */
     private SolverType solver;
     /** The conjugate gradient descent option. */
-    private ConjugateGradientDescentOption conjugateGradientDescentOption;
+//     private ConjugateGradientDescentOption conjugateGradientDescentOption; // Yudelson: obsolete
     /** The "fit as one skill" option. */
-    FitAsOneSkillOption fitAsOneSkillOption;
+//     FitAsOneSkillOption fitAsOneSkillOption; // Yudelson: non really needed
 
     /** Max iterations. */
     private Integer maxIterations;
@@ -225,34 +240,38 @@ public class BKTOptions {
     public List<String> checkOptions() {
         errorMessages = new ArrayList<String>();
 
-        if (structure == null) {
-            errorMessages.add("The structure parameter is required." + lineBreak);
-        }
+		// Yudelson: obsolete
+//         if (structure == null) {
+//             errorMessages.add("The structure parameter is required." + lineBreak);
+//         }
         if (solver == null) {
             errorMessages.add("The solver parameter is required." + lineBreak);
         }
-        if (solver != null && solver.equals(SolverType.CONJUGATE_GRADIENT_DESCENT)
-                && conjugateGradientDescentOption == null) {
-            errorMessages.add("If " + SolverType.CONJUGATE_GRADIENT_DESCENT
-                + " is chosen as the solver, the conjugate gradient descent parameter is required."
-                    + lineBreak);
-        }
+        // Yudelson: obsolete
+//         if (solver != null && solver.equals(SolverType.CONJUGATE_GRADIENT_DESCENT)
+//                 && conjugateGradientDescentOption == null) {
+//             errorMessages.add("If " + SolverType.CONJUGATE_GRADIENT_DESCENT
+//                 + " is chosen as the solver, the conjugate gradient descent parameter is required."
+//                     + lineBreak);
+//         }
 
         return errorMessages;
     }
     /**
      * @return the structure
      */
-    public StructureType getStructure() {
-        return structure;
-    }
+     // Yudelson: obsolete
+//     public StructureType getStructure() {
+//         return structure;
+//     }
 
     /**
      * @param structure the structure to set
      */
-    public void setStructure(StructureType structure) {
-        this.structure = structure;
-    }
+    // Yudelson: obsolete
+//     public void setStructure(StructureType structure) {
+//         this.structure = structure;
+//     }
 
     /**
      * @return the solver
@@ -271,31 +290,35 @@ public class BKTOptions {
     /**
      * @return the conjugateGradientDescentOption
      */
-    public ConjugateGradientDescentOption getConjugateGradientDescentOption() {
-        return conjugateGradientDescentOption;
-    }
+     // Yudelson: obsolete
+//     public ConjugateGradientDescentOption getConjugateGradientDescentOption() {
+//         return conjugateGradientDescentOption;
+//     }
 
     /**
      * @param conjugateGradientDescentOption the conjugateGradientDescentOption to set
      */
-    public void setConjugateGradientDescentOption(
-            ConjugateGradientDescentOption conjugateGradientDescentOption) {
-        this.conjugateGradientDescentOption = conjugateGradientDescentOption;
-    }
+     // Yudelson: obsolete
+//     public void setConjugateGradientDescentOption(
+//             ConjugateGradientDescentOption conjugateGradientDescentOption) {
+//         this.conjugateGradientDescentOption = conjugateGradientDescentOption;
+//     }
 
     /**
      * @return the fitAsOneSkillOption
      */
-    public FitAsOneSkillOption getFitAsOneSkillOption() {
-        return fitAsOneSkillOption;
-    }
+	// Yudelson: non really needed
+//     public FitAsOneSkillOption getFitAsOneSkillOption() {
+//         return fitAsOneSkillOption;
+//     }
 
     /**
      * @param fitAsOneSkillOption the fitAsOneSkillOption to set
      */
-    public void setFitAsOneSkillOption(FitAsOneSkillOption fitAsOneSkillOptions) {
-        this.fitAsOneSkillOption = fitAsOneSkillOption;
-    }
+    // Yudelson: non really needed
+//     public void setFitAsOneSkillOption(FitAsOneSkillOption fitAsOneSkillOptions) {
+//         this.fitAsOneSkillOption = fitAsOneSkillOption;
+//     }
 
     /**
      * @return the maxIterations
@@ -542,18 +565,20 @@ public class BKTOptions {
 
         StringBuffer returnParamString = new StringBuffer();
 
-        String structureSolver = getStructure().getId() + "." + getSolver().getId();
-        if (getSolver().equals(SolverType.CONJUGATE_GRADIENT_DESCENT)) {
-            structureSolver = structureSolver + "." + getConjugateGradientDescentOption().getId();
-        }
+        String structureSolver = getSolver().getId();
+		// Yudelson: simplified the below to above
+//         String structureSolver = getStructure().getId() + "." + getSolver().getId();
+//         if (getSolver().equals(SolverType.CONJUGATE_GRADIENT_DESCENT)) {
+//             structureSolver = structureSolver + "." + getConjugateGradientDescentOption().getId();
+//         }
 
         if (structureSolver != null) {
             returnParamString.append(" -s " + structureSolver);
         }
 
-        if (fitAsOneSkillOption != null) {
-            returnParamString.append(" -f " + fitAsOneSkillOption.getId());
-        }
+//         if (fitAsOneSkillOption != null) {
+//             returnParamString.append(" -f " + fitAsOneSkillOption.getId());
+//         }
         if (maxIterations != null) {
             returnParamString.append(" -i " + maxIterations);
         }

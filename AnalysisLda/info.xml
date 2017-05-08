@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Md Iqbal Hossain
+  <email>iqbaleric@gmail.com</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisLsa</url>
+<date>2016-08-14</date>
+<abstract>The <b>Latent Semantic Analysis</b> (LSA) performs semantic comparision of natural language inputs (i.e. Student input and ideal answer) </abstract>
+<description>
+    The LSA component takes in a transaction matrix and outputs LSA similarity values computed from comparing columns specified by header1 and header2. 
+    This component is build based on LSA principle. The original domain-specific corpus (TASA) is preprocessed and semantic space (lower dimensional matrix) generated based on that corpus. 
+    This component load that pre-generated space to find out similarity between input vectors (columns). This component also support many to many comparison while a bunch of sentences are given as input and returnvals defined as uniqmat. 
+    For similarity measure, only cosine distance is available now. Other distance measures will be added next. This component generates a “Output.txt” file which contains the two selected column from Transection matrix and a corresponding LSA score.  
+</description>
+
+<inputs>
+<b>Transaction export</b>
+</inputs>
+
+<outputs>
+<b>Text similarity values of selected columns</b>
+</outputs>
+
+<options>
+<b>col</b> - Option col (returnvals) format returns a column of LSA scores corresponding to the string values in header1 and header2 respectively (if  header1 and  header2 are both specified).<br/>
+<b>uniqmat</b> - Option (returnvals) uniqmat format returns an MxN similarity matrix corresponding to the M and N unique string values in header1 and header2 respectively (if  header1 and  header2 are both specified).<br/>
+</options>
+
+</info>

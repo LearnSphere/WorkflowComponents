@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisCorrelation</url>
+<date>2016-10-08</date>
+<abstract>The <b>Correlation</b> calculates a correlation between items (columns) in a gradebook.</abstract>
+<description>The description goes here.</description>
+
+<inputs>
+<b>Tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>Tab-delimited</b>
+</outputs>
+
+<options>
+<b>Summary column present</b> - flag indicating if last column is a summary column <br/>
+</options>
+
+</info>

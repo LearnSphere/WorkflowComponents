@@ -19,9 +19,15 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="student-step"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -36,33 +42,75 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="OutputType">
-    <xs:sequence>
-      <xs:element name="output0" type="OutputDefinition0" />
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="student-step" />
     </xs:choice>
   </xs:complexType>
 
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="model-values" />
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- Yudelson: BKT parameters VVV -->
+  <xs:complexType name="OutputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList2" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="OutFileList2">
+    <xs:choice>
+      <xs:element ref="parameters" />
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- Yudelson: BKT parameters ^^^ -->
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
+      <xs:element name="output2" type="OutputDefinition2" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Yudelson: obsolete
   <xs:simpleType name="structureType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="bySkill" />
     </xs:restriction>
-  </xs:simpleType>
+  </xs:simpleType>-->
 
   <xs:simpleType name="solverType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Baum-Welch" />
-      <xs:enumeration value="GradientDescent" />
-      <xs:enumeration value="ConjugateGradientDescent" />
+      <xs:enumeration value="Gradient Descent" />
+      <xs:enumeration value="Conjugate Gradient Descent, Polak-Ribiere" />
+      <xs:enumeration value="Conjugate Gradient Descent, Fletcher-Reeves" />
+      <xs:enumeration value="Conjugate Gradient Descent, Hestenes-Stiefel" />
     </xs:restriction>
   </xs:simpleType>
 
+  <!-- Yudelson: obsolete
   <xs:simpleType name="conjugateGradientDescentType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None" />
@@ -70,22 +118,22 @@
       <xs:enumeration value="Fletcher-Reeves" />
       <xs:enumeration value="Hestenes-Stiefel" />
     </xs:restriction>
-  </xs:simpleType>
+  </xs:simpleType> -->
 
   <xs:complexType name="OptionsType">
     <xs:all>
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="structureType" name="structure" id="Structure" default="bySkill" />
-      <xs:element type="solverType" name="solver" id="Solver" default="GradientDescent" />
-      <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
-        minOccurs="0"  default="None" />
-      <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />
+      <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
+      <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
+      <!-- <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
+        minOccurs="0"  default="None" /> Yudelson: obsolete-->
+      <!-- <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />  Yudelson: too advanced -->
       <xs:element type="xs:integer" name="maxIterations" id="Max_Iterations" default="200" />
-      <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
-        default="1" />
+      <!-- <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
+        default="1" /> Yudelson: too advanced -->
       <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
       <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
-      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0,0,0,0" />
+      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0.7,0,0,0.7" />
       <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />
     </xs:all>
   </xs:complexType>
@@ -103,6 +151,7 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0"  />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0"  />
         <xs:element name="options" type="OptionsType" minOccurs="0"  />
 

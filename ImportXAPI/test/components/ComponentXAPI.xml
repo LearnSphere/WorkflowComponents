@@ -1,0 +1,22 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Component #1</component_id_human>
+    <workflow_id>1</workflow_id>
+    <component_name>XAPI</component_name>
+    <component_type>Import</component_type>
+    <left>68</left>
+    <connections>
+        <connection>
+            <to>Component2</to>
+        </connection>
+    </connections>
+  <options>
+    <filter>filterByVerb</filter>
+    <url>https://lrs.adlnet.gov/xAPI</url>
+    <username>SKOAdmin</username>
+    <password>password</password>
+    <filterValue>helo</filterValue>
+    <customFilter>Null</customFilter>
+  </options>
+    <top>106</top>
+</component>

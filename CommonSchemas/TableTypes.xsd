@@ -25,38 +25,55 @@
 
   <xs:element name="file" type="FileContainer" />
   <xs:element name="text" substitutionGroup="file" />
-  <xs:element name="tab-delimited" substitutionGroup="text" />
-  <xs:element name="analysis-summary" substitutionGroup="text" />
-  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
-  <xs:element name="user-map" substitutionGroup="tab-delimited" />
-  <xs:element name="resource-use" substitutionGroup="tab-delimited" />
-  <xs:element name="outcome" substitutionGroup="tab-delimited" />
-  <xs:element name="resource-use-to-outcome" substitutionGroup="tab-delimited" />
-  <xs:element name="student-step" substitutionGroup="tab-delimited" />
-  <xs:element name="transaction" substitutionGroup="tab-delimited" />
-  <xs:element name="student-problem" substitutionGroup="tab-delimited" />
-  <xs:element name="csv" substitutionGroup="text" />
-  <xs:element name="xml" substitutionGroup="text" />
-  <xs:element name="inline-html" substitutionGroup="xml" />
-  <xs:element name="html" substitutionGroup="xml" />
-  <xs:element name="ctat-log" substitutionGroup="xml" />
-  <xs:element name="sql" substitutionGroup="text" />
-  <xs:element name="discoursedb" substitutionGroup="text" />
-
   <xs:element name="image" substitutionGroup="file" />
+  <xs:element name="audio" substitutionGroup="file" />
+  <xs:element name="video" substitutionGroup="file" />
+  <xs:element name="binary" substitutionGroup="file" />
+
+  <xs:element name="tab-delimited" substitutionGroup="text" />
+	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
+	  <xs:element name="user-map" substitutionGroup="tab-delimited" />
+	  <xs:element name="resource-use" substitutionGroup="tab-delimited" />
+	  <xs:element name="outcome" substitutionGroup="tab-delimited" />
+	  <xs:element name="resource-use-to-outcome" substitutionGroup="tab-delimited" />
+	  <xs:element name="student-step" substitutionGroup="tab-delimited" />
+	  <xs:element name="transaction" substitutionGroup="tab-delimited" />
+	  <xs:element name="student-problem" substitutionGroup="tab-delimited" />
+	  <xs:element name="model-values" substitutionGroup="tab-delimited" />
+	  <xs:element name="parameters" substitutionGroup="tab-delimited" />
+	  <xs:element name="gradebook" substitutionGroup="tab-delimited" />
+	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
+	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
+
+  <xs:element name="analysis-summary" substitutionGroup="text" />
+	  <xs:element name="csv" substitutionGroup="text" />
+	  <xs:element name="sql" substitutionGroup="text" />
+	  <xs:element name="discoursedb" substitutionGroup="text" />
+	  <xs:element name="xml" substitutionGroup="text" />
+		  <xs:element name="inline-html" substitutionGroup="xml" />
+		  <xs:element name="html" substitutionGroup="xml" />
+		  <xs:element name="ctat-log" substitutionGroup="xml" />
+
   <xs:element name="png" substitutionGroup="image" />
   <xs:element name="jpg" substitutionGroup="image" />
   <xs:element name="gif" substitutionGroup="image" />
   <xs:element name="psd" substitutionGroup="image" />
   <xs:element name="bmp" substitutionGroup="image" />
+  <xs:element name="svg" substitutionGroup="image" />
 
-  <xs:element name="compressed" substitutionGroup="file" />
-  <xs:element name="zip" substitutionGroup="compressed" />
-  <xs:element name="bz2" substitutionGroup="compressed" />
-  <xs:element name="gz" substitutionGroup="compressed" />
-  <xs:element name="_7z" substitutionGroup="compressed" />
+  <xs:element name="compressed" substitutionGroup="binary" />
+	  <xs:element name="zip" substitutionGroup="compressed" />
+	  <xs:element name="bz2" substitutionGroup="compressed" />
+	  <xs:element name="gz" substitutionGroup="compressed" />
+	  <xs:element name="tar" substitutionGroup="compressed" />
+	  <xs:element name="_7zip" substitutionGroup="compressed" />
 
+  <xs:element name="microsoft" substitutionGroup="binary" />
+	  <xs:element name="excel" substitutionGroup="microsoft" />
+	  <xs:element name="word" substitutionGroup="microsoft" />
+	  <xs:element name="powerpoint" substitutionGroup="microsoft" />
 
+  <xs:element name="pdf" substitutionGroup="binary" />
 
 
 </xs:schema>

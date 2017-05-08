@@ -11,6 +11,7 @@
     <xs:complexType>
       <xs:all>
         <xs:element type="xs:string" name="author" minOccurs="0" maxOccurs="1" />
+        <xs:element type="xs:string" name="email" minOccurs="0" maxOccurs="1" />
         <xs:element type="xs:string" name="url" minOccurs="0" maxOccurs="1" />
         <xs:element type="xs:date" name="date" minOccurs="0" maxOccurs="1" />
 

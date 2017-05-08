@@ -1,0 +1,26 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Import #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>Gradebook</component_name>
+  <component_type>import</component_type>
+  <left>163</left>
+  <connections>
+    <connection>
+      <to>Analysis-1-x231683</to>
+    </connection>
+  </connections>
+  <options>
+    <files>
+      <gradebook>
+        <file_path>test/example_gradebook/bio_gradebook.txt</file_path>
+        <file_name>bio_gradebook.txt</file_name>
+        <label>gradebook</label>
+        <index>0</index>
+        <metadata>
+        </metadata>
+      </gradebook>
+    </files>
+  </options>
+  <top>148</top>
+</component>

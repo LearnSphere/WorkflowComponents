@@ -12,7 +12,7 @@
         </connection>
     </connections>
     <options>
-      <model>KC (Default)</model>
+      <model>KC (Cluster)</model>
       <analysis>Simple</analysis>
     </options>
     <inputs>
@@ -25,10 +25,10 @@
       <errors/>
       <files>
           <transaction>
-              <file_path>test/example_transactions/partial_ds2033_tx_All_Data_56_2015_1208_144924.txt</file_path>
-              <file_name>partial_ds2033_tx_All_Data_56_2015_1208_144924.txt</file_name>
-              <index>0</index>
-              <label>transaction</label>
+            <file_path>test/example_transactions/GeneratePfaFeatures_output.txt</file_path>
+            <file_name>GeneratePfaFeatures_output.txt</file_name>
+            <index>0</index>
+            <label>transaction</label>
           </transaction>
       </files>
     </input0>

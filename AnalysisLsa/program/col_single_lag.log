@@ -1,0 +1,102 @@
+
+Output requested as col
+CF (Correct Answer)		Similarity value
+		NA
+		NA
+mean	sum	0.06994807
+dividing	measure|represent|describe	0.07481458
+sum	standard error	0.02822414
+measure|represent|describe	measure|represent|describe	1
+standard error	density	0.04219962
+measure|represent|describe	1	0
+density	mean	-0.02488231
+1	mean	0
+mean	multiple|many	0.002872913
+mean	variability	0.01187339
+multiple|many	range|set	0.1056956
+variability	standard error	-0.01894593
+range|set	standard deviation	0.2032959
+standard error	density	0.04219962
+standard deviation	different|far|variable	0.06229614
+density	mean	-0.02488231
+different|far|variable	root mean squared error	-0.006237931
+mean	divided	-0.01945688
+root mean squared error	range	0.0577485
+divided	2	0
+range	observations	0.00666871
+2	mean	0
+observations	standard error	0.08897779
+mean	standard deviation	0.1056104
+standard error	count	-0.02226933
+standard deviation	dividing	0.1046668
+count	individual|single	0.03789856
+dividing	mean	0.004203491
+individual|single	observations	0.00597011
+mean	mean|sample mean|average	0.6531504
+observations	root mean squared error	0.09566303
+mean|sample mean|average	standard deviation	0.202395
+root mean squared error	observations	0.09566303
+standard deviation	mean	0.1056104
+observations	equal	-0.017661
+mean	observations	0.059784
+equal	sample	0.1253719
+observations	population	0.04064432
+sample	variance	0.2941584
+population	population	1
+variance	sum	0.1221402
+population	observations	0.04064432
+sum	mean	0.06994807
+observations	equal	-0.017661
+mean	observations	0.059784
+equal	population	0.0100997
+observations	participated	-0.01225793
+population	count	0.1036265
+participated	root mean squared error	-0.007262332
+count	population	0.1036265
+root mean squared error	range|set	0.1085099
+population	range|set	-0.02867169
+range|set	equal	-0.03981718
+range|set	observations	0.02490368
+equal	participated	0.03789428
+observations	sample	0.1389508
+participated	observations	-0.01225793
+sample	mean|sample mean|average	0.5894966
+observations	mean	0.059784
+mean|sample mean|average	sample	0.5894966
+mean	root mean squared error	0.5831852
+sample	mean|sample mean|average	0.5894966
+root mean squared error	mean	0.5831852
+mean|sample mean|average	observations	0.1292086
+mean	equal	0.08831283
+observations	observations	1
+equal	represents|describes|shows	0.0354138
+observations	normal	-0.01146187
+represents|describes|shows	multiple|many	0.1142203
+normal	divided	0.01233245
+multiple|many	range|set	0.1056956
+divided	mean	-0.01945688
+range|set	mean	0.02916891
+mean	range|set	0.02916891
+mean	statistic	0.07658154
+range|set	measure|represent|describe	-0.03872335
+statistic	population	0.1401468
+measure|represent|describe	root mean squared error	0.193585
+population	dividing	0.0803416
+root mean squared error	normal	0.002850299
+dividing	normal	-0.08599264
+normal	standard deviation	0.06305595
+normal	participated	-0.08173924
+standard deviation	2	0
+participated	statistic	-0.1054872
+2	root mean squared error	0
+statistic	population	0.1401468
+root mean squared error	probability	0.1297522
+population	sample mean|mean	0.1853259
+probability	variability	0.129912
+sample mean|mean	probability|likelihood|chance	0.1399949
+variability	participated	-0.09408538
+probability|likelihood|chance	99.7	0
+participated	range	0.01282616
+99.7	range|set	0
+range	mean	0.04283211
+

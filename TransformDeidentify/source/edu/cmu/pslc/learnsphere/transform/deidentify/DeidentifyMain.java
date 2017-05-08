@@ -156,7 +156,7 @@ public class DeidentifyMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-            String appContextPath = this.getToolDir() + "/applicationContext.xml";
+            String appContextPath = this.getApplicationContextPath();
             logger.info("appContextPath: " + appContextPath);
             //System.out.println("appContextPath: " + appContextPath);
 
@@ -260,11 +260,11 @@ public class DeidentifyMain extends AbstractComponent {
         //deidentify file
         deidentifyFile(studentIdPairsOfFile, deidentifiedFile);
 
+        Integer fileIndex = 0;
         Integer nodeIndex = 0;
-        Integer fileIndex0 = 0;
-        Integer fileIndex1 = 1;
-        this.addOutputFile(newUserMapFile, nodeIndex, fileIndex0, "user-map");
-        this.addOutputFile(deidentifiedFile, nodeIndex, fileIndex1, "tab-delimited");
+        this.addOutputFile(newUserMapFile, nodeIndex, fileIndex, "user-map");
+        nodeIndex = 1;
+        this.addOutputFile(deidentifiedFile, nodeIndex, fileIndex, "tab-delimited");
 
         System.out.println(this.getOutput());
     }

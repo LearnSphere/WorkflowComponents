@@ -41,6 +41,8 @@ public class GraphOptions {
     /* Options with defaults. */
     /** Whether to view the predicted curve. */
     private Boolean viewPredicted = true;
+    /** Whether to view the highstakes error rate. */
+    private Boolean viewHighStakes = true;
     /** . */
     private Boolean createObservationTable = false;
     /** key for chart parameter. */
@@ -165,6 +167,22 @@ public class GraphOptions {
         this.viewPredicted = viewPredicted;
     }
 
+    /**
+     * Whether to view the highstakes error rate
+     * @return whether to view the highstakes error rate
+     */
+    public Boolean getViewHighStakes() {
+        return viewHighStakes;
+    }
+
+    /**
+     * Set whether to view the highstakes error rate
+     * @param viewHighStakes whether to view the highstakes error rate
+     */
+    public void setViewHighStakes(Boolean viewHighStakes) {
+        this.viewHighStakes = viewHighStakes;
+    }
+
     /** Whether to create the observation table.
      * @return whether to create the observation table
      */
@@ -249,11 +267,12 @@ public class GraphOptions {
         lcGraphOptions.setMinX(0.0);
         lcGraphOptions.setMaxX(50.0);
         lcGraphOptions.setMinY(0.0);
-        lcGraphOptions.setMaxY(1.0);
+        lcGraphOptions.setMaxY(100.0);
         lcGraphOptions.setTickUnit("1");
         lcGraphOptions.setShowAxisX(true);
         lcGraphOptions.setTitle("");
         lcGraphOptions.setViewPredicted(true);
+        lcGraphOptions.setViewHighStakes(true);
         return lcGraphOptions;
     }
 

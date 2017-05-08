@@ -2,7 +2,6 @@
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
-
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -14,16 +13,21 @@
     </xs:complexContent>
   </xs:complexType>
 
-
   <xs:complexType name="InputType">
     <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited" minOccurs="0" />
+      <xs:element ref="file" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -89,14 +93,13 @@
         default="Knowledge Components" />
       <xs:element type="xs:double" name="stdDevCutOff" id="Standard_Deviation_Cutoff"
         default="0" />
-      <xs:element type="xs:double" name="opportunityCutOffMin" id="Min_Opportunities"
-        default="0" />
       <xs:element type="xs:double" name="opportunityCutOffMax" id="Max_Opportunities"
         default="INF" />
       <xs:element type="errorBarType" name="errorBar" id="Error_Bar_Type"
         default="No Error Bars" />
       <xs:element type="learningCurveMetricType" name="learningCurveMetric" id="Learning_Curve_Metric"
         default="Error Rate" />
+      <xs:element minOccurs="0" type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
     </xs:all>
   </xs:complexType>
 

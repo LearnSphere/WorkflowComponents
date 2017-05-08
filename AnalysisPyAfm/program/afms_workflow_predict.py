@@ -121,11 +121,11 @@ if __name__ == "__main__":
     if args.model == "AFM":
         m = CustomLogistic(bounds=bounds, l2=l2, fit_intercept=False)
         m.fit(X, y)
-        yHat = m.predict_proba(X)
+        yHat = 1 - m.predict_proba(X)
     elif args.model == "AFM+S":
         m = BoundedLogistic(first_bounds=bounds, first_l2=l2)
         m.fit(X, X2, y)
-        yHat = m.predict_proba(X, X2)
+        yHat = 1 - m.predict_proba(X, X2)
     else:
         raise ValueError("Model type not supported")
 

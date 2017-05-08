@@ -1,0 +1,142 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+ <xs:complexType name="OutFileList0">
+	<xs:choice>
+		<xs:element ref="file"/>
+	</xs:choice>
+ </xs:complexType>
+
+ <xs:simpleType name="domainType" final="restriction">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="combineall"/>
+		<xs:enumeration value="ALL"/>
+		<xs:enumeration value="common"/>
+		<xs:enumeration value="Arts_and_Humanities"/>
+		<xs:enumeration value="Beauty_and_Style"/>
+		<xs:enumeration value="Cars_and_Transportation"/>
+		<xs:enumeration value="Computers_and_Internet"/>
+		<xs:enumeration value="Consumer_Electronics"/>
+		<xs:enumeration value="Environment"/>
+		<xs:enumeration value="Family_and_Relationships"/>
+		<xs:enumeration value="Food_and_Drink"/>
+		<xs:enumeration value="Games_and_Recreation"/>
+		<xs:enumeration value="Health"/>
+		<xs:enumeration value="Home_and_Garden"/>
+		<xs:enumeration value="Local_Business"/>
+		<xs:enumeration value="News_and_Events"/>
+		<xs:enumeration value="Pets"/>
+		<xs:enumeration value="Politics"/>
+		<xs:enumeration value="Science_and_Mathematics"/>
+		<xs:enumeration value="Social_Science"/>
+		<xs:enumeration value="Society_and_Culture"/>
+		<xs:enumeration value="Sports"/>
+		<xs:enumeration value="Travel"/>
+		<xs:enumeration value="nodomain"/>
+	</xs:restriction>
+ </xs:simpleType>
+ 
+ <xs:simpleType name="semanticSpaceType" final="restriction">
+	<xs:restriction base="xs:string">
+	 <xs:enumeration value="tasalsa500"/> 
+	 <xs:enumeration value="tasalsa3rd"/> 
+	 <xs:enumeration value="tasalsa6th"/>
+	 <xs:enumeration value="tasalsa9th"/>
+	 <xs:enumeration value="tasalsa12th"/>
+	 <xs:enumeration value="wordnetlsa"/>
+	 <xs:enumeration value="encyclopedialsa"/>
+	 <xs:enumeration value="narrative347lsa"/>
+	 <xs:enumeration value="physicslsa"/>
+	 <xs:enumeration value="fa" />
+	</xs:restriction>
+ </xs:simpleType>
+ 
+ <xs:simpleType name="returnvalsType" final="restriction">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="col"/>
+		<xs:enumeration value="uniqmat"/>
+	</xs:restriction>
+ </xs:simpleType>
+
+
+
+  <xs:complexType name="OptionsType">
+    <xs:all>
+	  <xs:element type="FileInputHeader" name="header1" id="header1" default=".*"/>
+	  <xs:element type="FileInputHeader" name="header2" id="header2" default=".*"/>
+	  <xs:element type="domainType" name="domain" id="domain" default="combineall"/>
+	  <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col"/>
+	  <xs:element type="semanticSpaceType" name="ss" id="ss" default="tasalsa500"/>
+	  <xs:element type="xs:integer" name="lag" id="lag" default="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left" />
+        <xs:element type="xs:double" name="top" />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1" type="ConnectionType" />
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

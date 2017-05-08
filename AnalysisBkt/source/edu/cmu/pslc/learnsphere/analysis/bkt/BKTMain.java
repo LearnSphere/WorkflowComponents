@@ -21,11 +21,11 @@ import java.util.zip.ZipInputStream;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions;
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption;
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption;
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption; // Yudelson: obsolete
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.FitAsOneSkillOption; // Yudelson: non really needed
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ReportModelPredictionsOption;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.SolverType;
-import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.StructureType;
+// import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.StructureType; // Yudelson: obsolete
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.ArrayUtils;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.IOUtil;
 
@@ -38,7 +38,6 @@ public class BKTMain extends AbstractComponent {
      * http://docs.oracle.com/javase/7/docs/api/java/lang/String.html. */
     private static final Integer PATTERN_NO_LIMIT = -1;
 
-
     private BKTOptions analysisOptions;
 
     /** The buffered reader buffer size. */
@@ -46,6 +45,41 @@ public class BKTMain extends AbstractComponent {
     /** The file delimiter. */
     private static final String STEP_EXPORT_SEPARATOR = "\\t";
 
+    /** LogLikelihood for the specified model. */
+    Double logLikelihoodValue = null;
+
+    /** AIC for the specified model. */
+    Double aicValue = null;
+
+    /** BIC for the specified model. */
+    Double bicValue = null;
+
+    /** RMSE for the specified model. */
+    Double rmseValue = null;
+
+    /** Accuracy for the specified model. */
+    Double accuracyValue = null;
+
+    /** Cross-validation: student-stratified. */
+    Double studentStratifiedValue = null;
+
+    /** Cross-validation: item-stratified. */
+    Double itemStratifiedValue = null;
+
+    /** Cross-validation: non-stratified. */
+    Double nonStratifiedValue = null;
+    StringBuffer parameterTable = null;
+
+    /** Decimal format used for predicted error rates. */
+    private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
+    
+    /** Keep track of the rows that have no skills*/
+    private List<Integer> rowsMissingSkill;
+    
+    /** Keep track of the rows that have multiple skills, key is the number of row, value is how many skills*/
+    private Map<Integer, Integer> rowsWithMultipleSkills;
+    
+    private int maxRowNumber = 0;
 
     /**
      * Main method.
@@ -63,7 +97,8 @@ public class BKTMain extends AbstractComponent {
      */
     public BKTMain() {
         super();
-
+        rowsMissingSkill = new ArrayList<Integer>();
+        rowsWithMultipleSkills = new Hashtable<Integer, Integer>();
     }
 
 
@@ -73,8 +108,6 @@ public class BKTMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-        DecimalFormat decimalFormat = new DecimalFormat("0.0000");
-
         // Get the predicted error rates
         logger.debug("Running BKT on file = " + this.getAttachment(0, 0) + ", model = " + this.modelName);
         String resultsString = calculatePredictedValues(this.getAttachment(0, 0),
@@ -95,10 +128,13 @@ public class BKTMain extends AbstractComponent {
 
             }
             File generatedFile = this.createFile("Step-values-with-predictions", ".txt");
-
+	    	File modelValuesFile = this.createFile("Model-values", ".txt");
+ 			File parametersFile = this.createFile("Parameter-estimate-values", ".txt"); // Yudelson, parameters file
+			
             String newLineChar = "\n";
 
             // Java 7 try-with-resources
+	    	// Write the predicted error rates to the first output file.
             try (OutputStream outputStream = new FileOutputStream(generatedFile);
                 FileInputStream inStream = new FileInputStream(this.getAttachment(0, 0));
                 BufferedReader bufferedReader = new BufferedReader(
@@ -131,10 +167,41 @@ public class BKTMain extends AbstractComponent {
                 // Write values to export
                 String line = bufferedReader.readLine();
                 Integer lineCount = 0;
+                int predictionValueRead = 0;
                 while (line != null) {
-
-                    String predictedValueString = decimalFormat
-                            .format(doubleValues.get(lineCount));
+                        String predictedValueString = "";
+                        //if this row missed skill
+                        if (rowsMissingSkill.contains(lineCount)) {
+                                predictedValueString = "\t";
+                        } //if this row has multiple skills 
+                        else if (rowsWithMultipleSkills.containsKey(lineCount)){
+                                int howManyValues = rowsWithMultipleSkills.get(lineCount);
+                                // Yudelson VVV, this code was printing out multiple prediction values, if multiple skills were present
+//                                 for (int i = 0; i < howManyValues - 1; i++) {
+//                                         predictedValueString += decimalFormat
+//                                                         .format(doubleValues.get(predictionValueRead)) + "~~";
+//                                         predictionValueRead++;
+//                                 }
+//                                 predictedValueString += decimalFormat
+//                                                 .format(doubleValues.get(predictionValueRead));
+//                                 predictionValueRead++;                        
+                                // Yudelson ^^^
+                                // Yudelson VVV, this code is printing ONE prediction value, if multiple skills were present
+                                // Yudelson, for simplicity, we print out the average
+                                Double sum = new Double(0);
+                                for (int i = 0; i < howManyValues; i++) {
+                                		sum += doubleValues.get(predictionValueRead);
+                                        predictionValueRead++;
+                                }
+                                predictedValueString += decimalFormat.format(sum / howManyValues);
+                                // Yudelson ^^^
+                        } //single value
+                        else {
+                                predictedValueString = decimalFormat
+                                                .format(doubleValues.get(predictionValueRead));
+                                predictionValueRead++;
+                        }
+                    
                     String[] valueArray = line.split("\t");
                     
                     Integer colIndex = 0;
@@ -165,17 +232,28 @@ public class BKTMain extends AbstractComponent {
                 bufferedReader.close();
 
             } catch (Exception exception) {
-
+				logger.error("Error occured in BKT: " + exception.getMessage());
                 this.addErrorMessage(exception.getMessage());
 
             }
 
+            // Now, write the model values to the second output file.
+            modelValuesFile = populateModelValuesFile(modelValuesFile);
+            // Finally, write the parameter estimate values to the third output file. // Yudelson
+            parametersFile = populateParametersFile(parametersFile); // Yudelson
+
+
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "student-step";
-
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
-
+            nodeIndex = 1;
+            fileLabel = "model-values";
+            this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileLabel);
+            nodeIndex = 2; // Yudelson
+            fileLabel = "parameters";  // Yudelson
+            this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileLabel);  // Yudelson
+	    
             System.out.println(this.getOutput());
         }
     }
@@ -233,24 +311,26 @@ public class BKTMain extends AbstractComponent {
             modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
         }
 
-        String structure = this.getOptionAsString("structure");
-        if (structure != null) {
-            if (structure
-                    .equalsIgnoreCase(
-                            StructureType.BY_SKILL.toString())) {
-                analysisOptions.setStructure(StructureType.BY_SKILL);
-            } else if (structure
-                    .equalsIgnoreCase(
-                            StructureType.BY_USER.toString())) {
-                analysisOptions.setStructure(StructureType.BY_USER);
-            }
-        } else {
-            // Default structure
-            analysisOptions.setStructure(StructureType.BY_SKILL);
-        }
+		// Yudelson: obsolete
+//         String structure = this.getOptionAsString("structure");
+//         if (structure != null) {
+//             if (structure
+//                     .equalsIgnoreCase(
+//                             StructureType.BY_SKILL.toString())) {
+//                 analysisOptions.setStructure(StructureType.BY_SKILL);
+//             } 
+//             else if (structure
+//                     .equalsIgnoreCase(
+//                             StructureType.BY_USER.toString())) {
+//                 analysisOptions.setStructure(StructureType.BY_USER);
+//             }
+//         } else {
+//             // Default structure
+//             analysisOptions.setStructure(StructureType.BY_SKILL);
+//         }
 
         String solver = this.getOptionAsString("solver");
-        String conjugateGradientDescentOption = null;
+//         String conjugateGradientDescentOption = null; // Yudelson: obsolete
         if (solver != null) {
             if (solver
                     .equalsIgnoreCase(
@@ -262,54 +342,68 @@ public class BKTMain extends AbstractComponent {
                 analysisOptions.setSolver(SolverType.GRADIENT_DESCENT);
             } else if (solver
                     .equalsIgnoreCase(
-                            SolverType.CONJUGATE_GRADIENT_DESCENT.toString())) {
-                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT);
-
-                conjugateGradientDescentOption = this.getOptionAsString("conjugateGradientDescentOption");
-                if (conjugateGradientDescentOption != null) {
-                    if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.POLAK_RIBIERE.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
-                    } else if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.FLETCHER_REEVES.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.FLETCHER_REEVES);
-                    } else if (conjugateGradientDescentOption
-                            .equalsIgnoreCase(
-                                    ConjugateGradientDescentOption.HESTENES_STIEFEL.toString())) {
-                        analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.HESTENES_STIEFEL);
-                    }
-                } else {
-                    // Default conjugate gradient descent option
-                    analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
-                }
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_POLAK_RIBIERE);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_FLETCHER_REEVES);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL);
             }
+//             else if (solver
+//                     .equalsIgnoreCase(
+//                             SolverType.CONJUGATE_GRADIENT_DESCENT.toString())) {
+//                 analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT);
+// 
+//                 conjugateGradientDescentOption = this.getOptionAsString("conjugateGradientDescentOption");
+//                 if (conjugateGradientDescentOption != null) {
+//                     if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.POLAK_RIBIERE.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
+//                     } else if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.FLETCHER_REEVES.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.FLETCHER_REEVES);
+//                     } else if (conjugateGradientDescentOption
+//                             .equalsIgnoreCase(
+//                                     ConjugateGradientDescentOption.HESTENES_STIEFEL.toString())) {
+//                         analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.HESTENES_STIEFEL);
+//                     }
+//                 } else {
+//                     // Default conjugate gradient descent option
+//                     analysisOptions.setConjugateGradientDescentOption(ConjugateGradientDescentOption.POLAK_RIBIERE);
+//                 }
+//             }
         } else {
             // Default solver
             analysisOptions.setSolver(SolverType.BAUM_WELCH);
         }
 
-        String fitAsOneSkill = this.getOptionAsString("fitAsOneSkill");
-        if (fitAsOneSkill != null) {
-            if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.NO.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.NO);
-            } else if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL);
-            } else if (fitAsOneSkill
-                    .equalsIgnoreCase(
-                            FitAsOneSkillOption.YES.toString())) {
-                analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.YES);
-            }
-        }
+		// Yudelson: non really needed
+//         String fitAsOneSkill = this.getOptionAsString("fitAsOneSkill");
+//         if (fitAsOneSkill != null) {
+//             if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.NO.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.NO);
+//             } else if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.FIT_AS_ONE_WITH_MULTISKILL);
+//             } else if (fitAsOneSkill
+//                     .equalsIgnoreCase(
+//                             FitAsOneSkillOption.YES.toString())) {
+//                 analysisOptions.setFitAsOneSkillOption(FitAsOneSkillOption.YES);
+//             }
+//         }
 
         analysisOptions.setMaxIterations(this.getOptionAsInteger("maxIterations"));
 
-        analysisOptions.setHiddenStates(this.getOptionAsInteger("hiddenStates"));
+        analysisOptions.setHiddenStates(2); // this.getOptionAsInteger("hiddenStates")); // Yudelson: too advanced
 
 
         String initialParametersAttribute = this.getOptionAsString("initialParameters");
@@ -346,7 +440,7 @@ public class BKTMain extends AbstractComponent {
 
         analysisOptions.setxValidationFolds(this.getOptionAsInteger("xValidationFolds"));
 
-        analysisOptions.setxValidationPredictState(this.getOptionAsInteger("xValidationPredictState"));
+        analysisOptions.setxValidationPredictState(1); // this.getOptionAsInteger("xValidationPredictState")); // Yudelson, too advanced
 
         // Do not allow this option to be set in the interface.
         Boolean reportModelFittingMetrics = true;
@@ -384,13 +478,15 @@ public class BKTMain extends AbstractComponent {
             if (tempDataFile.exists() && tempDataFile.canWrite()) {
                 // Build the options for student stratified CV.
                 ArrayList<String> params1 = new ArrayList<String>();
-                params1.add(this.getToolDir() + "program/trainhmm.exe");
+                params1.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params1.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params1.addAll(handleBKTOptions(analysisOptions.toArray(), "g"));
                 params1.add(tempDataFile.getAbsolutePath());
 
                 logger.debug("Command-line params: " + Arrays.toString(params1.toArray()));
                 // Run the BKT for student stratified CV.
                 Process process = new ProcessBuilder(params1).start();
+//                 logger.debug("Student-stratified run done."); // Yudelson debug
 
                 InputStream is1 = process.getInputStream();
                 InputStreamReader isr = new InputStreamReader(is1);
@@ -402,20 +498,20 @@ public class BKTMain extends AbstractComponent {
                     sbRunResult.append(line + "\n");
                 }
 
-
-
                 String gRMSE = parseRMSE(sbRunResult.toString());
 
                 is1.close();
 
                 // Build the options for item stratified CV.
                 ArrayList<String> params2 = new ArrayList<String>();
-                params2.add(this.getToolDir() + "program/trainhmm.exe");
+                params2.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params2.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params2.addAll(handleBKTOptions(analysisOptions.toArray(), "i"));
                 params2.add(tempDataFile.getAbsolutePath());
 
                 // Run the BKT for item stratified CV.
                 process = new ProcessBuilder(params2).start();
+//                 logger.debug("Item-stratified run done."); // Yudelson debug
                 InputStream is2 = process.getInputStream();
                 isr = new InputStreamReader(is2);
                 br = new BufferedReader(isr);
@@ -429,12 +525,14 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for non-stratified CV.
                 ArrayList<String> params3 = new ArrayList<String>();
-                params3.add(this.getToolDir() + "program/trainhmm.exe");
+                params3.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params3.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params3.addAll(handleBKTOptions(analysisOptions.toArray(), "n"));
                 params3.add(tempDataFile.getAbsolutePath());
 
                 // Run the BKT for non-stratified CV.
                 process = new ProcessBuilder(params3).start();
+//                 logger.debug("Non-stratified run done."); // Yudelson debug
                 InputStream is3 = process.getInputStream();
                 isr = new InputStreamReader(is3);
                 br = new BufferedReader(isr);
@@ -454,7 +552,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for prediction.
                 ArrayList<String> params4 = new ArrayList<String>();
-                params4.add(this.getToolDir() + "program/trainhmm.exe");
+                params4.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params4.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params4.addAll(handleBKTOptions(analysisOptions.toArray(), null));
                 params4.add(tempDataFile.getAbsolutePath());
                 params4.add(resultModelFile.getAbsolutePath());
@@ -462,6 +561,7 @@ public class BKTMain extends AbstractComponent {
 
                 // Run the BKT for prediction.
                 process = new ProcessBuilder(params4).start();
+//                 logger.debug("Prediction run done.."); // Yudelson debug
                 InputStream is = process.getInputStream();
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
@@ -471,25 +571,73 @@ public class BKTMain extends AbstractComponent {
                     sbRunResult.append(line + ", ");
                 }
 
-                logger.debug("gRMSE = " + gRMSE + ", iRMSE = " + iRMSE + ", nRMSE = " + nRMSE);
+                logger.debug("gRMSE = " + gRMSE + ", iRMSE = " + iRMSE + ", nRMSE = " + nRMSE); // Yudelson
                 // parse model and prediction file
+//                 logger.debug("Ready for model prediction files parsed."); // Yudelson debug
                 String strResult = parseModelPredictionFiles(
                         resultModelFile.getAbsolutePath(), resultPredictionFile.getAbsolutePath(),
                         sbRunResult.toString(), gRMSE, iRMSE, nRMSE);
-
+//                 logger.debug("Model prediction files parsed."); // Yudelson debug
                 List<Double> predictedValues = new ArrayList<Double>();
                 Boolean saveLines = false;
-
+                Boolean saveParameters = false;
                 for (String resultLine : strResult.toString().split("\\n")) {
+					String[] splitLine;
+					if (resultLine.startsWith("loglikelihood:")) {
+						splitLine = resultLine.split("\\t");
+						logLikelihoodValue = Double.parseDouble(splitLine[1]);
+					}
+					if (resultLine.startsWith("AIC:")) {
+						splitLine = resultLine.split("\\t");
+						aicValue = Double.parseDouble(splitLine[1]);
+					}
+					if (resultLine.startsWith("BIC:")) {
+						splitLine = resultLine.split("\\t");
+						bicValue = Double.parseDouble(splitLine[1]);
+					}
+					if (resultLine.startsWith("RMSE:")) {
+						splitLine = resultLine.split("\\t");
+						rmseValue = Double.parseDouble(splitLine[1]);
+					}
+					if (resultLine.startsWith("Accuracy:")) {
+						splitLine = resultLine.split("\\t");
+						accuracyValue = Double.parseDouble(splitLine[1]);
+					}
+					if (resultLine.startsWith("Student Stratified")) {
+						splitLine = resultLine.split("\\t");
+						studentStratifiedValue = Double.parseDouble(splitLine[0].split(" ")[2]);;
+						itemStratifiedValue = Double.parseDouble(splitLine[1].split(" ")[2]);
+						nonStratifiedValue = Double.parseDouble(splitLine[2].split(" ")[1]);
+					}
+					// save predicted error rate
                     if (resultLine.matches("Fitted values:")) {
                         saveLines = true;
+                        saveParameters = false;
                     } else if (saveLines) {
                         // Convert from predicted success to predicted error rate
                         Double errorRate = 1.0 - Double.parseDouble(resultLine);
                         predictedValues.add(errorRate);
                     }
+                    // save skill parameters  // Yudelson VVVV
+                    if (resultLine.matches("Id\tKC\tpLo\tpT\tpS\tpG")) {
+                        saveParameters = true;
+                        saveLines = false;
+                        parameterTable = new StringBuffer();
+                        parameterTable.append(resultLine + "\n");
+                    } else if (saveParameters && !resultLine.isEmpty()) { 
+                        splitLine = resultLine.split("\\t");
+//                         System.out.println("-- skill id |" + splitLine[0] + "|"); // Yudelson debug
+                        Integer id = Integer.parseInt(splitLine[0]);
+                        String skill = splitLine[1];
+                        Double pinit = Double.parseDouble(splitLine[2]);
+                        Double plearn = Double.parseDouble(splitLine[3]);
+                        Double pslip = Double.parseDouble(splitLine[4]);
+                        Double pguess = Double.parseDouble(splitLine[5]);
+						parameterTable.append(resultLine + "\n");
+                    } // Yudelson ^^^^
+                    
                 }
-
+//                 logger.debug("Fit statistics files parsed."); // Yudelson debug
                 resultString = predictedValues.toString();
 
             } else {
@@ -500,6 +648,7 @@ public class BKTMain extends AbstractComponent {
             // Log error
             addErrorMessage("Error occurred in BKT: " + ex.getMessage());
             logger.error("Error occured in BKT: " + ex.getMessage());
+            ex.printStackTrace();
         }
         return resultString;
     }
@@ -631,7 +780,7 @@ public class BKTMain extends AbstractComponent {
                 hasRMSE = true;
             }
             if (runWords[i].indexOf("Acc=") != -1) {
-                parameters[4][0] = "A':";
+                parameters[4][0] = "Accuracy:";
                 parameters[4][1] = runWords[i].substring(4);
                 hasA = true;
             }
@@ -660,6 +809,7 @@ public class BKTMain extends AbstractComponent {
         File resultModelFile = new File(modelFile);
         File resultPredictionFile = new File(predictionFile);
         StringBuffer resultSb = new StringBuffer();
+// 		logger.debug("- parseModelPredictionFiles: create file pointers."); // Yudelson debug
 
         if (resultModelFile.exists() && resultPredictionFile.exists()
                 && resultModelFile.canWrite() && resultPredictionFile.canWrite()) {
@@ -670,38 +820,43 @@ public class BKTMain extends AbstractComponent {
 
             String[] runWords = tempRunResult.split("\\s+");
 
-            // based on trainhmm output, size of (model2DStr - 7) gives how many
             // skills
-            int skillCnt = (model2DStr.length - 7) / 4;
+            int skillCnt = (model2DStr.length - 7) / 4; // Yudelson, in the current code version, 7 lines is the header
             int skillCntAlt = -1;
             try {
                 skillCntAlt = Integer
                         .parseInt(model2DStr[model2DStr.length - 4][0]) + 1;
             } catch (NumberFormatException ne) {
+				logger.error("Number format exception.");
                 addErrorMessage("Number format exception.");
             }
 
             if (skillCntAlt == -1 || skillCnt != skillCntAlt) {
-                addErrorMessage("Invalid skill count.");
+                addErrorMessage("Invalid skill count: skillCntAlt=" + skillCntAlt + ", vs. skillCnt=" + skillCnt );
             }
+
+// 			logger.debug("- parseModelPredictionFiles: skills counted."); // Yudelson debug
 
             String[][] skills = new String[skillCnt][6];
             String[][] parameters = new String[5][2];
             for (int i = 0; i < skillCnt; i++) {
+            	// Yudelson, in the current code version, 7 lines is the header
                 if (model2DStr[i * 4 + 7].length != 2
-                        || model2DStr[i * 4 + 8].length != 3
-                        || model2DStr[i * 4 + 9].length != 5
+                        || model2DStr[i * 4 +  8].length != 3
+                        || model2DStr[i * 4 +  9].length != 5
                         || model2DStr[i * 4 + 10].length != 5) {
                     addErrorMessage("Format error found in model file: " + modelFile);
                 } else {
-                    skills[i][0] = "" + (i + 1);
-                    skills[i][1] = model2DStr[i * 4 + 7][1];
-                    skills[i][2] = model2DStr[i * 4 + 8][1];
-                    skills[i][3] = model2DStr[i * 4 + 9][3];
-                    skills[i][4] = model2DStr[i * 4 + 10][2];
-                    skills[i][5] = model2DStr[i * 4 + 10][3];
+                    skills[i][0] = "" + (i + 1);             // skill number
+                    skills[i][1] = model2DStr[i * 4 +  7][1]; // skill name
+                    skills[i][2] = model2DStr[i * 4 +  8][1]; // p-init
+                    skills[i][3] = model2DStr[i * 4 +  9][3]; // p-learn
+                    skills[i][4] = model2DStr[i * 4 + 10][2]; // p-slip
+                    skills[i][5] = model2DStr[i * 4 + 10][3]; // p-guess
                 }
             }
+// 			logger.debug("- parseModelPredictionFiles: parameter array populated."); // Yudelson debug
+
             boolean hasLL = false;
             boolean hasAIC = false;
             boolean hasBIC = false;
@@ -714,13 +869,17 @@ public class BKTMain extends AbstractComponent {
                     hasLL = true;
                 }
                 if (runWords[i].indexOf("AIC=") != -1) {
+		    // Sigh. String ends with ','
+		    int index = runWords[i].indexOf(',');
                     parameters[1][0] = "AIC:";
-                    parameters[1][1] = runWords[i].substring(4);
+                    parameters[1][1] = runWords[i].substring(4, index);
                     hasAIC = true;
                 }
                 if (runWords[i].indexOf("BIC=") != -1) {
+		    // Sigh. String ends with ','
+		    int index = runWords[i].indexOf(',');
                     parameters[2][0] = "BIC:";
-                    parameters[2][1] = runWords[i].substring(4);
+                    parameters[2][1] = runWords[i].substring(4, index);
                     hasBIC = true;
                 }
                 if (runWords[i].indexOf("RMSE=") != -1) {
@@ -729,7 +888,7 @@ public class BKTMain extends AbstractComponent {
                     hasRMSE = true;
                 }
                 if (runWords[i].indexOf("Acc=") != -1) {
-                    parameters[4][0] = "A':";
+                    parameters[4][0] = "Accuracy:";
                     parameters[4][1] = runWords[i].substring(4);
                     hasA = true;
                 }
@@ -737,6 +896,8 @@ public class BKTMain extends AbstractComponent {
             if (!hasLL || !hasAIC || !hasBIC || !hasRMSE || !hasA) {
                 addErrorMessage("Format error found in result.");
             }
+// 			logger.debug("- parseModelPredictionFiles: parsed fit statistics."); // Yudelson debug
+            
             resultSb.append("\nModel fitting metrics:\n");
             for (int i = 0; i < parameters.length; i++) {
                 resultSb.append(parameters[i][0] + "\t" + parameters[i][1]
@@ -751,7 +912,9 @@ public class BKTMain extends AbstractComponent {
             if (iRMSE != null && !iRMSE.equals(""))
                 resultSb.append("Item Stratified: " + iRMSE + "\t");
             if (nRMSE != null && !nRMSE.equals(""))
-                resultSb.append("Non-tratified: " + nRMSE + "\n");
+                resultSb.append("Non-stratified: " + nRMSE + "\n");
+// 			logger.debug("- parseModelPredictionFiles: written fit statistics."); // Yudelson debug
+
             resultSb.append("\nBKT parameters:\n");
             resultSb.append("Id\tKC\tpLo\tpT\tpS\tpG\n");
             for (int i = 0; i < skills.length; i++) {
@@ -759,16 +922,20 @@ public class BKTMain extends AbstractComponent {
                         + skills[i][2] + "\t" + skills[i][3] + "\t"
                         + skills[i][4] + "\t" + skills[i][5] + "\n");
             }
+// 			logger.debug("- parseModelPredictionFiles: written model values."); // Yudelson debug
             resultSb.append("\nFitted values:\n");
             
             for (int i = 0; i < prediction2DStr.length; i++) {
                 resultSb.append(prediction2DStr[i][0] + "\n");
             }
+// 			logger.debug("- parseModelPredictionFiles: written prediction values."); // Yudelson debug
             
         } else {
             addErrorMessage("Can't write model file " + modelFile
                     + " or prediction file " + predictionFile + ".");
         }
+
+// 		logger.debug("- parseModelPredictionFiles: finishing."); // Yudelson debug
 
         for (String msg : this.errorMessages) {
             logger.error(msg);
@@ -784,6 +951,7 @@ public class BKTMain extends AbstractComponent {
     private static final int SKILL_SSSVS_COLUMN = 3;
     /**
      * Creates the BKT SSSS given a student-step export file and the desired model name.
+     * Need to populate rowsMissingSkill, rowsWithMultipleSkills and rowCount
      * @param stepRollupFile the student-step export file
      * @param modelName the desired model name
      * @return the 2d array of String values for the BKT SSSS table
@@ -865,19 +1033,26 @@ public class BKTMain extends AbstractComponent {
                 if (!firstAttempt.equalsIgnoreCase("correct")
                         && !firstAttempt.equalsIgnoreCase("incorrect")
                         && !firstAttempt.equalsIgnoreCase("hint")) {
+                        rowsMissingSkill.add(lineIndex);  
                     continue;
                 } else if (firstOpportunity.isEmpty()) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 } else if (!skillsSelected.isEmpty()
                         && !skillsSelected.contains(firstSkillName)) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 } else if (!studentsSelected.isEmpty()
                         && !studentsSelected.contains(anonStudentId)) {
+                        rowsMissingSkill.add(lineIndex); 
                     continue;
                 }
 
                 if (multipleSkillsPossible != null && !multipleSkillsPossible.equals("") && !multipleSkillsPossible.equals(".")) {
                     String[] kcs = multipleSkillsPossible.split("~~");
+                    if (kcs.length > 1) {
+                            rowsWithMultipleSkills.put(lineIndex, kcs.length);
+                    }
                     for (int j = 0; j < kcs.length; j++) {
                         String[] thisSSSSRow = new String[4];
                         thisSSSSRow[STUDENT_SSSVS_COLUMN] = anonStudentId;
@@ -900,10 +1075,12 @@ public class BKTMain extends AbstractComponent {
             if (br != null) {
                 br.close();
             }
+            maxRowNumber = lineIndex;
         } catch (IOException e) {
             // "A consistency proof for [any sufficiently powerful] system ...
             // can be carried out only by means of modes of inference that are not formalized in the system ... itself." --Noam Chomsky
             logger.error("Failed to read Student-Step data: " + stepRollupFile.getAbsolutePath());
+            addErrorMessage("Failed to read Student-Step data: " + stepRollupFile.getAbsolutePath());
         }
         return ArrayUtils.listArraysOfStringToArray2D(return_l);
     }
@@ -943,9 +1120,144 @@ public class BKTMain extends AbstractComponent {
             zipInputStream.closeEntry();
             zipInputStream.close();
         } catch (IOException exception) {
-
+//         	logger.error("Error occured in BKT: " + exception.getMessage());
+// 			addErrorMessage(exception.getMessage()); // Yudelson, need this one too
         }
         return zipFileName.replace("zip", "txt");
     }
 
+    // Constant
+    private static final String NEW_LINE_CHAR = "\n";
+
+    // Constant
+    private static final String TAB_CHAR = "\t";
+
+    /**
+     * Write the Model values to a file.
+     * @param theFile the File to write to
+     * @return the populated file
+     */
+    private File populateModelValuesFile(File theFile) {
+
+        // Are these all or nothing?
+        if (logLikelihoodValue == null || aicValue == null || bicValue == null || rmseValue == null) {
+            this.addErrorMessage("Model value results from BKT were empty.");            
+            return theFile;
+        }
+
+        String prefix = "Model Values for '" + modelName + "' model: ";
+
+        // Java try-with-resources
+        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+
+                // Write values to export
+                byte[] label = null;
+                byte[] value = null;
+
+                // Log Likelihood
+                label = (prefix + "Log Likelihood" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (logLikelihoodValue != null) {
+		    value = (decimalFormat.format(logLikelihoodValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // AIC
+                label = (prefix + "AIC" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (aicValue != null) {
+		    value = (decimalFormat.format(aicValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // BIC
+                label = (prefix + "BIC" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (bicValue != null) {
+		    value = (decimalFormat.format(bicValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // RMSE
+                label = (prefix + "RMSE" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (rmseValue != null) {
+		    value = (decimalFormat.format(rmseValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Accuracy
+                label = (prefix + "Accuracy" + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (accuracyValue != null) {
+		    value = (decimalFormat.format(accuracyValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+		prefix = "Cross validation ";
+                // Student-stratified CV
+                label = (prefix + "student-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (studentStratifiedValue != null) {
+		    value = (decimalFormat.format(studentStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Item-stratified CV
+                label = (prefix + "item-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (itemStratifiedValue != null) {
+		    value = (decimalFormat.format(itemStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+                // Non-stratified CV
+                label = (prefix + "non-stratified: " + TAB_CHAR).getBytes("UTF-8");
+                outputStream.write(label);
+		if (nonStratifiedValue != null) {
+		    value = (decimalFormat.format(nonStratifiedValue)).getBytes("UTF-8");
+		    outputStream.write(value);
+		}
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+            } catch (Exception e) {
+                // This will be picked up by the workflows platform and relayed to the user.
+//                 e.printStackTrace();
+				logger.error("Error occured in BKT: " + e.getMessage());
+                addErrorMessage(e.getMessage()); // Yudelson for uniformity
+            }
+
+        return theFile;
+    }
+
+	// Yudelson VVVV
+    /**
+     * Write the Parameter values to a file.
+     * @param theFile the File to write to
+     * @return the populated file
+     */
+    private File populateParametersFile(File theFile) {
+
+        if (parameterTable == null) {
+            this.addErrorMessage("Parameter value results from BKT were empty.");            
+            return theFile;
+        }
+ 
+         try (OutputStream outputStream = new FileOutputStream(theFile)) {
+ 			outputStream.write( parameterTable.toString().getBytes("UTF-8") );
+ 		} catch (Exception e) {
+ 			logger.error("Error occured in BKT: " + e.getMessage());
+ 			addErrorMessage(e.getMessage()); // Yudelson, for uniformity
+ 		}
+ 
+         return theFile;
+     }
+	// Yudelson ^^^^
 }

@@ -27,9 +27,9 @@
       <files>
         <student-step>
           <index>0</index>
-          <file_path>C:/datashop/files//workflows/3/Import-1-x995490/output/ds1_student_step_All_Data_1_2015_0421_134700_No_Predicted_Error_Rates - Copy - Copy_16.txt</file_path>
+          <file_path>test/example_student_step/ds96_student_step_export.txt</file_path>
           <label>student-step</label>
-          <file_name>ds1_student_step_All_Data_1_2015_0421_134700_No_Predicted_Error_Rates - Copy - Copy_16.txt</file_name>
+          <file_name>ds96_student_step_export.txt</file_name>
           <metadata>
             <header>
               <id>header0</id>
@@ -180,7 +180,6 @@
   </inputs>
   <options>
     <model>KC (Default)</model>
-    <xValidationFolds>10</xValidationFolds>
   </options>
 
 </component>

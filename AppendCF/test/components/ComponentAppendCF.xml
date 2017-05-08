@@ -1,0 +1,813 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>1</workflow_id>
+  <component_name>Append CF</component_name>
+  <component_type>transform</component_type>
+  <left>860</left>
+  <connections>
+    <connection>
+        <index>0</index>
+      <from>Import-1-x581366</from>
+    </connection>
+    <connection>
+        <index>0</index>
+      <from>Import-1-x352396</from>
+    </connection>
+  </connections>
+  <top>178</top>
+  <options>
+    <appendAllCF>true</appendAllCF>
+    <cfColumnName>CF (oli_highStakes)</cfColumnName>
+    <cfAppendMode>Student-problem Level</cfAppendMode>
+  </options>
+  <inputs>
+  <input0>
+      <component_id>Import-1-x581366</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <file_path>test/example_files/student_step_test.txt</file_path>
+          <file_name>student_step_test.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>75</index>
+              <name>Predicted Error Rate (unitLowHighPaa)</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>18</index>
+              <name>Condition</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>67</index>
+              <name>KC (stem_readiness-1.0-concat)</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>59</index>
+              <name>Opportunity (inspired-by-LFA)</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>66</index>
+              <name>Predicted Error Rate (stem_readiness-1.0)</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>7</index>
+              <name>Step Start Time</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>71</index>
+              <name>Opportunity (stem_readiness-10_clst50_nm_nmfC5)</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>70</index>
+              <name>KC (stem_readiness-10_clst50_nm_nmfC5)</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>3</index>
+              <name>Problem Hierarchy</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>12</index>
+              <name>Correct Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>5</index>
+              <name>Problem View</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>43</index>
+              <name>KC (LFASearchBICModel1)</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>9</index>
+              <name>Correct Transaction Time</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>10</index>
+              <name>Step End Time</name>
+            </header>
+            <header>
+              <id>header14</id>
+              <index>62</index>
+              <name>Opportunity (inspired-by-LFA-concat)</name>
+            </header>
+            <header>
+              <id>header15</id>
+              <index>52</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>49</index>
+              <name>KC (LFA_AIC_InspiredStemReadinessModel2-iter61)</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>56</index>
+              <name>Opportunity (Unique-step)</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>69</index>
+              <name>Predicted Error Rate (stem_readiness-1.0-concat)</name>
+            </header>
+            <header>
+              <id>header19</id>
+              <index>74</index>
+              <name>Opportunity (unitLowHighPaa)</name>
+            </header>
+            <header>
+              <id>header20</id>
+              <index>48</index>
+              <name>Predicted Error Rate (LFA_AIC_InspiredStemReadinessModel1-iter61)</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>13</index>
+              <name>Error Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>19</index>
+              <name>KC (AIC_LFAInspiredStemReadiness_Model1)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>36</index>
+              <name>Predicted Error Rate (LFASearchAICModel0)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>4</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>44</index>
+              <name>Opportunity (LFASearchBICModel1)</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>34</index>
+              <name>KC (LFASearchAICModel0)</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>68</index>
+              <name>Opportunity (stem_readiness-1.0-concat)</name>
+            </header>
+            <header>
+              <id>header28</id>
+              <index>58</index>
+              <name>KC (inspired-by-LFA)</name>
+            </header>
+            <header>
+              <id>header29</id>
+              <index>20</index>
+              <name>Opportunity (AIC_LFAInspiredStemReadiness_Model1)</name>
+            </header>
+            <header>
+              <id>header30</id>
+              <index>27</index>
+              <name>Predicted Error Rate (Item Model)</name>
+            </header>
+            <header>
+              <id>header31</id>
+              <index>63</index>
+              <name>Predicted Error Rate (inspired-by-LFA-concat)</name>
+            </header>
+            <header>
+              <id>header32</id>
+              <index>65</index>
+              <name>Opportunity (stem_readiness-1.0)</name>
+            </header>
+            <header>
+              <id>header33</id>
+              <index>61</index>
+              <name>KC (inspired-by-LFA-concat)</name>
+            </header>
+            <header>
+              <id>header34</id>
+              <index>1</index>
+              <name>Sample</name>
+            </header>
+            <header>
+              <id>header35</id>
+              <index>50</index>
+              <name>Opportunity (LFA_AIC_InspiredStemReadinessModel2-iter61)</name>
+            </header>
+            <header>
+              <id>header36</id>
+              <index>57</index>
+              <name>Predicted Error Rate (Unique-step)</name>
+            </header>
+            <header>
+              <id>header37</id>
+              <index>53</index>
+              <name>Opportunity (Single-KC)</name>
+            </header>
+            <header>
+              <id>header38</id>
+              <index>29</index>
+              <name>Opportunity (LFA-inspired-w-ALL-stem_readiness-1.0-)</name>
+            </header>
+            <header>
+              <id>header39</id>
+              <index>40</index>
+              <name>KC (LFASearchBICModel0)</name>
+            </header>
+            <header>
+              <id>header40</id>
+              <index>72</index>
+              <name>Predicted Error Rate (stem_readiness-10_clst50_nm_nmfC5)</name>
+            </header>
+            <header>
+              <id>header41</id>
+              <index>28</index>
+              <name>KC (LFA-inspired-w-ALL-stem_readiness-1.0-)</name>
+            </header>
+            <header>
+              <id>header42</id>
+              <index>47</index>
+              <name>Opportunity (LFA_AIC_InspiredStemReadinessModel1-iter61)</name>
+            </header>
+            <header>
+              <id>header43</id>
+              <index>73</index>
+              <name>KC (unitLowHighPaa)</name>
+            </header>
+            <header>
+              <id>header44</id>
+              <index>24</index>
+              <name>Predicted Error Rate (AIC_LFAInspiredStemReadiness_Model2)</name>
+            </header>
+            <header>
+              <id>header45</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header46</id>
+              <index>22</index>
+              <name>KC (AIC_LFAInspiredStemReadiness_Model2)</name>
+            </header>
+            <header>
+              <id>header47</id>
+              <index>14</index>
+              <name>First Attempt</name>
+            </header>
+            <header>
+              <id>header48</id>
+              <index>26</index>
+              <name>Opportunity (Item Model)</name>
+            </header>
+            <header>
+              <id>header49</id>
+              <index>39</index>
+              <name>Predicted Error Rate (LFASearchAICModel1)</name>
+            </header>
+            <header>
+              <id>header50</id>
+              <index>45</index>
+              <name>Predicted Error Rate (LFASearchBICModel1)</name>
+            </header>
+            <header>
+              <id>header51</id>
+              <index>35</index>
+              <name>Opportunity (LFASearchAICModel0)</name>
+            </header>
+            <header>
+              <id>header52</id>
+              <index>41</index>
+              <name>Opportunity (LFASearchBICModel0)</name>
+            </header>
+            <header>
+              <id>header53</id>
+              <index>17</index>
+              <name>Corrects</name>
+            </header>
+            <header>
+              <id>header54</id>
+              <index>32</index>
+              <name>Opportunity (LFA-inspired-w-ALL-stem_readiness-1.0-concat)</name>
+            </header>
+            <header>
+              <id>header55</id>
+              <index>8</index>
+              <name>First Transaction Time</name>
+            </header>
+            <header>
+              <id>header56</id>
+              <index>37</index>
+              <name>KC (LFASearchAICModel1)</name>
+            </header>
+            <header>
+              <id>header57</id>
+              <index>46</index>
+              <name>KC (LFA_AIC_InspiredStemReadinessModel1-iter61)</name>
+            </header>
+            <header>
+              <id>header58</id>
+              <index>42</index>
+              <name>Predicted Error Rate (LFASearchBICModel0)</name>
+            </header>
+            <header>
+              <id>header59</id>
+              <index>6</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header60</id>
+              <index>64</index>
+              <name>KC (stem_readiness-1.0)</name>
+            </header>
+            <header>
+              <id>header61</id>
+              <index>21</index>
+              <name>Predicted Error Rate (AIC_LFAInspiredStemReadiness_Model1)</name>
+            </header>
+            <header>
+              <id>header62</id>
+              <index>25</index>
+              <name>KC (Item Model)</name>
+            </header>
+            <header>
+              <id>header63</id>
+              <index>11</index>
+              <name>Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header64</id>
+              <index>30</index>
+              <name>Predicted Error Rate (LFA-inspired-w-ALL-stem_readiness-1.0-)</name>
+            </header>
+            <header>
+              <id>header65</id>
+              <index>38</index>
+              <name>Opportunity (LFASearchAICModel1)</name>
+            </header>
+            <header>
+              <id>header66</id>
+              <index>54</index>
+              <name>Predicted Error Rate (Single-KC)</name>
+            </header>
+            <header>
+              <id>header67</id>
+              <index>2</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header68</id>
+              <index>16</index>
+              <name>Hints</name>
+            </header>
+            <header>
+              <id>header69</id>
+              <index>55</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header70</id>
+              <index>60</index>
+              <name>Predicted Error Rate (inspired-by-LFA)</name>
+            </header>
+            <header>
+              <id>header71</id>
+              <index>15</index>
+              <name>Incorrects</name>
+            </header>
+            <header>
+              <id>header72</id>
+              <index>31</index>
+              <name>KC (LFA-inspired-w-ALL-stem_readiness-1.0-concat)</name>
+            </header>
+            <header>
+              <id>header73</id>
+              <index>23</index>
+              <name>Opportunity (AIC_LFAInspiredStemReadiness_Model2)</name>
+            </header>
+            <header>
+              <id>header74</id>
+              <index>51</index>
+              <name>Predicted Error Rate (LFA_AIC_InspiredStemReadinessModel2-iter61)</name>
+            </header>
+            <header>
+              <id>header75</id>
+              <index>33</index>
+              <name>Predicted Error Rate (LFA-inspired-w-ALL-stem_readiness-1.0-concat)</name>
+            </header>
+          </metadata>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input1>
+      <component_id>Import-1-x352396</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Transaction</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <file_path>test/example_files/transaction_test.txt</file_path>
+          <file_name>transaction_test.txt</file_name>
+          <index>0</index>
+          <label>transaction</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>1</index>
+              <name>Sample Name</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>99</index>
+              <name>KC (stem_readiness-10_clst50_nm_nmfC5)</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>16</index>
+              <name>Problem View</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>7</index>
+              <name>Duration (sec)</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>53</index>
+              <name>KC (LFASearchBICModel1)</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>58</index>
+              <name>KC Category (LFASearchAICModel1)</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>76</index>
+              <name>KC Category (LFA-inspired-w-ALL-stem_readiness-1_0-)</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>29</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>93</index>
+              <name>KC (LFA_AIC_InspiredStemReadinessModel2-iter61)</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>34</index>
+              <name>KC Category (stem_readiness-1_0)</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>60</index>
+              <name>KC Category (stem_readiness-1_0-concat)</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>97</index>
+              <name>KC (AIC_LFAInspiredStemReadiness_Model1)</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>89</index>
+              <name>KC (LFA-inspired-w-ALL-stem_readiness-1_0-concat)</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>100</index>
+              <name>KC Category (stem_readiness-10_clst50_nm_nmfC5)</name>
+            </header>
+            <header>
+              <id>header14</id>
+              <index>109</index>
+              <name>School</name>
+            </header>
+            <header>
+              <id>header15</id>
+              <index>15</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>28</index>
+              <name>Total Num Hints</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>55</index>
+              <name>KC (LFASearchAICModel0)</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>61</index>
+              <name>KC (inspired-by-LFA)</name>
+            </header>
+            <header>
+              <id>header19</id>
+              <index>102</index>
+              <name>KC Category (unitLowHighPaa)</name>
+            </header>
+            <header>
+              <id>header20</id>
+              <index>25</index>
+              <name>Feedback Text</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>19</index>
+              <name>Attempt At Step</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>74</index>
+              <name>KC Category (inspired-by-LFA-concat)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>73</index>
+              <name>KC (inspired-by-LFA-concat)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>75</index>
+              <name>KC (LFA-inspired-w-ALL-stem_readiness-1_0-)</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>90</index>
+              <name>KC Category (LFA-inspired-w-ALL-stem_readiness-1_0-concat)</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>51</index>
+              <name>KC (LFASearchBICModel0)</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>62</index>
+              <name>KC Category (inspired-by-LFA)</name>
+            </header>
+            <header>
+              <id>header28</id>
+              <index>101</index>
+              <name>KC (unitLowHighPaa)</name>
+            </header>
+            <header>
+              <id>header29</id>
+              <index>110</index>
+              <name>Class</name>
+            </header>
+            <header>
+              <id>header30</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header31</id>
+              <index>95</index>
+              <name>KC (AIC_LFAInspiredStemReadiness_Model2)</name>
+            </header>
+            <header>
+              <id>header32</id>
+              <index>12</index>
+              <name>Level (Sequence)</name>
+            </header>
+            <header>
+              <id>header33</id>
+              <index>94</index>
+              <name>KC Category (LFA_AIC_InspiredStemReadinessModel2-iter61)</name>
+            </header>
+            <header>
+              <id>header34</id>
+              <index>8</index>
+              <name>Student Response Type</name>
+            </header>
+            <header>
+              <id>header35</id>
+              <index>20</index>
+              <name>Is Last Attempt</name>
+            </header>
+            <header>
+              <id>header36</id>
+              <index>59</index>
+              <name>KC (stem_readiness-1_0-concat)</name>
+            </header>
+            <header>
+              <id>header37</id>
+              <index>91</index>
+              <name>KC (LFA_AIC_InspiredStemReadinessModel1-iter61)</name>
+            </header>
+            <header>
+              <id>header38</id>
+              <index>57</index>
+              <name>KC (LFASearchAICModel1)</name>
+            </header>
+            <header>
+              <id>header39</id>
+              <index>13</index>
+              <name>Level (Unit)</name>
+            </header>
+            <header>
+              <id>header40</id>
+              <index>98</index>
+              <name>KC Category (AIC_LFAInspiredStemReadiness_Model1)</name>
+            </header>
+            <header>
+              <id>header41</id>
+              <index>9</index>
+              <name>Student Response Subtype</name>
+            </header>
+            <header>
+              <id>header42</id>
+              <index>18</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header43</id>
+              <index>52</index>
+              <name>KC Category (LFASearchBICModel0)</name>
+            </header>
+            <header>
+              <id>header44</id>
+              <index>107</index>
+              <name>KC (Item Model)</name>
+            </header>
+            <header>
+              <id>header45</id>
+              <index>5</index>
+              <name>Time</name>
+            </header>
+            <header>
+              <id>header46</id>
+              <index>23</index>
+              <name>Action</name>
+            </header>
+            <header>
+              <id>header47</id>
+              <index>4</index>
+              <name>Session Id</name>
+            </header>
+            <header>
+              <id>header48</id>
+              <index>30</index>
+              <name>KC Category (Single-KC)</name>
+            </header>
+            <header>
+              <id>header49</id>
+              <index>26</index>
+              <name>Feedback Classification</name>
+            </header>
+            <header>
+              <id>header50</id>
+              <index>92</index>
+              <name>KC Category (LFA_AIC_InspiredStemReadinessModel1-iter61)</name>
+            </header>
+            <header>
+              <id>header51</id>
+              <index>17</index>
+              <name>Problem Start Time</name>
+            </header>
+            <header>
+              <id>header52</id>
+              <index>24</index>
+              <name>Input</name>
+            </header>
+            <header>
+              <id>header53</id>
+              <index>3</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header54</id>
+              <index>112</index>
+              <name>CF (oli_highStakes)</name>
+            </header>
+            <header>
+              <id>header55</id>
+              <index>108</index>
+              <name>KC Category (Item Model)</name>
+            </header>
+            <header>
+              <id>header56</id>
+              <index>11</index>
+              <name>Tutor Response Subtype</name>
+            </header>
+            <header>
+              <id>header57</id>
+              <index>33</index>
+              <name>KC (stem_readiness-1_0)</name>
+            </header>
+            <header>
+              <id>header58</id>
+              <index>111</index>
+              <name>CF (oli_activityGuid)</name>
+            </header>
+            <header>
+              <id>header59</id>
+              <index>54</index>
+              <name>KC Category (LFASearchBICModel1)</name>
+            </header>
+            <header>
+              <id>header60</id>
+              <index>10</index>
+              <name>Tutor Response Type</name>
+            </header>
+            <header>
+              <id>header61</id>
+              <index>21</index>
+              <name>Outcome</name>
+            </header>
+            <header>
+              <id>header62</id>
+              <index>27</index>
+              <name>Help Level</name>
+            </header>
+            <header>
+              <id>header63</id>
+              <index>31</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header64</id>
+              <index>96</index>
+              <name>KC Category (AIC_LFAInspiredStemReadiness_Model2)</name>
+            </header>
+            <header>
+              <id>header65</id>
+              <index>6</index>
+              <name>Time Zone</name>
+            </header>
+            <header>
+              <id>header66</id>
+              <index>2</index>
+              <name>Transaction Id</name>
+            </header>
+            <header>
+              <id>header67</id>
+              <index>32</index>
+              <name>KC Category (Unique-step)</name>
+            </header>
+            <header>
+              <id>header68</id>
+              <index>114</index>
+              <name>CF (oli_resourceType)</name>
+            </header>
+            <header>
+              <id>header69</id>
+              <index>113</index>
+              <name>CF (oli_purpose)</name>
+            </header>
+            <header>
+              <id>header70</id>
+              <index>56</index>
+              <name>KC Category (LFASearchAICModel0)</name>
+            </header>
+            <header>
+              <id>header71</id>
+              <index>14</index>
+              <name>Level (Module)</name>
+            </header>
+            <header>
+              <id>header72</id>
+              <index>22</index>
+              <name>Selection</name>
+            </header>
+          </metadata>
+
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>
+

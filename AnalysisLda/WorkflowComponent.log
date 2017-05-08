@@ -1,0 +1,58 @@
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:57,657 - Command-line args: [-componentXmlFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml, -workflowDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/, -toolDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/, -schemaFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/schemas/AnalysisLda_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:57,659 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 20:57:57,761 - Reading D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 20:57:57,763 - File absolute path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 20:57:57,764 - File canonical path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:57,783 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:57,783 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:57,842 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:58,040 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 20:57:58,040 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 20:58:05,609 - First line: CF (Correct Answer)	Input	Similarity value
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 20:58:05,609 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,433 - Command-line args: [-componentXmlFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml, -workflowDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/, -toolDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/, -schemaFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/schemas/AnalysisLda_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,452 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:35:56,552 - Reading D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:35:56,554 - File absolute path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:35:56,554 - File canonical path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,587 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,587 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,658 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,862 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:35:56,862 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,252 - Command-line args: [-componentXmlFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml, -workflowDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/, -toolDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/, -schemaFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/schemas/AnalysisLda_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,254 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:39:48,357 - Reading D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:39:48,359 - File absolute path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:39:48,359 - File canonical path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,378 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,378 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,437 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,637 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:39:48,638 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:39:55,939 - First line: CF (Correct Answer)	Input	Similarity value
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:39:55,939 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,357 - Command-line args: [-componentXmlFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml, -workflowDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/, -toolDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/, -schemaFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/schemas/AnalysisLda_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,359 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:54:48,461 - Reading D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:54:48,462 - File absolute path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:54:48,463 - File canonical path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,482 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,482 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,541 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,741 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 09 Oct 2016 22:54:48,742 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:54:56,125 - First line: CF (Correct Answer)	Input	Similarity value
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 09 Oct 2016 22:54:56,125 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,361 - Command-line args: [-componentXmlFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml, -workflowDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/, -toolDir, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/, -schemaFile, D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/schemas/AnalysisLda_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,389 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 17 Oct 2016 12:25:41,492 - Reading D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda/test/components/ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 17 Oct 2016 12:25:41,494 - File absolute path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 17 Oct 2016 12:25:41,494 - File canonical path: D:\Iqbal\DIBBs\Workflow\WorkflowComponents\AnalysisLda\test\components\ComponentLda.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,527 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,527 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,588 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,794 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.lda.LdaMain 17 Oct 2016 12:25:41,794 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 17 Oct 2016 12:25:50,305 - First line: Row	Sample Name	Transaction Id	Anon Student Id	Session Id	Time	Time Zone	Duration (sec)	Student Response Type	Student Response Subtype	Tutor Response Type	Tutor Response Subtype	Level (Unit)	Level (Unitname)	Problem Name	Problem View	Problem Start Time	Step Name	Attempt At Step	Is Last Attempt	Outcome	Selection	Action	Input	Feedback Text	Feedback Classification	Help Level	Total Num Hints	Condition Name	Condition Type	Condition Name	Condition Type	Condition Name	Condition Type	Condition Name	Condition Type	KC (Default)	KC Category (Default)	KC (Cluster)	KC Category (Cluster)	KC (Single-KC)	KC Category (Single-KC)	KC (Unique-step)	KC Category (Unique-step)	School	Class	CF (Button Order)	CF (Correct Answer)	CF (Display Order)	CF (End Latency)	CF (Note)	CF (Response Time)	CF (Review Latency)	CF (Set Shuffled Index)	CF (Start Latency)	CF (Stim File Index)	CF (Stimulus Version)	condlearn	CF (KCclusterindex)	CF (ansbin)	CF (KCindex)	CF (answerindex)	CF (cor)	CF (incor)	CF (czcor)	CF (czincor)	CF (clcor)	CF (clincor)	CF (study)	CF (tests)	CF (cltcnt)	CF (Time)	CF (KCspacing)	CF (totcor)	CF (totincor)	CF (totstudy)	CF (practiceTime)	CF (KCintspacing)	CF (KCage)	CF (KCageint)	CF (baselevel2)	CF (meanspacing)	CF (meanspacing2)	CF (modbin)	CF(Similarity value of CF (Correct Answer) and Input)
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 17 Oct 2016 12:25:50,305 - Delim: 	

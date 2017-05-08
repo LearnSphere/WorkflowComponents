@@ -50,8 +50,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all >
-      <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="xs:integer" name="n" id="n" default="1" />
+      <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Performance_Tracing" default="\s*KC\s*\((.*)\)\s*" />
     </xs:all>
   </xs:complexType>
 

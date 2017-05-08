@@ -15,23 +15,23 @@ import org.jdom.JDOMException;
 
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.DaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliTransactionDao;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OLIIntermediateDataObject;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OLIMediaDataObject;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OLIViewActionDataObject;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.XMLExtractedDataObject;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.XMLExtractedDataObject.MoreThanOneElementException;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.XMLExtractedDataObject.TooManyProblemsExistException;
-import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.item.ResourceUseOliTransactionItem;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliResourceUseDTOInterface;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliUserTransactionDTO;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.OliUserTransactionWithXmlDTO;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.OLIMediaDataObject;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.OLIViewActionDataObject;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.XMLExtractedDataObject;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.XMLExtractedDataObject.MoreThanOneElementException;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.XMLExtractedDataObject.TooManyProblemsExistException;
 
 /**
  * This class is the driver for the aggregation of OLI log_act data. It does the following:
- * 1. get all unique students from resource_use_oli_user_sess table for a resource_use_oli_transaction_file
- * 2. for each student, get data from resource_use_oli_tansaction table, ordered by time
- * 3. for each student, assign one OLIViewActionDataObject and one OLIMediaDataObject
- * 4. for each row of data from resource_use_oli_transaction, convert it to OLIIntermediateDataObject by
+ * 1. get all student transaction data by joining user-sess and log tables ordering by student and time
+ * 2. for each student, assign one OLIViewActionDataObject and one OLIMediaDataObject
+ * 3. for each row of data from resource_use_oli_transaction, 
  *      computing prevTime (null if new session starts) and nextTime, extracting data
  *      tutor_message XML, and combining rows with the same transaction id into one row
- * 5. pass the resulting OLIIntermediateDataObject to OILViewActionDataObject or OLIMediaDataObject 
+ * 5. pass the result to OILViewActionDataObject or OLIMediaDataObject 
  * 6. output result into a file   
  */
 public class OLIDataAggregator {
@@ -51,17 +51,12 @@ public class OLIDataAggregator {
     private Integer resourceUseOliTransactionFileId = null;
     private Integer resourceUseOliUserSessFileId = null;
     
-    private List<String> uniqueStudents;
     private HashMap<String, OLIViewActionDataObject> allStudentViewActionDataObjects;
     private HashMap<String, OLIMediaDataObject> allStudentMediaDataObjects;
     private String DEFAULT_OUTPUT_FILE = "OLIStudentResourceUse.txt";
     private String outputFileName = DEFAULT_OUTPUT_FILE;
-    
-    private ResourceUseOliHelper helper;
 
     public OLIDataAggregator() {
-            helper = new ResourceUseOliHelper();
-            uniqueStudents = new ArrayList<String>();
             allStudentViewActionDataObjects = new HashMap<String, OLIViewActionDataObject>() ;
             allStudentMediaDataObjects = new HashMap<String, OLIMediaDataObject>() ;
     }
@@ -83,22 +78,185 @@ public class OLIDataAggregator {
     }
 
     public String aggregateData() throws ResourceUseOliException {
-            //get the all related students
-            uniqueStudents = helper.getUniqueStudents(resourceUseOliUserSessFileId, resourceUseOliTransactionFileId);
-            if (uniqueStudents == null || uniqueStudents.size() == 0) {
-                    if (resourceUseOliUserSessFileId != null)
-                            throw ResourceUseOliException.noUserSessionFoundViaUserSessFileException(resourceUseOliUserSessFileId);
-                    else if (resourceUseOliTransactionFileId != null)
-                            throw ResourceUseOliException.noUserSessionFoundViaTransactionFileException(resourceUseOliTransactionFileId);
+            //get all data ordered by student and time
+            ResourceUseOliTransactionDao resourceUseOliTransactionDao = DaoFactory.DEFAULT.getResourceUseOliTransactionDao();
+            List<OliUserTransactionDTO> studentTransactions = resourceUseOliTransactionDao.getAllTransactions(resourceUseOliUserSessFileId, resourceUseOliTransactionFileId);
+            logger.info("All student transaction data: " + studentTransactions.size() + " rows.");
+            
+            if (studentTransactions == null || studentTransactions.size() == 0) {
+                    throw ResourceUseOliException.noUserTransactionFoundException(resourceUseOliUserSessFileId, resourceUseOliTransactionFileId);
             }
-            //process data for each student
-            for (String anonStudentId : uniqueStudents) {
-                    getStudentData(anonStudentId);
+            
+            String lastStudent = "";
+            OLIViewActionDataObject viewActionDataObject = null;
+            OLIMediaDataObject mediaDataObject = null;
+            int rowCount = 0;
+            OliResourceUseDTOInterface lastObj = null;
+            OliResourceUseDTOInterface currObj = null;
+            OliResourceUseDTOInterface nextObj = null;
+            OliResourceUseDTOInterface lastProcessedObj = null;
+            String lastContextMessageId = null;
+            String lastProblemName = null;
+            int studentCnt = 0;
+            
+            for (OliUserTransactionDTO transactionItem : studentTransactions) {
+                    String anonStudentId = transactionItem.getStudent();
+                    //logger.info(transactionItem);
+                    if (!anonStudentId.equals(lastStudent)) {
+                            logger.info("Aggregating data for student: " + anonStudentId);
+                            studentCnt++;
+                            //process the last two rows of the last student
+                            OliResourceUseDTOInterface newDataObject = null;
+                            if (currObj != null && lastObj != null) {
+                                    newDataObject = currObj.combineTwoOLIIntermediateDataObject(lastObj);
+                            }
+                            if (newDataObject == null) {
+                                    if (lastObj != null) {
+                                            callProcessOLIDataObject(lastObj, viewActionDataObject, mediaDataObject);
+                                    }
+                                    if (currObj != null) {
+                                            callProcessOLIDataObject(currObj, viewActionDataObject, mediaDataObject);
+                                    }
+                            } else {
+                                    callProcessOLIDataObject(newDataObject, viewActionDataObject, mediaDataObject);
+                            }
+                            
+                            //refresh all variables
+                            viewActionDataObject = new OLIViewActionDataObject();
+                            allStudentViewActionDataObjects.put(anonStudentId, viewActionDataObject);
+                            viewActionDataObject.setStudent(anonStudentId);
+                            mediaDataObject = new OLIMediaDataObject();
+                            allStudentMediaDataObjects.put(anonStudentId, mediaDataObject);
+                            mediaDataObject.setStudent(anonStudentId);
+                            rowCount = 1;
+                            lastObj = null;
+                            currObj = null;
+                            nextObj = null;
+                            lastProcessedObj = null;
+                            lastContextMessageId = null;
+                            lastProblemName = null;
+                    }
+                    long thisTransactionId = (Long)transactionItem.getResourceUseTransactionId();
+                    String thisAction = transactionItem.getAction();
+                    String thisInfoType = transactionItem.getInfoType();
+                    String thisInfo = transactionItem.getInfo();
+                    //process xml and get xml data
+                    XMLExtractedDataObject xmlExtractedDataObject = null;
+                    if (OliUserTransactionWithXmlDTO.actionIsTutorMessage(thisAction) && OliUserTransactionWithXmlDTO.infoTypeIsTutorMessage(thisInfoType)) {
+                            try {
+                                    xmlExtractedDataObject = new XMLExtractedDataObject();
+                                    xmlExtractedDataObject.setResourceUseTransactionId(thisTransactionId);
+                                    xmlExtractedDataObject.initiate(thisInfo);
+                            } catch (JDOMException e) {
+                                    //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found JDOMException", e);
+                                    logger.debug(ERROR_PREFIX + "extractInfoFromXML found JDOMException: " + e.getMessage());
+                                    continue;
+                            } catch (IOException e) {
+                                    //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found IOException", e);
+                                    logger.debug(ERROR_PREFIX + "extractInfoFromXML found IOException: " + e.getMessage());
+                                    continue;
+                            } catch (TooManyProblemsExistException e) {
+                                    //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found TooManyProblemsExistException found IOException", e);
+                                    logger.debug(ERROR_PREFIX + "extractInfoFromXML found TooManyProblemsExistException: " + e.getMessage());
+                                    continue;
+                            } catch (MoreThanOneElementException e) {
+                                    //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found MoreThanOneElementException found IOException", e);
+                                    logger.debug(ERROR_PREFIX + "extractInfoFromXML found MoreThanOneElementException: " + e.getMessage());
+                                    continue;
+                            }
+                    }
+                    if (xmlExtractedDataObject != null && !xmlExtractedDataObject.getContextMessageId().equals(lastContextMessageId)){
+                            //logger.info("xmlExtractedDataObject: " + xmlExtractedDataObject);
+                            lastContextMessageId = xmlExtractedDataObject.getContextMessageId();
+                            lastProblemName = xmlExtractedDataObject.getProblemName();
+                    } else if (xmlExtractedDataObject != null && xmlExtractedDataObject.getContextMessageId().equals(lastContextMessageId) &&
+                                    xmlExtractedDataObject.getProblemName() != null) {
+                            lastProblemName = xmlExtractedDataObject.getProblemName();
+                    }
+                    if (rowCount == 1) {
+                            if (xmlExtractedDataObject == null)
+                                    lastObj = transactionItem;
+                            else {
+                                    lastObj = new OliUserTransactionWithXmlDTO(transactionItem);
+                                    ((OliUserTransactionWithXmlDTO)lastObj).setXmlExtractedDataObject(xmlExtractedDataObject);
+                            }
+                            rowCount++;
+                            lastStudent = anonStudentId;
+                            continue;
+                    } else if (rowCount == 2) {
+                            if (xmlExtractedDataObject == null)
+                                    currObj = transactionItem;
+                            else {
+                                    currObj = new OliUserTransactionWithXmlDTO(transactionItem);
+                                    ((OliUserTransactionWithXmlDTO)currObj).setXmlExtractedDataObject(xmlExtractedDataObject);
+                            }
+                            lastObj.calculateNextTimeDiff(currObj);
+                            currObj.calculatePrevTimeDiff(lastObj);
+                            rowCount++;
+                            lastStudent = anonStudentId;
+                            continue;
+                    } else {
+                            if (xmlExtractedDataObject == null)
+                                    nextObj = transactionItem;
+                            else {
+                                    nextObj = new OliUserTransactionWithXmlDTO(transactionItem);
+                                    ((OliUserTransactionWithXmlDTO)nextObj).setXmlExtractedDataObject(xmlExtractedDataObject);
+                            }
+                            
+                            currObj.calculateNextTimeDiff(nextObj);
+                            nextObj.calculatePrevTimeDiff(currObj);
+                            /*
+                            logger.info(rowCount + ", lastProcessedObj: " + lastProcessedObj);
+                            logger.info(rowCount + ", lastObj: " + lastObj);
+                            logger.info(rowCount + ", currObj: " + currObj);
+                            logger.info(rowCount + ", nextObj : " + nextObj);
+                            */
+                            //see if prevObj and currObj can be combined
+                            OliResourceUseDTOInterface newDataObject = currObj.combineTwoOLIIntermediateDataObject(lastObj);
+                            //logger.info(rowCount + ", after combined : " + newDataObject);
+                            if (newDataObject == null) {
+                                    //logger.info("Process lastObj: " + lastObj);
+                                    callProcessOLIDataObject(lastObj, viewActionDataObject, mediaDataObject);
+                            } else {
+                                    currObj = newDataObject;
+                                    lastObj = lastProcessedObj;
+                            }
+                            viewActionDataObject.setLastProcessedDataObject(lastObj);
+                            mediaDataObject.setLastProcessedDataObject(lastObj);
+                            //logger.info("viewActionDataObject: " + viewActionDataObject);
+                            //logger.info("mediaDataObject: " + mediaDataObject);
+                            rowCount++;
+                    }
+                    //System.out.println("end of loop, viewActionDataObject : " + viewActionDataObject);
+                    //System.out.println("end of loop, mediaDataObject: " + mediaDataObject);
+                    //before going to next row, reset objects
+                    lastProcessedObj = lastObj;
+                    lastObj = currObj;
+                    currObj = nextObj;
+                    lastStudent = anonStudentId;
+            }//end of each transaction row
+            
+            //process the last two rows
+            OliResourceUseDTOInterface newDataObject = null;
+            if (currObj != null && lastObj != null) {
+                    newDataObject = currObj.combineTwoOLIIntermediateDataObject(lastObj);
             }
+            if (newDataObject == null) {
+                    if (lastObj != null) {
+                            callProcessOLIDataObject(lastObj, viewActionDataObject, mediaDataObject);
+                    }
+                    if (currObj != null) {
+                            callProcessOLIDataObject(currObj, viewActionDataObject, mediaDataObject);
+                    }
+            } else {
+                    callProcessOLIDataObject(newDataObject, viewActionDataObject, mediaDataObject);
+            }
+            
+            logger.info("Total student processed: " + studentCnt);
             if ((allStudentMediaDataObjects != null && allStudentMediaDataObjects.size() != 0)
-                            || (allStudentViewActionDataObjects != null && allStudentViewActionDataObjects.size() != 0))
+                            || (allStudentViewActionDataObjects != null && allStudentViewActionDataObjects.size() != 0)) {
                     return outputToString();
-            else
+            } else
                     throw ResourceUseOliException.noDataFoundException();
     }
 
@@ -135,162 +293,24 @@ public class OLIDataAggregator {
             }
             return sb.toString();
      }
-
-    private void getStudentData(String anonStudentId) {
-            ResourceUseOliTransactionDao resourceUseOliTransactionDao = DaoFactory.DEFAULT.getResourceUseOliTransactionDao();
-            List<ResourceUseOliTransactionItem> studentTransactions = resourceUseOliTransactionDao.getTransactionByAnonStudentId(resourceUseOliTransactionFileId, anonStudentId);
-           
-            OLIViewActionDataObject viewActionDataObject = new OLIViewActionDataObject();
-            allStudentViewActionDataObjects.put(anonStudentId, viewActionDataObject);
-            viewActionDataObject.setStudent(anonStudentId);
-            OLIMediaDataObject mediaDataObject = new OLIMediaDataObject();
-            allStudentMediaDataObjects.put(anonStudentId, mediaDataObject);
-            mediaDataObject.setStudent(anonStudentId);
-            OLIIntermediateDataObject lastObj = null;
-            OLIIntermediateDataObject currObj = null;
-            OLIIntermediateDataObject nextObj = null;
-            OLIIntermediateDataObject lastProcessedObj = null;
-            int rowCount = 1;
-            String lastContextMessageId = null;
-            String lastProblemName = null;
-            
-            for (ResourceUseOliTransactionItem transactionItem : studentTransactions) {
-                        long thisTransactionId = (Long)transactionItem.getId();
-                        String thisSession = transactionItem.getUserSess();
-                        Date thisTime = transactionItem.getTransactionTime();
-                        String thisAction = transactionItem.getAction();
-                        String thisInfoType = transactionItem.getInfoType();
-                        String thisInfo = transactionItem.getInfo();
-                        //process xml and get xml data
-                        XMLExtractedDataObject xmlExtractedDataObject = null;
-                        if (OLIIntermediateDataObject.actionIsTutorMessage(thisAction) && OLIIntermediateDataObject.infoTypeIsTutorMessage(thisInfoType)) {
-                                try {
-                                        xmlExtractedDataObject = new XMLExtractedDataObject();
-                                        xmlExtractedDataObject.setResourceUseTransactionId(thisTransactionId);
-                                        xmlExtractedDataObject.initiate(thisInfo);
-                                } catch (JDOMException e) {
-                                        //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found JDOMException", e);
-                                        continue;
-                                } catch (IOException e) {
-                                        //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found IOException", e);
-                                        continue;
-                                } catch (TooManyProblemsExistException e) {
-                                        //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found TooManyProblemsExistException found IOException", e);
-                                        continue;
-                                } catch (MoreThanOneElementException e) {
-                                        //LogUtils.logErr(logger, ERROR_PREFIX, "extractInfoFromXML found MoreThanOneElementException found IOException", e);
-                                        continue;
-                                }
-                        }
-                        //boolean resourceFound = resourceFoundInCourse(thisInfo, thisInfoType, xmlExtractedDataObject, lastContextMessageId, lastProblemName);
-                        if (xmlExtractedDataObject != null && !xmlExtractedDataObject.getContextMessageId().equals(lastContextMessageId)){
-                                lastContextMessageId = xmlExtractedDataObject.getContextMessageId();
-                                lastProblemName = xmlExtractedDataObject.getProblemName();
-                        } else if (xmlExtractedDataObject != null && xmlExtractedDataObject.getContextMessageId().equals(lastContextMessageId) &&
-                                        xmlExtractedDataObject.getProblemName() != null) {
-                                lastProblemName = xmlExtractedDataObject.getProblemName();
-                        }
-                        /*if (!resourceFound)
-                                continue;*/
-                                
-                        if (rowCount == 1) {
-                                lastObj = new OLIIntermediateDataObject();
-                                lastObj.setResourceUseTransactionId(thisTransactionId);
-                                lastObj.setStudent(anonStudentId);
-                                lastObj.setSession(thisSession);
-                                lastObj.setUTCTime(thisTime);
-                                lastObj.setAction(thisAction);
-                                lastObj.setInfoType(thisInfoType);
-                                if (xmlExtractedDataObject == null)
-                                        lastObj.setInfo(thisInfo);
-                                else {
-                                        lastObj.setXmlExtractedDataObject(xmlExtractedDataObject);
-                                }
-                                
-                                rowCount++;
-                                continue;
-                        } else if (rowCount == 2) {
-                                currObj = new OLIIntermediateDataObject();
-                                currObj.setResourceUseTransactionId(thisTransactionId);
-                                currObj.setStudent(anonStudentId);
-                                currObj.setSession(thisSession);
-                                currObj.setUTCTime(thisTime);
-                                currObj.setAction(thisAction);
-                                currObj.setInfoType(thisInfoType);
-                                if (xmlExtractedDataObject == null)
-                                        currObj.setInfo(thisInfo);
-                                else {
-                                        currObj.setXmlExtractedDataObject(xmlExtractedDataObject);
-                                }
-                                lastObj.calculateNextTimeDiff(currObj);
-                                currObj.calculatePrevTimeDiff(lastObj);
-                                rowCount++;
-                                continue;
-                        } else {
-                                nextObj = new OLIIntermediateDataObject();
-                                nextObj.setResourceUseTransactionId(thisTransactionId);
-                                nextObj.setStudent(anonStudentId);
-                                nextObj.setSession(thisSession);
-                                nextObj.setUTCTime(thisTime);
-                                nextObj.setAction(thisAction);
-                                nextObj.setInfoType(thisInfoType);
-                                if (xmlExtractedDataObject == null)
-                                        nextObj.setInfo(thisInfo);
-                                else {
-                                        nextObj.setXmlExtractedDataObject(xmlExtractedDataObject);
-                                }
-                                currObj.calculateNextTimeDiff(nextObj);
-                                nextObj.calculatePrevTimeDiff(currObj);
-                                //System.out.println(rowCount + ", lastProcessedObj: " + lastProcessedObj);
-                                //System.out.println(rowCount + ", lastObj: " + lastObj);
-                                //System.out.println(rowCount + ", currObj: " + currObj);
-                                //System.out.println(rowCount + ", nextObj : " + nextObj);
-                                //see if prevObj and currObj can be combined
-                                OLIIntermediateDataObject newOLIIntermediateDataObject = currObj.combineTwoOLIIntermediateDataObject(lastObj);
-                                //System.out.println(rowCount + ", after combined : " + newOLIIntermediateDataObject);
-                                if (newOLIIntermediateDataObject == null) {
-                                        callProcessOLIIntermediateDataObject(lastObj, viewActionDataObject, mediaDataObject);
-                                } else {
-                                        currObj = newOLIIntermediateDataObject;
-                                        lastObj = lastProcessedObj;
-                                }
-                                viewActionDataObject.setLastProcessedOLIIntermediateDataObject(lastObj);
-                                mediaDataObject.setLastProcessedOLIIntermediateDataObject(lastObj);
-                                rowCount++;
-                                
-                        }
-                        //System.out.println("end of loop, viewActionDataObject : " + viewActionDataObject);
-                        //System.out.println("end of loop, mediaDataObject: " + mediaDataObject);
-                        //before going to next row, reset objects
-                        lastProcessedObj = lastObj;
-                        lastObj = currObj;
-                        currObj = nextObj;
-                }
-                //process the last two
-                OLIIntermediateDataObject newOLIIntermediateDataObject = null;
-                if (currObj != null)
-                        currObj.combineTwoOLIIntermediateDataObject(lastObj);
-                if (newOLIIntermediateDataObject == null) {
-                        if (lastObj != null)
-                                callProcessOLIIntermediateDataObject(lastObj, viewActionDataObject, mediaDataObject);
-                        if (currObj != null)
-                                callProcessOLIIntermediateDataObject(currObj, viewActionDataObject, mediaDataObject);
-                } else {
-                        callProcessOLIIntermediateDataObject(newOLIIntermediateDataObject, viewActionDataObject, mediaDataObject);
-                }
-            
-    }
     
-    private void callProcessOLIIntermediateDataObject (OLIIntermediateDataObject oliIntermediateDataObject,
+    private void callProcessOLIDataObject (OliResourceUseDTOInterface oliResourceUseDTO,
                                                     OLIViewActionDataObject viewActionDataObject,
                                                     OLIMediaDataObject mediaDataObject) {
-            if (oliIntermediateDataObject.isPlainAction() ||
-                            oliIntermediateDataObject.isXMLAction() ||
-                            oliIntermediateDataObject.isViewPage()) {
-                    viewActionDataObject.processOLIIntermediateDataObject(oliIntermediateDataObject);
-            } else if (oliIntermediateDataObject.isPlainMediaAction() ||
-                            oliIntermediateDataObject.isXMLMediaAction()) {
-                    mediaDataObject.processOLIIntermediateDataObject(oliIntermediateDataObject);
+            if (oliResourceUseDTO instanceof OliUserTransactionDTO) {
+                    OliUserTransactionDTO dtoObj = (OliUserTransactionDTO)oliResourceUseDTO;
+                    if (dtoObj.isPlainAction() || dtoObj.isViewPage() || dtoObj.isCombinedViewSaveAttemptAction()) {
+                            viewActionDataObject.processOLIDataObject(oliResourceUseDTO);
+                    } else if (dtoObj.isPlainMediaAction()) {
+                            mediaDataObject.processOLIDataObject(oliResourceUseDTO);
+                    }
+            } else if (oliResourceUseDTO instanceof OliUserTransactionWithXmlDTO) {
+                    OliUserTransactionWithXmlDTO dtoObj = (OliUserTransactionWithXmlDTO)oliResourceUseDTO;
+                    if (dtoObj.isXMLAction()) {
+                            viewActionDataObject.processOLIDataObject(oliResourceUseDTO);
+                    } else if (dtoObj.isXMLMediaAction()) {
+                            mediaDataObject.processOLIDataObject(oliResourceUseDTO);
+                    }
             }
     }
 
