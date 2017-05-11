@@ -59,6 +59,7 @@ public class LsaMain extends AbstractComponent {
         //loding semantic space to the program from given directory
         try {
             //lsa.loadSpace(this.getToolDir() + "/program");
+                //lsa.loadSpace("C:\\SemanticSpace\\"+corpus);  
         	lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -393,4 +394,5 @@ public class LsaMain extends AbstractComponent {
             else{this.addErrorMessage("No output Generated for return type: "+returnvals);}
         }
 
+}
 }
