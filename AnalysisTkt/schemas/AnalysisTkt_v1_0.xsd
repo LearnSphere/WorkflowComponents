@@ -95,7 +95,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:all >
-        <xs:element type="mode" name="mode" id="Type_of_Fit" default="best_fit_model"/>
+        <xs:element type="mode" name="mode" id="Type_of_Fit" default="best fit model"/>
       <xs:element type="xs:string" name="optimizedParameters" id="Used_Parameters_boolean" default="1,1,1,1,1,0,1,1,1,1" />
       <xs:element type="xs:string" name="fixedParameters" id="Fixed_Parameter_values" default="0,0,0,0,0,0,0,0,0,0" />
     </xs:all>
@@ -103,9 +103,9 @@
 
  <xs:simpleType name="mode" final="restriction">
 	<xs:restriction base="xs:string">
-            <xs:enumeration value="best_fit_model"/>
-            <xs:enumeration value="five_times_2_fold_crossvalidated_create_folds"/>
-            <xs:enumeration value="five_times_2_fold_crossvalidated_read_folds"/>
+            <xs:enumeration value="best fit model"/>
+            <xs:enumeration value="five times 2 fold crossvalidated create folds"/>
+            <xs:enumeration value="five times 2 fold crossvalidated read folds"/>
 	</xs:restriction>
  </xs:simpleType>
 

@@ -12,7 +12,7 @@
         </connection>
     </connections>
     <options>
-        <mode>five_times_2_fold_crossvalidated_read_folds</mode>
+        <mode>best fit model</mode>
     <optimizedParameters>0,0,0,0,0,0,0,0,0,0</optimizedParameters>
     <fixedParameters>0,0,0,0,0,0,0,0,0,1</fixedParameters>
   </options>

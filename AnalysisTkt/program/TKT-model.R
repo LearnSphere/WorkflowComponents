@@ -134,7 +134,7 @@ baselevel <-  function(df, rate, compression) {
 top <- newXMLNode("model_output")
 
 switch(mode,
-best_fit_model = {
+"best fit model" = {
 
 if(all(vec[8:10]==c(0,0,0))){
     j<<-pars[8]
@@ -249,7 +249,7 @@ val$CF..baselevel.<-NA
 dat<-rbind(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 
 },
-five_times_2_fold_crossvalidated_create_folds = {
+"five times 2 fold crossvalidated create folds" = {
 
 for(run in 1:5){
     print(paste("run " , run))
@@ -393,7 +393,7 @@ saveXML(top, file=outputFilePath2)
 dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 dat<-dat[order(dat$Anon.Student.Id, dat$Time),] 
 },
-five_times_2_fold_crossvalidated_read_folds = {
+"five times 2 fold crossvalidated read folds" = {
 
 for(run in 1:5){
     print(paste("run " , run))
