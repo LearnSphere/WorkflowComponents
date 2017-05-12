@@ -101,7 +101,6 @@
 	</xs:restriction>
  </xs:simpleType>
 
-</xs:schema>
   <xs:complexType name="OptionsType">
     <xs:all >
         <xs:element type="modeType" name="mode" id="Type_of_Fit" default="best fit model"/>
