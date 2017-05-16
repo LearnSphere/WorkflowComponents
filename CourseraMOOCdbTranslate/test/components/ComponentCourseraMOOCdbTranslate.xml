@@ -1,0 +1,104 @@
+
+<component>
+  <component_id>Transform-1-x391318</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>18</workflow_id>
+  <component_name>Coursera MOOCdb Translate</component_name>
+  <component_type>transform</component_type>
+  <left>586.0000152587891</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x393353</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x250741</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x116869</from>
+    </connection>
+  </connections>
+  <top>44</top>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x393353</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>test/test_data/Game_Theory_gametheory-003_SQL_hash_mapping.sql</file_path>
+          <label>file</label>
+          <file_name>Game_Theory_gametheory-003_SQL_hash_mapping.sql</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>-- MySQL dump 10.13  Distrib 5.5.35, for debian-linux-gnu (x86_64)</name>
+            </header>
+          </metadata>
+        </file>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input1>
+      <component_id>Import-1-x250741</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>test/test_data/Game_Theory_gametheory-003_SQL_anonymized_general.sql</file_path>
+          <label>file</label>
+          <file_name>Game_Theory_gametheory-003_SQL_anonymized_general.sql</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>-- MySQL dump 10.13  Distrib 5.5.35, for debian-linux-gnu (x86_64)</name>
+            </header>
+          </metadata>
+        </file>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+    <input2>
+      <component_id>Import-1-x116869</component_id>
+      <component_id_human>Import #3</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql</file_path>
+          <label>file</label>
+          <file_name>Game_Theory_gametheory-003_SQL_anonymized_forum.sql</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>-- MySQL dump 10.13  Distrib 5.5.35, for debian-linux-gnu (x86_64)</name>
+            </header>
+          </metadata>
+        </file>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input2>
+  </inputs>
+  <options>
+    <customMOOCdbName></customMOOCdbName>
+  </options>
+</component>

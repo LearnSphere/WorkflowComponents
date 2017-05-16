@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/MOOCdbFeatureExtract</url>
+<date>2017-03-10</date>
+<abstract>The <b>MOOCdb Feature Extractor</b> component extracts longitudinal features from a MOOCdb database.</abstract>
+<description>This component extracts longitudinal data from a MOOCdb. The available featrues are listed below:
+<p>
+<ul>
+<li>pset_grade_over_time</li>
+<li>pset_grade</li>
+<li>dropout</li>
+<li>lab_grade_over_time</li>
+<li>sum_observed_events_duration</li>
+<li>lab_grade</li>
+<li>number_of_forum_posts</li>
+<li>number_of_forum_responses</li>
+<li>number_of_wiki_edits</li>
+<li>average_length_of_forum_posts</li>
+<li>percent_of_average_number_of_attempts</li>
+<li>distinct_attempts</li>
+<li>percentile_of_average_number_of_attempts</li>
+<li>number_of_attempts</li>
+<li>distinct_problems_correct</li>
+<li>average_number_of_attempts</li>
+<li>sum_observed_events_duration_per_correct_problem</li>
+<li>number_problem_attempted_per_correct_problem</li>
+<li>average_time_to_solve_problem</li>
+<li>observed_event_timestamp_variance</li>
+<li>number_of_collaborations</li>
+<li>max_duration_resources</li>
+<li>sum_observed_events_book</li>
+<li>sum_observed_events_lecture</li>
+<li>sum_observed_events_wiki</li>
+<li>attempts_correct</li>
+<li>percent_correct_submissions</li>
+<li>average_predeadline_submission_time</li>
+<li>difference_feature_3</li>
+<li>difference_feature_10</li>
+<li>difference_feature_11</li>
+<li>difference_feature_9</li>
+<li>difference_feature_4</li>
+<li>difference_feature_5</li>
+<li>difference_feature_12</li>
+<li>std_hours_working</li>
+<li>time_to_react</li>
+</ul>
+</p>
+</description>
+
+<inputs><ul>
+<li>MOOCdb file: contains the name of the new MOOCdb created.</li>
+<li>MOOCdb-features file: contains names of all available longitudinal features. This is used by the succeeding feature extraction component.</li>
+</ul></inputs>
+
+<outputs>
+<ul>
+<li>feature_descriptions.txt: contains all features that are available and brief description for each.</li>
+<li>moocdb_features.txt: contains the extracted longitudinal features.</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Features to extract</li>
+<li>Number of weeks (default is 10)</li>
+<li>Start date (format is yyyy-mm-dd, if not provided, the earliest submission time for the course is used)</li>
+<li>Export format (tall or wide, default is tall)</li>
+</ul>
+</options>
+
+</info>
