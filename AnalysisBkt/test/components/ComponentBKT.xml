@@ -22,10 +22,30 @@
     <xValidationFolds>10</xValidationFolds>
     <maxIterations>200</maxIterations>
     <solver>Baum-Welch</solver>
-    <upperBoundaries>0,0,1,0,0,0,0,0.3,0.3,0</upperBoundaries>
     <!-- <hiddenStates>2</hiddenStates>  Yudelson: too advanced-->
-    <initialParameters>0.5,1.0,0.4,0.8,0.2</initialParameters>
-    <lowerBoundaries>0,0,1,0,0,0,0.7,0,0,0.7</lowerBoundaries>
+    <!-- <initialParameters>0.5,1.0,0.4,0.8,0.2</initialParameters> --> <!-- Yudelson split -->
+    <lowerBoundaries>0,0,1,0,0,0,0.7,0,0,0.7</lowerBoundaries> <!-- Yudelson, will be split -->
+    <upperBoundaries>0,0,1,0,0,0,0,0.3,0.3,0</upperBoundaries>  <!-- Yudelson, will be split -->
+    <!-- Yudelson, initial parameters separately -->
+    <pInit>0.5</pInit>
+    <pForget>0.0</pForget>
+    <pLearn>0.4</pLearn>
+    <pSlip>0.2</pSlip>
+    <pGuess>0.2</pGuess>
+	<!-- Yudelson, lower boundaries separately
+    <pInitLowerBoundary>0.0</pInitLowerBoundary>
+    <pForgetLowerBoundary>0.0</pForgetLowerBoundary>
+    <pLearnLowerBoundary>0.0</pLearnLowerBoundary>
+    <pSlipLowerBoundary>0.0</pSlipLowerBoundary>
+    <pGuessLowerBoundary>0.0</pGuessLowerBoundary>
+	-->
+	<!-- Yudelson, upper boundaries separately
+    <pInitUpperBoundary>1.0</pInitUpperBoundary>
+    <pForgetUpperBoundary>0.0</pForgetUpperBoundary>
+    <pLearnUpperBoundary>1.0</pLearnUpperBoundary>
+    <pSlipUpperBoundary>0.3</pSlipUpperBoundary>
+    <pGuessUpperBoundary>0.3</pGuessUpperBoundary>
+	-->
   </options>
   <top>233</top>
   <inputs>

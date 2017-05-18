@@ -202,11 +202,26 @@ public class BKTOptions {
     /** Number of hidden states. */
     private Integer hiddenStates;
     /** Initial parameters (probabilities) for priors, transitions, and emissions. */
-    private List<Double> initialParameters;
+//     private List<Double> initialParameters; // Yudelson, will be split
+    private Double initialPInit;   // Yudelson starting p-init
+    private Double initialPForget; // Yudelson starting p-forget
+    private Double initialPLearn;  // Yudelson starting p-learn
+    private Double initialPSlip;   // Yudelson starting p-slip
+    private Double initialPGuess;  // Yudelson starting p-guess
     /** Lower boundaries for prior, transition, and emissions probabilities. */
-    private List<Double> lowerBoundaries;
+    private List<Double> lowerBoundaries;  // Yudelson, will be split
+    private Double lowerPInit;   // Yudelson lower boundary for p-init
+    private Double lowerPForget; // Yudelson lower boundary for p-forget
+    private Double lowerPLearn;  // Yudelson lower boundary for p-learn
+    private Double lowerPSlip;   // Yudelson lower boundary for p-slip
+    private Double lowerPGuess;  // Yudelson lower boundary for p-guess
     /** Upper boundaries for prior, transition, and emissions probabilities. */
-    private List<Double> upperBoundaries;
+    private List<Double> upperBoundaries;  // Yudelson, will be split
+    private Double upperPInit;   // Yudelson upper boundary for p-init
+    private Double upperPForget; // Yudelson upper boundary for p-forget
+    private Double upperPLearn;  // Yudelson upper boundary for p-learn
+    private Double upperPSlip;   // Yudelson upper boundary for p-slip
+    private Double upperPGuess;  // Yudelson upper boundary for p-guess
     /** L2 penalty weight. */
     private Double l2PenaltyWeight;
     /** Report model fitting metrics. */
@@ -351,15 +366,45 @@ public class BKTOptions {
     /**
      * @return the initialParameters
      */
-    public List<Double> getInitialParameters() {
-        return initialParameters;
+//     public List<Double> getInitialParameters() {
+//         return initialParameters;
+//     }
+    public Double getInitialPInit() {
+        return initialPInit;
+    }
+    public Double getInitialPForget() {
+        return initialPForget;
+    }
+    public Double getInitialPLearn() {
+        return initialPLearn;
+    }
+    public Double getInitialPSlip() {
+        return initialPSlip;
+    }
+    public Double getInitialPGuess() {
+        return initialPGuess;
     }
 
     /**
      * @param initialParamters the initialParameters to set
      */
-    public void setInitialParameters(List<Double> initialParamters) {
-        this.initialParameters = initialParamters;
+//     public void setInitialParameters(List<Double> initialParameters) {
+//         this.initialParameters = initialParameters;
+//     }
+    public void setInitialPInit(Double initialPInit) {
+        this.initialPInit = initialPInit;
+    }
+    public void setInitialPForget(Double initialPForget) {
+        this.initialPForget = initialPForget;
+    }
+    public void setInitialPLearn(Double initialPLearn) {
+        this.initialPLearn = initialPLearn;
+    }
+    public void setInitialPSlip(Double initialPSlip) {
+        this.initialPSlip = initialPSlip;
+    }
+    public void setInitialPGuess(Double initialPGuess) {
+        this.initialPGuess = initialPGuess;
     }
 
     /**
@@ -585,9 +630,16 @@ public class BKTOptions {
         if (hiddenStates != null) {
             returnParamString.append(" -n " + hiddenStates);
         }
-        if (initialParameters != null) {
-            returnParamString.append(" -0 " + getCommaSeparatedString(initialParameters));
+//         if (initialParameters != null) {
+//             returnParamString.append(" -0 " + getCommaSeparatedString(initialParameters));
+//         }
+        // Yudelson, split parameters
+        if (initialPInit!=null && initialPForget!=null && initialPLearn!=null &&
+        	initialPSlip!=null && initialPGuess!=null) {
+        	returnParamString.append(" -0 " + initialPInit + "," + initialPForget + "," +
+        		initialPLearn + "," + initialPSlip + "," + initialPGuess);
         }
+        
         if (lowerBoundaries != null) {
             returnParamString.append(" -l " + getCommaSeparatedString(lowerBoundaries));
         }
