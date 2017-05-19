@@ -426,25 +426,46 @@ public class BKTMain extends AbstractComponent {
         initParameter = this.getOptionAsString("pGuess");
         analysisOptions.setInitialPGuess( Double.parseDouble(initParameter) );
 
-        String lowerBoundariesAttribute = this.getOptionAsString("lowerBoundaries");
-        if (lowerBoundariesAttribute != null) {
-            String[] lowerBoundariesSplit = lowerBoundariesAttribute.split(",");
-            List<Double> lowerBoundaries = new ArrayList<Double>(lowerBoundariesSplit.length);
-            for (int i = 0; i < lowerBoundariesSplit.length; i++) {
-                lowerBoundaries.add(Double.parseDouble(lowerBoundariesSplit[i]));
-            }
-            analysisOptions.setLowerBoundaries(lowerBoundaries);
-        }
+//         String lowerBoundariesAttribute = this.getOptionAsString("lowerBoundaries");
+//         if (lowerBoundariesAttribute != null) {
+//             String[] lowerBoundariesSplit = lowerBoundariesAttribute.split(",");
+//             List<Double> lowerBoundaries = new ArrayList<Double>(lowerBoundariesSplit.length);
+//             for (int i = 0; i < lowerBoundariesSplit.length; i++) {
+//                 lowerBoundaries.add(Double.parseDouble(lowerBoundariesSplit[i]));
+//             }
+//             analysisOptions.setLowerBoundaries(lowerBoundaries);
+//         }
+        String lowerParameter = this.getOptionAsString("pInitLowerBoundary");
+        analysisOptions.setPInitLowerBoundary( Double.parseDouble(lowerParameter) );
+		lowerParameter = this.getOptionAsString("pForgetLowerBoundary");
+        analysisOptions.setPForgetLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pLearnLowerBoundary");
+        analysisOptions.setPLearnLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pSlipLowerBoundary");
+        analysisOptions.setPSlipLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pGuessLowerBoundary");
+        analysisOptions.setPGuessLowerBoundary( Double.parseDouble(lowerParameter) );
 
-        String upperBoundariesAttribute = this.getOptionAsString("upperBoundaries");
-        if (upperBoundariesAttribute != null) {
-            String[] upperBoundariesSplit = upperBoundariesAttribute.split(",");
-            List<Double> upperBoundaries = new ArrayList<Double>(upperBoundariesSplit.length);
-            for (int i = 0; i < upperBoundariesSplit.length; i++) {
-                upperBoundaries.add(Double.parseDouble(upperBoundariesSplit[i]));
-            }
-            analysisOptions.setUpperBoundaries(upperBoundaries);
-        }
+//         String upperBoundariesAttribute = this.getOptionAsString("upperBoundaries");
+//         if (upperBoundariesAttribute != null) {
+//             String[] upperBoundariesSplit = upperBoundariesAttribute.split(",");
+//             List<Double> upperBoundaries = new ArrayList<Double>(upperBoundariesSplit.length);
+//             for (int i = 0; i < upperBoundariesSplit.length; i++) {
+//                 upperBoundaries.add(Double.parseDouble(upperBoundariesSplit[i]));
+//             }
+//             analysisOptions.setUpperBoundaries(upperBoundaries);
+//         }
+//         analysisOptions.setPInitLowerBoundary( Double.parseDouble(lowerParameter) );
+		String upperParameter = this.getOptionAsString("pInitUpperBoundary");
+		analysisOptions.setPInitUpperBoundary( Double.parseDouble(upperParameter) );
+		upperParameter = this.getOptionAsString("pForgetUpperBoundary");
+        analysisOptions.setPForgetUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pLearnUpperBoundary");
+        analysisOptions.setPLearnUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pSlipUpperBoundary");
+        analysisOptions.setPSlipUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pGuessUpperBoundary");
+        analysisOptions.setPGuessUpperBoundary( Double.parseDouble(upperParameter) );
 
         analysisOptions.setL2PenaltyWeight(this.getOptionAsDouble("l2PenaltyWeight"));
 
@@ -488,8 +509,8 @@ public class BKTMain extends AbstractComponent {
             if (tempDataFile.exists() && tempDataFile.canWrite()) {
                 // Build the options for student stratified CV.
                 ArrayList<String> params1 = new ArrayList<String>();
-//                 params1.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-                params1.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+                params1.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params1.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params1.addAll(handleBKTOptions(analysisOptions.toArray(), "g"));
                 params1.add(tempDataFile.getAbsolutePath());
 
@@ -514,8 +535,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for item stratified CV.
                 ArrayList<String> params2 = new ArrayList<String>();
-//                 params2.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-                params2.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+                params2.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params2.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params2.addAll(handleBKTOptions(analysisOptions.toArray(), "i"));
                 params2.add(tempDataFile.getAbsolutePath());
 
@@ -535,8 +556,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for non-stratified CV.
                 ArrayList<String> params3 = new ArrayList<String>();
-//                 params3.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-                params3.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+                params3.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params3.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params3.addAll(handleBKTOptions(analysisOptions.toArray(), "n"));
                 params3.add(tempDataFile.getAbsolutePath());
 
@@ -562,8 +583,8 @@ public class BKTMain extends AbstractComponent {
 
                 // Build the options for prediction.
                 ArrayList<String> params4 = new ArrayList<String>();
-//                 params4.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
-                params4.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
+                params4.add(this.getToolDir() + "program/trainhmm.exe"); // Yudelson
+//                 params4.add(this.getToolDir() + "program/mac/trainhmm"); // Yudelson
                 params4.addAll(handleBKTOptions(analysisOptions.toArray(), null));
                 params4.add(tempDataFile.getAbsolutePath());
                 params4.add(resultModelFile.getAbsolutePath());
