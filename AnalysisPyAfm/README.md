@@ -1,5 +1,13 @@
-AFM and AFM+S in Python
-=======================
+Carnegie Mellon University, Massachusetts Institute of Technology, Stanford University, University of Memphis.
+Copyright 2016. All Rights Reserved.
+
+# LearnSphere and Tigris
+
+[LearnSphere](LearnSphere.org) is co-developed by the [LearnLab](http://learnlab.org) – a flagship project of [Carnegie Mellon](http://cmu.edu)'s [Simon Initiative](https://www.cmu.edu/simon). It is community software infrastructure for sharing, analysis, and collaboration of/around educational data. LearnSphere integrates existing and new educational data infrastructures to offer a world class repository of education data. 
+
+[Tigris](https://pslcdatashop.web.cmu.edu/LearnSphereLogin) is a workflow authoring tool which is part of the community software infrastructure being built for the LearnSphere project. The platform provides a way to create custom analyses and interact with new as well as existing data formats and repositories.
+
+# AFM and AFM+S in Python
 
 This is a python implementation of the Additive Factors Model (Cenn, 2009) and
 The Additive Factors Model with Slipping Paramters (MacLellan et al., 2015).
@@ -26,8 +34,7 @@ student step files in datashop format; e.g.,
 For a slightly more detailed example of how to use these scripts see my
 [blog post](http://christopia.net/blog/modeling-student-learning-in-python).
 
-Citing this Software
-====================
+# Citing this Software
 
 If you use this software in a scientific publiction, then we would appreciate
 citation of the following paper:
@@ -53,62 +60,51 @@ Bibtex entry:
     address={Madrid, Spain}
     }
 
-
-
-
-LearnSphere Workflow Component Source
-======================================
-
-Carnegie Mellon University, Massachusetts Institute of Technology, Stanford University, University of Memphis.
-Copyright 2016. All Rights Reserved.
-
-
-I. Dependencies
+# Appendix A. Technical Details 
+## I. Dependencies
 
 1. Ant 1.9 or greater
 2. Java Enterprise Edition Software Development Kit (J2EE SDK)
-2. Eclipse or Cygwin
-3. Git
-
-    git clone https://github.com/PSLCDataShop/WorkflowComponents WorkflowComponents
-
-
-II. Documentation
-
-  See WorkflowComponents/Workflow Components.docx for detailed information on creating, modifying, or running components.
+2. Eclipse or Cygwin.
+3. Clone the GitHub repository using `git clone https://github.com/PSLCDataShop/WorkflowComponents WorkflowComponents` command.
+4. BKT contains executables which may need to be rebuilt for your system.
+	- From the command-line in `WorkflowComponents/AnalysisBkt/program/standard-bkt-public-standard-bkt` folder issue the `make`command.
+	- Then, copy the predicthmm.exe and `trainhmm.exe` to the `AnalysisBkt/program` directory.
 
 
+## II. Documentation
 
-III. Testing a workflow component in Eclipse, Cygwin, or Linux
+See `WorkflowComponents/Workflow Components.docx` for detailed information on creating, modifying, or running components.
 
-A. Eclipse
+## III. Testing a workflow component in Eclipse, Cygwin, or Linux
 
-  1. File -> Import -> General -> Existing Projects into Workspace
-  2. Choose any component directory from your newly imported git clone, i.e. WorkflowComponents/<AnyComponent>
-  3. Click 'Finish'
-  4. In the Ant view (Windows -> Show View -> Ant), add the desired component's build.xml to your current buildfiles, e.g. <AnyComponent>/build.xml
-  5. Double click the ant task "runToolTemplate". The component should produce example XML output if it is setup correctly.
+### A. Eclipse
+	
+1. File -> Import -> General -> Existing Projects into Workspace.
+2. Choose any component directory from your newly imported git clone, i.e. `WorkflowComponents/<AnyComponent>`.
+3. Click 'Finish'.
+4. In the Ant view (Windows -> Show View -> Ant), add the desired component's build.xml to your current buildfiles, e.g. `<AnyComponent>/build.xml`.
+5. Double click the ant task `runToolTemplate`. The component should produce example XML output if it is setup correctly.
 
-* For debugging, you may wish to add the jars in the directory WorkflowComponents/CommonLibraries to your build path.
-
-
-B. Cygwin or Linux
-
-  1. Change to your WorkflowComponents directory, e.g. /cygdrive/c/your_workspace/<AnyComponent>/
-  2. Type the command "ant -p" to get a list of ant tasks
-  3. Type "ant runComponent" to run the component with the included example data
+**NB**: For debugging, you may wish to add the jars in the directory `WorkflowComponents/CommonLibraries` to your build path.
 
 
+### B. Cygwin or Linux
 
-IV. Building components
+1. Change to your `WorkflowComponents` directory, e.g. `/cygdrive/c/your_workspace/<AnyComponent>/`
+2. Issue the command `ant -p` to get a list of ant tasks
+3. Issue `ant runComponent` to run the component with the included example data
 
-Build all components
 
-  Modify the "dir" variable in WorkflowComponents/build.sh to match your WorkflowComponents path, then run the script (requires bash)
+## IV. Building components
 
-Building a single component
+### Build all components
 
-  ant dist
+Modify the `dir` variable in `WorkflowComponents/build.sh` to match your `WorkflowComponents` path, then run the script (requires bash)
+
+### Building a single component
+
+Issue the `ant dist` command.
 
 
 
