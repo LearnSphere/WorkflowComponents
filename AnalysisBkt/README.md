@@ -1,10 +1,15 @@
 Carnegie Mellon University, Massachusetts Institute of Technology, Stanford University, University of Memphis.
 Copyright 2016. All Rights Reserved.
 
+# LearnSphere and Tigris
 
-# Tigris's Bayesian Knowledge Tracing (BKT) Workflow Component
+[LearnSphere](LearnSphere.org) is co-developed by the [LearnLab](http://learnlab.org) – a flagship project of [Carnegie Mellon](http://cmu.edu)'s [Simon Initiative](https://www.cmu.edu/simon). It is community software infrastructure for sharing, analysis, and collaboration of/around educational data. LearnSphere integrates existing and new educational data infrastructures to offer a world class repository of education data. 
 
-Tigris is an open analytic method library and workflow-authoring environment for researchers to build models and run them across datasets. Bayesian Knowledge Tracing workflow component is one of the Tigris's student modeling components.
+[Tigris](https://pslcdatashop.web.cmu.edu/LearnSphereLogin) is a workflow authoring tool which is part of the community software infrastructure being built for the LearnSphere project. The platform provides a way to create custom analyses and interact with new as well as existing data formats and repositories.
+
+# Tigris Bayesian Knowledge Tracing (BKT) Workflow Component
+
+Bayesian Knowledge Tracing (BKT) workflow component is one of the building blocks in Tigris. It implements student modeling approach based in Hidden Markov Models. BKT can be run on most of the LearnSphere datasets without prior adaptation. 
 
 # Bayesian Knowledge Tracing Overview
 
