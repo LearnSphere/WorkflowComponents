@@ -1,3 +1,6 @@
 /nbproject/private/
 AnalysisBkt/AnalysisBkt.bbprojectd/
 AnalysisBkt/test/ComponentTestOutput/*
+/build/
+/.classpath
+/.project
