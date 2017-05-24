@@ -15,6 +15,7 @@ The <b>Gradebook</b> import is a tab-delimited text file containing gradebook va
 <li>The first <b>row</b> contains the gradebook item names.</li>
 <li>The first <b>column</b> contains unique student IDs.</li>
 <li>All other cells are numbers -- the score the student (row) had on this item (column).</li>
+<li>Empty cells are assigned a value of 0.0.</li>
 </ul>
 <br/>
 Optionally, the last column can be a summary column, containing the student's total score.
