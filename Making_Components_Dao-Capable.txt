@@ -1,0 +1,88 @@
+How to enable and access DataShop DAO from within the component wrapper
+
+Note: The argument "-userId <user_id>" (the user id of the invoking datashop user) is passed to every component, now
+
+I. Changes to build.xml
+1. After lib.path, insert the following
+
+<path id="spring.lib.path">
+        <fileset dir="${lib}/spring">
+            <include name="**/spring.jar" />
+        </fileset>
+    </path>
+
+    <path id="hibernate.lib.path">
+        <fileset dir="${lib}/hibernate">
+            <include name="**/hibernate3.jar" />
+            <include name="**/dom4j-1.6.1.jar" />
+            <include name="**/antlr-2.7.6.jar" />
+            <include name="**/asm.jar" />
+            <include name="**/asm-attrs.jar" />
+            <include name="**/cglib-2.1.3.jar" />
+            <include name="**/ehcache-1.2.3.jar" />
+            <include name="**/jta.jar" />
+            <include name="**/commons-collections-2.1.1.jar" />
+        </fileset>
+        <fileset dir="${lib}">
+            <include name="**/commons-logging.jar" />
+        </fileset>
+    </path>
+
+2. Replace the build-classpath object
+
+        <path id="build-classpath">
+            <fileset dir="${lib}">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+
+  with
+
+<path id="build-classpath">
+            <fileset dir="${lib}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${lib}/spring">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${lib}/hibernate">
+                <include name="*.jar" />
+            </fileset>
+        </path>
+
+3. Add the following classpaths to the "compile" target
+
+<classpath refid="spring.lib.path" />
+<classpath refid="hibernate.lib.path" />
+
+4. Add the following imports to the java wrapper (*Main.java)
+
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
+import edu.cmu.pslc.datashop.dao.DaoFactory;
+import edu.cmu.pslc.datashop.dao.UserDao;
+import edu.cmu.pslc.datashop.item.UserItem;
+import edu.cmu.pslc.datashop.util.SpringContext;
+
+
+5. Add the following to the runComponent method
+
+        String appContextPath = this.getApplicationContextPath();
+        logger.info("appContextPath: " + appContextPath);
+
+        // Do not follow symbolic links so we can prevent unwanted directory traversals if someone
+        // does manage to create a symlink to somewhere dangerous (like /datashop/deploy/)
+        if (Files.exists(Paths.get(appContextPath), LinkOption.NOFOLLOW_LINKS)) {
+            /** Initialize the Spring Framework application context. */
+            SpringContext.getApplicationContext(appContextPath);
+        }
+
+    	UserDao userDao = DaoFactory.DEFAULT.getUserDao();
+        UserItem userItem = userDao.get(this.getUserId());
+
+  /* Now you can use the userDao just as you would from within DataShop. DAO restrictions are placed on the database user specified in the CommonLibraries/applicationContext.xml (i.e., the datashop user). */
+
+
+
+

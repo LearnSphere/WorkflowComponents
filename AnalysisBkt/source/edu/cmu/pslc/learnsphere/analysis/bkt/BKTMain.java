@@ -405,36 +405,67 @@ public class BKTMain extends AbstractComponent {
 
         analysisOptions.setHiddenStates(2); // this.getOptionAsInteger("hiddenStates")); // Yudelson: too advanced
 
+		// Yudelson, split initial parameters
+//         String initialParametersAttribute = this.getOptionAsString("initialParameters");
+//         if (initialParametersAttribute != null) {
+//             String[] initialParametersSplit = initialParametersAttribute.split(",");
+//             List<Double> initialParameters = new ArrayList<Double>(initialParametersSplit.length);
+//             for (int i = 0; i < initialParametersSplit.length; i++) {
+//                 initialParameters.add(Double.parseDouble(initialParametersSplit[i]));
+//             }
+//             analysisOptions.setInitialParameters(initialParameters);
+//         }
+        String initParameter = this.getOptionAsString("pInit");
+        analysisOptions.setInitialPInit( Double.parseDouble(initParameter) );
+        initParameter = this.getOptionAsString("pForget");
+        analysisOptions.setInitialPForget( Double.parseDouble(initParameter) );
+        initParameter = this.getOptionAsString("pLearn");
+        analysisOptions.setInitialPLearn( Double.parseDouble(initParameter) );
+        initParameter = this.getOptionAsString("pSlip");
+        analysisOptions.setInitialPSlip( Double.parseDouble(initParameter) );
+        initParameter = this.getOptionAsString("pGuess");
+        analysisOptions.setInitialPGuess( Double.parseDouble(initParameter) );
 
-        String initialParametersAttribute = this.getOptionAsString("initialParameters");
-        if (initialParametersAttribute != null) {
-            String[] initialParametersSplit = initialParametersAttribute.split(",");
-            List<Double> initialParameters = new ArrayList<Double>(initialParametersSplit.length);
-            for (int i = 0; i < initialParametersSplit.length; i++) {
-                initialParameters.add(Double.parseDouble(initialParametersSplit[i]));
-            }
-            analysisOptions.setInitialParameters(initialParameters);
-        }
+//         String lowerBoundariesAttribute = this.getOptionAsString("lowerBoundaries");
+//         if (lowerBoundariesAttribute != null) {
+//             String[] lowerBoundariesSplit = lowerBoundariesAttribute.split(",");
+//             List<Double> lowerBoundaries = new ArrayList<Double>(lowerBoundariesSplit.length);
+//             for (int i = 0; i < lowerBoundariesSplit.length; i++) {
+//                 lowerBoundaries.add(Double.parseDouble(lowerBoundariesSplit[i]));
+//             }
+//             analysisOptions.setLowerBoundaries(lowerBoundaries);
+//         }
+        String lowerParameter = this.getOptionAsString("pInitLowerBoundary");
+        analysisOptions.setPInitLowerBoundary( Double.parseDouble(lowerParameter) );
+		lowerParameter = this.getOptionAsString("pForgetLowerBoundary");
+        analysisOptions.setPForgetLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pLearnLowerBoundary");
+        analysisOptions.setPLearnLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pSlipLowerBoundary");
+        analysisOptions.setPSlipLowerBoundary( Double.parseDouble(lowerParameter) );
+        lowerParameter = this.getOptionAsString("pGuessLowerBoundary");
+        analysisOptions.setPGuessLowerBoundary( Double.parseDouble(lowerParameter) );
 
-        String lowerBoundariesAttribute = this.getOptionAsString("lowerBoundaries");
-        if (lowerBoundariesAttribute != null) {
-            String[] lowerBoundariesSplit = lowerBoundariesAttribute.split(",");
-            List<Double> lowerBoundaries = new ArrayList<Double>(lowerBoundariesSplit.length);
-            for (int i = 0; i < lowerBoundariesSplit.length; i++) {
-                lowerBoundaries.add(Double.parseDouble(lowerBoundariesSplit[i]));
-            }
-            analysisOptions.setLowerBoundaries(lowerBoundaries);
-        }
-
-        String upperBoundariesAttribute = this.getOptionAsString("upperBoundaries");
-        if (upperBoundariesAttribute != null) {
-            String[] upperBoundariesSplit = upperBoundariesAttribute.split(",");
-            List<Double> upperBoundaries = new ArrayList<Double>(upperBoundariesSplit.length);
-            for (int i = 0; i < upperBoundariesSplit.length; i++) {
-                upperBoundaries.add(Double.parseDouble(upperBoundariesSplit[i]));
-            }
-            analysisOptions.setUpperBoundaries(upperBoundaries);
-        }
+//         String upperBoundariesAttribute = this.getOptionAsString("upperBoundaries");
+//         if (upperBoundariesAttribute != null) {
+//             String[] upperBoundariesSplit = upperBoundariesAttribute.split(",");
+//             List<Double> upperBoundaries = new ArrayList<Double>(upperBoundariesSplit.length);
+//             for (int i = 0; i < upperBoundariesSplit.length; i++) {
+//                 upperBoundaries.add(Double.parseDouble(upperBoundariesSplit[i]));
+//             }
+//             analysisOptions.setUpperBoundaries(upperBoundaries);
+//         }
+//         analysisOptions.setPInitLowerBoundary( Double.parseDouble(lowerParameter) );
+		String upperParameter = this.getOptionAsString("pInitUpperBoundary");
+		analysisOptions.setPInitUpperBoundary( Double.parseDouble(upperParameter) );
+		upperParameter = this.getOptionAsString("pForgetUpperBoundary");
+        analysisOptions.setPForgetUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pLearnUpperBoundary");
+        analysisOptions.setPLearnUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pSlipUpperBoundary");
+        analysisOptions.setPSlipUpperBoundary( Double.parseDouble(upperParameter) );
+        upperParameter = this.getOptionAsString("pGuessUpperBoundary");
+        analysisOptions.setPGuessUpperBoundary( Double.parseDouble(upperParameter) );
 
         analysisOptions.setL2PenaltyWeight(this.getOptionAsDouble("l2PenaltyWeight"));
 

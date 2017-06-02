@@ -117,7 +117,7 @@ public class LearningCurveVisualization {
         Map<String, String> opportunities = new Hashtable<String, String>();
         Map<String, Double> avgAssistanceScore = new Hashtable<String, Double>();
         Map<String, Double> avgErrorRate = new Hashtable<String, Double>();
-        Map<String, Double> hsErrorRate = new Hashtable<String, Double>();        
+        Map<String, Double> hsErrorRate = new Hashtable<String, Double>();
         Map<String, Double> avgIncorrects = new Hashtable<String, Double>();
         Map<String, Double> avgHints = new Hashtable<String, Double>();
         Map<String, Double> avgStepDuration = new Hashtable<String, Double>();
@@ -221,7 +221,7 @@ public class LearningCurveVisualization {
                 Double correctStepDuration = null;
 
                 String criteria = null;
-                
+
                 for (int skillCounter = 0; skillCounter < skillNamesSplit.length; skillCounter++) {
 
                     String hsCriteria = null;
@@ -260,7 +260,7 @@ public class LearningCurveVisualization {
                     if (!maxOpportunities.containsKey(hsCriteria)) {
                         maxOpportunities.put(hsCriteria, new Integer(0));
                     }
-                    
+
                     if (!lsCounts.containsKey(criteria)) {
                         lsCounts.put(criteria, new Integer(0));
                     }
@@ -268,7 +268,7 @@ public class LearningCurveVisualization {
                     if (!hsCounts.containsKey(hsCriteria)) {
                         hsCounts.put(hsCriteria, new Integer(0));
                     }
-                    
+
                     if (!hsErrorRate.containsKey(hsCriteria)) {
                         hsErrorRate.put(hsCriteria, new Double(0));
                     }
@@ -679,7 +679,7 @@ public class LearningCurveVisualization {
         StringBuffer sBuffer = new StringBuffer();
         for (String key : lcData.keySet()) {
             lcImage = null;
-            String filePrefix = key;
+            String filePrefix = key.replaceAll(WorkflowHelper.BAD_FILEPATH_CHARS, "_");
             String fileSuffix = ".png";
 
             File imageFile;

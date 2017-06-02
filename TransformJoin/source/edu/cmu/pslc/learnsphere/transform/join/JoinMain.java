@@ -231,7 +231,7 @@ public class JoinMain extends AbstractComponent {
                    // Headers, the column values are column labels
                    int leftColCount = 0;
                    for (String leftHeader : leftFileHeaders) {
-                       if (leftHeader.matches(leftJoinColumn)) {
+                       if (leftHeader.equalsIgnoreCase(leftJoinColumn)) {
                            leftColumnIndex = leftColCount;
                        }
                        leftColCount++;
@@ -239,7 +239,7 @@ public class JoinMain extends AbstractComponent {
 
                    int rightColCount = 0;
                    for (String rightHeader : rightFileHeaders) {
-                       if (rightHeader.matches(rightJoinColumn)) {
+                       if (rightHeader.equalsIgnoreCase(rightJoinColumn)) {
                            rightColumnIndex = rightColCount;
                        }
                        rightColCount++;
@@ -396,7 +396,7 @@ public class JoinMain extends AbstractComponent {
                    // Headers, the column values are column labels
                    int leftColCount = 0;
                    for (String leftHeader : leftFileHeaders) {
-                       if (leftHeader.matches(leftJoinColumn)) {
+                       if (leftHeader.equalsIgnoreCase(leftJoinColumn)) {
                            leftColumnIndex = leftColCount;
                        }
                        leftColCount++;
@@ -404,7 +404,7 @@ public class JoinMain extends AbstractComponent {
 
                    int rightColCount = 0;
                    for (String rightHeader : rightFileHeaders) {
-                       if (rightHeader.matches(rightJoinColumn)) {
+                       if (rightHeader.equalsIgnoreCase(rightJoinColumn)) {
                            rightColumnIndex = rightColCount;
                        }
                        rightColCount++;
