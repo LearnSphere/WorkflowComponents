@@ -29,9 +29,9 @@
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:all >
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
       <xs:element type="xs:string" name="coursename" id="Course_Name" default="coursera_emnlp_2014" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

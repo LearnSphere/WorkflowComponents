@@ -32,10 +32,10 @@
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="xs:boolean" name="summary_column_present"
                   id="Is_Summary_Column_Present" default="false" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="OutputDefinition0">

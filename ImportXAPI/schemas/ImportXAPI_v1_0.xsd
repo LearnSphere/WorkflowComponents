@@ -48,15 +48,14 @@
   </xs:simpleType>
 
   <xs:complexType name="OptionsType">
-    <xs:all >
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element type="filterType" name="filter" id="filter" default="Null" />
-    <xs:element type="xs:string" name="url" id="url" default="https://lrs.adlnet.gov/xAPI" />    
-    <xs:element type="xs:string" name="username" id="username" default="user" />    
-    <xs:element type="xs:string" name="password" id="password" default="password" />    
-    <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />    
-    <xs:element type="xs:string" name="customFilter" id="customFilter" default="context.extensions.yourExtension" />    
-      
-    </xs:all>
+    <xs:element type="xs:string" name="url" id="url" default="https://lrs.adlnet.gov/xAPI" />
+    <xs:element type="xs:string" name="username" id="username" default="user" />
+    <xs:element type="xs:string" name="password" id="password" default="password" />
+    <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
+    <xs:element type="xs:string" name="customFilter" id="customFilter" default="context.extensions.yourExtension" />
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

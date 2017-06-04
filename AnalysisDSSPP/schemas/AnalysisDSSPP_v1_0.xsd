@@ -83,11 +83,11 @@
 		<xs:enumeration value="nodomain"/>
 	</xs:restriction>
  </xs:simpleType>
- 
+
  <xs:simpleType name="semanticSpaceType" final="restriction">
 	<xs:restriction base="xs:string">
-	 <xs:enumeration value="tasalsa500"/> 
-	 <xs:enumeration value="tasalsa3rd"/> 
+	 <xs:enumeration value="tasalsa500"/>
+	 <xs:enumeration value="tasalsa3rd"/>
 	 <xs:enumeration value="tasalsa6th"/>
 	 <xs:enumeration value="tasalsa9th"/>
 	 <xs:enumeration value="tasalsa12th"/>
@@ -98,7 +98,7 @@
 	 <xs:enumeration value="fa" />
 	</xs:restriction>
  </xs:simpleType>
- 
+
  <xs:simpleType name="returnvalsType" final="restriction">
 	<xs:restriction base="xs:string">
 		<xs:enumeration value="col"/>
@@ -109,14 +109,14 @@
 
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
 	  <xs:element type="FileInputHeader" name="header1" id="header1" default=".*"/>
 	  <xs:element type="FileInputHeader" name="header2" id="header2" default=".*"/>
 	  <xs:element type="domainType" name="domain" id="domain" default="combineall"/>
 	  <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col"/>
 	  <xs:element type="semanticSpaceType" name="ss" id="ss" default="tasalsa500"/>
 	  <xs:element type="xs:integer" name="lag" id="lag" default="0"/>
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

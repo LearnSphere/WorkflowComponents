@@ -49,9 +49,9 @@
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:all >
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Performance_Tracing" default="\s*KC\s*\((.*)\)\s*" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

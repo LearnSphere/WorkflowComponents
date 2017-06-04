@@ -56,10 +56,10 @@
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element type="xs:string" name="d" id="Dependent_variables" minOccurs="0"/>
         <xs:element type="xs:string" name="i" id="Independent_variables" minOccurs="0" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
 
