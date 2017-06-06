@@ -7713,3 +7713,19 @@ INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Jun 2017 
 INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Jun 2017 14:34:08,608 - Delim: 	
 INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Jun 2017 14:34:08,611 - First line: <table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
 INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Jun 2017 14:34:08,611 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:57,833 - Command-line args: [-componentXmlFile, G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/test/components/Descriptive_component_example.xml, -workflowDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/test/, -toolDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/, -schemaFile, G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/schemas/AnalysisDescriptive_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:57,835 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:35:58,092 - Reading G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/test/components/Descriptive_component_example.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:35:58,093 - File absolute path: G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive\test\components\Descriptive_component_example.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:35:58,093 - File canonical path: G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive\test\components\Descriptive_component_example.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,117 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,117 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,269 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,270 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,615 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,616 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.Descriptive.DescriptiveMain 06 Jun 2017 16:35:58,751 - Executing process: [C:\Program, Files\R\R-3.4.0\bin\Rscript.exe, G:/Workflowcomponents1/WorkflowComponents/AnalysisDescriptive/program\Descriptive-model.R, -programDir, G:/Workflowcomponents1/WorkflowComponents/AnalysisDescriptive/, -workingDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisDescriptive/test/ComponentTestOutput/output/, -category, "Level (Unitname)", -dependent, "Incorrect Latency", -latency, "CF (Start Latency)", -file0, "G:/Workflowcomponents1/WorkflowComponents/AnalysisDescriptive/test/example_transactions/GenerateDescriptiveFeatures_output.txt"]
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:36:08,133 - First line: <table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:36:08,133 - Delim: 	
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:36:08,137 - First line: <table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 06 Jun 2017 16:36:08,137 - Delim: 	
