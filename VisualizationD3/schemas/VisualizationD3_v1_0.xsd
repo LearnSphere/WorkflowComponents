@@ -83,12 +83,12 @@
   </xs:simpleType>
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="chartType" name="chartType" id="Chart_Type" default="Line_Chart" />
       <xs:element type="FileInputHeader" name="x" id="x"  default=".*" />
       <xs:element type="FileInputHeader" name="y" id="y"  default=".*" />
       <xs:element type="FileInputHeader" name="pointlabel" id="Point_Label"  default=".*" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

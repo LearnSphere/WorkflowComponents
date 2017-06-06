@@ -76,7 +76,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList2">
     <xs:choice>
       <xs:element ref="parameters" />
@@ -120,16 +120,16 @@
     </xs:restriction>
   </xs:simpleType> -->
 
-  
+
   <xs:simpleType name="probability">
 	<xs:restriction base="xs:double">
 		<xs:minInclusive value="0.0"/>
 		<xs:maxInclusive value="1.0"/>
-	</xs:restriction>      
+	</xs:restriction>
   </xs:simpleType>
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
       <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
       <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
@@ -161,7 +161,7 @@
       <xs:element type="probability" name="pLearnUpperBoundary" id="P_Learn_Upper_Boundary" default="1.0" />
       <xs:element type="probability" name="pSlipUpperBoundary" id="P_Slip_Upper_Boundary" default="0.3" />
       <xs:element type="probability" name="pGuessUpperBoundary" id="P_Guess_Upper_Boundary" default="0.3" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">
