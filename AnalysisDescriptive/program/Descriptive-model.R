@@ -97,7 +97,6 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 outputFilePath<- paste(workingDirectory, "factor.html", sep="")
 outputFilePath2<- paste(workingDirectory, "factorbyfactor.html", sep="")
-outputFilePath3<- paste(workingDirectory, "descriptive.txt", sep="")
 
 # Get data
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank.lines.skip=TRUE)
@@ -180,12 +179,3 @@ write.table(factorbyfactor,file=outputFilePath2,sep="\t", quote=FALSE,na = "",co
 factor<-htmlTable(res,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
 write.table(factor,file=outputFilePath,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 #write.table(link,file=outputFilePath,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
-
-clean <- file(paste(workingDirectory, "R output model summary.txt", sep=""))
-sink(clean,append=TRUE)
-sink(clean,append=TRUE,type="message") # get error reports also
-options(width=120)
-
-# Stop logging
-sink()
-sink(type="message")

@@ -23,9 +23,7 @@ public class DescriptiveMain extends AbstractComponent {
     @Override
     protected void parseOptions() {
 
-        if (this.getOptionAsString("model") != null) {
-            modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
-        }
+      
 
     }
 
@@ -50,7 +48,7 @@ public class DescriptiveMain extends AbstractComponent {
             File file1 = new File(outputDirectory.getAbsolutePath() + "/factorbyfactor.html");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/histogram.jpg");
 
-            if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
+            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
