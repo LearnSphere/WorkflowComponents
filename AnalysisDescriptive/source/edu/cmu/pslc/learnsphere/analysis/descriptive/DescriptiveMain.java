@@ -46,7 +46,7 @@ public class DescriptiveMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/factor.html");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/factorbyfactor.html");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/histogram.jpg");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/histogram.png");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
 

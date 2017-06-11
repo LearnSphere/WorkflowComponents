@@ -137,7 +137,8 @@ if(dependent=="Incorrect Latency")
 
 meanVal<-getmean(val, c(category,"Anon.Student.Id"), meanOn)
 
-jpeg('test\\ComponentTestOutput\\output\\histogram.jpg')
+options(bitmapType='cairo')
+png( paste(workingDirectory,'histogram.png',sep=""))
 #histogram(~mean|factor(as.character(meanVal[[category]])),data=meanVal)
 histogram( ~meanVal$mean | as.character(meanVal[[category]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 dev.off()
