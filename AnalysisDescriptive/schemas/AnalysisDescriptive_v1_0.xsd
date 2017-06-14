@@ -21,7 +21,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="transaction or student-step" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -113,7 +113,7 @@
   <xs:complexType name="OptionsType">
     <xs:all >
       <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
-      <xs:element type="xs:string" name="category" id="Category" default="Level (Unitname)" />
+      <xs:element type="FileInputHeader" name="category" id="Category" default=".*" />
       <xs:element type="latencyColumn" name="latency" id="Latency" default="CF (Start Latency)" />
     </xs:all>
   </xs:complexType>
