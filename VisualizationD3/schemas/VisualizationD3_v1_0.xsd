@@ -43,7 +43,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="inline-html" />
@@ -104,7 +103,6 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0" />
-        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
 
