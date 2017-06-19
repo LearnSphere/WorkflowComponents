@@ -44,7 +44,7 @@
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/asm.jar"/>
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/asm-attrs.jar"/>
-	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/cglib-2.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/cglib-nodep-3.1.jar"/>
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="C:/WPIDevelopment/dev06_dev/WorkflowComponents/CommonLibraries/hibernate/ehcache-1.2.3.jar"/>
