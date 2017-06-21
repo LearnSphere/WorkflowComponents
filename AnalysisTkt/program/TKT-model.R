@@ -1,5 +1,6 @@
 # Run TKT models
 
+
 echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -12,13 +13,6 @@ suppressMessages(library(TTR))
 suppressMessages(library(plyr))
 suppressMessages(library(pROC))
 
-# initialize variables
-inputFile = NULL
-workingDirectory = NULL
-componentDirectory = NULL
-trainfold = NULL
-testfold = NULL
-pr =NULL
 
 # parse commandline args
 i = 1
@@ -31,37 +25,45 @@ while (i <= length(args)) {
        i = i+1
     }  else if (args[i] == "-optimizedParameters") {
        if (length(args) == i) {
-          stop("optimizedParameters name must be specified")
+          stop("optimizedParameters must be specified")
        }
-       # This dir is the root dir of the component code.
-       optimizedParameters = args[i+1]
+        optimizedParameters = args[i+1]
        i = i+1
     } else if (args[i] == "-fixedParameters") {
        if (length(args) == i) {
-          stop("fixedParameters name must be specified")
-       }
-       # This dir is the root dir of the component code.
+          stop("fixedParameters must be specified")
+       }       
        fixedParameters = args[i+1]
+       i = i+1
+    } else if (args[i] == "-constHeader") {
+       if (length(args) == i) {
+          stop("constHeader must be specified")
+       }       
+       constHeader = args[i+1]
        i = i+1
     } else if (args[i] == "-mode") {
        if (length(args) == i) {
           stop("mode name must be specified")
-       }
-       # This dir is the root dir of the component code.
+       }       
        mode = args[i+1]
+       i = i+1
+    } else if (args[i] == "-const") {
+       if (length(args) == i) {
+          stop("const must be specified")
+       }
+       
+       const = args[i+1]
        i = i+1
     } else if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
        }
-       # This dir is the working dir for the component instantiation.
        workingDirectory = args[i+1]
        i = i+1
     } else if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
-       }
-       # This dir is the root dir of the component code.
+       }       
        componentDirectory = args[i+1]
        i = i+1
     } 
@@ -71,21 +73,15 @@ while (i <= length(args)) {
 if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirectory)) {
    if (is.null(inputFile)) {
       warning("Missing required input parameter: -file0")
-   }
-   
+   }   
    if (is.null(workingDirectory)) {
       warning("Missing required input parameter: -workingDir")
    }
    if (is.null(componentDirectory)) {
       warning("Missing required input parameter: -programDir")
    }
-  
    stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file  ")
 }
-# This dir is the root dir of the component code.
-componentDirectory = args[2]
-# This dir is the working dir for the component instantiation.
-workingDirectory = args[4]
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
@@ -99,23 +95,29 @@ val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 clean <- file(paste(workingDirectory, "R output model summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
-options(width=120)
+options(width=300)
 
 #Model options
 print(optimizedParameters)
 print(fixedParameters)
 print(mode)
+print(const)
+print(constHeader)
 
 vec<- eval(parse(text=paste("c(",optimizedParameters,")",sep="")))
 pars<- eval(parse(text=paste("c(",fixedParameters,")",sep="")))
 
-terms<- c("log((2+CF..cor.)/(2+CF..incor.))",
-              "log((2+CF..czcor.)/(2+CF..czincor.))",
-              "log((10+CF..totcor.)/(10+CF..totincor.))",
-              "I((!CF..KCclusterspacing.==0)*(1+CF..KCclusterspacing.)^-j)", 
-              "I(CF..baselevel.*log(CF..tests.+1)*(CF..meanspacingint.^k))",
-              "I(CF..baselevel.*log(CF..cltcnt.+1))",#*(CF..meanspacingint.^k))",
-              "I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.))")#*(CF..meanspacingint.^k))")
+terms<- c("log((1+CF..cor.)/(1+CF..incor.))",# KC..Default.",
+              "log((1+CF..czcor.)/(1+CF..czincor.))",
+              "log((5+CF..totcor.)/(5+CF..totincor.))",
+              "I((!CF..KCclusterspacing.==0)*((1+CF..KCclusterspacing.)^-j))", 
+              "I(CF..baselevel.*log(CF..tests.+1)*ifelse(CF..meanspacingint.==1,2,((CF..meanspacingint.)^k)))",
+              "I(CF..baselevel.*log(CF..cltcnt.+1))",
+              "I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.))")
+
+
+   constHeader <- gsub("[ ()-]", ".", constHeader)
+if(const!="single intercept only"){terms[1]<-paste(constHeader,"-1+",terms[1],sep="")}
 
 composedform <- "CF..ansbin.~ "
 for(v in 1:length(terms)){
@@ -125,12 +127,16 @@ if(composedform=="CF..ansbin.~ "){
 composedform<-"CF..ansbin.~ 1 "}
 composedform<-substr(composedform,1,nchar(composedform)-1)
 
-#Run the model
-dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,] 
+#Use valid rows
+dat<-val[(val$CF..ansbin.==0 | val$CF..ansbin.==1) & !is.na(val$CF..ansbin.),] 
+
+#Helper function
 baselevel <-  function(df, rate, compression) {
     temp <- rep(0, length(df$CF..ansbin.))              
                 temp <- (df$CF..KCageint. + (df$CF..KCage. - df$CF..KCageint.) * compression) ^ -rate
     return(temp)}
+
+#Initialize output
 top <- newXMLNode("model_output")
 
 switch(mode,
@@ -224,6 +230,7 @@ pr<-3}
 #Output text summary
 names(x$coefficients)<-substr(names(x$coefficients),1,75)
 print(summary(x))
+print(c("decay rate",j,"spacing effect",k,"interference rate",f))
 
 Nres<-length(dat$Outcome)
 R2<-r.squaredGLMM(x)
@@ -246,7 +253,7 @@ print(top[[1]][[1]])
 dat$CF..modbin.<-pred
 val$CF..modbin.<-NA
 val$CF..baselevel.<-NA
-dat<-rbind(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
+dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
 
 },
 "five times 2 fold crossvalidated create folds" = {
