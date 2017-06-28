@@ -18,9 +18,9 @@ workingDirectory = args[4]
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-flags<- args[6]
-KCmodel <- gsub("[ ()]", ".", args[8])
-inputFile<-args[10]
+flags<- args[8]
+KCmodel <- gsub("[ ()]", ".", args[10])
+inputFile<-args[12]
 
 # Get data
 outputFilePath<- paste(workingDirectory, "tkt-model.txt", sep="")
@@ -34,7 +34,7 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
 #Select the data
-dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,] 
+dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,]
 
 top <- newXMLNode("model_output")
 
@@ -47,7 +47,7 @@ for(run in 1:5){
         foldlevels[[x]] <-c(foldlevels[[x]],ransamp[w])
         x<-x+1
         if(x==(3)){x<-1}}
-        for(fold in 1:2){    
+        for(fold in 1:2){
         print(paste("fold " , fold))
             testfold <<- dat[ as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]], ]
 
@@ -60,7 +60,7 @@ eval(parse(text=paste(sep="",
             trainfold <<- dat[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]), ]
             baselevel <-
               function(df, rate, f) {
-                temp <- rep(0, length(df$CF..ansbin.))              
+                temp <- rep(0, length(df$CF..ansbin.))
                 temp <- (df$CF..KCageint. + (df$CF..KCage. - df$CF..KCageint.) * f) ^ -rate
                 return(temp)}
             decmod <- function(tem) {
@@ -69,11 +69,11 @@ eval(parse(text=paste(sep="",
               f<<-tem[3]
               trainfold$CF..baselevel. <<- baselevel(trainfold,j,f)
               testfold$CF..baselevel. <<- baselevel(testfold,j,f)
-              fitmodel <<- glm(CF..ansbin.~ 
+              fitmodel <<- glm(CF..ansbin.~
                           log((2+CF..cor.)/(2+CF..incor.))+log((2+CF..czcor.)/(2+CF..czincor.))+log((10+CF..totcor.)/(10+CF..totincor.))+
-                          I((!CF..KCclusterspacing.==0)*(1+CF..KCclusterspacing.)^-j)+ 
+                          I((!CF..KCclusterspacing.==0)*(1+CF..KCclusterspacing.)^-j)+
                           I(CF..baselevel.*log(CF..tests.+1)*(CF..meanspacingint.^k)) +
-                          #I(CF..baselevel.*log(CF..cltcnt.+1)*(CF..meanspacingint.^k)) + 
+                          #I(CF..baselevel.*log(CF..cltcnt.+1)*(CF..meanspacingint.^k)) +
                           I(CF..baselevel.*log(1+CF..czcor.+CF..czincor.)*(CF..meanspacingint.^k))
                         ,data=trainfold,family=binomial(logit))
                #print(paste(j," ",k," ",f," ",-logLik(fitmodel)[1]))
@@ -113,7 +113,7 @@ saveXML(top, file=outputFilePath2)
 
 # Save predictions in file
 dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
-dat<-dat[order(dat$Anon.Student.Id, dat$Time),] 
+dat<-dat[order(dat$Anon.Student.Id, dat$Time),]
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(dat))
 headers<-gsub("[.]1","",headers)
