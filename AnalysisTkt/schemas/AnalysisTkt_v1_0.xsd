@@ -100,7 +100,7 @@
             <xs:enumeration value="five times 2 fold crossvalidated read folds"/>
         </xs:restriction>
     </xs:simpleType>
- 
+
     <xs:simpleType name="constantType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="single intercept only"/>
@@ -109,13 +109,13 @@
     </xs:simpleType>
 
     <xs:complexType name="OptionsType">
-        <xs:all>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
             <xs:element type="constantType" name="const" id="Use_categorical_intercept_column" default="single intercept only"/>
             <xs:element type="xs:string" name="optimizedParameters" id="Used_Parameters_boolean" default="1,1,1,1,1,0,1,1,1,1" />
-            <xs:element type="xs:string" name="fixedParameters" id="Fixed_Parameter_values" default="0,0,0,0,0,0,0,0,0,0" />   
+            <xs:element type="xs:string" name="fixedParameters" id="Fixed_Parameter_values" default="0,0,0,0,0,0,0,0,0,0" />
             <xs:element type="FileInputHeader" name="constHeader" id="Categorical_intercept_column_if_per_header_selected" default=".*" />
-        </xs:all>
+        </xs:choice>
     </xs:complexType>
 
     <xs:element name="component">
