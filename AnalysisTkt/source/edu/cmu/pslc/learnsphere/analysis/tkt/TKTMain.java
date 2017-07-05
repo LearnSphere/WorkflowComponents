@@ -6,9 +6,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
 public class TKTMain extends AbstractComponent {
 
-    /** Component option (model). */
-    String modelName = null;
-    String modelsubName = null;
     public static void main(String[] args) {
 
         TKTMain tool = new TKTMain();
@@ -23,7 +20,6 @@ public class TKTMain extends AbstractComponent {
     @Override
     protected void parseOptions() {
 
-  
     }
 
     @Override

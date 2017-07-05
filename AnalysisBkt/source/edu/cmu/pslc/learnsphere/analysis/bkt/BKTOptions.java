@@ -202,11 +202,26 @@ public class BKTOptions {
     /** Number of hidden states. */
     private Integer hiddenStates;
     /** Initial parameters (probabilities) for priors, transitions, and emissions. */
-    private List<Double> initialParameters;
+//     private List<Double> initialParameters; // Yudelson, will be split
+    private Double initialPInit;   // Yudelson starting p-init
+    private Double initialPForget; // Yudelson starting p-forget
+    private Double initialPLearn;  // Yudelson starting p-learn
+    private Double initialPSlip;   // Yudelson starting p-slip
+    private Double initialPGuess;  // Yudelson starting p-guess
     /** Lower boundaries for prior, transition, and emissions probabilities. */
-    private List<Double> lowerBoundaries;
+//     private List<Double> lowerBoundaries;  // Yudelson, will be split
+    private Double lowerPInit;   // Yudelson lower boundary for p-init
+    private Double lowerPForget; // Yudelson lower boundary for p-forget
+    private Double lowerPLearn;  // Yudelson lower boundary for p-learn
+    private Double lowerPSlip;   // Yudelson lower boundary for p-slip
+    private Double lowerPGuess;  // Yudelson lower boundary for p-guess
     /** Upper boundaries for prior, transition, and emissions probabilities. */
-    private List<Double> upperBoundaries;
+//     private List<Double> upperBoundaries;  // Yudelson, will be split
+    private Double upperPInit;   // Yudelson upper boundary for p-init
+    private Double upperPForget; // Yudelson upper boundary for p-forget
+    private Double upperPLearn;  // Yudelson upper boundary for p-learn
+    private Double upperPSlip;   // Yudelson upper boundary for p-slip
+    private Double upperPGuess;  // Yudelson upper boundary for p-guess
     /** L2 penalty weight. */
     private Double l2PenaltyWeight;
     /** Report model fitting metrics. */
@@ -351,43 +366,133 @@ public class BKTOptions {
     /**
      * @return the initialParameters
      */
-    public List<Double> getInitialParameters() {
-        return initialParameters;
+//     public List<Double> getInitialParameters() {
+//         return initialParameters;
+//     }
+    public Double getInitialPInit() {
+        return initialPInit;
+    }
+    public Double getInitialPForget() {
+        return initialPForget;
+    }
+    public Double getInitialPLearn() {
+        return initialPLearn;
+    }
+    public Double getInitialPSlip() {
+        return initialPSlip;
+    }
+    public Double getInitialPGuess() {
+        return initialPGuess;
     }
 
     /**
      * @param initialParamters the initialParameters to set
      */
-    public void setInitialParameters(List<Double> initialParamters) {
-        this.initialParameters = initialParamters;
+//     public void setInitialParameters(List<Double> initialParameters) {
+//         this.initialParameters = initialParameters;
+//     }
+    public void setInitialPInit(Double initialPInit) {
+        this.initialPInit = initialPInit;
+    }
+    public void setInitialPForget(Double initialPForget) {
+        this.initialPForget = initialPForget;
+    }
+    public void setInitialPLearn(Double initialPLearn) {
+        this.initialPLearn = initialPLearn;
+    }
+    public void setInitialPSlip(Double initialPSlip) {
+        this.initialPSlip = initialPSlip;
+    }
+    public void setInitialPGuess(Double initialPGuess) {
+        this.initialPGuess = initialPGuess;
     }
 
     /**
      * @return the lowerBoundaries
      */
-    public List<Double> getLowerBoundaries() {
-        return lowerBoundaries;
+//     public List<Double> getLowerBoundaries() {
+//         return lowerBoundaries;
+//     }
+    public Double getPInitLowerBoundary() {
+    	return lowerPInit;
+    }
+    public Double getPForgetLowerBoundary() {
+    	return lowerPForget;
+    }
+    public Double getPLearnLowerBoundary() {
+    	return lowerPLearn;
+    }
+    public Double getPSlipLowerBoundary() {
+    	return lowerPSlip;
+    }
+    public Double getPGuessLowerBoundary() {
+    	return lowerPGuess;
     }
 
     /**
      * @param lowerBoundaries the lowerBoundaries to set
      */
-    public void setLowerBoundaries(List<Double> lowerBoundaries) {
-        this.lowerBoundaries = lowerBoundaries;
+//     public void setLowerBoundaries(List<Double> lowerBoundaries) {
+//         this.lowerBoundaries = lowerBoundaries;
+//     }
+    public void setPInitLowerBoundary(Double lowerPInit) {
+    	this.lowerPInit = lowerPInit;
+    }
+    public void setPForgetLowerBoundary(Double lowerPForget) {
+    	this.lowerPForget = lowerPForget;
+    }
+    public void setPLearnLowerBoundary(Double lowerPLearn) {
+    	this.lowerPLearn = lowerPLearn;
+    }
+    public void setPSlipLowerBoundary(Double lowerPSlip) {
+    	this.lowerPSlip = lowerPSlip;
+    }
+    public void setPGuessLowerBoundary(Double lowerPGuess) {
+    	this.lowerPGuess = lowerPGuess;
     }
 
     /**
      * @return the upperBoundaries
      */
-    public List<Double> getUpperBoundaries() {
-        return upperBoundaries;
+//     public List<Double> getUpperBoundaries() {
+//         return upperBoundaries;
+//     }
+    public Double getPInitUpperBoundary() {
+    	return upperPInit;
+    }
+    public Double getPForgetUpperBoundary() {
+    	return upperPForget;
+    }
+    public Double getPLearnUpperBoundary() {
+    	return upperPLearn;
+    }
+    public Double getPSlipUpperBoundary() {
+    	return upperPSlip;
+    }
+    public Double getPGuessUpperBoundary() {
+    	return upperPGuess;
     }
 
     /**
      * @param upperBoundaries the upperBoundaries to set
      */
-    public void setUpperBoundaries(List<Double> upperBoundaries) {
-        this.upperBoundaries = upperBoundaries;
+//     public void setUpperBoundaries(List<Double> upperBoundaries) {
+//         this.upperBoundaries = upperBoundaries;
+//     }
+    public void setPInitUpperBoundary(Double upperPInit) {
+    	this.upperPInit = upperPInit;
+    }
+    public void setPForgetUpperBoundary(Double upperPForget) {
+    	this.upperPForget = upperPForget;
+    }
+    public void setPLearnUpperBoundary(Double upperPLearn) {
+    	this.upperPLearn = upperPLearn;
+    }
+    public void setPSlipUpperBoundary(Double upperPSlip) {
+    	this.upperPSlip = upperPSlip;
+    }
+    public void setPGuessUpperBoundary(Double upperPGuess) {
+    	this.upperPGuess = upperPGuess;
     }
 
     /**
@@ -585,15 +690,46 @@ public class BKTOptions {
         if (hiddenStates != null) {
             returnParamString.append(" -n " + hiddenStates);
         }
-        if (initialParameters != null) {
-            returnParamString.append(" -0 " + getCommaSeparatedString(initialParameters));
+//         if (initialParameters != null) {
+//             returnParamString.append(" -0 " + getCommaSeparatedString(initialParameters));
+//         }
+        // Yudelson, split parameters
+        if (initialPInit!=null && initialPForget!=null && initialPLearn!=null &&
+        	initialPSlip!=null && initialPGuess!=null) {
+        	returnParamString.append(" -0 " + initialPInit + "," + initialPForget + "," +
+        		initialPLearn + "," + initialPSlip + "," + initialPGuess);
         }
-        if (lowerBoundaries != null) {
-            returnParamString.append(" -l " + getCommaSeparatedString(lowerBoundaries));
+        
+//         if (lowerBoundaries != null) {
+//             returnParamString.append(" -l " + getCommaSeparatedString(lowerBoundaries));
+//         }
+//         if (upperBoundaries != null) {
+//             returnParamString.append(" -u " + getCommaSeparatedString(upperBoundaries));
+//         }
+        if (lowerPInit!=null && lowerPForget!=null && lowerPLearn!=null && 
+        	lowerPSlip!=null && lowerPGuess!=null && 
+        	upperPInit!=null && upperPForget!=null && upperPLearn!=null && 
+        	upperPSlip!=null && upperPGuess!=null) {
+        	
+            returnParamString.append(" -l " + 
+            	lowerPInit + "," + (1 - upperPInit) + "," +
+            	(1-upperPForget) + "," + lowerPForget + "," +
+            	lowerPLearn + "," + (1 - upperPLearn) + "," +
+            	(1-upperPSlip) + "," + lowerPSlip + "," +
+            	lowerPGuess + "," + (1 - upperPGuess)
+            	);
+
+            returnParamString.append(" -u " + 
+            	upperPInit + "," + (1 - lowerPInit) + "," +
+            	(1-lowerPForget) + "," + upperPForget + "," +
+            	upperPLearn + "," + (1 - lowerPLearn) + "," +
+            	(1-lowerPSlip) + "," + upperPSlip + "," +
+            	upperPGuess + "," + (1 - lowerPGuess) 
+            	);
+
         }
-        if (upperBoundaries != null) {
-            returnParamString.append(" -u " + getCommaSeparatedString(upperBoundaries));
-        }
+        
+        
         if (l2PenaltyWeight != null) {
             returnParamString.append(" -c " + l2PenaltyWeight);
         }

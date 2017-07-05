@@ -57,13 +57,13 @@
 
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element type="FileInputHeader" name="header1" id="Correct_Answer_Custom_Field" default="\s*KC\s*\((.*)\)\s*" />
       <xs:element type="xs:string" name="header2" id="header2" default="Input" />
       <xs:element type="xs:string" name="simfunc" id="simfunc" default="cosine" />
       <xs:element type="xs:string" name="returnvals" id="returnvals" default="col" />
       <xs:element type="xs:integer" name="lag" id="lag" default="0" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

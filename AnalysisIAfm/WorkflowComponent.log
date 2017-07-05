@@ -1,0 +1,15 @@
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:12,866 - Command-line args: [-componentXmlFile, G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/test/components/AnalysisIAfm.xml, -workflowDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/test/, -toolDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/, -schemaFile, G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/schemas/AnalysisIAfm_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:12,868 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 05 May 2017 13:10:12,989 - Reading G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/test/components/AnalysisIAfm.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 05 May 2017 13:10:12,992 - File absolute path: G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm\test\components\AnalysisIAfm.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 05 May 2017 13:10:12,992 - File canonical path: G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm\test\components\AnalysisIAfm.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,045 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,045 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,121 - Parsing options
+DEBUG: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,122 - modelName = Unique-step
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,122 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,123 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,376 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,377 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,529 - Executing process: [/usr/local/bin/Rscript, G:/Workflowcomponents1/WorkflowComponents/AnalysisIAfm/program/iAFM.R, -programDir, G:/Workflowcomponents1/WorkflowComponents/AnalysisIAfm/, -workingDir, G:\Workflowcomponents1\WorkflowComponents\AnalysisIAfm/test/ComponentTestOutput/output/, -model, "KC (Unique-step)", -file0, "G:/Workflowcomponents1/WorkflowComponents/AnalysisIAfm/test/test_data/ds96_student_step_export.txt"]
+ERROR: [main] edu.cmu.pslc.learnsphere.analysis.AnalysisIAfm.AnalysisIAfm 05 May 2017 13:10:13,530 - Cannot run program "/usr/local/bin/Rscript": CreateProcess error=2, The system cannot find the file specified

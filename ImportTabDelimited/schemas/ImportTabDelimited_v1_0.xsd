@@ -3,9 +3,9 @@
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
   <xs:complexType name="OptionsType">
-    <xs:all minOccurs="1">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
       <xs:element name="files" type="OptionFileList" minOccurs="1" maxOccurs="1" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="OptionFileList">

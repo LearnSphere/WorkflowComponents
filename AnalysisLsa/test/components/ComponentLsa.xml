@@ -20,6 +20,7 @@
     <header2>Input</header2>
     <returnvals>col</returnvals>
     <lag>0</lag>
+    <corpus>TASA1</corpus>
   </options>
   <inputs>
     <input0>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisDescriptive</url>
+<date>2016-07-14</date>
+<abstract>The <b>Performance Factors Analysis</b> (Descriptive) performs a logistic regression over the "error rate" learning curve data.</abstract>
+<details>Descriptive is a generalization of the additive factors model (AFM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, the KC by prior succesful opportunity interaction and the KC by prior unsuccessful opportunity interaction. Without the KC by opportunity interactions, Descriptive is LLTM. Further, if the KC Model is the Unique-Step model (and there are also no opportunity counts), the model is a version of Item Response Theory, or the Rasch model. The version here is slightly different than the published version (Pavlik, Cen, &amp; Koedinger, 2009), since this version uses random effects for KC and student, which likely improves the model fit and the ability to identify the parameters with learning specific effects(Yudelson, Pavlik, &amp; Koedinger, 2011). <br/><br/> Email the author directly with bug reports for this component.</details>
+
+<inputs>
+<b>Transaction export with Descriptive features</b>
+</inputs>
+
+<outputs>
+<b>Transaction export with model, R model output, Random effect parameters, Model statistics xml file</b>
+</outputs>
+
+<options>
+<b>Version</b> - the Full version is described above. The Simple version is less heavily parameterized, using a single slope (not the interaction with KC) for each of the success and failure prior opportunity counts for each KC, so all KC's are learned at equal rates. Both versions are mixed-effect logisitic regression with random effects for student and KC.<br/>
+</options>
+
+</info>

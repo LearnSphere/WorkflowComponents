@@ -74,7 +74,7 @@
       <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:simpleType name="appendModeType" final="restriction">
 	<xs:restriction base="xs:string">
 		<xs:enumeration value="Student-problem Level"/>
@@ -84,12 +84,11 @@
    </xs:simpleType>
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="appendModeType" name="cfAppendMode" id="Append_by" default="Student-problem Level"/>
       <xs:element type="xs:boolean" name="appendAllCF" id="Append_All_CF" default="false" />
       <xs:element type="FileInputHeader" name="cfColumnName" id="Custom_Field_Column_Name" default="\s*CF\s*\((.*)\)\s*"/>
-      
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
 

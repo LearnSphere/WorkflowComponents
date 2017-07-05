@@ -12,8 +12,9 @@
         </connection>
     </connections>
     <options>
-    <usedParameters>1,1,1,1,1,0,1</usedParameters>
-    <fixedParameters>0,0,0,0,0,0,0</fixedParameters>
+        <mode>best fit model</mode>
+    <optimizedParameters>0,0,0,0,0,0,0,0,0,0</optimizedParameters>
+    <fixedParameters>0,0,0,0,0,0,0,0,0,1</fixedParameters>
   </options>
     <inputs>
     <input0>

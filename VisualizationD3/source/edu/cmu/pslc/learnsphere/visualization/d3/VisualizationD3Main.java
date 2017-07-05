@@ -104,7 +104,11 @@ public class VisualizationD3Main extends AbstractComponent {
 
 
         if (chartTypes.contains(this.getOptionAsString("chartType"))) {
-            File htmlTemplateFile = new File(this.getToolDir() + "/program/" + this.getOptionAsString("chartType") + ".html");
+        	String chartType = "Line_Chart";
+        	if (this.getOptionAsString("chartType") != null && this.getOptionAsString("chartType").equalsIgnoreCase("Scatter_Plot")) {
+        		chartType = "Scatter_Plot";
+        	}
+            File htmlTemplateFile = new File(this.getToolDir() + "/program/" + chartType + ".html");
             if (inputFile.exists() && inputFile.isFile() && inputFile.canRead()
                     && htmlTemplateFile.exists() && htmlTemplateFile.isFile() && htmlTemplateFile.canRead()) {
                 File outputFile = this.createFile("visualization.html");
@@ -112,7 +116,7 @@ public class VisualizationD3Main extends AbstractComponent {
                 String outputSubpath = this.componentOutputDir
                     .replaceAll("\\\\", "/")
                         .replaceAll("^.*/workflows/", "workflows/");
-                String dataFilePath = "ManageWorkflows?htmlPath=" + outputSubpath + "/data.txt";
+                String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + "/data.txt";
 
 
                 try {
@@ -195,8 +199,6 @@ public class VisualizationD3Main extends AbstractComponent {
 
             } else if (!inputFile.canRead()) {
                 errorMessages.add("Tab-delimited file cannot be read.");
-            } else {
-                errorMessages.add("Visualization template file not found.");
             }
         } else {
             errorMessages.add("Chart type does not exist.");

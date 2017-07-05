@@ -87,7 +87,7 @@
 
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" />
       <xs:element type="learningCurveType" name="learningCurve" id="Learning_Curve_Type"
         default="Knowledge Components" />
@@ -100,7 +100,7 @@
       <xs:element type="learningCurveMetricType" name="learningCurveMetric" id="Learning_Curve_Metric"
         default="Error Rate" />
       <xs:element minOccurs="0" type="FileInputHeader" name="highStakesCF" id="High_Stakes_CF_Name"  default="\s*CF\s*(.*)\s*" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

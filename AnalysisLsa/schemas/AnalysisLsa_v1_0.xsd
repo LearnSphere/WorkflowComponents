@@ -61,7 +61,7 @@
       <xs:enumeration value="euclidean" />
     </xs:restriction>
   </xs:simpleType>
-  
+
  <xs:simpleType name="semanticSpaceType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="TASA1" />
@@ -70,24 +70,24 @@
       <xs:enumeration value="Wiki4" />
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:simpleType name="returnvalsType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="col" />
       <xs:enumeration value="uniqmat" />
     </xs:restriction>
   </xs:simpleType>
-  
+
 
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element type="FileInputHeader" name="header1" id="header1" default=".*" />
     <xs:element type="FileInputHeader" name="header2" id="header2" default=".*" />
     <xs:element type="similarityAlgType" name="simfunc" id="simfunc" default="cosine" />
     <xs:element type="returnvalsType" name="returnvals" id="returnvals" default="col" />
     <xs:element type="semanticSpaceType" name="corpus" id="corpus" default="TASA1" />
     <xs:element type="xs:integer" name="lag" id="lag" default="0" />
-    </xs:all>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

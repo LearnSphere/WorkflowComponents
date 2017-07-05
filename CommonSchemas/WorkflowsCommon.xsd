@@ -7,10 +7,12 @@
       <xs:element name="connection" maxOccurs="unbounded" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="2">
+            <xs:choice minOccurs="0" maxOccurs="3">
               <xs:element type="xs:string" name="to" />
               <xs:element type="xs:string" name="from" />
               <xs:element type="xs:string" name="index" />
+              <xs:element type="xs:string" name="frindex" />
+              <xs:element type="xs:string" name="tindex" />
             </xs:choice>
           </xs:sequence>
         </xs:complexType>
@@ -30,6 +32,10 @@
   </xs:complexType>
 
 <xs:simpleType name="FileInputHeader" >
+   <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="MultiFileInputHeader" >
    <xs:restriction base="xs:string" />
 </xs:simpleType>
 

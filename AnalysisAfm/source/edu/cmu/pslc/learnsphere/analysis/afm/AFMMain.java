@@ -79,8 +79,15 @@ public class AFMMain extends AbstractComponent {
         // plus one extra column for Predicted Error Rate, if it doesn't already exist.
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        this.addMetaDataFromInput("student-step", 0, 0, ".*");
+        Integer outNodeIndex0 = 0;
+        this.addMetaDataFromInput("student-step", 0, outNodeIndex0, ".*");
         this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "Predicted Error Rate (" + modelName + ")");
+        Integer outNodeIndex2 = 2;
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label1", 0, "type");
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label2", 1, "name");
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label3", 2, "intercept");
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label4", 3, "slope");
+
     }
 
     @Override

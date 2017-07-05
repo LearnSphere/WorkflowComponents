@@ -1,5 +1,6 @@
 # Build features for TKT models
 ech<-FALSE
+
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -13,9 +14,9 @@ workingDirectory = args[4]
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-KCmodelsuper <- gsub("[ ()-]", ".", args[6])
-KCmodelsub <- gsub("[ ()-]", ".", args[8])
-inputFile<-args[10]
+KCmodelsuper <- gsub("[ ()-]", ".", args[8])
+KCmodelsub <- gsub("[ ()-]", ".", args[10])
+inputFile<-args[12]
 outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
 
 # Get data
@@ -62,7 +63,7 @@ KCage <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))              #ad
                               temp[index==i]<-pmax(cumsum(df$CF..KCclusterspacing.[index==i])-df$Duration..sec.[index==i]/2,1)}
                             return(temp)}
 
-meanspacing <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing 
+meanspacing <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing
 for (i in unique(index)){
   j<-length(temp[index==i])
 if(j>1){temp[index==i][2]<-1}
@@ -71,7 +72,7 @@ if(j==3){temp[index==i][3]<-max(df$CF..KCclusterspacing.[index==i][2]-(df$Durati
                                       k=25,alg=c("exact"),align=c("right"))-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}}
 return(temp)}
 
-meanspacingint <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing 
+meanspacingint <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing
 for (i in unique(index)){
   j<-length(temp[index==i])
   if(j>1){temp[index==i][2]<-1}
@@ -80,7 +81,7 @@ if(j==3){temp[index==i][3]<-max(df$CF..KCintspacing.[index==i][2]-(df$Duration..
                                       k=25,alg=c("exact"),align=c("right"))-(df$Duration..sec.[index==i][2:(j-1)])/2,1)}}
 return(temp)}
 
-practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))         
+practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))
                                 for (i in unique(df$Anon.Student.Id)){
                                    temp[df$Anon.Student.Id==i]<-
                                      c(0,cumsum(df$Duration..sec.[df$Anon.Student.Id==i])
@@ -106,7 +107,7 @@ val$CF..KCclusterindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodelsub,sep=""))),sep="-")
 #val$CF..Correct.Answer.<-tolower(gsub(" ","",val$CF..Correct.Answer.))
 val$CF..answerindex.<-  paste(val$Anon.Student.Id,val$CF..Correct.Answer.,sep="-")
-val<-val[order(val$Anon.Student.Id, val$Time),] 
+val<-val[order(val$Anon.Student.Id, val$Time),]
 val$Duration..sec.<-as.numeric(as.character(val$Duration..sec.))
 if("CF..End.Latency." %in% colnames(val))
 {val$Duration..sec.<-(val$CF..End.Latency. + val$CF..Review.Latency.)/1000}
@@ -118,7 +119,7 @@ val$CF..czincor.<-incorcount(val,val$CF..answerindex.)
 val$CF..clcor.<-corcount(val,val$CF..KCclusterindex.)
 val$CF..clincor.<-incorcount(val,val$CF..KCclusterindex.)
 val$CF..study.<-studycount(val,val$CF..KCclusterindex.)
-val$CF..tests.<-val$CF..cor.+val$CF..incor. 
+val$CF..tests.<-val$CF..cor.+val$CF..incor.
 val$CF..cltcnt.<-val$CF..clcor.+val$CF..clincor.+val$CF..study.
 val$CF..totcor.<-corcount(val,val$Anon.Student.Id)
 val$CF..totincor.<-incorcount(val,val$Anon.Student.Id)

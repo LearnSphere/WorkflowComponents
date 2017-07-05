@@ -1,0 +1,32 @@
+<component>
+  <component_id>Import-1-x393353</component_id>
+  <component_id_human>Import #1</component_id_human>
+  <workflow_id>18</workflow_id>
+  <component_name>File</component_name>
+  <component_type>import</component_type>
+  <left>100.00001525878906</left>
+  <connections>
+    <connection>
+      <to>Transform-1-x391318</to>
+      <index>0</index>
+    </connection>
+  </connections>
+  <options>
+    <files>
+      <file>
+       	<index>0</index>
+        <file_path>test/example_file/Game_Theory_gametheory-003_SQL_hash_mapping.sql</file_path>
+        <label>file</label>
+        <file_name>Game_Theory_gametheory-003_SQL_hash_mapping.sql</file_name>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>-- MySQL dump 10.13  Distrib 5.5.35, for debian-linux-gnu (x86_64)</name>
+          </header>
+        </metadata>
+      </file>
+    </files>
+  </options>
+  <top>26</top>
+</component>

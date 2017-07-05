@@ -76,7 +76,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList2">
     <xs:choice>
       <xs:element ref="parameters" />
@@ -120,8 +120,16 @@
     </xs:restriction>
   </xs:simpleType> -->
 
+
+  <xs:simpleType name="probability">
+	<xs:restriction base="xs:double">
+		<xs:minInclusive value="0.0"/>
+		<xs:maxInclusive value="1.0"/>
+	</xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="OptionsType">
-    <xs:all>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
       <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
       <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
@@ -132,10 +140,28 @@
       <!-- <xs:element type="xs:integer" name="xValidationPredictState" id="Cross-validation_Predict_State"
         default="1" /> Yudelson: too advanced -->
       <xs:element type="xs:integer" name="xValidationFolds" id="Cross-validation_Folds" default="10" />
-      <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" />
-      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0.7,0,0,0.7" />
-      <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />
-    </xs:all>
+<!--       <xs:element type="xs:string" name="initialParameters" id="Initial_Parameters" default="0.5,1.0,0.4,0.8,0.2" /> Yudelson, will be split -->
+<!--      <xs:element type="xs:string" name="lowerBoundaries" id="Lower_Boundaries" default="0,0,1,0,0,0,0.7,0,0,0.7" />  Yudelson, will be split -->
+<!--      <xs:element type="xs:string" name="upperBoundaries" id="Upper_Boundaries" default="1,1,1,0,1,1,1,0.3,0.3,1" />  Yudelson, will be split -->
+      <!-- Yudelson, initial parameters separately -->
+      <xs:element type="probability" name="pInit" id="P_Init" default="0.5"/>
+      <xs:element type="probability" name="pForget" id="P_Forget" default="0.0" />
+      <xs:element type="probability" name="pLearn" id="P_Learn" default="0.4" />
+      <xs:element type="probability" name="pSlip" id="P_Slip" default="0.2" />
+      <xs:element type="probability" name="pGuess" id="P_Guess" default="0.2" />
+      <!-- Yudelson, upper lower separately -->
+      <xs:element type="probability" name="pInitLowerBoundary" id="P_Init_Lower_Boundary" default="0.0" />
+      <xs:element type="probability" name="pForgetLowerBoundary" id="P_Forget_Lower_Boundary" default="0.0" />
+      <xs:element type="probability" name="pLearnLowerBoundary" id="P_Learn_Lower_Boundary" default="0.0" />
+      <xs:element type="probability" name="pSlipLowerBoundary" id="P_Slip_Lower_Boundary" default="0.0" />
+      <xs:element type="probability" name="pGuessLowerBoundary" id="P_Guess_Lower_Boundary" default="0.0" />
+      <!-- Yudelson, upper boundaries separately -->
+      <xs:element type="probability" name="pInitUpperBoundary" id="P_Init_Upper_Boundary" default="1.0" />
+      <xs:element type="probability" name="pForgetUpperBoundary" id="P_Forget_Upper_Boundary" default="0.0" />
+      <xs:element type="probability" name="pLearnUpperBoundary" id="P_Learn_Upper_Boundary" default="1.0" />
+      <xs:element type="probability" name="pSlipUpperBoundary" id="P_Slip_Upper_Boundary" default="0.3" />
+      <xs:element type="probability" name="pGuessUpperBoundary" id="P_Guess_Upper_Boundary" default="0.3" />
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">
