@@ -11,10 +11,11 @@
             <from>ImportTransaction1</from>
         </connection>
     </connections>
-    <options>
-      <category>Level (Unitname)</category>
+    <options>  
+      <groupingCategory>Level (Unitname)</groupingCategory>
+      <unitCategory>Anon Student Id</unitCategory>
       <latency>CF (Start Latency)</latency>
-      <dependent>Incorrect Latency</dependent>
+      <dependent>Correctness</dependent>
     </options>
     <inputs>
     <input0>
