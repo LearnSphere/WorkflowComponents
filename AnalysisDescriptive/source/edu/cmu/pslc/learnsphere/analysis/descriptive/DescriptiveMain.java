@@ -34,8 +34,7 @@ public class DescriptiveMain extends AbstractComponent {
         // plus one extra column for Predicted Error Rate, if it doesn't already exist.
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        this.addMetaDataFromInput("transaction", 0, 0, ".*");
-        this.addMetaData("transaction", 0, META_DATA_LABEL, "label0", 0, "KC (" + modelName + ")");
+     
     }
 
     @Override

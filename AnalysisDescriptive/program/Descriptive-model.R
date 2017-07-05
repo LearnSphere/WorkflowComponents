@@ -23,7 +23,8 @@ getmean <- function(data, facs, bar){
 
 # initialize variables
 inputFile = NULL
-category = NULL
+unitCategory = NULL
+groupingCategory = NULL
 dependent = NULL
 latency = NULL
 workingDirectory = NULL
@@ -38,11 +39,17 @@ while (i <= length(args)) {
        }
        inputFile = args[i+1]
        i = i+1
-    } else if (args[i] == "-category") {
+    } else if (args[i] == "-unitCategory") {
        if (length(args) == i) {
-          stop("category must be specified")
+          stop("Unit Category must be specified")
        }
-       category <- args[i+1]
+       unitCategory <- args[i+1]
+       i = i+1
+    }else if (args[i] == "-groupingCategory") {
+       if (length(args) == i) {
+          stop("Grouping Category must be specified")
+       }
+       groupingCategory <- args[i+1]
        i = i+1
     } else if (args[i] == "-dependent") {
        if (length(args) == i) {
@@ -88,7 +95,7 @@ if (is.null(inputFile) ||  is.null(workingDirectory) || is.null(componentDirecto
    }
    
 
- stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -category Anon.Student.Id")
+ stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -groupingCategory Anon.Student.Id")
 }
 
 # This dir contains the R program or any R helper scripts
@@ -98,6 +105,7 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 outputFilePath<- paste(workingDirectory, "factor.html", sep="")
 outputFilePath2<- paste(workingDirectory, "factorbyfactor.html", sep="")
 
+
 # Get data
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank.lines.skip=TRUE)
 
@@ -105,65 +113,89 @@ val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank
 names(val) <- gsub(" ", ".", names(val))
 
 #relpace parenthesis and space with period
-category <- gsub(" ", ".", category)
-category <- gsub("\\(", ".", category)
-category <- gsub("\\)", ".", category)
+unitCategory <- gsub(" ", ".", unitCategory)
+unitCategory <- gsub("\\(", ".", unitCategory)
+unitCategory <- gsub("\\)", ".", unitCategory)
+
+groupingCategory <- gsub(" ", ".", groupingCategory)
+groupingCategory <- gsub("\\(", ".", groupingCategory)
+groupingCategory <- gsub("\\)", ".", groupingCategory)
 
 latency <- gsub(" ", ".", latency)
 latency <- gsub("\\(", ".", latency)
 latency <- gsub("\\)", ".", latency)
 
-#replace values in column Outcome- 1 for CORRECT and 0 for INCORRECT
-#val$Outcome = as.numeric(val$Outcome == "CORRECT")
-val$Outcome = ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 
-#dependent="incorrect latency"
-meanOn<-"Outcome"
+if("Outcome" %in% colnames(val))
+{
+  #replace values in column Outcome- 1 for CORRECT and 0 for INCORRECT
+  val$Outcome = ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 
-# subset the data based on dependent
-if(dependent=="Correct Latency") 
+  #default value on which mean is calculated is Outcome
+  meanOn<-"Outcome"
+
+    # subset the data based on dependent
+    if(dependent=="Correct Latency") 
+    {
+        val <-val[val$Outcome ==1,]
+        meanOn<-latency
+    }
+    if(dependent=="Incorrect Latency") 
+    {
+        val<-val[val$Outcome==0,]
+        meanOn<-latency
+    }
+ }
+
+
+if("First.Attempt" %in% colnames(val))
 {
-    val <-val[val$Outcome ==1,]
-    meanOn<-latency
-}
-if(dependent=="Incorrect Latency") 
-{
-    val<-val[val$Outcome==0,]
-    meanOn<-latency
+    #replace values in column Outcome- 1 for CORRECT and 0 for INCORRECT
+    val$First.Attempt = ifelse(tolower(val$First.Attempt)=="correct",1,ifelse(tolower(val$First.Attempt)=="incorrect",0,-1))
+
+    #default value on which mean is calculated is Outcome
+    meanOn<-"First.Attempt"
+
+    # subset the data based on dependent
+    if(dependent=="Correct Latency") 
+    {
+        val <-val[val$First.Attempt ==1,]
+        meanOn<-latency
+    }
+    if(dependent=="Incorrect Latency") 
+    {
+        val<-val[val$First.Attempt==0,]
+        meanOn<-latency
+    }
 }
 
 #factorbyfactor calculation
-#meanVal <-ddply(val,c(category,"Anon.Student.Id"),summarise,mean=mean(Outcome))
+meanVal<-getmean(val, c(groupingCategory,unitCategory), meanOn)
 
-meanVal<-getmean(val, c(category,"Anon.Student.Id"), meanOn)
-
+#to print histogram 
 options(bitmapType='cairo')
 png( paste(workingDirectory,'histogram.png',sep=""))
-#histogram(~mean|factor(as.character(meanVal[[category]])),data=meanVal)
-histogram( ~meanVal$mean | as.character(meanVal[[category]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+histogram( ~meanVal$mean | as.character(meanVal[[groupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 dev.off()
 
 
 #factor calculation
-mean <-ddply(meanVal,category,summarise,mean=mean(mean))
-median<-ddply(meanVal,category,summarise,median=median(mean))
-minmax <-ddply(meanVal,category,summarise,min=min(mean),max=max(mean))
-stdev <-ddply(meanVal,category,summarise,sd=sd(mean))
-freq <-ddply(meanVal,category,summarise,N=length(mean))
-#to add link in each row
-#freq <-ddply(meanVal,category,summarise,N=length(mean),his='<a href="">link</a>')
+mean <-ddply(meanVal,groupingCategory,summarise,mean=mean(mean))
+median<-ddply(meanVal,groupingCategory,summarise,median=median(mean))
+minmax <-ddply(meanVal,groupingCategory,summarise,min=min(mean),max=max(mean))
+stdev <-ddply(meanVal,groupingCategory,summarise,sd=sd(mean))
+freq <-ddply(meanVal,groupingCategory,summarise,N=length(mean))
 
-res <- merge(mean,median,by=category)
-res <- merge(res,minmax,by=category)
-res <- merge(res,stdev,by=category)
-res <- merge(res,freq,by=category)
+res <- merge(mean,median,by=groupingCategory)
+res <- merge(res,minmax,by=groupingCategory)
+res <- merge(res,stdev,by=groupingCategory)
+res <- merge(res,freq,by=groupingCategory)
 
 names(res)<-gsub("[.]1","",names(res))
 names(res)<-gsub("[.]2","",names(res))
 names(res)<-gsub("[.]3","",names(res))
 names(res)<-gsub("[.][.]"," (",names(res))
 names(res)<-gsub("[.]$",")",names(res))
-
 
 names(meanVal)<-gsub("[.]1","",names(meanVal))
 names(meanVal)<-gsub("[.]2","",names(meanVal))
@@ -176,7 +208,7 @@ names(meanVal)<-gsub("[.]"," ",names(meanVal))
 factorbyfactor<-htmlTable(meanVal,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
 write.table(factorbyfactor,file=outputFilePath2,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 
-#link<-'<a href="factor.html">ABC</a>'
 factor<-htmlTable(res,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
 write.table(factor,file=outputFilePath,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
-#write.table(link,file=outputFilePath,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+
+

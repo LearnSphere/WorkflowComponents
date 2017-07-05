@@ -111,10 +111,11 @@
 </xs:simpleType>
   
   <xs:complexType name="OptionsType">
-    <xs:all >
+    <xs:all>
       <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
-      <xs:element type="FileInputHeader" name="category" id="Category" default=".*" />
-      <xs:element type="latencyColumn" name="latency" id="Latency" default="CF (Start Latency)" />
+      <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
+      <xs:element type="FileInputHeader" name="groupingCategory" id="Grouping_Category" default=".*" />
+      <xs:element type="xs:string" name="latency" id="Latency" default=".*" />
     </xs:all>
   </xs:complexType>
 
