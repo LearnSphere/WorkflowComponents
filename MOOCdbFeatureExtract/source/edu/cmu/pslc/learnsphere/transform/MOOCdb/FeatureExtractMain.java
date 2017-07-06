@@ -88,6 +88,8 @@ public class FeatureExtractMain extends AbstractComponent {
             }
             
             String progress = currMOOCdbItem.getCurrentProgress();
+            String username = currMOOCdbItem.getUsername();
+            String password = currMOOCdbItem.getPassword();
             Date endTimestamp = currMOOCdbItem.getEndTimestamp();
             Date earliestSubmissionDate = currMOOCdbItem.getEarliestSubmissionTimestamp();
             
@@ -127,13 +129,13 @@ public class FeatureExtractMain extends AbstractComponent {
                     return;
             }
             //process feature to extract
+            List<String> featuresToExtractList = this.getMultiOptionAsString("featuresToExtract");
             String featuresToExtract = "";
             Map<Integer, String> availFeatures = getAllFeatures(MOOCdbName);
-            String opFeaturesToExtract = getOptionAsString("featuresToExtract");
-            if (opFeaturesToExtract == null || opFeaturesToExtract.equals("all"))
-                    opFeaturesToExtract = "";
-            String[] values = opFeaturesToExtract.replaceAll("^[,\\s]+", "").split("[,\\s]+");
-            if (opFeaturesToExtract == null || opFeaturesToExtract.trim().equals("")) {
+            String[] values = null;
+            if (featuresToExtractList != null && featuresToExtractList.size() != 0) 
+                    values = (String[]) featuresToExtractList.toArray(new String[0]);
+            if (values == null || values.length == 0) {
                     for (int key : availFeatures.keySet())
                             featuresToExtract += key + ",";
             } else {
@@ -248,13 +250,12 @@ public class FeatureExtractMain extends AbstractComponent {
                     logger.info("Saved new featureExtractionItem: " + featureExtractionItem);
                     this.componentOptions.addContent(0, new Element("runExtraction").setText("true"));
             }    
-            Map<String, String> login = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseLogin();
-            
+            Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            //this.componentOptions.addContent(0, new Element("userName").setText(login.get("user")));
-            //this.componentOptions.addContent(0, new Element("password").setText(login.get("password")));
-            //this.componentOptions.addContent(0, new Element("dbHost").setText("127.0.0.1"));
-            //this.componentOptions.addContent(0, new Element("dbPort").setText("3306"));
+            this.componentOptions.addContent(0, new Element("userName").setText(username));
+            this.componentOptions.addContent(0, new Element("password").setText(password));
+            this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
+            this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("earliestSubmissionDate").setText(format.format(earliestSubmissionDate)));
             this.componentOptions.addContent(0, new Element("featureExtractionId").setText("" + featureExtractionItem.getId()));
             this.componentOptions.addContent(0, new Element("startDateWF").setText(format.format(startDate)));
@@ -268,7 +269,9 @@ public class FeatureExtractMain extends AbstractComponent {
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "longitudinal-features";
-            File longitudinalFile = new File(outputDirectory.getAbsolutePath() + "/moocdb_features.txt");
+            String featureFilePath = outputDirectory.getAbsolutePath() + "/moocdb_features.txt";
+            File longitudinalFile = new File(featureFilePath);
+            
             this.addOutputFile(longitudinalFile, nodeIndex, fileIndex, fileLabel);
 
             nodeIndex = 1;
@@ -279,7 +282,7 @@ public class FeatureExtractMain extends AbstractComponent {
 
             // Send the component output bakc to the workflow.
             System.out.println(this.getOutput());
-            //update the featureExtractionItem if new fature extraction
+            //update the featureExtractionItem if new feature extraction
             if (newFeatureExtraction) {
                     featureExtractionItem.setEndTimestamp(new Date());
                     try {
@@ -320,18 +323,16 @@ public class FeatureExtractMain extends AbstractComponent {
             feDao.saveOrUpdateFeatureExtractionItem(MOOCdbName, featureExtractionItem);
     }
     
-    private String getMOOCdbNameFromFile (File dbPointerFile) {
-            String[][] fileContent = IOUtil.read2DStringArray(dbPointerFile.getAbsolutePath());
-            String MOOCdbNameInFile = null;
-            //use the first meaningful name 
-            for (String[] row : fileContent) {
-                    for (String name : row) {
-                            if (name != null && !name.equals("") && !name.equals(MOOCdbItem.MOOCdb_COLUMN_HEADER_NAME)) {
-                                    MOOCdbNameInFile = name;
-                                    break;
-                            }
-                    }
-            }
-            return MOOCdbNameInFile;
+    private String getMOOCdbNameFromFile(File dbPointerFile) {
+            String fileContent = IOUtil.readString(dbPointerFile.getAbsolutePath());
+            //the first property name currently is MOOCdbName 
+            if (fileContent.trim().indexOf(MOOCdbItem.MOOCdb_PROPERTY_NAME) == 0) {
+                    String[] tokens = fileContent.trim().split("\\=");
+                    if (tokens[0].trim().equals(MOOCdbItem.MOOCdb_PROPERTY_NAME)){
+                            return tokens[1].trim();
+                    } else
+                            return null;
+            } else
+                    return null;
     }
 }

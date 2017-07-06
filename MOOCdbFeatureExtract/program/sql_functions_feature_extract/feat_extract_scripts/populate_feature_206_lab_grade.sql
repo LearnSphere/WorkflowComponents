@@ -15,7 +15,8 @@ SELECT @feature_extraction_id, 206, submissions.user_id,
 	FLOOR((UNIX_TIMESTAMP(problems.problem_hard_deadline) - UNIX_TIMESTAMP(@start_date)) / (3600 * 24 * 7)) AS week, 
 	COUNT(*) /
 	(SELECT COUNT(*)  FROM `moocdb`.problems AS p2 WHERE p2.problem_type_id = 1
-		AND p2.problem_week = problems.problem_week GROUP BY problem_week) AS pset_grade,
+		AND p2.problem_week = problems.problem_week 
+		GROUP BY FLOOR((UNIX_TIMESTAMP(p2.problem_hard_deadline) - UNIX_TIMESTAMP(@start_date)) / (3600 * 24 * 7))) AS pset_grade,
     @current_date
 FROM `moocdb`.submissions
 INNER JOIN `moocdb`.problems

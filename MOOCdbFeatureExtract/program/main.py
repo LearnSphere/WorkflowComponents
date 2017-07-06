@@ -12,17 +12,17 @@ import feature_extract as fe
 import ConfigParser
 
 #example of running on command line
-#python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -startDateWF 2013-10-14 -earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall -featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
+#python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -userName datashop -password datashop -startDateWF 2013-10-14 -earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall -featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Feature Extraction MoocDb.')
-    parser.add_argument('-programDir', type=str, help='the component program directory')
+    parser.add_argument('-programDir', type=str, help='the component program directory', default=".")
     parser.add_argument('-workingDir', type=str, help='the component instance working directory', default=".")
     parser.add_argument('-MOOCdbName', type=str, help='MoocDb name')
-    #parser.add_argument('-userName', type=str, help='user name to access mooc-db)', default="root")
-    #parser.add_argument('-password', type=str, help='password to access mooc-db)', default="mysql")
-    #parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
-    #parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
+    parser.add_argument('-userName', type=str, help='user name to access mooc-db)', default="root")
+    parser.add_argument('-password', type=str, help='password to access mooc-db)', default="mysql")
+    parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
+    parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
     parser.add_argument('-runExtraction', choices=["true", "false"], type=str, help='run the feature extraction (default="false")', default="false")
     parser.add_argument('-startDate', type=str, help='the start date for analysis', default="")
     parser.add_argument('-startDateWF', type=str, help='the start date for analysis from WF')
@@ -35,22 +35,13 @@ if __name__ == "__main__":
     parser.add_argument('-featureExtractionId', type=str, help='the id that is associated to this feature extraction configuration')
     parser.add_argument('-exportFormat', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     parser.add_argument('-exportFormatWF', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
+    parser.add_argument('-userId', type=str, help='placeholder for WF', default='')
     parser.add_argument('-file0', type=str, help='placeholder for WF', default='')
     parser.add_argument('-file1', type=str, help='placeholder for WF', default='')
     
     args = parser.parse_args()
 
-    #read config file
-    config = ConfigParser.RawConfigParser()
-    if args.programDir == ".":
-        config.read(args.programDir + '/ConfigFile.properties')
-    else:
-        config.read(args.programDir + '/program/ConfigFile.properties')
-    userName = config.get('database', 'userName');
-    password = config.get('database', 'password');
-    dbHost = config.get('database', 'dbHost');
-    dbPort = config.get('database', 'dbPort');
-    dbPort = int(dbPort)
+    dbPort = int(args.dbPort)
 
     workingDir = args.workingDir
     if not workingDir:
@@ -83,9 +74,9 @@ if __name__ == "__main__":
 
     if runExtraction:
         fe.extract_features(dbName             = args.MOOCdbName,
-                            userName           = userName,
-                            passwd             = password,
-                            dbHost             = dbHost,
+                            userName           = args.userName,
+                            passwd             = args.password,
+                            dbHost             = args.dbHost,
                             dbPort             = dbPort,
                             timeout            = 86400,
                             startDate          = startDate,
@@ -97,9 +88,9 @@ if __name__ == "__main__":
                             )
     #export features with feature description
     fe.exportFeatures(dbName            = args.MOOCdbName,
-                        userName        = userName,
-                        passwd          = password,
-                        dbHost          = dbHost,
+                        userName        = args.userName,
+                        passwd          = args.password,
+                        dbHost          = args.dbHost,
                         dbPort          = dbPort,
                         exportFileFolderPath = workingDir,
                         featureExtractionId   = args.featureExtractionId,

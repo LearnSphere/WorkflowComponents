@@ -1,0 +1,73 @@
+<component>
+  <component_id>Transform-1-x869321</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>37</workflow_id>
+  <component_name>Pivot</component_name>
+  <component_type>transform</component_type>
+  <left>427.99998474121094</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x649925</from>
+    </connection>
+  </connections>
+  <options>
+    <rWF>Input 0 - User ID (column 2)</rWF>
+    <cWF>Input 0 - Feature Name (column 1)</cWF>
+    <aWF>length</aWF>
+    <mWF>Input 0 - Longitudinal Feature Value (column 4)</mWF>
+  </options>
+  <top>44</top>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x649925</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/test_data/moocdb_features.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>moocdb_features.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>3</index>
+              <name>Longitudinal Feature Week</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>5</index>
+              <name>Date Of Extraction</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>1</index>
+              <name>Feature Name</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>0</index>
+              <name>Feature ID</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Longitudinal Feature Value</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>2</index>
+              <name>User ID</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
