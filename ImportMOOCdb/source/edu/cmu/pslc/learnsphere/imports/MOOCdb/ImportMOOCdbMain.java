@@ -30,7 +30,7 @@ import edu.cmu.pslc.datashop.problemcontent.oli.CommonXml;
 public class ImportMOOCdbMain extends AbstractComponent {
     private static String MOOCDB_CLEAN = "moocdb_clean";
     private static String MOOCDB_CORE = "moocdb_core";
-    
+
 
     public static void main(String[] args) {
             ImportMOOCdbMain tool = new ImportMOOCdbMain();
@@ -40,16 +40,16 @@ public class ImportMOOCdbMain extends AbstractComponent {
     public ImportMOOCdbMain() {
             super();
     }
-    
+
     protected void processOptions() {
             logger.info("Processing Options");
             // If you want to add all headers from a previous component, try one of these:
             //this.addMetaDataFromInput("transaction", 0, 0, ".*");
             //this.addMetaDataFromInput("user-session-map", 1, 0, ".*");
-            
+
         }
 
-    
+
     @Override
     protected void runComponent() {
             // Dao-enabled components require an applicationContext.xml in the component directory,
@@ -66,7 +66,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
             File MOOCdbFile = getAttachment(0, 0);
             String MOOCdbName = null;
             String MOOCdbFileName = MOOCdbFile.getName();
-            String MOOCdbFilePath = MOOCdbFile.getAbsolutePath();
+            String MOOCdbFilePath = MOOCdbFile.getAbsolutePath().replaceAll("\\\\", "/");
             logger.info("MOOCdbFile: " + MOOCdbFilePath);
             String MOOCdbMd5HashValue = CommonXml.md5Hash(MOOCdbFilePath);
             int SQLfileInd = MOOCdbFileName.indexOf(".sql");
@@ -149,7 +149,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
                                            System.err.println(errMsg);
                                            return;
                                    }
-                                   
+
                             } else {
                                   //db with the same name but it's not a moocdb
                                     String errMsg = "A database with the same name already exists. Database name: " + MOOCdbName + ". ";
@@ -159,7 +159,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
                                     System.err.println(errMsg);
                                     return;
                             }
-                    } 
+                    }
             }
             //possible that moocdb doesn't exist yet but moocdbs table has an record, very unlikely though
             MOOCdbItem currMOOCdbItem = findMOOCdb(MOOCdbName);
@@ -172,7 +172,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
             }
             //start a new moocdb
             //save a record in moocdb_courses table
-            
+
             MOOCdbItem moocdbItem = new MOOCdbItem();
             moocdbItem.setMOOCdbName(MOOCdbName);
             moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_CREATE_DBS);
@@ -196,7 +196,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
                             addErrorMessage(errMsg);
                             logger.info("MOOCdbImport aborted: " + errMsg);
                             System.err.println(errMsg);
-                            return; 
+                            return;
                     }
                     createDBUser(moocdbItem.getUsername(), moocdbItem.getPassword());
                     createDB(MOOCdbName);
@@ -238,20 +238,20 @@ public class ImportMOOCdbMain extends AbstractComponent {
             }
             logger.info("Created MOOCdb: " + MOOCdbName);
             logger.info("Created MOOCdb user: " + moocdbItem.getUsername());
-            
+
             moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_DONE);
             moocdbItem.setEndTimestamp(new Date());
             moocdbItem.setLastProgress(MOOCdbItem.PROGRESS_RESTORE_MOOCDB);
             moocdbItem.setLastProgressEndTimestamp(new Date());
             logger.info("Completed restoring MOOCdb: " + MOOCdbName);
             saveOrUpdateMOOCdb(moocdbItem);
-            
+
             //output MOOCdb file and feature name
             outputFilesWithExistingDbInfo(MOOCdbName);
             return;
     }
 
-    
+
     private String getAllFeatures (String MOOCdbName) {
             FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
             Map<Integer, String> featureMap = feDao.getAllFeatures(MOOCdbName);
@@ -263,58 +263,58 @@ public class ImportMOOCdbMain extends AbstractComponent {
             }
             return features.trim();
     }
-    
+
 
     private boolean isMOOCdb(String dbName) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             return dbDao.isMOOCdb(dbName);
     }
-    
+
     private boolean userExist(String username) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             return dbDao.userExist(username);
     }
-    
+
     private void deleteMOOCDbItem(MOOCdbItem dbItem) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.delete(dbItem);
     }
-    
+
     private void deleteMOOCdb(String MOOCdbName) throws SQLException, Exception {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.deleteMOOCdb(MOOCdbName);
     }
-    
+
     private void deleteUser(String username) throws SQLException {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.deleteUser(username);
     }
-    
+
     private void createDBUser(String username, String passwrod) throws SQLException {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.createDBUser(username, passwrod);
     }
-    
+
     private void createDB(String dbName) throws SQLException {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.createDB(dbName);
     }
-    
+
     private void addUserToDB(String dbName, String username, String accessRights) throws SQLException {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.addUserToDB(dbName, username, accessRights);
     }
-    
+
     //restore MOOCdb
-    private void restoreMOOCdb(String DbName, String MOOCdbFileName, String username, String password) 
+    private void restoreMOOCdb(String DbName, String MOOCdbFileName, String username, String password)
                     throws SQLException, Exception {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.restoreMOOCdb(DbName, MOOCdbFileName, username, password);
     }
-    
+
     private String getMOOCdbNameFromFile(File dbPointerFile) {
             String fileContent = IOUtil.readString(dbPointerFile.getAbsolutePath());
-            //the first property name currently should be MOOCdbName 
+            //the first property name currently should be MOOCdbName
             if (fileContent.trim().indexOf(MOOCdbItem.MOOCdb_PROPERTY_NAME) == 0) {
                     String[] tokens = fileContent.trim().split("\\=");
                     if (tokens[0].trim().equals(MOOCdbItem.MOOCdb_PROPERTY_NAME)){
@@ -324,7 +324,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
             } else
                     return null;
     }
-    
+
     private boolean databaseExist(String dbName) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             return dbDao.databaseExist(dbName);
@@ -336,12 +336,12 @@ public class ImportMOOCdbMain extends AbstractComponent {
             MOOCdbItem item = dbDao.getMOOCdbByName(MOOCdbName);
             return item;
     }
-    
+
     private void outputFilesWithExistingDbInfo(String MOOCdbName) {
           //output MOOCdb file and feature name
             File dbPointerFile = this.createFile("MOOCdbPointer", ".txt");
             File featuresFile = this.createFile("MOOCdbFeatures", ".txt");
-                    
+
             //write to dbPointerFile
             try (OutputStream outputStream = new FileOutputStream(dbPointerFile)) {
                     // Write header and course name to export
@@ -352,7 +352,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
                     // This will be picked up by the workflows platform and relayed to the user.
                     e.printStackTrace();
             }
-                    
+
             //write one line to featureFile
             try (OutputStream outputStream = new FileOutputStream(featuresFile)) {
                     // Write features to export
@@ -368,7 +368,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
                     // This will be picked up by the workflows platform and relayed to the user.
                     e.printStackTrace();
             }
-                            
+
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "MOOCdb";
@@ -383,7 +383,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
             System.out.println(this.getOutput());
             return;
     }
-    
+
     private String getSaltString() {
             String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder salt = new StringBuilder();
@@ -395,7 +395,7 @@ public class ImportMOOCdbMain extends AbstractComponent {
             String saltStr = salt.toString();
             return saltStr;
     }
-    
+
     //save or update a MOOCdbITem and return the item
     private void saveOrUpdateMOOCdb(MOOCdbItem dbItem) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
