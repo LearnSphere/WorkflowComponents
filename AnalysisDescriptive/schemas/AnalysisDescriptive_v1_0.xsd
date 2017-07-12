@@ -102,20 +102,13 @@
     </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="latencyColumn" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="CF (Start Latency)" />
-      <xs:enumeration value="CF (End Latency)" />
-      <xs:enumeration value="CF (Review Latency)" />
-    </xs:restriction>
-</xs:simpleType>
   
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
       <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
       <xs:element type="FileInputHeader" name="groupingCategory" id="Grouping_Category" default=".*" />
-      <xs:element type="latencyColumn" name="latency" id="Latency" default=".*" />
+      <xs:element type="FileInputHeader" name="latency" id="Latency" default=".*" />
     </xs:choice>
   </xs:complexType>
 
