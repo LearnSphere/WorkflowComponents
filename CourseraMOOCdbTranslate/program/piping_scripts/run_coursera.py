@@ -13,7 +13,7 @@ import platform
 #-anonymizedForumDBName test_anonymized_forum -anonymizedForumFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql"
 #-userName datashop -password datashop
 
-#python run_coursera.py -courseName game_theory_gametheory003 -MOOCdbName moocdb_test -hashMapDBName test_hash_mapping -hashMapBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_hash_mapping.sql" -anonymizedGeneralDBName test_anonymized_general -anonymizedGeneralBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_general.sql" -anonymizedForumDBName test_anonymized_forum -anonymizedForumFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql" -userName datashop -password datashop
+#python run_coursera.py -courseName game_theory_gametheory003 -MOOCdbName moocdb_test -hashMapDBName test_hash_mapping -hashMapBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_hash_mapping.sql" -anonymizedGeneralDBName test_anonymized_general -anonymizedGeneralBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_general.sql" -anonymizedForumDBName test_anonymized_forum -anonymizedForumFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql"
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Coursera to MOOCdb Translator.')
     parser.add_argument('-programDir', type=str, help='the component program directory', default="..")
@@ -26,10 +26,10 @@ if __name__ == "__main__":
     parser.add_argument('-anonymizedGeneralBackupFilePath', type=str, help='anonymous general DB backup file name')
     parser.add_argument('-anonymizedForumDBName', type=str, help='anonymous forum DB name')
     parser.add_argument('-anonymizedForumFilePath', type=str, help='anonymous forum DB backup file name')
-    parser.add_argument('-userName', type=str, help='user name to access db)')
-    parser.add_argument('-password', type=str, help='password to access db)')
-    parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
-    parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
+    #parser.add_argument('-userName', type=str, help='user name to access db)')
+    #parser.add_argument('-password', type=str, help='password to access db)')
+    #parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
+    #parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
     parser.add_argument('-customMOOCdbName', type=str, help='place holder, no use', default="")
     parser.add_argument('-userId', type=str, help='placeholder for WF', default='')
     parser.add_argument('-file0', type=str, help='place holder for WF, no use', default="")
@@ -37,8 +37,19 @@ if __name__ == "__main__":
     parser.add_argument('-file2', type=str, help='place holder for WF, no use', default="")
     
     args = parser.parse_args()
+
+    #read config file
+    config = ConfigParser.RawConfigParser()
+    if args.programDir == "..":
+        config.read(args.programDir + '/ConfigFile.properties')
+    else:
+        config.read(args.programDir + '/program/ConfigFile.properties')
+    userName = config.get('database', 'userName');
+    password = config.get('database', 'password');
+    dbHost = config.get('database', 'dbHost');
+    dbPort = config.get('database', 'dbPort');
     
-    dbPort = int(args.dbPort)
+    dbPort = int(dbPort)
 
     
     vars = {
@@ -47,9 +58,9 @@ if __name__ == "__main__":
             #course_id is not really used
             'course_id': args.courseName,
             'course_url_id': args.courseName,
-            'host': args.dbHost,
-            'user': args.userName,
-            'password': args.password,
+            'host': dbHost,
+            'user': userName,
+            'password': password,
             'port': dbPort,
             'hash_mapping_db': args.hashMapDBName,
             'general_db': args.anonymizedGeneralDBName,
@@ -57,16 +68,16 @@ if __name__ == "__main__":
         },
     
         'core': {
-            'host': args.dbHost,
-            'user': args.userName,
-            'password': args.password,
+            'host': dbHost,
+            'user': userName,
+            'password': password,
             'port': dbPort,
         },
     
         'target': {
-            'host': args.dbHost,
-            'user': args.userName,
-            'password': args.password,
+            'host': dbHost,
+            'user': userName,
+            'password': password,
             'port': dbPort,
             'db': args.MOOCdbName,
         },
@@ -75,7 +86,7 @@ if __name__ == "__main__":
             'log_path': args.workingDir,
             'log_to_console': True,
             'debug': False,
-            'num_users_debug_mode': 200,
+            'num_users_debug_mode': 10000,
         },
     }
     start_dt = datetime.now()
@@ -85,9 +96,9 @@ if __name__ == "__main__":
     vars['logger'] = logger
     vars['log_file'] = vars['options']['log_path'] + "/{}.log".format(vars['task_id'])
 
-    vars['logger'].Log(vars, "username: {}".format(args.userName))
-    vars['logger'].Log(vars, "password: {}".format(args.password))
-    vars['logger'].Log(vars, "host: {}".format(args.dbHost))
+    vars['logger'].Log(vars, "username: {}".format(userName))
+    vars['logger'].Log(vars, "password: {}".format(password))
+    vars['logger'].Log(vars, "host: {}".format(dbHost))
     vars['logger'].Log(vars, "port: {}".format(dbPort))
     
     #run restore databases with file

@@ -57,15 +57,13 @@ public class FeatureExtractMain extends AbstractComponent {
                 /** Initialize the Spring Framework application context. */
                 SpringContext.getApplicationContext(appContextPath);
             }
-            //get MOOCdb name from either option or MOOCdb file
-            String MOOCdbName = this.getOptionAsString("MOOCdbName");
+            //get MOOCdb name from MOOCdb file
+            String MOOCdbName = null;
             File MOOCdbFile = getAttachment(0, 0);
             logger.info("MOOCdbFile: " + MOOCdbFile);
             //File MOOCdbFeaturesFile = getAttachment(1, 0);
-            if (MOOCdbName == null || MOOCdbName.trim().equals("")) {
-                    if (MOOCdbFile != null) {
+            if (MOOCdbFile != null) {
                             MOOCdbName = getMOOCdbNameFromFile(MOOCdbFile);
-                    }
             }
             if (MOOCdbName == null) {
                     //send error message
@@ -92,7 +90,8 @@ public class FeatureExtractMain extends AbstractComponent {
             String password = currMOOCdbItem.getPassword();
             Date endTimestamp = currMOOCdbItem.getEndTimestamp();
             Date earliestSubmissionDate = currMOOCdbItem.getEarliestSubmissionTimestamp();
-            
+            if (earliestSubmissionDate == null)
+                    earliestSubmissionDate = this.getEarliestSubmissionTime(MOOCdbName);
             //process startDate
             String opStartDate = getOptionAsString("startDate");
             Date startDate = null;
@@ -111,6 +110,7 @@ public class FeatureExtractMain extends AbstractComponent {
             } else {
                     startDate = earliestSubmissionDate;
             }
+            
             
             if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
                     String errMsg = "MOOCdb " + MOOCdbName + " is currently undergoing " + progress + " by another process.";
@@ -205,7 +205,7 @@ public class FeatureExtractMain extends AbstractComponent {
             int iNumOfWeek = Integer.parseInt(numberWeeks);
             logger.info("Number of weeks for extraction: " + iNumOfWeek);
             //process export format
-            String exportFileFormat = getOptionAsString("exportFileFormat");
+            String exportFileFormat = getOptionAsString("exportFormat");
             if (exportFileFormat != null)
                     exportFileFormat = exportFileFormat.toLowerCase();
             if (exportFileFormat == null || 
@@ -252,10 +252,10 @@ public class FeatureExtractMain extends AbstractComponent {
             }    
             Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            this.componentOptions.addContent(0, new Element("userName").setText(username));
-            this.componentOptions.addContent(0, new Element("password").setText(password));
-            this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
-            this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
+            //this.componentOptions.addContent(0, new Element("userName").setText(username));
+            //this.componentOptions.addContent(0, new Element("password").setText(password));
+            //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
+            //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("earliestSubmissionDate").setText(format.format(earliestSubmissionDate)));
             this.componentOptions.addContent(0, new Element("featureExtractionId").setText("" + featureExtractionItem.getId()));
             this.componentOptions.addContent(0, new Element("startDateWF").setText(format.format(startDate)));
@@ -334,5 +334,10 @@ public class FeatureExtractMain extends AbstractComponent {
                             return null;
             } else
                     return null;
+    }
+    
+    private Date getEarliestSubmissionTime (String MOOCdbName) {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            return dbDao.getEarliestSubmissionTime(MOOCdbName);
     }
 }

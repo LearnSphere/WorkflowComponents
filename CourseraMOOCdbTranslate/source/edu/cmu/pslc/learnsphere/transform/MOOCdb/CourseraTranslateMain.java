@@ -192,9 +192,19 @@ public class CourseraTranslateMain extends AbstractComponent {
                             boolean hashMappingFileEqual = false;
                             boolean generalFileEqual = false;
                             boolean forumFileEqual = false;
-                            File fHashMapping = new File(currMOOCdbItem.getHashMappingFile());
-                            File fGeneral = new File(currMOOCdbItem.getGeneralFile());
-                            File fForum = new File(currMOOCdbItem.getForumFile());
+                            String existingHashMappingFile = currMOOCdbItem.getHashMappingFile();
+                            String existingGeneralFile = currMOOCdbItem.getGeneralFile();
+                            String existingForumFile = currMOOCdbItem.getForumFile();
+                            if (existingHashMappingFile == null || existingGeneralFile == null || existingForumFile == null) {
+                                    String errMsg = "MOOCdb " + MOOCdbName + " is found in moocdbs table but information on coursera backup files are missing.";
+                                    addErrorMessage(errMsg + " You can start process with a new custom MOOCdb name.");
+                                    logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                    System.err.println(errMsg);
+                                    return;
+                            }
+                            File fHashMapping = new File(existingHashMappingFile);
+                            File fGeneral = new File(existingGeneralFile);
+                            File fForum = new File(existingForumFile);
                                     
                             hashMappingFileEqual = itemHashMappingMd5HashValue.equals(hashMappingMd5HashValue);
                             generalFileEqual = itemGeneralMd5HashValue.equals(generalMd5HashValue);
@@ -237,10 +247,13 @@ public class CourseraTranslateMain extends AbstractComponent {
                                     Integer nodeIndex = 0;
                                     Integer fileIndex = 0;
                                     String fileLabel = "MOOCdb";
+                                    logger.info("dbPointerFile: " + dbPointerFile);
                                     this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
                                     nodeIndex = 1;
                                     fileIndex = 0;
                                     fileLabel = "MOOCdb-features";
+                                    logger.info("featuresFile: " + featuresFile);
+                                    
                                     this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
 
                                     logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
@@ -346,14 +359,14 @@ public class CourseraTranslateMain extends AbstractComponent {
             
             // Run the program and return its stdout to a file.
             // pass arguments
-            Map<String, String> login = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseLogin();
-            Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
+            //Map<String, String> login = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseLogin();
+            //Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("courseName").setText(escapedCourseName));
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            this.componentOptions.addContent(0, new Element("userName").setText(moocdbItem.getUsername()));
-            this.componentOptions.addContent(0, new Element("password").setText(moocdbItem.getPassword()));
-            this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
-            this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
+            //this.componentOptions.addContent(0, new Element("userName").setText(moocdbItem.getUsername()));
+            //this.componentOptions.addContent(0, new Element("password").setText(moocdbItem.getPassword()));
+            //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
+            //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("hashMapDBName").setText(hashMappingDbName));
             this.componentOptions.addContent(0, new Element("hashMapBackupFilePath").setText(hashMappingFile));
             this.componentOptions.addContent(0, new Element("anonymizedGeneralDBName").setText(generalDbName));
