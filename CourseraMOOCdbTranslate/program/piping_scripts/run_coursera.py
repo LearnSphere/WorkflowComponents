@@ -11,7 +11,7 @@ import platform
 #-hashMapDBName test_hash_mapping -hashMapBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_hash_mapping.sql"
 #-anonymizedGeneralDBName test_anonymized_general -anonymizedGeneralBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_general.sql"
 #-anonymizedForumDBName test_anonymized_forum -anonymizedForumFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql"
-#-userName datashop -password datashop
+#-un datashop -p datashop
 
 #python run_coursera.py -courseName game_theory_gametheory003 -MOOCdbName moocdb_test -hashMapDBName test_hash_mapping -hashMapBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_hash_mapping.sql" -anonymizedGeneralDBName test_anonymized_general -anonymizedGeneralBackupFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_general.sql" -anonymizedForumDBName test_anonymized_forum -anonymizedForumFilePath "C:/WPIDevelopment/dev06_dev/WorkflowComponents/CourseraMOOCdbTranslate/test/test_data/Game_Theory_gametheory-003_SQL_anonymized_forum.sql"
 if __name__ == "__main__":
@@ -26,8 +26,8 @@ if __name__ == "__main__":
     parser.add_argument('-anonymizedGeneralBackupFilePath', type=str, help='anonymous general DB backup file name')
     parser.add_argument('-anonymizedForumDBName', type=str, help='anonymous forum DB name')
     parser.add_argument('-anonymizedForumFilePath', type=str, help='anonymous forum DB backup file name')
-    #parser.add_argument('-userName', type=str, help='user name to access db)')
-    #parser.add_argument('-password', type=str, help='password to access db)')
+    parser.add_argument('-un', type=str, help='user name to access db)')
+    parser.add_argument('-p', type=str, help='password to access db)')
     #parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
     #parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
     parser.add_argument('-customMOOCdbName', type=str, help='place holder, no use', default="")
@@ -44,10 +44,12 @@ if __name__ == "__main__":
         config.read(args.programDir + '/ConfigFile.properties')
     else:
         config.read(args.programDir + '/program/ConfigFile.properties')
-    userName = config.get('database', 'userName');
-    password = config.get('database', 'password');
     dbHost = config.get('database', 'dbHost');
     dbPort = config.get('database', 'dbPort');
+
+    userName = args.un
+    password = args.p
+    
     
     dbPort = int(dbPort)
 
@@ -86,7 +88,7 @@ if __name__ == "__main__":
             'log_path': args.workingDir,
             'log_to_console': True,
             'debug': False,
-            'num_users_debug_mode': 10000,
+            'num_users_debug_mode': 100,
         },
     }
     start_dt = datetime.now()

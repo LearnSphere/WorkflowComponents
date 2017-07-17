@@ -363,8 +363,8 @@ public class CourseraTranslateMain extends AbstractComponent {
             //Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("courseName").setText(escapedCourseName));
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            //this.componentOptions.addContent(0, new Element("userName").setText(moocdbItem.getUsername()));
-            //this.componentOptions.addContent(0, new Element("password").setText(moocdbItem.getPassword()));
+            this.componentOptions.addContent(0, new Element("un").setText(moocdbItem.getUsername()));
+            this.componentOptions.addContent(0, new Element("p").setText(moocdbItem.getPassword()));
             //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
             //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("hashMapDBName").setText(hashMappingDbName));

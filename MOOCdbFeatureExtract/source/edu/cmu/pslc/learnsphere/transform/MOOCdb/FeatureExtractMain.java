@@ -252,8 +252,8 @@ public class FeatureExtractMain extends AbstractComponent {
             }    
             Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            //this.componentOptions.addContent(0, new Element("userName").setText(username));
-            //this.componentOptions.addContent(0, new Element("password").setText(password));
+            this.componentOptions.addContent(0, new Element("un").setText(username));
+            this.componentOptions.addContent(0, new Element("p").setText(password));
             //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
             //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("earliestSubmissionDate").setText(format.format(earliestSubmissionDate)));

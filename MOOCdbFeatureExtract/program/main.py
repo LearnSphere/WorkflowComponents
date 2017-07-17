@@ -12,15 +12,17 @@ import feature_extract as fe
 import ConfigParser
 
 #example of running on command line
-#python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -startDateWF 2013-10-14 -earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall -featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
+#python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -startDateWF 2013-10-14
+#-earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall
+#-featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Feature Extraction MoocDb.')
     parser.add_argument('-programDir', type=str, help='the component program directory', default=".")
     parser.add_argument('-workingDir', type=str, help='the component instance working directory', default=".")
     parser.add_argument('-MOOCdbName', type=str, help='MoocDb name')
-    #parser.add_argument('-userName', type=str, help='user name to access mooc-db)', default="root")
-    #parser.add_argument('-password', type=str, help='password to access mooc-db)', default="mysql")
+    parser.add_argument('-un', type=str, help='user name to access mooc-db)', default="datashop")
+    parser.add_argument('-p', type=str, help='password to access mooc-db)', default="datashop")
     #parser.add_argument('-dbHost', type=str, help='host name to access mooc-db', default="127.0.0.1")
     #parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
     parser.add_argument('-runExtraction', choices=["true", "false"], type=str, help='run the feature extraction (default="false")', default="false")
@@ -47,10 +49,12 @@ if __name__ == "__main__":
         config.read(args.programDir + '/ConfigFile.properties')
     else:
         config.read(args.programDir + '/program/ConfigFile.properties')
-    userName = config.get('database', 'userName');
-    password = config.get('database', 'password');
     dbHost = config.get('database', 'dbHost');
     dbPort = config.get('database', 'dbPort');
+
+    userName = args.un
+    password = args.p
+    
 
     dbPort = int(dbPort)
 
