@@ -51,7 +51,7 @@
 		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
 <xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
 <xs:element name="coursera-anonymized-general" substitutionGroup="text" />
-	<xs:element name="MOOCdb" substitutionGroup="text" />
+	<xs:element name="MOOCdb" substitutionGroup="file" />
 <xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
 <xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
 <xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />

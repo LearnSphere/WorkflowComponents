@@ -1,0 +1,37 @@
+<component>
+  <component_id>MOOCdb</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>50</workflow_id>
+  <component_name>File</component_name>
+  <component_type>transform</component_type>
+  <left>101.00001525878906</left>
+  <connections>
+    <connection>
+      <to>Import-1-x094576</to>
+      <index>0</index>
+      <frindex>0</frindex>
+    </connection>
+  </connections>
+  <options/>
+  <inputs>
+    <input0>
+	<component_id>Import1</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>file</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/example_file/test.sql</file_path>
+	<!--  <file_path>test/example_file/moocdb_test.txt</file_path>-->
+        <label>file</label>
+        <file_name>test.sql</file_name>
+        <index>0</index>
+      </file>
+      </files>
+</input0>
+</inputs>
+  <top>40</top>
+</component>
+

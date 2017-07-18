@@ -12,8 +12,8 @@
         </connection>
     </connections>
     <options>
-      <d>6,7</d>
-      <i>2,3,4,5</i>
+      <d_wf>Total.Quiz,Final_Exam</d_wf>
+      <i_wf>Activities,Non Activities_Reading,Video,Pretest</i_wf>
   </options>
   <inputs>
     <input0>

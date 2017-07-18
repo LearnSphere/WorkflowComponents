@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.jdom.Element;
@@ -25,6 +26,7 @@ import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.FeatureExtractionDao;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.MOOCdbDao;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.item.MOOCdbItem;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.DaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.hibernate.HibernateDaoFactory;
 import edu.cmu.pslc.datashop.problemcontent.oli.CommonXml;
 
 public class CourseraTranslateMain extends AbstractComponent {
@@ -68,6 +70,8 @@ public class CourseraTranslateMain extends AbstractComponent {
             String optionMOOCdbName = this.getOptionAsString("customMOOCdbName");
             if (optionMOOCdbName != null) {
                     optionMOOCdbName = optionMOOCdbName.replaceAll("[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\?\\*\\+\\.\\>]", "");
+                    //just to be sure
+                    optionMOOCdbName = optionMOOCdbName.replaceAll("\\W", "");
                     optionMOOCdbName = optionMOOCdbName.toLowerCase();
             }
             //get the three input sql files
@@ -107,6 +111,8 @@ public class CourseraTranslateMain extends AbstractComponent {
                     return;
             } else {
                     escapedCourseName = filePrefSuf1[0].replaceAll("[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\?\\*\\+\\.\\>]", "");
+                    //just to be sure
+                    escapedCourseName = escapedCourseName.replaceAll("\\W", "");
                     escapedCourseName = escapedCourseName.toLowerCase();
                     logger.info("escaped course name: " + escapedCourseName);
                     if (optionMOOCdbName != null && !optionMOOCdbName.trim().equals("")) {
@@ -186,9 +192,19 @@ public class CourseraTranslateMain extends AbstractComponent {
                             boolean hashMappingFileEqual = false;
                             boolean generalFileEqual = false;
                             boolean forumFileEqual = false;
-                            File fHashMapping = new File(currMOOCdbItem.getHashMappingFile());
-                            File fGeneral = new File(currMOOCdbItem.getGeneralFile());
-                            File fForum = new File(currMOOCdbItem.getForumFile());
+                            String existingHashMappingFile = currMOOCdbItem.getHashMappingFile();
+                            String existingGeneralFile = currMOOCdbItem.getGeneralFile();
+                            String existingForumFile = currMOOCdbItem.getForumFile();
+                            if (existingHashMappingFile == null || existingGeneralFile == null || existingForumFile == null) {
+                                    String errMsg = "MOOCdb " + MOOCdbName + " is found in moocdbs table but information on coursera backup files are missing.";
+                                    addErrorMessage(errMsg + " You can start process with a new custom MOOCdb name.");
+                                    logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                    System.err.println(errMsg);
+                                    return;
+                            }
+                            File fHashMapping = new File(existingHashMappingFile);
+                            File fGeneral = new File(existingGeneralFile);
+                            File fForum = new File(existingForumFile);
                                     
                             hashMappingFileEqual = itemHashMappingMd5HashValue.equals(hashMappingMd5HashValue);
                             generalFileEqual = itemGeneralMd5HashValue.equals(generalMd5HashValue);
@@ -205,12 +221,7 @@ public class CourseraTranslateMain extends AbstractComponent {
                                     try (OutputStream outputStream = new FileOutputStream(dbPointerFile)) {
                                             // Write header and course name to export
                                             byte[] cname = null;
-                                            String osName = System.getProperty("os.name").toLowerCase();
-                                            if (osName.indexOf("win") >= 0) {
-                                                    cname = (MOOCdbItem.MOOCdb_COLUMN_HEADER_NAME + "\r\n" + MOOCdbName).getBytes("UTF-8");
-                                            } else {
-                                                    cname = (MOOCdbItem.MOOCdb_COLUMN_HEADER_NAME + "\n" + MOOCdbName).getBytes("UTF-8");
-                                            }
+                                            cname = (MOOCdbItem.MOOCdb_PROPERTY_NAME + "=" + MOOCdbName).getBytes("UTF-8");
                                             outputStream.write(cname);
                                     } catch (Exception e) {
                                             // This will be picked up by the workflows platform and relayed to the user.
@@ -236,10 +247,13 @@ public class CourseraTranslateMain extends AbstractComponent {
                                     Integer nodeIndex = 0;
                                     Integer fileIndex = 0;
                                     String fileLabel = "MOOCdb";
+                                    logger.info("dbPointerFile: " + dbPointerFile);
                                     this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
                                     nodeIndex = 1;
                                     fileIndex = 0;
                                     fileLabel = "MOOCdb-features";
+                                    logger.info("featuresFile: " + featuresFile);
+                                    
                                     this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
 
                                     logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
@@ -248,7 +262,7 @@ public class CourseraTranslateMain extends AbstractComponent {
                                     return;
                                             
                             } else {
-                                    String errMsg = "MOOCdb with the same name already exists. MOOCdb name: " + MOOCdbName + ". ";
+                                    String errMsg = "MOOCdb with the same name already exists but SQL backup files are different. MOOCdb name: " + MOOCdbName + ". ";
                                     logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
                                     if (fHashMapping.exists() && fForum.exists() && fGeneral.exists()) 
                                             errMsg += " You can start translation process with a different MOOCdb name.";
@@ -260,14 +274,26 @@ public class CourseraTranslateMain extends AbstractComponent {
                             }
                     }  
             }
-            //delete current one
-            if (currMOOCdbItem != null)
-                    deleteMOOCDbItem(currMOOCdbItem);
+            //this should be a new MOOCdb. So make sure there is no databases with these names exist
+            if (databaseExist(MOOCdbName) || databaseExist(hashMappingDbName) || databaseExist(forumDbName) || databaseExist(generalDbName)) {
+                    String errMsg = "One of these databases already exist: " + MOOCdbName + "; " + hashMappingDbName + "; " + forumDbName + "; " + generalDbName + ". ";
+                    errMsg += "But MOOCdb: " + MOOCdbName + " is not found in moocdbs table! Start translation process with a different MOOCdb name";
+                    logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                    addErrorMessage(errMsg);
+                    System.err.println(errMsg);
+                    return;
+            }
             //save a record in moocdb_courses table
             MOOCdbItem moocdbItem = new MOOCdbItem();
             moocdbItem.setMOOCdbName(MOOCdbName);
-            //courseItem.setCreatedBy("");
-            moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_RESTORE);
+            moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_CREATE_DBS);
+            if (this.getUserId() != null)
+                    moocdbItem.setCreatedBy(this.getUserId());
+            String username = getSaltString();
+            while (userExist(username))
+                    username = getSaltString();
+            moocdbItem.setUsername(username);
+            moocdbItem.setPassword(getSaltString());
             moocdbItem.setForumFile(forumFile);
             moocdbItem.setForumFileMd5HashValue(forumMd5HashValue);
             moocdbItem.setGeneralFile(generalFile);
@@ -278,22 +304,54 @@ public class CourseraTranslateMain extends AbstractComponent {
             saveOrUpdateMOOCdb(moocdbItem);
             logger.info("Saved MOOCdbItem: " + moocdbItem);
             
-            //restore coursera databases
+            //create coursera databases
             try {
-                    restoreCourseraDBs(hashMappingDbName, hashMappingFile, 
-                            forumDbName, forumFile, 
-                            generalDbName, generalFile);
+                    if (userExist(moocdbItem.getUsername())) {
+                            deleteMOOCDbItem(moocdbItem);
+                            String errMsg = "Error found when creating user for accessing new DB: " + moocdbItem.getUsername();
+                            addErrorMessage(errMsg);
+                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                            System.err.println(errMsg);
+                            return; 
+                    }
+                    createDBUser(moocdbItem.getUsername(), moocdbItem.getPassword());
+                    createDB(MOOCdbName);
+                    addUserToDB(MOOCdbName, moocdbItem.getUsername(), MOOCdbItem.DB_READ_WRITE);
+                    createDB(hashMappingDbName);
+                    addUserToDB(hashMappingDbName, moocdbItem.getUsername(), MOOCdbItem.DB_READ_WRITE);
+                    createDB(forumDbName);
+                    addUserToDB(forumDbName, moocdbItem.getUsername(), MOOCdbItem.DB_READ_WRITE);
+                    createDB(generalDbName);
+                    addUserToDB(generalDbName, moocdbItem.getUsername(), MOOCdbItem.DB_READ_WRITE);
+                    addUserToDB(MOOCDB_CORE, moocdbItem.getUsername(), MOOCdbItem.DB_READ);
+                    addUserToDB(MOOCDB_CLEAN, moocdbItem.getUsername(), MOOCdbItem.DB_READ);
             } catch (Exception ex) {
                     //send error message
                     this.deleteMOOCDbItem(moocdbItem);
+                    try {
+                            deleteUser(moocdbItem.getUsername());
+                            deleteMOOCdb(MOOCdbName);
+                            deleteCourseraDbs(hashMappingDbName, forumDbName, generalDbName);
+                    } catch (Exception innerex) {
+                            String errMsg = "Found error deleting databases;  hash_mapping: " + hashMappingDbName + "; forum: " + forumDbName + "; general: " + generalDbName + 
+                                            "; MOOCdb: " + MOOCdbName +
+                                            "; username: " + moocdbItem.getUsername() +
+                                            "; Exception: " + innerex.getMessage();
+                            addErrorMessage(errMsg);
+                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                            System.err.println(errMsg);
+                            return;
+                    }
                     String errMsg = "Found error restoring Coursera backup files;  hash_mapping: " + hashMappingFile + "; forumFile: " + forumFile + "; generalFile: " + generalFile + "; Exception: " + ex.getMessage();
                     addErrorMessage(errMsg);
                     logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
                     System.err.println(errMsg);
                     return;
             }
-            logger.info("Restored Coursera DBs are: " + hashMappingDbName + "; " + forumDbName + "; " + generalDbName);
-            moocdbItem.setLastProgress(MOOCdbItem.PROGRESS_RESTORE);
+            logger.info("Created Coursera DBs are: " + hashMappingDbName + "; " + forumDbName + "; " + generalDbName);
+            logger.info("Created Coursera DB User is: " + moocdbItem.getUsername());
+            
+            moocdbItem.setLastProgress(MOOCdbItem.PROGRESS_CREATE_DBS);
             moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_TRANSLATE_PREPROCESS_CURATE);
             moocdbItem.setLastProgressEndTimestamp(new Date());
             logger.info("Start translation/preprocess/curate for MOOCdbItem: " + moocdbItem);
@@ -302,12 +360,20 @@ public class CourseraTranslateMain extends AbstractComponent {
             // Run the program and return its stdout to a file.
             // pass arguments
             //Map<String, String> login = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseLogin();
+            //Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("courseName").setText(escapedCourseName));
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            //this.componentOptions.addContent(0, new Element("userName").setText(login.get("user")));
-            //this.componentOptions.addContent(0, new Element("password").setText(login.get("password")));
-            //this.componentOptions.addContent(0, new Element("dbHost").setText("127.0.0.1"));
-            //this.componentOptions.addContent(0, new Element("dbPort").setText("3306"));
+            this.componentOptions.addContent(0, new Element("un").setText(moocdbItem.getUsername()));
+            this.componentOptions.addContent(0, new Element("p").setText(moocdbItem.getPassword()));
+            //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
+            //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
+            this.componentOptions.addContent(0, new Element("hashMapDBName").setText(hashMappingDbName));
+            this.componentOptions.addContent(0, new Element("hashMapBackupFilePath").setText(hashMappingFile));
+            this.componentOptions.addContent(0, new Element("anonymizedGeneralDBName").setText(generalDbName));
+            this.componentOptions.addContent(0, new Element("anonymizedGeneralBackupFilePath").setText(generalFile));
+            this.componentOptions.addContent(0, new Element("anonymizedForumDBName").setText(forumDbName));
+            this.componentOptions.addContent(0, new Element("anonymizedForumFilePath").setText(forumFile));
+            
             File outputDirectory = this.runExternalMultipleFileOuput();
             File dbPointerFile = new File(outputDirectory.getAbsolutePath() + "/MOOCdbPointer.txt");
             File featuresFile = new File(outputDirectory.getAbsolutePath() + "/MOOCdbFeatures.txt");
@@ -322,7 +388,7 @@ public class CourseraTranslateMain extends AbstractComponent {
                     moocdbItem.setEndTimestamp(new Date());
                     moocdbItem.setLastProgress(MOOCdbItem.PROGRESS_TRANSLATE_PREPROCESS_CURATE);
                     moocdbItem.setLastProgressEndTimestamp(new Date());
-                    logger.info("Completed translation and pre-process for MOOCdb: " + MOOCdbName);
+                    logger.info("Completed translation, pre-process and curate for MOOCdb: " + MOOCdbName);
                     saveOrUpdateMOOCdb(moocdbItem);
                     
                     Integer nodeIndex = 0;
@@ -333,16 +399,21 @@ public class CourseraTranslateMain extends AbstractComponent {
                     fileIndex = 0;
                     fileLabel = "MOOCdb-features";
                     this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
+                    System.out.println(this.getOutput());
                     return;
+                    
+                    
             } else {
                     //send error message
                     deleteMOOCDbItem(moocdbItem);
+                    
                     String errMsg = "Found error in translating/curating MOOCdb: " + MOOCdbName + "; MOOCdb name doesn't match with the Python output file. ";
                     addErrorMessage(errMsg);
                     logger.info(errMsg + " Deleted MOOCdbItem: " + moocdbItem + "; and Coursera DBs and MOOCdb.");
                     try {
                             deleteMOOCdb(MOOCdbName);
                             deleteCourseraDbs(hashMappingDbName, forumDbName, generalDbName);
+                            deleteUser(moocdbItem.getUsername());
                             logger.info(" Deleted MOOCdb " + MOOCdbName + "; and Coursera DBs: " + hashMappingDbName + "; " + forumDbName + "; " + generalDbName);
                     } catch (Exception ex) {
                             String exErr = " Error found deleting MOOCdb " + MOOCdbName + "; or Coursera DBs: " + hashMappingDbName + "; " + forumDbName + "; " + generalDbName;
@@ -414,16 +485,6 @@ public class CourseraTranslateMain extends AbstractComponent {
             dbDao.saveOrUpdate(dbItem);
     }
     
-    //restore coursera databases
-    private void restoreCourseraDBs(String hashMappingDbName, String hashMappingFile, 
-                    String forumDbName, String forumFile, 
-                    String generalDbName, String generalFile) throws SQLException, Exception {
-            CourseraDbsRestoreDao restoreDao = DaoFactory.DEFAULT.getCourseraDbsRestoreDao();
-            restoreDao.restoreCourseraDBs(hashMappingDbName, hashMappingFile, 
-                     forumDbName, forumFile, 
-                     generalDbName, generalFile);
-    }
-    
     //delete MOOCdbItem
     private void deleteMOOCDbItem(MOOCdbItem dbItem) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
@@ -432,19 +493,16 @@ public class CourseraTranslateMain extends AbstractComponent {
     
     //compare the content of the output file of python translation script matches the MOOCdbName
     private boolean checkOutputContent(File dbPointerFile, String MOOCdbName) {
-            String[][] fileContent = IOUtil.read2DStringArray(dbPointerFile.getAbsolutePath());
-            String MOOCdbNameInFile = null;
-            //use the first meaningful name 
-            for (String[] row : fileContent) {
-                    for (String name : row) {
-                            if (name != null && !name.equals("") && !name.equals(MOOCdbItem.MOOCdb_COLUMN_HEADER_NAME)) {
-                                    MOOCdbNameInFile = name;
-                                    break;
-                            }
-                    }
-            }
-                    
-            return MOOCdbNameInFile.equals(MOOCdbName);
+            String fileContent = IOUtil.readString(dbPointerFile.getAbsolutePath());
+            //the first property name currently is MOOCdbName 
+            if (fileContent.trim().indexOf(MOOCdbItem.MOOCdb_PROPERTY_NAME) == 0) {
+                    String[] tokens = fileContent.trim().split("\\=");
+                    if (tokens[0].trim().equals(MOOCdbItem.MOOCdb_PROPERTY_NAME)){
+                            return tokens[1].trim().equals(MOOCdbName);
+                    } else
+                            return false;
+            } else
+                    return false;
     }
     
     private Date getEarliestSubmissionTime (String MOOCdbName) {
@@ -473,5 +531,47 @@ public class CourseraTranslateMain extends AbstractComponent {
                 features += pair.getValue() + "\t";
             }
             return features.trim();
+    }
+    
+    private String getSaltString() {
+            String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder salt = new StringBuilder();
+            Random rnd = new Random();
+            while (salt.length() < 10) { // length of the random string.
+                int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+                salt.append(SALTCHARS.charAt(index));
+            }
+            String saltStr = salt.toString();
+            return saltStr;
+    }
+    
+    private boolean databaseExist(String dbName) {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            return dbDao.databaseExist(dbName);
+    }
+    
+    private void createDBUser(String username, String passwrod) throws SQLException {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            dbDao.createDBUser(username, passwrod);
+    }
+    
+    private void createDB(String dbName) throws SQLException {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            dbDao.createDB(dbName);
+    }
+    
+    private boolean userExist(String username) {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            return dbDao.userExist(username);
+    }
+    
+    private void addUserToDB(String dbName, String username, String accessRights) throws SQLException {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            dbDao.addUserToDB(dbName, username, accessRights);
+    }
+    
+    private void deleteUser(String username) throws SQLException {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            dbDao.deleteUser(username);
     }
 }
