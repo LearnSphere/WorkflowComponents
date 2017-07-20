@@ -47,7 +47,8 @@ d3.tsv("${input0}", function (error, data) {
     if(error) throw error;
 	createGraph(data);	
 });
-
+var charge = function(d) { return d["${columncharge}"];}
+debugger;
 //function to create graph
 function createGraph(data)
 {
@@ -87,11 +88,11 @@ function formatDataInJson(data)
 			{
 				jsonData.nodes.push({ 
 					"name" : item,
-					"group"  : parseInt(i)+1
+					"group"  : 1
 				});
 			}
 		}
-		
+		//parseInt(i)+1
 	   data.forEach(function(d) {
 	 
 			var src=d["X"];
