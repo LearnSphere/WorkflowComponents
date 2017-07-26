@@ -7,21 +7,21 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:all>
+    <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-    </xs:all>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -30,6 +30,7 @@
       <xs:element ref="file" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
+
 
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
@@ -45,13 +46,11 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="html" />
+      <xs:element ref="inline-html" />
     </xs:choice>
   </xs:complexType>
 
-
-
-<xs:complexType name="OutputDefinition1">
+  <xs:complexType name="OutputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
         <xs:sequence>
@@ -62,27 +61,10 @@
     </xs:complexContent>
   </xs:complexType>
 
+
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="html" />
-    </xs:choice>
-  </xs:complexType>
-
-
-<xs:complexType name="OutputDefinition2">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList2" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="OutFileList2">
-    <xs:choice>
-      <xs:element ref="image" />
+      <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
 
@@ -90,25 +72,15 @@
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
       <xs:element name="output1" type="OutputDefinition1" />
-      <xs:element name="output2" type="OutputDefinition2" />
     </xs:sequence>
   </xs:complexType>
 
-<xs:simpleType name="latencyType" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Correctness" />
-      <xs:enumeration value="Correct Latency" />
-      <xs:enumeration value="Incorrect Latency" />
-    </xs:restriction>
-</xs:simpleType>
+ 
 
-  
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
-      <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
-      <xs:element type="FileInputHeader" name="groupingCategory" id="Grouping_Category" default=".*" />
-      <xs:element type="FileInputHeader" name="latency" id="Latency" default=".*" />
+      <xs:element type="xs:integer" name="charge" id="Charge" default="-120" />
+        <xs:element type="xs:integer" name="linkDistance" id="Link_Distance" default="30" />
     </xs:choice>
   </xs:complexType>
 
@@ -120,9 +92,9 @@
         <xs:element type="xs:string" name="component_id_human" />
         <xs:element type="xs:string" name="component_name" />
         <xs:element type="xs:string" name="component_type" />
-        <xs:element type="xs:double" name="left" />
-        <xs:element type="xs:double" name="top" />
-        <xs:element name="connections" minOccurs="0" maxOccurs="1" type="ConnectionType" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0" />
         <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />

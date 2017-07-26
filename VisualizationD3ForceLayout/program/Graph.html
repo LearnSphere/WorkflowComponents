@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+  text-color: blue;
+}
+
+
+</style>
+<body onload="parent.frameSize(document.body.scrollWidth, document.body.scrollHeight);">
+<script src="https://d3js.org/d3.v3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+
+<script type="application/json" id="mis">
+    
+</script>
+
+<script type="text/javascript">
+
+//note::threshold and double click cannot be performed together
+var jsonData = {
+		nodes: [],
+		links:[]
+		};
+		
+var force="";
+var svg="";
+var link="";
+var node="";
+//Toggle stores whether the highlighting is on
+var toggle = 0;
+
+//Create an array logging what is connected to what
+var linkedByIndex = {};
+
+var node_drag="";
+//data.txt
+d3.tsv("${input0}", function (error, data) {    
+    if(error) throw error;
+	createGraph(data);	
+});
+var charge = function(d) { return d["${columncharge}"];}
+debugger;
+//function to create graph
+function createGraph(data)
+{
+		formatDataInJson(data);
+		drawGraph();
+}
+
+//function to transform data in json
+function formatDataInJson(data)
+{
+	
+		//gets all column header
+		var keys1 = $.map(data[0], function(item, key) {
+		  return key;
+		});
+		
+		//filter out dummy value "X" and empty
+		keys1 = keys1.filter(function(n){ return (n != "" && n!="X")});
+		
+		//gets all first column values which is titled with dummy header "X"
+		var keys2=[]
+		data.forEach(function(d) {		
+		keys2.push(d["X"]);		
+		});
+	  
+		//merge all column headers and first column removing duplicates to create node
+		var keys = keys1.concat(keys2.filter(function (item) {
+			return keys1.indexOf(item) < 0;
+		}));
+		
+		//creates nodes and links for graph
+		for(var i in keys) {    
+
+			var item = keys[i];   
+			
+			if(item.length>0)
+			{
+				jsonData.nodes.push({ 
+					"name" : item,
+					"group"  : 1
+				});
+			}
+		}
+		//parseInt(i)+1
+	   data.forEach(function(d) {
+	 
+			var src=d["X"];
+						
+			keys1.forEach(function(trgt) {
+			  
+			var trgtVal=d[trgt];
+			
+				if(src!=trgt && trgtVal >0.2)
+				{			
+					var s = $.map(jsonData.nodes, function(item, key) {
+					  return item["name"];
+					}).indexOf(src);
+					var t =$.map(jsonData.nodes, function(item, key) {
+					  return item["name"];
+					}).indexOf(trgt);
+					
+					jsonData.links.push({ 
+								"source" : s,
+								"target"  : t,
+								"value":parseFloat(trgtVal)
+							});
+				}	
+			});
+		});
+		
+}
+
+function drawGraph()
+{
+	//Constants for the SVG
+	var width = 800,
+		height = 800;
+
+	//Set up the colour scale
+	var color = d3.scale.category20();
+
+	//Set up the force layout
+	force = d3.layout.force()
+		.charge(-180)//-120 80
+		.linkDistance(150)
+		.size([width, height]);
+
+	//Append a SVG to the body of the html page. Assign this SVG as an object to svg
+	svg = d3.select("body").append("svg")
+		.attr("width", width)
+		.attr("height", height)
+	.on("dblclick", threshold);//uncomment and remove semicolon above to enable threshold
+
+	graph = jsonData;
+	graphRec=JSON.parse(JSON.stringify(graph)); //Add this line
+
+	graph.links.forEach(function(link, index, list) {
+			if (typeof graph.nodes[link.source] === 'undefined') {
+				console.log('undefined source', link);
+			}
+			if (typeof graph.nodes[link.target] === 'undefined') {
+				console.log('undefined target', link);
+			}
+		});
+
+	//Creates the graph data structure out of the json data
+	force.nodes(graph.nodes)
+		.links(graph.links)
+		.start();
+
+	//Create all the line svgs but without locations yet
+	link = svg.selectAll(".link")
+		.data(graph.links)
+		.enter().append("line")
+		.attr("class", "link")
+		.style("stroke-width", function (d) {
+		return Math.sqrt(d.value);
+	});
+	
+	node_drag = d3.behavior.drag()
+        .on("dragstart", dragstart)
+        .on("drag", dragmove)
+        .on("dragend", dragend);
+		
+	//Do the same with the circles for the nodes - no 
+	//Changed
+	node = svg.selectAll(".node")
+		.data(graph.nodes)
+		.enter().append("g")
+		.attr("class", "node")
+		.call(node_drag)
+		.on('dblclick', connectedNodes); //Added code for double click on nodes
+
+	node.append("circle")
+		.attr("r", 8)
+		.style("fill", function (d) {
+		return color(d.group);
+	})
+
+	node.append("text")
+		  .attr("dx", 10)
+		  .attr("dy", ".35em")
+		  .text(function(d) { return d.name });
+	//End changed
+
+
+	//Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
+	force.on("tick", function () {
+		link.attr("x1", function (d) {
+			return d.source.x;
+		})
+			.attr("y1", function (d) {
+			return d.source.y;
+		})
+			.attr("x2", function (d) {
+			return d.target.x;
+		})
+			.attr("y2", function (d) {
+			return d.target.y;
+		});
+
+		//Changed
+		
+		d3.selectAll("circle").attr("cx", function (d) {
+			return d.x;
+		})
+			.attr("cy", function (d) {
+			return d.y;
+		});
+
+		d3.selectAll("text").attr("x", function (d) {
+			return d.x;
+		})
+			.attr("y", function (d) {
+			return d.y;
+		});
+		
+		//End Changed
+		
+		node.each(collide(0.5)); //Added to prevent node overlap
+
+});
+
+
+//---Insert for double click-------
+
+for (i = 0; i < graph.nodes.length; i++) {
+    linkedByIndex[i + "," + i] = 1;
+};
+graph.links.forEach(function (d) {
+    linkedByIndex[d.source.index + "," + d.target.index] = 1;
+});
+//end insert
+
+}
+
+//---Insert-------
+
+//adjust threshold
+
+function threshold(thresh) {
+    graph.links.splice(0, graph.links.length);
+
+		for (var i = 0; i < graphRec.links.length; i++) {
+			if (graphRec.links[i].value > thresh/10) {graph.links.push(graphRec.links[i]);}
+		}
+		 document.getElementById('thresholdVal').innerHTML = '<h3> Only those links between nodes are shown for whose value is greater than '+thresh/10+'</h3>';
+    restart();
+}
+
+
+//Restart the visualisation after any node and link changes
+
+function restart() {
+	
+	link = link.data(graph.links);
+	link.exit().remove();
+	link.enter().insert("line", ".node").attr("class", "link");
+	node = node.data(graph.nodes);
+	node.enter().insert("circle", ".cursor").attr("class", "node").attr("r", 5).call(force.drag);
+	force.start();
+}
+//---End Insert---
+
+//---Insert------
+// Resolves collisions between d and all other circles.
+var padding = 1, // separation between circles
+    radius=10;
+
+function collide(alpha) {
+  var quadtree = d3.geom.quadtree(graph.nodes);
+  return function(d) {
+    var rb = 2*radius + padding,
+        nx1 = d.x - rb,
+        nx2 = d.x + rb,
+        ny1 = d.y - rb,
+        ny2 = d.y + rb;
+    
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== d)) {
+        var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y);
+          if (l < rb) {
+          l = (l - rb) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+    });
+  };
+}
+//---End Insert---
+
+
+//insert for double click
+
+
+//This function looks up whether a pair are neighbours  
+function neighboring(a, b) {
+    return linkedByIndex[a.index + "," + b.index];
+}
+
+function connectedNodes() {
+
+    if (toggle == 0) {
+        //Reduce the opacity of all but the neighbouring nodes
+        d = d3.select(this).node().__data__;
+        node.style("opacity", function (o) {
+            return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+        });
+        
+        link.style("opacity", function (o) {
+            return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+        });
+        
+        //Reduce the op
+        
+        toggle = 1;
+    } else {
+        //Put them back to opacity=1
+        node.style("opacity", 1);
+        link.style("opacity", 1);
+        toggle = 0;
+    }
+
+}
+
+//---End Insert---
+
+//insert for pin down
+function dragstart(d, i) {
+        force.stop() // stops the force auto positioning before you start dragging
+    }
+
+    function dragmove(d, i) {
+        d.px += d3.event.dx;
+        d.py += d3.event.dy;
+        d.x += d3.event.dx;
+        d.y += d3.event.dy; 
+    }
+
+    function dragend(d, i) {
+        d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+        force.resume();
+    }
+
+    function releasenode(d) {
+        d.fixed = false; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+        //force.resume();
+    }
+
+
+//---End Insert------
+</script>
+<form>
+    <h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 0 min="0" max="10" onchange="threshold(this.value)"> 1 </h3>
+     <label id="thresholdVal"></label>
+	</form>
+</body>
+</html>
