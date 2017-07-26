@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.transform.join;
+package edu.cmu.pslc.learnsphere.transform.sensordata;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,7 +22,7 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JoinMain extends AbstractComponent {
+public class TransformSensorDataMain extends AbstractComponent {
 
     
     /** The join type. */
@@ -151,7 +151,7 @@ public class JoinMain extends AbstractComponent {
      */
     public static void main(String[] args) {
 
-        JoinMain tool = new JoinMain();
+        TransformSensorDataMain tool = new TransformSensorDataMain();
         tool.startComponent(args);
 
     }
@@ -159,7 +159,7 @@ public class JoinMain extends AbstractComponent {
     /**
      * This class runs Join on two files.
      */
-    public JoinMain() {
+    public TransformSensorDataMain() {
         super();
 
 
@@ -308,7 +308,7 @@ File outputFile = outputfile;
                     // output.add(sc1.nextInt());
                  }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
         }
         
             Scanner sc2;
@@ -332,7 +332,7 @@ File outputFile = outputfile;
                      count2++;
                  }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //////// end get data from file////////
@@ -401,7 +401,7 @@ if(newlistSensorData1.size()>newlistSensorData2.size())
 else
     resultedDataSize=newlistSensorData2.size();
 
-       ////////Output file .............//
+       //.................Output file .............//
        //System.out.println("output");
          BufferedWriter bw = null;           
 
@@ -415,7 +415,7 @@ else
         for(int j=0;j<resultedDataSize-1;j++)
         { 
          bw.append(newlistSensorData1.get(j).toString());
-         bw.append(",");
+         bw.append("\t");
          bw.append(newlistSensorData2.get(j).toString());
          bw.append("\n");
  
@@ -426,12 +426,12 @@ else
         bw.close();
         
         } catch (IOException ex) {
-           Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+           Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
        } finally {
            try {
                fstream.close();
            } catch (IOException ex) {
-               Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+               Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
        
@@ -601,7 +601,7 @@ return outputFile;
                     // output.add(sc1.nextInt());
                  }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
         }
         
             Scanner sc2;
@@ -623,7 +623,7 @@ return outputFile;
                     // output.add(sc1.nextInt());
                  }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JoinMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransformSensorDataMain.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
             return null;

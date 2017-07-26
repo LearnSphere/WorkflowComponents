@@ -36,9 +36,9 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/join/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/sensordata/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.join.JoinMain" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.sensordata.TransformSensorDataMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -80,7 +80,7 @@
     </target>
 
     <target name="runComponent" depends="clean, compile, dist" description="executes TransformShift">
-        <java classname="edu.cmu.pslc.learnsphere.transform.join.JoinMain" fork="true">
+        <java classname="edu.cmu.pslc.learnsphere.transform.sensordata.TransformSensorDataMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
             <arg value="${basedir}/test/components/ComponentTransformShift.xml" />
