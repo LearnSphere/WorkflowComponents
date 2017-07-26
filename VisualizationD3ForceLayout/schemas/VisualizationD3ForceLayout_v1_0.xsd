@@ -79,7 +79,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      
+      <xs:element type="xs:integer" name="charge" id="Charge" default="-120" />
+        <xs:element type="xs:integer" name="linkDistance" id="Link_Distance" default="30" />
     </xs:choice>
   </xs:complexType>
 

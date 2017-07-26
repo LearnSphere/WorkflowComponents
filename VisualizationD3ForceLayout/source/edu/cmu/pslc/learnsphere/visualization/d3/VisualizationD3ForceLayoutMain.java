@@ -60,7 +60,7 @@ public class VisualizationD3ForceLayoutMain extends AbstractComponent {
             String outputSubpath = this.componentOutputDir
                 .replaceAll("\\\\", "/")
                     .replaceAll("^.*/workflows/", "workflows/");
-            String dataFilePath = "ManageWorkflows?htmlPath=" + outputSubpath + "data.txt";
+            String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + "data.txt";
 
 
           //  try {
@@ -85,7 +85,16 @@ public class VisualizationD3ForceLayoutMain extends AbstractComponent {
                             line = line.replaceAll(Pattern.quote("${input0}"),
                                     dataFilePath); // name is data.txt
                         }
+                        if (line.contains("${columnx}")) {
 
+                                line = line.replaceAll(Pattern.quote("${columncharge}"),
+                                        this.getOptionAsString("charge"));
+                            }
+                            if (line.contains("${columny}")) {
+
+                                line = line.replaceAll(Pattern.quote("${columnlinkDistance}"),
+                                        this.getOptionAsString("linkDistance"));
+                            }
                         bWriter.append(line + "\n");
                     }
                 } catch (IOException e) {
@@ -120,8 +129,7 @@ public class VisualizationD3ForceLayoutMain extends AbstractComponent {
                     line1= bReader1.readLine();
                     line1="X"+line1;
                     bWriter1.append(line1 + "\n");
-
-                    System.out.println(line1);
+                    
                      while ((line1 = bReader1.readLine()) != null) {
                          bWriter1.append(line1 + "\n");
                      }
