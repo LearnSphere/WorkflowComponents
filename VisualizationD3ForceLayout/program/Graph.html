@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<meta charset="utf-8">
+  <head>
+  <title>Visualization graph</title>
 <style>
 
 .link {
@@ -9,20 +10,59 @@
 
 .node text {
   pointer-events: none;
-  font: 10px sans-serif;
+  font: 14px sans-serif;
   text-color: blue;
 }
 
 
 </style>
+</head>
 <body onload="parent.frameSize(document.body.scrollWidth, document.body.scrollHeight);">
 <script src="https://d3js.org/d3.v3.js"></script>
 <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
 
+
 <script type="application/json" id="mis">
     
 </script>
+<div>
+<div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
+<div style="width:24%;height:100%;float:right;">
+<form>
+<table>
+<tr>
+<td id="threshSld">
+<!--
+<h4> Link threshold <input type="range" name="thersholdSliderName" id="thersholdSliderId" value=0 min="0" max="10" onchange="threshold(this.value)" oninput="thresholdOutputId.value = thersholdSliderId.value/10">
+<output name="thresholdOutputName" id="thresholdOutputId">0</output></h4>-->
+</td>
+<tr>
+<td>
+<h4> Link distance <input type="range" name="linkDisName" id="linkDisId" value=30 min="30" max="500" onchange="linkDistance(this.value)" oninput="linkDisOutputId.value = linkDisId.value">
+<output name="linkDisOutputName" id="linkDisOutputId">500</output></h4>
+</td>
+</tr>
+<tr>
+<td>
 
+<h4> Charge <input type="range" name="chargeName" id="chargeId" value=30 min="30" max="500" onchange="chargeSlider(this.value)" oninput="chargeOutputId.value = chargeId.value">
+<output name="chargeOutputName" id="chargeOutputId">500</output></h4>
+</td>
+</tr>
+<tr>
+<td>
+<h4> Magnify link width <input type="range" name="linkWidthName" id="linkWidthId" value=5 min="1" max="10" onchange="linkwidthSlider(this.value)" oninput="linkWidthOutputId.value = linkWidthId.value">
+<output name="linkWidthOutputName" id="linkWidthOutputId">5</output></h4>
+</td>
+</tr>
+</table>
+
+ <button type="button" onClick="window.location.reload();">Reset</button>
+ <!--<input type="checkbox" id="disConnNodeChkbx" name="Show disconnected nodes" onclick="showDisconNodes();">Show disconnected nodes</input>
+ <br/><label id="disConnNodeLst"></label>-->
+</form>
+</div>
+</div>
 <script type="text/javascript">
 
 //note::threshold and double click cannot be performed together
@@ -31,24 +71,31 @@ var jsonData = {
 		links:[]
 		};
 		
+var upjsonData = {
+		nodes: [],
+		links:[]
+		};
 var force="";
 var svg="";
 var link="";
 var node="";
 //Toggle stores whether the highlighting is on
 var toggle = 0;
+var color="";
+var conGraph="";
+var ConNodes="";
+var allValues=[];
 
 //Create an array logging what is connected to what
 var linkedByIndex = {};
 
 var node_drag="";
-//data.txt
+//change "${input0}" to data.txt to test locally
 d3.tsv("${input0}", function (error, data) {    
     if(error) throw error;
 	createGraph(data);	
 });
-var charge = function(d) { return d["${columncharge}"];}
-debugger;
+
 //function to create graph
 function createGraph(data)
 {
@@ -88,11 +135,11 @@ function formatDataInJson(data)
 			{
 				jsonData.nodes.push({ 
 					"name" : item,
-					"group"  : 1
+					"group"  :1
 				});
 			}
 		}
-		//parseInt(i)+1
+		
 	   data.forEach(function(d) {
 	 
 			var src=d["X"];
@@ -111,6 +158,58 @@ function formatDataInJson(data)
 					}).indexOf(trgt);
 					
 					jsonData.links.push({ 
+								"source" : src,
+								"target"  : trgt,
+								"value":parseFloat(trgtVal)
+						});
+                                //to obtain max and min values	
+				allValues.push(parseFloat(trgtVal));
+				}	
+			});
+		});
+	
+        //create json without disconnected nodes
+	var conNodes=[];
+		jsonData.links.forEach(function(l)
+		{ 
+		if( !(conNodes.indexOf( l.source ) > -1 ))
+			conNodes.push(l.source);
+		});	
+			
+			
+		//creates nodes and links for graph
+		for(var i in conNodes) {    
+
+			var item = conNodes[i];   
+			
+			if(item.length>0)
+			{
+				upjsonData.nodes.push({ 
+					"name" : item,
+					"group"  :1
+				});
+			}
+		}
+		
+		
+		  data.forEach(function(d) {
+	 
+			var src=d["X"];
+						
+			keys1.forEach(function(trgt) {
+			  
+			var trgtVal=d[trgt];
+			
+				if(src!=trgt && trgtVal >0.2)
+				{			
+					var s = $.map(upjsonData.nodes, function(item, key) {
+					  return item["name"];
+					}).indexOf(src);
+					var t =$.map(upjsonData.nodes, function(item, key) {
+					  return item["name"];
+					}).indexOf(trgt);
+					
+					upjsonData.links.push({ 
 								"source" : s,
 								"target"  : t,
 								"value":parseFloat(trgtVal)
@@ -118,31 +217,43 @@ function formatDataInJson(data)
 				}	
 			});
 		});
-		
+	
 }
 
 function drawGraph()
 {
+
+	//threshold slider created dynamically to make it work after dynamic value set
+	var maxVal = parseInt(Math.max.apply(Math,allValues.map(function(o){return o;})));
+	var minVal =parseInt( Math.min.apply(Math,allValues.map(function(o){return o;})));
+	var stepVal=1;
+	if (maxVal<=1)
+		stepVal=0.1;
+	
+	var div = document.createElement('div');
+	div.innerHTML = '<h4> Link threshold <input name="thersholdSliderName" id="thersholdSliderId" type ="range" min="'+minVal+'" max="'+maxVal+'" step="'+stepVal+'" value=0 onchange="threshold(this.value)" oninput="thresholdOutputId.value = thersholdSliderId.value"" /> <output name="thresholdOutputName" id="thresholdOutputId">0</output></h4>';
+	document.getElementById('threshSld').appendChild(div);
+
 	//Constants for the SVG
-	var width = 800,
-		height = 800;
+	var width = 1000,
+		height = 1000;
 
 	//Set up the colour scale
-	var color = d3.scale.category20();
+	color = d3.scale.category20();
 
 	//Set up the force layout
 	force = d3.layout.force()
-		.charge(-180)//-120 80
-		.linkDistance(150)
+		.charge(-280)//-120 30
+		.linkDistance(180)
 		.size([width, height]);
 
 	//Append a SVG to the body of the html page. Assign this SVG as an object to svg
-	svg = d3.select("body").append("svg")
+	svg = d3.select("#svgContainer").append("svg")
 		.attr("width", width)
-		.attr("height", height)
-	.on("dblclick", threshold);//uncomment and remove semicolon above to enable threshold
+		.attr("height", height);
+	//.on("dblclick", threshold);//uncomment and remove semicolon above to enable threshold
 
-	graph = jsonData;
+	graph = upjsonData;
 	graphRec=JSON.parse(JSON.stringify(graph)); //Add this line
 
 	graph.links.forEach(function(link, index, list) {
@@ -154,6 +265,7 @@ function drawGraph()
 			}
 		});
 
+		
 	//Creates the graph data structure out of the json data
 	force.nodes(graph.nodes)
 		.links(graph.links)
@@ -165,7 +277,7 @@ function drawGraph()
 		.enter().append("line")
 		.attr("class", "link")
 		.style("stroke-width", function (d) {
-		return Math.sqrt(d.value);
+		return Math.sqrt(d.value)*5;
 	});
 	
 	node_drag = d3.behavior.drag()
@@ -243,6 +355,10 @@ graph.links.forEach(function (d) {
 });
 //end insert
 
+
+
+
+
 }
 
 //---Insert-------
@@ -253,9 +369,9 @@ function threshold(thresh) {
     graph.links.splice(0, graph.links.length);
 
 		for (var i = 0; i < graphRec.links.length; i++) {
-			if (graphRec.links[i].value > thresh/10) {graph.links.push(graphRec.links[i]);}
+			if (graphRec.links[i].value > thresh) {graph.links.push(graphRec.links[i]);}
 		}
-		 document.getElementById('thresholdVal').innerHTML = '<h3> Only those links between nodes are shown for whose value is greater than '+thresh/10+'</h3>';
+		// document.getElementById('thresholdVal').innerHTML = '<h3> Only those links between nodes are shown for whose value is greater than '+thresh/10+'</h3>';
     restart();
 }
 
@@ -267,10 +383,52 @@ function restart() {
 	link = link.data(graph.links);
 	link.exit().remove();
 	link.enter().insert("line", ".node").attr("class", "link");
-	node = node.data(graph.nodes);
+	//if (document.getElementById('disConnNodeChkbx').checked)
+		//node = node.data(ConNodes);
+	//else
+		node = node.data(graph.nodes);
 	node.enter().insert("circle", ".cursor").attr("class", "node").attr("r", 5).call(force.drag);
 	force.start();
 }
+/*
+function restart1(nd) {
+		
+	node = node.data(force.nodes(), function(d) { return d.id;});
+	node.exit().remove();
+	
+	
+	//Changed
+	node = node
+		.data(nd)
+		.enter().append("g")
+		.attr("class", "node")
+		.call(node_drag)
+		.on('dblclick', connectedNodes); //Added code for double click on nodes
+
+	node.append("circle")
+		.attr("r", 8)
+		.style("fill", function (d) {
+		return color(d.group);
+	})
+
+	node.append("text")
+		  .attr("dx", 10)
+		  .attr("dy", ".35em")
+		  .text(function(d) { return d.name });
+	//End changed
+	force.start();
+	conGraph=graph;
+	
+	conGraph.nodes=graph.nodes.forEach(function(d){
+	if(d.weight!=0)
+	{return d;
+	}
+
+	});
+
+
+}
+*/
 //---End Insert---
 
 //---Insert------
@@ -366,10 +524,60 @@ function dragstart(d, i) {
 
 
 //---End Insert------
+
+/*
+//list disconnected nodes
+function showDisconNodes()
+{
+	var disConNodes=force.nodes().filter(
+	function(d){
+	var a;
+	if(d.weight==0)
+		a+=d.name;
+	return a;
+
+	})
+	
+	
+	ConNodes=force.nodes().filter(
+	function(d){
+	var a;
+	if(d.weight!=0)
+		a+=d.name;
+	return a;
+
+	})
+	//graph.nodes.splice(1, 1);
+	restart1(ConNodes);
+	
+	disConNodes.forEach(function (d) {
+    document.getElementById('disConnNodeLst').innerHTML+=d.name+" ";
+	});
+	
+	
+	//console.log(disConNodes);
+}
+
+*/
+//function for slider link distance
+function linkDistance(dis) {
+	force.linkDistance(dis);
+    force.start();
+}
+
+//function for slider charge
+function chargeSlider(chrg) {
+	force.charge(-chrg);
+    force.start();
+}
+
+//function to increase link width to show difference with links having smaller values
+function linkwidthSlider(magnifyVal) {
+			link.style("stroke-width", function (d) {
+		return Math.sqrt(d.value)*magnifyVal;
+	});
+}
 </script>
-<form>
-    <h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value = 0 min="0" max="10" onchange="threshold(this.value)"> 1 </h3>
-     <label id="thresholdVal"></label>
-	</form>
+
 </body>
 </html>

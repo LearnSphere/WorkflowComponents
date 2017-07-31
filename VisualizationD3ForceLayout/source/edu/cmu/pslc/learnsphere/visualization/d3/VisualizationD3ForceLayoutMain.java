@@ -85,16 +85,7 @@ public class VisualizationD3ForceLayoutMain extends AbstractComponent {
                             line = line.replaceAll(Pattern.quote("${input0}"),
                                     dataFilePath); // name is data.txt
                         }
-                        if (line.contains("${columnx}")) {
-
-                                line = line.replaceAll(Pattern.quote("${columncharge}"),
-                                        this.getOptionAsString("charge"));
-                            }
-                            if (line.contains("${columny}")) {
-
-                                line = line.replaceAll(Pattern.quote("${columnlinkDistance}"),
-                                        this.getOptionAsString("linkDistance"));
-                            }
+                       
                         bWriter.append(line + "\n");
                     }
                 } catch (IOException e) {
