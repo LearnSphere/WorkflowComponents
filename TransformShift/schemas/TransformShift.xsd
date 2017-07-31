@@ -1,0 +1,139 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+             <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="text" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+<!-- 
+  <xs:simpleType name="joinType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="inner" />
+      <xs:enumeration value="left_outer" />
+      <xs:enumeration value="right_outer" />
+    </xs:restriction>
+  </xs:simpleType>
+  -->
+  
+  <xs:simpleType name="initialTime" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="zero" />
+      <xs:enumeration value="one" />
+      <xs:enumeration value="two" />
+      <xs:enumeration value="three" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+   <xs:simpleType name="timePeriod" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="one" />
+      <xs:enumeration value="two" />
+      <xs:enumeration value="three" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">    
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="FileInputHeader" name="file1ColumnName" id="File_1_Column_Name" default=".*" />
+      <xs:element type="FileInputHeader" name="file2ColumnName" id="File_2_Column_Name" default=".*" />
+      <xs:element type="timePeriod" name="timeperiod" id="Time_Period" default="1" />
+      <xs:element type="initialTime" name="initialtime" id="Initial_Time" default="0" />
+    <!--  <xs:element type="joinType" name="join" id="Join_Type" default="inner" /> -->
+      <xs:element type="xs:boolean" name="caseSensitive" id="Case_Sensitive" default="false" />
+      <xs:element type="xs:string" name="delimiterPattern" id="Delimiter_Pattern" default="\t" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -4,10 +4,10 @@
 <author>Philip Pavlik
   <email>ppavlik@memphis.edu</email>
 </author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisTkt</url>
-<date>2016-07-14</date>
-<abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model performs a logistic regression over the "error rate" learning curve data.</abstract>
-<description>TKT is a generalization of the additive factors model (AFM). Experimental. <br/><br/> Email the author directly with bug reports for this component.</description>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/GenerateTktFeatures</url>
+<date>2017-07-28</date>
+<abstract>This component generates features needed for the the <b>Temporal Knowledge Tracing</b> (TKT) model (an analysis component).</abstract>
+<details>TKT is a generalization of the additive factors model (AFM). Like additive factors analysis and performnace factors analysis (PFA), many of the input features are counts of prior events. This component counts prior success and failures for each transaction for each student ID for the super and subordinate KC models input as options. It also computes prior non-test trials, but only for the superordinate model. The superodinate category is also used to compute a number of time (duration/age) values for each event, including the mean prior temporal spacing between repetitions for the superordinate KC and time since first practice for the superoderinate KC. Please see the github code to check the methods for the custom fields created if advanced use is needed.  <br/><br/> Email the author directly with bug reports for this component.</details>
 
 <inputs>
 <b>Transaction export</b>
