@@ -140,7 +140,7 @@ public class VisualizationD3ForceLayoutMain extends AbstractComponent {
                 }
               // Html rendering
                 Integer nodeIndex = 0;
-                String fileLabel = "inline-html";
+                String fileLabel = "html";
 
                 this.addOutputFile(outputFile, nodeIndex, 0, fileLabel);
 
