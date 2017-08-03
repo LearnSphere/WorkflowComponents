@@ -1,0 +1,709 @@
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:53,929 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:53,930 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:38:54,123 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:38:54,126 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:38:54,126 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,149 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,149 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,215 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,217 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,418 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,418 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:38:54,792 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:38:54,810 - First line: Row	Sample	Anon Student Id	Problem Hierarchy	Problem Name	Problem View	Step Name	Step Start Time	First Transaction Time	Correct Transaction Time	Step End Time	Step Duration (sec)	Correct Step Duration (sec)	Error Step Duration (sec)	First Attempt	Incorrects	Hints	Corrects	Condition	KC (Default)	Opportunity (Default)	Predicted Error Rate (Default)	KC (Single-KC)	Opportunity (Single-KC)	Predicted Error Rate (Single-KC)	KC (Unique-step)	Opportunity (Unique-step)	Predicted Error Rate (Unique-step)	Anon Student Id	Actual Student Id
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:38:54,810 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:51,978 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:51,980 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:51:52,135 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:51:52,138 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:51:52,138 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,156 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,156 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,233 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,234 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,420 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:51:52,421 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 10:52:16,830 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:52:16,834 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 10:52:16,834 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,409 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,419 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:01,559 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:01,559 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:01,559 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,589 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,589 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,653 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,653 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,833 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,833 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:01,843 - Join type: inner
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,722 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,722 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:27,859 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:27,863 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:27,863 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,874 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,874 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,944 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:27,944 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:28,134 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:28,134 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 11:39:52,151 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:52,154 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 11:39:52,154 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:56,794 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:56,795 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 12:20:56,973 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 12:20:56,975 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 12:20:56,975 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:56,992 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:56,993 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:57,055 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:57,056 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:57,254 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:20:57,254 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 12:21:23,053 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 12:21:23,058 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 12:21:23,058 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:38,817 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:38,817 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:06:38,999 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:06:38,999 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:06:38,999 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,019 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,019 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,089 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,089 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,269 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:06:39,269 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:07:02,094 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:07:02,094 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:07:02,094 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:08,931 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:08,931 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:10:09,083 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:10:09,083 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:10:09,083 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,103 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,103 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,173 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,173 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,363 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:09,363 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:10:32,017 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:10:32,017 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:10:32,017 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,146 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,156 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:11:21,376 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:11:21,378 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:11:21,378 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,397 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,397 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,480 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,480 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,700 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:21,700 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:11:44,596 - Join type: inner
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:11:44,606 - First line: EEG data	EEG data
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:11:44,606 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,182 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,182 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:20:25,334 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:20:25,334 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:20:25,334 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,354 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,354 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,424 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,424 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,614 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,614 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:20:25,624 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>0</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+      <join>inner</join>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,536 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,536 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:23:20,711 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:23:20,713 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:23:20,713 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,728 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,728 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,808 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:20,818 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:21,040 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:21,040 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:23:21,050 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>1</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+      <join>inner</join>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,060 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,060 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:26:01,263 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:26:01,266 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:26:01,266 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,283 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,283 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,373 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,373 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,622 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:26:01,622 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:26:01,838 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:26:01,838 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,305 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,305 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:27:45,445 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:27:45,455 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:27:45,455 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,475 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,475 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,535 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,545 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,735 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:27:45,735 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:27:45,955 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:27:45,955 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,348 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,358 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:28:45,508 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:28:45,508 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:28:45,508 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,528 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,528 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,598 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,598 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,788 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:28:45,788 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:28:45,998 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:28:45,998 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,098 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,098 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:31:04,292 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:31:04,292 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:31:04,292 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,312 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,312 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,372 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,372 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,552 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:31:04,552 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:31:04,712 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:31:04,712 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,608 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,608 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:08,762 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:08,765 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:08,765 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,778 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,778 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,848 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:08,848 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:09,028 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:09,028 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:09,260 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:09,260 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,107 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,107 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:44,259 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:44,259 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:44,259 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,279 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,279 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,339 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,339 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,529 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:32:44,529 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:44,714 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:32:44,714 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,278 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,278 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:35:07,430 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:35:07,430 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:35:07,430 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,450 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,450 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,510 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,520 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,700 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 26 Jul 2017 13:35:07,700 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:35:07,900 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 26 Jul 2017 13:35:07,900 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:23,537 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:23,567 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 09:59:24,230 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 09:59:24,260 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 09:59:24,260 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:24,350 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:24,350 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:24,640 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:24,640 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:25,220 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 09:59:25,220 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 09:59:25,646 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 09:59:25,647 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,346 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,356 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:13:22,508 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:13:22,511 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:13:22,511 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,536 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,536 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,606 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,606 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,857 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:13:22,857 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:13:23,290 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:13:23,290 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,588 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,628 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:01,767 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:01,769 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:01,769 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,780 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,780 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,850 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:01,850 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:02,060 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:02,060 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:02,374 - First line: 17.771\t17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:02,374 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,400 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,400 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:19,558 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:19,561 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:19,561 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,572 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,572 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,693 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,693 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,873 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:19,873 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:20,183 - First line: 17.771\t17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:20,183 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,597 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,597 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:58,751 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:58,753 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:58,754 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,769 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,769 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,839 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:58,839 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:59,029 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:27:59,029 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:59,291 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:27:59,291 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,384 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,384 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:31:46,532 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:31:46,535 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:31:46,535 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,556 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,556 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,627 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,627 - Validating workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,868 - org.xml.sax.SAXParseException; lineNumber: 23; columnNumber: 11; cvc-complex-type.2.4.a: Invalid content was found starting with element 'join'. One of '{file1ColumnName, file2ColumnName, caseSensitive, delimiterPattern}' is expected.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:31:46,868 - org.xml.sax.SAXParseException; lineNumber: 23; columnNumber: 11; cvc-complex-type.2.4.a: Invalid content was found starting with element 'join'. One of '{file1ColumnName, file2ColumnName, caseSensitive, delimiterPattern}' is expected.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,570 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,570 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:18,731 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:18,733 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:18,734 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,752 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,752 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,812 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:18,812 - Validating workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:19,012 - org.xml.sax.SAXParseException; lineNumber: 23; columnNumber: 11; cvc-complex-type.2.4.a: Invalid content was found starting with element 'join'. One of '{file1ColumnName, file2ColumnName, caseSensitive, delimiterPattern}' is expected.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:19,012 - org.xml.sax.SAXParseException; lineNumber: 23; columnNumber: 11; cvc-complex-type.2.4.a: Invalid content was found starting with element 'join'. One of '{file1ColumnName, file2ColumnName, caseSensitive, delimiterPattern}' is expected.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,048 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,048 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:59,198 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:59,198 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:59,198 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,218 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,218 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,288 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,288 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,459 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:32:59,459 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:59,732 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:32:59,732 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:12,987 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:12,987 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:33:13,137 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:33:13,137 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:33:13,137 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,157 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,157 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,227 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,227 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,447 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:33:13,447 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:33:13,729 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:33:13,729 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,507 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,507 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:39:58,659 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:39:58,659 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:39:58,659 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,679 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,679 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,749 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,749 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,949 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:39:58,949 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:39:59,221 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:39:59,221 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,732 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,742 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:40:11,884 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:40:11,884 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:40:11,884 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,904 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,904 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,974 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:11,974 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:12,166 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:40:12,166 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:40:12,430 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:40:12,430 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,405 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,405 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:45:02,545 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:45:02,555 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:45:02,555 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,576 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,576 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,637 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,647 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,828 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:45:02,828 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:45:03,120 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:45:03,120 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:00,714 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:00,714 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:47:00,914 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:47:00,917 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:47:00,917 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:00,937 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:00,938 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:01,038 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:01,038 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:01,241 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:01,241 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:47:01,251 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>1</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,173 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,183 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:48:52,323 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:48:52,323 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:48:52,323 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,343 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,343 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,413 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,413 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,603 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,603 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:48:52,613 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>0</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,340 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,340 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:51:56,513 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:51:56,516 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:51:56,516 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,532 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,532 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,602 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,602 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,803 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,803 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:51:56,803 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>0</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,083 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,093 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:02,223 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:02,223 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:02,223 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,243 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,243 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,313 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,313 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,503 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:02,503 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:02,703 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:02,703 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:52,859 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:52,859 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:53,008 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:53,010 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:53,011 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,031 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,031 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,101 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,101 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,281 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 12:58:53,281 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:53,521 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 12:58:53,521 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,175 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,175 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:10:46,325 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:10:46,335 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:10:46,335 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,345 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,345 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,425 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,435 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,615 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:10:46,615 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:10:46,867 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:10:46,867 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,648 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,648 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:11:10,808 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:11:10,808 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:11:10,808 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,828 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,828 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,909 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:10,909 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:11,103 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:11,103 - Executing workflow component.
+ERROR: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:11:11,355 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <component_type>transform</component_type>
+    <component_name>Join</component_name>
+    <elapsed_seconds>1</elapsed_seconds>
+    <errors />
+    <files>
+      <tab-delimited>
+        <index>0</index>
+        <label>tab-delimited</label>
+        <metadata>
+          <header>
+            <id>header0</id>
+            <index>0</index>
+            <name>EEG data</name>
+          </header>
+        </metadata>
+      </tab-delimited>
+    </files>
+    <inputmeta />
+    <optionmeta>
+      <delimiterPattern>\t</delimiterPattern>
+      <caseSensitive>false</caseSensitive>
+      <initialtime1>0</initialtime1>
+      <resamplingscale1>2.0</resamplingscale1>
+      <initialtime2>0</initialtime2>
+      <resamplingscale2>3.0</resamplingscale2>
+      <file1ColumnName>EEG data</file1ColumnName>
+      <file2ColumnName>EEG data</file2ColumnName>
+    </optionmeta>
+  </output0>
+</outputs>
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,116 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,126 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:12:24,268 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:12:24,268 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:12:24,268 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,288 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,298 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,368 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,368 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,549 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:12:24,549 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:12:24,835 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:12:24,835 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:00,934 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:00,934 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:27:01,085 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:27:01,087 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:27:01,087 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,096 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,096 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,176 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,176 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,366 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:27:01,366 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:27:01,659 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:27:01,659 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:00,889 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:00,889 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:01,056 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:01,058 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:01,058 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,073 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,073 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,143 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,143 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,333 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:01,333 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:01,597 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:01,597 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,457 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,457 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:39,603 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:39,605 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:39,605 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,620 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,620 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,690 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,690 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,890 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 13:28:39,890 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:40,154 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 13:28:40,154 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,303 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1/test/components/ComponentJoin.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1/schemas/TransformJoin_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,303 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,443 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1/test/components/ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,445 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,445 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformJoin_1_1_1_1_1\test\components\ComponentJoin.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,465 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,465 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,535 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,535 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,725 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,725 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,985 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,985 - Delim: 	
