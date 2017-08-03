@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.transform.join;
+package edu.cmu.pslc.learnsphere.transform.sensordataalign;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -86,7 +86,7 @@ public class SensorDataAlignMain extends AbstractComponent {
         }
 
         // Output file
-        File generatedFile = this.createFile("Join", ".txt");
+        File generatedFile = this.createFile("SensorDataAligned", ".txt");
         String delimiterpattern = this.getOptionAsString("delimiterPattern");
         String strInitialtime1=this.getOptionAsString("initialtime1");
         String strInitialtime2=this.getOptionAsString("initialtime2");

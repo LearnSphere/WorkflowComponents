@@ -36,7 +36,7 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu\cmu\pslc\learnsphere\transform\sensordataalign/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/sensordataalign/**">
             <manifest>
                 <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain" />
                 <attribute name="Class-Path" value="${lib.list}" />

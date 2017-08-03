@@ -707,3 +707,29 @@ INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:
 INFO: [main] edu.cmu.pslc.learnsphere.transform.join.JoinMain 02 Aug 2017 14:07:41,725 - Executing workflow component.
 INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,985 - First line: 17.771	17.771
 INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 02 Aug 2017 14:07:41,985 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:39,028 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/components/ComponentSensorDataAlign.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/schemas/TransformSensorDataAlign_v1.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:39,059 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:31:39,900 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/components/ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:31:39,933 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign\test\components\ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:31:39,933 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign\test\components\ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,008 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,009 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,336 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,336 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,979 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:31:40,980 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:31:41,335 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:31:41,336 - Delim: 	
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,531 - Command-line args: [-componentXmlFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/components/ComponentSensorDataAlign.xml, -workflowDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/, -toolDir, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/, -schemaFile, D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/schemas/TransformSensorDataAlign_v1.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,533 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:34:22,678 - Reading D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign/test/components/ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:34:22,681 - File absolute path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign\test\components\ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:34:22,681 - File canonical path: D:\Android\2016\netbeansWorkspce3\WorkflowComponents\TransformSensorDataAlign\test\components\ComponentSensorDataAlign.xml
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,701 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,702 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,770 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,770 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,955 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain 03 Aug 2017 11:34:22,955 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:34:23,286 - First line: 17.771	17.771
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 03 Aug 2017 11:34:23,286 - Delim: 	
