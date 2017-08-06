@@ -46,7 +46,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="html" />
+      <xs:element ref="inline-html" />
     </xs:choice>
   </xs:complexType>
 
