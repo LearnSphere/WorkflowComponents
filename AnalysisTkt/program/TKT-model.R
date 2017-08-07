@@ -389,9 +389,10 @@ switch(mode,
              predtest<-predict(fitmodel,testfold,re.form = NULL, type = "response",allow.new.levels=TRUE)
              
              
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.<-NA")))
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]]<-predtest")))
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]])]<-predfit")))
+             
+             eval(parse(text=paste(sep="","trainfold$CF..run",run,"fold",fold,"modbin.<-predfit")))
+             eval(parse(text=paste(sep="","testfold$CF..run",run,"fold",fold,"modbin.<-predtest")))
+             dat<-rbind(trainfold, testfold)
              
              bot <- newXMLNode(paste("model_output_fold",fold,"run",run,sep="_"),parent=top)
              newXMLNode("N", Nresfit, parent = bot)
@@ -551,10 +552,10 @@ switch(mode,
              predtest<-predict(fitmodel,testfold,re.form = NULL, type = "response",allow.new.levels=TRUE)
              
              
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.<-NA")))
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]]<-predtest")))
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,"modbin.[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]])]<-predfit")))
-             
+             eval(parse(text=paste(sep="","trainfold$CF..run",run,"fold",fold,"modbin.<-predfit")))
+             eval(parse(text=paste(sep="","testfold$CF..run",run,"fold",fold,"modbin.<-predtest")))
+             dat<-rbind(trainfold, testfold)
+
              bot <- newXMLNode(paste("model_output_fold",fold,"run",run,sep="_"),parent=top)
              newXMLNode("N", Nresfit, parent = bot)
              newXMLNode("Loglikelihood", round(logLik(fitmodel),5), parent = bot)
