@@ -1,8 +1,6 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
-
-
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -87,7 +85,10 @@
         <xs:element type="xs:string" name="resamplingscale2" id="Resamlimg_Scale2" default="1.0" />
 
       <xs:element type="xs:boolean" name="caseSensitive" id="Case_Sensitive" default="false" />
+      <xs:element type="xs:boolean" name="inputHeader" id="Input_Header" default="false" />
+
       <xs:element type="xs:string" name="delimiterPattern" id="Delimiter_Pattern" default="\t" />
+      
     </xs:choice>
   </xs:complexType>
 

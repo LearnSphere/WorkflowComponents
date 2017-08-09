@@ -93,7 +93,7 @@ public class SensorDataAlignMain extends AbstractComponent {
         
         String strReSamplingscale1=this.getOptionAsString("resamplingscale1");
         String strReSamplingscale2=this.getOptionAsString("resamplingscale2");
-        
+        Boolean blnInputHeader=this.getOptionAsBoolean("inputHeader");
    // String delimiterpattern ="\t";
     Double reSamplingscale1=Double.parseDouble(strReSamplingscale1);
     Double resamplingscale2=Double.parseDouble(strReSamplingscale2);
@@ -103,7 +103,7 @@ public class SensorDataAlignMain extends AbstractComponent {
      int intTimePeriod=timeperiodInteger;
     */ 
 //...... call  output file ...... //
-       generatedFile=this.getCombinedOutput(file1, file2, reSamplingscale1, resamplingscale2,delimiterpattern, generatedFile);
+       generatedFile=this.getCombinedOutput(file1, file2, reSamplingscale1, resamplingscale2,delimiterpattern, generatedFile,blnInputHeader);
         Integer nodeIndex = 0;
         Integer fileIndex = 0;
         
@@ -115,16 +115,27 @@ public class SensorDataAlignMain extends AbstractComponent {
     }
 
       
-File getCombinedOutput(File file1,File file2,Double sampleScale1,Double sampleScale2,String delimiterpattern,File outputfile)
+File getCombinedOutput(File file1,File file2,Double sampleScale1,Double sampleScale2,String delimiterpattern,File outputfile,Boolean blnInputHeader)
 {
   
 Double samplingScale1=sampleScale1;
 Double samplingScale2=sampleScale2;
 File outputFile = outputfile;
-       
-        
-        String delimiter1=delimiterpattern;
-        String delimiter2=delimiterpattern;
+/*
+//....... for space ....////
+String delimiter1="\\s+";
+String delimiter2="\\s+";
+int columnindex=1;
+//.....end ........//
+*/
+
+// .... for tab or comma.....//
+String delimiter1=delimiterpattern;
+String delimiter2=delimiterpattern;
+int columnindex=0;
+//... end ... //
+
+
         boolean skipEmptyLine1=true;
         boolean skipEmptyLine2=true;
       
@@ -148,13 +159,14 @@ File outputFile = outputfile;
                                             continue;
                             }
                                                     
-                           if(count1!=0)
-                           { String tt =  cols[0];
+                           if(count1!=0||!blnInputHeader)
+                           { String tt =  cols[columnindex];
                              Double ii = Double.parseDouble(tt); 
                              listSensorData1.add(ii);
                             // System.out.println("ii= "+ii);
-                             Integer ii2 = Integer.valueOf(cols[1]);
-                             listTime1.add(ii2);
+                            //... now time is omitted...//
+                             //Integer ii2 = Integer.valueOf(cols[1]);
+                             //listTime1.add(ii2);
                            }
                           count1++;
                     
@@ -176,12 +188,13 @@ File outputFile = outputfile;
                                     if (cols.length == 0 || (cols.length == 1 && cols[0].length() == 1))
                                             continue;
                             }
-                     if(count2!=0)
+                     if(count2!=0||!blnInputHeader)
                      {
-                     Double ii21 = Double.parseDouble(cols[0]);
+                     Double ii21 = Double.parseDouble(cols[columnindex]);
                      listSensorData2.add(ii21);
-                     Integer ii22 = Integer.valueOf(cols[1]);
-                     listTime2.add(ii22);  
+                     //... now time is ommitted..//
+                    // Integer ii22 = Integer.valueOf(cols[1]);
+                    // listTime2.add(ii22);  
                      }
                      count2++;
                  }
