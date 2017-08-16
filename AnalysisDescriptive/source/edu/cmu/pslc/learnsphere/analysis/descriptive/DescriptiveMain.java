@@ -50,7 +50,7 @@ public class DescriptiveMain extends AbstractComponent {
             File file4 = new File(outputDirectory.getAbsolutePath() + "/histogramff.png");
             File file5 = new File(outputDirectory.getAbsolutePath() + "/histogramf.png");
 
-            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
+            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file4 != null && file4.exists() && file5 != null && file5.exists()) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
