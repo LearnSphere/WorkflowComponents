@@ -163,9 +163,9 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
-       <xs:element type="FileInputHeader" name="subordinateGroupingCategory" id="Subordinate_Grouping_Category" default=".*" />
-      <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
       <xs:element type="FileInputHeader" name="superordinateGroupingCategory" id="Superordinate_Grouping_Category" default=".*" />
+      <xs:element type="FileInputHeader" name="subordinateGroupingCategory" id="Subordinate_Grouping_Category" default=".*" />
+      <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
       <xs:element type="FileInputHeader" name="latency" id="Latency" default=".*" />
     </xs:choice>
   </xs:complexType>
