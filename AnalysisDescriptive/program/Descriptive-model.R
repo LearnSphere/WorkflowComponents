@@ -16,10 +16,12 @@ suppressMessages(library(lattice))
 #function to calculate mean
 getmean <- function(data, facs, bar){
     result = ddply(data, facs, here(summarize),
-            mean = mean(eval(parse(text=bar)), na.rm=TRUE)
+            mean = round(mean(eval(parse(text=bar)), na.rm=TRUE),digits=3)
     )
     return(result)
 }
+
+
 
 # initialize variables
 inputFile = NULL
@@ -39,17 +41,23 @@ while (i <= length(args)) {
        }
        inputFile = args[i+1]
        i = i+1
-    } else if (args[i] == "-unitCategory") {
+    } else if (args[i] == "-subordinateGroupingCategory") {
        if (length(args) == i) {
-          stop("Unit Category must be specified")
+          stop("Subordinate grouping Category must be specified")
        }
+       subordinateGroupingCategory <- args[i+1]
+       i = i+1
+    }else if (args[i] == "-unitCategory") {
+       #if (length(args) == i) {
+         # stop("Unit Category must be specified")
+       #}
        unitCategory <- args[i+1]
        i = i+1
-    }else if (args[i] == "-groupingCategory") {
+    }else if (args[i] == "-superordinateGroupingCategory") {
        if (length(args) == i) {
-          stop("Grouping Category must be specified")
+          stop("Superordinate Grouping Category must be specified")
        }
-       groupingCategory <- args[i+1]
+       superordinateGroupingCategory <- args[i+1]
        i = i+1
     } else if (args[i] == "-dependent") {
        if (length(args) == i) {
@@ -104,6 +112,8 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 outputFilePath<- paste(workingDirectory, "factor.html", sep="")
 outputFilePath2<- paste(workingDirectory, "factorbyfactor.html", sep="")
+outputFilePath3<- paste(workingDirectory, "factorbyfactorbyfactor.html", sep="")
+
 
 
 # Get data
@@ -113,13 +123,20 @@ val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank
 names(val) <- gsub(" ", ".", names(val))
 
 #relpace parenthesis and space with period
+if (length(unitCategory)>0)
+{
 unitCategory <- gsub(" ", ".", unitCategory)
 unitCategory <- gsub("\\(", ".", unitCategory)
 unitCategory <- gsub("\\)", ".", unitCategory)
+}
 
-groupingCategory <- gsub(" ", ".", groupingCategory)
-groupingCategory <- gsub("\\(", ".", groupingCategory)
-groupingCategory <- gsub("\\)", ".", groupingCategory)
+subordinateGroupingCategory <- gsub(" ", ".", subordinateGroupingCategory)
+subordinateGroupingCategory <- gsub("\\(", ".", subordinateGroupingCategory)
+subordinateGroupingCategory <- gsub("\\)", ".", subordinateGroupingCategory)
+
+superordinateGroupingCategory <- gsub(" ", ".", superordinateGroupingCategory)
+superordinateGroupingCategory <- gsub("\\(", ".", superordinateGroupingCategory)
+superordinateGroupingCategory <- gsub("\\)", ".", superordinateGroupingCategory)
 
 latency <- gsub(" ", ".", latency)
 latency <- gsub("\\(", ".", latency)
@@ -169,27 +186,90 @@ if("First.Attempt" %in% colnames(val))
     }
 }
 
-#factorbyfactor calculation
-meanVal<-getmean(val, c(groupingCategory,unitCategory), meanOn)
+#factorbyfactorbyfactor calculation
+if (length(unitCategory)>0)
+{
+meanValue<-getmean(val, c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory), meanOn)
+medianValue<-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory),summarise,median =round( median(eval(parse(text=meanOn))),digits=3))
+minmaxValue <-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory),summarise,min=min(eval(parse(text=meanOn))),max=max(eval(parse(text=meanOn))))
+stdevValue <-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory),summarise,sd=round(sd(eval(parse(text=meanOn))),digits=3))
+freqValue <- ddply(val, c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory), nrow)
+names(freqValue) <- c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory, "N")
 
-#to print histogram 
-options(bitmapType='cairo')
-png( paste(workingDirectory,'histogram.png',sep=""))
-histogram( ~meanVal$mean | as.character(meanVal[[groupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-dev.off()
+#freqValue <-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory),summarise,N=length(meanOn))
+#count(val, c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory))
+
+resValue <- merge(meanValue,medianValue,by=c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory))
+resValue <- merge(resValue,minmaxValue,by=c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory))
+resValue <- merge(resValue,stdevValue,by=c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory))
+resValue <- merge(resValue,freqValue,by=c(superordinateGroupingCategory,subordinateGroupingCategory,unitCategory))
+}
+
+#factorbyfactor calculation
+meanVal<-getmean(val, c(superordinateGroupingCategory,subordinateGroupingCategory), meanOn)
+medianVal<-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory),summarise,median =round( median(eval(parse(text=meanOn))),digits=3))
+minmaxVal <-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory),summarise,min=min(eval(parse(text=meanOn))),max=max(eval(parse(text=meanOn))))
+stdevVal <-ddply(val,c(superordinateGroupingCategory,subordinateGroupingCategory),summarise,sd=round(sd(eval(parse(text=meanOn))),digits=3))
+freqVal <- ddply(val, c(superordinateGroupingCategory,subordinateGroupingCategory), nrow)
+names(freqVal) <- c(superordinateGroupingCategory,subordinateGroupingCategory, "N")
+
+resVal <- merge(meanVal,medianVal,by=c(superordinateGroupingCategory,subordinateGroupingCategory))
+resVal <- merge(resVal,minmaxVal,by=c(superordinateGroupingCategory,subordinateGroupingCategory))
+resVal <- merge(resVal,stdevVal,by=c(superordinateGroupingCategory,subordinateGroupingCategory))
+resVal <- merge(resVal,freqVal,by=c(superordinateGroupingCategory,subordinateGroupingCategory))
 
 
 #factor calculation
-mean <-ddply(meanVal,groupingCategory,summarise,mean=mean(mean))
-median<-ddply(meanVal,groupingCategory,summarise,median=median(mean))
-minmax <-ddply(meanVal,groupingCategory,summarise,min=min(mean),max=max(mean))
-stdev <-ddply(meanVal,groupingCategory,summarise,sd=sd(mean))
-freq <-ddply(meanVal,groupingCategory,summarise,N=length(mean))
+mean <-ddply(meanVal,c(superordinateGroupingCategory),summarise,mean=mean(mean))
+median<-ddply(meanVal,superordinateGroupingCategory,summarise,median=median(mean))
+minmax <-ddply(meanVal,superordinateGroupingCategory,summarise,min=min(mean),max=max(mean))
+stdev <-ddply(meanVal,superordinateGroupingCategory,summarise,sd=sd(mean))
+freq <-ddply(meanVal,superordinateGroupingCategory,summarise,N=length(mean))
 
-res <- merge(mean,median,by=groupingCategory)
-res <- merge(res,minmax,by=groupingCategory)
-res <- merge(res,stdev,by=groupingCategory)
-res <- merge(res,freq,by=groupingCategory)
+res <- merge(mean,median,by=superordinateGroupingCategory)
+res <- merge(res,minmax,by=superordinateGroupingCategory)
+res <- merge(res,stdev,by=superordinateGroupingCategory)
+res <- merge(res,freq,by=superordinateGroupingCategory)
+
+
+#to print histogram 
+
+#for factorbyfactorbyfactor
+if (length(unitCategory)>0)
+{
+options(bitmapType='cairo')
+png( paste(workingDirectory,'histogramfff.png',sep=""),width=5000,height=nrow(meanValue)*100)
+h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+print(h)
+dev.off()
+}
+
+#for factorbyfactor
+options(bitmapType='cairo')
+png( paste(workingDirectory,'histogramff.png',sep=""),width=1000,height=nrow(meanVal)*100)
+histogram( ~meanVal$mean | as.character(meanVal[[superordinateGroupingCategory]])+as.character(meanVal[[subordinateGroupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+dev.off()
+
+#for factor
+options(bitmapType='cairo')
+png( paste(workingDirectory,'histogramf.png',sep=""))
+histogram( ~mean$mean | as.character(mean[[superordinateGroupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+dev.off()
+
+if (length(unitCategory)>0)
+{
+names(resValue)<-gsub("[.]1","",names(resValue))
+names(resValue)<-gsub("[.]2","",names(resValue))
+names(resValue)<-gsub("[.]3","",names(resValue))
+names(resValue)<-gsub("[.][.]"," (",names(resValue))
+names(resValue)<-gsub("[.]$",")",names(resValue))
+names(resValue)<-gsub("[.]"," ",names(resValue))
+}
+names(resVal)<-gsub("[.]1","",names(resVal))
+names(resVal)<-gsub("[.]2","",names(resVal))
+names(resVal)<-gsub("[.]3","",names(resVal))
+names(resVal)<-gsub("[.][.]"," (",names(resVal))
+names(resVal)<-gsub("[.]$",")",names(resVal))
 
 names(res)<-gsub("[.]1","",names(res))
 names(res)<-gsub("[.]2","",names(res))
@@ -197,15 +277,18 @@ names(res)<-gsub("[.]3","",names(res))
 names(res)<-gsub("[.][.]"," (",names(res))
 names(res)<-gsub("[.]$",")",names(res))
 
-names(meanVal)<-gsub("[.]1","",names(meanVal))
-names(meanVal)<-gsub("[.]2","",names(meanVal))
-names(meanVal)<-gsub("[.]3","",names(meanVal))
-names(meanVal)<-gsub("[.][.]"," (",names(meanVal))
-names(meanVal)<-gsub("[.]$",")",names(meanVal))
-names(meanVal)<-gsub("[.]"," ",names(meanVal))
+
 
 #write to a html file in the form of table
-factorbyfactor<-htmlTable(meanVal,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
+if (length(unitCategory)>0)
+{
+factorbyfactorbyfactor<-htmlTable(resValue,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
+write.table(factorbyfactorbyfactor,file=outputFilePath3,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(length(unitCategory),file=outputFilePath3,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+}
+
+
+factorbyfactor<-htmlTable(resVal,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
 write.table(factorbyfactor,file=outputFilePath2,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 
 factor<-htmlTable(res,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")

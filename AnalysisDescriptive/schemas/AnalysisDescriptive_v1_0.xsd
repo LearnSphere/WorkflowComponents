@@ -86,11 +86,68 @@
     </xs:choice>
   </xs:complexType>
 
+<xs:complexType name="OutputDefinition3">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList3" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList3">
+    <xs:choice>
+      <xs:element ref="html" />
+    </xs:choice>
+  </xs:complexType>
+
+
+<xs:complexType name="OutputDefinition4">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList4" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList4">
+    <xs:choice>
+      <xs:element ref="image" />
+    </xs:choice>
+  </xs:complexType>
+
+
+<xs:complexType name="OutputDefinition5">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList4" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList5">
+    <xs:choice>
+      <xs:element ref="image" />
+    </xs:choice>
+  </xs:complexType>
+
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
       <xs:element name="output1" type="OutputDefinition1" />
       <xs:element name="output2" type="OutputDefinition2" />
+      <xs:element name="output3" type="OutputDefinition2" />
+      <xs:element name="output4" type="OutputDefinition2" />
+      <xs:element name="output5" type="OutputDefinition2" />
     </xs:sequence>
   </xs:complexType>
 
@@ -106,8 +163,9 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="latencyType" name="dependent" id="Dependent" default="Correctness" />
+       <xs:element type="FileInputHeader" name="subordinateGroupingCategory" id="Subordinate_Grouping_Category" default=".*" />
       <xs:element type="FileInputHeader" name="unitCategory" id="Unit_Category" default=".*" />
-      <xs:element type="FileInputHeader" name="groupingCategory" id="Grouping_Category" default=".*" />
+      <xs:element type="FileInputHeader" name="superordinateGroupingCategory" id="Superordinate_Grouping_Category" default=".*" />
       <xs:element type="FileInputHeader" name="latency" id="Latency" default=".*" />
     </xs:choice>
   </xs:complexType>
