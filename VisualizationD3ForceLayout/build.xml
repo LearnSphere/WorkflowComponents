@@ -1,6 +1,6 @@
 <project name="VisualizationD3ForceLayout" default="dist" basedir=".">
     <description>
-        Java-based VisualizationD3 workflow component.
+        Java-based VisualizationD3ForceLayout workflow component.
     </description>
 
     <!-- set global properties for this build -->
@@ -79,7 +79,7 @@
         </javadoc>
     </target>
 
-    <target name="runComponent" depends="clean, compile, dist" description="executes VisualizationD3">
+    <target name="runComponent" depends="clean, compile, dist" description="executes VisualizationD3ForceLayout">
         <java classname="edu.cmu.pslc.learnsphere.visualization.d3.VisualizationD3ForceLayoutMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
@@ -94,4 +94,5 @@
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>
     </target>
+    
 </project>
