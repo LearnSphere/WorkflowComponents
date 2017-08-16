@@ -1,6 +1,6 @@
-<project name="VisualizationD3ForceLayout" default="dist" basedir=".">
+<project name="TransformSensorDataAlign" default="dist" basedir=".">
     <description>
-        Java-based VisualizationD3ForceLayout workflow component.
+        Java-based TransformJoin workflow component.
     </description>
 
     <!-- set global properties for this build -->
@@ -13,7 +13,7 @@
 
     <property name="version" value="1.0" />
 
-    <property name="component.id" value="VisualizationD3ForceLayout" />
+    <property name="component.id" value="TransformSensorDataAlign" />
     <property name="component.version" value="v${version} 2015" />
 
     <property name="ToolTemplate.jar" value="${dist}/${component.id}-${version}.jar" />
@@ -36,9 +36,9 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/visualization/d3/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/sensordataalign/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.visualization.d3.VisualizationD3ForceLayoutMain" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -79,20 +79,19 @@
         </javadoc>
     </target>
 
-    <target name="runComponent" depends="clean, compile, dist" description="executes VisualizationD3ForceLayout">
-        <java classname="edu.cmu.pslc.learnsphere.visualization.d3.VisualizationD3ForceLayoutMain" fork="true">
+    <target name="runComponent" depends="clean, compile, dist" description="executes SensorDataAlign">
+        <java classname="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/ComponentD3ForceLayout.xml" />
+            <arg value="${basedir}/test/components/ComponentSensorDataAlign.xml" />
             <arg value="-workflowDir" />
             <arg value="${basedir}/test/" />
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/VisualizationD3ForceLayout_v1_0.xsd" />
+            <arg value="${basedir}/schemas/TransformSensorDataAlign_v1.xsd" />
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>
     </target>
-    
 </project>
