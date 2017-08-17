@@ -19,7 +19,7 @@
 </head>
 <body onload="parent.frameSize(jQuery(window).width(), jQuery(window).height());">
 <script src="https://d3js.org/d3.v3.js"></script>
-
+<script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
 
 
 <script type="application/json" id="mis">
@@ -90,8 +90,8 @@ var allValues=[];
 var linkedByIndex = {};
 
 var node_drag="";
-//change "jQuery{input0}" to data.txt to test locally
-d3.tsv("jQuery{input0}", function (error, data) {    
+//change "${input0}" to data.txt to test locally
+d3.tsv("${input0}", function (error, data) {    
     if(error) throw error;
 	createGraph(data);	
 });
@@ -108,7 +108,7 @@ function formatDataInJson(data)
 {
 	
 		//gets all column header
-		var keys1 = jQuery.map(data[0], function(item, key) {
+		var keys1 = $.map(data[0], function(item, key) {
 		  return key;
 		});
 		
@@ -150,10 +150,10 @@ function formatDataInJson(data)
 			
 				if(src!=trgt && trgtVal >0.2)
 				{			
-					var s = jQuery.map(jsonData.nodes, function(item, key) {
+					var s = $.map(jsonData.nodes, function(item, key) {
 					  return item["name"];
 					}).indexOf(src);
-					var t =jQuery.map(jsonData.nodes, function(item, key) {
+					var t =$.map(jsonData.nodes, function(item, key) {
 					  return item["name"];
 					}).indexOf(trgt);
 					
@@ -202,10 +202,10 @@ function formatDataInJson(data)
 			
 				if(src!=trgt && trgtVal >0.2)
 				{			
-					var s = jQuery.map(upjsonData.nodes, function(item, key) {
+					var s = $.map(upjsonData.nodes, function(item, key) {
 					  return item["name"];
 					}).indexOf(src);
-					var t =jQuery.map(upjsonData.nodes, function(item, key) {
+					var t =$.map(upjsonData.nodes, function(item, key) {
 					  return item["name"];
 					}).indexOf(trgt);
 					
