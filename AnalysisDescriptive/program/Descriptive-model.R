@@ -238,7 +238,7 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
 if (length(unitCategory)>0)
 {
 #options(bitmapType='cairo')
-png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=nrow(meanValue)*100)
+png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=55000)
 h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 print(h)
 dev.off()
@@ -246,7 +246,7 @@ dev.off()
 
 #for factorbyfactor
 #options(bitmapType='cairo')
-png( paste(workingDirectory,'histogramff.png',sep=""),width=1000,height=nrow(meanVal)*100)
+png( paste(workingDirectory,'histogramff.png',sep=""),width=1000,height=25000)
 histogram( ~meanVal$mean | as.character(meanVal[[superordinateGroupingCategory]])+as.character(meanVal[[subordinateGroupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 dev.off()
 
