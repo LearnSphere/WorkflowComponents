@@ -235,14 +235,51 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
 #to print histogram 
 
 #for factorbyfactorbyfactor
-if (length(unitCategory)>0)
-{
-options(bitmapType='cairo-png')
-png( paste(workingDirectory,'histogramfff.png',sep=""),height=nrow(meanValue)*100)
-h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-print(h)
-dev.off()
-}
+tryCatch(
+        {
+            message("This is the 'try' part")
+
+           if (length(unitCategory)>0)
+			{
+			options(bitmapType='cairo-png')
+			png( paste(workingDirectory,'histogramfff.png',sep=""),height=nrow(meanValue)*100)
+			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+			print(h)
+			dev.off()
+			}
+        },
+        error=function(cond) {
+            message("Error")
+            message("Here's the original error message:")
+            message(cond)
+            if (length(unitCategory)>0)
+			{
+			options(bitmapType='cairo-png')
+			png( paste(workingDirectory,'histogramfff.png',sep=""))
+			h<-""
+			print(h)
+			dev.off()
+			}
+            # Choose a return value in case of error
+            return(NA)
+        },
+        warning=function(cond) {
+            message("Warning")
+            message("Here's the original warning message:")
+            message(cond)
+            # Choose a return value in case of warning
+            return(NULL)
+        },
+        finally={
+        # NOTE:
+        # Here goes everything that should be executed at the end,
+        # regardless of success or error.
+        # If you want more than one expression to be executed, then you 
+        # need to wrap them in curly brackets ({...}); otherwise you could
+        # just have written 'finally=<expression>' 
+            message("Done")
+        }
+    ) 
 
 #,width=1000,height=nrow(meanVal)*100
 #for factorbyfactor
