@@ -241,18 +241,25 @@ tryCatch(
 
            if (length(unitCategory)>0)
 			{
-			options(bitmapType='cairo-png')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),height=nrow(meanValue)*100)
+			options(bitmapType='cairo')
+			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=nrow(meanValue)*100)
 			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 			print(h)
 			dev.off()
 			}
         },
         error=function(cond) {
-            message("Error")
-            message("Here's the original error message:")
-            message(cond)
-           
+        # message("Error")
+         #   message("Here's the original error message:")
+          #  message(cond)
+           if (length(unitCategory)>0)
+			{
+			options(bitmapType='cairo')
+			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000)
+			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+			print(h)
+			dev.off()
+			}
             # Choose a return value in case of error
             return(NA)
         },
@@ -260,7 +267,14 @@ tryCatch(
             #message("Warning")
             #message("Here's the original warning message:")
             #message(cond)
-           
+           if (length(unitCategory)>0)
+			{
+			options(bitmapType='cairo')
+			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000)
+			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+			print(h)
+			dev.off()
+			}
             # Choose a return value in case of warning
             return(NULL)
         },
@@ -269,10 +283,9 @@ tryCatch(
         }
     ) 
 
-#,width=1000,height=nrow(meanVal)*100
 #for factorbyfactor
 options(bitmapType='cairo')
-png( paste(workingDirectory,'histogramff.png',sep=""),height=nrow(meanVal)*100)
+png( paste(workingDirectory,'histogramff.png',sep=""),width=1000,height=nrow(meanVal)*100)
 histogram( ~meanVal$mean | as.character(meanVal[[superordinateGroupingCategory]])+as.character(meanVal[[subordinateGroupingCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 dev.off()
 
