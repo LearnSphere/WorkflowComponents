@@ -256,36 +256,26 @@ tryCatch(
 			{
 			options(bitmapType='cairo-png')
 			png( paste(workingDirectory,'histogramfff.png',sep=""))
-			h<-""
-			print(h)
 			dev.off()
 			}
             # Choose a return value in case of error
             return(NA)
         },
         warning=function(cond) {
-            message("Warning")
-            message("Here's the original warning message:")
-            message(cond)
-        if (length(unitCategory)>0)
+            #message("Warning")
+            #message("Here's the original warning message:")
+            #message(cond)
+            if (length(unitCategory)>0)
 			{
 			options(bitmapType='cairo-png')
 			png( paste(workingDirectory,'histogramfff.png',sep=""))
-			h<-""
-			print(h)
 			dev.off()
 			}
             # Choose a return value in case of warning
             return(NULL)
         },
         finally={
-        # NOTE:
-        # Here goes everything that should be executed at the end,
-        # regardless of success or error.
-        # If you want more than one expression to be executed, then you 
-        # need to wrap them in curly brackets ({...}); otherwise you could
-        # just have written 'finally=<expression>' 
-           # message("Done")
+                   # message("Done")
         }
     ) 
 
