@@ -252,12 +252,7 @@ tryCatch(
             message("Error")
             message("Here's the original error message:")
             message(cond)
-            if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo-png')
-			png( paste(workingDirectory,'histogramfff.png',sep=""))
-			dev.off()
-			}
+           
             # Choose a return value in case of error
             return(NA)
         },
@@ -265,12 +260,7 @@ tryCatch(
             #message("Warning")
             #message("Here's the original warning message:")
             #message(cond)
-            if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo-png')
-			png( paste(workingDirectory,'histogramfff.png',sep=""))
-			dev.off()
-			}
+           
             # Choose a return value in case of warning
             return(NULL)
         },
