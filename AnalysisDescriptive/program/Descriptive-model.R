@@ -242,7 +242,8 @@ tryCatch(
            if (length(unitCategory)>0)
 			{
 			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=nrow(meanValue)*100)
+#,height=nrow(meanValue)*100
+			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=65000)
 			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 			print(h)
 			dev.off()
