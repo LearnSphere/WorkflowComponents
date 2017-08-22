@@ -235,54 +235,17 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
 #to print histogram 
 
 #for factorbyfactorbyfactor
-tryCatch(
-        {
-            #message("This is the 'try' part")
-
-           if (length(unitCategory)>0)
+ if (length(unitCategory)>0)
 			{
 			options(bitmapType='cairo')
 #,height=nrow(meanValue)*100
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=65000)
+			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=75000)
 			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
 			print(h)
 			dev.off()
 			}
-        },
-        error=function(cond) {
-        # message("Error")
-         #   message("Here's the original error message:")
-          #  message(cond)
-           if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000)
-			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-			print(h)
-			dev.off()
-			}
-            # Choose a return value in case of error
-            return(NA)
-        },
-        warning=function(cond) {
-            #message("Warning")
-            #message("Here's the original warning message:")
-            #message(cond)
-           if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000)
-			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-			print(h)
-			dev.off()
-			}
-            # Choose a return value in case of warning
-            return(NULL)
-        },
-        finally={
-                   # message("Done")
-        }
-    ) 
+
+
 
 #for factorbyfactor
 options(bitmapType='cairo')
