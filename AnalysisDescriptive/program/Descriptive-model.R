@@ -237,7 +237,7 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
 #for factorbyfactorbyfactor
 tryCatch(
         {
-            message("This is the 'try' part")
+            #message("This is the 'try' part")
 
            if (length(unitCategory)>0)
 			{
@@ -267,6 +267,14 @@ tryCatch(
             message("Warning")
             message("Here's the original warning message:")
             message(cond)
+        if (length(unitCategory)>0)
+			{
+			options(bitmapType='cairo-png')
+			png( paste(workingDirectory,'histogramfff.png',sep=""))
+			h<-""
+			print(h)
+			dev.off()
+			}
             # Choose a return value in case of warning
             return(NULL)
         },
@@ -277,7 +285,7 @@ tryCatch(
         # If you want more than one expression to be executed, then you 
         # need to wrap them in curly brackets ({...}); otherwise you could
         # just have written 'finally=<expression>' 
-            message("Done")
+           # message("Done")
         }
     ) 
 
