@@ -74,21 +74,31 @@
   </xs:complexType>
 
 
+  <xs:simpleType name="interpolationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="spline" />
+      <xs:enumeration value="linear" />
+      <xs:enumeration value="constant" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="FileInputHeader" name="file1ColumnName" id="File_1_Column_Name" default=".*" />
-       <xs:element type="xs:string" name="initialtime1" id="Initial_Time1" default="0" />
-        <xs:element type="xs:string" name="samplingscale1" id="Sampling_Scale1" default="1.0" />
+      <xs:element type="FileInputHeader" name="file1ColumnName" id="Signal_1_Column_Name" default=".*" />
+      <xs:element type="xs:string" name="signal1samplingrate" id="Signal_1_sampling_rate" default="1024.0" /> 
 
-      <xs:element type="FileInputHeader" name="file2ColumnName" id="File_2_Column_Name" default=".*" />
-      <xs:element type="xs:string" name="initialtime2" id="Initial_Time2" default="0" />
-      <xs:element type="xs:string" name="samplingscale2" id="Sampling_Scale2" default="1.0" />
+      <xs:element type="FileInputHeader" name="file2ColumnName" id="Signal_2_Column_Name" default=".*" />
+      <xs:element type="xs:string" name="signal2samplingrate" id="Signal_2_sampling_rate" default="1024.0" />
       
-      <xs:element type="xs:string" name="resamplingscale" id="Resampling_Scale" default="1.0" />
+     <xs:element type="xs:string" name="offsetofsignal2fromsignal1" id="Offset_of_Signal2_from_Signal1" default="0" />
 
-      <xs:element type="xs:boolean" name="inputHeader" id="Input_Header" default="false" />
+      <xs:element type="xs:string" name="outputresamplerate" id="Output_Resample_rate" default="1024.0" />
+      <xs:element type="interpolationType" name="interpolationtype" id="Interpolation_Type" default="spline" />
 
-      <xs:element type="xs:string" name="delimiterPattern" id="Delimiter_Pattern" default="\t" />
+      <xs:element type="xs:boolean" name="generatetimevector" id="Generate_time_vector" default="true" />
+
+      <xs:element type="xs:boolean" name="inputHeader" id="Input_Header" default="true" />
       
     </xs:choice>
   </xs:complexType>

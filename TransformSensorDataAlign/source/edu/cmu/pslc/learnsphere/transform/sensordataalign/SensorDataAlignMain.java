@@ -20,7 +20,7 @@ public class SensorDataAlignMain extends AbstractComponent {
     }
 
     /**
-     * This class runs Join on two files.
+     * This class runs Sensor Data Align on two files.
      */
     public SensorDataAlignMain() {
         super();
@@ -46,7 +46,7 @@ public class SensorDataAlignMain extends AbstractComponent {
     }
 
     /**
-     * Joins the two files and adds the resulting file to the component output.
+     * Sensor Data Align for the two files and adds the resulting file to the component output.
      */
     List<Integer> listTime1=new ArrayList<>();
     List<Integer> listSensorData1=new ArrayList<>();
@@ -57,8 +57,8 @@ public class SensorDataAlignMain extends AbstractComponent {
     protected void runComponent() {  
         File outputDirectory = this.runExternalMultipleFileOuput();
         String dir= this.getToolPath();
-    System.out.println("dir"+dir);
-        // Attach the output files to the component output with addOutputFile(..>)
+    
+        //.. Attach the output files to the component output with addOutputFile...//
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsoluteFile() + "/SensorDataAligned.txt");
             
@@ -70,13 +70,13 @@ public class SensorDataAlignMain extends AbstractComponent {
                 this.addOutputFile(file0, nodeIndex, fileIndex, fileLabel);
 
             } else {
-                this.addErrorMessage("An unknown error has occurred with the PFA component.");
+                this.addErrorMessage("An unknown error has occurred with the SensordataAlign component.");
             }
 
         }
 
         // Send the component output back to the workflow.
-        System.out.println(this.getOutput());
+       // System.out.println(this.getOutput());
         
     }
 
