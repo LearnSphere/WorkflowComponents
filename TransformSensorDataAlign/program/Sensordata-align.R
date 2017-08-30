@@ -137,8 +137,13 @@ outputFilePath<- paste(workingDirectory,"SensorDataAligned.txt", sep="")
 # Get program location
 datalocation<- paste(componentDirectory, "/program/", sep="")
 #Get input Files
+if(inputHeader){
+FileInputData1<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+FileInputData2<-read.table(inputFile1,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+}else{
 FileInputData1<-read.table(inputFile0,sep="\t", header=FALSE,na.strings="",quote="",comment.char = "")
 FileInputData2<-read.table(inputFile1,sep="\t", header=FALSE,na.strings="",quote="",comment.char = "")
+}
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "Sensordata-Align-log.wfl", sep=""))
@@ -148,9 +153,9 @@ options(width=130)
 
 #Get the column from input data file0 and file1 to resample it 
 
-InputData1<-FileInputData1[[file1ColumnName]]
+InputData1<-as.numeric(FileInputData1[[file1ColumnName]])
 #Get the column from input data file1 to resample it 
-InputData2<-FileInputData2[[file2ColumnName]]
+InputData2<-as.numeric(FileInputData2[[file2ColumnName]])
 
 # Sensordata Align functions
 # original sampling rate of InputData1 and InputData2
@@ -166,8 +171,8 @@ SampOut <- as.numeric(outputresamplerate)
 
 # CALCULATION starts from here
 # Determine lengths of input vectors
-LenInput1 <- length(t(InputData1))
-LenInput2 <- length(t(InputData2))
+LenInput1 <- length(InputData1)
+LenInput2 <- length(InputData2)
 
 # determine sampling factors for InputData1 and InputData2
 FactorInput1 <- SampOut / SampIn1
@@ -242,9 +247,28 @@ if(generatetimevector)
 {
 # columns: Time, OutputData1, OutputData2
 OutputData <- cbind(time, OutputData1, OutputData2)
+
+ if(inputHeader){
+    colnames(OutputData)[1]<-"Sampling Rate"
+    colnames(OutputData)[2]<- file1ColumnName
+    colnames(OutputData)[3]<- file2ColumnName
+  
+  }else{
+    colnames(OutputData)[1]<-"Sampling Rate"
+    colnames(OutputData)[2]<- "Signal 1 Sensor data"
+    colnames(OutputData)[3]<- "Signal 2 Sensor data"
+  }
 }else{
-# columns: OutputData1, OutputData2
-OutputData <- cbind(OutputData1, OutputData2)
+    # columns: OutputData1, OutputData2
+    OutputData <- cbind(OutputData1, OutputData2)
+    if(inputHeader){  
+    colnames(OutputData)[1]<- file1ColumnName
+    colnames(OutputData)[2]<- file2ColumnName 
+  }else{
+    colnames(OutputData)[1]<- "Signal 1 Sensor data"
+    colnames(OutputData)[2]<- "Signal 2 Sensor data"
+  }
+   
 }
 
 

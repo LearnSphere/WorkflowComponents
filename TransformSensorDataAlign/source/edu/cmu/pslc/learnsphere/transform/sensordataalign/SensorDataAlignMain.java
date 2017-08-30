@@ -56,7 +56,7 @@ public class SensorDataAlignMain extends AbstractComponent {
     @Override
     protected void runComponent() {  
         File outputDirectory = this.runExternalMultipleFileOuput();
-        String dir= this.getToolPath();
+        //String dir= this.getToolPath();
     
         //.. Attach the output files to the component output with addOutputFile...//
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
