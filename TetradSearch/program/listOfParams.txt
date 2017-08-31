@@ -1,0 +1,7 @@
+testType
+algorithm
+alpha
+maxSizeConditioningSet
+
+
+

@@ -1,0 +1,62 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>TetradEstimator #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>TetradEstimator</component_name>
+  <component_type>tetrad</component_type>
+  <left>695</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Analysis-1-x641889</from>
+    </connection>
+  </connections>
+  <top>106</top>
+  <options>
+	<estimator>ML_Bayes_Estimator</estimator>
+	<incompleteRows>Randomize_incomplete_rows</incompleteRows>
+	<parametricModel>Bayes_Parametric_Model</parametricModel>
+  </options>
+  <inputs>
+    <!--<input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>		  
+		  <file_path>test/resources/CheeseDiscrete.txt</file_path>
+          <file_name>CheeseDiscrete.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+          <metadata />
+        </student-step>
+		
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>-->
+	<input1>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #2</component_id_human>
+      <component_type>analysis1</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>		  
+		  <file_path>test/resources/graphBrain.txt</file_path>
+          <file_name>graphBrain.txt</file_name>
+          <index>1</index>
+          <label>student-step</label>
+          <metadata />
+            
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>

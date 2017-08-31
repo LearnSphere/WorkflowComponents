@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: tetrad-gui-6.3.4-launch.jar
+Main-Class: TetradDiscretize 

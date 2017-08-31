@@ -1,0 +1,194 @@
+<!-- 
+        HELPER DEPENDENCIES 
+      -->
+
+      <!-- Conditional Gaussian BIC is selected -->
+      <xs:element type="conjunctive" name="condGausBICDependency1" ls:dependentOption="condGausBICDependency1" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="condGausBICDependency2" ls:dependentOption="condGausBICDependency2" ls:dependsOn="scoreTypeContinuous" ls:constraint="matches(Conditional_Gaussian_BIC)" />
+      <xs:element type="conjunctive" name="condGausBICDependency3" ls:dependentOption="condGausBICDependency3" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="conjunctive" name="condGausBICDependency4" ls:dependentOption="condGausBICDependency4" ls:dependsOn="scoreTypeDiscrete" ls:constraint="matches(Conditional_Gaussian_BIC)" />
+      <xs:element type="conjunctive" name="condGausBICDependency5" ls:dependentOption="condGausBICDependency5" ls:dependsOn="dataType" ls:constraint="matches(Mixed)" />
+      <xs:element type="conjunctive" name="condGausBICDependency6" ls:dependentOption="condGausBICDependency6" ls:dependsOn="scoreTypeMixed" ls:constraint="matches(Conditional_Gaussian_BIC)" />
+
+      <xs:element type="conjunctive" name="condGausBICDependency7" ls:dependentOption="condGausBICDependency7" ls:dependsOn="condGausBICDependency1" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependency7a" ls:dependentOption="condGausBICDependency7" ls:dependsOn="condGausBICDependency2" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependency8" ls:dependentOption="condGausBICDependency8" ls:dependsOn="condGausBICDependency3" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependency8a" ls:dependentOption="condGausBICDependency8" ls:dependsOn="condGausBICDependency4" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependency9" ls:dependentOption="condGausBICDependency9" ls:dependsOn="condGausBICDependency5" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependency9a" ls:dependentOption="condGausBICDependency9" ls:dependsOn="condGausBICDependency6" ls:constraint="true" />
+
+      <xs:element type="disjunctive" name="condGausBICDependency10" ls:dependentOption="condGausBICDependency10" ls:dependsOn="condGausBICDependency7" ls:constraint="true" />
+      <xs:element type="disjunctive" name="condGausBICDependency10a" ls:dependentOption="condGausBICDependency10" ls:dependsOn="condGausBICDependency8" ls:constraint="true" />
+      <xs:element type="disjunctive" name="condGausBICDependency10b" ls:dependentOption="condGausBICDependency10" ls:dependsOn="condGausBICDependency9" ls:constraint="true" />
+
+      <xs:element type="conjunctive" name="condGausBICDependency11" ls:dependentOption="condGausBICDependency11" ls:dependsOn="algorithm" ls:constraint="matches(FGES||MBFS)" />
+
+      <xs:element type="conjunctive" name="condGausBICDependency" ls:dependentOption="condGausBICDependency" ls:dependsOn="condGausBICDependency10" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausBICDependencya" ls:dependentOption="condGausBICDependency" ls:dependsOn="condGausBICDependency11" ls:constraint="true" />
+
+      <!-- Conditional Gaussian LRT is selected -->
+
+      <xs:element type="conjunctive" name="condGausLRTDependency1" ls:dependentOption="condGausLRTDependency1" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="condGausLRTDependency2" ls:dependentOption="condGausLRTDependency2" ls:dependsOn="testTypeContinuous" ls:constraint="matches(Conditional_Gaussian_LRT)" />
+      <xs:element type="conjunctive" name="condGausLRTDependency3" ls:dependentOption="condGausLRTDependency3" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="conjunctive" name="condGausLRTDependency4" ls:dependentOption="condGausLRTDependency4" ls:dependsOn="testTypeDiscrete" ls:constraint="matches(Conditional_Gaussian_LRT)" />
+      <xs:element type="conjunctive" name="condGausLRTDependency5" ls:dependentOption="condGausLRTDependency5" ls:dependsOn="dataType" ls:constraint="matches(Mixed)" />
+      <xs:element type="conjunctive" name="condGausLRTDependency6" ls:dependentOption="condGausLRTDependency6" ls:dependsOn="testTypeMixed" ls:constraint="matches(Conditional_Gaussian_LRT)" />
+
+      <xs:element type="conjunctive" name="condGausLRTDependency7" ls:dependentOption="condGausLRTDependency7" ls:dependsOn="condGausLRTDependency1" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependency7a" ls:dependentOption="condGausLRTDependency7" ls:dependsOn="condGausLRTDependency2" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependency8" ls:dependentOption="condGausLRTDependency8" ls:dependsOn="condGausLRTDependency3" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependency8a" ls:dependentOption="condGausLRTDependency8" ls:dependsOn="condGausLRTDependency4" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependency9" ls:dependentOption="condGausLRTDependency9" ls:dependsOn="condGausLRTDependency5" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependency9a" ls:dependentOption="condGausLRTDependency9" ls:dependsOn="condGausLRTDependency6" ls:constraint="true" />
+
+      <xs:element type="disjunctive" name="condGausLRTDependency10" ls:dependentOption="condGausLRTDependency10" ls:dependsOn="condGausLRTDependency7" ls:constraint="true" />
+      <xs:element type="disjunctive" name="condGausLRTDependency10a" ls:dependentOption="condGausLRTDependency10" ls:dependsOn="condGausLRTDependency8" ls:constraint="true" />
+      <xs:element type="disjunctive" name="condGausLRTDependency10b" ls:dependentOption="condGausLRTDependency10" ls:dependsOn="condGausLRTDependency9" ls:constraint="true" />
+
+      <xs:element type="conjunctive" name="condGausLRTDependency11" ls:dependentOption="condGausLRTDependency11" ls:dependsOn="algorithm" ls:constraint="matches(FCI||PC)" />
+
+      <xs:element type="conjunctive" name="condGausLRTDependency" ls:dependentOption="condGausLRTDependency" ls:dependsOn="condGausLRTDependency10" ls:constraint="true" />
+      <xs:element type="conjunctive" name="condGausLRTDependencya" ls:dependentOption="condGausLRTDependency" ls:dependsOn="condGausLRTDependency11" ls:constraint="true" />
+
+
+      <!-- alpha -->
+      <xs:element type="disjunctive" name="alphaDependency" ls:dependentOption="alpha" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES)" />
+
+      <!-- maxSizeConditioningSet -->
+      <xs:element type="disjunctive" name="maxSizeConditioningSetDependency" ls:dependentOption="maxSizeConditioningSet" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES)" />
+
+      <!-- testType -->
+      <xs:element type="conjunctive" name="testTypeDependencyContinuous1" ls:dependentOption="testTypeContinuous" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="testTypeDependencyContinuous2" ls:dependentOption="testTypeContinuous" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES|MBFS)" />
+
+      <xs:element type="conjunctive" name="testTypeDependencyDiscrete1" ls:dependentOption="testTypeDiscrete" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="conjunctive" name="testTypeDependencyDiscrete2" ls:dependentOption="testTypeDiscrete" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES|MBFS)" />
+
+      <xs:element type="conjunctive" name="testTypeDependencyMixed1" ls:dependentOption="testTypeMixed" ls:dependsOn="dataType" ls:constraint="matches(Mixed)" />
+      <xs:element type="conjunctive" name="testTypeDependencyMixed2" ls:dependentOption="testTypeMixed" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES|MBFS)" />
+
+      <!-- penaltyDiscount ...god help me-->
+        <!--Leaves penaltyDiscount-->
+      <xs:element type="conjunctive" name="penaltyDiscountDependency8" ls:dependentOption="penaltyDiscountDependency8" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency9" ls:dependentOption="penaltyDiscountDependency9" ls:dependsOn="testTypeContinuous" ls:constraint="matches(Conditional_Gaussian_LRT)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency11" ls:dependentOption="penaltyDiscountDependency11" ls:dependsOn="algorithm" ls:constraint="matches(PC)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency12" ls:dependentOption="penaltyDiscountDependency12" ls:dependsOn="algorithm" ls:constraint="matches(FCI)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency13" ls:dependentOption="penaltyDiscountDependency13" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency14" ls:dependentOption="penaltyDiscountDependency14" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency15" ls:dependentOption="penaltyDiscountDependency15" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency16" ls:dependentOption="penaltyDiscountDependency16" ls:dependsOn="algorithm" ls:constraint="matches(MBFS)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency17" ls:dependentOption="penaltyDiscountDependency17" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency19" ls:dependentOption="penaltyDiscountDependency19" ls:dependsOn="scoreTypeDiscrete" ls:constraint="matches(Discrete_BIC)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency20" ls:dependentOption="penaltyDiscountDependency20" ls:dependsOn="scoreTypeDiscrete" ls:constraint="matches(Conditional_Gaussian_BIC)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency21" ls:dependentOption="penaltyDiscountDependency21" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency22" ls:dependentOption="penaltyDiscountDependency22" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency25" ls:dependentOption="penaltyDiscountDependency25" ls:dependsOn="algorithm" ls:constraint="matches(FCI)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency26" ls:dependentOption="penaltyDiscountDependency26" ls:dependsOn="algorithm" ls:constraint="matches(PC)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency24" ls:dependentOption="penaltyDiscountDependency24" ls:dependsOn="testTypeDiscrete" ls:constraint="matches(Conditional_Gaussian_LRT)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency27" ls:dependentOption="penaltyDiscountDependency27" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency28" ls:dependentOption="penaltyDiscountDependency28" ls:dependsOn="algorithm" ls:constraint="matches(MBFS)" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency29" ls:dependentOption="penaltyDiscountDependency29" ls:dependsOn="dataType" ls:constraint="matches(mixed)" />
+
+        <!--2nd tier penaltyDiscount-->
+      <xs:element type="disjunctive" name="penaltyDiscountDependency10" ls:dependentOption="penaltyDiscountDependency10" ls:dependsOn="penaltyDiscountDependency11" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency10a" ls:dependentOption="penaltyDiscountDependency10" ls:dependsOn="penaltyDiscountDependency12" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency18" ls:dependentOption="penaltyDiscountDependency18" ls:dependsOn="penaltyDiscountDependency19" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency18a" ls:dependentOption="penaltyDiscountDependency18" ls:dependsOn="penaltyDiscountDependency20" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency23" ls:dependentOption="penaltyDiscountDependency23" ls:dependsOn="penaltyDiscountDependency25" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency23a" ls:dependentOption="penaltyDiscountDependency23" ls:dependsOn="penaltyDiscountDependency26" ls:constraint="true" />
+
+        <!--Top tier penaltyDiscount-->
+      <xs:element type="conjunctive" name="penaltyDiscountDependency1" ls:dependentOption="penaltyDiscountDependency1" ls:dependsOn="penaltyDiscountDependency8" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency1a" ls:dependentOption="penaltyDiscountDependency1" ls:dependsOn="penaltyDiscountDependency9" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency1b" ls:dependentOption="penaltyDiscountDependency1" ls:dependsOn="penaltyDiscountDependency10" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency2" ls:dependentOption="penaltyDiscountDependency2" ls:dependsOn="penaltyDiscountDependency13" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency2a" ls:dependentOption="penaltyDiscountDependency2" ls:dependsOn="penaltyDiscountDependency14" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency3" ls:dependentOption="penaltyDiscountDependency3" ls:dependsOn="penaltyDiscountDependency15" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency3a" ls:dependentOption="penaltyDiscountDependency3" ls:dependsOn="penaltyDiscountDependency16" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency4" ls:dependentOption="penaltyDiscountDependency4" ls:dependsOn="penaltyDiscountDependency17" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency4a" ls:dependentOption="penaltyDiscountDependency4" ls:dependsOn="penaltyDiscountDependency18" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency4b" ls:dependentOption="penaltyDiscountDependency4" ls:dependsOn="penaltyDiscountDependency21" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency5" ls:dependentOption="penaltyDiscountDependency5" ls:dependsOn="penaltyDiscountDependency22" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency5a" ls:dependentOption="penaltyDiscountDependency5" ls:dependsOn="penaltyDiscountDependency23" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency5b" ls:dependentOption="penaltyDiscountDependency5" ls:dependsOn="penaltyDiscountDependency24" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency6" ls:dependentOption="penaltyDiscountDependency6" ls:dependsOn="penaltyDiscountDependency27" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency6a" ls:dependentOption="penaltyDiscountDependency6" ls:dependsOn="penaltyDiscountDependency28" ls:constraint="true" />
+      <xs:element type="conjunctive" name="penaltyDiscountDependency7" ls:dependentOption="penaltyDiscountDependency7" ls:dependsOn="penaltyDiscountDependency29" ls:constraint="true" />
+      
+
+      <xs:element type="disjunctive" name="penaltyDiscountDependency30" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency1" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency31" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency2" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency32" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency3" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency33" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency4" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency34" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency5" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency35" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency6" ls:constraint="true" />
+      <xs:element type="disjunctive" name="penaltyDiscountDependency36" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency7" ls:constraint="true" />
+
+      <!-- discretizeContinuousVars -->
+      <xs:element type="disjunctive" name="discretizeContinuousVarsDependency1" ls:dependentOption="discretizeContinuousVars" ls:dependsOn="condGausBICDependency" ls:constraint="true" />
+      <xs:element type="disjunctive" name="discretizeContinuousVarsDependency2" ls:dependentOption="discretizeContinuousVars" ls:dependsOn="condGausLRTDependency" ls:constraint="true" />
+
+      <!-- numCatForDiscretize -->
+      <xs:element type="disjunctive" name="numCatForDiscretize1" ls:dependentOption="numCatForDiscretize1" ls:dependsOn="condGausLRTDependency" ls:constraint="true" />
+      <xs:element type="disjunctive" name="numCatForDiscretize2" ls:dependentOption="numCatForDiscretize2" ls:dependsOn="condGausBICDependency" ls:constraint="true" />
+      <xs:element type="disjunctive" name="numCatForDiscretize3" ls:dependentOption="numCatForDiscretize31" ls:dependsOn="algorithm" ls:constraint="matches(MBFS)" />
+
+      <xs:element type="disjunctive" name="numCatForDiscretize4" ls:dependentOption="numCatForDiscretize4" ls:dependsOn="numCatForDiscretize2" ls:constraint="true" />
+      <xs:element type="disjunctive" name="numCatForDiscretize4a" ls:dependentOption="numCatForDiscretize4" ls:dependsOn="numCatForDiscretize3" ls:constraint="true" />
+
+      <xs:element type="disjunctive" name="numCatForDiscretize5" ls:dependentOption="numCatForDiscretize5" ls:dependsOn="numCatForDiscretize1" ls:constraint="true" />
+      <xs:element type="disjunctive" name="numCatForDiscretize5a" ls:dependentOption="numCatForDiscretize5" ls:dependsOn="numCatForDiscretize4" ls:constraint="true" />
+
+      <xs:element type="disjunctive" name="numCatForDiscretize6" ls:dependentOption="numCatForDiscretize" ls:dependsOn="numCatForDiscretize5" ls:constraint="true" />
+
+      <!-- useHeuristic -->
+      <xs:element type="disjunctive" name="useHeuristicDependency" ls:dependentOption="useHeuristic" ls:dependsOn="algorithm" ls:constraint="matches(PcMax)" />
+
+      <!-- maxPathLength -->
+      <xs:element type="disjunctive" name="maxPathLengthDependency" ls:dependentOption="maxPathLength" ls:dependsOn="algorithm" ls:constraint="matches(PcMax)" />
+
+      <!-- scoreType -->
+      <xs:element type="conjunctive" name="scoreTypeDependencyContinuous1" ls:dependentOption="scoreTypeContinuous" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
+      <xs:element type="conjunctive" name="scoreTypeDependencyContinuous2" ls:dependentOption="scoreTypeContinuous" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(PC|FCI)" />
+
+      <xs:element type="conjunctive" name="scoreTypeDependencyDiscrete1" ls:dependentOption="scoreTypeDiscrete" ls:dependsOn="dataType" ls:constraint="matches(Completely_Discrete)" />
+      <xs:element type="conjunctive" name="scoreTypeDependencyDiscrete2" ls:dependentOption="scoreTypeDiscrete" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(PC|FCI)" />
+
+      <xs:element type="conjunctive" name="scoreTypeDependencyMixed1" ls:dependentOption="scoreTypeMixed" ls:dependsOn="dataType" ls:constraint="matches(Mixed)" />
+      <xs:element type="conjunctive" name="scoreTypeDependencyMixed2" ls:dependentOption="scoreTypeMixed" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(PC|FCI)" />
+
+      <!-- verbose -->
+
+      <!-- structurePrior -->
+      <xs:element type="disjunctive" name="structurePriorDependency1" ls:dependentOption="structurePriorDependency1" ls:dependsOn="condGausLRTDependency" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency2" ls:dependentOption="structurePriorDependency2" ls:dependsOn="condGausBICDependency" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency3" ls:dependentOption="structurePriorDependency3" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+      <xs:element type="conjunctive" name="structurePriorDependency4" ls:dependentOption="structurePriorDependency4" ls:dependsOn="condGausBICDependency" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency5" ls:dependentOption="structurePriorDependency5" ls:dependsOn="algorithm" ls:constraint="matches(MBFS)" />
+      <xs:element type="conjunctive" name="structurePriorDependency6" ls:dependentOption="structurePriorDependency6" ls:dependsOn="dataType" ls:negation="true" ls:constraint="matches(Completely_Continuous)" />
+
+      <xs:element type="conjunctive" name="structurePriorDependency7" ls:dependentOption="structurePriorDependency7" ls:dependsOn="structurePriorDependency2" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency7a" ls:dependentOption="structurePriorDependency7" ls:dependsOn="structurePriorDependency3" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency8" ls:dependentOption="structurePriorDependency8" ls:dependsOn="structurePriorDependency4" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency8a" ls:dependentOption="structurePriorDependency8" ls:dependsOn="structurePriorDependency5" ls:constraint="true" />
+      <xs:element type="conjunctive" name="structurePriorDependency8b" ls:dependentOption="structurePriorDependency8" ls:dependsOn="structurePriorDependency6" ls:constraint="true" />
+
+      <xs:element type="disjunctive" name="structurePriorDependency9" ls:dependentOption="structurePriorDependency9" ls:dependsOn="structurePriorDependency1" ls:constraint="true" />
+      <xs:element type="disjunctive" name="structurePriorDependency9a" ls:dependentOption="structurePriorDependency9" ls:dependsOn="structurePriorDependency7" ls:constraint="true" />
+      <xs:element type="disjunctive" name="structurePriorDependency9b" ls:dependentOption="structurePriorDependency9" ls:dependsOn="structurePriorDependency8" ls:constraint="true" />
+
+      <!-- faithfulnessAssumed -->
+      <xs:element type="conjunctive" name="faithfulnessAssumedDependency" ls:dependentOption="faithfulnessAssumed" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+
+      <!-- maxDegree -->
+      <xs:element type="conjunctive" name="maxDegreeDependency" ls:dependentOption="maxDegree" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+
+      <!-- symmetricFirstStep -->
+      <xs:element type="conjunctive" name="symmetricFirstStepDependency" ls:dependentOption="symmetricFirstStep" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
+
+      <!-- completeRuleSetUsed -->
+      <xs:element type="conjunctive" name="completeRuleSetUsedDependency" ls:dependentOption="completeRuleSetUsed" ls:dependsOn="algorithm" ls:constraint="matches(FCI)" />
+
+      <!-- maxLengthDiscriminatingPath -->
+      <xs:element type="conjunctive" name="maxLengthDiscriminatingPathDependency" ls:dependentOption="maxLengthDiscriminatingPath" ls:dependsOn="algorithm" ls:constraint="matches(FCI)" />

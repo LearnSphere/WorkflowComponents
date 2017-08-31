@@ -1,0 +1,291 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+  <!-- TIERS -->
+      <xs:element type="conjunctive" name="numTiersDependency" ls:dependentOption="numTiers" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+
+      <xs:element type="conjunctive" name="tier1VarsDependency1" ls:dependentOption="tier1Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="tier1VarsDependency2" ls:dependentOption="tier1Vars" ls:dependsOn="numTiers" ls:constraint="gte(1)" />
+
+      <xs:element type="conjunctive" name="tier2VarsDependency1" ls:dependentOption="tier2Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="tier2VarsDependency2" ls:dependentOption="tier2Vars" ls:dependsOn="numTiers" ls:constraint="gte(2)" />
+
+      <xs:element type="conjunctive" name="tier3VarsDependency1" ls:dependentOption="tier3Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="tier3VarsDependency2" ls:dependentOption="tier3Vars" ls:dependsOn="numTiers" ls:constraint="gte(3)" />
+
+      <xs:element type="conjunctive" name="tier4VarsDependency1" ls:dependentOption="tier4Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="tier4VarsDependency2" ls:dependentOption="tier4Vars" ls:dependsOn="numTiers" ls:constraint="gte(4)" />
+
+      <xs:element type="conjunctive" name="tier5VarsDependency1" ls:dependentOption="tier5Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="tier5VarsDependency2" ls:dependentOption="tier5Vars" ls:dependsOn="numTiers" ls:constraint="gte(5)" />
+
+
+      <xs:element type="conjunctive" name="forbiddenTier1Dependency1" ls:dependentOption="forbiddenTier1" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="forbiddenTier1Dependency2" ls:dependentOption="forbiddenTier1" ls:dependsOn="numTiers" ls:constraint="gte(1)" />
+
+      <xs:element type="conjunctive" name="forbiddenTier2Dependency1" ls:dependentOption="forbiddenTier2" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="forbiddenTier2Dependency2" ls:dependentOption="forbiddenTier2" ls:dependsOn="numTiers" ls:constraint="gte(2)" />
+
+      <xs:element type="conjunctive" name="forbiddenTier3Dependency1" ls:dependentOption="forbiddenTier3" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="forbiddenTier3Dependency2" ls:dependentOption="forbiddenTier3" ls:dependsOn="numTiers" ls:constraint="gte(3)" />
+
+      <xs:element type="conjunctive" name="forbiddenTier4Dependency1" ls:dependentOption="forbiddenTier4" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="forbiddenTier4Dependency2" ls:dependentOption="forbiddenTier4" ls:dependsOn="numTiers" ls:constraint="gte(4)" />
+
+      <xs:element type="conjunctive" name="forbiddenTier5Dependency1" ls:dependentOption="forbiddenTier5" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="forbiddenTier5Dependency2" ls:dependentOption="forbiddenTier5" ls:dependsOn="numTiers" ls:constraint="gte(5)" />
+
+
+  <!-- EDGES -->
+      <xs:element type="conjunctive" name="numEdgesDependency" ls:dependentOption="numEdges" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+
+        <!--edgeTypeN -->
+      <xs:element type="conjunctive" name="edge1TypeDependency1" ls:dependentOption="edge1Type" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="edge1TypeDependency2" ls:dependentOption="edge1Type" ls:dependsOn="numEdges" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="edge2TypeDependency1" ls:dependentOption="edge2Type" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="edge2TypeDependency2" ls:dependentOption="edge2Type" ls:dependsOn="numEdges" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="edge3TypeDependency1" ls:dependentOption="edge3Type" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="edge3TypeDependency2" ls:dependentOption="edge3Type" ls:dependsOn="numEdges" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="edge4TypeDependency1" ls:dependentOption="edge4Type" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="edge4TypeDependency2" ls:dependentOption="edge4Type" ls:dependsOn="numEdges" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="edge5TypeDependency1" ls:dependentOption="edge5Type" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="edge5TypeDependency2" ls:dependentOption="edge5Type" ls:dependsOn="numEdges" ls:constraint="gte(5)" />
+        <!-- Edge N tip -->
+      <xs:element type="conjunctive" name="startEdge1Dependency1" ls:dependentOption="startEdge1" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="startEdge1Dependency2" ls:dependentOption="startEdge1" ls:dependsOn="numEdges" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="startEdge2Dependency1" ls:dependentOption="startEdge2" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="startEdge2Dependency2" ls:dependentOption="startEdge2" ls:dependsOn="numEdges" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="startEdge3Dependency1" ls:dependentOption="startEdge3" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="startEdge3Dependency2" ls:dependentOption="startEdge3" ls:dependsOn="numEdges" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="startEdge4Dependency1" ls:dependentOption="startEdge4" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="startEdge4Dependency2" ls:dependentOption="startEdge4" ls:dependsOn="numEdges" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="startEdge5Dependency1" ls:dependentOption="startEdge5" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="startEdge5Dependency2" ls:dependentOption="startEdge5" ls:dependsOn="numEdges" ls:constraint="gte(5)" />
+       <!-- Edge N tail -->
+      <xs:element type="conjunctive" name="endEdge1Dependency1" ls:dependentOption="endEdge1" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="endEdge1Dependency2" ls:dependentOption="endEdge1" ls:dependsOn="numEdges" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="endEdge2Dependency1" ls:dependentOption="endEdge2" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="endEdge2Dependency2" ls:dependentOption="endEdge2" ls:dependsOn="numEdges" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="endEdge3Dependency1" ls:dependentOption="endEdge3" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="endEdge3Dependency2" ls:dependentOption="endEdge3" ls:dependsOn="numEdges" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="endEdge4Dependency1" ls:dependentOption="endEdge4" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="endEdge4Dependency2" ls:dependentOption="endEdge4" ls:dependsOn="numEdges" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="endEdge5Dependency1" ls:dependentOption="endEdge5" ls:dependsOn="knowledgeType" ls:constraint="matches(Tiers_and_Edges)" />
+      <xs:element type="conjunctive" name="endEdge5Dependency2" ls:dependentOption="endEdge5" ls:dependsOn="numEdges" ls:constraint="gte(5)" />
+
+  <!-- MEASUREMENT MODEL  -->
+      <xs:element type="conjunctive" name="numClustersDependency" ls:dependentOption="numClusters" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+
+      <xs:element type="conjunctive" name="cluster1VarsDependency1" ls:dependentOption="cluster1Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+      <xs:element type="conjunctive" name="cluster1VarsDependency2" ls:dependentOption="cluster1Vars" ls:dependsOn="numClusters" ls:constraint="gte(1)" />
+
+      <xs:element type="conjunctive" name="cluster2VarsDependency1" ls:dependentOption="cluster2Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+      <xs:element type="conjunctive" name="cluster2VarsDependency2" ls:dependentOption="cluster2Vars" ls:dependsOn="numClusters" ls:constraint="gte(2)" />
+
+      <xs:element type="conjunctive" name="cluster3VarsDependency1" ls:dependentOption="cluster3Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+      <xs:element type="conjunctive" name="cluster3VarsDependency2" ls:dependentOption="cluster3Vars" ls:dependsOn="numClusters" ls:constraint="gte(3)" />
+
+      <xs:element type="conjunctive" name="cluster4VarsDependency1" ls:dependentOption="cluster4Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+      <xs:element type="conjunctive" name="cluster4VarsDependency2" ls:dependentOption="cluster4Vars" ls:dependsOn="numClusters" ls:constraint="gte(4)" />
+
+      <xs:element type="conjunctive" name="cluster5VarsDependency1" ls:dependentOption="cluster5Vars" ls:dependsOn="knowledgeType" ls:constraint="matches(Measurement_Model)" />
+      <xs:element type="conjunctive" name="cluster5VarsDependency2" ls:dependentOption="cluster5Vars" ls:dependsOn="numClusters" ls:constraint="gte(5)" />
+    
+
+      </xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="KnowledgeTypeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Tiers_and_Edges" />
+      <!--<xs:enumeration value="Measurement_Model" />-->
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:simpleType name="Tier1ForbidType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Tier2ForbidType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Tier3ForbidType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Tier4ForbidType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Tier5ForbidType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:simpleType name="Edge1Type" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Forbidden" />
+      <xs:enumeration value="Required" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Edge2Type" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Forbidden" />
+      <xs:enumeration value="Required" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Edge3Type" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Forbidden" />
+      <xs:enumeration value="Required" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Edge4Type" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Forbidden" />
+      <xs:enumeration value="Required" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Edge5Type" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Forbidden" />
+      <xs:enumeration value="Required" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="KnowledgeTypeType" name="knowledgeType" id="Type_of_Knowledge_Component" default="Tiers_and_Edges" />
+
+      <xs:element type="xs:integer" name="numTiers" id="Number_of_tiers" default="2" />
+      <xs:element type="MultiFileInputHeader" name="tier1Vars" id="Variables_In_tier_1" default=".*" />
+      <xs:element type="Tier1ForbidType" name="forbiddenTier1" id="Forbid_Within_Edges_1" default="No" />
+      <xs:element type="MultiFileInputHeader" name="tier2Vars" id="Variables_In_tier_2" default=".*" />
+      <xs:element type="Tier1ForbidType" name="forbiddenTier2" id="Forbid_Within_Tier_Edges_2" default="No" />
+      <xs:element type="MultiFileInputHeader" name="tier3Vars" id="Variables_In_tier_3" default=".*" />
+      <xs:element type="Tier1ForbidType" name="forbiddenTier3" id="Forbid_Within_Tier_Edges_3" default="No" />
+      <xs:element type="MultiFileInputHeader" name="tier4Vars" id="Variables_In_tier_4" default=".*" />
+      <xs:element type="Tier4ForbidType" name="forbiddenTier4" id="Forbid_Within_Tier_Edges_4" default="No" />
+      <xs:element type="MultiFileInputHeader" name="tier5Vars" id="Variables_In_tier_5" default=".*" />
+      <xs:element type="Tier5ForbidType" name="forbiddenTier5" id="Forbid_Within_Tier_Edges_5" default="No" />
+
+      <xs:element type="xs:integer" name="numEdges" id="Number_of_Forbidden_or_Requireds" default="0" />
+      <xs:element type="Edge1Type" name="edge1Type" id="Edge_1_Type" default="Forbidden" />
+      <xs:element type="FileInputHeader" name="startEdge1" id="Edge_1_tail" default=".*" />
+      <xs:element type="FileInputHeader" name="endEdge1" id="Edge_1_tip" default=".*" />
+      <xs:element type="Edge2Type" name="edge2Type" id="Edge_2_Type" default="Forbidden" />
+      <xs:element type="FileInputHeader" name="startEdge2" id="Edge_2_tail" default=".*" />
+      <xs:element type="FileInputHeader" name="endEdge2" id="Edge_2_tip" default=".*" />
+      <xs:element type="Edge3Type" name="edge3Type" id="Edge_3_Type" default="Forbidden" />
+      <xs:element type="FileInputHeader" name="startEdge3" id="Edge_3_tail" default=".*" />
+      <xs:element type="FileInputHeader" name="endEdge3" id="Edge_3_tip" default=".*" />
+      <xs:element type="Edge4Type" name="edge4Type" id="Edge_4_Type" default="Forbidden" />
+      <xs:element type="FileInputHeader" name="startEdge4" id="Edge_4_tail" default=".*" />
+      <xs:element type="FileInputHeader" name="endEdge4" id="Edge_4_tip" default=".*" />
+      <xs:element type="Edge5Type" name="edge5Type" id="Edge_5_Type" default="Forbidden" />
+      <xs:element type="FileInputHeader" name="startEdge5" id="Edge_5_tail" default=".*" />
+      <xs:element type="FileInputHeader" name="endEdge5" id="Edge_5_tip" default=".*" />
+
+      <xs:element type="xs:integer" name="numClusters" id="Number_of_clusters" default="3" />
+      <xs:element type="MultiFileInputHeader" name="cluster1Vars" id="Variables_In_Cluster_1" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster2Vars" id="Variables_In_Cluster_2" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster3Vars" id="Variables_In_Cluster_3" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster4Vars" id="Variables_In_Cluster_4" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster5Vars" id="Variables_In_Cluster_5" default=".*" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
