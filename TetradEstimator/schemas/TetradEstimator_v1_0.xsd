@@ -47,7 +47,7 @@
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
-      <xs:element name="input1" type="xs:string" default="tab-delimited" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="tetrad-graph" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -65,7 +65,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited" />
+      <xs:element ref="tetrad-graph" />
     </xs:choice>
   </xs:complexType>
 
@@ -83,7 +83,7 @@
 
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="tab-delimited" />
+      <xs:element ref="tetrad-bayesIM" />
     </xs:choice>
   </xs:complexType>
 

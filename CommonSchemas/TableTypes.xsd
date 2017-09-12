@@ -61,6 +61,11 @@
 		  <xs:element name="html" substitutionGroup="xml" />
 		  <xs:element name="ctat-log" substitutionGroup="xml" />
 
+      <xs:element name="tetrad-graph" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-regression" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-bayesIM" substitutionGroup="tab-delimited" />
+
   <xs:element name="png" substitutionGroup="image" />
   <xs:element name="jpg" substitutionGroup="image" />
   <xs:element name="gif" substitutionGroup="image" />

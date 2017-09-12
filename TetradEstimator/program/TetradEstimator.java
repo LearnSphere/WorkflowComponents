@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.Math;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -61,7 +62,16 @@ public class TetradEstimator {
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i + 1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -147,8 +157,8 @@ public class TetradEstimator {
           char[] chars = fileToCharArray(inputFile0);
 
           DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(25);
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setMaxIntegralDiscrete(10);
+          reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
 
@@ -164,37 +174,54 @@ public class TetradEstimator {
           try {
             Dag dag = new Dag(graph);
           } catch (IllegalArgumentException e) {
-            addToDebugMessages("Graph is not a dag, will make one now..l" + e.toString());
+            addToDebugMessages("Graph is not a dag, will make one now..." + e.toString());
             DagInPatternWrapper dagWrapper = new DagInPatternWrapper(graph);
             graph = dagWrapper.getGraph();
           }
 
           Parameters params = new Parameters();
-          params.set("initializationMode", "manual");
+          params.set("initializationMode", "automatic");
+          params.set("minCategories", 2);
+          params.set("maxCategories", 10);
 
           int numNodes = graph.getNumNodes();
 
           switch (parametricModel) {
           case "Bayes_Parametric_Model":
+            addToDebugMessages("graph: " + graph.toString());
+            addToDebugMessages("data: " + data.toString().substring(0, 200));
             if (data.isContinuous() || data.isMixed()) {
               addToErrorMessages("Data set is continuous or mixed, but it must be discrete.");
               break;
             }
             BayesPmWrapper bayesWrapper = new BayesPmWrapper( graph , params );
 
+            BayesPm bayesPm = new BayesPm(graph, 2, 10);
+
             BayesIm bayesInstantiatedModel = null;// estWrap.getEstimatedBayesIm();
+            addToDebugMessages("made pm");
+
+            //Set the number of categories for each var
+            List<Node> nodes1 = data.getVariables();
+            for (Node node : nodes1) {
+              DiscreteVariable n = (DiscreteVariable)node;
+              String name = node.getName();
+              int numCategories = n.getNumCategories();
+              Node setThis = bayesPm.getNode(name);
+              bayesPm.setNumCategories(setThis, Math.max(2, numCategories));
+            }
 
             if (estimator.equals("ML_Bayes_Estimator")) {
-              BayesEstimatorWrapper estWrap = new BayesEstimatorWrapper(
-                  new DataWrapper( data ), bayesWrapper );
-              bayesInstantiatedModel = estWrap.getEstimatedBayesIm();
+              MlBayesEstimator mlbe = new MlBayesEstimator();
+              bayesInstantiatedModel = mlbe.estimate(bayesPm, data);
             } else if (estimator.equals("EM_Bayes_Estimator")) {
-              Parameters estParams = new Parameters();
-              estParams.set("tolerance", tolerance);
-              EmBayesEstimatorWrapper estWrap = new EmBayesEstimatorWrapper(
-                  new DataWrapper(data), bayesWrapper, estParams);
-              bayesInstantiatedModel = estWrap.getEstimateBayesIm();
+              EmBayesEstimator embe = new EmBayesEstimator(bayesPm, data);
+              bayesInstantiatedModel = embe.maximization(tolerance);
+            } else if (estimator.equals("Dirichlet_Estimator")) {
+              DirichletBayesIm prior = DirichletBayesIm.symmetricDirichletIm(bayesPm, pseudocounts);
+              bayesInstantiatedModel = DirichletEstimator.estimate(prior, data);
             }
+            addToDebugMessages("made estWrap");
 
             if (incompleteRows.equals("Randomize_incomplete_rows")) {
               for (int i = 0 ; i < numNodes ; i++ ) {
@@ -202,19 +229,42 @@ public class TetradEstimator {
               }
             }
             bWriterTable.append( bayesInstantiatedModel.toString() );
+            bWriterGraph.append( graph.toString() );
             break;
 
           case "SEM_Parametric_Model":
-            SemPmWrapper semWrapper = new SemPmWrapper( graph );
+            SemOptimizer opt = new SemOptimizerRegression();
+
+            if ("Regression".equals(optimizer)) {
+              opt = new SemOptimizerRegression();
+            } else if ("EM".equals(optimizer)) {
+              opt = new SemOptimizerEm();
+            } else if ("Powell".equals(optimizer)) {
+              opt = new SemOptimizerPowell();
+            } else if ("Random Search".equals(optimizer)) {
+              opt = new SemOptimizerScattershot();
+            } else if ("RICF".equals(optimizer)) {
+              opt = new SemOptimizerRicf();
+            }
+
+            SemPm semPm = new SemPm(graph);
             addToDebugMessages("made semWrapper");
 
+            DataSet continuousData = DataUtils.convertNumericalDiscreteToContinuous( data );
 
-            SemEstimatorWrapper semEstWrap = new SemEstimatorWrapper(
-              new DataWrapper( data ), semWrapper, new Parameters() );
+            SemEstimator semEst = new SemEstimator(continuousData, semPm, opt);
+            semEst.setNumRestarts(randomRestarts);
+            if (score.equals("Fgls")) {
+              semEst.setScoreType(SemIm.ScoreType.Fgls);
+            } else {
+              semEst.setScoreType(SemIm.ScoreType.Fml);
+            }
+
             addToDebugMessages("made estimator wrapper");
 
+            SemIm semInstantiatedModel = semEst.estimate();
 
-            SemIm semInstantiatedModel = semEstWrap.getEstimatedSemIm();
+            Graph g = semInstantiatedModel.getSemPm().getGraph();
 
             String buf = "";
             buf += "Graph Nodes SEM:\n";
@@ -222,7 +272,7 @@ public class TetradEstimator {
             int c = 1;
             for (Node n : nodes) {
               buf += n.getName() + " " +
-                 semInstantiatedModel.getMean(n);
+                     semInstantiatedModel.getMean(n);
               if (c++ < nodes.size()) {
                 buf += ",";
               }
@@ -231,8 +281,9 @@ public class TetradEstimator {
             int i = 1;
             for (Edge edge : graph.getEdges()) {
               buf += (i++) + ". " + edge.toString() + " " +
-                 semInstantiatedModel.getEdgeCoef(edge) + "\n";
-            } 
+                     semInstantiatedModel.getEdgeCoef(edge) + "\n";
+            }
+            bWriterGraph.append(buf);
             buf += semInstantiatedModel.toString();
 
             bWriterTable.append(buf);
@@ -240,8 +291,6 @@ public class TetradEstimator {
           }
 
           bWriterTable.close();
-
-          bWriterGraph.append( graph.toString() );
           bWriterGraph.close();
 
         } catch (IOException e) {
@@ -282,7 +331,7 @@ public class TetradEstimator {
 
         String [] nodeAr = line.split(",");
         for ( int i = 0; i < nodeAr.length; i++ ) {
-          nodeList.add( new GraphNode( nodeAr[i] ));
+          nodeList.add( new GraphNode( nodeAr[i].replaceAll(" ", "_") ));
         }
         break;
       }
@@ -298,6 +347,7 @@ public class TetradEstimator {
             onEdges = true;
             continue;
           }
+          continue;
         }
 
         String [] tokens = line.split("\\s+");
@@ -306,8 +356,29 @@ public class TetradEstimator {
           continue;
         }
 
-        String n0 = tokens[1];
-        String n1 = tokens[3];
+        String n0 = ""; //tokens[1];
+        String n1 = ""; //tokens[3];
+        boolean onFirstNodeName = true;
+        //get node names (even if they have spaces)
+        for (int i = 1; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            onFirstNodeName = false;
+            continue;
+          }
+          if (onFirstNodeName) {
+            if (i != 1) {
+              n0 += "_";
+            }
+            n0 += t;
+          } else {
+            if (n1.length() > 0) {
+              n1 += "_";
+            }
+            n1 += t;
+          }
+
+        }
         Node node0 = new GraphNode("");
         Node node1 = new GraphNode("");
 
@@ -321,18 +392,27 @@ public class TetradEstimator {
           }
         }
 
-        if ( tokens[2].equals("---") ) {
-          //TODO: UNCOMMENT NEXT LINE
-          //addToDebugMessages("" + g.addEdge( Edges.nondirectedEdge( node0, node1 ) ));
-        } else if ( tokens[2].equals("-->") ) {
-          addToDebugMessages("" +  g.addEdge( Edges.directedEdge( node0, node1 ) ));
-        } else if ( tokens[2].equals("<--") ) {
-          addToDebugMessages( "" + g.addEdge( Edges.directedEdge( node1, node0 ) ));
-        } else if ( tokens[2].equals("<->") ) {
-          addToDebugMessages("" + g.addEdge( Edges.bidirectedEdge(node0, node1)));
+        //get the arrow from the line
+        String arrow = "";
+        for (int i = 0; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            arrow = t;
+            break;
+          }
+        }
 
+        if ( arrow.equals("---") ) {
+          //TODO: UNCOMMENT NEXT LINE
+          addToDebugMessages("" + g.addEdge( Edges.undirectedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("-->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("<--") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node1, node0 ) ));
+        } else if ( arrow.equals("<->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.bidirectedEdge(node0, node1)));
         } else {
-          addToDebugMessages("edge is unreadable" + tokens[2]);
+          addToDebugMessages("edge is unreadable" + arrow);
         }
       }
       return g;
@@ -341,25 +421,6 @@ public class TetradEstimator {
       return new EdgeListGraph();
     }
   }
-
-  /*private static int getNumCategories( String nName, DataSet d ) {
-    TetradMatrix tm = d.getDoubleData();
-    double[][] data = tm.toArray();
-
-    int index = d.getVariableNames().indexOf(nName);
-
-    double[] col = data[index];
-    HashSet<Double> hs = new HashSet<Double>();
-
-    for ( int i = 0; i < col.length; i++ ) {
-      if ( (col[i] % 1) == 0 ) {
-        hs.add( new Double( col[i] ) );
-      } else {
-        return -1;
-      }
-    }
-    return hs.size();
-  }*/
 
   private static char[] fileToCharArray(File file) {
     try {

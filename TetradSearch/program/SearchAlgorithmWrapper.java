@@ -20,6 +20,7 @@ import java.util.Vector;
 import java.util.logging.*;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.io.CharArrayWriter;
@@ -53,6 +54,7 @@ public class SearchAlgorithmWrapper {
 	private DataSet data;
 	private GraphSearch searchAlgorithm = null;
 
+	private IKnowledge knowledge = new Knowledge2();
 	private IndependenceTest indTest = null;
 	private Score score = null;
 	private String algorithmType = null;
@@ -87,12 +89,30 @@ public class SearchAlgorithmWrapper {
 	 * inputs: data set, and command line arguments (params)
 	 */
 	public SearchAlgorithmWrapper (DataSet data, HashMap<String,String> params) {
-		addToDebugMessages("in SearchAlgorithmWrapper constructor");
+		//addToDebugMessages("in SearchAlgorithmWrapper constructor");
 
 		if( data == null ) { 
 			throw new IllegalArgumentException("Data cannot be null");
 		}
 		this.data = data;
+
+		//Get Knowledge if the user gave it as input
+		try {
+			String infile1 = params.get("-file1");
+			if (infile1 != null) {
+		    File inputFile1 = new File( infile1 );
+		    if (inputFile1.exists() && inputFile1.isFile() && inputFile1.canRead()) {
+		    	getKnowledgeFromFile(inputFile1);
+		    } else {
+		    	this.knowledge = new Knowledge2();
+		    }
+		  } else {
+		  	this.knowledge = new Knowledge2();
+		  }
+		} catch (Exception e) {
+			addToErrorMessages("Exception creating knowledge: " + e.toString());
+		}
+    addToDebugMessages("Knowledge: \n" + this.knowledge.toString());
 
 		parseParameters(params);		
 
@@ -107,6 +127,7 @@ public class SearchAlgorithmWrapper {
 					getIndTest();
 					Pc pc = new Pc( this.indTest );
 					pc.setDepth(this.maxSizeConditioningSet);
+					pc.setKnowledge(this.knowledge);
 					this.searchAlgorithm = pc;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up PC algorithm: "+e);
@@ -118,6 +139,7 @@ public class SearchAlgorithmWrapper {
 					getIndTest();
 					Cpc cpc = new Cpc( this.indTest );
 					cpc.setDepth(this.maxSizeConditioningSet);
+					cpc.setKnowledge(this.knowledge);
 					this.searchAlgorithm = cpc;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up CPC algorithm: "+e);
@@ -129,6 +151,7 @@ public class SearchAlgorithmWrapper {
 					getIndTest();
 					PcStable pcStable = new PcStable( this.indTest );
 					pcStable.setDepth(this.maxSizeConditioningSet);
+					pcStable.setKnowledge(this.knowledge);
 					this.searchAlgorithm = pcStable;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up PCStable algorithm: "+e);
@@ -140,6 +163,7 @@ public class SearchAlgorithmWrapper {
 					getIndTest();
 					CpcStable cpcStable = new CpcStable( this.indTest );
 					cpcStable.setDepth(this.maxSizeConditioningSet);
+					cpcStable.setKnowledge(this.knowledge);
 					this.searchAlgorithm = cpcStable;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up CPCStable algorithm: "+e);
@@ -153,6 +177,7 @@ public class SearchAlgorithmWrapper {
 					pcMax.setDepth(this.maxSizeConditioningSet);
 					pcMax.setUseHeuristic( this.useHeuristic );
 					pcMax.setMaxPathLength( this.maxPathLength );
+					pcMax.setKnowledge(this.knowledge);
 					this.searchAlgorithm = pcMax;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up PcMax algorithm: "+e);
@@ -167,6 +192,7 @@ public class SearchAlgorithmWrapper {
 					fges.setFaithfulnessAssumed( this.faithfulnessAssumed );
 					fges.setMaxDegree( this.maxDegree );
 					fges.setSymmetricFirstStep( this.symmetricFirstStep );
+					fges.setKnowledge(this.knowledge);
 					this.searchAlgorithm = fges;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up FGES algorithm: "+e);
@@ -180,6 +206,7 @@ public class SearchAlgorithmWrapper {
 					fci.setCompleteRuleSetUsed( this.completeRuleSetUsed );
 					fci.setMaxPathLength( this.maxLengthDiscriminatingPath );
 					fci.setDepth( this.maxSizeConditioningSet );
+					fci.setKnowledge(this.knowledge);
 					this.searchAlgorithm = fci;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up FCI algorithm: "+e);
@@ -192,6 +219,7 @@ public class SearchAlgorithmWrapper {
 					getIndTest();
 					Mbfs mbfs = new Mbfs( this.indTest, -1 );
 					mbfs.setDepth( this.maxSizeConditioningSet );
+					mbfs.setKnowledge(this.knowledge);
 					this.searchAlgorithm = mbfs;
 				} catch (Exception e) {
 					addToErrorMessages("Exception setting up MBFS algorithm: "+e);
@@ -529,6 +557,125 @@ public class SearchAlgorithmWrapper {
 		}
 		return false;
 	}
+
+	public void getKnowledgeFromFile(File infile) {
+		addToDebugMessages("Getting knowledge from file");
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(infile));
+
+			this.knowledge = new Knowledge2();
+
+			/* GET TIER INFO */
+			boolean onKnowledge = false;
+			boolean onAddTemporal = false;
+			while (br.ready()) {
+				String line = br.readLine();
+				//addToDebugMessages("tier line "+line);
+				//addToDebugMessages("onKnowledge "+onKnowledge + "  onAddTemporal"+onAddTemporal);
+
+				if (line.contains("forbiddirect") || line.contains("requiredirect")) {
+					break;
+				}
+
+				if (onKnowledge && onAddTemporal) {
+					String [] tokens = line.split("\\s+");
+
+					if (tokens.length < 2) {
+						continue;
+					}
+
+					List<String> varsInTier = new ArrayList<String>();
+					for (String var : Arrays.copyOfRange(tokens, 1, tokens.length)) {
+						//varsInTier.addAll(Arrays.copyOfRange(tokens, 1, tokens.length));
+						varsInTier.add(var);
+					}
+					//addToDebugMessages("varsInTier "+varsInTier);
+
+					int tierNum = 0;
+					try {
+						tierNum = Integer.parseInt(tokens[0].replaceAll("\\*",""));
+					} catch (Exception e) {
+						//addToDebugMessages("tokens[0] = " + tokens[0].replaceAll("*",""));
+						addToErrorMessages("Exception parsing tierNum." + e.toString());
+					}
+
+					this.knowledge.setTier(tierNum, varsInTier);
+					//addToDebugMessages("tokens[0] = "+tokens[0] +" contains *= "+tokens[0].contains("*"));
+
+					if (tokens[0].contains("*")) {
+						//addToDebugMessages("forbidden within tier "+tierNum);
+						this.knowledge.setTierForbiddenWithin(tierNum, true);
+					} else {
+						this.knowledge.setTierForbiddenWithin(tierNum, false);
+					}
+				} else {
+					if (line.contains("knowledge")) {
+						onKnowledge = true;
+					}
+					if (line.contains("addtemporal")) {
+						onAddTemporal = true;
+					}
+				}
+			}
+
+			/* GET FORBIDDEN EDGES */
+			br = new BufferedReader(new FileReader(infile));
+			boolean onForbiddenEdges = false;
+			while (br.ready()) {
+				String line = br.readLine();
+				//addToDebugMessages("forbidden edge line "+line);
+
+				if (line.contains("requiredirect")) {
+					break;
+				}
+
+				if (onForbiddenEdges) {
+					String [] tokens = line.split("\\s+");
+
+
+					if (tokens.length != 3) {
+						continue;
+					}
+					//addToDebugMessages("onForbiddenEdges "+tokens[0]+tokens[1]+tokens[2]);
+
+					this.knowledge.setForbidden(tokens[0], tokens[2]);
+
+				} else {
+					if (line.contains("forbiddirect")) {
+						onForbiddenEdges = true;
+					}
+				}
+			}
+
+			/* GET REQUIRED EDGES */
+			br = new BufferedReader(new FileReader(infile));
+			boolean onRequiredEdges = false;
+			while (br.ready()) {
+				String line = br.readLine();
+
+				if (onRequiredEdges) {
+					String [] tokens = line.split("\\s+");
+
+					if (tokens.length != 3) {
+						continue;
+					}
+
+					this.knowledge.setRequired(tokens[0], tokens[2]);
+
+				} else {
+					if (line.contains("requiredirect")) {
+						onRequiredEdges = true;
+					}
+				}
+			}
+
+		} catch (IOException e) {
+			addToErrorMessages("IOException reading from knowledge file: " + e.toString());
+		} catch (Exception e) {
+			addToErrorMessages("Exception adding info to knowledge: " + e.toString());
+		}
+	}
+
 	/**
    *Save ERROR message string from component to a file.
    */

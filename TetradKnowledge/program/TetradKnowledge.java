@@ -61,7 +61,16 @@ public class TetradKnowledge {
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -123,7 +132,7 @@ public class TetradKnowledge {
 
           DataReader reader = new DataReader();
           reader.setMaxIntegralDiscrete(25);
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
 
@@ -132,7 +141,7 @@ public class TetradKnowledge {
 
           List<String> varNames = data.getVariableNames();
 
-          Knowledge knowledge = new Knowledge();
+          Knowledge2 knowledge = new Knowledge2();
 
           switch (knowledgeType){
 
@@ -159,9 +168,10 @@ public class TetradKnowledge {
               
               try {
                 if (cmdParams.get("-forbiddenTier" + i).equals("Yes")) {
-                  knowledge.setTierForbiddenWithin(i, true);
+                  addToDebugMessages("Setting tier " + i + " as forbidden within.");
+                  knowledge.setTierForbiddenWithin(i-1, true);
                 } else {
-                  knowledge.setTierForbiddenWithin(i, false);
+                  knowledge.setTierForbiddenWithin(i-1, false);
                 }
               } catch (Exception e) {
                 addToErrorMessages("Exception setting tier as forbidden within or not" + e);
@@ -190,9 +200,14 @@ public class TetradKnowledge {
               String edgeType = cmdParams.get("-edge" + i + "Type");
               try {
                 if (edgeType.equals("Forbidden")) {
+                  addToDebugMessages("Adding forbidden edge: " + tail + " -> " + tip);
                   knowledge.setForbidden(tail, tip);
                 } else if (edgeType.equals("Required")) {
+                  addToDebugMessages("Adding required edge: " + tail + " -> " + tip);
                   knowledge.setRequired(tail, tip);
+                } else {
+                  addToErrorMessages(
+                      "Edge type could not be determined. Edge type found: " + edgeType);
                 }
               } catch (Exception e) {
                 addToErrorMessages("Exception setting forbidden or required edge: " + e.toString());
@@ -260,7 +275,17 @@ public class TetradKnowledge {
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if (argName.equals(s) && i != (args.length - 1)) {
-        ret.add(args[i+1]);
+        //ret.add(args[i+1]);
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        ret.add(value);
         i++;
       }
     }

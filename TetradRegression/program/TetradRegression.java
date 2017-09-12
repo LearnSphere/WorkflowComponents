@@ -56,14 +56,23 @@ public class TetradRegression {
     System.setErr(new PrintStream(baos));
 
 
-    List<String> regressors = new ArrayList<String>();
+    //List<String> regressors = new ArrayList<String>();
+    List<String> regressors = getMultiFileInputHeaders("regressors", args);
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        if ( s.equals("-regressors") ) {regressors.add(args[i + 1]);}
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -145,7 +154,7 @@ public class TetradRegression {
 
           DataReader reader = new DataReader();
           reader.setMaxIntegralDiscrete(10);
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
 
@@ -229,6 +238,30 @@ public class TetradRegression {
     System.setErr(sysErr);
 
   }
+
+  public static ArrayList<String> getMultiFileInputHeaders (String param, String [] args) {
+    ArrayList<String> ret = new ArrayList<String>();
+    String argName = "-" + param;
+    for ( int i = 0; i < args.length; i++ ) {
+      String s = args[i];
+      if (argName.equals(s) && i != (args.length - 1)) {
+        //ret.add(args[i+1]);
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        ret.add(value);
+        i++;
+      }
+    }
+    return ret;
+  }
+
   private static char[] fileToCharArray(File file) {
     try {
       FileReader reader = new FileReader(file);

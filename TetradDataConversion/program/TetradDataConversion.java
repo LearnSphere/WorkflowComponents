@@ -59,7 +59,16 @@ public class TetradDataConversion {
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -106,7 +115,8 @@ public class TetradDataConversion {
           char[] chars = fileToCharArray(inputFile);
 
           DataReader reader = new DataReader();
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          //reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
 

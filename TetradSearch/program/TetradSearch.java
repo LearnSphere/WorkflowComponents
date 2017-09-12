@@ -59,7 +59,16 @@ public class TetradSearch {
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -80,17 +89,14 @@ public class TetradSearch {
  
     String workingDir = cmdParams.get("-workingDir");
 
-    String infile = cmdParams.get("-file0");
-    File inputFile = new File( infile );
+    String infile0 = cmdParams.get("-file0");
+    File inputFile0 = new File( infile0 );
 
-    if (inputFile.exists() && inputFile.isFile() && inputFile.canRead() ) {
+    if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
       String outputFile = workingDir + "Graph.txt";
 
       try {
-
-        BufferedReader bReader = null;
-        FileReader fReader = null;
 
         BufferedWriter bWriter = null;
         FileWriter fWriter = null;
@@ -100,10 +106,10 @@ public class TetradSearch {
           fWriter = new FileWriter(outputFile);
           bWriter = new BufferedWriter(fWriter);
 
-          char[] chars = fileToCharArray(inputFile);
+          char[] chars = fileToCharArray(inputFile0);
 
           DataReader reader = new DataReader();
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setDelimiter(DelimiterType.TAB);
           reader.setMaxIntegralDiscrete(25);
 
           DataSet data = reader.parseTabular(chars);
@@ -131,11 +137,11 @@ public class TetradSearch {
       }
 
 
-    } else if (inputFile == null || !inputFile.exists()
-               || !inputFile.isFile()) {
+    } else if (inputFile0 == null || !inputFile0.exists()
+               || !inputFile0.isFile()) {
       addToErrorMessages("Tab-delimited file does not exist.");
 
-    } else if (!inputFile.canRead()) {
+    } else if (!inputFile0.canRead()) {
       addToErrorMessages("Tab-delimited file cannot be read.");
     }
     System.setErr(sysErr);

@@ -7,7 +7,18 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+              <xs:any minOccurs="1" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+             <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -15,17 +26,25 @@
 
   <xs:complexType name="InputType">
     <xs:sequence>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="tab_delimited" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="1" />
+      <xs:element name="input1" type="xs:string" default="tetrad-knowledge" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
   <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
     <xs:choice>
       <xs:element ref="file" minOccurs="0" />
     </xs:choice>
@@ -45,7 +64,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="tab_delimited" />
+      <xs:element ref="tetrad-graph" />
     </xs:choice>
   </xs:complexType>
 <!--

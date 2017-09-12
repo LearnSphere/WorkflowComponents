@@ -55,14 +55,24 @@ public class TetradDiscretize {
     System.setErr(new PrintStream(baos));
 
 
-    ArrayList<String> varsToDiscretize = new ArrayList<String>();
+    //ArrayList<String> varsToDiscretize = new ArrayList<String>();
+    ArrayList<String> varsToDiscretize = 
+        getMultiFileInputHeaders("variables", args);
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
       if ( s.charAt(0) == '-' && i != args.length - 1) {
-        if ( s.equals("-variables") ) {varsToDiscretize.add(args[i + 1]);}
-        cmdParams.put( s, args[i + 1] );
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -109,7 +119,7 @@ public class TetradDiscretize {
         char[] chars = fileToCharArray(inputFile);
 
         DataReader reader = new DataReader();
-        reader.setDelimiter(DelimiterType.WHITESPACE);
+        reader.setDelimiter(DelimiterType.TAB);
 
         DataSet data = reader.parseTabular(chars);
 
@@ -129,6 +139,7 @@ public class TetradDiscretize {
         for ( int i = 0; i < vars.size(); i++ ) {
           if ( varsToDiscretize.contains(vars.get(i).getName()) ) {
             colInds[c++] = i;
+            addToDebugMessages("colInds to discretize: " + i);
           }
         }
 
@@ -198,6 +209,30 @@ public class TetradDiscretize {
     }
 
   }
+
+  public static ArrayList<String> getMultiFileInputHeaders (String param, String [] args) {
+    ArrayList<String> ret = new ArrayList<String>();
+    String argName = "-" + param;
+    for ( int i = 0; i < args.length; i++ ) {
+      String s = args[i];
+      if (argName.equals(s) && i != (args.length - 1)) {
+        //ret.add(args[i+1]);
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        ret.add(value);
+        i++;
+      }
+    }
+    return ret;
+  }
+
   private static char[] fileToCharArray(File file) {
     try {
       FileReader reader = new FileReader(file);

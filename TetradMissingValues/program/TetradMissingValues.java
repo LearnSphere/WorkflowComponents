@@ -56,11 +56,20 @@ public class TetradMissingValues {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
-    HashMap<String,String> cmdParams = new HashMap<String,String>();
-    for (int i = 0; i < args.length; i++) {
+    HashMap<String, String> cmdParams = new HashMap<String, String>();
+    for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
-      if (s.charAt(0) == '-' && i != args.length-1) {
-        cmdParams.put( s, args[i+1] );
+      if ( s.charAt(0) == '-' && i != args.length - 1) {
+        String value = "";
+        for (int j = i + 1; j < args.length; j++) {
+          if (args[j].charAt(0) == '-' && j > i+1) {
+            break;
+          } else if (j != i + 1) {
+            value += " ";
+          }
+          value += args[j];
+        }
+        cmdParams.put(s, value);
         i++;
       }
     }
@@ -77,9 +86,15 @@ public class TetradMissingValues {
     } else if (cmdParams.containsKey("-file0") == false){
       addToErrorMessages("No outfile name"); 
       return;
+    } else if (cmdParams.containsKey("-missingValueMarker") == false){
+      addToErrorMessages("No missingValueMarker name"); 
+      return;
     }
 
     String operation = cmdParams.get("-operation");
+    String marker = cmdParams.get("-missingValueMarker");
+
+    addToDebugMessages("missing value marker: " + marker);
 
     String infile = cmdParams.get("-file0");
     File inputFile = new File(infile);
@@ -103,7 +118,8 @@ public class TetradMissingValues {
 
           DataReader reader = new DataReader();
           reader.setMaxIntegralDiscrete(10);
-          reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setDelimiter(DelimiterType.TAB);
+          reader.setMissingValueMarker(marker);
   
           DataSet data = reader.parseTabular(chars);
           
@@ -131,15 +147,19 @@ public class TetradMissingValues {
               addToDebugMessages("probability_of_injection: " + probOfInjection.toString());
 
               try {
-                DataWrapper dw = new DataWrapper(data);
+                /*DataWrapper dw = new DataWrapper(data);
 
                 Parameters params = new Parameters();
                 params.set("prob", probOfInjection);
 
                 MissingDataInjectorWrapper mdiw = 
-                    new MissingDataInjectorWrapper(dw, params);
-
-                DataSet newData = mdiw.getOutputDataset();
+                    new MissingDataInjectorWrapper(dw, params);*/
+                double [] probs = new double[data.getVariableNames().size()];
+                for (int i = 0; i < probs.length; i++) {
+                  probs[i] = probOfInjection;
+                }
+                DataSet newData = DataUtils.addMissingData(data, probs);
+                //DataSet newData = mdiw.getOutputDataset();
 
                 manipulatedData = newData.toString();
               } catch (Exception e) {

@@ -77,6 +77,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="operationType" name="operation" id="operation" default="Remove_Cases_with_Missing_Values" />
       <xs:element type="xs:double" name="probability_of_injection" id="probability_of_injection" default="0.7" />
+      <xs:element type="xs:string" name="missingValueMarker" id="Missing_Value_Marker" default="*" />
     </xs:choice>
   </xs:complexType>
 

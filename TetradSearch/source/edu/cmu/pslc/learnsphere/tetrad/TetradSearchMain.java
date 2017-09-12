@@ -96,109 +96,7 @@ public class TetradSearchMain extends AbstractComponent {
     }
 
     System.out.println(this.getOutput());
-    /*
-    try {
-        Double.parseDouble( this.getOptionAsString("alpha") );
-    } catch ( NumberFormatException e ){
-        errorMessages.add("Alpha entered is not a number.");
-    } catch ( NullPointerException e ){
-        errorMessages.add(e+"");
-    }
-
-    File inputFile = this.getAttachment(0, 0);
-
-
-
-    if (inputFile.exists() && inputFile.isFile() && inputFile.canRead() ) {
-
-        File regressionSearchFile = this.createFile("Graph.txt");
-
-        //List <String> regressors = this.getMultiOptionAsString("regressors");
-
-
-        double alpha;
-        try {
-            Double temp = Double.parseDouble( this.getOptionAsString("alpha") );
-            alpha = temp.doubleValue();
-        } catch ( NullPointerException e ){
-            alpha = 0.001;
-        } catch ( NumberFormatException e ){
-            alpha = 0.001;
-        }
-
-        logger.debug("alpha = "+alpha);
-
-        try {
-
-            BufferedReader bReader = null;
-            FileReader fReader = null;
-
-            BufferedWriter bWriterGraph = null;
-            FileWriter fWriterGraph = null;
-
-
-
-            try {
-
-                fWriterGraph = new FileWriter(regressionSearchFile);
-                bWriterGraph = new BufferedWriter(fWriterGraph);
-
-                char[] chars = fileToCharArray(inputFile);
-
-                DataReader reader = new DataReader();
-                reader.setDelimiter(DelimiterType.WHITESPACE);
-
-                DataSet data = reader.parseTabular(chars);
-
-                logger.debug("Data\n"+data.toString());
-
-                List<String> variableNames = data.getVariableNames();
-
-                IndependenceTest it = new IndTestFisherZ( data, alpha );
-                //it.setpValue(0.01);
-
-                GraphSearch gs = new Pc( it );
-
-                Graph graph = gs.search();
-
-                logger.debug("Results graph: \n"+graph.toString());
-
-
-                bWriterGraph.append( graph.toString() );
-                bWriterGraph.close();
-
-            } catch (IOException e) {
-                errorMessages.add(e.toString());
-            }
-
-
-
-            // Text rendering of input file
-            Integer nodeIndex = 0;
-            String fileLabel = "tab-delimited";
-            this.addOutputFile(regressionSearchFile, nodeIndex, 0, fileLabel);
-
-
-        } catch (Exception e) {
-            errorMessages.add(e.toString());
-        }
-
-
-    } else if (inputFile == null || !inputFile.exists()
-            || !inputFile.isFile()) {
-        errorMessages.add("Tab-delimited file does not exist.");
-
-    } else if (!inputFile.canRead()) {
-        errorMessages.add("Tab-delimited file cannot be read.");
-    }
-
-
-    for (String err : errorMessages) {
-        logger.error(err);
-    }
-
-    System.out.println(this.getOutput());
-    */
+    
   }
 
   /**
@@ -243,12 +141,12 @@ public class TetradSearchMain extends AbstractComponent {
   private void addErrorsAndDebugsToLogger(String outputPath) {
     ArrayList<String> errors = getErrorMessagesFromComponent(outputPath);
     for (int i = 0; i < errors.size(); i++) {
-      errorMessages.add("[error from TetradMissingValues.java] " + errors.get(i));
+      errorMessages.add("[error from TetradSearch.java] " + errors.get(i));
     }
 
     ArrayList<String> debugMessages = getDebugMessagesFromComponent(outputPath);
     for (int i = 0; i < debugMessages.size(); i++) {
-      logger.debug("[debug from TetradMissingValues.java] " + debugMessages.get(i));
+      logger.debug("[debug from TetradSearch.java] " + debugMessages.get(i));
     }
 
     clearComponentOutputFile(outputPath);
@@ -283,7 +181,7 @@ public class TetradSearchMain extends AbstractComponent {
       return messageArray;
     } catch (IOException e) {
       errorMessages.add("Could not read from error message file: " + e.toString());
-      return null;
+      return new ArrayList<String>();
     }
   }
 
@@ -316,7 +214,7 @@ public class TetradSearchMain extends AbstractComponent {
       return messageArray;
     } catch (IOException e) {
       errorMessages.add("Could not read from debug message file: " + e.toString());
-      return null;
+      return new ArrayList<String>();
     }
   }
 
