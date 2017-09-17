@@ -183,18 +183,18 @@ FactorInput2 <- SampOut / SampIn2
 if(interpolationtype=="spline")
 {
 # using spline interpolation 
-Out1 <- spline(InputData1, n=(LenInput1*FactorInput1), method="fmm", ties=mean)
-Out2 <- spline(InputData2, n=(LenInput2*FactorInput2), method="fmm", ties=mean)
+Out1 <- spline(InputData1, n=(LenInput1*FactorInput1), method="fmm")
+Out2 <- spline(InputData2, n=(LenInput2*FactorInput2), method="fmm")
 }else if(interpolationtype=="linear")
 {
 # using linear interpolation
-Out1 <- approx(InputData1, n=(LenInput1*FactorInput1), method="linear", ties=mean)
-Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="linear", ties=mean)
+Out1 <- approx(InputData1, n=(LenInput1*FactorInput1), method="linear")
+Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="linear")
 }else if(interpolationtype=="constant")
 {
 # using constant interpolation
-Out1 <- approx(InputData1, n=(LenInput1*FactorInput1), method="constant", ties=mean)
-Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="constant", ties=mean)  
+Out1 <- approx(InputData1, n=(LenInput1*FactorInput1), method="constant")
+Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="constant")  
 }
 
 # Get Data after resampling with interpolation
