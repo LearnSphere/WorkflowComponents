@@ -87,6 +87,9 @@ if __name__ == "__main__":
     parser.add_argument('-kc_model', type=str,
                        help='the KC model that you would like to use; e.g., "Item"')
 
+    parser.add_argument('-userId', type=str,
+                       help='placeholder for WF', default='')
+
 
     args = parser.parse_args()
 
