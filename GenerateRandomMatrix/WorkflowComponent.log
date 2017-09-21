@@ -1,0 +1,13 @@
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,586 - Command-line args: [-componentXmlFile, C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix/test/components/ComponentTest.xml, -workflowDir, C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix/test/, -toolDir, C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix/, -schemaFile, C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix/schemas/GenerateRandomMatrix_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,589 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 21 Sep 2017 11:28:31,747 - Reading C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix/test/components/ComponentTest.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 21 Sep 2017 11:28:31,748 - File absolute path: C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix\test\components\ComponentTest.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 21 Sep 2017 11:28:31,748 - File canonical path: C:\Users\mkomisin\git\WorkflowComponents\GenerateRandomMatrix\test\components\ComponentTest.xml
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,760 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,760 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,821 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:31,822 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:32,028 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.generate.randommatrix.GenerateRandomMatrixMain 21 Sep 2017 11:28:32,028 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 21 Sep 2017 11:28:32,040 - First line: Row Name	Column[0]	Column[1]	Column[2]	Column[3]	Column[4]	Column[5]	Column[6]	Column[7]	Column[8]	Column[9]
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 21 Sep 2017 11:28:32,040 - Delim: 	
