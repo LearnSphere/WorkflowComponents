@@ -116,6 +116,7 @@ public class TetradDataConversion {
 
           DataReader reader = new DataReader();
           //reader.setDelimiter(DelimiterType.WHITESPACE);
+          reader.setMaxIntegralDiscrete(10);
           reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);

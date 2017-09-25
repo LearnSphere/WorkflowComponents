@@ -1,0 +1,83 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>TetradClassifier #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>TetradClassifier</component_name>
+  <component_type>tetrad</component_type>
+  <left>695</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Analysis-1-x641889</from>
+    </connection>
+  </connections>
+  <top>106</top>
+  <options>
+	<target>HC</target>
+  <targetCategory>1</targetCategory>
+  <!--<model>ML_Bayes_Estimator</model>
+	<parametricModel>Bayes_Parametric_Model</parametricModel>-->
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>		  
+		  <file_path>test/resources/CheeseDiscrete.txt</file_path>
+          <file_name>CheeseDiscrete.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+          <metadata />
+        </student-step>
+		
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+	<input1>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #2</component_id_human>
+      <component_type>analysis1</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>		  
+		  <file_path>test/resources/classifyGraphBrain.txt</file_path>
+          <file_name>classifyGraphBrain.txt</file_name>
+          <index>1</index>
+          <label>student-step</label>
+          <metadata />
+            
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+    <input2>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #2</component_id_human>
+      <component_type>analysis1</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>      
+      <file_path>test/resources/CheeseDiscrete.txt</file_path>
+          <file_name>CheeseDiscrete.txt</file_name>
+          <index>1</index>
+          <label>student-step</label>
+          <metadata />
+            
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input2>
+  </inputs>
+</component>

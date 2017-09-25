@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Tetrad Implemented by Peter Schaldenbrand
+  <email>pschalde@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/TetradDiscretize</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>Discretizer</b> component uses Tetrad functinality to make variables' data discrete.
+<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b>
+</outputs>
+
+<options>
+<b>Variables</b>- Select the variables you wish to make discrete.<br/>
+<b>Distribution</b>- Evenly distribute values make sure each category has equal numbers of instances.  Evenly distribute Intervals ensures that the intervals on which to split the categories are even.<br/>
+<b>NumCategories</b>- is the number of categories to split the variables' data into.
+</options>
+
+</info>

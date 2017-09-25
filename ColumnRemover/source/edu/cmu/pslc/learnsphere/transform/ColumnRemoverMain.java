@@ -177,7 +177,7 @@ public class ColumnRemoverMain extends AbstractComponent {
 
         // Text rendering of input file
         Integer nodeIndex = 0;
-        String fileLabel = "text";
+        String fileLabel = "tab-delimited";
         this.addOutputFile(outputFile, nodeIndex, 0, fileLabel);
 
 

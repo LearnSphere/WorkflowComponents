@@ -1,0 +1,12 @@
+Graph Nodes:
+CCMIDSA,FIQ,ORDER,HC,PAIR,SEX,TOTSA,TOTVOL,WEIGHT
+
+Graph Edges:
+6. WEIGHT --> HC
+8. PAIR --> HC
+9. ORDER --> HC
+10. SEX --> HC
+11. CCMIDSA --> HC
+12. FIQ --> HC
+13. TOTSA --> HC
+14. TOTVOL --> HC

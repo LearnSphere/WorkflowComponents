@@ -99,6 +99,7 @@ public class TetradRegression {
 
     String regrType = cmdParams.get("-regression");
     String target = cmdParams.get("-target");
+    target = target.replaceAll(" ","_");
     Double t1 = Double.parseDouble(cmdParams.get("-alpha"));
     double alpha = t1.doubleValue();
     String workingDir = cmdParams.get("-workingDir");
@@ -110,6 +111,14 @@ public class TetradRegression {
     hs.addAll(regressors);
     regressors.clear();
     regressors.addAll(hs);
+
+    //replace spaces with underscores
+    /*int size = regressors.size();
+    List<String> oldRegressors = regressors;
+    regressors = new ArrayList<String>();
+    for (int i = 0; i < size; i++) {
+      regressors.add(i, oldRegressors.get(i).replaceAll(" ","_"));
+    }*/
 
     addToDebugMessages(target + "target");
     addToDebugMessages("regressors" + regressors.toString());
@@ -159,7 +168,7 @@ public class TetradRegression {
           DataSet data = reader.parseTabular(chars);
 
           List<String> variableNames = data.getVariableNames();
-
+          addToDebugMessages(variableNames.toString());
           if ( variableNames.contains(target) == false ) {
             addToErrorMessages("Target specified was not in the DataSet.");
           }
@@ -255,7 +264,7 @@ public class TetradRegression {
           }
           value += args[j];
         }
-        ret.add(value);
+        ret.add(value.replaceAll(" ","_"));
         i++;
       }
     }

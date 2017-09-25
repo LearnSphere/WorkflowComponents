@@ -56,8 +56,8 @@ public class TetradDiscretize {
 
 
     //ArrayList<String> varsToDiscretize = new ArrayList<String>();
-    ArrayList<String> varsToDiscretize = 
-        getMultiFileInputHeaders("variables", args);
+    ArrayList<String> varsToDiscretize =
+      getMultiFileInputHeaders("variables", args);
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
@@ -65,7 +65,7 @@ public class TetradDiscretize {
       if ( s.charAt(0) == '-' && i != args.length - 1) {
         String value = "";
         for (int j = i + 1; j < args.length; j++) {
-          if (args[j].charAt(0) == '-' && j > i+1) {
+          if (args[j].charAt(0) == '-' && j > i + 1) {
             break;
           } else if (j != i + 1) {
             value += " ";
@@ -119,6 +119,7 @@ public class TetradDiscretize {
         char[] chars = fileToCharArray(inputFile);
 
         DataReader reader = new DataReader();
+        reader.setMaxIntegralDiscrete(10);
         reader.setDelimiter(DelimiterType.TAB);
 
         DataSet data = reader.parseTabular(chars);
@@ -139,11 +140,14 @@ public class TetradDiscretize {
         for ( int i = 0; i < vars.size(); i++ ) {
           if ( varsToDiscretize.contains(vars.get(i).getName()) ) {
             colInds[c++] = i;
+            data = makeColumnContinuous(data, i);
             addToDebugMessages("colInds to discretize: " + i);
           }
         }
+        
 
         if (distributionType.equals("Evenly Distribute Values") ) {
+          addToDebugMessages("in evenly distribute values");
           //Even Discrete categories (evenly distribute values)
           for ( int i = 0; i < colInds.length; i++ ) {
             int ind = colInds[i];
@@ -153,10 +157,12 @@ public class TetradDiscretize {
             double[] doubleData = data.getDoubleData().getColumn(ind).toArray();
             double[] breakpoints = Discretizer.getEqualFrequencyBreakPoints(doubleData, numCategories);
             List<String> categories = new DiscreteVariable(name, numCategories).getCategories();
+            
             ContinuousDiscretizationSpec spec
               = new ContinuousDiscretizationSpec(breakpoints, categories);
+            
             spec.setMethod(ContinuousDiscretizationSpec.EVENLY_DISTRIBUTED_VALUES);
-
+            
             specs.put(node, spec);
           }
           params.set("discretizationSpecs", specs);
@@ -189,9 +195,9 @@ public class TetradDiscretize {
           }
           params.set("discretizationSpecs", specs);
         }
-
+        
         DiscretizationWrapper disWrap = new DiscretizationWrapper( dw, params );
-
+        
         DataModel newData = disWrap.getDataModels().get(0);
 
         String convertedData = newData.toString();
@@ -203,11 +209,101 @@ public class TetradDiscretize {
       } catch (IOException e) {
         addToErrorMessages(e.toString());
       }
-
+    } catch (ClassCastException e) {
+      addToErrorMessages("Please do not try to discretize a variable that is already discrete."
+                         + e.toString());
     } catch (Exception e) {
       addToErrorMessages(e.toString());
     }
 
+  }
+
+  public static DataSet makeColumnContinuous(DataSet dataSet, int ind) {
+    /*Node variable = dataSet.getVariable(index);
+
+    DataSet newData = dataSet;
+
+    if (variable instanceof ContinuousVariable) {
+      for (int i = 0; i < dataSet.getNumRows(); i++) {
+        newData.setDouble(i, index, dataSet.getDouble(i, index));
+      }
+    } else {
+      DiscreteVariable discreteVariable = (DiscreteVariable) variable;
+
+      for (int i = 0; i < dataSet.getNumRows(); i++) {
+        int index1 = dataSet.getInt(i, index);
+        String catName = discreteVariable.getCategory(index1);
+        double value;
+
+        if (catName.equals("*")) {
+          value = Double.NaN;
+        } else {
+          value = Double.parseDouble(catName);
+        }
+
+        newData.setDouble(i, index, value);
+      }
+    }*/
+
+
+
+
+    List<Node> variables = new ArrayList<>();
+    int c = 0;
+    for (Node variable : dataSet.getVariables()) {
+      if (c == ind) {
+        if (variable instanceof ContinuousVariable) {
+          variables.add(variable);
+        } else {
+          variables.add(new ContinuousVariable(variable.getName()));
+        }
+      } else {
+        variables.add(variable);
+      }
+      c++;
+    }
+
+    DataSet continuousData = new ColtDataSet(dataSet.getNumRows(),
+        variables);
+
+    for (int j = 0; j < dataSet.getNumColumns(); j++) {
+      Node variable = dataSet.getVariable(j);
+
+      if (j != ind) {
+        //add normally
+        for (int i = 0; i < dataSet.getNumRows(); i++) {
+          if (variable instanceof ContinuousVariable) {
+            continuousData.setDouble(i, j, dataSet.getDouble(i, j));
+          } else {
+            continuousData.setInt(i, j, dataSet.getInt(i, j));
+          }
+        }
+      } else {
+        //make it continuous
+        if (variable instanceof ContinuousVariable) {
+          for (int i = 0; i < dataSet.getNumRows(); i++) {
+            continuousData.setDouble(i, j, dataSet.getDouble(i, j));
+          }
+        } else {
+          DiscreteVariable discreteVariable = (DiscreteVariable) variable;
+
+          for (int i = 0; i < dataSet.getNumRows(); i++) {
+            int index = dataSet.getInt(i, j);
+            String catName = discreteVariable.getCategory(index);
+            double value;
+
+            if (catName.equals("*")) {
+              value = Double.NaN;
+            } else {
+              value = Double.parseDouble(catName);
+            }
+
+            continuousData.setDouble(i, j, value);
+          }
+        }
+      }
+    }
+    return continuousData;
   }
 
   public static ArrayList<String> getMultiFileInputHeaders (String param, String [] args) {
@@ -219,14 +315,14 @@ public class TetradDiscretize {
         //ret.add(args[i+1]);
         String value = "";
         for (int j = i + 1; j < args.length; j++) {
-          if (args[j].charAt(0) == '-' && j > i+1) {
+          if (args[j].charAt(0) == '-' && j > i + 1) {
             break;
           } else if (j != i + 1) {
             value += " ";
           }
           value += args[j];
         }
-        ret.add(value);
+        ret.add(value.replaceAll(" ", "_"));
         i++;
       }
     }

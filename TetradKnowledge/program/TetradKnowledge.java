@@ -285,7 +285,7 @@ public class TetradKnowledge {
           }
           value += args[j];
         }
-        ret.add(value);
+        ret.add(value.replaceAll(" ","_"));
         i++;
       }
     }

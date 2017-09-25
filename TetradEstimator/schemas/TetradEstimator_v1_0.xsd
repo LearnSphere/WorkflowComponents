@@ -83,7 +83,7 @@
 
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="tetrad-bayesIM" />
+      <xs:element ref="tetrad-im" />
     </xs:choice>
   </xs:complexType>
 
