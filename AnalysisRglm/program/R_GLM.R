@@ -1,6 +1,6 @@
 #usage
-#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingType "glm" -formula "Final_Exam~Video" -family "quasi(link=identity, variance=constant)" -workingDir "." -programDir "." 
-#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingType "glm" -formula "Final_Exam~Video" -family "binomial" -workingDir "." -programDir "." 
+#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "quasi(link=identity, variance=constant)" -workingDir "." -programDir "." 
+#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "binomial" -workingDir "." -programDir "." 
 
 
 options(echo=FALSE)
@@ -64,12 +64,12 @@ while (i <= length(args)) {
 	 if (grepl("binomial", family) == TRUE)
 		isBinomial = TRUE
        i = i+1
-    } else if (args[i] == "-modelingType") {
+    } else if (args[i] == "-modelingFunc") {
        if (length(args) == i) {
           stop("modeling type must be specified")
        }
-       modelingType = args[i+1]
-	 if (modelingType != "glm" && modelingType != "glmer" && modelingType != "lm" && modelingType != "lmer") {
+       modelingFunc = args[i+1]
+	 if (modelingFunc != "glm" && modelingFunc != "glmer" && modelingFunc != "lm" && modelingFunc != "lmer") {
           stop("modeling type must be lm, lmer, glm or glmer")
        }
 	 
@@ -155,7 +155,7 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
 #Run the model
-if(modelingType == "glmer"){
+if(modelingFunc == "glmer"){
 	modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ")", sep="")
 	eval(parse(text=modelingString))
 	modelSum <- summary(fittedModel)
@@ -164,17 +164,17 @@ if(modelingType == "glmer"){
 	cat("\n\n\n\n")
 	print(params)
 	#anova(fittedModel)
-} else if (modelingType == "glm") {
+} else if (modelingFunc == "glm") {
 	modelingString = paste("fittedModel <-glm(", formula, ", data=ds, family=", family, ")", sep="")
 	eval(parse(text=modelingString))
 	modelSum <- summary(fittedModel)
 	print(modelSum)
-} else if (modelingType == "lm") {
+} else if (modelingFunc == "lm") {
   modelingString = paste("fittedModel <-lm(", formula, ", data=ds)", sep="")
   eval(parse(text=modelingString))
   modelSum <- summary(fittedModel)
   print(modelSum)
-}else if (modelingType == "lmer") {
+}else if (modelingFunc == "lmer") {
   modelingString = paste("fittedModel <-lmer(", formula, ", data=ds)", sep="")
   eval(parse(text=modelingString))
   modelSum <- summary(fittedModel)

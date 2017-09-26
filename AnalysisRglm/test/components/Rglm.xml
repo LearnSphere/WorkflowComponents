@@ -17,7 +17,7 @@
       <fixedEffects>Video,Pretest,Activities</fixedEffects>
       <!-- <randomEffects>1|id,1+Non Activities_Reading|Pretest</randomEffects>-->
       <family>binomial (link = logit)</family> <!--gaussian (link = identity) -->
-      <modelingType>glm</modelingType>
+      <modelingFunc>glm</modelingFunc>
   </options>
   <inputs>
     <input0>
