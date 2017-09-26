@@ -39,6 +39,15 @@
    <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="FixedEffectsPanel" >
+	<xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="RandomEffectsPanel" >
+	<xs:restriction base="xs:string" />
+</xs:simpleType>
+
+
 <xs:simpleType name="FileOptionHeader" >
    <xs:restriction base="xs:string" />
 </xs:simpleType>

@@ -1,0 +1,40 @@
+<component>
+    <component_id>RglmTest</component_id>
+    <component_id_human>Analysis #1</component_id_human>
+    <workflow_id>104</workflow_id>
+    <component_name>R_glm</component_name>
+    <component_type>analysis</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <to>Component2</to>
+        </connection>
+    </connections>
+    <options>
+      <response>Pass or not</response>
+      <!-- <fixedEffects>Activities,Non Activities_Reading,Video*Pretest</fixedEffects>-->
+      <fixedEffects>Video,Pretest,Activities</fixedEffects>
+      <!-- <randomEffects>1|id,1+Non Activities_Reading|Pretest</randomEffects>-->
+      <family>binomial (link = logit)</family> <!--gaussian (link = identity) -->
+      <modelingType>glm</modelingType>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import1</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>ImportTabDelimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <tab-delimited>
+        <file_path>test/test_data/data.txt</file_path>
+        <label>tab-delimited</label>
+        <file_name>data.txt</file_name>
+        <index>0</index>
+      </tab-delimited>
+      </files>
+    </input0>
+    </inputs>
+</component>
