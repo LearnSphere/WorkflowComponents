@@ -13,12 +13,18 @@
   </connections>
   <top>106</top>
   <options>
-	<estimator>ML_Bayes_Estimator</estimator>
-	<incompleteRows>Randomize_incomplete_rows</incompleteRows>
-	<parametricModel>Bayes_Parametric_Model</parametricModel>
+  	<estimator>ML_Bayes_Estimator</estimator>
+    <pseudocounts>1.0000</pseudocounts>
+    <incompleteRows>Randomize_incomplete_rows</incompleteRows>
+    <optimizer>Regression</optimizer>
+    <tolerance>0.0001</tolerance>
+    <score>Fgls</score>
+    <parametricModel>SEM_Parametric_Model</parametricModel>
+    <correlation>Yes</correlation>
+    <randomRestarts>1</randomRestarts>
   </options>
   <inputs>
-    <!--<input0>
+    <input0>
       <component_id>Analysis-1-x641889</component_id>
       <component_id_human>Analysis #1</component_id_human>
       <component_type>analysis</component_type>
@@ -27,8 +33,8 @@
       <errors />
       <files>
         <student-step>		  
-		  <file_path>test/resources/CheeseDiscrete.txt</file_path>
-          <file_name>CheeseDiscrete.txt</file_name>
+		  <file_path>test/resources/cheese.txt</file_path>
+          <file_name>cheese.txt</file_name>
           <index>0</index>
           <label>student-step</label>
           <metadata />
@@ -37,7 +43,7 @@
       </files>
       <inputmeta />
       <optionmeta />
-    </input0>-->
+    </input0>
 	<input1>
       <component_id>Analysis-1-x641889</component_id>
       <component_id_human>Analysis #2</component_id_human>
@@ -47,8 +53,8 @@
       <errors />
       <files>
         <student-step>		  
-		  <file_path>test/resources/graphBrain.txt</file_path>
-          <file_name>graphBrain.txt</file_name>
+		  <file_path>test/resources/graph.txt</file_path>
+          <file_name>graph.txt</file_name>
           <index>1</index>
           <label>student-step</label>
           <metadata />

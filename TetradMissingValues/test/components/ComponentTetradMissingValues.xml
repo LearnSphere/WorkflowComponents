@@ -15,6 +15,7 @@
   <options>
 	  <operation>Inject_Missing_Data_Randomly</operation>
     <probability_of_injection>0.6</probability_of_injection>
+    <missingValueMarker>*</missingValueMarker>
   </options>
   <inputs>
     <input0>
@@ -26,8 +27,8 @@
       <errors />
       <files>
         <student-step>		  
-		  <file_path>test/resources/stupidData.txt</file_path>
-          <file_name>stupidData.txt</file_name>
+		  <file_path>test/resources/cheese.txt</file_path>
+          <file_name>cheese.txt</file_name>
           <index>0</index>
           <label>student-step</label>
           <metadata>

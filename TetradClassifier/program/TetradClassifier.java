@@ -304,6 +304,7 @@ public class TetradClassifier {
             double[][] points = rocc.getScaledRocPlot();
             addToDebugMessages("1.6");
             double area = rocc.getAuc();
+            String auc = area + "";
             addToDebugMessages("1.75");
 
             String rocData = "[";
@@ -337,6 +338,9 @@ public class TetradClassifier {
                 }
                 if (line.contains("INSERTTITLEDATAHERE")) {
                     line = line.replaceAll("INSERTTITLEDATAHERE", target + " = " + targetCat); 
+                }
+                if (line.contains("AUC_DATA_HERE")) {
+                    line = line.replaceAll("AUC_DATA_HERE", auc.substring(0,6)); 
                 }
                 bWriterROC.append(line + "\n");
             }

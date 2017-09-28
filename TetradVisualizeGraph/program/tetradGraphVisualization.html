@@ -62,6 +62,9 @@ ${PutGraphDataHere}
 
 <script>
 $(document).ready(function(){
+
+//$("body").width($(document).parent().parent().parent().width());
+
 $("#edgeInfo").hide();
 displayEdgeInfo();
 
@@ -90,9 +93,11 @@ for( ; i < lines.length; i++ )
 	if( gettingNodesLine ){
     if (isSEM) {
       var temp = l.split(',');
-      nodes = [];
+      console.log(temp);
+      //nodes = [];
       for (var j = 0; j < temp.length; j++) {
         var tempToks = temp[j].split(" ");
+        console.log(tempToks);
         nodes.push(tempToks[0]);
         childNodes.push(tempToks[0] + tempToks[1]);
       }
@@ -102,6 +107,8 @@ for( ; i < lines.length; i++ )
 		gettingNodesLine = false;
 		break;
 	}
+  console.log(childNodes);
+  console.log(nodes);
 }
 
 var gettingEdges = false;
@@ -207,7 +214,7 @@ var cytContainer = {
       })
     .selector('node.SEM_Label')
       .css({
-        'content': 'data(id)',
+        'content': 'data(name)',
         'text-opacity': 1,
         'text-valign': 'bottom',
         'text-halign': 'right',
@@ -282,24 +289,29 @@ var cytContainer = {
 
 //add nodes to the container
 cytContainer.elements.nodes = [];
-for( var j = 0; j < nodes.length; j++ ){
-	var d = {};
-	d.data = {};
-	d.data.id = nodes[j];
-  d.data.idNumChars = nodes[j].length;
-	cytContainer.elements.nodes.push(d);
-}
+///if (!isSEM) {
+  for( var j = 0; j < nodes.length; j++ ){
+  	var d = {};
+  	d.data = {};
+  	d.data.id = nodes[j];
+    d.data.idNumChars = nodes[j].length;
+  	cytContainer.elements.nodes.push(d);
+  }
+//}
 if (isSEM) {
   for( var j = 0; j < childNodes.length; j++) {
     var d = {};
     d.data = {};
-    d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
+    //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
+    d.data.id = childNodes[j];
+    d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
     d.classes = "SEM_Label";
     d.data.parent = nodes[j];
     d.data.idNumChars = nodes[j].length;
     cytContainer.elements.nodes.push(d);
   }
 }
+console.log(cytContainer.elements.nodes);
 
 //add edges to the container
 cytContainer.elements.edges = e;

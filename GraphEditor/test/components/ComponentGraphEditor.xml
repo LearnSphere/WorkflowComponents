@@ -1,65 +1,105 @@
 <component>
-  <component_id>ComponentTestOutput</component_id>
-  <component_id_human>GraphEditor #1</component_id_human>
-  <workflow_id>6</workflow_id>
-  <component_name>GraphEditor</component_name>
+  <component_id>Tetrad-1-x502095</component_id>
+  <component_id_human>Tetrad #5</component_id_human>
+  <workflow_id>124</workflow_id>
+  <component_name>Graph Editor</component_name>
   <component_type>tetrad</component_type>
-  <left>695</left>
+  <left>492</left>
   <connections>
     <connection>
       <index>0</index>
-      <from>Analysis-1-x641889</from>
+      <tindex>0</tindex>
+      <from>Tetrad-1-x833848</from>
     </connection>
   </connections>
-  <top>106</top>
   <options>
-	<conversion>Standardize_Data</conversion>
+    <nodeName5 />
+    <nodeName4 />
+    <nodeName3 />
+    <nodeName2 />
+    <nodeName1>AddedNode</nodeName1>
+    <numNodeEdits>1</numNodeEdits>
+    <edge3>Directed</edge3>
+    <edge4>Directed</edge4>
+    <edge1>Directed</edge1>
+    <edge2>Partially_Oriented</edge2>
+    <edge5>Directed</edge5>
+    <nodeOperation2>Add_Node</nodeOperation2>
+    <toNode3 />
+    <nodeType1>Variable</nodeType1>
+    <toNode4 />
+    <nodeOperation1>Add_Node</nodeOperation1>
+    <nodeOperation4>Add_Node</nodeOperation4>
+    <nodeType3>Variable</nodeType3>
+    <toNode1>T.Quiz</toNode1>
+    <fromNode5 />
+    <nodeOperation3>Add_Node</nodeOperation3>
+    <nodeType2>Variable</nodeType2>
+    <toNode2>play</toNode2>
+    <fromNode4 />
+    <nodeType5>Variable</nodeType5>
+    <fromNode3 />
+    <nodeType4>Variable</nodeType4>
+    <fromNode2>Fina__Exam</fromNode2>
+    <fromNode1>play</fromNode1>
+    <toNode5 />
+    <numEdgeEdits>2</numEdgeEdits>
+    <operation2>Add_Edge</operation2>
+    <operation1>Remove_Edge</operation1>
+    <nodeOperation5>Add_Node</nodeOperation5>
+    <operation5>Add_Edge</operation5>
+    <operation4>Add_Edge</operation4>
+    <operation3>Add_Edge</operation3>
   </options>
+  <top>452</top>
   <inputs>
     <input0>
-      <component_id>Analysis-1-x641889</component_id>
-      <component_id_human>Analysis #1</component_id_human>
-      <component_type>analysis</component_type>
-      <component_name>Afm</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
+      <component_id>Tetrad-1-x833848</component_id>
+      <component_id_human>Tetrad #1</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Tetrad Search</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
       <errors />
       <files>
-        <student-step>		  
-		  <file_path>test/resources/cheese.txt</file_path>
-          <file_name>cheese.txt</file_name>
+        <text>
+          <file_path>test/resources/Graph.txt</file_path>
+          <file_name>Graph.txt</file_name>
           <index>0</index>
-          <label>student-step</label>
+          <label>text</label>
           <metadata>
             <header>
               <id>header0</id>
               <index>0</index>
-              <name>Case</name>
-            </header>
-			<header>
-              <id>header1</id>
-              <index>1</index>
-              <name>taste</name>
-            </header>
-			<header>
-              <id>header2</id>
-              <index>2</index>
-              <name>Acetic</name>
-            </header>
-			<header>
-              <id>header3</id>
-              <index>3</index>
-              <name>H2S</name>
-            </header>
-			<header>
-              <id>header4</id>
-              <index>4</index>
-              <name>Lactic</name>
+              <name>Graph Nodes:</name>
             </header>
           </metadata>
-        </student-step>
+        </text>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <completeRuleSetUsed>no</completeRuleSetUsed>
+        <faithfulnessAssumed>no</faithfulnessAssumed>
+        <useHeuristic>yes</useHeuristic>
+        <scoreTypeDiscrete>Conditional_Gaussian_BIC</scoreTypeDiscrete>
+        <testTypeMixed>Conditional_Gaussian_LRT</testTypeMixed>
+        <numCatForDiscretize>3</numCatForDiscretize>
+        <structurePrior>1</structurePrior>
+        <maxDegree>100</maxDegree>
+        <maxPathLength>3</maxPathLength>
+        <algorithm>PC</algorithm>
+        <symmetricFirstStep>no</symmetricFirstStep>
+        <maxSizeConditioningSet>-1</maxSizeConditioningSet>
+        <dataType>Completely_Continuous</dataType>
+        <testTypeDiscrete>GSquare</testTypeDiscrete>
+        <samplePrior>1</samplePrior>
+        <testTypeContinuous>Fisher_Z</testTypeContinuous>
+        <maxLengthDiscriminatingPath>-1</maxLengthDiscriminatingPath>
+        <alpha>0.05</alpha>
+        <penaltyDiscount>2</penaltyDiscount>
+        <scoreTypeMixed>Conditional_Gaussian_BIC</scoreTypeMixed>
+        <discretizeContinuousVars>yes</discretizeContinuousVars>
+        <scoreTypeContinuous>Conditional_Gaussian_BIC</scoreTypeContinuous>
+      </optionmeta>
     </input0>
   </inputs>
 </component>

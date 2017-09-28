@@ -1,83 +1,186 @@
 <component>
-  <component_id>ComponentTestOutput</component_id>
-  <component_id_human>TetradClassifier #1</component_id_human>
-  <workflow_id>6</workflow_id>
-  <component_name>TetradClassifier</component_name>
+  <component_id>Tetrad-1-x172412</component_id>
+  <component_id_human>Tetrad #4</component_id_human>
+  <workflow_id>126</workflow_id>
+  <component_name>Classifier</component_name>
   <component_type>tetrad</component_type>
-  <left>695</left>
+  <left>748</left>
   <connections>
     <connection>
       <index>0</index>
-      <from>Analysis-1-x641889</from>
+      <tindex>1</tindex>
+      <from>Tetrad-1-x854618</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>2</tindex>
+      <from>Tetrad-1-x194498</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Tetrad-1-x448126</from>
     </connection>
   </connections>
-  <top>106</top>
   <options>
-	<target>HC</target>
-  <targetCategory>1</targetCategory>
-  <!--<model>ML_Bayes_Estimator</model>
-	<parametricModel>Bayes_Parametric_Model</parametricModel>-->
+    <target>Input 0 - Fina__Exam (column 4)</target>
+    <targetCategory>0</targetCategory>
   </options>
+  <top>258</top>
   <inputs>
     <input0>
-      <component_id>Analysis-1-x641889</component_id>
-      <component_id_human>Analysis #1</component_id_human>
-      <component_type>analysis</component_type>
-      <component_name>Afm</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
+      <component_id>Tetrad-1-x448126</component_id>
+      <component_id_human>Tetrad #2</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Row Operations</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
       <errors />
       <files>
-        <student-step>		  
-		  <file_path>test/resources/CheeseDiscrete.txt</file_path>
-          <file_name>CheeseDiscrete.txt</file_name>
+        <tab-delimited>
+          <file_path>test/resources/ConvertedData.txt</file_path>
+          <file_name>ConvertedData.txt</file_name>
           <index>0</index>
-          <label>student-step</label>
-          <metadata />
-        </student-step>
-		
+          <label>tab-delimited</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>activities_started</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>play</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>T.Quiz</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Fina__Exam</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>non_activities_pageview</name>
+            </header>
+          </metadata>
+        </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <operation>Bootstrap_Sample</operation>
+        <sampleSize>3001</sampleSize>
+      </optionmeta>
     </input0>
-	<input1>
-      <component_id>Analysis-1-x641889</component_id>
-      <component_id_human>Analysis #2</component_id_human>
-      <component_type>analysis1</component_type>
-      <component_name>Afm</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
-      <errors />
-      <files>
-        <student-step>		  
-		  <file_path>test/resources/classifyGraphBrain.txt</file_path>
-          <file_name>classifyGraphBrain.txt</file_name>
-          <index>1</index>
-          <label>student-step</label>
-          <metadata />
-            
-        </student-step>
-      </files>
-      <inputmeta />
-      <optionmeta />
-    </input1>
     <input2>
-      <component_id>Analysis-1-x641889</component_id>
-      <component_id_human>Analysis #2</component_id_human>
-      <component_type>analysis1</component_type>
-      <component_name>Afm</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
+      <component_id>Tetrad-1-x194498</component_id>
+      <component_id_human>Tetrad #3</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Row Operations</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
       <errors />
       <files>
-        <student-step>      
-      <file_path>test/resources/CheeseDiscrete.txt</file_path>
-          <file_name>CheeseDiscrete.txt</file_name>
-          <index>1</index>
-          <label>student-step</label>
-          <metadata />
-            
-        </student-step>
+        <tab-delimited>
+          <file_path>test/resources/ConvertedData1.txt</file_path>
+          <file_name>ConvertedData1.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>activities_started</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>play</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>T.Quiz</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Fina__Exam</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>non_activities_pageview</name>
+            </header>
+          </metadata>
+        </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <operation>Bootstrap_Sample</operation>
+        <sampleSize>501</sampleSize>
+      </optionmeta>
     </input2>
+    <input1>
+      <component_id>Tetrad-1-x854618</component_id>
+      <component_id_human>Tetrad #5</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Tetrad Search</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <file_path>test/resources/Graph.txt</file_path>
+          <file_name>Graph.txt</file_name>
+          <index>0</index>
+          <label>text</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Graph Nodes:</name>
+            </header>
+          </metadata>
+        </text>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <completeRuleSetUsed>no</completeRuleSetUsed>
+        <faithfulnessAssumed>no</faithfulnessAssumed>
+        <useHeuristic>yes</useHeuristic>
+        <scoreTypeDiscrete>Conditional_Gaussian_BIC</scoreTypeDiscrete>
+        <testTypeMixed>Conditional_Gaussian_LRT</testTypeMixed>
+        <numCatForDiscretize>3</numCatForDiscretize>
+        <structurePrior>1</structurePrior>
+        <maxDegree>100</maxDegree>
+        <maxPathLength>3</maxPathLength>
+        <algorithm>PC</algorithm>
+        <symmetricFirstStep>no</symmetricFirstStep>
+        <maxSizeConditioningSet>-1</maxSizeConditioningSet>
+        <dataType>Completely_Discrete</dataType>
+        <testTypeDiscrete>GSquare</testTypeDiscrete>
+        <samplePrior>1</samplePrior>
+        <testTypeContinuous>Fisher_Z</testTypeContinuous>
+        <maxLengthDiscriminatingPath>-1</maxLengthDiscriminatingPath>
+        <alpha>0.05</alpha>
+        <penaltyDiscount>2</penaltyDiscount>
+        <scoreTypeMixed>Conditional_Gaussian_BIC</scoreTypeMixed>
+        <discretizeContinuousVars>yes</discretizeContinuousVars>
+        <scoreTypeContinuous>Conditional_Gaussian_BIC</scoreTypeContinuous>
+      </optionmeta>
+    </input1>
   </inputs>
 </component>

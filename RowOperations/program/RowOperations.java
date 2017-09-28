@@ -115,6 +115,7 @@ public class RowOperations {
           char[] chars = fileToCharArray(inputFile);
 
           DataReader reader = new DataReader();
+          reader.setMaxIntegralDiscrete(10);
           reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);

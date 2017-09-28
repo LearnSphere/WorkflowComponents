@@ -88,6 +88,7 @@ public class TetradSearch {
     }
  
     String workingDir = cmdParams.get("-workingDir");
+    outputDir = workingDir;
 
     String infile0 = cmdParams.get("-file0");
     File inputFile0 = new File( infile0 );

@@ -76,6 +76,9 @@ public class TetradEstimator {
       }
     }
 
+    String workingDir = cmdParams.get("-workingDir");
+    outputDir = workingDir;
+
     if ( cmdParams.containsKey("-estimator") == false ) {
       addToErrorMessages("No Regression Specified.");
       return;
@@ -97,14 +100,13 @@ public class TetradEstimator {
     }
 
     String estimator = cmdParams.get("-estimator");
-    String workingDir = cmdParams.get("-workingDir");
-    outputDir = workingDir;
     String infile0 = cmdParams.get("-file0");
     String infile1 = cmdParams.get("-file1");
     String incompleteRows = cmdParams.get("-incompleteRows");
     String parametricModel = cmdParams.get("-parametricModel");
     String optimizer = cmdParams.get("-optimizer");
     String score = cmdParams.get("-score");
+    String correlation = cmdParams.get("-correlation");
     double pseudocounts = 1.00;
     try {
       Double temp = Double.parseDouble(cmdParams.get("-pseudocounts"));
@@ -252,7 +254,15 @@ public class TetradEstimator {
 
             DataSet continuousData = DataUtils.convertNumericalDiscreteToContinuous( data );
 
-            SemEstimator semEst = new SemEstimator(continuousData, semPm, opt);
+            SemEstimator semEst = null;
+
+            addToDebugMessages("correlation: " + correlation);
+            if (correlation.equals("Yes")) {
+              ICovarianceMatrix corr = new CorrelationMatrix(continuousData);
+              semEst = new SemEstimator(corr, semPm, opt);
+            } else if (correlation.equals("No")) {
+              semEst = new SemEstimator(continuousData, semPm, opt);
+            }
             semEst.setNumRestarts(randomRestarts);
             if (score.equals("Fgls")) {
               semEst.setScoreType(SemIm.ScoreType.Fgls);

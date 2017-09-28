@@ -10,6 +10,13 @@
 .axis {
   shape-rendering: crispEdges;
 }
+text {
+  font-weight: bold;
+}
+
+.tick text {
+  font-weight: normal;
+}
 
 .x.axis line {
 }
@@ -26,6 +33,12 @@
 .y.axis path {
   fill: none;
   stroke: #000;
+}
+
+.auc {
+  position: fixed;
+  top: 370px;
+  left: 300px;
 }
 
 </style>
@@ -131,7 +144,8 @@ var svg = d3.select("body").append("svg")
   if (d3.version.substring(0,1) === "3") {
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate("+height+"," + height + ")")
+        //.attr("transform", "translate("+height+"," + height + ")")
+        .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
     /*svg.append("g")
@@ -172,4 +186,5 @@ var svg = d3.select("body").append("svg")
 //});
 
 </script>
+<div class="auc"><b>AUC = AUC_DATA_HERE</b></div>
 </body>

@@ -152,6 +152,14 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="correlationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="parametricModelType" name="parametricModel" id="parametricModel" default="Bayes_Parametric_Model" />
@@ -162,6 +170,7 @@
       <xs:element type="xs:double" name="pseudocounts" id="Estimate_using_a_prior_with_all_pseudocounts_" default="1.0000" />
       <xs:element type="xs:double" name="tolerance" id="Iterate_until_less_than_this_tolerance" default="0.0001" />
       <xs:element type="xs:integer" name="randomRestarts" id="Random_Restarts" default="1" />
+      <xs:element type="correlationType" name="correlation" id="Use_input_data_as_correlation_matrix" default="No" />
     </xs:choice>
   </xs:complexType>
 
