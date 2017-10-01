@@ -24,7 +24,7 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/example_student_step/prediction.txt</file_path>
+          <file_path>test/example_tab-delimited/prediction.txt</file_path>
           <file_name>prediction.txt</file_name>
           <index>0</index>
           <label>student-step</label>

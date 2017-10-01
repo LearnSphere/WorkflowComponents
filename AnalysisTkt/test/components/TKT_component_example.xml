@@ -12,9 +12,11 @@
         </connection>
     </connections>
     <options>
-        <mode>best fit model</mode>
-    <optimizedParameters>0,0,0,0,0,0,0,0,0,0</optimizedParameters>
+    <mode>five times 2 fold crossvalidated read folds</mode>
+    <optimizedParameters>1,0,1,0,1,0,0,1,1,1</optimizedParameters>
     <fixedParameters>0,0,0,0,0,0,0,0,0,1</fixedParameters>
+    <const>use categorical intercepts</const>
+    <constHeader>KC (Default)</constHeader>
   </options>
     <inputs>
     <input0>
@@ -26,8 +28,8 @@
       <errors/>
       <files>
           <transaction>
-              <file_path>test/example_transactions/tkt-model.txt</file_path>
-              <file_name>tkt-model.txt</file_name>
+              <file_path>test/example_transactions/transaction file with added features stim cv.txt</file_path>
+              <file_name>dummy.txt</file_name>
               <index>0</index>
               <label>transaction</label>
           </transaction>
