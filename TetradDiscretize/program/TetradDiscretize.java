@@ -201,6 +201,7 @@ public class TetradDiscretize {
         DataModel newData = disWrap.getDataModels().get(0);
 
         String convertedData = newData.toString();
+        convertedData = convertedData.replaceAll("\n\n","\n");
 
 
         bWriter.append( convertedData.replaceFirst("\n", "") );

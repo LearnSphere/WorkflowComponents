@@ -243,6 +243,9 @@ public class TetradMissingValues {
               break;
              
           }
+
+          manipulatedData = manipulatedData.replaceAll("\n\n","\n");
+
           bWriter.append( manipulatedData.replaceFirst("\n","") );
           bWriter.close();
 

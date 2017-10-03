@@ -226,7 +226,8 @@ public class TetradDataConversion {
             break;
           }
 
-
+          convertedData = convertedData.replaceAll("\n\n","\n");
+          
           bWriter.append( convertedData.replaceFirst("\n", "") );
           bWriter.close();
 

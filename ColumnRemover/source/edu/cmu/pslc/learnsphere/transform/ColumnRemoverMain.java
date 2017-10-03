@@ -153,8 +153,8 @@ public class ColumnRemoverMain extends AbstractComponent {
           StringBuilder buf = new StringBuilder();
           for (int i = 0; i < modifiedData.size(); i++) {
             for (int j = 0; j < modifiedData.get(0).size(); j++) {
-              logger.debug("daata.geti"+modifiedData.get(i));
-              logger.debug("i "+i+ " j "+j+ "  cell "+modifiedData.get(i).get(j));
+              //logger.debug("daata.geti"+modifiedData.get(i));
+              //logger.debug("i "+i+ " j "+j+ "  cell "+modifiedData.get(i).get(j));
               buf.append(modifiedData.get(i).get(j));
               if (j != modifiedData.get(0).size()-1) {
                 buf.append("\t");
@@ -164,6 +164,7 @@ public class ColumnRemoverMain extends AbstractComponent {
               buf.append("\n");
             }
           }
+          buf = buf.replaceAll("\n\n","\n");
           bWriter.write(buf.toString());
           bWriter.close();
 

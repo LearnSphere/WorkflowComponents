@@ -255,7 +255,9 @@ public class TetradClassifier {
             c++;
           }
           addToDebugMessages("classified data: \n" + classifiedData.toString().substring(0,700));
-          bWriterData.append(classifiedData.toString().replaceFirst("\n",""));
+          String classifiedDataStr = classifiedData.toString();
+          classifiedDataStr = classifiedDataStr.replaceAll("\n\n","\n");
+          bWriterData.append(classifiedDataStr.replaceFirst("\n",""));
           bWriterData.close();
 
           addToDebugMessages("adding roc data");
