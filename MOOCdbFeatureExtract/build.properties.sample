@@ -1,2 +1,2 @@
-component.interpreter.path=C:/Program Files (x86)/Python35-32/python.exe
-component.program.path=program/afms_workflow_predict.py
+component.interpreter.path=/usr/bin/python
+component.program.path=program/main.py

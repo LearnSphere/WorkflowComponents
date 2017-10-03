@@ -1,2 +1,2 @@
-component.interpreter.path=c:/R-3.2.3/bin/Rscript.exe
-component.program.path=program/RLMFitting.R
+component.interpreter.path=C:/Program Files/R/R-3.4.1/bin/Rscript.exe
+component.program.path=program/R_GLM.R
