@@ -1,2 +1,2 @@
-component.interpreter.path=/usr/bin/python
+component.interpreter.path=C:/Python27/Python
 component.program.path=program/main.py
