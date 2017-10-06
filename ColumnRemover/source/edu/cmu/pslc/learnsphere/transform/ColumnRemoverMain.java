@@ -164,7 +164,6 @@ public class ColumnRemoverMain extends AbstractComponent {
               buf.append("\n");
             }
           }
-          buf = buf.replaceAll("\n\n","\n");
           bWriter.write(buf.toString());
           bWriter.close();
 

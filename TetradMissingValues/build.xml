@@ -23,6 +23,9 @@
         <fileset dir="${lib}">
             <include name="**/**.jar" />
         </fileset>
+        <fileset dir="${tetrad.lib}">
+            <include name="*.jar" />
+        </fileset>
     </path>
 
     <target name="dist" depends="compile" description="generate the distribution">
@@ -33,9 +36,6 @@
             <fileset dir="${lib}">
                 <include name="*.jar" />
             </fileset>
-            <fileset dir="${tetrad.lib}">
-               <include name="**/**.jar" />
-           </fileset>
         </path>
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />

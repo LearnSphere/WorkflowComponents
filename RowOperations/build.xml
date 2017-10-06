@@ -10,6 +10,7 @@
     <property name="dist" location="${basedir}/dist" />
     <property name="lib" location="../CommonLibraries" />
     <property name="javadoc" location="${basedir}/javadoc" />
+    <property name="tetrad.lib" location="../CustomLibraries/Tetrad" />
 
     <property name="version" value="1.0" />
 
@@ -20,8 +21,11 @@
 
     <path id="lib.path">
         <fileset dir="${lib}">
-            <include name="**/**.jar" />
+            <include name="*.jar" />
         </fileset>
+        <fileset dir="${tetrad.lib}">
+           <include name="*.jar" />
+       </fileset>
     </path>
 
     <target name="dist" depends="compile" description="generate the distribution">
@@ -32,9 +36,6 @@
             <fileset dir="${lib}">
                 <include name="*.jar" />
             </fileset>
-            <fileset dir="${tetrad.lib}">
-                <include name="*.jar" />
-           </fileset>
         </path>
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
