@@ -10,6 +10,7 @@
     <property name="dist" location="${basedir}/dist" />
     <property name="lib" location="../CommonLibraries" />
     <property name="javadoc" location="${basedir}/javadoc" />
+    <property name="tetrad.lib" location="../CustomLibraries/Tetrad" />
 
     <property name="version" value="1.0" />
 
@@ -22,6 +23,9 @@
         <fileset dir="${lib}">
             <include name="**/**.jar" />
         </fileset>
+        <fileset dir="${tetrad.lib}">
+           <include name="*.jar" />
+       </fileset>
     </path>
 
     <target name="dist" depends="compile" description="generate the distribution">
