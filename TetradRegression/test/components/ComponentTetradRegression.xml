@@ -31,8 +31,8 @@
       <errors />
       <files>
         <student-step>		  
-		  <file_path>test/resources/cheese1.txt</file_path>
-          <file_name>cheese1.txt</file_name>
+		  <file_path>test/resources/cheese.txt</file_path>
+          <file_name>cheese.txt</file_name>
           <index>0</index>
           <label>student-step</label>
           <metadata>

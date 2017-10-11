@@ -7,6 +7,7 @@
     <property file="build.properties" />
     <property name="source" location="${basedir}/source" />
     <property name="build" location="${basedir}/build" />
+    <property name="program" location="${basedir}/program" />
     <property name="dist" location="${basedir}/dist" />
     <property name="lib" location="../CommonLibraries" />
     <property name="javadoc" location="${basedir}/javadoc" />
@@ -14,10 +15,13 @@
 
     <property name="version" value="1.0" />
 
+    <property name="javac8" location="/usr/java/jdk1.8.0_131/bin/javac" />
+
     <property name="component.id" value="TetradClassifier" />
     <property name="component.version" value="v${version} 2015" />
 
     <property name="ToolTemplate.jar" value="${dist}/${component.id}-${version}.jar" />
+    <property name="TetradTemplate.jar" value="${dist}/${component.id}.jar" />
 
     <path id="lib.path">
         <fileset dir="${lib}">
@@ -36,6 +40,9 @@
             <fileset dir="${lib}">
                 <include name="*.jar" />
             </fileset>
+            <fileset dir="${tetrad.lib}">
+               <include name="*.jar" />
+           </fileset>
         </path>
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
@@ -44,6 +51,17 @@
             <manifest>
                 <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.tetrad.TetradClassifierMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
+            </manifest>
+        </jar>
+
+        <!-- build component jar -->
+        <manifestclasspath property="tetrad.lib.list" jarfile="${TetradTemplate.jar}">
+            <classpath refid="build-classpath" />
+        </manifestclasspath>
+        <jar jarfile="${TetradTemplate.jar}" basedir="${build}" includes="**">
+            <manifest>
+                <attribute name="Main-Class" value="TetradClassifier" />
+                <attribute name="Class-Path" value="${tetrad.lib.list}" />
             </manifest>
         </jar>
     </target>
@@ -64,9 +82,11 @@
 
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
-        <javac includeantruntime="false" srcdir="${source}" destdir="${build}" debug="on" fork="true">
+        <javac includeantruntime="false" srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
-			<compilerarg line="-nowarn" />
+        </javac>
+        <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on" fork="yes" executable="${javac8}">
+            <classpath refid="lib.path" />
         </javac>
     </target>
 
