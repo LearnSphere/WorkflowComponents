@@ -1,3 +1,3 @@
 for d in */ ; do
-	( cd $d && cd program && chmod +x run.sh )
+	( cd $d && cd program && chmod ug+x run.sh )
 done
