@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisRglm</url>
+<date>2017-09-14</date>
+<abstract>
+<p>The <b>Linear Modeling</b> component allows users to conduct R 
+    <a href="https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/lm">lm</a>, 
+    <a href="https://www.rdocumentation.org/packages/lme4/versions/1.1-13/topics/lmer">lmer</a>, 
+    <a href="https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/glm">glm</a> and 
+    <a href="https://www.rdocumentation.org/packages/lme4/versions/1.1-13/topics/glmer">glmer</a> functions on a data file of their choice.</p>
+<p>For glm and glmer, the variance and link families provided include: binomial (link = logit), binomial (link = probit), binomial (link = cloglog), gaussian (link = identity), Gamma (link = inverse), Gamma (link = identity), Gamma (link = log), inverse.gaussian (link = 1/mu^2), poisson (link = log), poisson (link = identity), poisson (link = sqrt).</p>
+<p>Users can choose a column for response. For binomial families, the component can convert true/false and correct/incorrect/hint values to 1 or 0. For other families, the component only allows numeric values for response column.</p>
+<p>The component provides ways for users to construct formula for these analyses. For lm/glm option, users can choose columns for fixed factor(s). For lmer/glmer, in addition to fixed factor(s), users can choose columns for random factor(s) with or without intercept, and with or without categorical nesting factor.
+</p>
+<p>The back-end of the component runs on R.</p></abstract>
+<description></description>
+
+<inputs>
+<ul><li>A tab-delimited data file. This can be done using a Tab-delimited File Import component.</li></ul>
+</inputs>
+
+<outputs><ul>
+<li>A text file containing R analysis summary.</li>
+</ul></outputs>
+
+<options>
+<ul>
+<li>Modeling type: lm, lmer, glm or glmer.</li>
+<li>Family: available only for glm or glmer.</li>
+<li>Response: for binomial families, the component can convert true/false and correct/incorrect/hint values to 1 or 0. For other families, the component only allows numeric values for response column.</li>
+<li>Fixed effects: can choose single factor or more than one factor at a time. Use the arrow buttons to edit the final fixed effects. If interaction type "*" is selected, all possible fixed factors will be added to the final list, e.g. KC*KC-opportunity results in three items KC, KC-opportunity and KC:KC-opportunity added.</li>
+<li>Random effects: grouping/random factor is required while nesting and independent/fixed factors are optional. For examples: choosing "student" as grouping/random factor alone results in (1+student) added to the final list; choosing "student" as grouping/random factor, "class" as nesting factor and "KC-opportunity" as independent/fixed factor results in (KC-opportunity|class/student) added to the final list. If "no" intercept is selected, (0+KC-opportunity|class/student) is added.</li>
+<li>Formula: uneditable field. Content is constructed by what are selected in fixed effect and random effect fields.</li>
+</ul>
+</options>
+
+</info>

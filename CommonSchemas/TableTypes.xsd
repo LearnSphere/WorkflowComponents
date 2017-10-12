@@ -51,7 +51,7 @@
 		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
 <xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
 <xs:element name="coursera-anonymized-general" substitutionGroup="text" />
-	<xs:element name="MOOCdb" substitutionGroup="text" />
+	<xs:element name="MOOCdb" substitutionGroup="file" />
 <xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
 <xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
 <xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />
@@ -60,6 +60,11 @@
 		  <xs:element name="inline-html" substitutionGroup="xml" />
 		  <xs:element name="html" substitutionGroup="xml" />
 		  <xs:element name="ctat-log" substitutionGroup="xml" />
+
+      <xs:element name="tetrad-graph" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-regression" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-im" substitutionGroup="tab-delimited" />
 
   <xs:element name="png" substitutionGroup="image" />
   <xs:element name="jpg" substitutionGroup="image" />

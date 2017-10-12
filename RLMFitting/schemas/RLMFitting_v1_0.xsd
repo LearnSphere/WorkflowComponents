@@ -15,7 +15,7 @@
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 
@@ -57,8 +57,11 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element type="MultiFileInputHeader" name="i_wf" id="Independent_variables" default=".*" />
+        <xs:element type="MultiFileInputHeader" name="d_wf" id="Dependent_variables" default=".*" />
+        <!--<xs:element type="xs:string" name="i" id="Independent_variables" minOccurs="0" />
         <xs:element type="xs:string" name="d" id="Dependent_variables" minOccurs="0"/>
-        <xs:element type="xs:string" name="i" id="Independent_variables" minOccurs="0" />
+        -->
     </xs:choice>
   </xs:complexType>
 

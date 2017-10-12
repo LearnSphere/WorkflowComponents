@@ -254,8 +254,8 @@
   
   
   <options>
-    <!--  <MOOCdbName />-->
-    <featuresToExtract>dropout,sum_observed_events_duration</featuresToExtract>
+    <!--  dropout,sum_observed_events_duration<MOOCdbName />-->
+    <featuresToExtract>dropout</featuresToExtract>
     <numberWeeks>10</numberWeeks>
     <startDate>yyyy-mm-dd</startDate>
     <exportFormat>tall</exportFormat>

@@ -1,0 +1,20 @@
+<component>
+  <component_id>Generate-1-x123456</component_id>
+  <component_id_human>Generate #1</component_id_human>
+  <workflow_id>1</workflow_id>
+  <component_name>Random Matrix</component_name>
+  <component_type>generate</component_type>
+  <top>0</top>
+  <left>0</left>
+  <connections>
+    <connection>
+      <to>Analysis-1-x231683</to>
+    </connection>
+  </connections>
+  <options>
+	<rows>10</rows>
+	<columns>10</columns>
+	<randomSeed>1234</randomSeed>
+  </options>
+
+</component>

@@ -18,7 +18,7 @@
     <simfunc>cosine</simfunc>
     <header1>CF (Correct Answer)</header1>
     <header2>Input</header2>
-    <returnvals>col</returnvals>
+    <returnvals>uniqmat</returnvals>
     <lag>0</lag>
     <corpus>TASA1</corpus>
   </options>

@@ -39,8 +39,31 @@
    <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="FixedEffectsPanel" >
+	<xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="RandomEffectsPanel" >
+	<xs:restriction base="xs:string" />
+</xs:simpleType>
+
+
 <xs:simpleType name="FileOptionHeader" >
    <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:attribute name="hidden" type="xs:boolean" />
+<xs:attribute name="dependsOn" type="xs:string" />
+<xs:attribute name="dependentOption" type="xs:string" />
+<xs:attribute name="constraint" type="xs:string" />
+<xs:attribute name="negation" type="xs:boolean" />
+
+<xs:simpleType name="disjunctive">
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="conjunctive">
+  <xs:restriction base="xs:string" />
 </xs:simpleType>
 
 </xs:schema>

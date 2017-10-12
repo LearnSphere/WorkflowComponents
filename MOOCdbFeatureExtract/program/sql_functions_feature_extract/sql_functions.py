@@ -88,6 +88,7 @@ def executeSQLWithConnParams(userName,passwd, host, port,databaseName,command,pa
     statements = sqlparse.split(command)
     count = 0
     for statement in statements:
+        #log.log(statement)
         cur = connection.cursor()
         #make sure actually does something
         if sqlparse.parse(statement):

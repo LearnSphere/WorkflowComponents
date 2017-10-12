@@ -58,7 +58,7 @@ public class LsaMain extends AbstractComponent {
         }
         //loding semantic space to the program from given directory
         try {
-            //lsa.loadSpace(this.getToolDir() + "/program");
+       //     lsa.loadSpace(this.getToolDir() + "/program");
                 //lsa.loadSpace("C:\\SemanticSpace\\"+corpus);  
         	lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class LsaMain extends AbstractComponent {
         }
 
         File generatedFile = this.createFile(
-                "Step-values-with-predictions", ".txt");
+                "LSA-predictions", ".txt");
 
         FileWriter oStream = new FileWriter(generatedFile);
         BufferedWriter sw = new BufferedWriter(oStream);

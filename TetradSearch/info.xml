@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Tetrad Implemented by Peter Schaldenbrand
+  <email>pschalde@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/TetradSearch</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>search box</b> takes as input a data set (in either a data or simulation box) and optionally a knowledge box, and searches for causal explanations represented by directed graphs. The result of a search is not necessarily—and not usually—a unique graph, but an object such as a pattern that represents a set of graphs, usually a Markov Equivalence class. More alternatives can be found by varying the parameters of search algorithms.
+<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited (required)</b><br/>
+tetrad-knowledge (optional)
+</inputs>
+
+<outputs>
+<b>tetrad-graph</b>
+</outputs>
+
+<options>
+
+</options>
+
+</info>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Tetrad Implemented by Peter Schaldenbrand
+  <email>pschalde@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/TetradEstimator</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>Estimator</b> component takes as input a tab-delimited data set and a tetrad graph. Based on the input graph, this component will estimate parameters for a model that is selected (SEM or Bayes). 
+<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b><br/>
+<b>tetrad-graph</b>
+</inputs>
+
+<outputs>
+<b>tetrad-graph</b> - SEM estimated graph if SEM is selected in the options.  Otherwise, if Bayes is selected, then it is the original graph.<br/>
+<b>tetrad-im</b> - Instatiated model as output from the estimator.
+</outputs>
+
+<options>
+
+</options>
+
+</info>

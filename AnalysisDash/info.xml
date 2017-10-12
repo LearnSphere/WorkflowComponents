@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Nick Lewis
+  <email>thecanary@gmail.com</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/dev/AnalysisIAfm</url>
+<date>2017-07-22</date>
+<abstract>Four models that add time or memory strength to a logistic regression over the "error rate" learning curve data.</abstract>
+<description> An extension of models such as AFM. Added factor of time inspired by cognitive models of memory. The LRT model simply adds time between opportunities as a factor. DASH models are taken from Michael Mozer and Robert Lindsey's work incorporating cognitive theories into big data approaches. There is an option to use the memory factor as either a fixed effect or as a random slope on items (KCs).</description>
+
+
+
+<inputs>
+<b>Student-Step</b>
+</inputs>
+
+<outputs>
+<b>Student-Step</b>
+<b>Model values</b>
+</outputs>
+
+<options>
+<b>KC Model</b> - the column containing the Knowledge Component Model (KCM) data <br/>
+<b>Memory Model</b> - Choose between the type of memory model that generates the memory factor <br/>
+<b>Factor Type</b> - Choose between setting memory as a fixed effect or as a random slope on item (KC) <br/>
+</options>
+
+</info>

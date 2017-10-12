@@ -1,0 +1,106 @@
+<component>
+  <component_id>Analysis-1-x138726</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>124</workflow_id>
+  <component_name>Knowledge</component_name>
+  <component_type>analysis</component_type>
+  <left>314</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Import-1-x392706</from>
+    </connection>
+  </connections>
+  <options>
+    <forbiddenTier4>No</forbiddenTier4>
+    <tier3Vars>Input 0 - T.Quiz (column 3)</tier3Vars>
+    <forbiddenTier3>No</forbiddenTier3>
+    <edge2Type>Forbidden</edge2Type>
+    <forbiddenTier5>No</forbiddenTier5>
+    <edge5Type>Forbidden</edge5Type>
+    <cluster1Vars>null</cluster1Vars>
+    <tier2Vars>Input 0 - activities_started (column 1)</tier2Vars>
+    <tier2Vars>Input 0 - play (column 2)</tier2Vars>
+    <tier2Vars>Input 0 - non_activities_pageview (column 5)</tier2Vars>
+    <numClusters>3</numClusters>
+    <forbiddenTier2>No</forbiddenTier2>
+    <forbiddenTier1>No</forbiddenTier1>
+    <endEdge1>Input 0 - Pretest (column 0)</endEdge1>
+    <endEdge3>Input 0 - Pretest (column 0)</endEdge3>
+    <tier1Vars>Input 0 - Pretest (column 0)</tier1Vars>
+    <endEdge2>Input 0 - Pretest (column 0)</endEdge2>
+    <endEdge5>Input 0 - Pretest (column 0)</endEdge5>
+    <endEdge4>Input 0 - Pretest (column 0)</endEdge4>
+    <edge3Type>Forbidden</edge3Type>
+    <edge1Type>Forbidden</edge1Type>
+    <cluster5Vars>null</cluster5Vars>
+    <edge4Type>Forbidden</edge4Type>
+    <numEdges>0</numEdges>
+    <cluster4Vars>null</cluster4Vars>
+    <tier5Vars>null</tier5Vars>
+    <cluster3Vars>null</cluster3Vars>
+    <startEdge5>Input 0 - Pretest (column 0)</startEdge5>
+    <numTiers>4</numTiers>
+    <cluster2Vars>null</cluster2Vars>
+    <startEdge3>Input 0 - Pretest (column 0)</startEdge3>
+    <startEdge4>Input 0 - Pretest (column 0)</startEdge4>
+    <knowledgeType>Tiers_and_Edges</knowledgeType>
+    <startEdge1>Input 0 - Pretest (column 0)</startEdge1>
+    <tier4Vars>Input 0 - Fina__Exam (column 4)</tier4Vars>
+    <startEdge2>Input 0 - Pretest (column 0)</startEdge2>
+  </options>
+  <top>99</top>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x392706</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/resources/data1.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>data1.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>activities_started</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>play</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>T.Quiz</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Fina__Exam</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>non_activities_pageview</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
