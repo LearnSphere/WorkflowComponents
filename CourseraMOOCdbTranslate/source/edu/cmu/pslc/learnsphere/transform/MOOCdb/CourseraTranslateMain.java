@@ -53,6 +53,7 @@ public class CourseraTranslateMain extends AbstractComponent {
     private static String GENERAL_SUFFIX = "anonymized_general";
     private static String MOOCDB_CORE = "moocdb_core";
     private static String MOOCDB_CLEAN = "moocdb_clean";
+    private static String MOOCDB_SUFFIX = "moocdb";
     
     @Override
     protected void runComponent() {
@@ -118,12 +119,12 @@ public class CourseraTranslateMain extends AbstractComponent {
                     if (optionMOOCdbName != null && !optionMOOCdbName.trim().equals("")) {
                             MOOCdbName = optionMOOCdbName;
                     } else {
-                            MOOCdbName = "moocdb_" + escapedCourseName;
+                            MOOCdbName = escapedCourseName;
                     }
                     hashMappingDbName = MOOCdbName + "_hash_mapping";
                     forumDbName = MOOCdbName + "_anonymized_forum";
                     generalDbName = MOOCdbName + "_anonymized_general";
-                    
+                    MOOCdbName = MOOCdbName + MOOCDB_SUFFIX;
             }
             if (MOOCdbName.equals(MOOCDB_CLEAN) || MOOCdbName.equals(MOOCDB_CORE)){
                     //send error message
@@ -176,103 +177,139 @@ public class CourseraTranslateMain extends AbstractComponent {
             MOOCdbItem currMOOCdbItem = findMOOCdb(MOOCdbName);
             logger.info("currMOOCdbItem: " + currMOOCdbItem);
             if (currMOOCdbItem != null) {
-                    //send error message if there is a current progress going on
-                    String progress = currMOOCdbItem.getCurrentProgress();
-                    String itemHashMappingMd5HashValue = currMOOCdbItem.getHashMappingFileMd5HashValue();
-                    String itemGeneralMd5HashValue = currMOOCdbItem.getGeneralFileMd5HashValue();
-                    String itemForumMd5HashValue = currMOOCdbItem.getForumFileMd5HashValue();
-                    
-                    if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
-                            String errMsg = "Course " + escapedCourseName + " is currently undergoing " + progress + " by another process.";
-                            addErrorMessage(errMsg + " You can either wait till it's done or start process with a new custom MOOCdb name.");
-                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
-                            System.err.println(errMsg);
-                            return;
+                    boolean moocdbExist = false;
+                    boolean backupdbExist = false;
+                    if (databaseExist(MOOCdbName) && isMOOCdb(MOOCdbName))
+                            moocdbExist = true;
+                    if (databaseExist(hashMappingDbName) || databaseExist(forumDbName) || databaseExist(generalDbName))
+                            backupdbExist = true;
+                    if (!moocdbExist && !backupdbExist) {
+                            logger.info("Orphaned MOOCdbItem is found: " + currMOOCdbItem);
+                            deleteMOOCDbItem(currMOOCdbItem);
+                            //then starts everything new
                     } else {
-                            boolean hashMappingFileEqual = false;
-                            boolean generalFileEqual = false;
-                            boolean forumFileEqual = false;
-                            String existingHashMappingFile = currMOOCdbItem.getHashMappingFile();
-                            String existingGeneralFile = currMOOCdbItem.getGeneralFile();
-                            String existingForumFile = currMOOCdbItem.getForumFile();
-                            if (existingHashMappingFile == null || existingGeneralFile == null || existingForumFile == null) {
-                                    String errMsg = "MOOCdb " + MOOCdbName + " is found in moocdbs table but information on coursera backup files are missing.";
-                                    addErrorMessage(errMsg + " You can start process with a new custom MOOCdb name.");
+                                                                                                                                                                                                                                                    //send error message if there is a current progress going on
+                            String progress = currMOOCdbItem.getCurrentProgress();
+                            if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
+                                    String errMsg = "Course " + escapedCourseName + " is currently undergoing " + progress + " by another process.";
+                                    addErrorMessage(errMsg + " You can either wait till it's done or start process with a new custom MOOCdb name.");
                                     logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
                                     System.err.println(errMsg);
                                     return;
-                            }
-                            File fHashMapping = new File(existingHashMappingFile);
-                            File fGeneral = new File(existingGeneralFile);
-                            File fForum = new File(existingForumFile);
-                                    
-                            hashMappingFileEqual = itemHashMappingMd5HashValue.equals(hashMappingMd5HashValue);
-                            generalFileEqual = itemGeneralMd5HashValue.equals(generalMd5HashValue);
-                            forumFileEqual = itemForumMd5HashValue.equals(forumMd5HashValue);
-                            logger.info("Compared hash-mapping file: " + hashMappingFileEqual);
-                            logger.info("Compared anonymized-general file: " + generalFileEqual);
-                            logger.info("Compared anonymized-forum file: " + forumFileEqual);
-                            if (hashMappingFileEqual && generalFileEqual && forumFileEqual) {
-                                    //output MOOCdb file and feature name
-                                    File dbPointerFile = this.createFile("MOOCdbPointer", ".txt");
-                                    File featuresFile = this.createFile("MOOCdbFeatures", ".txt");
-                                            
-                                    //write to dbPointerFile
-                                    try (OutputStream outputStream = new FileOutputStream(dbPointerFile)) {
-                                            // Write header and course name to export
-                                            byte[] cname = null;
-                                            cname = (MOOCdbItem.MOOCdb_PROPERTY_NAME + "=" + MOOCdbName).getBytes("UTF-8");
-                                            outputStream.write(cname);
-                                    } catch (Exception e) {
-                                            // This will be picked up by the workflows platform and relayed to the user.
-                                            e.printStackTrace();
-                                    }
-                                            
-                                    //write one line to featureFile
-                                    try (OutputStream outputStream = new FileOutputStream(featuresFile)) {
-                                            // Write features to export
-                                            byte[] features = null;
-                                            String osName = System.getProperty("os.name").toLowerCase();
-                                            if (osName.indexOf("win") >= 0) {
-                                                    features = (getAllFeatures(MOOCdbName) + "\r\n").getBytes("UTF-8");
-                                            } else {
-                                                    features = (getAllFeatures(MOOCdbName) + "\n").getBytes("UTF-8");
-                                            }
-                                            outputStream.write(features);
-                                    } catch (Exception e) {
-                                            // This will be picked up by the workflows platform and relayed to the user.
-                                            e.printStackTrace();
-                                    }
-                                                    
-                                    Integer nodeIndex = 0;
-                                    Integer fileIndex = 0;
-                                    String fileLabel = "MOOCdb";
-                                    logger.info("dbPointerFile: " + dbPointerFile);
-                                    this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
-                                    nodeIndex = 1;
-                                    fileIndex = 0;
-                                    fileLabel = "MOOCdb-features";
-                                    logger.info("featuresFile: " + featuresFile);
-                                    
-                                    this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
-
-                                    logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
-                                    // Send the component output back to the workflow.
-                                    System.out.println(this.getOutput());
-                                    return;
-                                            
                             } else {
-                                    String errMsg = "MOOCdb with the same name already exists but SQL backup files are different. MOOCdb name: " + MOOCdbName + ". ";
-                                    logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
-                                    if (fHashMapping.exists() && fForum.exists() && fGeneral.exists()) 
-                                            errMsg += " You can start translation process with a different MOOCdb name.";
-                                    else
-                                            errMsg += " You can use Feature Extraction Workflow component with the existing MOOCdb.";
-                                    addErrorMessage(errMsg);
-                                    System.err.println(errMsg);
-                                    return;
-                            }
-                    }  
+                                    //make sure the real database exists and delete backup databases
+                                    if (backupdbExist) {
+                                            try {
+                                                    deleteCourseraDbs(hashMappingDbName, forumDbName, generalDbName);
+                                            } catch (Exception ex) {
+                                                    String errMsg = "Found error deleting databases;  hash_mapping: " + hashMappingDbName + "; forum: " + forumDbName + "; general: " + generalDbName + 
+                                                                    "; Exception: " + ex.getMessage();
+                                                    addErrorMessage(errMsg);
+                                                    logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                                    System.err.println(errMsg);
+                                                    return;
+                                            }
+                                    } 
+                                    if (databaseExist(MOOCdbName) && !isMOOCdb(MOOCdbName)) {
+                                            logger.info("Orphaned MOOCdbItem is found: " + currMOOCdbItem);
+                                            deleteMOOCDbItem(currMOOCdbItem);
+                                            String errMsg = "Database name: " +MOOCdbName +
+                                                            " already exists. Start translation process with another database name.";
+                                            addErrorMessage(errMsg);
+                                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                            System.err.println(errMsg);
+                                            return;
+                                    }
+                                    
+                                    //when MOOCdb exsits, make sure it is from the same backup files
+                                    String itemHashMappingMd5HashValue = currMOOCdbItem.getHashMappingFileMd5HashValue();
+                                    String itemGeneralMd5HashValue = currMOOCdbItem.getGeneralFileMd5HashValue();
+                                    String itemForumMd5HashValue = currMOOCdbItem.getForumFileMd5HashValue();
+                                    boolean hashMappingFileEqual = false;
+                                    boolean generalFileEqual = false;
+                                    boolean forumFileEqual = false;
+                                    String existingHashMappingFile = currMOOCdbItem.getHashMappingFile();
+                                    String existingGeneralFile = currMOOCdbItem.getGeneralFile();
+                                    String existingForumFile = currMOOCdbItem.getForumFile();
+                                    if (existingHashMappingFile == null || existingGeneralFile == null || existingForumFile == null) {
+                                            String errMsg = "MOOCdb " + MOOCdbName + " is found in moocdbs table but information on coursera backup files are missing.";
+                                            addErrorMessage(errMsg + " You can start process with a new custom MOOCdb name.");
+                                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                            System.err.println(errMsg);
+                                            return;
+                                    }
+                                    File fHashMapping = new File(existingHashMappingFile);
+                                    File fGeneral = new File(existingGeneralFile);
+                                    File fForum = new File(existingForumFile);
+                                            
+                                    hashMappingFileEqual = itemHashMappingMd5HashValue.equals(hashMappingMd5HashValue);
+                                    generalFileEqual = itemGeneralMd5HashValue.equals(generalMd5HashValue);
+                                    forumFileEqual = itemForumMd5HashValue.equals(forumMd5HashValue);
+                                    logger.info("Compared hash-mapping file: " + hashMappingFileEqual);
+                                    logger.info("Compared anonymized-general file: " + generalFileEqual);
+                                    logger.info("Compared anonymized-forum file: " + forumFileEqual);
+                                    if (hashMappingFileEqual && generalFileEqual && forumFileEqual) {
+                                            //output MOOCdb file and feature name
+                                            File dbPointerFile = this.createFile("MOOCdbPointer", ".txt");
+                                            File featuresFile = this.createFile("MOOCdbFeatures", ".txt");
+                                                    
+                                            //write to dbPointerFile
+                                            try (OutputStream outputStream = new FileOutputStream(dbPointerFile)) {
+                                                    // Write header and course name to export
+                                                    byte[] cname = null;
+                                                    cname = (MOOCdbItem.MOOCdb_PROPERTY_NAME + "=" + MOOCdbName).getBytes("UTF-8");
+                                                    outputStream.write(cname);
+                                            } catch (Exception e) {
+                                                    // This will be picked up by the workflows platform and relayed to the user.
+                                                    e.printStackTrace();
+                                            }
+                                                    
+                                            //write one line to featureFile
+                                            try (OutputStream outputStream = new FileOutputStream(featuresFile)) {
+                                                    // Write features to export
+                                                    byte[] features = null;
+                                                    String osName = System.getProperty("os.name").toLowerCase();
+                                                    if (osName.indexOf("win") >= 0) {
+                                                            features = (getAllFeatures(MOOCdbName) + "\r\n").getBytes("UTF-8");
+                                                    } else {
+                                                            features = (getAllFeatures(MOOCdbName) + "\n").getBytes("UTF-8");
+                                                    }
+                                                    outputStream.write(features);
+                                            } catch (Exception e) {
+                                                    // This will be picked up by the workflows platform and relayed to the user.
+                                                    e.printStackTrace();
+                                            }
+                                                            
+                                            Integer nodeIndex = 0;
+                                            Integer fileIndex = 0;
+                                            String fileLabel = "MOOCdb";
+                                            logger.info("dbPointerFile: " + dbPointerFile);
+                                            this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
+                                            nodeIndex = 1;
+                                            fileIndex = 0;
+                                            fileLabel = "MOOCdb-features";
+                                            logger.info("featuresFile: " + featuresFile);
+                                            
+                                            this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
+        
+                                            logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
+                                            // Send the component output back to the workflow.
+                                            System.out.println(this.getOutput());
+                                            return;
+                                                    
+                                    } else {
+                                            String errMsg = "MOOCdb with the same name already exists but SQL backup files are different. MOOCdb name: " + MOOCdbName + ". ";
+                                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                                            if (fHashMapping.exists() && fForum.exists() && fGeneral.exists()) 
+                                                    errMsg += " You can start new translation process with a different MOOCdb name.";
+                                            else
+                                                    errMsg += " You can use Feature Extraction Workflow component with the existing MOOCdb.";
+                                            addErrorMessage(errMsg);
+                                            System.err.println(errMsg);
+                                            return;
+                                    }
+                            } 
+                    }
             }
             //this should be a new MOOCdb. So make sure there is no databases with these names exist
             if (databaseExist(MOOCdbName) || databaseExist(hashMappingDbName) || databaseExist(forumDbName) || databaseExist(generalDbName)) {
@@ -379,8 +416,7 @@ public class CourseraTranslateMain extends AbstractComponent {
             File featuresFile = new File(outputDirectory.getAbsolutePath() + "/MOOCdbFeatures.txt");
             
 
-            //check if the content of the dbPointerFile is correct
-            if (checkOutputContent(dbPointerFile, MOOCdbName)) {
+            if (dbPointerFile.exists() && checkOutputContent(dbPointerFile, MOOCdbName)) {
                     //set the earliest_submission_time
                     Date earliestSubmissionTime = getEarliestSubmissionTime(MOOCdbName); 
                     moocdbItem.setEarliestSubmissionTimestamp(earliestSubmissionTime); 
@@ -390,6 +426,17 @@ public class CourseraTranslateMain extends AbstractComponent {
                     moocdbItem.setLastProgressEndTimestamp(new Date());
                     logger.info("Completed translation, pre-process and curate for MOOCdb: " + MOOCdbName);
                     saveOrUpdateMOOCdb(moocdbItem);
+                    
+                    //delete all backupfiles
+                    try {
+                            deleteCourseraDbs(hashMappingDbName, forumDbName, generalDbName);
+                    } catch (Exception ex) {
+                            //since it is so far into the process, this error will not abort the process, 
+                            //it only keep a record in log file
+                            String errMsg = "Found error deleting databases;  hash_mapping: " + hashMappingDbName + "; forum: " + forumDbName + "; general: " + generalDbName + 
+                                            "; Exception: " + ex.getMessage();
+                            logger.info("CourseraMOOCdbTranlate aborted: " + errMsg);
+                    }
                     
                     Integer nodeIndex = 0;
                     Integer fileIndex = 0;
@@ -407,7 +454,9 @@ public class CourseraTranslateMain extends AbstractComponent {
                     //send error message
                     deleteMOOCDbItem(moocdbItem);
                     
-                    String errMsg = "Found error in translating/curating MOOCdb: " + MOOCdbName + "; MOOCdb name doesn't match with the Python output file. ";
+                    String errMsg = "Found error in translating/curating MOOCdb: " + MOOCdbName;
+                    if (dbPointerFile.exists())
+                            errMsg += "; MOOCdb name doesn't match with the Python output file. ";
                     addErrorMessage(errMsg);
                     logger.info(errMsg + " Deleted MOOCdbItem: " + moocdbItem + "; and Coursera DBs and MOOCdb.");
                     try {
@@ -548,6 +597,11 @@ public class CourseraTranslateMain extends AbstractComponent {
     private boolean databaseExist(String dbName) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             return dbDao.databaseExist(dbName);
+    }
+    
+    private boolean isMOOCdb(String dbName) {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            return dbDao.isMOOCdb(dbName);
     }
     
     private void createDBUser(String username, String passwrod) throws SQLException {

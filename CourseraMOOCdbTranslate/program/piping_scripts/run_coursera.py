@@ -87,7 +87,7 @@ if __name__ == "__main__":
         'options': {
             'log_path': args.workingDir,
             'log_to_console': True,
-            'debug': False,
+            'debug': True,
             'num_users_debug_mode': 100,
         },
     }
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     if startDate == None:
         startDate = datetime.now()
     startDate = startDate.strftime('%Y-%m-%d %H:%M:%S')
-        
+    vars['logger'].Log(vars, "startDate: " + startDate)    
     cu.curate(vars,
               dbName     = vars['target']['db'],
             userName    = vars['target']['user'],

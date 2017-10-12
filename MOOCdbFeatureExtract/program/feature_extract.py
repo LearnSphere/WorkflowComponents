@@ -131,39 +131,43 @@ def writeFeaturesInTallForm(conn,dbName,filePath,featuresToExtract,featureExtrac
         log = logger
 
     log.log('writing features in tall format')
-    sql = '''SELECT a.longitudinal_feature_id,
+    outfile = open(filePath, 'w')
+    headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
+    outfile.write("\t".join(headers) + "\n")    
+    for i in featuresToExtract :
+        sql = '''SELECT a.longitudinal_feature_id,
                     b.longitudinal_feature_name,
                     a.user_id,
                     a.longitudinal_feature_week,
                     a.longitudinal_feature_value,
                     a.date_of_extraction
-             FROM `%s`.user_longitudinal_feature_values a
-             JOIN `%s`.longitudinal_features b
-             ON a.longitudinal_feature_id = b.longitudinal_feature_id
-             WHERE a.longitudinal_feature_id in (%s) 
-                     AND a.feature_extraction_id = %s ''' % (dbName, dbName, ",".join(str(i) for i in featuresToExtract), featureExtractionId)
-    sql += ''' ORDER BY a.longitudinal_feature_id, a.user_id, a.longitudinal_feature_week '''
-    log.log(sql)
-    try:
-        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(sql)
-        rows = cursor.fetchall()
-        outfile = open(filePath, 'w')
-        headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
-        cols = ["longitudinal_feature_id", "longitudinal_feature_name", "user_id", "longitudinal_feature_week", "longitudinal_feature_value", "date_of_extraction"]
-        outfile.write("\t".join(headers) + "\n")
+                 FROM `%s`.user_longitudinal_feature_values a
+                 JOIN `%s`.longitudinal_features b
+                 ON a.longitudinal_feature_id = b.longitudinal_feature_id
+                 WHERE a.longitudinal_feature_id = %s 
+                     AND a.feature_extraction_id = %s ''' % (dbName, dbName, i, featureExtractionId)
+        sql += ''' ORDER BY a.user_id, a.longitudinal_feature_week '''
+        log.log(sql)
+        try:
+            cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            #outfile = open(filePath, 'w')
+            #headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
+            cols = ["longitudinal_feature_id", "longitudinal_feature_name", "user_id", "longitudinal_feature_week", "longitudinal_feature_value", "date_of_extraction"]
+            #outfile.write("\t".join(headers) + "\n")
         
-        for row in rows:
-            strRow = ""
-            for colName in cols:
-                strRow += str(row[colName])+ "\t"
-            outfile.write(strRow.strip())
-            outfile.write("\n")
-        cursor.close()
-    except Exception as error:
-        log.log("\n ERROR: writing longitudinal features tall form unsucessful.")
-        log.log("\n Traceback: " + traceback.format_exc())
-    log.log('done')
+            for row in rows:
+                strRow = ""
+                for colName in cols:
+                    strRow += str(row[colName])+ "\t"
+                outfile.write(strRow.strip())
+                outfile.write("\n")
+            cursor.close()
+        except Exception as error:
+            log.log("\n ERROR: writing longitudinal features tall form unsucessful.")
+            log.log("\n Traceback: " + traceback.format_exc())
+        log.log('done')
     
 
 def writeFeaturesInWideForm(conn,dbName,filePath,featuresToExtract,featureExtractionId,logger=None):
@@ -557,18 +561,18 @@ featureDict = {
          'default': 0,
          'dependencies':[],
          'desc': " Average number of attempts in current week divided by average number of attempts in previous week (difference of feature 9)."},
-     110:{'name': "difference_feature_10",
-         'filename': 'populate_feature_110_difference_feature_10',
-         'extension': '.sql',
-         'default': 0,
-         'dependencies':[],
-         'desc': " (Total time spent on all resources during current week (feat. 2) divided by number of correct problems during current week (feat. 8)) divided by same thing from previous week (difference of feature 10)."},
-     111:{'name': "difference_feature_11",
-             'filename': 'populate_feature_111_difference_feature_11',
-             'extension': '.sql',
-         'default': 0,
-         'dependencies':[],
-         'desc': " (Number of problems attempted (feat. 6) divided by number of correct problems (feat. 8)) divided by same thing from previous week (difference of feature 11)."},
+     #110:{'name': "difference_feature_10",
+      #   'filename': 'populate_feature_110_difference_feature_10',
+      #   'extension': '.sql',
+      #   'default': 0,
+      #   'dependencies':[],
+      #   'desc': " (Total time spent on all resources during current week (feat. 2) divided by number of correct problems during current week (feat. 8)) divided by same thing from previous week (difference of feature 10)."},
+     #111:{'name': "difference_feature_11",
+     #        'filename': 'populate_feature_111_difference_feature_11',
+     #        'extension': '.sql',
+     #    'default': 0,
+     #    'dependencies':[],
+     #    'desc': " (Number of problems attempted (feat. 6) divided by number of correct problems (feat. 8)) divided by same thing from previous week (difference of feature 11)."},
      112:{'name': "difference_feature_12",
              'filename': 'populate_feature_112_difference_feature_12',
              'extension': '.sql',

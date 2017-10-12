@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jdom.Element;
@@ -34,6 +35,8 @@ public class FeatureExtractMain extends AbstractComponent {
 
     /** Component option (dataset). */
     String courseName = null;
+    
+    private int MAX_FEATURE_TO_EXTRACT = 15;
 
     public static void main(String[] args) {
             FeatureExtractMain tool = new FeatureExtractMain();
@@ -130,6 +133,13 @@ public class FeatureExtractMain extends AbstractComponent {
             }
             //process feature to extract
             List<String> featuresToExtractList = this.getMultiOptionAsString("featuresToExtract");
+            if (featuresToExtractList.size() > MAX_FEATURE_TO_EXTRACT) {
+                    String errMsg = "Too many features are selected. Extract less than " + MAX_FEATURE_TO_EXTRACT + " features at a time. ";
+                    addErrorMessage(errMsg);
+                    logger.info("MOOCdbFeatureExtraction aborted: " + errMsg + " currMOOCdbItem: " + currMOOCdbItem);
+                    System.err.println(errMsg);
+                    return;
+            }
             String featuresToExtract = "";
             Map<Integer, String> availFeatures = getAllFeatures(MOOCdbName);
             String[] values = null;
