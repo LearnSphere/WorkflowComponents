@@ -87,7 +87,7 @@ if __name__ == "__main__":
         'options': {
             'log_path': args.workingDir,
             'log_to_console': True,
-            'debug': True,
+            'debug': False,
             'num_users_debug_mode': 100,
         },
     }
