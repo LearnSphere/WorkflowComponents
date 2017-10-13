@@ -327,7 +327,7 @@ window.parent.document.getElementsByClassName('visFrame').height = '500px';
 function displayEdgeInfo() {
   $("body").prepend(
       '<div id="edgeInfoOption">' + 
-      'Click for more (or less) info about graph edge types</div>');
+      'Click for more info about graph edge types</div>');
  
   $("#edgeInfoOption").on("click", function() {
     $("#edgeInfo").toggle();
@@ -347,7 +347,21 @@ function displayEdgeInfo() {
     <tbody>
     <tr>
         <td>
-            <h2><font color="white">Graph Edge Types</font></h2>
+            <h2>
+              <font color="white">Graph Edge Types</font>
+              <span style="
+                  float: right;
+                  background-color: white;
+                  border-radius: 3px;
+                  margin: 1% 1%;
+                  padding: 2px 4px;
+                  border-width: 2px;
+                  border-color: black;
+                  border-style: solid;
+                  color: black;
+                  cursor: pointer;
+              ">✖</span>
+            </h2>
         </td>
     </tr>
     </tbody>
