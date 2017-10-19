@@ -7,7 +7,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="1" />
+              <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -28,7 +28,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 

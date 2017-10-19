@@ -27,7 +27,7 @@
 
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="file" minOccurs="1" />
+      <xs:element ref="file" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
