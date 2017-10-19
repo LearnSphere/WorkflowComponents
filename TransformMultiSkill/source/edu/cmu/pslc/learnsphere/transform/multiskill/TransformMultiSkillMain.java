@@ -127,19 +127,22 @@ public class TransformMultiSkillMain extends AbstractComponent {
                             }
                             
                             if (kcs != null) {
+                                    boolean includePredictedError = false;
+                                    if (kcs.length == 1 || (errRates != null && errRates.length > 1))
+                                            includePredictedError = true;
                                     for (int x = 0; x < kcs.length; x++) {
                                             List<String> newRow = new ArrayList<String>();
                                             for (int j = 0; j < fContent[i].length; j++) {
                                                     if (!deleteColumns.contains(j)) {
                                                             if (j == colInd_KC)
                                                                     newRow.add(kcs[x]);
-                                                            else if (j == colInd_opp && found) {
-                                                                    if ( x < opps.length)
+                                                            else if (j == colInd_opp && found ) {
+                                                                    if (opps != null && x < opps.length)
                                                                             newRow.add(opps[x]);
                                                                     else
                                                                             newRow.add("");
                                                             } else if (j == colInd_errRate && found) {
-                                                                    if ( x < errRates.length)
+                                                                    if (errRates != null && x < errRates.length && includePredictedError)
                                                                             newRow.add(errRates[x]);
                                                                     else
                                                                             newRow.add("");
