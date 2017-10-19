@@ -76,10 +76,6 @@
         </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta>
-        <operation>Bootstrap_Sample</operation>
-        <sampleSize>3001</sampleSize>
-      </optionmeta>
     </input0>
     <input2>
       <component_id>Tetrad-1-x194498</component_id>
@@ -129,10 +125,6 @@
         </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta>
-        <operation>Bootstrap_Sample</operation>
-        <sampleSize>501</sampleSize>
-      </optionmeta>
     </input2>
     <input1>
       <component_id>Tetrad-1-x854618</component_id>
@@ -157,30 +149,6 @@
         </text>
       </files>
       <inputmeta />
-      <optionmeta>
-        <completeRuleSetUsed>no</completeRuleSetUsed>
-        <faithfulnessAssumed>no</faithfulnessAssumed>
-        <useHeuristic>yes</useHeuristic>
-        <scoreTypeDiscrete>Conditional_Gaussian_BIC</scoreTypeDiscrete>
-        <testTypeMixed>Conditional_Gaussian_LRT</testTypeMixed>
-        <numCatForDiscretize>3</numCatForDiscretize>
-        <structurePrior>1</structurePrior>
-        <maxDegree>100</maxDegree>
-        <maxPathLength>3</maxPathLength>
-        <algorithm>PC</algorithm>
-        <symmetricFirstStep>no</symmetricFirstStep>
-        <maxSizeConditioningSet>-1</maxSizeConditioningSet>
-        <dataType>Completely_Discrete</dataType>
-        <testTypeDiscrete>GSquare</testTypeDiscrete>
-        <samplePrior>1</samplePrior>
-        <testTypeContinuous>Fisher_Z</testTypeContinuous>
-        <maxLengthDiscriminatingPath>-1</maxLengthDiscriminatingPath>
-        <alpha>0.05</alpha>
-        <penaltyDiscount>2</penaltyDiscount>
-        <scoreTypeMixed>Conditional_Gaussian_BIC</scoreTypeMixed>
-        <discretizeContinuousVars>yes</discretizeContinuousVars>
-        <scoreTypeContinuous>Conditional_Gaussian_BIC</scoreTypeContinuous>
-      </optionmeta>
     </input1>
   </inputs>
 </component>

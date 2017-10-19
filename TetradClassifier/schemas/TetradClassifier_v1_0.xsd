@@ -7,7 +7,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+              <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -18,7 +18,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList1" name="files" />
-             <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+             <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -29,7 +29,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList2" name="files" />
-             <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+             <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -37,27 +37,27 @@
 
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="1" />
     </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InFileList1">
     <xs:choice>
-      <xs:element ref="file" minOccurs="0" />
+      <xs:element ref="file" minOccurs="1" />
     </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InFileList2">
     <xs:choice>
-      <xs:element ref="file" minOccurs="0" />
+      <xs:element ref="file" minOccurs="1" />
     </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-      <xs:element name="input2" type="InputDefinition2" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
+      <xs:element name="input2" type="InputDefinition2" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 

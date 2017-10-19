@@ -120,6 +120,8 @@ public class RowOperations {
 
           DataSet data = reader.parseTabular(chars);
 
+          addToDebugMessages("parsed data: \n" + data.toString().substring(0,500));
+
           String convertedData = "";
           DataSet newData = null;
 
