@@ -52,16 +52,26 @@ public class RLMFitting extends AbstractComponent {
                     
             this.componentOptions.addContent(0, new Element("i").setText(independentVars));
             this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
+            this.componentOptions.addContent(0, new Element("outputFile").setText("R-summary.txt"));
             // Run the program and return its stdout to a file.
-            File output = this.runExternal();
-
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileLabel = "analysis-summary";
-
-            this.addOutputFile(output, nodeIndex, fileIndex, fileLabel);
+            //File output = this.runExternal();
+            File outputDirectory = this.runExternalMultipleFileOuput();
+            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+                    logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+                    File file0 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");
+                    if (file0 != null && file0.exists()) {
+                            Integer nodeIndex0 = 0;
+                            Integer fileIndex0 = 0;
+                            String label0 = "text";
+                            this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
+                    } else {
+                            this.addErrorMessage("An unknown error has occurred with the Rglm component.");
+                    }
+            }
+            
             // Send the component output back to the workflow.
             System.out.println(this.getOutput());
+            
     }
 
 }
