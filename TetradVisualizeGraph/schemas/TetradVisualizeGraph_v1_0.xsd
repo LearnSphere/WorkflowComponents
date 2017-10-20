@@ -7,7 +7,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -15,7 +15,7 @@
 
   <xs:complexType name="InputType">
     <xs:sequence>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:sequence>
   </xs:complexType>
 
@@ -27,7 +27,7 @@
 
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="file" minOccurs="1" />
+      <xs:element ref="file" minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 

@@ -7,7 +7,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="1" processContents="skip" maxOccurs="1" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -18,7 +18,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element type="InFileList1" name="files" />
-             <xs:any minOccurs="0" processContents="skip" maxOccurs="1" />
+             <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -33,7 +33,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="1" />
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="tetrad-knowledge" minOccurs="0" />
     </xs:all>
   </xs:complexType>
