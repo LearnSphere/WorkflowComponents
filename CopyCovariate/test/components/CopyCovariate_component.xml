@@ -14,7 +14,11 @@
       <from>Import-1-x352396</from>
     </connection>
     </connections>
-
+ <options>
+      <oldcol>CF (Covariate)</oldcol>
+      <newcol>CF (Posttest)</newcol>
+      <keycol>Anon.Student.Id</keycol>
+    </options>
     <inputs>
     <input0>
       <component_id>Import-1-x084422</component_id>
