@@ -55,6 +55,10 @@ public class TetradMissingValues {
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
+    String argLine = "";
+    for (String s : args) {
+      argLine += s + " ";
+    }
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
@@ -76,6 +80,8 @@ public class TetradMissingValues {
     String workingDir = cmdParams.get("-workingDir");
 
     outputDir = workingDir;
+    System.out.println(outputDir + FILENAME);
+    addToDebugMessages(argLine);
 
     if (cmdParams.containsKey("-operation") == false) {
       addToErrorMessages("No operation Specified."); 
@@ -86,15 +92,16 @@ public class TetradMissingValues {
     } else if (cmdParams.containsKey("-file0") == false){
       addToErrorMessages("No outfile name"); 
       return;
-    } else if (cmdParams.containsKey("-missingValueMarker") == false){
+    } /*else if (cmdParams.containsKey("-missingValueMarker") == false){
       addToErrorMessages("No missingValueMarker name"); 
       return;
-    }
+    }*/
 
     String operation = cmdParams.get("-operation");
-    String marker = cmdParams.get("-missingValueMarker");
+    //String marker = cmdParams.get("-missingValueMarker");
+    String marker = "*";
 
-    addToDebugMessages("missing value marker: " + marker);
+    addToDebugMessages("missing value marker: " + marker + ".");
 
     String infile = cmdParams.get("-file0");
     File inputFile = new File(infile);
@@ -189,10 +196,14 @@ public class TetradMissingValues {
 
                 Parameters params = new Parameters();
 
-                MeanInterpolatorWrapper miw = 
+                /*MeanInterpolatorWrapper miw = 
                   new MeanInterpolatorWrapper(dw, params);
 
-                DataModel newData = miw.getDataModels().get(0);
+                DataModel newData = miw.getDataModels().get(0);*/
+
+                DataFilter interpolator = new MeanInterpolator();
+                DataSet newData = interpolator.filter(data);
+                addToDebugMessages(newData.toString().substring(0,500));
 
                 manipulatedData = newData.toString();
               } catch (Exception e) {
@@ -313,6 +324,9 @@ public class TetradMissingValues {
       bw.flush();
       bw.close();
     } catch (IOException e) {
+      System.out.println("Unable to write to file: " + e.toString());
+      return false;
+    } catch (Exception e) {
       System.out.println("Unable to write to file: " + e.toString());
       return false;
     }
