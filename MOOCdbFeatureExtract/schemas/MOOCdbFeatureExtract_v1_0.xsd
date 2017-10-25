@@ -119,8 +119,7 @@
 
   <xs:complexType name="OptionsType"> 
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    	<xs:element type="exportFileFormat" name="exportFormat" id="Output_Format" default="tall" />
-     	<xs:element type="MultiFileInputHeader" name="featuresToExtract" id="Features_to_Extract" default=".*" />	
+    	<xs:element type="MultiFileInputHeader" name="featuresToExtract" id="Features_to_Extract" default=".*" />	
       <xs:element type="xs:integer" name="numberWeeks" id="Number_Of_Weeks_To_Extract" default="10"/>
       <xs:element type="xs:string" name="startDate" id="Start_Date" default="yyyy-mm-dd"/>
       

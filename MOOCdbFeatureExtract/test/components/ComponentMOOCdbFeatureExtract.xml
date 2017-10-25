@@ -245,6 +245,5 @@
     <featuresToExtract>dropout</featuresToExtract>
     <numberWeeks>10</numberWeeks>
     <startDate>yyyy-mm-dd</startDate>
-    <exportFormat>tall</exportFormat>
   </options>
 </component>
