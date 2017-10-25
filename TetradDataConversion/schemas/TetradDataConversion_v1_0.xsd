@@ -15,7 +15,7 @@
 
   <xs:complexType name="InputType">
     <xs:sequence>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:sequence>
   </xs:complexType>
 
@@ -55,11 +55,11 @@
     </xs:sequence>
   </xs:complexType>
 
-  <!--<xs:complexType name="option_dependency">
+  <xs:complexType name="option_dependency">
     <xs:choice>
-      <xs:element type="conjunctive" name="varsToStandardizeDependency" ls:dependentOption="varsToStandardize" ls:dependsOn="conversion" ls:constraint="matches(Standardize_Data)" />
+      <xs:element type="conjunctive" name="numInstancesDependency" ls:dependentOption="numInstances" ls:dependsOn="conversion" ls:constraint="matches(Simulate_Tabular_From_Covariance)" />
     </xs:choice>
-  </xs:complexType>-->
+  </xs:complexType>
 
    <xs:simpleType name="conversionType" final="restriction">
     <xs:restriction base="xs:string">
@@ -78,6 +78,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="conversionType" name="conversion" id="conversion" default="Convert_to_Covariance_Matrix" />
       <!--<xs:element type="MultiFileInputHeader" name="varsToStandardize" id="Variables_to_standardize" default=".*" />-->
+      <xs:element type="xs:integer" name="numInstances" id="Number_of_instances" default="100" />
     </xs:choice>
   </xs:complexType>
 

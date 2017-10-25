@@ -51,9 +51,10 @@ public class RowOperationsMain extends AbstractComponent {
    */
   public static void main(String[] args) {
     //Change the System.err for Tetrad Components because Tetrad code causes strange error
+    //System.out.println("AHHHH");
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setErr(new PrintStream(baos));
+    //System.setErr(new PrintStream(baos));
 
     RowOperationsMain tool = new RowOperationsMain();
 
@@ -73,6 +74,8 @@ public class RowOperationsMain extends AbstractComponent {
   }
   @Override
   protected void runComponent() {
+    //System.out.println("in runComponent");
+    logger.debug("in run component");
 
     File outputDirectory = this.runExternalMultipleFileOuput();
 

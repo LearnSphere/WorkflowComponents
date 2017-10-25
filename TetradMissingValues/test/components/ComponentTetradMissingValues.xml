@@ -15,7 +15,7 @@
   <options>
 	  <operation>Inject_Missing_Data_Randomly</operation>
     <probability_of_injection>0.6</probability_of_injection>
-    <missingValueMarker>*</missingValueMarker>
+    <!--<missingValueMarker>*</missingValueMarker>-->
   </options>
   <inputs>
     <input0>

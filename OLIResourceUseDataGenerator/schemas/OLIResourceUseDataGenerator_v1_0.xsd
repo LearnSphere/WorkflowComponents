@@ -14,7 +14,7 @@
 
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="transaction"  minOccurs="0" />
+      <xs:element ref="tab-delimited"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 

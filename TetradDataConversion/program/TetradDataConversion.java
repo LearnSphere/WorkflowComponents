@@ -139,15 +139,27 @@ public class TetradDataConversion {
             break;
           case "Simulate_Tabular_From_Covariance":
             try {
-              TetradMatrix mat = data.getCovarianceMatrix();
+              int numInstances = 100;
+              try {
+                numInstances = Integer.parseInt(cmdParams.get("-numInstances"));
+              } catch (Exception e) {
+                addToErrorMessages("Couldn't get numInstances: " + e.toString());
+              }
 
-              double [][] ar = mat.toArray();
+              TetradMatrix tm = data.getDoubleData();
 
-              ColtDataSet newDS = new ColtDataSet(
-                mat.rows(), data.getVariables() );
-              newDS.makeData(data.getVariables(), mat);
+              CovarianceMatrix covMat = null;
+              try {
+                covMat = new CovarianceMatrix(data.getVariables(),
+                  tm, numInstances);
+              } catch (Exception e) {
+                addToErrorMessages("Input data is not a covariance matrix: " + e.toString());
+              }
 
-              DataWrapper dw = new DataWrapper(newDS);
+              DataModel covDM = (DataModel)covMat;
+
+              DataWrapper dw = new DataWrapper(data);
+              dw.setDataModel(covDM);
 
               DataWrapper sfcw = new SimulateFromCovWrapper(
                 dw, new Parameters() );

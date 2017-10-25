@@ -27,7 +27,7 @@
       <elapsed_seconds>0</elapsed_seconds>
       <errors/>
       <files>
-      <transaction>
+      <tab-delimited>
         <file_path>test/test_data/stats_log_act.txt</file_path>
         <label>transaction</label>
         <file_name>stats_log_act.txt</file_name>
@@ -105,7 +105,7 @@
             </header>
           </metadata>
 
-      </transaction>
+      </tab-delimited>
       </files>
     </input0>
     <input1>

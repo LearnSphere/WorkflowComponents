@@ -38,8 +38,8 @@
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 

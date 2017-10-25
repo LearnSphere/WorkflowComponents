@@ -15,7 +15,7 @@
 
   <xs:complexType name="InputType">
     <xs:sequence>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:sequence>
   </xs:complexType>
 
