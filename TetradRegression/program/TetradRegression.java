@@ -53,7 +53,7 @@ public class TetradRegression {
   public static void main(String [] args) {
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setErr(new PrintStream(baos));
+    //System.setErr(new PrintStream(baos));
 
 
     //List<String> regressors = new ArrayList<String>();
@@ -162,7 +162,7 @@ public class TetradRegression {
           char[] chars = fileToCharArray(inputFile);
 
           DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
@@ -288,6 +288,8 @@ public class TetradRegression {
   }
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -305,6 +307,8 @@ public class TetradRegression {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

@@ -55,7 +55,7 @@ public class GraphEditor {
   public static void main(String [] args) {
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setErr(new PrintStream(baos));
+    //System.setErr(new PrintStream(baos));
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
@@ -389,6 +389,8 @@ public class GraphEditor {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -406,6 +408,8 @@ public class GraphEditor {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

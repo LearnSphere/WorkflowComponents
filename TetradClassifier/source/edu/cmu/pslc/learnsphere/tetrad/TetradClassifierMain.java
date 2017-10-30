@@ -67,6 +67,7 @@ public class TetradClassifierMain extends AbstractComponent {
   }
   @Override
   protected void runComponent() {
+    logger.debug("about to run TetradClassifier.java");
 
     File outputDirectory = this.runExternalMultipleFileOuput();
 

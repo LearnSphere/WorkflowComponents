@@ -170,6 +170,8 @@ public class TetradSearch {
    */
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -187,6 +189,8 @@ public class TetradSearch {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

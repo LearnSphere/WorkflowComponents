@@ -54,7 +54,8 @@ public class TetradMissingValues {
     System.out.println("in main");
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setErr(new PrintStream(baos));
+    //System.setErr(new PrintStream(baos));
+    
     String argLine = "";
     for (String s : args) {
       argLine += s + " ";
@@ -124,7 +125,7 @@ public class TetradMissingValues {
           char[] chars = fileToCharArray(inputFile);
 
           DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           reader.setMissingValueMarker(marker);
   
@@ -301,6 +302,8 @@ public class TetradMissingValues {
    */
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -318,6 +321,8 @@ public class TetradMissingValues {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

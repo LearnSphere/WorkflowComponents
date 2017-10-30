@@ -116,7 +116,7 @@ public class TetradDataConversion {
 
           DataReader reader = new DataReader();
           //reader.setDelimiter(DelimiterType.WHITESPACE);
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
 
           DataSet data = reader.parseTabular(chars);
@@ -220,7 +220,13 @@ public class TetradDataConversion {
             break;
           case "Standardize_Data":
             try {
-              DataSet standardizedData = DataUtils.standardizeData( data );
+              char[] newchars = fileToCharArray(inputFile);
+              DataReader reReader = new DataReader();
+              reReader.setMaxIntegralDiscrete(0);
+              reReader.setDelimiter(DelimiterType.TAB);
+              DataSet continuousData = reReader.parseTabular(newchars);
+
+              DataSet standardizedData = DataUtils.standardizeData( continuousData );
               convertedData = standardizedData.toString();
             } catch (Exception e ) {
               addToErrorMessages(
@@ -278,6 +284,8 @@ public class TetradDataConversion {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -295,6 +303,8 @@ public class TetradDataConversion {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");
