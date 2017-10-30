@@ -67,7 +67,6 @@ public class TetradClassifierMain extends AbstractComponent {
   }
   @Override
   protected void runComponent() {
-    logger.debug("about to run TetradClassifier.java");
 
     File outputDirectory = this.runExternalMultipleFileOuput();
 
@@ -154,12 +153,12 @@ public class TetradClassifierMain extends AbstractComponent {
   private void addErrorsAndDebugsToLogger(String outputPath) {
     ArrayList<String> errors = getErrorMessagesFromComponent(outputPath);
     for (int i = 0; i < errors.size(); i++) {
-      errorMessages.add("[error from TetradEstimator.java] " + errors.get(i));
+      errorMessages.add("[error from TetradClassifier.java] " + errors.get(i));
     }
 
     ArrayList<String> debugMessages = getDebugMessagesFromComponent(outputPath);
     for (int i = 0; i < debugMessages.size(); i++) {
-      logger.debug("[debug from TetradEstimator.java] " + debugMessages.get(i));
+      logger.debug("[debug from TetradClassifier.java] " + debugMessages.get(i));
     }
 
     clearComponentOutputFile(outputPath);

@@ -52,7 +52,7 @@ public class TetradDiscretize {
     //suppress a warning from the tetrad code
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    //System.setErr(new PrintStream(baos));
+    System.setErr(new PrintStream(baos));
 
 
     //ArrayList<String> varsToDiscretize = new ArrayList<String>();
@@ -74,6 +74,14 @@ public class TetradDiscretize {
         }
         cmdParams.put(s, value);
         i++;
+      }
+    }
+    
+    //remove preceding and ending single quotes
+    for (String key : cmdParams.keySet()) {
+      String v = cmdParams.get(key);
+      if (v.charAt(0) == '\'' && v.charAt(v.length() - 1) == '\'') {
+        cmdParams.put(key, v.substring(1,v.length() - 1));
       }
     }
 
@@ -325,6 +333,14 @@ public class TetradDiscretize {
         }
         ret.add(value.replaceAll(" ", "_"));
         i++;
+      }
+    }
+    //remove preceding and ending single quotes
+    for (int i = 0; i < ret.size(); i++) {
+      String v = ret.get(i);
+      if (v.charAt(0) == '\'' && v.charAt(v.length() - 1) == '\'') {
+        ret.remove(i);
+        ret.add(i, v.substring(1,v.length() - 1));
       }
     }
     return ret;
