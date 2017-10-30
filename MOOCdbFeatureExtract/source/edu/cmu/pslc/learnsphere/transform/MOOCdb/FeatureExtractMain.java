@@ -264,9 +264,12 @@ public class FeatureExtractMain extends AbstractComponent {
             this.componentOptions.addContent(0, new Element("numberWeeksWF").setText(numberWeeks));
             this.componentOptions.addContent(0, new Element("exportFormatWF").setText("tall"));
             
+            
             // Run the program and return its stdout to a file.
             File outputDirectory = this.runExternalMultipleFileOuput();
-            
+            //avoid showing username and password
+            this.setOption("un", "");
+            this.setOption("p", "");
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "longitudinal-features";

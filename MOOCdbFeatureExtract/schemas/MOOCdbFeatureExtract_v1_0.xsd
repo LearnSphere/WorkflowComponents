@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" /> 
 
@@ -41,14 +41,14 @@
   </xs:complexType>
   
   
-  
+
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="MOOCdb" minOccurs="0" />
     	<xs:element name="input1" type="xs:string" default="MOOCdb-features" minOccurs="0" />
     </xs:all>
   </xs:complexType>
-  
+
   
 
   <xs:complexType name="InputType">
@@ -104,30 +104,17 @@
     </xs:sequence>
   </xs:complexType>
   
-  
-  
-  
-  
-  
-   
-   <xs:simpleType name="exportFileFormat" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="wide" />
-      <xs:enumeration value="tall" />
-    </xs:restriction>
-  </xs:simpleType>
+
 
   <xs:complexType name="OptionsType"> 
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="MultiFileInputHeader" name="featuresToExtract" id="Features_to_Extract" default=".*" />	
       <xs:element type="xs:integer" name="numberWeeks" id="Number_Of_Weeks_To_Extract" default="10"/>
       <xs:element type="xs:string" name="startDate" id="Start_Date" default="yyyy-mm-dd"/>
-      
-      <!-- <xs:element type="xs:string" name="MOOCdbName" id="MOOCdb_to_Extract_Features_from" default=""/>
-      <xs:element type="xs:string" name="featuresToExtract" id="Features_to_Extract" default="all"/>-->
-      
     </xs:choice>
   </xs:complexType>
+  
+
 
   <xs:element name="component">
     <xs:complexType>
@@ -141,9 +128,10 @@
         <xs:element type="xs:double" name="top"  />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
         <xs:element name="inputs" type="InputType" minOccurs="0" />
-        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
-        <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        
 
       </xs:all>
     </xs:complexType>
