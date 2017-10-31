@@ -39,9 +39,9 @@ public class TKTMain extends AbstractComponent {
         File outputDirectory = this.runExternalMultipleFileOuput();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction file output.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/model result values.xml");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction_file_output.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/model_result_values.xml");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
