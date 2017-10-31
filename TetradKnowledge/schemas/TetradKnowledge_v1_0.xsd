@@ -242,7 +242,7 @@
       <xs:element type="MultiFileInputHeader" name="tier5Vars" id="Variables_In_tier_5" default=".*" />
       <xs:element type="Tier5ForbidType" name="forbiddenTier5" id="Forbid_Within_Tier_Edges_5" default="No" />
 
-      <xs:element type="xs:integer" name="numEdges" id="Number_of_Forbidden_or_Requireds" default="0" />
+      <xs:element type="xs:integer" name="numEdges" id="Number_of_Additional_Forbidden_or_Requireds" default="0" />
       <xs:element type="Edge1Type" name="edge1Type" id="Edge_1_Type" default="Forbidden" />
       <xs:element type="FileInputHeader" name="startEdge1" id="Edge_1_tail" default=".*" />
       <xs:element type="FileInputHeader" name="endEdge1" id="Edge_1_tip" default=".*" />

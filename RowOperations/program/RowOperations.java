@@ -72,14 +72,6 @@ public class RowOperations {
         i++;
       }
     }
-    
-    //remove preceding and ending single quotes
-    for (String key : cmdParams.keySet()) {
-      String v = cmdParams.get(key);
-      if (v.charAt(0) == '\'' && v.charAt(v.length() - 1) == '\'') {
-        cmdParams.put(key, v.substring(1,v.length() - 1));
-      }
-    }
 
     if ( cmdParams.containsKey("-operation") == false ) {
       addToErrorMessages("No operation Specified.");

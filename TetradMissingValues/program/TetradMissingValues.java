@@ -79,13 +79,6 @@ public class TetradMissingValues {
       }
     }
     
-    //remove preceding and ending single quotes
-    for (String key : cmdParams.keySet()) {
-      String v = cmdParams.get(key);
-      if (v.charAt(0) == '\'' && v.charAt(v.length() - 1) == '\'') {
-        cmdParams.put(key, v.substring(1,v.length() - 1));
-      }
-    }
     String workingDir = cmdParams.get("-workingDir");
 
     outputDir = workingDir;
