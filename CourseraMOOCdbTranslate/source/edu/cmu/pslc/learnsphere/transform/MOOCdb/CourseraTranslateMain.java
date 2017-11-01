@@ -56,6 +56,13 @@ public class CourseraTranslateMain extends AbstractComponent {
     private static String MOOCDB_SUFFIX = "moocdb";
     
     @Override
+    protected void parseOptions() {
+        logger.info("Parsing options");
+        //this.setOption("model", "blah");
+        
+    }
+    
+    @Override
     protected void runComponent() {
             // Dao-enabled components require an applicationContext.xml in the component directory,
 
@@ -411,7 +418,12 @@ public class CourseraTranslateMain extends AbstractComponent {
             this.componentOptions.addContent(0, new Element("anonymizedForumDBName").setText(forumDbName));
             this.componentOptions.addContent(0, new Element("anonymizedForumFilePath").setText(forumFile));
             
+            //this.setOption("un", moocdbItem.getUsername());
+            //this.setOption("p", moocdbItem.getPassword());
             File outputDirectory = this.runExternalMultipleFileOuput();
+            //avoid showing username and password
+            this.setOption("un", "");
+            this.setOption("p", "");
             File dbPointerFile = new File(outputDirectory.getAbsolutePath() + "/MOOCdbPointer.txt");
             File featuresFile = new File(outputDirectory.getAbsolutePath() + "/MOOCdbFeatures.txt");
             

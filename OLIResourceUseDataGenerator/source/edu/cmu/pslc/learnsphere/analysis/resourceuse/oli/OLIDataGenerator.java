@@ -35,7 +35,7 @@ public class OLIDataGenerator extends AbstractComponent {
     private OLIDataImporter oliImporter;
     private OLIDataAggregator oliDataAggregator;
 
-    private static String FILE_TYPE_TRANSACTION = "transaction";
+    private static String FILE_TYPE_TRANSACTION = "tab-delimited";
     private static String FILE_TYPE_USER_SESS_MAP = "user-sess-map";
     private static String FILE_TYPE_RESOURCE_USE = "resource-use";
 

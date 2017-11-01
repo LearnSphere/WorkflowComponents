@@ -214,15 +214,6 @@ public class FeatureExtractMain extends AbstractComponent {
             }
             int iNumOfWeek = Integer.parseInt(numberWeeks);
             logger.info("Number of weeks for extraction: " + iNumOfWeek);
-            //process export format
-            String exportFileFormat = getOptionAsString("exportFormat");
-            if (exportFileFormat != null)
-                    exportFileFormat = exportFileFormat.toLowerCase();
-            if (exportFileFormat == null || 
-                            !(exportFileFormat.equals("tall") || exportFileFormat.equals("wide"))) {
-                    //send out error message
-                    exportFileFormat = "tall";
-            }
             
             //find out if someone has already done feature extraction for this specification
             FeatureExtractionItem featureExtractionItem = findAFeatureExtraction(MOOCdbName, startDate, iNumOfWeek, featuresToExtract);
@@ -271,11 +262,14 @@ public class FeatureExtractMain extends AbstractComponent {
             this.componentOptions.addContent(0, new Element("startDateWF").setText(format.format(startDate)));
             this.componentOptions.addContent(0, new Element("featuresToExtractWF").setText(featuresToExtract));
             this.componentOptions.addContent(0, new Element("numberWeeksWF").setText(numberWeeks));
-            this.componentOptions.addContent(0, new Element("exportFormatWF").setText(exportFileFormat));
+            this.componentOptions.addContent(0, new Element("exportFormatWF").setText("tall"));
+            
             
             // Run the program and return its stdout to a file.
             File outputDirectory = this.runExternalMultipleFileOuput();
-            
+            //avoid showing username and password
+            this.setOption("un", "");
+            this.setOption("p", "");
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "longitudinal-features";

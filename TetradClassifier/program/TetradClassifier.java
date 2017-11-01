@@ -144,18 +144,30 @@ public class TetradClassifier {
           // train data
           char[] chars = fileToCharArray(inputFile0);
           DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           DataSet trainData = reader.parseTabular(chars);
 
           // test data
           chars = fileToCharArray(inputFile2);
           reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           DataSet testData = reader.parseTabular(chars);
+          System.out.println("loaded data");
 
-          //List<String> variableNames = data.getVariableNames();
+          //Ensure both data sets have same variables
+          List<String> trainVars = trainData.getVariableNames();
+          List<String> testVars = testData.getVariableNames();
+          if (trainVars.size() != testVars.size()) {
+            addToErrorMessages("Test and Training data have different number of variables");
+          }
+          for (int i = 0; i < trainVars.size(); i++) {
+            if (trainVars.contains(testVars.get(i)) == false ||
+                testVars.contains(trainVars.get(i)) == false) {
+              addToErrorMessages("Test and Training data have different variables");
+            }
+          }
 
 
 
@@ -698,6 +710,8 @@ public class TetradClassifier {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -715,6 +729,8 @@ public class TetradClassifier {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

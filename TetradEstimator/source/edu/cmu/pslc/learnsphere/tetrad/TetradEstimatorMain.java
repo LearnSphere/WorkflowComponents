@@ -119,6 +119,12 @@ public class TetradEstimatorMain extends AbstractComponent {
 
 
   }
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tetrad-graph", 0, outNodeIndex0, ".*");
+  }
 
 
   private char[] fileToCharArray(File file) {

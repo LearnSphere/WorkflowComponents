@@ -79,20 +79,6 @@
     </xs:choice>
   </xs:complexType>
 
-<xs:complexType name="option_dependency">
-	<xs:choice>
-
-	<xs:element type="disjunctive" name="dependency1"
-		ls:dependentOption="join" ls:dependsOn="file1ColumnName"
-			ls:constraint="matches(KC.*)" />
-
-	<xs:element type="disjunctive" name="dependency2"
-		ls:dependentOption="join" ls:dependsOn="file1ColumnName"
-			ls:constraint="matches(Pred.*)" />
-
-	</xs:choice>
-</xs:complexType>
-
   <xs:simpleType name="joinType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="inner" />

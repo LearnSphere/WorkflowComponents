@@ -124,7 +124,8 @@ public class RPivotMain extends AbstractComponent {
     }
     //in r col name with space should replace space with a "." 
     private String removeSpace(String aColName) {
-            return aColName.replaceAll("\\s+",".");
+            //return aColName.replaceAll("\\s+",".");
+            return aColName.replaceAll("[\\(\\[\\]\\)\\-\\s]",".");
     }
 
 }
