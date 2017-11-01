@@ -277,13 +277,12 @@ switch(mode,
              if(x==(3)){x<-1}}
            for(fold in 1:2){
              print(paste("fold " , fold))
-             
+
+              eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,".<-ifelse(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]],\"test\",\"train\")")))
              testfold <<- dat[ as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]], ]
              trainfold <<- dat[!(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]]), ]
-             eval(parse(text=paste(sep="","dat$CF..run",run,"fold",fold,".",
-                                   "<-ifelse(as.factor(dat$Anon.Student.Id) %in% foldlevels[[fold]],\"test\",\"train\")")))
-             
-             if(all(vec[8:10]==c(0,0,0))){
+           
+               if(all(vec[8:10]==c(0,0,0))){
                j<<-pars[8]
                k<<-pars[9]
                f<<-pars[10]
@@ -371,8 +370,8 @@ switch(mode,
                  k<<-tem[2]
                  f<<-tem[3]
                  trainfold$CF..baselevel. <<- baselevel(trainfold,j,f)
-                 trainfold$CF..meanspacingval. <<- f*(trainfold$CF..meanspacing.-trainfold$CF..meanspacingint.)+trainfold$CF..meanspacingint.
-                 fitmodel <<- glm(as.formula(composedform),data=trainfold,family=binomial(logit))
+                  trainfold$CF..meanspacingval. <<- f*(trainfold$CF..meanspacing.-trainfold$CF..meanspacingint.)+trainfold$CF..meanspacingint.
+                fitmodel <<- glm(as.formula(composedform),data=trainfold,family=binomial(logit))
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-3}
