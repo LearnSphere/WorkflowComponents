@@ -12,10 +12,10 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -25,7 +25,11 @@
     </xs:all>
   </xs:complexType>
 
-  
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
 
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
@@ -37,7 +41,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="tab-delimited" />
@@ -50,7 +54,7 @@
       <xs:element name="output0" type="OutputDefinition0" />
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:simpleType name="analysisType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="length" />
@@ -62,9 +66,9 @@
       <xs:enumeration value="min" />
     </xs:restriction>
   </xs:simpleType>
-  
 
-  
+
+
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -75,7 +79,7 @@
     </xs:choice>
   </xs:complexType>
 
-  
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all >
@@ -89,6 +93,7 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType"/>
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
 
