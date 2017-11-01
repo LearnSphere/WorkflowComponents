@@ -14,7 +14,7 @@
 
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -31,7 +31,7 @@
 
   <xs:complexType name="InFileList1">
     <xs:choice>
-      <xs:element ref="user-sess-map"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -42,6 +42,12 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="user-sess-map" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
 
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
@@ -81,6 +87,7 @@
         <xs:element type="xs:double" name="top"  />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
         <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
       </xs:all>
