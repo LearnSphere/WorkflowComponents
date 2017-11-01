@@ -65,7 +65,7 @@ public class PFAMain extends AbstractComponent {
 
                 Integer nodeIndex2 = 2;
                 Integer fileIndex2 = 0;
-                String label2 = "text";
+                String label2 = "tab-delimited";
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
                 
                 Integer nodeIndex3 = 3;
