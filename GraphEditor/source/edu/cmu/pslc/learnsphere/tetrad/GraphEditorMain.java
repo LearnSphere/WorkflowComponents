@@ -123,8 +123,13 @@ public class GraphEditorMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
+  }
 
-
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tetrad-graph", 0, outNodeIndex0, ".*");
   }
 
 

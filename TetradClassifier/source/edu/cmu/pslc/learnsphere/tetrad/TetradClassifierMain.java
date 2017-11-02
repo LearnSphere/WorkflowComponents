@@ -129,9 +129,13 @@ public class TetradClassifierMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
-
-
   }
+
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+  }
+
 
 
   private char[] fileToCharArray(File file) {

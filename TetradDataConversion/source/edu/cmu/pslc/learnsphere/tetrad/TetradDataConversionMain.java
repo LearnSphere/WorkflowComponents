@@ -123,8 +123,12 @@ public class TetradDataConversionMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
-
-
+  }
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
   }
 
 

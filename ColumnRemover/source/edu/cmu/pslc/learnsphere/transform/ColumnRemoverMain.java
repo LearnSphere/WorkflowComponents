@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.FileInputStream;
+import org.jdom.Element;
 
 import java.util.regex.Pattern;
 
@@ -221,9 +222,72 @@ public class ColumnRemoverMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
-
-
   }
+
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    logger.debug("processing options");
+    Integer outNodeIndex0 = 0;
+    String type = "tab-delimited";
+    //this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
+
+    List<String> selectedCols = this.getMultiOptionAsString("columns");
+    List<String> allColumns = new ArrayList<String>();
+
+    //get all column labels
+    List<Element> inputElements = this.inputXml.get(0);
+    for (Element inputElement : inputElements) {
+      if (inputElement.getChild("files") != null && inputElement.getChild("files").getChildren() != null) {
+        for (Element filesChild : (List<Element>) inputElement.getChild("files").getChildren()) {
+          if (filesChild.getChild("metadata") != null) {
+            Element inMetaElement = filesChild.getChild("metadata");
+            if (inMetaElement != null && !inMetaElement.getChildren().isEmpty()) {
+              for (Element child : (List<Element>) inMetaElement.getChildren()) {
+                if (child.getChild("name") != null
+                    && child.getChild("index") != null
+                    && child.getChild("id") != null) {
+                  String colLabel = child.getChildTextTrim("name");
+                  
+                  allColumns.add(colLabel);
+                }
+              }
+            }
+            break; // we only get metadata from one of the objects for now.. more code required to handle them separately
+          }
+        }
+      }
+    }
+    logger.debug("got allColumns");
+
+    String removeOrKeep = this.getOptionAsString("removeOrKeep");
+    boolean remove = false;
+    if (removeOrKeep.equals("Remove_Selected_Columns")) {
+      remove = true;
+    }
+
+    //add the columns that won't be discarded
+    List<String> keptCols = new ArrayList<String>();
+    for (String col : allColumns) {
+      //logger.debug("all cols: "+col);
+      if (remove && !selectedCols.contains(col)) {
+        keptCols.add(col);
+      }
+      if (!remove && selectedCols.contains(col)) {
+        keptCols.add(col);
+      }
+    }
+
+
+    //add meta data for columns that will be in the output
+    int c = 0;
+    for (String col : keptCols) {
+      //logger.debug("adding col "+col);
+      this.addMetaData("tab-delimited", outNodeIndex0, META_DATA_HEADER, "header" + c, c, col);
+      c++;
+    }
+  }
+
 
 
   private char[] fileToCharArray(File file) {
