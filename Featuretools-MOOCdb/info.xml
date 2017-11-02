@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Featuretools-MOOCdb</url>
+<date>2017-03-10</date>
+<abstract>The <b>Featuretools-MOOCdb<</b> component using an entity set extracts features from a MOOCdb database.</abstract>
+<description>MOOCdb TSV Files:
+<p>
+<ul>
+<li>assessments.tsv - assement_id</li>
+<li>observed_events.tsv - observed_events_id</li>
+<li>problems.tsv - problem_id</li>
+<li>submissions.tsv - submission_id</li>
+<li>users.tsv - user_id</li>
+</ul>
+</p>
+</description>
+<description>MOOCdb Relationships:
+<p>
+<ul>
+<li>users - user_id - observed_events - user_id</li>
+<li>users - user_id - submissions - user_id</li>
+<li>problems - problem_id - submissions - problem_id</li>
+<li>submissions - submission_id - assessments - submission_id</li>
+</ul>
+</p>
+</description>
+
+
+<inputs><ul>
+<li>MOOCdb inputs file location: contains all of the required tsv files.</li>
+</ul></inputs>
+
+<outputs>
+<ul>
+<li></li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+ <li></li>
+</ul>
+</options>
+
+</info>

@@ -1,0 +1,20 @@
+<component>
+  <component_id>GenerateMOOCdbFeatures</component_id>
+  <component_id_human>Transform #3</component_id_human>
+  <workflow_id>10</workflow_id>
+  <component_name>Featuretools-MOOCdb</component_name>
+  <component_type>transform</component_type>
+  <left>680.2500305175781</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Transform-1-x783506</from>
+    </connection>
+  </connections>
+  <options>
+  	<class_dir>./program/inputs/</class_dir>
+  	<class_name></class_name>
+  </options>
+  <top>231.75</top>
+ 
+</component>
