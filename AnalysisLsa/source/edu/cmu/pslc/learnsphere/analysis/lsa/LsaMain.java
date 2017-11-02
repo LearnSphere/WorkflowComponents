@@ -382,13 +382,13 @@ public class LsaMain extends AbstractComponent {
         	if (returnvals.equals("col")){
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
-            String fileType = "student-step";
+            String fileType = "tab-delimited";
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
         	}
             else if (returnvals.equals("uniqmat"))  {
 	            Integer nodeIndex = 0;
 	            Integer fileIndex = 0;
-	            String fileType = "text";
+	            String fileType = "tab-delimited";
 	            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
             }
             else{this.addErrorMessage("No output Generated for return type: "+returnvals);}

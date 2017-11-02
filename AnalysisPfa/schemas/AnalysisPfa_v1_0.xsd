@@ -80,7 +80,7 @@
 
   <xs:complexType name="OutFileList2">
     <xs:choice>
-      <xs:element ref="text" />
+      <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
 
@@ -119,7 +119,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="analysisType" name="analysis" id="Analysis" default="Simple" />
+      <xs:element type="analysisType" name="analysis" id="Analysis_Version" default="Simple" />
       <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Random_Effect" default="\s*KC\s*\((.*)\)\s*" />
     </xs:choice>
   </xs:complexType>
