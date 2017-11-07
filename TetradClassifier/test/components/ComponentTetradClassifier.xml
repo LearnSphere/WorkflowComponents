@@ -1,0 +1,154 @@
+<component>
+  <component_id>Tetrad-1-x172412</component_id>
+  <component_id_human>Tetrad #4</component_id_human>
+  <workflow_id>126</workflow_id>
+  <component_name>Classifier</component_name>
+  <component_type>tetrad</component_type>
+  <left>748</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Tetrad-1-x854618</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>2</tindex>
+      <from>Tetrad-1-x194498</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Tetrad-1-x448126</from>
+    </connection>
+  </connections>
+  <options>
+    <target>Input 0 - Fina__Exam (column 4)</target>
+    <targetCategory>0</targetCategory>
+  </options>
+  <top>258</top>
+  <inputs>
+    <input0>
+      <component_id>Tetrad-1-x448126</component_id>
+      <component_id_human>Tetrad #2</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Row Operations</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/resources/ConvertedData.txt</file_path>
+          <file_name>ConvertedData.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>activities_started</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>play</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>T.Quiz</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Fina__Exam</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>non_activities_pageview</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+    </input0>
+    <input2>
+      <component_id>Tetrad-1-x194498</component_id>
+      <component_id_human>Tetrad #3</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Row Operations</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/resources/ConvertedData1.txt</file_path>
+          <file_name>ConvertedData1.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>activities_started</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>play</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>T.Quiz</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Fina__Exam</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>non_activities_pageview</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+    </input2>
+    <input1>
+      <component_id>Tetrad-1-x854618</component_id>
+      <component_id_human>Tetrad #5</component_id_human>
+      <component_type>tetrad</component_type>
+      <component_name>Tetrad Search</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <file_path>test/resources/Graph.txt</file_path>
+          <file_name>Graph.txt</file_name>
+          <index>0</index>
+          <label>text</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Graph Nodes:</name>
+            </header>
+          </metadata>
+        </text>
+      </files>
+      <inputmeta />
+    </input1>
+  </inputs>
+</component>

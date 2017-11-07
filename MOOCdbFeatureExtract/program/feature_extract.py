@@ -131,36 +131,43 @@ def writeFeaturesInTallForm(conn,dbName,filePath,featuresToExtract,featureExtrac
         log = logger
 
     log.log('writing features in tall format')
-    sql = '''SELECT a.longitudinal_feature_id,
+    outfile = open(filePath, 'w')
+    headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
+    outfile.write("\t".join(headers) + "\n")    
+    for i in featuresToExtract :
+        sql = '''SELECT a.longitudinal_feature_id,
                     b.longitudinal_feature_name,
                     a.user_id,
                     a.longitudinal_feature_week,
                     a.longitudinal_feature_value,
                     a.date_of_extraction
-             FROM `%s`.user_longitudinal_feature_values a
-             JOIN `%s`.longitudinal_features b
-             ON a.longitudinal_feature_id = b.longitudinal_feature_id
-             WHERE a.longitudinal_feature_id in (%s) 
-                     AND a.feature_extraction_id = %s ''' % (dbName, dbName, ",".join(str(i) for i in featuresToExtract), featureExtractionId)
-    sql += ''' ORDER BY a.longitudinal_feature_id, a.user_id, a.longitudinal_feature_week '''
-    log.log(sql)
-    try:
-        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(sql)
-        rows = cursor.fetchall()
-        outfile = open(filePath, 'w')
-        headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
-        cols = ["longitudinal_feature_id", "longitudinal_feature_name", "user_id", "longitudinal_feature_week", "longitudinal_feature_value", "date_of_extraction"]
-        outfile.write("\t".join(headers) + "\n")
-        for row in rows:
-            for colName in cols:
-                outfile.write(str(row[colName])+ "\t")
-            outfile.write("\n")
-        cursor.close()
-    except Exception as error:
-        log.log("\n ERROR: writing longitudinal features tall form unsucessful.")
-        log.log("\n Traceback: " + traceback.format_exc())
-    log.log('done')
+                 FROM `%s`.user_longitudinal_feature_values a
+                 JOIN `%s`.longitudinal_features b
+                 ON a.longitudinal_feature_id = b.longitudinal_feature_id
+                 WHERE a.longitudinal_feature_id = %s 
+                     AND a.feature_extraction_id = %s ''' % (dbName, dbName, i, featureExtractionId)
+        sql += ''' ORDER BY a.user_id, a.longitudinal_feature_week '''
+        log.log(sql)
+        try:
+            cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            #outfile = open(filePath, 'w')
+            #headers = ["Feature ID", "Feature Name", "User ID", "Longitudinal Feature Week", "Longitudinal Feature Value", "Date Of Extraction"]
+            cols = ["longitudinal_feature_id", "longitudinal_feature_name", "user_id", "longitudinal_feature_week", "longitudinal_feature_value", "date_of_extraction"]
+            #outfile.write("\t".join(headers) + "\n")
+        
+            for row in rows:
+                strRow = ""
+                for colName in cols:
+                    strRow += str(row[colName])+ "\t"
+                outfile.write(strRow.strip())
+                outfile.write("\n")
+            cursor.close()
+        except Exception as error:
+            log.log("\n ERROR: writing longitudinal features tall form unsucessful.")
+            log.log("\n Traceback: " + traceback.format_exc())
+        log.log('done')
     
 
 def writeFeaturesInWideForm(conn,dbName,filePath,featuresToExtract,featureExtractionId,logger=None):
@@ -206,8 +213,10 @@ def writeFeaturesInWideForm(conn,dbName,filePath,featuresToExtract,featureExtrac
         outfile = open(filePath, 'w')
         outfile.write("\t".join(headers) + "\n")
         for row in rows:
+            strRow = ""
             for colName in cols:
-                outfile.write(str(row[colName])+ "\t")
+                strRow += str(row[colName])+ "\t"
+            outfile.write(strRow.strip())
             outfile.write("\n")
         cursor.close()
     except Exception as error:
@@ -487,25 +496,47 @@ featureDict = {
          'dependencies':[],
          'desc': " Duration of longest observed event"},
     
-     #16: {'name': "sum_observed_events_lecture",
-     #    'filename': 'populate_feature_16_sum_observed_events_lecture',
-     #    'extension': '.sql',
-     #    'default': 0,
-     #    'dependencies':[],
-     #    'desc': " Total time spent on all lecture-related resources during the week."},
-     #17: {'name': "sum_observed_events_book",
-     #    'filename': 'populate_feature_17_sum_observed_events_book',
-     #    'extension': '.sql',
-     #    'default': 0,
-     #    'dependencies':[],
-     #    'desc': " Total time spent on all book-related resources during the week."},
-     #18: {'name': "sum_observed_events_wiki",
-     #    'filename': 'populate_feature_18_sum_observed_events_wiki',
-     #    'extension': '.sql',
-     #    'default': 0,
-     #    'dependencies':[],
-     #    'desc': " Total time spent on all wiki-related resources during the week."},
+    16: {'name': "lecture_event_duration",
+         'filename': 'populate_feature_16_lecture_event_duration',
+         'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Total time spent on all lecture-related resources during the week."},
+    #17: {'name': "sum_observed_events_book",
+    #   'filename': 'populate_feature_17_sum_observed_events_book',
+    #     'extension': '.sql',
+    #    'default': 0,
+    #     'dependencies':[],
+    #     'desc': " Total time spent on all book-related resources during the week."},
+     18: {'name': "wiki_event_duration",
+         'filename': 'populate_feature_18_wiki_event_duration',
+         'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Total time spent on all wiki-related resources during the week."},
+
+     19: {'name': "attempt_duration",
+         'filename': 'populate_feature_19_attempt_duration',
+         'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Total time spent on attempting questions for quizzes during the week."},
+
+    20: {'name': "number_of_lecture_events",
+         'filename': 'populate_feature_20_number_of_lecture_events',
+         'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Total number of lecture/video related observed events during the week."},
+
+    21: {'name': "number_of_test_submissions",
+         'filename': 'populate_feature_21_number_test_submission',
+         'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Total time spent on attempting questions for quizzes during the week."},
          
+    
      103:{'name': "difference_feature_3",
          'filename': 'populate_feature_103_difference_feature_3',
          'extension': '.sql',
@@ -530,18 +561,18 @@ featureDict = {
          'default': 0,
          'dependencies':[],
          'desc': " Average number of attempts in current week divided by average number of attempts in previous week (difference of feature 9)."},
-     110:{'name': "difference_feature_10",
-         'filename': 'populate_feature_110_difference_feature_10',
-         'extension': '.sql',
-         'default': 0,
-         'dependencies':[],
-         'desc': " (Total time spent on all resources during current week (feat. 2) divided by number of correct problems during current week (feat. 8)) divided by same thing from previous week (difference of feature 10)."},
-     111:{'name': "difference_feature_11",
-             'filename': 'populate_feature_111_difference_feature_11',
-             'extension': '.sql',
-         'default': 0,
-         'dependencies':[],
-         'desc': " (Number of problems attempted (feat. 6) divided by number of correct problems (feat. 8)) divided by same thing from previous week (difference of feature 11)."},
+     #110:{'name': "difference_feature_10",
+      #   'filename': 'populate_feature_110_difference_feature_10',
+      #   'extension': '.sql',
+      #   'default': 0,
+      #   'dependencies':[],
+      #   'desc': " (Total time spent on all resources during current week (feat. 2) divided by number of correct problems during current week (feat. 8)) divided by same thing from previous week (difference of feature 10)."},
+     #111:{'name': "difference_feature_11",
+     #        'filename': 'populate_feature_111_difference_feature_11',
+     #        'extension': '.sql',
+     #    'default': 0,
+     #    'dependencies':[],
+     #    'desc': " (Number of problems attempted (feat. 6) divided by number of correct problems (feat. 8)) divided by same thing from previous week (difference of feature 11)."},
      112:{'name': "difference_feature_12",
              'filename': 'populate_feature_112_difference_feature_12',
              'extension': '.sql',
@@ -578,18 +609,18 @@ featureDict = {
          'default': -1,
          'dependencies':[],
          'desc': " Pset grade from current week (feature 204) - avg(pset grade from previous week)."},
-     206:{'name': "lab_grade",
-             'filename': 'populate_feature_206_lab_grade',
-             'extension': '.sql',
-         'default': 0,
-         'dependencies':[207],
-         'desc': " Number of lab problems correct in a week divided by number of lab problems in the week."},
-     207:{'name': "lab_grade_over_time",
-             'filename': 'populate_feature_207_lab_grade_over_time',
-             'extension': '.sql',
-         'default': 0,
-         'dependencies':[],
-         'desc': " Lab grade from current week (feature 206) - avg(lab grade from previous week)."},
+     #206:{'name': "lab_grade",
+    #       'filename': 'populate_feature_206_lab_grade',
+    #         'extension': '.sql',
+    #    'default': 0,
+    #     'dependencies':[207],
+    #     'desc': " Number of lab problems correct in a week divided by number of lab problems in the week."},
+     #207:{'name': "lab_grade_over_time",
+      #       'filename': 'populate_feature_207_lab_grade_over_time',
+      #       'extension': '.sql',
+      #   'default': 0,
+      #   'dependencies':[],
+      #   'desc': " Lab grade from current week (feature 206) - avg(lab grade from previous week)."},
      208:{'name': "attempts_correct",
              'filename': 'populate_feature_208_attempts_correct',
              'extension': '.sql',
@@ -621,7 +652,14 @@ featureDict = {
     #     'default': 0,
     #     'dependencies':[],
     #     'desc': " Average time in days a student takes to react when a new resource in posted. Tried to capture how fast a student is reacting to new content."},
-         
+
+    303:{'name': "final_grade",
+            'filename': 'populate_feature_303_final_grade',
+             'extension': '.sql',
+         'default': 0,
+         'dependencies':[],
+         'desc': " Final grade for a student."},  
+           
 }
 
 def returnFeatures():

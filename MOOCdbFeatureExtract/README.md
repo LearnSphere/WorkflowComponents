@@ -53,6 +53,23 @@ Modify the `dir` variable in `WorkflowComponents/build.sh` to match your `Workfl
 
 Issue the `ant dist` command.
 
+## V. Instructions for setting up component MOOCdbFeatureExtract:
+
+### Python version needed to run this component:
+
+2.7
+
+### Python packages needed to run this component:
+
+Scipy assuming that MYSQL-python, phpserialize, sqlparse and numpy are already installed. Refers to install_dependencies.py for installation of python packages
+
+### Other changes needed to run this component:
+
+In the top directory of this component, make file build.properties based on your machine's configuration. Use build.properties.sample as example.
+
+In program directory, make file ConfigFile.properties based on your machine's configuration. Use ConfigFile.properties.sample as example.
+
+
 
 
 

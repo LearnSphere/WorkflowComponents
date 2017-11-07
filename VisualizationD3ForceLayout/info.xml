@@ -12,7 +12,7 @@
 </description>
 
 <inputs>
-tab-delimited 2 dimensional matrix with columns and headers labeled
+tab-delimited 2-dimensional association matrix with both column and row headers
 </inputs>
 
 <outputs>

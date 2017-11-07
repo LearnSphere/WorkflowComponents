@@ -2,7 +2,7 @@
 
 <info>
 <author>DataShop@CMU
-  <email>datashop-help@lists.andrew.cmu.edu</email>
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/CourseraMOOCdbTranslate</url>
 <date>2017-05-14</date>
@@ -19,7 +19,9 @@
 <outputs><ul>
 <li>MOOCdbPointer.txt: contains the name of the new MOOCdb created.</li>
 <li>MOOCdbFeatures.txt: contains names of all available longitudinal features. This is used by the succeeding feature extraction component.</li>
-</ul></outputs>
+</ul>
+We recommend that the owner of the Coursera data source upload the output MOOCdbPointer.txt file to his/her Datashop project. Other users can gain access to the MOOCdbPointer file, and start their own workflows with the "MOOCdb Transform Component". 
+</outputs>
 
 <options>
 </options>

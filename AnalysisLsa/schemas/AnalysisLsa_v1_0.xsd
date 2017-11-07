@@ -51,7 +51,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="file" />
+      <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
 

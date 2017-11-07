@@ -1,0 +1,106 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+        <xs:element type="disjunctive" name="dependency1" ls:dependentOption="probability_of_injection" ls:dependsOn="operation" ls:constraint="matches(Inject_Missing_Data_Randomly)" />
+    </xs:choice>
+</xs:complexType>
+
+   <xs:simpleType name="operationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Remove_Cases_with_Missing_Values" />
+      <xs:enumeration value="Replace_Missing_Values_with_Column_Mode"/>
+      <xs:enumeration value="Replace_Missing_Values_with_Column_Mean"/>
+      <!--<xs:enumeration value="Replace_Missing_Values_with_Regression_Predictions"/>-->
+      <xs:enumeration value="Replace_Missing_Values_by_Extra_Category"/>
+      <xs:enumeration value="Replace_Missing_With_Random"/>
+      <xs:enumeration value="Inject_Missing_Data_Randomly"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="operationType" name="operation" id="operation" default="Remove_Cases_with_Missing_Values" />
+      <xs:element type="xs:double" name="probability_of_injection" id="probability_of_injection" default="0.7" />
+      <!--
+      <xs:element type="xs:string" name="missingValueMarker" id="Missing_Value_Marker" default="*" />
+      -->
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

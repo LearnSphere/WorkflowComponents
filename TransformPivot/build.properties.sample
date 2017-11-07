@@ -1,0 +1,2 @@
+component.interpreter.path=C:/Program Files/R/R-3.4.1/bin/Rscript.exe
+component.program.path=program/pivot.R

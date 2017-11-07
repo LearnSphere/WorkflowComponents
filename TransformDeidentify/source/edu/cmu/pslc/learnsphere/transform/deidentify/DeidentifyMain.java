@@ -320,18 +320,22 @@ public class DeidentifyMain extends AbstractComponent {
     }
 
     private String getDSAnonStudentId(String studentActualId) {
-            StudentDao sDao = DaoFactory.DEFAULT.getStudentDao();
-            Collection<StudentItem> students = null;
-            if (this.caseSensitive)
-                    students = sDao.find(studentActualId);
-            else
-                    students = sDao.findIgnoreCase(studentActualId);
-            if (students.size() > 0) {
-                    Iterator<StudentItem> it = students.iterator();
-                    StudentItem student = it.next();
-                    return student.getAnonymousUserId();
-            }
-            return null;
+        // Have to go to mapping_db for actual student info
+        edu.cmu.pslc.datashop.mapping.dao.StudentDao mappedStudentDao =
+            edu.cmu.pslc.datashop.mapping.dao.DaoFactory.HIBERNATE.getStudentDao();
+
+        Collection<edu.cmu.pslc.datashop.mapping.item.StudentItem> students = null;
+        if (this.caseSensitive) {
+            students = mappedStudentDao.find(studentActualId);
+        } else {
+            students = mappedStudentDao.findIgnoreCase(studentActualId);
+        }
+        if (students.size() > 0) {
+            Iterator<edu.cmu.pslc.datashop.mapping.item.StudentItem> it = students.iterator();
+            edu.cmu.pslc.datashop.mapping.item.StudentItem student = it.next();
+            return student.getAnonymousUserId();
+        }
+        return null;
     }
 
     private void writeMapToFile(Map<String, String> studentIdPairs, File outputFile) {

@@ -1,0 +1,10 @@
+Graph Nodes:
+Case,taste,Acetic,H2S,Lactic
+
+Graph Edges:
+1. Case --> taste
+2. Acetic --> H2S
+3. Lactic --> Acetic
+4. taste --> Acetic
+5. taste --> H2S
+6. H2S --> Case

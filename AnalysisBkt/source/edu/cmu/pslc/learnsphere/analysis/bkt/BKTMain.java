@@ -721,10 +721,13 @@ public class BKTMain extends AbstractComponent {
                     i++;
                     continue;
                 }
+                /*
+                 * For now, don't drop these args... pass them on to the C++ code.
                 if ((args[i].equals("-u") || args[i].equals("-l") || args[i].equals("-0")) && i < args.length - 1) {
                     i++;
                     continue;
                 }
+                */
 
                 modifiedArgs.add(args[i]);
             }
@@ -749,11 +752,13 @@ public class BKTMain extends AbstractComponent {
                     i++;
                     continue;
                 }
-
+                /*
+                 * For now, don't drop these args... pass them on to the C++ code.
                 if ((args[i].equals("-u") || args[i].equals("-l") || args[i].equals("-0")) && i < args.length - 1) {
                     i++;
                     continue;
                 }
+                */
 
                 if (args[i].equals("-f") && i < args.length - 1 && !bySkill) {
                     i++;

@@ -51,7 +51,7 @@ while (i <= length(args)) {
     # This dir is the root dir of the component code.
     componentDirectory = args[i+1]
     i = i+1
-  } 
+  }
   i = i+1
 }
 
@@ -66,7 +66,7 @@ if (is.null(inputFile) || is.null(KCmodelsub) || is.null(KCmodelsuper)|| is.null
   }
   if (is.null(KCmodelsub)) {
     warning("Missing required input parameter: -modelsub")
-  } 
+  }
   if (is.null(KCmodelsuper)) {
     warning("Missing required input parameter: -model")
   }
@@ -76,15 +76,15 @@ if (is.null(inputFile) || is.null(KCmodelsub) || is.null(KCmodelsuper)|| is.null
   if (is.null(componentDirectory)) {
     warning("Missing required input parameter: -programDir")
   }
-  
-  
+
+
   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -model kc_model")
 }
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
+outputFilePath<- paste(workingDirectory, "transaction_file_with_added_features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")

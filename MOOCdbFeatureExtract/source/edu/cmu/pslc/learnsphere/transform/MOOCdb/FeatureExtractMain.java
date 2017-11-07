@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jdom.Element;
@@ -34,6 +35,8 @@ public class FeatureExtractMain extends AbstractComponent {
 
     /** Component option (dataset). */
     String courseName = null;
+    
+    private int MAX_FEATURE_TO_EXTRACT = 15;
 
     public static void main(String[] args) {
             FeatureExtractMain tool = new FeatureExtractMain();
@@ -57,15 +60,13 @@ public class FeatureExtractMain extends AbstractComponent {
                 /** Initialize the Spring Framework application context. */
                 SpringContext.getApplicationContext(appContextPath);
             }
-            //get MOOCdb name from either option or MOOCdb file
-            String MOOCdbName = this.getOptionAsString("MOOCdbName");
+            //get MOOCdb name from MOOCdb file
+            String MOOCdbName = null;
             File MOOCdbFile = getAttachment(0, 0);
             logger.info("MOOCdbFile: " + MOOCdbFile);
             //File MOOCdbFeaturesFile = getAttachment(1, 0);
-            if (MOOCdbName == null || MOOCdbName.trim().equals("")) {
-                    if (MOOCdbFile != null) {
+            if (MOOCdbFile != null) {
                             MOOCdbName = getMOOCdbNameFromFile(MOOCdbFile);
-                    }
             }
             if (MOOCdbName == null) {
                     //send error message
@@ -88,9 +89,12 @@ public class FeatureExtractMain extends AbstractComponent {
             }
             
             String progress = currMOOCdbItem.getCurrentProgress();
+            String username = currMOOCdbItem.getUsername();
+            String password = currMOOCdbItem.getPassword();
             Date endTimestamp = currMOOCdbItem.getEndTimestamp();
             Date earliestSubmissionDate = currMOOCdbItem.getEarliestSubmissionTimestamp();
-            
+            if (earliestSubmissionDate == null)
+                    earliestSubmissionDate = this.getEarliestSubmissionTime(MOOCdbName);
             //process startDate
             String opStartDate = getOptionAsString("startDate");
             Date startDate = null;
@@ -110,6 +114,7 @@ public class FeatureExtractMain extends AbstractComponent {
                     startDate = earliestSubmissionDate;
             }
             
+            
             if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
                     String errMsg = "MOOCdb " + MOOCdbName + " is currently undergoing " + progress + " by another process.";
                     addErrorMessage(errMsg + " You can either wait till it's done or start process with a new custom MOOCdb name.");
@@ -127,13 +132,20 @@ public class FeatureExtractMain extends AbstractComponent {
                     return;
             }
             //process feature to extract
+            List<String> featuresToExtractList = this.getMultiOptionAsString("featuresToExtract");
+            if (featuresToExtractList.size() > MAX_FEATURE_TO_EXTRACT) {
+                    String errMsg = "Too many features are selected. Extract less than " + MAX_FEATURE_TO_EXTRACT + " features at a time. ";
+                    addErrorMessage(errMsg);
+                    logger.info("MOOCdbFeatureExtraction aborted: " + errMsg + " currMOOCdbItem: " + currMOOCdbItem);
+                    System.err.println(errMsg);
+                    return;
+            }
             String featuresToExtract = "";
             Map<Integer, String> availFeatures = getAllFeatures(MOOCdbName);
-            String opFeaturesToExtract = getOptionAsString("featuresToExtract");
-            if (opFeaturesToExtract == null || opFeaturesToExtract.equals("all"))
-                    opFeaturesToExtract = "";
-            String[] values = opFeaturesToExtract.replaceAll("^[,\\s]+", "").split("[,\\s]+");
-            if (opFeaturesToExtract == null || opFeaturesToExtract.trim().equals("")) {
+            String[] values = null;
+            if (featuresToExtractList != null && featuresToExtractList.size() != 0) 
+                    values = (String[]) featuresToExtractList.toArray(new String[0]);
+            if (values == null || values.length == 0) {
                     for (int key : availFeatures.keySet())
                             featuresToExtract += key + ",";
             } else {
@@ -202,15 +214,6 @@ public class FeatureExtractMain extends AbstractComponent {
             }
             int iNumOfWeek = Integer.parseInt(numberWeeks);
             logger.info("Number of weeks for extraction: " + iNumOfWeek);
-            //process export format
-            String exportFileFormat = getOptionAsString("exportFileFormat");
-            if (exportFileFormat != null)
-                    exportFileFormat = exportFileFormat.toLowerCase();
-            if (exportFileFormat == null || 
-                            !(exportFileFormat.equals("tall") || exportFileFormat.equals("wide"))) {
-                    //send out error message
-                    exportFileFormat = "tall";
-            }
             
             //find out if someone has already done feature extraction for this specification
             FeatureExtractionItem featureExtractionItem = findAFeatureExtraction(MOOCdbName, startDate, iNumOfWeek, featuresToExtract);
@@ -248,27 +251,31 @@ public class FeatureExtractMain extends AbstractComponent {
                     logger.info("Saved new featureExtractionItem: " + featureExtractionItem);
                     this.componentOptions.addContent(0, new Element("runExtraction").setText("true"));
             }    
-            Map<String, String> login = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseLogin();
-            
+            Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
             this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
-            //this.componentOptions.addContent(0, new Element("userName").setText(login.get("user")));
-            //this.componentOptions.addContent(0, new Element("password").setText(login.get("password")));
-            //this.componentOptions.addContent(0, new Element("dbHost").setText("127.0.0.1"));
-            //this.componentOptions.addContent(0, new Element("dbPort").setText("3306"));
+            this.componentOptions.addContent(0, new Element("un").setText(username));
+            this.componentOptions.addContent(0, new Element("p").setText(password));
+            //this.componentOptions.addContent(0, new Element("dbHost").setText(dbConfig.get("host")));
+            //this.componentOptions.addContent(0, new Element("dbPort").setText(dbConfig.get("port")));
             this.componentOptions.addContent(0, new Element("earliestSubmissionDate").setText(format.format(earliestSubmissionDate)));
             this.componentOptions.addContent(0, new Element("featureExtractionId").setText("" + featureExtractionItem.getId()));
             this.componentOptions.addContent(0, new Element("startDateWF").setText(format.format(startDate)));
             this.componentOptions.addContent(0, new Element("featuresToExtractWF").setText(featuresToExtract));
             this.componentOptions.addContent(0, new Element("numberWeeksWF").setText(numberWeeks));
-            this.componentOptions.addContent(0, new Element("exportFormatWF").setText(exportFileFormat));
+            this.componentOptions.addContent(0, new Element("exportFormatWF").setText("tall"));
+            
             
             // Run the program and return its stdout to a file.
             File outputDirectory = this.runExternalMultipleFileOuput();
-            
+            //avoid showing username and password
+            this.setOption("un", "");
+            this.setOption("p", "");
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileLabel = "longitudinal-features";
-            File longitudinalFile = new File(outputDirectory.getAbsolutePath() + "/moocdb_features.txt");
+            String featureFilePath = outputDirectory.getAbsolutePath() + "/moocdb_features.txt";
+            File longitudinalFile = new File(featureFilePath);
+            
             this.addOutputFile(longitudinalFile, nodeIndex, fileIndex, fileLabel);
 
             nodeIndex = 1;
@@ -279,7 +286,7 @@ public class FeatureExtractMain extends AbstractComponent {
 
             // Send the component output bakc to the workflow.
             System.out.println(this.getOutput());
-            //update the featureExtractionItem if new fature extraction
+            //update the featureExtractionItem if new feature extraction
             if (newFeatureExtraction) {
                     featureExtractionItem.setEndTimestamp(new Date());
                     try {
@@ -320,18 +327,21 @@ public class FeatureExtractMain extends AbstractComponent {
             feDao.saveOrUpdateFeatureExtractionItem(MOOCdbName, featureExtractionItem);
     }
     
-    private String getMOOCdbNameFromFile (File dbPointerFile) {
-            String[][] fileContent = IOUtil.read2DStringArray(dbPointerFile.getAbsolutePath());
-            String MOOCdbNameInFile = null;
-            //use the first meaningful name 
-            for (String[] row : fileContent) {
-                    for (String name : row) {
-                            if (name != null && !name.equals("") && !name.equals(MOOCdbItem.MOOCdb_COLUMN_HEADER_NAME)) {
-                                    MOOCdbNameInFile = name;
-                                    break;
-                            }
-                    }
-            }
-            return MOOCdbNameInFile;
+    private String getMOOCdbNameFromFile(File dbPointerFile) {
+            String fileContent = IOUtil.readString(dbPointerFile.getAbsolutePath());
+            //the first property name currently is MOOCdbName 
+            if (fileContent.trim().indexOf(MOOCdbItem.MOOCdb_PROPERTY_NAME) == 0) {
+                    String[] tokens = fileContent.trim().split("\\=");
+                    if (tokens[0].trim().equals(MOOCdbItem.MOOCdb_PROPERTY_NAME)){
+                            return tokens[1].trim();
+                    } else
+                            return null;
+            } else
+                    return null;
+    }
+    
+    private Date getEarliestSubmissionTime (String MOOCdbName) {
+            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            return dbDao.getEarliestSubmissionTime(MOOCdbName);
     }
 }

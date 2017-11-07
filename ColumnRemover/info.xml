@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Peter Schaldenbrand
+  <email>pschalde@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/ColumnRemover</url>
+
+<date>2017-09-19</date>
+
+<abstract>Select columns/variables that you would like removed or kept within a data set.
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b>
+</outputs>
+
+<options>
+  <b>What To Do With Columns</b> - Select whether the selected columns will be removed from the input or kept from the input. <br/>
+  <b>Columns</b> - Select columns to be kept or removed.
+
+</options>
+
+</info>

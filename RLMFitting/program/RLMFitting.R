@@ -44,6 +44,8 @@ args <- commandArgs(TRUE)
 dataIsRead = FALSE
 independendVarSpecified = FALSE
 dependendVarSpecified = FALSE
+workingDir = NULL
+outputFile = NULL
 i = 1
 #process arguments
 while (i <= length(args)) {
@@ -66,6 +68,25 @@ while (i <= length(args)) {
     independendVariableColumns = args[i+1]
     i = i+1
   }
+  
+  #workingDir
+  else if (args[i] == "-workingDir") {
+    if (length(args) == i) {
+      stop("workingDir name must be specified")
+    }
+    # This dir is the working dir for the component instantiation.
+    workingDir = args[i+1]
+    i = i+1
+  } 
+  
+  #output file
+  else if (args[i] == "-outputFile") {
+    if (length(args) == i) {
+      stop("outputFile must be specified")
+    }
+    outputFile = paste(workingDir, "/", args[i+1], sep="")
+    i = i+1
+  } 
   
   #process file
   else if (args[i] == "-f") {
@@ -139,6 +160,19 @@ if (!dataIsRead) {
   stop("file must be provided")
 }
 
+
+# Creates output summary file
+clean <- file(outputFile,  open = "wt")
+#sink(clean,append=T)
+sink(clean,type="message") # get error reports also
+options(width=120)
+
+
+# Creates output summary file
+clean <- file(outputFile)
+sink(clean,append=TRUE)
+sink(clean,append=TRUE,type="message") # get error reports also
+options(width=120)
 
 #default dependent variable is the last column
 if (!dependendVarSpecified) {
@@ -229,7 +263,9 @@ for (i in 1:length(dependendVariableColInds)) {
   }
   val = paste(val, ", data = myData)")
   eval(parse(text=val))
-  print(eval(parse(text=paste0("summary(", var, ")", sep=""))))
+  eval(parse(text=paste0("modelSum <- summary(", var, ")", sep="")))
+  print(modelSum)
+  cat("\n\n\n\n")
 }
 
 

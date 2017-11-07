@@ -51,7 +51,7 @@ while (i <= length(args)) {
     if (length(args) == i) {
       stop("const must be specified")
     }
-    
+
     const = args[i+1]
     i = i+1
   } else if (args[i] == "-workingDir") {
@@ -87,12 +87,12 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 # Get data
-outputFilePath<- paste(workingDirectory, "transaction file output.txt", sep="")
-outputFilePath2<- paste(workingDirectory, "model result values.xml", sep="")
+outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
+outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 
 # Creates output log file
-clean <- file(paste(workingDirectory, "R output model summary.txt", sep=""))
+clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
@@ -142,7 +142,7 @@ top <- newXMLNode("model_output")
 
 switch(mode,
        "best fit model" = {
-         
+
          if(all(vec[8:10]==c(0,0,0))){
            j<<-pars[8]
            k<<-pars[9]
@@ -150,7 +150,7 @@ switch(mode,
            dat$CF..baselevel. <- baselevel(dat,j,f)
            x <- glm(as.formula(composedform),data=dat,family=binomial(logit))
            pr<-0}
-         
+
          if(all(vec[8:10]==c(1,0,0))){
            decmod <- function(tem) {
              j<<-tem[1]
@@ -162,7 +162,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.4),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-1}
-         
+
          if(all(vec[8:10]==c(0,1,0))){
            decmod <- function(tem) {
              j<<-pars[8]
@@ -174,7 +174,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-1}
-         
+
          if(all(vec[8:10]==c(0,0,1))){
            decmod <- function(tem) {
              j<<-pars[8]
@@ -186,7 +186,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-1}
-         
+
          if(all(vec[8:10]==c(1,1,0))){
            decmod <- function(tem) {
              j<<-tem[1]
@@ -198,7 +198,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-2}
-         
+
          if(all(vec[8:10]==c(1,0,1))){
            decmod <- function(tem) {
              j<<-tem[1]
@@ -210,7 +210,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-2}
-         
+
          if(all(vec[8:10]==c(0,1,1))){
            decmod <- function(tem) {
              j<<-pars[8]
@@ -222,7 +222,7 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-2}
-         
+
          if(all(vec[8:10]==c(1,1,1))){
            decmod <- function(tem) {
              j<<-tem[1]
@@ -234,16 +234,16 @@ switch(mode,
              -logLik(x)[1]}
            optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
            pr<-3}
-         
+
          #Output text summary
          names(x$coefficients)<-substr(names(x$coefficients),1,75)
          print(summary(x))
          print(c("decay rate",j,"spacing effect",k,"interference rate",f))
-         
+
          Nres<-length(dat$Outcome)
          R2<-r.squaredGLMM(x)
          pred<-predict(x,type="response")
-         
+
          newXMLNode("N", Nres, parent = top)
          newXMLNode("Loglikelihood", round(logLik(x),5), parent = top)
          newXMLNode("Parameters",pr+attr(logLik(x), "df") , parent = top)
@@ -256,16 +256,16 @@ switch(mode,
          newXMLNode("r2NG", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
          saveXML(top, file=outputFilePath2)
          print(top[[1]][[1]])
-         
+
          # Save predictions in file
          dat$CF..modbin.<-pred
          val$CF..modbin.<-NA
          val$CF..baselevel.<-NA
          dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
-         
+
        },
        "five times 2 fold crossvalidated create folds" = {
-         
+
          for(run in 1:5){
            print(paste("run " , run))
            foldlevels<-vector(mode='list',length=2)
@@ -291,7 +291,7 @@ switch(mode,
                fitmodel <<- glm(as.formula(composedform),data=trainfold,family=binomial(logit))
                fitoptim<<-fitmodel
                pr<-0}
-             
+
              if(all(vec[8:10]==c(1,0,0))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -303,7 +303,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(0,1,0))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -315,7 +315,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(0,0,1))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -327,7 +327,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(1,1,0))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -339,7 +339,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(1,0,1))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -351,7 +351,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(0,1,1))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -363,7 +363,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(1,1,1))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -375,7 +375,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-3}
-             
+
              testfold$CF..baselevel. <- baselevel(testfold,j,f)
              testfold$CF..meanspacingval. <- f*(testfold$CF..meanspacing.-testfold$CF..meanspacingint.)+testfold$CF..meanspacingint.
 
@@ -386,13 +386,13 @@ switch(mode,
              R2fit<-r.squaredGLMM(fitmodel)
              predfit<-predict(fitmodel,trainfold,type="response")
              predtest<-predict(fitmodel,testfold,re.form = NULL, type = "response",allow.new.levels=TRUE)
-             
-             
-             
+
+
+
              eval(parse(text=paste(sep="","trainfold$CF..run",run,"fold",fold,"modbin.<-predfit")))
              eval(parse(text=paste(sep="","testfold$CF..run",run,"fold",fold,"modbin.<-predtest")))
              dat<-rbind(trainfold, testfold)
-             
+
              bot <- newXMLNode(paste("model_output_fold",fold,"run",run,sep="_"),parent=top)
              newXMLNode("N", Nresfit, parent = bot)
              newXMLNode("Loglikelihood", round(logLik(fitmodel),5), parent = bot)
@@ -411,14 +411,14 @@ switch(mode,
            }
            saveXML(top, file=outputFilePath2)
          }
-         
-         
+
+
          # Save predictions in file
          dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
          dat<-dat[order(dat$Anon.Student.Id, dat$Time),]
        },
        "five times 2 fold crossvalidated read folds" = {
-         
+
          for(run in 1:5){
            print(paste("run " , run))
            foldlevels<-vector(mode='list',length=2)
@@ -430,19 +430,19 @@ switch(mode,
              if(x==(3)){x<-1}}
            for(fold in 1:2){
              print(paste("fold " , fold))
-             
+
              eval(parse(text=paste(sep="",
                                    "testfold <<-dat[dat$CF..run",
                                    run,
                                    "fold",
                                    fold,".==\"test\",]")))
-             
+
              eval(parse(text=paste(sep="",
                                    "trainfold <<-dat[dat$CF..run",
                                    run,
                                    "fold",
                                    fold,".==\"train\",]")))
-             
+
              if(all(vec[8:10]==c(0,0,0))){
                j<<-pars[8]
                k<<-pars[9]
@@ -453,7 +453,7 @@ switch(mode,
                fitoptim<<-fitmodel
                pr<-0
              }
-             
+
              if(all(vec[8:10]==c(1,0,0))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -465,7 +465,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(0,1,0))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -477,7 +477,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(0,0,1))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -489,7 +489,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-1}
-             
+
              if(all(vec[8:10]==c(1,1,0))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -501,7 +501,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(1,0,1))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -513,7 +513,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(0,1,1))){
                decmod <- function(tem) {
                  j<<-pars[8]
@@ -525,7 +525,7 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-2}
-             
+
              if(all(vec[8:10]==c(1,1,1))){
                decmod <- function(tem) {
                  j<<-tem[1]
@@ -537,8 +537,8 @@ switch(mode,
                  -logLik(fitmodel)[1]}
                fitoptim<-optim(c(.4,.05,.05),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
                pr<-3}
-             
-             
+
+
              testfold$CF..baselevel. <- baselevel(testfold,j,f)
              testfold$CF..meanspacingval. <- f*(testfold$CF..meanspacing.-testfold$CF..meanspacingint.)+testfold$CF..meanspacingint.
 
@@ -549,8 +549,8 @@ switch(mode,
              R2fit<-r.squaredGLMM(fitmodel)
              predfit<-predict(fitmodel,trainfold,type="response")
              predtest<-predict(fitmodel,testfold,re.form = NULL, type = "response",allow.new.levels=TRUE)
-             
-             
+
+
              eval(parse(text=paste(sep="","trainfold$CF..run",run,"fold",fold,"modbin.<-predfit")))
              eval(parse(text=paste(sep="","testfold$CF..run",run,"fold",fold,"modbin.<-predtest")))
              dat<-rbind(trainfold, testfold)
@@ -573,8 +573,8 @@ switch(mode,
            }
            saveXML(top, file=outputFilePath2)
          }
-         
-         
+
+
          # Save predictions in file
          dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
          dat<-dat[order(dat$Anon.Student.Id, dat$Time),]
