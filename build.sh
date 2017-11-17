@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=`pwd`
+dir=/datashop/workflow_components
 
 cd $dir
 
