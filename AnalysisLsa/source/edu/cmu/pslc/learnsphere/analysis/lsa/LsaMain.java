@@ -54,26 +54,29 @@ public class LsaMain extends AbstractComponent {
             lsa = new LSAUtil();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage("Failed to initialize LSAUtil.");
         }
+
         //loding semantic space to the program from given directory
+        Boolean spaceLoaded = false;
         try {
-       //     lsa.loadSpace(this.getToolDir() + "/program");
-                //lsa.loadSpace("C:\\SemanticSpace\\"+corpus);  
-        	lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
+            if (lsa != null) {
+                lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
+                spaceLoaded = true;
+            }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage(e.getMessage());
         }
         //Generating required out
         try {
-            lSAsimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc);
-
+            if (spaceLoaded) {
+                lSAsimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc);
+            }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage(e.getMessage());
         }
-
 
         System.out.println(this.getOutput());
 
