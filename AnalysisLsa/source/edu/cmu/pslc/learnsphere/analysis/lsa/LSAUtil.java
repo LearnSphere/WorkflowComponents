@@ -109,7 +109,7 @@ public class LSAUtil
         else
         {
             //System.out.println("Space not found!\nPlease specify the right space folder path");
-            System.exit(0);
+            throw new Exception("Failed to find necessary space files for: " + path);
         }
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.NumberUtils;
 import org.jdom.Element;
 
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
@@ -199,7 +199,7 @@ public class RglmMain extends AbstractComponent {
                     String[] row = fContent[rowCnt];
                     if (colInd >= row.length)
                             continue;
-                    if (!StringUtils.isNumeric(row[colInd]))
+                    if (!NumberUtils.isNumber(row[colInd]))
                             return false;
             }
             return true;

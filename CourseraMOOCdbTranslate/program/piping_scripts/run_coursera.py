@@ -104,9 +104,9 @@ if __name__ == "__main__":
     vars['logger'].Log(vars, "port: {}".format(dbPort))
     
     #run restore databases with file
-    restoreDB (vars, vars['source']['hash_mapping_db'], args.hashMapBackupFilePath)    
-    restoreDB (vars, vars['source']['general_db'], args.anonymizedGeneralBackupFilePath)
-    restoreDB (vars, vars['source']['forum_db'], args.anonymizedForumFilePath)
+    restoreDB (vars, vars['source']['hash_mapping_db'], args.hashMapBackupFilePath, dbHost)    
+    restoreDB (vars, vars['source']['general_db'], args.anonymizedGeneralBackupFilePath, dbHost)
+    restoreDB (vars, vars['source']['forum_db'], args.anonymizedForumFilePath, dbHost)
     
     #translation
     main(vars)
