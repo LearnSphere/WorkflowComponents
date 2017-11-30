@@ -75,10 +75,11 @@ public class GraphEditorMain extends AbstractComponent {
   protected void runComponent() {
 
     File outputDirectory = this.runExternalMultipleFileOuput();
+    //File outputDirectory = this.createFile("EditedGraph.html");
 
-    if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+    if (true){//outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/EditedGraph.txt");
-
+      //File file0 = outputDirectory;
 
       if (file0 != null && file0.exists() ) {
 
@@ -94,8 +95,8 @@ public class GraphEditorMain extends AbstractComponent {
       errorMessages.add("issue with output directory");
     }
 
-    String outputPath = outputDirectory.getAbsolutePath() + "/";
-    addErrorsAndDebugsToLogger(outputPath);
+    //String outputPath = outputDirectory.getAbsolutePath() + "/";
+    //addErrorsAndDebugsToLogger(outputPath);
 
     for (String err : errorMessages) {
       logger.error(err);

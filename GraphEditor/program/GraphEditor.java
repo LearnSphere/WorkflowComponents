@@ -75,6 +75,8 @@ public class GraphEditor {
       }
     }
 
+    
+
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
@@ -96,7 +98,19 @@ public class GraphEditor {
 
     String outputFile = workingDir + "EditedGraph.txt";
 
+    String graphStr = cmdParams.get("-TetradGraphEditor");
+    graphStr = graphStr.replaceAll("%NEW_LINE%","\n");
+    addToDebugMessages(graphStr);
+
     try {
+      BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+      bw.append(graphStr);
+      bw.flush();
+      bw.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph out to file: " + e.toString());
+    }
+    /*try {
 
       BufferedReader bReader = null;
       FileReader fReader = null;
@@ -132,7 +146,7 @@ public class GraphEditor {
       }
     } catch (Exception e) {
       addToErrorMessages(e.toString());
-    }
+    }*/
 
     System.setErr(sysErr);
 
