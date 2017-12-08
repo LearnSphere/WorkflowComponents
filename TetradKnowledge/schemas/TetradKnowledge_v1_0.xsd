@@ -228,7 +228,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="KnowledgeTypeType" name="knowledgeType" id="Type_of_Knowledge_Component" default="Tiers_and_Edges" />
+      <xs:element type="TetradKnowledge" name="TetradKnowledge" id="TetradKnowledge" default="0" />
+      <!--<xs:element type="KnowledgeTypeType" name="knowledgeType" id="Type_of_Knowledge_Component" default="Tiers_and_Edges" />
 
       <xs:element type="xs:integer" name="numTiers" id="Number_of_tiers" default="2" />
       <xs:element type="MultiFileInputHeader" name="tier1Vars" id="Variables_In_tier_1" default=".*" />
@@ -264,7 +265,7 @@
       <xs:element type="MultiFileInputHeader" name="cluster2Vars" id="Variables_In_Cluster_2" default=".*" />
       <xs:element type="MultiFileInputHeader" name="cluster3Vars" id="Variables_In_Cluster_3" default=".*" />
       <xs:element type="MultiFileInputHeader" name="cluster4Vars" id="Variables_In_Cluster_4" default=".*" />
-      <xs:element type="MultiFileInputHeader" name="cluster5Vars" id="Variables_In_Cluster_5" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster5Vars" id="Variables_In_Cluster_5" default=".*" />-->
     </xs:choice>
   </xs:complexType>
 

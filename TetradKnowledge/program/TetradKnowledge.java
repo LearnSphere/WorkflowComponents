@@ -30,6 +30,10 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+//import org.json.*;
+//import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.*;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -75,10 +79,7 @@ public class TetradKnowledge {
       }
     }
 
-    if ( cmdParams.containsKey("-knowledgeType") == false ) {
-      addToErrorMessages("No knowledgeType Specified.");
-      return;
-    } else if ( cmdParams.containsKey("-workingDir") == false ) {
+    if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
     } else if ( cmdParams.containsKey("-file0") == false ) {
@@ -86,31 +87,13 @@ public class TetradKnowledge {
       //return;
     } 
 
-    String knowledgeType = cmdParams.get("-knowledgeType");
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
-    String infile0 = cmdParams.get("-file0");
-    /*
-    double pseudocounts = 1.00;
-    try {
-      Double temp = Double.parseDouble(cmdParams.get("-pseudocounts"));
-      pseudocounts = temp.doubleValue();
-    } catch (Exception e) {
-      addToErrorMessages("Could not parse pseudocounts" + e.toString());
-    }
-    
-    int randomRestarts = 1;
-    try {
-      Integer temp = Integer.parseInt(cmdParams.get("-randomRestarts"));
-      randomRestarts = temp.intValue();
-    } catch (Exception e) {
-      addToErrorMessages("Could not parse randomRestarts" + e.toString());
-    }
-    */
+    String knowledgeJsonStrFileName = workingDir + "/knowledgeJsonStr.txt";//cmdParams.get("-file0");
 
-    File inputFile0 = new File( infile0 );
+    File knowledgeJsonStrFile = new File( knowledgeJsonStrFileName );
 
-    if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
+    if (knowledgeJsonStrFile.exists() && knowledgeJsonStrFile.isFile() && knowledgeJsonStrFile.canRead() ) {
 
       String knowledgeFile = workingDir + "Knowledge.txt";
 
@@ -127,19 +110,81 @@ public class TetradKnowledge {
           fWriter = new FileWriter(knowledgeFile);
           bWriter = new BufferedWriter(fWriter);
 
+          bReader = new BufferedReader(new FileReader(knowledgeJsonStrFile));
+          String knowledgeJsonStr = bReader.readLine();
 
-          char[] chars = fileToCharArray(inputFile0);
+          JSONParser parser = new JSONParser();
+          Object resultObject = parser.parse(knowledgeJsonStr.toString());
+          JSONObject knowledgeJson = (JSONObject) resultObject;
+
+          /*JSONObject knowledgeJson = null;
+          try {
+            knowledgeJson = new JSONObject(knowledgeJsonStr);
+          } catch (Exception e) {
+            addToErrorMessages("Could not create json object: " + e.toString());
+          }*/
+
+          /*int numTiers = knowledgeJson.getInt("numTiers");
+          JSONArray forbidWithinTier = knowledgeJson.getJSONArray("forbidWithinTier");
+          JSONArray tiers = knowledgeJson.getJSONArray("tiers");
+          JSONArray unusedVars = knowledgeJson.getJSONArray("unusedVars");*/
+          int numTiers= Integer.parseInt(String.valueOf(knowledgeJson.get("numTiers")));
+
+          Object obj = JSONValue.parse(String.valueOf(knowledgeJson.get("forbidWithinTier")));
+          JSONArray forbidWithinTier = (JSONArray)obj;
+
+          obj = JSONValue.parse(String.valueOf(knowledgeJson.get("tiers")));
+          JSONArray tiers = (JSONArray)obj;
+
+          obj = JSONValue.parse(String.valueOf(knowledgeJson.get("unusedVars")));
+          JSONArray unusedVars = (JSONArray)obj;
+
+          Knowledge2 knowledge = new Knowledge2();
+
+          for (int i = 0; i < numTiers; i++) {
+            ArrayList<String> varsInTier = new ArrayList<String>();
+
+            //JSONArray ar = tiers.getJSONArray(i);
+            //Object obj2=(Object)tiers.get(i);
+            Object obj2 = JSONValue.parse(String.valueOf(tiers.get(i)));
+            JSONArray ar = (JSONArray)obj2;
+
+            //JSONArray ar = (JSONArray)obj2;
+
+            for (int j = 0; j < ar.size(); j++) {
+              //ar.getString(j)
+              String str = String.valueOf(ar.get(j));
+              varsInTier.add(str);
+            }
+
+            knowledge.setTier(i, varsInTier);
+
+            //boolean setForbid = forbidWithinTier.getBoolean(i);
+            boolean setForbid = Boolean.parseBoolean(String.valueOf(forbidWithinTier.get(i)));
+            knowledge.setTierForbiddenWithin(i, setForbid);
+          }
+
+          for (int i = 0; i < unusedVars.size(); i++) {
+            String unusedVar = String.valueOf(unusedVars.get(i));
+            knowledge.addVariable(unusedVar);
+          }
+          addToDebugMessages(knowledge.toString());
+          bWriter.append(knowledge.toString());
+          bWriter.close();
+
+
+          /*char[] chars = fileToCharArray(inputFile0);
 
           DataReader reader = new DataReader();
           reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
 
-          DataSet data = reader.parseTabular(chars);
+          DataSet data = reader.parseTabular(chars);*/
 
           //fReader = new FileReader( inputFile0 );
           //bReader = new BufferedReader( fReader );
 
-          List<String> varNames = data.getVariableNames();
+          /*List<String> varNames = data.getVariableNames();
 
           Knowledge2 knowledge = new Knowledge2();
 
@@ -214,6 +259,7 @@ public class TetradKnowledge {
               }
             }
             break;
+            */
           /*  TODO IMPLEMENT LATER WHEN YOU KNOW WHAT THIS DOES
           case "Measurement_Model":
             int numClusters = 0;
@@ -226,10 +272,10 @@ public class TetradKnowledge {
 
             break;
           */
-          }
+          //}
 
-          bWriter.append(knowledge.toString());
-          bWriter.close();
+          //bWriter.append(knowledge.toString());
+          //bWriter.close();
 
         } catch (IOException e) {
           addToErrorMessages("IOException main case: " + e.toString());
@@ -243,12 +289,12 @@ public class TetradKnowledge {
       }
 
 
-    } else if (inputFile0 == null || !inputFile0.exists()
-               || !inputFile0.isFile()) {
-      addToErrorMessages("Tab-delimited file does not exist.");
+    } else if (knowledgeJsonStrFile == null || !knowledgeJsonStrFile.exists()
+               || !knowledgeJsonStrFile.isFile()) {
+      addToErrorMessages("knowledgeJsonStrFile does not exist.");
 
-    } else if (!inputFile0.canRead()) {
-      addToErrorMessages("Tab-delimited file cannot be read.");
+    } else if (!knowledgeJsonStrFile.canRead()) {
+      addToErrorMessages("knowledgeJsonStrFile cannot be read.");
     }
     System.setErr(sysErr);
   }

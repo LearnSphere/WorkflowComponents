@@ -13,7 +13,8 @@
     </connection>
   </connections>
   <options>
-    <forbiddenTier4>No</forbiddenTier4>
+    <TetradKnowledge></TetradKnowledge>
+    <!--<forbiddenTier4>No</forbiddenTier4>
     <tier3Vars>Input 0 - T.Quiz (column 3)</tier3Vars>
     <forbiddenTier3>No</forbiddenTier3>
     <edge2Type>Forbidden</edge2Type>
@@ -48,7 +49,7 @@
     <knowledgeType>Tiers_and_Edges</knowledgeType>
     <startEdge1>Input 0 - Pretest (column 0)</startEdge1>
     <tier4Vars>Input 0 - Fina__Exam (column 4)</tier4Vars>
-    <startEdge2>Input 0 - Pretest (column 0)</startEdge2>
+    <startEdge2>Input 0 - Pretest (column 0)</startEdge2>-->
   </options>
   <top>99</top>
   <inputs>
