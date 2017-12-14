@@ -304,88 +304,21 @@ function simulateDataStream(e, parser){
 //var path = window.location.pathname;
 //path = path.split("/").slice(0,-1).join("/");
 
-//New To WF Component
-function sendTerminationCommand() {
-	setTimeout(function(){ 
-		for (k in activeDetectors){
-			//activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
-			activeDetectors[k].terminate();
-		}
-		activeDetectors = null;
-	},500);
-}
-
-//Get command line arguments
-programDir = process.argv[process.argv.indexOf("-programDir") + 1];
-workingDir = process.argv[process.argv.indexOf("-workingDir") + 1];
-file0 = process.argv[process.argv.indexOf("-file0") + 1];
-file1 = process.argv[process.argv.indexOf("-file1") + 1];
-
-
-fs = require('fs');
-var outputWriter = fs.createWriteStream(workingDir + "output.txt");
-
-var Worker = require("tiny-worker");
-var numTerminated = 0;
-
-//fix naming and paths for detector_list
-for (var m = 0; m < detector_list.length; m++) {
-	var s = programDir+"program/CTAT-detector-plugins/Test_Rig/" + detector_list[m];
-	detector_list[m] = s;
-}
-detector_list.push(file1); //the tested detector
-
 for(var m = 0; m < detector_list.length; ++m)
     {
-	var detector = new Worker(detector_list[m]);
+	var s = './' + detector_list[m];
+	var detector = new Worker(s);
 
 	detector.onmessage = function(e) {
-	   	var returnedData = JSON.stringify(e.data);
-	   	if (returnedData === '"terminate"') {
-	   		this.terminate();
-	   		numTerminated++;
-	   		if (numTerminated == activeDetectors.length) {
-	   			for (var a = 0; a < activeDetectors.length; a++) {
-	   				console.log("terminating");
-	   				activeDetectors[a].terminate();
-	   			}
-	   			activeDetectors= null;
-	   		}
-	   	} else {
-	   		//outputWriter.write(JSON.stringify(e.data)+"\n");
-	   		outputStr = e.data.category + ',' + e.data.time + ',' + e.data.name + ',' + e.data.value + '\n'; //+ ',' + ',' + e.data.history + '\n';
-	   		outputWriter.write(outputStr);
-	   	}
+	   	//console.log('Message received from worker:', JSON.stringify(e.data));
+	   	outputStr += e.data.category + ',' + e.data.time + ',' + e.data.name + ',' + e.data.value + '\n'; //+ ',' + ',' + e.data.history + '\n';
 	}
-
 
 	activeDetectors.push(detector);
 
 	//console.log("created: active["+m+"]=", s, 
 	//	activeDetectors[m]);
     }
-
-
-function runSimulation(){
-	inputFilePath = file0;
-
-	var readData = fs.readFileSync(inputFilePath, 'utf8');
-	data = readData.split("\n");
-
-	index = 0;
-	function slowGiveData() {
-		setTimeout(function() {
-			if (index == data.length) { console.log("over");sendTerminationCommand();return;}
-			simulateDataStream({"data":[data[index].split('\t')]},null);
-			index++;
-			slowGiveData();
-		},1);
-	}
-	slowGiveData();
-}
-
-runSimulation();
-//End new wf component stuff
 
 
 function downloadCSV(args) {  
