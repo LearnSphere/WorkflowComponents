@@ -1,0 +1,71 @@
+<?xml version="1.0" standalone="yes"?>
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="true" hintPolicy="Use Both Kinds of Bias" version="2.1" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Cognitive Tutor (Jess)">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>-x+6eq15</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>6871320589C21B28</transaction_id>
+                <Selection>
+                    <value>startLeft</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextField</value>
+                </Action>
+                <Input>
+                    <value>-x + 6</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>9582DC6EDE63B86A</transaction_id>
+                <Selection>
+                    <value>startRight</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextField</value>
+                </Action>
+                <Input>
+                    <value>15</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>-x+6eq15</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>246</x>
+            <y>30</y>
+        </dimension>
+    </node>
+    <productionRule opportunities="1">
+        <ruleName>Add/subtract_constant_from_both_sides</ruleName>
+        <productionSet>LDashb</productionSet>
+    </productionRule>
+    <productionRule opportunities="1">
+        <ruleName>Combine_constant_terms</ruleName>
+        <productionSet>LDashb</productionSet>
+    </productionRule>
+    <productionRule opportunities="1">
+        <ruleName>Divide_both_sides_by_the_variable_coefficient</ruleName>
+        <productionSet>LDashb</productionSet>
+    </productionRule>
+    <EdgesGroups ordered="true"></EdgesGroups>
+</stateGraph>
