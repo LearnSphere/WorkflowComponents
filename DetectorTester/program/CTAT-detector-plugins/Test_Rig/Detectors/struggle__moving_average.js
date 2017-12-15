@@ -539,6 +539,8 @@ function receive_transaction( thisTransaction ){
 	}
 }
 
+var numRowsReceived = 0;
+var numRowsProcessed = 0;
 
 self.onmessage = function ( event ) {
     //console.log(variableName, " self.onmessage:", e, e.data, (e.data?e.data.commmand:null), (e.data?e.data.transaction:null), e.ports);
@@ -547,7 +549,9 @@ self.onmessage = function ( event ) {
     case "offlineMode":
     	//console.log(event.data.message);
     	offlineMode = true;
+    	numRowsReceived++;
     	receive_transaction({data: event.data.message});
+    	numRowsProcessed++;
     break;
     case "offlineNewProblem":
     	console.log("new problem!");
@@ -579,6 +583,13 @@ self.onmessage = function ( event ) {
 					  "lastSenseOfWhatToDo": false
 					 };
 		attemptCorrect;
+    break;
+    case "endOfOfflineMessages":
+    	setInterval(function() {
+    		if (numRowsReceived === numRowsProcessed) {
+    			postMessage("readyToTerminate");
+    		}
+    	},200);
     break;
     case "connectMailer":
 		mailer = e.ports[0];

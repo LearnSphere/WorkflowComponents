@@ -48,13 +48,14 @@ public class DetectorTesterMain extends AbstractComponent {
 
         //System.out.println(this.getOutput());
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
+            logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
+            File outputFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
 
             if (outputFile != null && outputFile.exists()) {
                 Integer nodeIndex = 0;
                 Integer fileIndex = 0;
-                String fileLabel = "text";
-                logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt");
+                String fileLabel = "tab-delimited";
+                logger.debug(outputDirectory.getAbsolutePath() + "/output.txt"); // different slash for windows machines
 
                 this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
             } else {

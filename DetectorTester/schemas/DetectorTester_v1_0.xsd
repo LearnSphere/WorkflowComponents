@@ -70,7 +70,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="text" />
+      <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
 

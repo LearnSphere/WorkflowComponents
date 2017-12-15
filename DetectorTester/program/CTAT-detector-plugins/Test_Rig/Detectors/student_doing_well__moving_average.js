@@ -96,6 +96,8 @@ function receive_transaction( e ){
 		console.log("output_data = ", detector_output);
 	}
 }
+var numRowsReceived = 0;
+var numRowsProcessed = 0;
 
 
 self.onmessage = function ( event ) {
@@ -105,7 +107,9 @@ self.onmessage = function ( event ) {
     case "offlineMode":
     	//console.log(event.data.message);
     	offlineMode = true;
+    	numRowsReceived++;
     	receive_transaction({data: event.data.message});
+    	numRowsProcessed++;
     break;
     case "offlineNewProblem":
     	console.log("new problem!");
@@ -118,6 +122,13 @@ self.onmessage = function ( event ) {
 		detector_output.value = "0, > 0 s";
     	attemptWindow = Array.apply(null, Array(windowSize)).map(Number.prototype.valueOf,0);
 		stepCounter = {};
+    break;
+    case "endOfOfflineMessages":
+    	setInterval(function() {
+    		if (numRowsReceived === numRowsProcessed) {
+    			postMessage("readyToTerminate");
+    		}
+    	},200);
     break;
     case "connectMailer":
 		mailer = e.ports[0];

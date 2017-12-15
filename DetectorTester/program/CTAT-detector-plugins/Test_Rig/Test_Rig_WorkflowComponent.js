@@ -305,15 +305,6 @@ function simulateDataStream(e, parser){
 //path = path.split("/").slice(0,-1).join("/");
 
 //New To WF Component
-function sendTerminationCommand() {
-	setTimeout(function(){ 
-		for (k in activeDetectors){
-			//activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
-			activeDetectors[k].terminate();
-		}
-		activeDetectors = null;
-	},500);
-}
 
 //Get command line arguments
 programDir = process.argv[process.argv.indexOf("-programDir") + 1];
@@ -323,37 +314,46 @@ file1 = process.argv[process.argv.indexOf("-file1") + 1];
 
 
 fs = require('fs');
+
+//Create output file in the output directory (needs to match up with file in DetectorTesterMain.java)
 var outputWriter = fs.createWriteStream(workingDir + "output.txt");
 
 var Worker = require("tiny-worker");
-var numTerminated = 0;
+var numDetectorsTerminated = 0;
 
 //fix naming and paths for detector_list
-for (var m = 0; m < detector_list.length; m++) {
+/*for (var m = 0; m < detector_list.length; m++) { //add all the detectors from detector_list
 	var s = programDir+"program/CTAT-detector-plugins/Test_Rig/" + detector_list[m];
 	detector_list[m] = s;
-}
-detector_list.push(file1); //the tested detector
+}*/
+detector_list.push(file1); //the tested detector (input to the component)
 
+
+/*
+	Start all of the detectors (or just the uploaded detector)
+*/
 for(var m = 0; m < detector_list.length; ++m)
     {
 	var detector = new Worker(detector_list[m]);
 
 	detector.onmessage = function(e) {
 	   	var returnedData = JSON.stringify(e.data);
-	   	if (returnedData === '"terminate"') {
+
+	   	if (returnedData === '"readyToTerminate"') {
 	   		this.terminate();
-	   		numTerminated++;
-	   		if (numTerminated == activeDetectors.length) {
+	   		numDetectorsTerminated++;
+	   		if (numDetectorsTerminated == activeDetectors.length) {
+	   			console.log("terminating detectors");
 	   			for (var a = 0; a < activeDetectors.length; a++) {
-	   				console.log("terminating");
 	   				activeDetectors[a].terminate();
 	   			}
 	   			activeDetectors= null;
+	   			outputWriter.end();
+	   			process.exit();
 	   		}
 	   	} else {
 	   		//outputWriter.write(JSON.stringify(e.data)+"\n");
-	   		outputStr = e.data.category + ',' + e.data.time + ',' + e.data.name + ',' + e.data.value + '\n'; //+ ',' + ',' + e.data.history + '\n';
+	   		outputStr = e.data.category + '\t' + e.data.time + '\t' + e.data.name + '\t' + e.data.value + '\n'; //+ ',' + ',' + e.data.history + '\n';
 	   		outputWriter.write(outputStr);
 	   	}
 	}
@@ -365,7 +365,9 @@ for(var m = 0; m < detector_list.length; ++m)
 	//	activeDetectors[m]);
     }
 
-
+/*
+	Reads from the data input file and sends rows to the detectors
+*/
 function runSimulation(){
 	inputFilePath = file0;
 
@@ -375,7 +377,10 @@ function runSimulation(){
 	index = 0;
 	function slowGiveData() {
 		setTimeout(function() {
-			if (index == data.length) { console.log("over");sendTerminationCommand();return;}
+			if (index == data.length) { 
+				console.log("No more messages to send");
+				sendTerminationCommand();return;
+			}
 			simulateDataStream({"data":[data[index].split('\t')]},null);
 			index++;
 			slowGiveData();
@@ -385,6 +390,19 @@ function runSimulation(){
 }
 
 runSimulation();
+
+/* 
+	Tell the detectors that no more messages will be sent
+*/
+function sendTerminationCommand() {
+	setTimeout(function(){ 
+		for (k in activeDetectors){
+			activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
+			//activeDetectors[k].terminate();
+		}
+		activeDetectors = null;
+	},500);
+}
 //End new wf component stuff
 
 
