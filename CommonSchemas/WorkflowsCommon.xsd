@@ -51,6 +51,13 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="TetradKnowledge" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="DetectorTester" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
 
 <xs:simpleType name="FileOptionHeader" >
    <xs:restriction base="xs:string" />
