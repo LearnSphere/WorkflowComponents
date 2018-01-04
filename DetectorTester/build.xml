@@ -24,12 +24,41 @@
         </fileset>
     </path>
 
+    <path id="spring.lib.path">
+        <fileset dir="${lib}/spring">
+            <include name="**/spring.jar" />
+        </fileset>
+    </path>
+
+    <path id="hibernate.lib.path">
+        <fileset dir="${lib}/hibernate">
+            <include name="**/hibernate3.jar" />
+            <include name="**/dom4j-1.6.1.jar" />
+            <include name="**/antlr-2.7.6.jar" />
+            <include name="**/asm.jar" />
+            <include name="**/asm-attrs.jar" />
+            <include name="**/cglib-nodep-3.1.jar" />
+            <include name="**/ehcache-1.2.3.jar" />
+            <include name="**/jta.jar" />
+            <include name="**/commons-collections-2.1.1.jar" />
+        </fileset>
+        <fileset dir="${lib}">
+            <include name="**/commons-logging.jar" />
+        </fileset>
+    </path>
+
     <target name="dist" depends="compile" description="generate the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}" />
 
         <path id="build-classpath">
             <fileset dir="${lib}">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${lib}/spring">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${lib}/hibernate">
                 <include name="*.jar" />
             </fileset>
         </path>
@@ -62,6 +91,8 @@
         <!-- Compile the java code from ${source} into ${build} -->
         <javac srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
+            <classpath refid="spring.lib.path" />
+            <classpath refid="hibernate.lib.path" />
         </javac>
     </target>
 

@@ -74,8 +74,19 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:simpleType name="detectorType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="critical_struggle.js" />
+      <xs:enumeration value="idle.js" />
+      <xs:enumeration value="struggle__moving_average.js" />
+      <xs:enumeration value="student_doing_well__moving_average.js" />
+      <xs:enumeration value="system_misuse.js" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <!--<xs:element type="DetectorTester" name="DetectorTester" id="DetectorTester" default="0" />-->
     </xs:choice>
   </xs:complexType>
 

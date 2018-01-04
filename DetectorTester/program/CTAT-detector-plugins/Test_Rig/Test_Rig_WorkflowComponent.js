@@ -326,14 +326,21 @@ var numDetectorsTerminated = 0;
 	var s = programDir+"program/CTAT-detector-plugins/Test_Rig/" + detector_list[m];
 	detector_list[m] = s;
 }*/
+detector_list = [];
 detector_list.push(file1); //the tested detector (input to the component)
 
+outputStr = "Student_ID" + '\t' + "Time" + '\t' + "Detector_Name" + '\t' + "Value" + '\n';
+outputWriter.write(outputStr);
 
 /*
 	Start all of the detectors (or just the uploaded detector)
 */
 for(var m = 0; m < detector_list.length; ++m)
     {
+    if (!userScriptSecure(detector_list[m])) {
+    	throw 'Detector script uses require().  This is not allowed for security reasons.';
+    	break;
+    }
 	var detector = new Worker(detector_list[m]);
 
 	detector.onmessage = function(e) {
@@ -342,15 +349,19 @@ for(var m = 0; m < detector_list.length; ++m)
 	   	if (returnedData === '"readyToTerminate"') {
 	   		this.terminate();
 	   		numDetectorsTerminated++;
-	   		if (numDetectorsTerminated == activeDetectors.length) {
-	   			console.log("terminating detectors");
-	   			for (var a = 0; a < activeDetectors.length; a++) {
-	   				activeDetectors[a].terminate();
-	   			}
-	   			activeDetectors= null;
-	   			outputWriter.end();
-	   			process.exit();
-	   		}
+	   		if (activeDetectors !== null) {
+		   		if (numDetectorsTerminated == activeDetectors.length) {
+		   			console.log("terminating detectors");
+		   			for (var a = 0; a < activeDetectors.length; a++) {
+		   				activeDetectors[a].terminate();
+		   			}
+		   			activeDetectors= null;
+		   			outputWriter.end();
+		   			process.exit();
+		   		}
+		   	} else {
+		   		process.exit();
+		   	}
 	   	} else {
 	   		//outputWriter.write(JSON.stringify(e.data)+"\n");
 	   		outputStr = e.data.category + '\t' + e.data.time + '\t' + e.data.name + '\t' + e.data.value + '\n'; //+ ',' + ',' + e.data.history + '\n';
@@ -400,8 +411,17 @@ function sendTerminationCommand() {
 			activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
 			//activeDetectors[k].terminate();
 		}
-		activeDetectors = null;
+		//activeDetectors = null;
 	},500);
+}
+
+function userScriptSecure(detectorPath) {
+	var detectorCode = fs.readFileSync(detectorPath, 'utf8');
+	if (detectorCode.includes('require')) {
+		return false;
+	}
+
+	return true;
 }
 //End new wf component stuff
 
