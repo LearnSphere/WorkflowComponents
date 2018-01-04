@@ -4,7 +4,7 @@ dir=/datashop/workflow_components
 
 cd $dir
 
-rm -R */dist
+rm -Rf */dist
 
 for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
   cd $cdir
@@ -16,7 +16,7 @@ for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
   cd $dir
 done
 
-rm -R */test/ComponentTestOutput WorkflowComponent.log */build
+rm -Rf */test/ComponentTestOutput */WorkflowComponent.log */build
 
 
 
