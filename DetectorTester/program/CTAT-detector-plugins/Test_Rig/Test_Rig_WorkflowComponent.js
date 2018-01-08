@@ -338,6 +338,7 @@ outputWriter.write(outputStr);
 for(var m = 0; m < detector_list.length; ++m)
     {
     if (!userScriptSecure(detector_list[m])) {
+    	console.error('Detector script uses require().  This is not allowed for security reasons.');
     	throw 'Detector script uses require().  This is not allowed for security reasons.';
     	break;
     }

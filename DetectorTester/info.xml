@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Kenneth Holstein
+  <email>kjholste@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DetectorTester</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>Detector Tester</b> component allows users to view the output of a detector on a DataShop dataset.
+<br/>
+<a target="_blank" href="https://github.com/d19fe8/CTAT-detector-plugins">Detector Plugin Github</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b> - A DataShop transaction file <br/>
+<b>file</b> - A JavaScript detector file
+</inputs>
+
+<outputs>
+<b>tab-delimited</b> - Detector output
+</outputs>
+
+<options>
+
+</options>
+
+</info>

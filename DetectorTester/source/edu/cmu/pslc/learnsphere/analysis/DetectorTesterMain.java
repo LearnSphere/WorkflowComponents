@@ -13,10 +13,12 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.dao.*;
 import edu.cmu.pslc.datashop.dao.hibernate.*;
 import edu.cmu.pslc.datashop.item.*;
+import edu.cmu.pslc.datashop.item.DataShopInstanceItem;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import edu.cmu.pslc.datashop.util.SpringContext;
+import edu.cmu.pslc.datashop.util.DataShopInstance;
 
 public class DetectorTesterMain extends AbstractComponent {
 
@@ -58,27 +60,32 @@ public class DetectorTesterMain extends AbstractComponent {
     protected void runComponent() {
         boolean access = hasAccess();
         if (!access) {
-          logger.error("User does not have access to the DetectorTesterAccess project." +
-              "  Please request access to that project to be able to use this component.");
-          System.err.println("User does not have access to the DetectorTesterAccess project." +
-              "  Please request access to that project to be able to use this component.");
+          /*logger.error("User does not have access to the DetectorTesterAccess project." +
+              "  Please request access to that project to be able to use this component.");*/
+          //DataShopInstanceItem dsInstance = new DataShopInstanceItem();
+              //DataShopInstance dsInstance = new DataShopInstance();
+          DataShopInstance.initialize();
+          System.err.println("User does not have access to this component." +
+              "\n  Please request access from " + DataShopInstance.getDatashopHelpEmail() +
+              " to be able to use the Detector Tester.");
         }
 
         File outputDirectory = null;
-        if (access) {
+        /*if (access) {
           // Run the program and return its stdout to a file.
           outputDirectory = this.runExternalMultipleFileOuput();
-        }
+        }*/
+        outputDirectory = this.runExternalMultipleFileOuput();
         if (outputDirectory != null) {
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                 logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
-                File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
+                File outputFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
 
                 if (outputFile != null && outputFile.exists()) {
                     Integer nodeIndex = 0;
                     Integer fileIndex = 0;
                     String fileLabel = "tab-delimited";
-                    logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt"); // different slash for windows machines
+                    logger.debug(outputDirectory.getAbsolutePath() + "/output.txt"); // different slash for windows machines
 
                     this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
                 } else {
@@ -114,7 +121,8 @@ public class DetectorTesterMain extends AbstractComponent {
       
       String userId = this.getUserId();
       if (userId == null) { //for use with ant runComponent
-        userId = "peterschaldenbrand@gmail.com";
+        logger.error("no userId");
+        return false;
       }
 
       UserItem userItem = userDao.get(userId);
@@ -146,7 +154,7 @@ public class DetectorTesterMain extends AbstractComponent {
       String authorization = authorizationDao.getAuthorization(userId, projectId);
       logger.debug("Authorization level: " + authorization);
       if (authorization == null) {
-        System.err.println("Could not find authorization data on user for project: " + accessProject);
+        logger.error("Could not find authorization data on user for project: " + accessProject);
         return false;
       }
 
@@ -154,7 +162,7 @@ public class DetectorTesterMain extends AbstractComponent {
           || authorization.equals(AuthorizationItem.LEVEL_ADMIN)) {
         return true;
       } else {
-        System.err.println("User does not have edit or admin authorization to project " + accessProject +
+        logger.error("User does not have edit or admin authorization to project " + accessProject +
             ".  Get access to this project to be able to run written code.");
         return false;
       }
