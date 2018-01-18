@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RowRemover</url>
+<date>2018-01-14</date>
+<abstract>The <b>Row Remover</b> component selects rows that you would like removed or kept within a data set.</abstract>
+<description>This component allows you to remove or keep rows that meet certain criteria from a dataset.</description>
+
+<inputs><ul>
+<li>tab-delimited file: contains data to be modified.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains data with rows removed or kept.
+</outputs>
+
+<options>
+ <ul>
+<li>What to Do with Rows: two options: remove selected rows, or keep selected rows and remove the rest</li>
+<li>Column to Match: the column or variable that the values should be matched to</li>
+<li>Case sensitive</li>
+<li>Remove or Keep Empty Values: work with empty values or not</li>
+<li>Values to Remove: you can enter values that you want to remove or keep. Separate multiple values with commas.</li>
+</ul>
+</options>
+
+</info>
