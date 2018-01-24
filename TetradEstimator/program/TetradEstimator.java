@@ -99,6 +99,8 @@ public class TetradEstimator {
       return;
     }
 
+    String programDir = cmdParams.get("-programDir");
+
     String estimator = cmdParams.get("-estimator");
     String infile0 = cmdParams.get("-file0");
     String infile1 = cmdParams.get("-file1");
@@ -135,7 +137,7 @@ public class TetradEstimator {
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
       String regressionTableFile = workingDir + "BayesIm.txt";
-      String regressionGraphFile = workingDir + "Graph.txt";
+      String regressionGraphFile = workingDir + "Graph.html";
 
       try {
 
@@ -172,13 +174,26 @@ public class TetradEstimator {
           bReader = new BufferedReader( fReader );
 
           Graph graph = getGraphFromText( bReader, data );
+
+          addToDebugMessages("Graph from getGraphFromText(): \n" + graph.toString());
+
           //Make graph into a dag if it isn't already
+          ArrayList<Edge> newEdges = new ArrayList<Edge>();
           try {
             Dag dag = new Dag(graph);
           } catch (IllegalArgumentException e) {
             addToDebugMessages("Graph is not a dag, will make one now..." + e.toString());
             DagInPatternWrapper dagWrapper = new DagInPatternWrapper(graph);
+            Graph oldGraph = graph;
             graph = dagWrapper.getGraph();
+
+            //Determine which were the new edges
+            for (Edge edge : graph.getEdges()) {
+              if (!oldGraph.containsEdge(edge)) {
+                newEdges.add(edge);
+                addToDebugMessages("newEdge: " + edge.toString());
+              }
+            }
           }
 
           Parameters params = new Parameters();
@@ -291,9 +306,14 @@ public class TetradEstimator {
             int i = 1;
             for (Edge edge : graph.getEdges()) {
               buf += (i++) + ". " + edge.toString() + " " +
-                     semInstantiatedModel.getEdgeCoef(edge) + "\n";
+                     semInstantiatedModel.getEdgeCoef(edge);
+              if (newEdges.contains(edge)) {
+                buf += " y";
+              }
+              buf += "\n";
             }
-            bWriterGraph.append(buf);
+            //bWriterGraph.append(buf);
+            writeGraphToHtml(buf, programDir, bWriterGraph);
             buf += semInstantiatedModel.toString();
 
             bWriterTable.append(buf);
@@ -326,6 +346,139 @@ public class TetradEstimator {
   }
 
   private static Graph getGraphFromText( BufferedReader b, DataSet d ) {
+    try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+      
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr);
+      
+      String [] graphLines = graphStr.split("\n");
+
+      //Get nodes
+      List<Node> nodeList = new ArrayList<Node>();
+      boolean onNodes = false;
+      //while ( b.ready() ) {
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        //String line = b.readLine();
+        if ( !onNodes ) {
+          if ( line.contains("Graph Nodes:") ) {
+            onNodes = true;
+            continue;
+          }
+        }
+
+        String [] nodeAr = line.split(",");
+        for ( int i = 0; i < nodeAr.length; i++ ) {
+          nodeList.add( new GraphNode( nodeAr[i].replaceAll(" ", "_") ));
+        }
+        break;
+      }
+
+      Graph g = new EdgeListGraph( nodeList );
+
+      //Get edges
+      boolean onEdges = false;
+      //while ( b.ready() ) {
+        //String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        if ( !onEdges ) {
+          if ( line.contains("Graph Edges:") ) {
+            onEdges = true;
+            continue;
+          }
+          continue;
+        }
+
+        String [] tokens = line.split("\\s+");
+
+        if ( tokens.length < 4 ) {
+          continue;
+        }
+
+        String n0 = ""; //tokens[1];
+        String n1 = ""; //tokens[3];
+        boolean onFirstNodeName = true;
+        //get node names (even if they have spaces)
+        for (int i = 1; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            onFirstNodeName = false;
+            continue;
+          }
+          if (onFirstNodeName) {
+            if (i != 1) {
+              n0 += "_";
+            }
+            n0 += t;
+          } else {
+            if (n1.length() > 0) {
+              n1 += "_";
+            }
+            n1 += t;
+          }
+
+        }
+        Node node0 = new GraphNode("");
+        Node node1 = new GraphNode("");
+
+        for ( int i = 0; i < nodeList.size(); i++ ) {
+          Node curr = nodeList.get(i);
+          if ( curr.getName().equals(n0) ) {
+            node0 = curr;
+          }
+          if ( curr.getName().equals(n1) ) {
+            node1 = curr;
+          }
+        }
+
+        //get the arrow from the line
+        String arrow = "";
+        for (int i = 0; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            arrow = t;
+            break;
+          }
+        }
+
+        if ( arrow.equals("---") ) {
+          //TODO: UNCOMMENT NEXT LINE
+          addToDebugMessages("" + g.addEdge( Edges.undirectedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("-->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("<--") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node1, node0 ) ));
+        } else if ( arrow.equals("<->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.bidirectedEdge(node0, node1)));
+        } else {
+          addToDebugMessages("edge is unreadable" + arrow);
+        }
+      }
+      return g;
+    } catch ( Exception e ) {
+      addToDebugMessages("Error getting graph: " + e.toString() );
+      return new EdgeListGraph();
+    }
+  }
+
+  /*private static Graph getGraphFromText( BufferedReader b, DataSet d ) {
     try {
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
@@ -430,7 +583,7 @@ public class TetradEstimator {
       addToDebugMessages("Error getting graph: " + e.toString() );
       return new EdgeListGraph();
     }
-  }
+  }*/
 
   private static char[] fileToCharArray(File file) {
     try {
@@ -482,6 +635,29 @@ public class TetradEstimator {
       return false;
     }
     return true;
+  }
+
+  private static void writeGraphToHtml(String graphStr, String programDir, BufferedWriter bWriter) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(programDir + "/program/tetradGraph.html"));
+
+      StringBuilder htmlStr = new StringBuilder();
+      while(br.ready()) {
+        htmlStr.append(br.readLine());
+        if (br.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+      
+      s = s.replaceAll("PutGraphDataHere", graphStr);
+
+      bWriter.write(s);
+      bWriter.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph to file. " + e.toString());
+    }
   }
 
 }
