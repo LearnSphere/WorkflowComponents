@@ -5,6 +5,7 @@
   <component_name>Featuretools-MOOCdb</component_name>
   <component_type>transform</component_type>
   <left>680.2500305175781</left>
+  <top>231.75</top>
   <connections>
     <connection>
       <index>0</index>
@@ -12,9 +13,25 @@
     </connection>
   </connections>
   <options>
-  	<class_dir>./program/inputs/</class_dir>
-  	<class_name></class_name>
-  </options>
-  <top>231.75</top>
- 
+      <dummyStr>peach</dummyStr>
+      <dummyBool>true</dummyBool>
+    </options>
+    <inputs>
+    <input0>
+      <component_id>ImportFile1</component_id>
+      <component_id_human>Import File #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>file</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <file>
+            <file_path>test/example_input/folder.zip</file_path>
+            <file_name>folder.zip</file_name>
+            <index>0</index>
+            <label>file</label>
+          </file>
+      </files>
+    </input0>
+  </inputs>
 </component>

@@ -15,7 +15,11 @@ def create_moocdb_entity_set(tsv_file_locations, class_name):
 
     #create FeatureTools entities for each of these
     #format is (tsv_file_name, tsv_index_id)
-    #might want to eventually add a field to declare FeatureTools variable types as well
+
+    ### #might want to eventually add a field to declare FeatureTools variable types as well
+    # Inline response from Mike:
+    # feature tools variables can be obtained from the command-line if they are defined
+    # in the XSD options, e.g. -dummyStr mango
     moocdb_tsv_files = [("assessments", "assessment_id"),
                         ("observed_events", "observed_event_id"),
                         ("problems", "problem_id"),
@@ -44,6 +48,8 @@ def create_moocdb_entity_set(tsv_file_locations, class_name):
         try:
             print "Loading Pandas dataframe for file: " + fname
             filepath = tsv_file_map[fname]
+            if not os.path.isfile(filepath):
+                sys.exit("Missing file: " + filepath)
             f = open(filepath)
             df = pd.read_table(f,sep='\t',quoting=csv.QUOTE_NONE,lineterminator='\n')
             df_file_map[fname]=df
