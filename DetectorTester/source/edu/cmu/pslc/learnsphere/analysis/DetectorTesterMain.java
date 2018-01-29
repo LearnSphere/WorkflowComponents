@@ -58,34 +58,42 @@ public class DetectorTesterMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
+        boolean usingDetectorInput = false;
+        if (this.getOptionAsString("useDetectorInput").equals("Yes")) {
+          usingDetectorInput = true;
+        }
+
         boolean access = hasAccess();
-        if (!access) {
-          /*logger.error("User does not have access to the DetectorTesterAccess project." +
-              "  Please request access to that project to be able to use this component.");*/
-          //DataShopInstanceItem dsInstance = new DataShopInstanceItem();
-              //DataShopInstance dsInstance = new DataShopInstance();
+        if (!access && usingDetectorInput) {
           DataShopInstance.initialize();
-          System.err.println("User does not have access to this component." +
+          System.err.println("User does not have access to use the JavaScript input for this component." +
               "\n  Please request access from " + DataShopInstance.getDatashopHelpEmail() +
-              " to be able to use the Detector Tester.");
+              " to be able to use your own detectors as input to this component. " + 
+              "You may still use this component without access.  Select \"No\" in the first option in" +
+              " the options pane, then select the detector from the dropdown that you would like to use.");
+          return;
+        }
+
+        if (usingDetectorInput) {
+          logger.debug("inputContainsRequire() = " + inputContainsRequire());
+          if (inputContainsRequire()) {
+            System.err.println("Detector script uses require().  This is not allowed for security reasons.");
+            return;
+          }
         }
 
         File outputDirectory = null;
-        /*if (access) {
-          // Run the program and return its stdout to a file.
-          outputDirectory = this.runExternalMultipleFileOuput();
-        }*/
         outputDirectory = this.runExternalMultipleFileOuput();
         if (outputDirectory != null) {
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                 logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
-                File outputFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
+                File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
 
                 if (outputFile != null && outputFile.exists()) {
                     Integer nodeIndex = 0;
                     Integer fileIndex = 0;
                     String fileLabel = "tab-delimited";
-                    logger.debug(outputDirectory.getAbsolutePath() + "/output.txt"); // different slash for windows machines
+                    logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt"); // different slash for windows machines
 
                     this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
                 } else {
@@ -166,6 +174,38 @@ public class DetectorTesterMain extends AbstractComponent {
             ".  Get access to this project to be able to run written code.");
         return false;
       }
+
+    }
+
+    private boolean inputContainsRequire() {
+      File inputFile = this.getAttachment(1, 0);
+
+      if (inputFile.exists() && inputFile.isFile() && inputFile.canRead()) {
+        try {
+          BufferedReader br = new BufferedReader(new FileReader(inputFile));
+          StringBuilder wholeFileStr = new StringBuilder();
+          while(br.ready()) {
+            wholeFileStr.append(br.readLine());
+            if (br.ready()) {
+              wholeFileStr.append("\n");
+            }
+          }
+
+          String s = wholeFileStr.toString();
+          //logger.debug(s);
+          if (s.contains("require")) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (Exception e) {
+          System.err.println("Could not read from js input file. " + e.toString());
+          return false;
+        }
+      } else {
+        System.err.println("input js file does not exist. ");
+      }
+      return false;
 
     }
 

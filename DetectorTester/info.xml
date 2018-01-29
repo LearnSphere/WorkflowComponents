@@ -13,7 +13,8 @@
 <br/>
 <a target="_blank" href="https://github.com/d19fe8/CTAT-detector-plugins">Detector Plugin Github</a>
 <br/>
-<b>***Permission from DataShop is needed to use this component.  Please contact <u>datashop-help@lists.andrew.cmu.edu</u> if you would like to request access to this component.</b>
+<b>***Permission from DataShop is needed to use the JavaScript detector file for this component.  Please contact <u>datashop-help@lists.andrew.cmu.edu</u> if you would like to request access to this feature.</b>
+All users may still run the pre-screened detectors in the dropdown on the options pane of this component.
 <br/>
 </abstract>
 
@@ -29,6 +30,8 @@
 </outputs>
 
 <options>
+<b>Use detector from input</b> - Select "Yes" if you would like to use the JavaScript detector file input (second input node) as the detector for this component.  Only select "Yes" if you have access as described above.  Otherwise, select "No" and use one of the detectors from the dropdown below.<br/>
+<b>Detector</b> - Select the detector to use.  All users, regardless of access, are able to use these detectors.
 
 </options>
 

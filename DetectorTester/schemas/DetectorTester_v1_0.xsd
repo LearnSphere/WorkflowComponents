@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
@@ -39,7 +39,7 @@
   <xs:complexType name="InputType">
     <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -74,6 +74,12 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+      <xs:element type="conjunctive" name="showDetectorListDependency" ls:dependentOption="detectorFromList" ls:dependsOn="useDetectorInput" ls:constraint="matches(No)" />
+    </xs:choice>
+  </xs:complexType>
+
   <xs:simpleType name="detectorType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="critical_struggle.js" />
@@ -84,8 +90,17 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="useDetectorInputType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="useDetectorInputType" name="useDetectorInput" id="Use_detector_from_input" default="No" />
+      <xs:element type="detectorType" name="detectorFromList" id="Detector" default="idle.js" />
       <!--<xs:element type="DetectorTester" name="DetectorTester" id="DetectorTester" default="0" />-->
     </xs:choice>
   </xs:complexType>

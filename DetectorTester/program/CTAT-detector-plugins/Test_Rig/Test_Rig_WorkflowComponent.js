@@ -310,8 +310,19 @@ function simulateDataStream(e, parser){
 programDir = process.argv[process.argv.indexOf("-programDir") + 1];
 workingDir = process.argv[process.argv.indexOf("-workingDir") + 1];
 file0 = process.argv[process.argv.indexOf("-file0") + 1];
-file1 = process.argv[process.argv.indexOf("-file1") + 1];
+file1 = null;
+if (process.argv.indexOf("-file1") >= 0) {
+	file1 = process.argv[process.argv.indexOf("-file1") + 1];
+}
 
+//check if user wanted to use a detector that was in the list of pre-screened detectors
+useDetectorInputInd = process.argv.indexOf("-useDetectorInput");
+if (useDetectorInputInd >= 0) {
+	if (process.argv[useDetectorInputInd + 1] === "No") {
+		var detectorName = process.argv[process.argv.indexOf("-detectorFromList") + 1];
+		file1 = programDir + "program/CTAT-detector-plugins/Test_Rig/Detectors/" + detectorName;
+	}
+}
 
 fs = require('fs');
 
