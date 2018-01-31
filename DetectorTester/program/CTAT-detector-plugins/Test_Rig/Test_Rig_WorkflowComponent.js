@@ -395,6 +395,7 @@ function runSimulation(){
 	inputFilePath = file0;
 
 	var readData = fs.readFileSync(inputFilePath, 'utf8');
+	readData = readData.replace(new RegExp('\r', 'g'), '\n');
 	data = readData.split("\n");
 
 	index = 0;
