@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Kenneth Holstein
+  <email>kjholste@cs.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DetectorTester</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>DetectorTester</b> component allows users to run a detector on a DataShop dataset and view its output.
+<br/>
+<a target="_blank" href="https://github.com/d19fe8/CTAT-detector-plugins">Detector Plugin Github</a>
+<br/>
+<b>***Permission from DataShop is needed to use the JavaScript detector file for this component.  Please contact <u>datashop-help@lists.andrew.cmu.edu</u> if you would like to request access to this feature.</b>
+All users may still run the pre-screened detectors in the dropdown on the options pane of this component.
+<br/>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b> - A DataShop transaction file <br/>
+<b>file</b> - A JavaScript detector file
+</inputs>
+
+<outputs>
+<b>tab-delimited</b> - Detector output<br/>
+</outputs>
+
+<options>
+<b>Use detector from input</b> - Select "Yes" if you would like to use the JavaScript detector file input (second input node) as the detector for this component.  Only select "Yes" if you have access as described above.  Otherwise, select "No" and use one of the detectors from the dropdown below.<br/>
+<b>Detector</b> - Select the detector to use.  All users, regardless of access, are able to use these detectors.
+
+</options>
+
+</info>

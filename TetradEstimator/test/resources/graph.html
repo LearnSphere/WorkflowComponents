@@ -1,0 +1,912 @@
+
+<html>
+<head>
+	<title>TetradGraphEditor</title>
+	<script src="javascript/lib/cytoscape.min.js"></script>
+  <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+	<style>
+    html {
+      width : 100%;
+      height:100%;
+    }
+  	body {
+  	  //font-family: helvetica;
+      font: verdana;
+  	  font-size: 14px;
+      //-webkit-transform: scale(0.5, 0.5);
+      //-webkit-transform-origin: top left;
+      width:96%;
+      height:96%;
+      background-color:white;
+  	}
+
+  	#cy {
+  	  //min-width: 950px;
+  	  //min-height: 450px;
+      //max-width: 2000px;
+      //max-height:1000px;
+      width: 100%;
+      height: 100%;
+  	  position: absolute;
+  	  left: 0px;
+  	  top: 0;
+  	  z-index: 1;
+  	}
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    #edgeInfoOption {
+      color : rgb(6,69,173);
+      max-width : 100px;
+      position:absolute;
+      z-index:1000;
+      text-decoration: underline;
+      font-size:90%;
+    }
+    #graphEditOptions {
+      max-width : 150px;
+      position:absolute;
+      z-index:1000;
+      top:70px;
+    }
+    
+    #deleteNode {
+      margin: 5px 5px;
+    }
+    #deleteEdge {
+     margin: 5px 5px;
+    }
+
+    #addNodeOptions, #addEdgeOptions, #deleteOptions {
+      margin: 5px 5px;
+      padding: 5px 5px;
+      border-style: solid;
+      border-width: 1px;
+      background-color:rgba(200,200,200,0.5);
+    }
+    #addNode {
+    }
+    #nodeName {
+      width:100%;
+    }
+    #to, #from {
+      color: blue;
+    }
+
+    #edgeInfo {
+      position:absolute;
+      top:60px;
+      left:20px;
+      z-index:1001;
+      opacity:1;
+      background:white
+    }
+  	h1 {
+  	  opacity : 0.5;
+  	  font-size : 1em;
+  	}
+	</style>
+</head>
+
+<body>
+<div id="graphData" style="visibility:hidden">
+Graph Nodes:
+Case,taste,Acetic,H2S,Lactic
+
+Graph Edges:
+1. Case --> taste
+2. Acetic --> H2S
+3. Lactic --> Acetic
+4. taste --> Acetic
+5. taste --> H2S
+6. H2S --> Case
+
+</div>
+
+<div id="cy" ></div>
+
+<script>
+var firstSelectedNode = null;
+var secondSelectedNode = null;
+var selectedEdge = null;
+var cytContainer = null;
+var isSEM = false;
+
+var isEditor = false;
+
+if (isEditor) {
+  //Getting the input to the component is asynchronous.  this allows the script to wait for 
+  //the data to be received from the server.
+  loadedGraph = loadGraph();
+
+  if (loadedGraph === undefined || loadedGraph === null || loadedGraph === "0") {
+    parent.getComponentInput(0, 0, -1);
+    var getComponentInputInterval = setInterval(function() {
+      if (parent.componentInputRequesting == false) {
+        clearInterval(getComponentInputInterval);
+        initiateTetradGraphEditor();
+      }
+    },50);
+  } else {
+    initiateTetradGraphEditor();
+  }
+} else {  //just viewing the graph
+  loadedGraph = $("#graphData").text();
+  initiateTetradGraphViewer();
+}
+
+
+$(document).ready(function(){
+  $("#edgeInfo").hide();
+  if (isEditor) {
+    $(".advancedOptionsTable", parent.document).hide();
+    $(".fileInputForm", parent.document).css("height","97%");
+    $(".fileInputForm", parent.document).css("width","97%");
+    $(".componentOptionsDiv", parent.document).css("height","80%");
+    $("#cy", parent.document).css("height","100%");
+    $(".fileInputForm", parent.document).css("width","100%");
+  }
+});
+
+function initiateTetradGraphViewer() {
+  $("#edgeInfo").hide();
+  setTimeout(function(){displayEdgeInfo()},400);
+  //displayGraphEditingOptions();
+
+  var lines = loadedGraph.split('\n');
+
+  [nodes, childNodes] = getNodes(lines);
+
+  e = getEdges(lines);
+
+  cytContainer = getCytContainer();
+
+  //add nodes to the container
+  cytContainer.elements.nodes = [];
+  if (isSEM) {
+    for( var j = 0; j < childNodes.length; j++) {
+      var d = {};
+      d.data = {};
+      //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.data.id = childNodes[j];
+      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.classes = "SEM_Label";
+      d.data.parent = nodes[j];
+      d.data.idNumChars = nodes[j].length;
+      cytContainer.elements.nodes.push(d);
+    }
+  }
+  for( var j = 0; j < nodes.length; j++ ){
+    var d = {};
+    d.data = {};
+    d.data.id = nodes[j];
+    d.data.idNumChars = nodes[j].length;
+    cytContainer.elements.nodes.push(d);
+  }
+
+  //add edges to the container
+  cytContainer.elements.edges = e;
+
+  //Create the graph
+  cy = window.cy = cytoscape(cytContainer);
+}
+
+function initiateTetradGraphEditor() {
+  $(".advancedOptionsTable", parent.document).hide();
+  $(".fileInputForm", parent.document).css("height","97%");
+  $(".fileInputForm", parent.document).css("width","97%");
+  $(".componentOptionsDiv", parent.document).css("height","80%");
+  $("#cy", parent.document).css("height","100%");
+  $(".fileInputForm", parent.document).css("width","100%");
+
+  $("#edgeInfo").hide();
+  setTimeout(function(){displayEdgeInfo()},400);
+  displayGraphEditingOptions();
+
+  var lines = [];
+
+  loadedGraph = loadGraph();
+
+  if (loadedGraph === undefined || loadedGraph === null || loadedGraph === "0") {
+    if (parent.componentInput !== null && parent.componentInput !== undefined) {
+      lines = parent.componentInput.split('\n');
+    }
+    //console.log("using graphStr from input file");
+  } else {
+    //console.log("using graph that was saved in options before");
+    lines = loadedGraph.split('\n');
+    //console.log(loadedGraph);
+  }
+
+  [nodes, childNodes] = getNodes(lines);
+
+  e = getEdges(lines);
+
+  cytContainer = getCytContainer();
+
+  //add nodes to the container
+  cytContainer.elements.nodes = [];
+  if (isSEM) {
+    for( var j = 0; j < childNodes.length; j++) {
+      var d = {};
+      d.data = {};
+      //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.data.id = childNodes[j];
+      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.classes = "SEM_Label";
+      d.data.parent = nodes[j];
+      d.data.idNumChars = nodes[j].length;
+      cytContainer.elements.nodes.push(d);
+    }
+  }
+  for( var j = 0; j < nodes.length; j++ ){
+  	var d = {};
+  	d.data = {};
+  	d.data.id = nodes[j];
+    d.data.idNumChars = nodes[j].length;
+  	cytContainer.elements.nodes.push(d);
+  }
+  /*if (isSEM) {
+    for( var j = 0; j < childNodes.length; j++) {
+      var d = {};
+      d.data = {};
+      //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.data.id = childNodes[j];
+      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+      d.classes = "SEM_Label";
+      d.data.parent = nodes[j];
+      d.data.idNumChars = nodes[j].length;
+      cytContainer.elements.nodes.push(d);
+    }
+  }*/
+
+  //add edges to the container
+  cytContainer.elements.edges = e;
+
+  //Create the graph
+  cy = window.cy = cytoscape(cytContainer);
+  
+
+  window.parent.document.getElementsByClassName('visFrame').width = '700px';
+  window.parent.document.getElementsByClassName('visFrame').height = '500px';
+
+
+  ///GRAPH EDITOR STUFF
+
+  initiateGraphEditorFunctionality(nodes, childNodes);
+}
+
+function initiateGraphEditorFunctionality(nodes, childNodes) {
+  //selection of nodes
+  for (var j = 0; j < nodes.length; j++) {
+    var id = nodes[j];
+    cy.$("#" + id).on('tap', function(evt){selectNode(evt)});
+  }
+
+  //selection of edges
+  cy.edges().on("click", function(evt){
+    selectEdge(evt);
+  });
+  
+
+  //delete selected nodes
+  $("#deleteNode").on("click", function (){
+    //console.log("deleteing");
+    //console.log(firstSelectedNode);
+    if (firstSelectedNode != null) {
+      firstSelectedNode.remove();
+      firstSelectedNode = null;
+    }
+    if (secondSelectedNode != null) {
+      secondSelectedNode.remove();
+      secondSelectedNode = null;
+    }
+  });
+
+  //delete selected edge
+  $("#deleteEdge").on("click", function() {
+    selectedEdge.target.remove();
+    selectedEdge = null;
+  });
+
+  //Add node
+  $("#addNode").on("click", function (){
+    addNewNode();
+  });
+
+  //Add Edge
+  $("#addEdge").on("click", function (){
+    addNewEdge();
+  });
+
+  //Save graph when clicking button
+  $("button").on("click", function() {
+    //console.log("setting button click save");
+    setTimeout(function() {
+      //console.log("about to save");
+      saveGraph();
+    }, 200);
+  });
+}
+
+function addNewNode() {
+  var nodeName = $("#nodeName").val();
+  var newNode = {group:"nodes", data: {id: nodeName} };
+  newNode.data.idNumChars = nodeName.length;
+  //cytContainer.elements.nodes.push(newNode);
+  cy.add(newNode);
+  //console.log(newNode);
+  cy.$("#" + nodeName).on('tap', function(evt){selectNode(evt)});
+
+  if (isSEM) {
+    var d = {};
+    d.data = {};
+    d.data.id = nodeName + "value";
+    d.data.name = "0.00";
+    d.classes = "SEM_Label";
+    d.data.parent = nodeName;
+    d.data.id.numChars = nodeName.length;
+    //cytContainer.elements.nodes.push(d);
+    cy.add(d);
+  }
+}
+
+function addNewEdge () {
+  var newEdge = {group: "edges", data: {} };
+    
+  if (firstSelectedNode == null || secondSelectedNode == null) {
+    alert("Please select the two nodes that you would like an edge to form between");
+    return; //not enough nodes selected to make edge
+  }
+  newEdge.data.source = secondSelectedNode.id();
+  newEdge.data.target = firstSelectedNode.id();
+
+  var d = new Date();
+  newEdge.data.id = d.getTime();
+  //console.log($("#edgeTypeAddEdge").val());
+  var edgeTypeValue = $("#edgeTypeAddEdge").val();
+  switch(edgeTypeValue) {
+    case "Directed":
+      //newEdge.classes = "directed";
+      break;
+    case "Bidirected":
+      //console.log("bi");
+      newEdge.classes = "bidirected";
+      break;
+    case "Undirected":
+      //console.log("un");
+      newEdge.classes = "undirected";
+      break;
+    case "Partially_Oriented":
+      newEdge.classes = "partiallyOriented";
+      break;
+    case "Nondirected":
+      newEdge.classes = "nondirected";
+      break;
+  }
+  if (!isGoodNewEdge(newEdge.data.source, newEdge.data.target, newEdge.classes)) {
+    alert("This edge already exists");
+    return;
+  }
+
+  cy.add(newEdge);
+  cy.$("#" + newEdge.data.id).on('tap', function(evt){selectEdge(evt);});
+}
+
+function selectNode (evt){
+  setSelectionsOfNodes(evt);
+  if (firstSelectedNode != null) {
+    $("#to").text(firstSelectedNode.id());
+  } else {
+    $("#to").text("");
+  }
+  if (secondSelectedNode != null) {
+    $("#from").text(secondSelectedNode.id());
+  } else {
+    $("#from").text("");
+  }
+}
+
+function setSelectionsOfNodes (evt) {
+
+  var selectedNode = evt.target;
+
+  if (isSEM && evt.target.parent().data() != undefined) {
+    var parId = evt.target.parent().data().id;
+    //cy.$("#" + parId).css("background-color","pink");
+    selectedNode = cy.$("#" + parId);
+  }
+
+  selectedNode.addClass("selected");
+
+  if (firstSelectedNode != null) {
+    if (selectedNode.id() == firstSelectedNode.id() ) {
+      //console.log("deselect");
+      selectedNode.removeClass("selected");
+      firstSelectedNode = secondSelectedNode;
+      secondSelectedNode = null;
+      return;
+    } 
+  }
+  if (secondSelectedNode != null) {
+    if (selectedNode.id() == secondSelectedNode.id()) {
+      selectedNode.removeClass("selected");
+      secondSelectedNode = null;
+      return;
+    }
+  }
+  if (firstSelectedNode != null && secondSelectedNode != null) {
+    //shift them down
+    secondSelectedNode.removeClass("selected");
+    secondSelectedNode = firstSelectedNode;
+    firstSelectedNode = selectedNode;
+  } else if (firstSelectedNode != null && secondSelectedNode == null) {
+    secondSelectedNode = firstSelectedNode;
+    firstSelectedNode = selectedNode;
+  } else {
+    firstSelectedNode = selectedNode;
+    secondSelectedNode = null;
+  }
+}
+
+function selectEdge (evt) {
+  evt.target.addClass("selected");
+  if (selectedEdge != null) {
+    selectedEdge.target.removeClass("selected");
+  }
+  selectedEdge = evt;
+}
+
+function displayEdgeInfo() {
+  $("body").prepend(
+      '<div id="edgeInfoOption">' + 
+
+      'Click for more info about graph edge types</div>'
+  );
+ 
+  $("#edgeInfoOption").on("click", function() {
+    $("#edgeInfo").toggle();
+  });
+  $("#edgeInfo").on("click", function() {
+    $("#edgeInfo").toggle();
+  });
+}
+
+function displayGraphEditingOptions() {
+  //options for editing graph
+  $("body").prepend(
+      '<div id="graphEditOptions">' + 
+      '<div id="deleteOptions"><button id="deleteNode">Delete Selected Nodes</button><br/>' + 
+
+      '<button id="deleteEdge">Delete Selected Edge</button></div>' +
+
+      '<div id="addNodeOptions">' + 
+      '<span id="nameNode">' + 
+      'Name of node to add (no spaces)' + 
+      '<input id="nodeName" type="text" name="nodeName" value="V_1"></span><br/>' +
+      
+      '<button id="addNode">Add Node</button></div>' + 
+
+      '<div id="addEdgeOptions">' +
+      'From <span id="from"></span><br/>' +
+      'To   <span id="to"></span><br/>' +
+      'Edge Type:<br/><select id="edgeTypeAddEdge">' + 
+      '<option value="Directed">Directed</option>' + 
+      '<option value="Bidirected">Bidirected</option>' + 
+      '<option value="Undirected">Undirected</option>' + 
+      '<option value="Partially_Oriented">Partially Oriented</option>' + 
+      '<option value="Nondirected">Nondirected</option>' + 
+      '</select><br/>' +
+
+      '<button id="addEdge">Add Edge</button></div>' +
+
+      '</div>'
+  );
+}
+
+function getNodes(lines) {
+  var nodes = [];
+  var childNodes = [];
+
+  var gettingNodesLine = false;
+  isSEM = false;
+
+  for (var i = 0; i < lines.length; i++ )
+  {
+    var l = lines[i];
+    
+    if( l.includes("Graph Nodes") ){
+      gettingNodesLine = true;
+      if (l.includes("SEM")) {
+        isSEM = true;
+      }
+      continue;
+    }
+    if( gettingNodesLine ){
+      if (isSEM) {
+        var temp = l.split(',');
+
+        for (var j = 0; j < temp.length; j++) {
+          var tempToks = temp[j].split(" ");
+          //console.log(tempToks);
+          nodes.push(tempToks[0]);
+          childNodes.push(tempToks[0] + tempToks[1]);
+        }
+      } else {
+        nodes = l.split(',');
+      }
+      gettingNodesLine = false;
+      break;
+    }
+    //console.log(childNodes);
+    //console.log(nodes);
+  }
+  return [nodes, childNodes];
+}
+
+function getEdges(lines) {
+  var gettingEdges = false;
+  var e = [];
+
+  for(var i = 0; i < lines.length; i++ )
+  {
+    var l = lines[i];
+    
+    if( l.includes("Graph Edges") ){
+      gettingEdges = true;
+      if (l.includes("SEM")) {
+        isSEM = true;
+      }
+      continue;
+    }
+    if (gettingEdges) {
+      var tokens = l.split(/\s+/);
+      
+      if( tokens.length < 4 ){
+        gettingEdges = false;
+        continue;
+      }
+          
+      var d = {};
+      d.data = {};
+      
+      var directed = false;
+
+      d.data.source = tokens[1];
+      d.data.target = tokens[3];
+      d.label = "Hello";
+
+      if (tokens[2] == "---"){      
+        d.classes = "undirected";
+      } else if(tokens[2] == "<->"){
+        d.classes = "bidirected";
+      } else if (tokens[2] == '-->') {
+        
+      } else if (tokens[2] == '<--') {
+        d.data.target = tokens[1];
+        d.data.source = tokens[3];
+      } else if (tokens[2] == 'o->') {
+        d.classes = "partiallyOriented";
+      } else if (tokens[2] == 'o-o') {
+        d.classes = "nondirected";
+      }
+
+      for (var j = 4; j < tokens.length; j++) {
+        if (tokens[j] == 'nl') {
+          d.classes += ' noLatent';
+        } else if (tokens[j] == 'dd') {
+          d.classes += ' definitelyDirected';
+        } else if (!isNaN(tokens[j])) {
+          d.data.label = tokens[j].substring(0,6);
+        }
+      }
+      e.push( d )
+    }
+  }
+  return e;
+}
+
+function getCytContainer() {
+  return {
+    container: document.getElementById('cy'),
+
+    boxSelectionEnabled: false,
+    autounselectify: true,
+
+    layout: {
+    //name:'grid|random'
+      name: 'circle',//'cose',
+      spacingFactor: .45,
+      directed: true,
+      sort: 'function(a, b){ return a.data.id.localeCompare(b.data.id); }'
+    },
+
+      
+    style: cytoscape.stylesheet()
+      .selector('node')
+        .css({
+          'compound-sizing-wrt-labels' : 'exclude',
+          'content': 'data(id)',
+          'text-opacity': 1,
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'text-outline-width':2,
+          'text-outline-color':'lightblue',
+          'font-family': 'verdana',
+          'background-color': 'lightblue',
+          'opacity' : 1,
+
+          "width": "mapData(idNumChars, 1, 100, 100, 2148)",//"label",
+          "height": '50%',
+          //"padding": '20px',
+
+          'font-size':'40%',
+          'color':'black',
+          'shape':'roundrectangle',
+
+          'border-width':1,
+          'border-style':'solid',
+          'border-color':'black',
+          'border-opacity':1,
+          'z-index':5
+        })
+      .selector('node.SEM_Label')
+        .css({
+          'content': 'data(name)',
+          'text-opacity': 1,
+          'text-valign': 'bottom',
+          'text-halign': 'right',
+          'text-outline-width':5,
+          'text-outline-color':'white',
+          'font-size' : '28%',
+          'background-opacity' : 0,
+          'border-opacity' : 0,
+
+          'color':'rgb(0, 180, 0)',
+          'z-index':4
+
+        })
+      .selector('node.selected')
+        .css({
+          'background-color': 'rgb(232, 211, 97)',
+          'text-outline-color':'rgb(232, 211, 97)'
+        })
+      .selector('edge')
+        .css({
+          'content' : 'data(label)',
+          'text-outline-width':5,
+          'text-outline-color':'white',
+          'font-family': 'verdana',
+          'curve-style': 'bezier',
+          'target-arrow-shape': 'triangle',
+          'width': 3,
+          'line-color': 'rgb(82, 120, 177)',
+          'target-arrow-color': 'rgb(82, 120, 177)',
+          'source-arrow-color': 'rgb(82, 120, 177)',
+          'arrow-scale': 3,
+          'font-size' : '25%'
+        })
+       .selector('edge.undirected')
+        .css({
+          'target-arrow-shape': 'none'
+        })
+       .selector('edge.bidirected')
+        .css({
+          'target-arrow-shape': 'triangle',
+          'source-arrow-shape': 'triangle'
+        })
+      .selector('edge.partiallyOriented')
+        .css({
+          'target-arrow-shape': 'triangle',
+          'source-arrow-shape': 'circle',
+          'source-arrow-fill':'hollow'
+        })
+      .selector('edge.nondirected')
+        .css({
+          'target-arrow-shape': 'circle',
+          'source-arrow-shape': 'circle',
+          'target-arrow-fill':'hollow',
+          'source-arrow-fill':'hollow'
+        })
+      .selector('edge.definitelyDirected')
+        .css({
+          'line-color': 'rgb(0, 255, 0)',
+          'target-arrow-color': 'rgb(0, 255, 0)'
+        })
+      .selector('edge.noLatent')
+        .css({
+          'line-style': 'dashed'
+        })
+      .selector('edge.selected')
+        .css({
+          'line-color': 'orange',
+          'target-arrow-color': 'orange',
+          'source-arrow-color': 'orange',
+        })
+      .selector('.highlighted')
+        .css({
+          'background-color': '#61bffc',
+          'line-color': '#61bffc',
+          'target-arrow-color': '#61bffc',
+          'transition-property': 'background-color, line-color, target-arrow-color',
+          'transition-duration': '0.5s'
+        }),
+
+    
+    elements: {
+    },
+  }
+}
+
+function isGoodNewEdge(source, target, type) {
+  var allEdges = cy.edges();
+  for (var i = 0; i < allEdges.length; i++) {
+    var edge = allEdges[i].data();
+    if (edge.target === target && edge.source === source && 
+        allEdges[i].hasClass(type)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function graphToString() {
+  var graphStr = 'Graph Nodes:\n';
+  if (isSEM) {
+    graphStr = "Graph Nodes SEM:\n"
+  }
+
+  var nodes = cy.nodes();
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+
+    if (n.parent().data() !== undefined) {
+      continue; //it's a child node (for sem)
+    }
+    
+    graphStr += n.id();
+    if (isSEM) {//get the param for the node
+      for (var j = 0; j < nodes.length; j++) {
+        if (nodes[j].parent().data() !== undefined) {
+          if (nodes[j].parent().data().id === n.id()) {
+            graphStr += " " + nodes[j].data().name;
+            break;
+          }
+        }
+      }
+    }
+    if (i != nodes.length - 1) {
+      graphStr += ","
+    }
+  }
+
+  if (isSEM) {
+    graphStr += '\n\nGraph Edges SEM:\n';
+  } else {
+    graphStr += '\n\nGraph Edges:\n';
+  }
+
+  var edges = cy.edges();
+  for (var i = 0; i < edges.length; i++) {
+    var e = edges[i].data();
+
+    edgeArrow = "-->";
+    if (edges[i].hasClass("bidirected")) {
+      edgeArrow = "<->";
+    } else if (edges[i].hasClass("undirected")) {
+      edgeArrow = "---";
+    } else if (edges[i].hasClass("partiallyOriented")) {
+      edgeArrow = "o->";
+    } else if (edges[i].hasClass("nondirected")) {
+      edgeArrow = "o-o";
+    }
+
+    edgeValue = '';
+    if (isSEM) {
+      edgeValue = " " + e.label;
+    }
+
+    graphStr += (i+1) + ". " + e.source + " " + edgeArrow + ' ' + e.target + edgeValue + '\n';
+  }
+
+
+  return graphStr.replace(/\n/g, "%NEW_LINE%");
+}
+
+function loadGraph() {
+  return parent.loadData("TetradGraphEditor");
+}
+
+function saveGraph() {
+  parent.saveData("TetradGraphEditor", graphToString());
+}
+
+</script>
+
+</body>
+
+<div id="edgeInfo" >
+  <table width="95%" border="1" bgcolor="maroon">
+      <tbody>
+      <tr>
+          <td>
+              <h2>
+                <font color="white">Graph Edge Types</font>
+                <span style="
+                    float: right;
+                    background-color: white;
+                    border-radius: 3px;
+                    margin: 1% 1%;
+                    padding: 2px 4px;
+                    border-width: 2px;
+                    border-color: black;
+                    border-style: solid;
+                    color: black;
+                    cursor: pointer;
+                ">✖</span>
+              </h2>
+          </td>
+      </tr>
+      </tbody>
+  </table>
+
+  <table width="95%" border="1">
+      <thead>
+          <tr>
+              <th>Edge Types</th>
+              <th>Present Relationships</th>
+              <th>Absent Relationships</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>A --&gt; B</td>
+              <td>
+                  A is a cause of B.<br />
+                  It may be a direct or indirect cause that may include other measured variables. Also, there may be an unmeasured confounder of A and B.
+              </td>
+              <td>B is not a cause of A</td>
+          </tr>
+          <tr>
+              <td>A &lt;-&gt; B</td>
+              <td>There is an unmeasured confounder (call it L) of A and B. There may be measured variables along the causal pathway from L to A or from L to B.</td>
+              <td>
+                  A is not a cause of B.<br />
+                  B is not a cause of A.
+              </td>
+          </tr>
+          <tr>
+              <td>A o-&gt; B</td>
+              <td>Either A is a cause of B (i.e, A --&gt; B) or there is an unmeasured confounder of A and B (i.e, A &lt;-&gt; B) or both.</td>
+              <td>B is not a cause of A.</td>
+          </tr>
+          <tr>
+              <td>A o-o B</td>
+              <td>
+                  Exactly one of the following holds:
+                  <ol>
+                      <li>A is a cause of B</li>
+                      <li>B is a cause of A</li>
+                      <li>there is an unmeasured confounder of A and B</li>
+                      <li>both a and c</li>
+                      <li>both b and c</li>
+                  </ol>
+              </td>
+              <td></td>
+          </tr>
+      </tbody>
+      <tfoot>
+          <tr>
+              <td colspan="3">If an edge is dashed that means there is no latent confounder. Otherwise, there is possibly latent confounder.</td>
+          </tr>
+          <tr>
+              <td colspan="3">If an edge is green that means it is definitely direct. Otherwise, it is possibly direct.</td>
+          </tr>
+      </tfoot>
+  </table>
+
+</div>
+
+</html>
