@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Carnegie Mellon University
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ImportLightsideModel</url>
+<date>2017-03-20</date>
+<abstract>
+The <b>Lightside Model</b> import is an XML file created by the <a href="http://ankara.lti.cs.cmu.edu/side/">LightSide</a>
+machine learning workbench, describing an algorithm for classifying text samples.
+</abstract>
+
+<inputs>
+</inputs>
+
+<outputs>
+Feed this into the TransformClassifyLightside component, along with a dataset containing a text column,
+to apply text classification to that column.
+</outputs>
+
+<options>
+<b>Upload</b> or <b>Import existing file</b>
+</options>
+
+</info>
