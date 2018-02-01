@@ -139,6 +139,7 @@ function constructTransaction(e){
 
 function getRowVariables(thisrow){
 	//initialize all relevant indices
+	
 	if(i==0){
 		currSkills_indices = getAllIndices(thisrow, KC_model);
 		studentId_index = thisrow.indexOf("Anon Student Id");
@@ -395,7 +396,11 @@ function runSimulation(){
 	inputFilePath = file0;
 
 	var readData = fs.readFileSync(inputFilePath, 'utf8');
+
+	// Some files use carriage returns ('\r') instead of '\n'
 	readData = readData.replace(new RegExp('\r', 'g'), '\n');
+	readData = readData.replace(new RegExp('\n\n', 'g'), '\n');
+
 	data = readData.split("\n");
 
 	index = 0;
