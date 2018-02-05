@@ -44,7 +44,7 @@ public class GenerateMOOCdbFeatures extends AbstractComponent
     @Override
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/ft_output_pickle");

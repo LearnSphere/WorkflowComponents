@@ -104,7 +104,7 @@ public class RPivotMain extends AbstractComponent {
             }
             
         // Run the program and return its stdout to a file.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+            File outputDirectory = this.runExternal();
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                 logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
                 File file0 = new File(outputDirectory.getAbsolutePath() + "/pivot_result.txt");

@@ -73,7 +73,7 @@ public class TetradKnowledgeMain extends AbstractComponent {
       errorMessages.add("coudn't write the knowledge json to file: " + e.toString());
     }
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/Knowledge.txt");

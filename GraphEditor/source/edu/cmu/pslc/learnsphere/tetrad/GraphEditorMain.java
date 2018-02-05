@@ -74,7 +74,7 @@ public class GraphEditorMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
     //File outputDirectory = this.createFile("EditedGraph.html");
 
     if (true){//outputDirectory.isDirectory() && outputDirectory.canRead()) {

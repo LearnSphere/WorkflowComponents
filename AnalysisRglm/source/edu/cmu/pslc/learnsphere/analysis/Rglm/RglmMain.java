@@ -161,7 +161,7 @@ public class RglmMain extends AbstractComponent {
                     
             }
             
-            File outputDirectory = this.runExternalMultipleFileOuput();
+            File outputDirectory = this.runExternal();
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                     logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
                     File file0 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");

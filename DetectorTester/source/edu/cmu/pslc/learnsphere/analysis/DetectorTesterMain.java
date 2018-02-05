@@ -83,7 +83,7 @@ public class DetectorTesterMain extends AbstractComponent {
         }
 
         File outputDirectory = null;
-        outputDirectory = this.runExternalMultipleFileOuput();
+        outputDirectory = this.runExternal();
         if (outputDirectory != null) {
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                 logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");

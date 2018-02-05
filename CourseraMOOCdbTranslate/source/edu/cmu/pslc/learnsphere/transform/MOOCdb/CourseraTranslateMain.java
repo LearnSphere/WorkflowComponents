@@ -420,7 +420,7 @@ public class CourseraTranslateMain extends AbstractComponent {
             
             //this.setOption("un", moocdbItem.getUsername());
             //this.setOption("p", moocdbItem.getPassword());
-            File outputDirectory = this.runExternalMultipleFileOuput();
+            File outputDirectory = this.runExternal();
             //avoid showing username and password
             this.setOption("un", "");
             this.setOption("p", "");
