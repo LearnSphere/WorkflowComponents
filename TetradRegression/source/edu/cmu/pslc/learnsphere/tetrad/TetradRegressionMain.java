@@ -71,7 +71,7 @@ public class TetradRegressionMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/RegressionGraph.html");

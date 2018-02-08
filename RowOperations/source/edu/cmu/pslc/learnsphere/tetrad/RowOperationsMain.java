@@ -77,7 +77,7 @@ public class RowOperationsMain extends AbstractComponent {
     //System.out.println("in runComponent");
     logger.debug("in run component");
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/ConvertedData.txt");

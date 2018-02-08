@@ -54,8 +54,7 @@ public class RLMFitting extends AbstractComponent {
             this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
             this.componentOptions.addContent(0, new Element("outputFile").setText("R-summary.txt"));
             // Run the program and return its stdout to a file.
-            //File output = this.runExternal();
-            File outputDirectory = this.runExternalMultipleFileOuput();
+            File outputDirectory = this.runExternal();
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                     logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
                     File file0 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");

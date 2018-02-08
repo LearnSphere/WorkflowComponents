@@ -1,0 +1,72 @@
+# Example properties file for generating an Python component.
+# Contact us (datashop-help@lists.andrew.cmu.edu) if you have questions
+# or find yourself wanting to do something that isn't obvious here.
+
+# The name of the new component. [Required]
+component.name=TetradSearchCopy
+
+# The type of the new component. [Required]
+# Options include: import, analysis, transform, visualization, tetrad
+component.type=tetrad
+
+# The language the component is written in. [Required]
+# Options include: Java, R, Python, Jar
+component.lang=Jar
+
+# The Java package for the generated Main class. [Default = edu.cmu.learnsphere]
+component.pkg=edu.cmu.learnsphere.tetrad
+
+# The author of the new component. [Default = system]
+component.author=ctipper
+
+# The email of the component author. [Default = datashop-help@lists.andrew.cmu.edu]
+component.author.email=ctipper@cs.cmu.edu
+
+# If the component lang is not Java, you must specify the directory
+# which contains the component program files, e.g., example.R
+component.program.dir=/Users/ctipper/dev/GitRepos/WorkflowComponents/TetradSearch/program
+
+# If the component lang is not Java, you must specify the file to be run.
+# This file is expected to be found in the component.program.dir.
+component.program.file=run.sh
+
+# The version of the new component. [Default = 1.0]
+component.version=1.0
+
+# Some descriptive text of the new component.
+component.description=Now is the time for all good mean to come to the aid of their country.
+
+# The number of inputs for the new component. 
+component.num_inputs=2
+
+# The number of outputs for the new component. 
+component.num_outputs=1
+
+# The number of options for the new component. 
+component.num_options=3
+
+# For each input, specify the type, e.g., file, tab-delimited, csv, student-step
+input.0.type=tab-delimited
+input.1.type=tetrad-knowledge
+
+# For each output, specify the type, e.g., file, tab-delimited, csv, student-step
+output.0.type=tetrad-graph
+
+# For each option, specify the type, name, id and default.
+# Common option types include: FileInputHeader, Enum, xs:string, xs:double
+# If using an enum, the syntax is "Enum(Foo, Bar, Baz)"
+# If the 'default' looks like a regular expression, we'll try to treat it as such.
+option.0.type=Enum(PC, CPC, PCStable, CPCStable, PcMax, FGES, RFCI)
+option.0.name=algorithm
+option.0.id=Algorithm
+option.0.default=PC
+
+option.1.type=Enum(Completely_Discrete, Completely_Continuous)
+option.1.name=dataType
+option.1.id=Type_of_incoming_data
+option.1.default=Completely_Continuous
+
+option.2.type=xs:double
+option.2.name=alpha
+option.2.id=Cutoff_for_p_values
+option.2.default=0.001

@@ -266,7 +266,7 @@ public class FeatureExtractMain extends AbstractComponent {
             
             
             // Run the program and return its stdout to a file.
-            File outputDirectory = this.runExternalMultipleFileOuput();
+            File outputDirectory = this.runExternal();
             //avoid showing username and password
             this.setOption("un", "");
             this.setOption("p", "");

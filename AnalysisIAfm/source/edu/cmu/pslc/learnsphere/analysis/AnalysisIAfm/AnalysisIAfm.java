@@ -40,7 +40,7 @@ public class AnalysisIAfm extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program...
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
 
         Integer fileIndex = 0;
         Integer nodeIndex = 0;
