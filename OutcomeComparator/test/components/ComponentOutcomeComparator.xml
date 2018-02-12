@@ -1,0 +1,219 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Analysis #1</component_id_human>
+    <workflow_id>1</workflow_id>
+    <component_name>OutputComparator</component_name>
+    <component_type>analysis</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+        	<index>0</index>
+            <from>Import-1-x393351</from>
+        </connection>
+        <connection>
+            <index>1</index>
+            <from>Import-1-x393352</from>
+        </connection>
+        <connection>
+            <index>2</index>
+            <from>Import-1-x393353</from>
+        </connection>
+        <connection>
+            <index>3</index>
+            <from>Import-1-x393354</from>
+        </connection>
+    </connections>
+    
+    <options>
+      <!-- <fileType>XML</fileType> -->
+      <fileType>Properties File</fileType>
+      <!--  <fileType>Tabular</fileType>-->
+      <caseSensitive>Yes</caseSensitive>
+      <removeNull>Yes</removeNull>
+      <matchColumn0>Anon Student Id</matchColumn0>
+      <compareColumn0>Problem Name</compareColumn0>
+      <matchColumn1>Anon Student Id2</matchColumn1>
+      <compareColumn1>Problem View</compareColumn1>
+      <matchColumn2>Anon Student Id</matchColumn2>
+      <compareColumn2>Step Name</compareColumn2>
+  </options>
+  <inputs>
+    <!-- <input0>
+      <component_id>Import-1-x393351</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/model_result_values1.xml</file_path>
+        <label>file1</label>
+        <file_name>model_result_values1.xml</file_name>
+        <index>0</index>
+      </file>
+      </files>
+    </input0>
+    <input1>
+      <component_id>Import-1-x393352</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/model_result_values2.xml</file_path>
+        <label>file2</label>
+        <file_name>model_result_values2.xml</file_name>
+        <index>1</index>
+      </file>
+      </files>
+    </input1>
+    <input2>
+      <component_id>Import-1-x393353</component_id>
+      <component_id_human>Import #3</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/model_result_values3.xml</file_path>
+        <label>file3</label>
+        <file_name>model_result_values3.xml</file_name>
+        <index>2</index>
+      </file>
+      </files>
+    </input2>
+    <input3>
+      <component_id>Import-1-x393354</component_id>
+      <component_id_human>Import #4</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/model_result_values4.xml</file_path>
+        <label>file4</label>
+        <file_name>model_result_values4.xml</file_name>
+        <index>3</index>
+      </file>
+      </files>
+    </input3>-->
+    <input0>
+      <component_id>Import-1-x393351</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/test1.properties</file_path>
+        <label>file1</label>
+        <file_name>test1.properties</file_name>
+        <index>0</index>
+      </file>
+      </files>
+    </input0>
+    <input1>
+      <component_id>Import-1-x393352</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/test2.properties</file_path>
+        <label>file2</label>
+        <file_name>test2.properties</file_name>
+        <index>1</index>
+      </file>
+      </files>
+    </input1>
+    <input2>
+      <component_id>Import-1-x393353</component_id>
+      <component_id_human>Import #3</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/test3.properties</file_path>
+        <label>file3</label>
+        <file_name>test3.properties</file_name>
+        <index>2</index>
+      </file>
+      </files>
+    </input2>
+    <input3>
+      <component_id>Import-1-x393354</component_id>
+      <component_id_human>Import #4</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/test4.properties</file_path>
+        <label>file4</label>
+        <file_name>test4.properties</file_name>
+        <index>3</index>
+      </file>
+      </files>
+    </input3>
+    <!--  <input0>
+      <component_id>Import-1-x393351</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/ds76_student_step_export1.txt</file_path>
+        <label>file1</label>
+        <file_name>ds76_student_step_export1.txt</file_name>
+        <index>0</index>
+      </file>
+      </files>
+    </input0>
+    <input1>
+      <component_id>Import-1-x393352</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/ds76_student_step_export2.txt</file_path>
+        <label>file2</label>
+        <file_name>ds76_student_step_export2.txt</file_name>
+        <index>1</index>
+      </file>
+      </files>
+    </input1>
+    <input2>
+      <component_id>Import-1-x393353</component_id>
+      <component_id_human>Import #3</component_id_human>
+      <component_type>import</component_type>
+      <component_name>File</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/test_data/ds76_student_step_export3.txt</file_path>
+        <label>file3</label>
+        <file_name>ds76_student_step_export3.txt</file_name>
+        <index>2</index>
+      </file>
+      </files>
+    </input2>-->
+    </inputs>
+</component>
