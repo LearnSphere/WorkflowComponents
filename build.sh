@@ -1,6 +1,12 @@
 #!/bin/bash
 
-dir=/datashop/workflow_components
+
+
+dir=`pwd`
+
+if [ "$#" == "1" ]; then
+  dir=$1
+fi
 
 cd $dir
 
