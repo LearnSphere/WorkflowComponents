@@ -46,7 +46,7 @@ public class PFAMain extends AbstractComponent {
         File outputDirectory = this.runExternal();
         // Attach the output files to the component output: file_type = "analysis-summary", label = ""
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/transaction file with added features.txt");
+            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/transaction_file_with_added_features.txt");
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "transaction";

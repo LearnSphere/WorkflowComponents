@@ -1,10 +1,10 @@
 #usage
-#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "quasi(link=identity, variance=constant)" -workingDir "." -programDir "." 
-#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "binomial" -workingDir "." -programDir "." 
+#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "quasi(link=identity, variance=constant)" -workingDir "." -programDir "."
+#"C:\Program Files\R\R-3.2.2\bin\Rscript.exe" R_GLM.R -file0 data.txt -modelingFunc "glm" -formula "Final_Exam~Video" -family "binomial" -workingDir "." -programDir "."
 
 
 options(echo=FALSE)
-options(warn=-1) 
+options(warn=-1)
 
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -72,7 +72,7 @@ while (i <= length(args)) {
 	 if (modelingFunc != "glm" && modelingFunc != "glmer" && modelingFunc != "lm" && modelingFunc != "lmer") {
           stop("modeling type must be lm, lmer, glm or glmer")
        }
-	 
+
        i = i+1
     } else if (args[i] == "-responseCol") {
        if (length(args) == i) {
@@ -80,14 +80,14 @@ while (i <= length(args)) {
        }
        responseCol= args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
 
 
 # output datas
 #??? what to output
-modelSummaryOutputFilePath<- paste(workingDir, "/R output model summary.txt", sep="")
+modelSummaryOutputFilePath<- paste(workingDir, "/R_output_model_summary.txt", sep="")
 ds<-read.table(inputFile,sep="\t", header=TRUE,quote="\"",comment.char = "",blank.lines.skip=TRUE)
 #clean up ds
 # convert correctness coding to binary, numeric
@@ -112,7 +112,7 @@ if (isBinomial == TRUE) {
 	eval(parse(text=cleanString))
 	#ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
 	cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-	eval(parse(text=cleanString))	
+	eval(parse(text=cleanString))
 } else {
   testNumeric <- sapply(ds,is.numeric)
   # testNumeric <- testNumeric[["First.Attempt"]]
@@ -139,15 +139,15 @@ if (isBinomial == TRUE) {
     eval(parse(text=cleanString))
     #ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
     cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    eval(parse(text=cleanString))	
+    eval(parse(text=cleanString))
   }
 }
 
 #make response col numeric
-#ds$First.Attempt <- as.numeric(as.vector(ds$First.Attempt))  
+#ds$First.Attempt <- as.numeric(as.vector(ds$First.Attempt))
 cleanString = paste("ds$", responseCol, " <- as.numeric(as.vector(ds$", responseCol, "))", sep="")
 eval(parse(text=cleanString))
-  
+
 # Creates output summary file
 clean <- file(modelSummaryOutputFilePath)
 sink(clean,append=TRUE)

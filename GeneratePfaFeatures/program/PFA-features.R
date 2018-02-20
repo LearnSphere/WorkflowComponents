@@ -42,7 +42,7 @@ while (i <= length(args)) {
 # This dir is the root dir of the component code.
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
 
@@ -68,7 +68,7 @@ if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.nu
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 # Get data
-outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
+outputFilePath<- paste(workingDirectory, "transaction_file_with_added_features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")
