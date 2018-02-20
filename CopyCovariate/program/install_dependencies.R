@@ -15,10 +15,10 @@ install.packages("nloptr", lib="C:/R-3.4.1/library")
 
 
 # EpiCalc is No longer in CRAN!
-# This does not work: install.packages("epicalc", lib="C:/R-3.4.1/library/epicalc")
+# This does not work: install.packages("epicalc", lib="C:/R-3.4.2/library/epicalc")
 
 # EpiCalc can be downloaded via WWW at https://cran.r-project.org/src/contrib/Archive/epicalc/
-# Unzip (tar/gz) and copy to C:\R-3.4.1\library or wherever your R\library folder is located
+# Unzip (tar/gz) and copy to C:\R-3.4.2\library or wherever your R\library folder is located
 # Then, in R.exe, execute the command:
 
-install.packages("C:/R-3.4.1/epicalc", lib="C:/R-3.4.1/library", repos = NULL, type="source")
+install.packages("C:/R-3.4.2/epicalc", lib="C:/R-3.4.2/library", repos = NULL, type="source")

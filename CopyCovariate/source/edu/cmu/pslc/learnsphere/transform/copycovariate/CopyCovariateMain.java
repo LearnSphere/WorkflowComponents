@@ -30,7 +30,7 @@ public class CopyCovariateMain extends AbstractComponent {
         // plus one extra column for Predicted Error Rate, if it doesn't already exist.
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        this.addMetaDataFromInput("transaction", 0, 0, ".*");
+        this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
         //this.addMetaData("transaction", 0, META_DATA_LABEL, "label0", 0, "KC (" + modelName + ")");
         this.addMetaDataFromInput("tab-delimited", 1, 0, ".*");
     }
@@ -41,10 +41,10 @@ public class CopyCovariateMain extends AbstractComponent {
         File outputDirectory = this.runExternalMultipleFileOuput();
         // Attach the output files to the component output: file_type = "analysis-summary", label = ""
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/transaction file with added features.txt");
+            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/tab-delimited_file with covariate.txt");
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
-            String label0 = "transaction";
+            String label0 = "tab-delimited";
             logger.info("Added file: " + outputFile.getAbsolutePath());
             this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
         }
