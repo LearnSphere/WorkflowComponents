@@ -1,0 +1,43 @@
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>FOR %A IN (-programDir C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/ -workingDir C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor/test/Tetrad-1-x502095/output/ -TetradGraphEditor "Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview" -file0 C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/test/resources/Graph.txt) DO (ECHO BATCH ARG: %A ) 
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: -programDir ) 
+BATCH ARG: -programDir
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/ ) 
+BATCH ARG: C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: -workingDir ) 
+BATCH ARG: -workingDir
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor/test/Tetrad-1-x502095/output/ ) 
+BATCH ARG: C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor/test/Tetrad-1-x502095/output/
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: -TetradGraphEditor ) 
+BATCH ARG: -TetradGraphEditor
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: "Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview" ) 
+BATCH ARG: "Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview"
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: -file0 ) 
+BATCH ARG: -file0
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>(ECHO BATCH ARG: C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/test/resources/Graph.txt ) 
+BATCH ARG: C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/test/resources/Graph.txt
+
+C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor>"C:/Program Files/Java/jdk1.8.0_144/bin/java.exe" -cp C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\CustomLibraries\tetrad-gui-6.3.4-launch.jar -jar C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor\dist\GraphEditor.jar -programDir C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/ -workingDir C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\GraphEditor/test/Tetrad-1-x502095/output/ -TetradGraphEditor "Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview" -file0 C:/Users/Peter/WorkflowsAndTetrad/WorkflowComponents/GraphEditor/test/resources/Graph.txt 
+Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview

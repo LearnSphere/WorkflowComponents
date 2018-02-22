@@ -1,0 +1,430 @@
+DEBUG: Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview
+DEBUG: Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview
+DEBUG: Graph Nodes:Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageviewGraph Edges:1. Pretest --> T.Quiz2. Pretest --> activities_started3. T.Quiz --> Fina__Exam4. activities_started --> T.Quiz5. non_activities_pageview --> T.Quiz6. non_activities_pageview --> activities_started7. play --> T.Quiz8. play --- non_activities_pageview
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 1
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 3
+DEBUG: 4
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 3
+DEBUG: 4
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 3
+DEBUG: 4
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 3
+DEBUG: 4
+DEBUG: Graph: 
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview
+
+DEBUG: Graph Nodes:
+page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number
+
+Graph Edges:
+1. page_view_to_action_count --> total_quiz_proportion
+2. page_view_to_action_time --> total_quiz_proportion
+3. page_view_to_action_count --> quiz_finished
+4. quiz_finished --> final_grade_in_number
+5. quiz_first_attempt_stdev --> final_grade_in_number
+6. total_quiz_proportion --> final_grade_in_number
+7. page_view_to_action_count --> quiz_first_attempt_stdev
+
+DEBUG: 3
+DEBUG: 4
