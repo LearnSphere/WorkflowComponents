@@ -233,6 +233,7 @@ public class JoinMain extends AbstractComponent {
                    for (String leftHeader : leftFileHeaders) {
                        if (leftHeader.equalsIgnoreCase(leftJoinColumn)) {
                            leftColumnIndex = leftColCount;
+                           break;
                        }
                        leftColCount++;
                    }
@@ -241,6 +242,7 @@ public class JoinMain extends AbstractComponent {
                    for (String rightHeader : rightFileHeaders) {
                        if (rightHeader.equalsIgnoreCase(rightJoinColumn)) {
                            rightColumnIndex = rightColCount;
+                           break;
                        }
                        rightColCount++;
                    }
