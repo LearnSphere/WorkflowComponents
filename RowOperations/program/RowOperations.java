@@ -156,12 +156,13 @@ public class RowOperations {
             }
             newData = (DataSet)(dmList.get(0));
             convertedData = newData.toString();
+            convertedData = convertedData.replaceFirst("\n", "");
             break;
           }
 
           convertedData = convertedData.replaceAll("\n\n","\n");
 
-          bWriter.append( convertedData.replaceFirst("\n", "") );
+          bWriter.append( convertedData );
           bWriter.close();
 
         } catch (IOException e) {
@@ -209,7 +210,8 @@ public class RowOperations {
     }
     
     StringBuilder buf = new StringBuilder();
-    buf.append(header + "\n");
+    buf.append(header);
+    buf.append("\n");
     for (int i = 0; i < samples; i++) {
       buf.append(bootstrappedData.get(i));
       if (i != samples - 1) {
@@ -247,7 +249,8 @@ public class RowOperations {
     }
 
     StringBuilder buf = new StringBuilder();
-    buf.append(header + "\n");
+    buf.append(header);
+    buf.append("\n");
     for (int i = 0; i < datasetSize; i++) {
       buf.append(rowsPermuted.get(i));
       if (i != datasetSize - 1) {
