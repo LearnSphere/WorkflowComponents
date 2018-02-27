@@ -81,7 +81,7 @@ public class TetradClassifierMain extends AbstractComponent {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "tab-delimited";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
         Integer nodeIndex1 = 1;
