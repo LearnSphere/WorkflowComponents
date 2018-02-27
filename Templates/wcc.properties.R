@@ -48,10 +48,13 @@ component.num_options=1
 # For each input, specify the type, e.g., file, tab-delimited, csv, student-step
 input.0.type=student-step
 
-# For each output, specify the type, e.g., file, tab-delimited, csv, student-step
+# For each output, specify the name and type, e.g., file, tab-delimited, csv, student-step
 output.0.type=student-step
+output.0.name=output1.txt
 output.1.type=model-values
+output.1.name=model_values.txt
 output.2.type=parameters
+output.2.name=parameters.txt
 
 # For each option, specify the type, name, id and default.
 # Common option types include: FileInputHeader, Enum, xs:string, xs:double
