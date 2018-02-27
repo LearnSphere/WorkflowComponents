@@ -49,8 +49,9 @@ component.num_options=3
 input.0.type=tab-delimited
 input.1.type=tetrad-knowledge
 
-# For each output, specify the type, e.g., file, tab-delimited, csv, student-step
+# For each output, specify the name and type, e.g., file, tab-delimited, csv, student-step
 output.0.type=tetrad-graph
+output.0.name=graph.txt
 
 # For each option, specify the type, name, id and default.
 # Common option types include: FileInputHeader, Enum, xs:string, xs:double
