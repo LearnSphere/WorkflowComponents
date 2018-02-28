@@ -66,6 +66,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
     protected void runComponent() {
 
 %INPUT_DEFN_BLOCK%
+        File outputDirectory = new File(this.getComponentOutputDir());
 %OUTPUT_DEFN_BLOCK%
 
         // Light-weight example of using the input and output files.
@@ -94,7 +95,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
                 outputStream.write(value);
                 outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
                 
-                outputStream = new FileOutputStream(outputFile1 != null ? outputFile1 : outputFile0);
+                outputStream = new FileOutputStream(outputFile0);
                 
                 label = ("This file has the number of input lines: " + lineCount).getBytes("UTF-8");
                 
