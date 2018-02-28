@@ -77,4 +77,7 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:attribute name="inputNodeIndex" type="xs:string" />
+<xs:attribute name="inputFileIndex" type="xs:string" />
+
 </xs:schema>
