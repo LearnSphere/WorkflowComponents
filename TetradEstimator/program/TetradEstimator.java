@@ -597,7 +597,7 @@ public class TetradEstimator {
       return "Infinity";
     }
 
-    if (d < 0.001) {
+    if (-0.001 < d && d < 0.001) {
       return "0.0";
     }
 
