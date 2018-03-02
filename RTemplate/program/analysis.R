@@ -1,120 +1,93 @@
-# NOTE: The "#" symbol indiates comments. All other lines are comments that can be copied into the R console.
-
-
-# Do not show commands
-options(echo=FALSE)
-
+# Build features for PFA models
+ech<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
-
 # Enable if debugging
-# print(args)
 
-# Read arguments into variables
-file <- args[6]
+#print(args)
 
-rm(args)
+# initialize variables
+inputFile = NULL
+KCmodel = NULL
+workingDirectory = NULL
+componentDirectory = NULL
+flags = NULL
 
-# 1. Load a file that was exported from DataShop as student-step rollup export
-#file = file.choose() # Brings up a dialog so you can select the dsXX_student_step_XX.txt file you exported.
-file # To illustrate the file I used:
-# [1] "/Ken/.../ds76_student_step_2014_0716_171821/ds76_student_step_All_Data_74_2014_0615_045213.txt"
-ds = read.delim(file, header = TRUE, quote="\"", dec=".", fill = TRUE, comment.char="")
-
-# 2. Inspect the file and do minimal necessary preprocessing
-attach(ds) # Allows reference to the variables in ds without using ds: e.g., ds$Anon.Student.Id
-summary(ds) # Inspect the contents of the file
-L = length(Anon.Student.Id) # Number of "rows" (values) in (this "column" variable from) ds
-Success = vector(mode="numeric", length=L) # Create a new variable (default values are 0)
-Success[First.Attempt=="correct"]=1 # Change rows where First.Attempt is "correct" to 1.
-
-
-
-# 3. Run a simple version of the Additive Factors Model -- all variables are fixed effects.
-model.glm = glm(Success~Anon.Student.Id + KC..Original. + KC..Original.:Opportunity..Original., family=binomial(), data=ds)  # family=binomial() makes this logistic regression
-
-# 4. Inspect parameters & produce prediction fit metrics
-summary(model.glm) # Allows you to inspect parameter estimates
-length(coef(model.glm)) # Number of parameters. You should get Parameters = 88
--summary(model.glm)$deviance/2 # Likelihood = -2479.298
-summary(model.glm)$aic # AIC = 5134.595
-summary(model.glm)$aic+length(coef(model.glm))*(log(N)-2) # BIC = 5709.92
-
-# 5. Try a different KC model
-model.glm = glm(Success~Anon.Student.Id + KC..Textbook_New_Decompose. + KC..Textbook_New_Decompose.:Opportunity..Textbook_New_Decompose., family=binomial(), data=ds)  # family=binomial() makes this logistic regression
-length(coef(model.glm)) # Number of parameters. You should get Parameters = 80
--summary(model.glm)$deviance/2 # Likelihood = -2461.867 - better despite fewer parameters
-summary(model.glm)$aic # AIC = 5083.734 # also better
-summary(model.glm)$aic+length(coef(model.glm))*(log(N)-2) # BIC = 5606.756  # also better
-
-
-# OTHER OPTIONAL EXAMPLES
-# 6. Fixed learning rate (slope) across all KCs
-model.glm = glm(Success~Anon.Student.Id + KC..Textbook_New_Decompose. + Opportunity..Textbook_New_Decompose., family=binomial(), data=ds)
-summary(model.glm)$aic # AIC = 5128.8 # worse than 5083.734 above
-
-# 7. Different slopes for different students
-model.glm = glm(Success~Anon.Student.Id + KC..Textbook_New_Decompose. + KC..Textbook_New_Decompose.:Opportunity..Textbook_New_Decompose.+ Anon.Student.Id:Opportunity..Textbook_New_Decompose., family=binomial(), data=ds)
-summary(model.glm)$aic # AIC = 5112.847 # worse than 5083.734 above
-
-# 8. To do a model with random effects load the lme4 package
-# This model, like AFM model in DataShop, treats the Student (Anon.Student.Id) as a random effect
-model1.lmer <- glmer(Success~(1|Anon.Student.Id) + KC..Original. + Opportunity..Original., data=ds, family=binomial())
-
-# Loading a different DataShop dataset
-detach(ds) # Clear local variables from prior ds.
-ds = read.delim(file.choose(), header = TRUE, quote="\"", dec=".", fill = TRUE, comment.char="")
-# [1] "/Ken/.../ds748_student_step_2014_0224_102531/ds748_student_step_All_Data_2133_2014_0221_202753.txt"
-attach(ds)
-summary(ds)
-Success = vector(mode="numeric", length(Anon.Student.Id)) # Create a new variable (default values are 0)
-Success[First.Attempt=="correct"]=1 # Change rows where First.Attempt is "correct" to 1.
-model.glm = glm(Success~Anon.Student.Id + KC..all.shapes.merged. + KC..all.shapes.merged.:Opportunity..all.shapes.merged., family=binomial(), data=ds)
-
-# If you need to save memory or want to create your own (smaller) data table:
-sds=data.frame(Success, Anon.Student.Id, KC..all.shapes.merged., Opportunity..all.shapes.merged.)
-detach(ds)
-rm(ds)
-rm(Success)
-attach(sds)
-
-model.glm = glm(Success~Anon.Student.Id + KC..all.shapes.merged. + KC..all.shapes.merged.:Opportunity..all.shapes.merged., family=binomial(), data=sds)
-
-
-
-
-
-# EXTRA
-# If you are getting memory allocation errors, the following function is useful to track down objects you might remove (using rm()).
-
-# improved list of objects
-.ls.objects <- function (pos = 1, pattern, order.by,
-                        decreasing=FALSE, head=FALSE, n=5) {
-    napply <- function(names, fn) sapply(names, function(x)
-                                         fn(get(x, pos = pos)))
-    names <- ls(pos = pos, pattern = pattern)
-    obj.class <- napply(names, function(x) as.character(class(x))[1])
-    obj.mode <- napply(names, mode)
-    obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
-    obj.prettysize <- napply(names, function(x) {
-                           capture.output(print(object.size(x), units = "auto")) })
-    obj.size <- napply(names, object.size)
-    obj.dim <- t(napply(names, function(x)
-                        as.numeric(dim(x))[1:2]))
-    vec <- is.na(obj.dim)[, 1] & (obj.type != "function")
-    obj.dim[vec, 1] <- napply(names, length)[vec]
-    out <- data.frame(obj.type, obj.size, obj.prettysize, obj.dim)
-    names(out) <- c("Type", "Size", "PrettySize", "Rows", "Columns")
-    if (!missing(order.by))
-        out <- out[order(out[[order.by]], decreasing=decreasing), ]
-    if (head)
-        out <- head(out, n)
-    out
+# parse commandline args
+i = 1
+while (i <= length(args)) {
+    if (args[i] == "-file0") {
+       if (length(args) == i) {
+          stop("input file name must be specified")
+       }
+       inputFile = args[i+1]
+       i = i+1
+    } else if (args[i] == "-dummyOption") {
+       if (length(args) == i) {
+          stop("dummyOption must be specified")
+       }
+       KCmodel <- gsub("[ ()-]", ".", args[i+1])
+       i = i+1
+    } else if (args[i] == "-workingDir") {
+       if (length(args) == i) {
+          stop("workingDir name must be specified")
+       }
+       # This dir is the working dir for the component instantiation.
+       workingDirectory = args[i+1]
+       i = i+1
+    } else if (args[i] == "-programDir") {
+       if (length(args) == i) {
+          stop("programDir name must be specified")
+       }
+# This dir is the root dir of the component code.
+       componentDirectory = args[i+1]
+       i = i+1
+    }
+    i = i+1
 }
 
-# shorthand
-lsos <- function(..., n=10) {
-    .ls.objects(..., order.by="Size", decreasing=TRUE, head=TRUE, n=n)
+if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.null(componentDirectory) ) {
+   if (is.null(inputFile)) {
+      warning("Missing required input parameter: -file0")
+   }
+   if (is.null(KCmodel)) {
+      warning("Missing required input parameter: -dummyOption")
+   }
+   if (is.null(workingDirectory)) {
+      warning("Missing required input parameter: -workingDir")
+   }
+   if (is.null(componentDirectory)) {
+      warning("Missing required input parameter: -programDir")
+   }
+
+
+   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -dummyOption getWellSilentBob")
 }
 
-lsos()
+# This dir contains the R program or any R helper scripts
+programLocation<- paste(componentDirectory, "/program/", sep="")
+
+# Get data (NO spaces in the output file name, as it causes cross-platform issues)
+outputFilePath<- paste(workingDirectory, "my_output_file.txt", sep="")
+
+# Get data
+datalocation<- paste(componentDirectory, "/program/", sep="")
+val<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+
+# Creates a log file
+# Use the .wfl extension if you want the file to be treated as a logging file and hidden from the user.
+clean <- file(paste(workingDirectory, "component-log.wfl", sep=""))
+sink(clean,append=TRUE)
+sink(clean,append=TRUE,type="message") # get error reports also
+options(width=120)
+
+# cat(length(val$Outcome))
+
+headers<- colnames(val)
+headers<-paste(headers,collapse="\t")
+write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",append=FALSE,col.names=FALSE,row.names = FALSE)
+write.table(val,file=outputFilePath,sep="\t",quote=FALSE,na = "",append=TRUE,col.names=FALSE,row.names = FALSE)
+
+# Stop logging
+sink()
+sink(type="message")
