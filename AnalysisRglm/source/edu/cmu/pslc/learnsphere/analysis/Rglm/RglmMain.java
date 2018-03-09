@@ -43,16 +43,12 @@ public class RglmMain extends AbstractComponent {
                             String errMsg = "Fixed effects is required for lm or glm function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             } else if (modelingFuncOpt.equals("glmer") || modelingFuncOpt.equals("lmer")) {
                     if ((randomEffectsOpt == null || randomEffectsOpt.equals(""))){
                             String errMsg = "Random effects is required for lmer or glmer function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             }
 
@@ -135,29 +131,21 @@ public class RglmMain extends AbstractComponent {
                     String errMsg = "Response column not found in headers.";
                     addErrorMessage(errMsg);
                     logger.info(errMsg);
-                    System.err.println(errMsg);
-                    return;
             }
             if (modelingFuncOpt.equals("glm") || modelingFuncOpt.equals("glmer")) {
                     if (familyOpt.indexOf("binomial") != -1 && !getColBinaryConvertible(fileName, responseColInd)) {
                             String errMsg = "Values for response column must be 0 or 1 for binomial function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     } else if (familyOpt.indexOf("binomial") == -1 && !isColNumeric(fileName, responseColInd) && !getColBinaryConvertible(fileName, responseColInd)) {
                             String errMsg = "Response column must be numeric.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             } else if (!isColNumeric(fileName, responseColInd) && !getColBinaryConvertible(fileName, responseColInd)) {
                     String errMsg = "Response column must be numeric.";
                     addErrorMessage(errMsg);
                     logger.info(errMsg);
-                    System.err.println(errMsg);
-                    return;
 
             }
 
