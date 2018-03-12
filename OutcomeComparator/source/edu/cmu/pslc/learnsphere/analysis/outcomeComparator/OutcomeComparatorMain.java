@@ -32,94 +32,96 @@ public class OutcomeComparatorMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-            String fileType  = this.getOptionAsString("fileType");
-            String file0 = this.getAttachment(0, 0).getAbsolutePath();
-            String file1 = this.getAttachment(1, 0).getAbsolutePath();
-            String file2 = null;
-            if (this.getAttachment(2, 0) != null)
-                    file2 = this.getAttachment(2, 0).getAbsolutePath();
-            String file3 = null;
-            if (this.getAttachment(3, 0) != null)
-                    file3 = this.getAttachment(3, 0).getAbsolutePath();
-            
-            if (fileType.equalsIgnoreCase("XML")) {
-                    File file0Converted = convertXML(file0);
-                    File file1Converted = convertXML(file1);
-                    File file2Converted = null;
-                    File file3Converted = null;
-                    if (file2 != null)
-                            file2Converted = convertXML(file2);
-                    if (file3 != null)
-                            file3Converted = convertXML(file3);
-                    if (file0Converted == null || file1Converted == null ||
-                                    (file2 != null && file2Converted == null) ||
-                                    (file3 != null && file3Converted == null)) {
-                            String exErr = "Input XML files are mal-formed";
-                            addErrorMessage(exErr);
-                            logger.info(exErr);
-                            System.err.println(exErr);
-                            return;
-                    }
-                    //reset option for file
-                    this.setOption("xmlfile0", file0Converted.getAbsolutePath());
-                    this.setOption("xmlfile1", file1Converted.getAbsolutePath());
-                    if (file2 != null) {
-                            this.setOption("xmlfile2", file2Converted.getAbsolutePath());
-                    }
-                    if (file3 != null) {
-                            this.setOption("xmlfile3", file3Converted.getAbsolutePath());
-                    }
-                    this.setOption("matchColumn0", "");
-                    this.setOption("compareColumn0", "");
-                    this.setOption("matchColumn1", "");
-                    this.setOption("compareColumn1", "");
+        Boolean reqsMet = false;
+		String fileType  = this.getOptionAsString("fileType");
+        String file0 = this.getAttachment(0, 0).getAbsolutePath();
+        String file1 = this.getAttachment(1, 0).getAbsolutePath();
+        String file2 = null;
+        if (this.getAttachment(2, 0) != null) {
+            file2 = this.getAttachment(2, 0).getAbsolutePath();
+        }
+        String file3 = null;
+        if (this.getAttachment(3, 0) != null) {
+            file3 = this.getAttachment(3, 0).getAbsolutePath();
+        }
+
+        if (fileType.equalsIgnoreCase("XML")) {
+            File file0Converted = convertXML(file0);
+            File file1Converted = convertXML(file1);
+            File file2Converted = null;
+            File file3Converted = null;
+            if (file2 != null)
+                    file2Converted = convertXML(file2);
+            if (file3 != null)
+                    file3Converted = convertXML(file3);
+            if (file0Converted == null || file1Converted == null ||
+                            (file2 != null && file2Converted == null) ||
+                            (file3 != null && file3Converted == null)) {
+                    String exErr = "Input XML files are mal-formed";
+                    addErrorMessage(exErr);
+                    logger.info(exErr);
+                    reqsMet = false;
+            } else {
+                //reset option for file
+                this.setOption("xmlfile0", file0Converted.getAbsolutePath());
+                this.setOption("xmlfile1", file1Converted.getAbsolutePath());
+                if (file2 != null) {
+                        this.setOption("xmlfile2", file2Converted.getAbsolutePath());
+                }
+                if (file3 != null) {
+                        this.setOption("xmlfile3", file3Converted.getAbsolutePath());
+                }
+                this.setOption("matchColumn0", "");
+                this.setOption("compareColumn0", "");
+                this.setOption("matchColumn1", "");
+                this.setOption("compareColumn1", "");
+                this.setOption("matchColumn2", "");
+                this.setOption("compareColumn2", "");
+                this.setOption("matchColumn3", "");
+                this.setOption("compareColumn3", "");
+            }
+        } else if (fileType.equalsIgnoreCase("Properties File")) {
+            this.setOption("matchColumn0", "");
+            this.setOption("compareColumn0", "");
+            this.setOption("matchColumn1", "");
+            this.setOption("compareColumn1", "");
+            this.setOption("matchColumn2", "");
+            this.setOption("compareColumn2", "");
+            this.setOption("matchColumn3", "");
+            this.setOption("compareColumn3", "");
+        } else if (fileType.equalsIgnoreCase("Tabular")) {
+            if (file2 == null) {
                     this.setOption("matchColumn2", "");
                     this.setOption("compareColumn2", "");
+            }
+            if (file3 == null) {
                     this.setOption("matchColumn3", "");
                     this.setOption("compareColumn3", "");
-            } else if (fileType.equalsIgnoreCase("Properties File")) {
-                    this.setOption("matchColumn0", "");
-                    this.setOption("compareColumn0", "");
-                    this.setOption("matchColumn1", "");
-                    this.setOption("compareColumn1", "");
-                    this.setOption("matchColumn2", "");
-                    this.setOption("compareColumn2", "");
-                    this.setOption("matchColumn3", "");
-                    this.setOption("compareColumn3", "");
-            } else if (fileType.equalsIgnoreCase("Tabular")) {
-                    if (file2 == null) {
-                            this.setOption("matchColumn2", "");
-                            this.setOption("compareColumn2", "");
-                    }
-                    if (file3 == null) {
-                            this.setOption("matchColumn3", "");
-                            this.setOption("compareColumn3", "");
-                    }
             }
-             
-            File outputDirectory = this.runExternal();
-            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-                    logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-                    File outputFile = new File(outputDirectory.getAbsolutePath() + "/comparison_result.txt");
-                    if (outputFile != null && outputFile.exists()) {
-                            Integer nodeIndex0 = 0;
-                            Integer fileIndex0 = 0;
-                            String label0 = "tab-delimited";
-                            this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
-                    } else {
-                            String exErr = "An error has occurred with the component. Check input file format to ensure you are comparing the right format.";
-                            addErrorMessage(exErr);
-                            logger.info(exErr);
-                            System.err.println(exErr);
-                            return;
-                    }
-            }
-            
-            // Send the component output back to the workflow.
-            System.out.println(this.getOutput());
-            return;
+        }
+
+		if (reqsMet) {
+			File outputDirectory = this.runExternal();
+			if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+				logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+				File outputFile = new File(outputDirectory.getAbsolutePath() + "/comparison_result.txt");
+				if (outputFile != null && outputFile.exists()) {
+					Integer nodeIndex0 = 0;
+					Integer fileIndex0 = 0;
+					String label0 = "tab-delimited";
+					this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
+				} else {
+					String exErr = "An error has occurred with the component. Check input file format to ensure you are comparing the right format.";
+					addErrorMessage(exErr);
+					logger.info(exErr);
+				}
+			}
+		}
+
+        // Send the component output back to the workflow.
+        System.out.println(this.getOutput());
     }
-    
+
     private File convertXML(String inputFilePathName) {
             logger.info("Converting xml file: " + inputFilePathName);
             String inputFileName = (new File(inputFilePathName)).getName();
@@ -189,7 +191,7 @@ public class OutcomeComparatorMain extends AbstractComponent {
                                     }
                                     bw.append(row + "\n");
                             }
-                            
+
                     } catch (Exception e) {
                             String exErr = "Found error while writing output file: " + e.getMessage();
                             addErrorMessage(exErr);

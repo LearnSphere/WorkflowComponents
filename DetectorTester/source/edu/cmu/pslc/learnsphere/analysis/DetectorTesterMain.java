@@ -58,63 +58,63 @@ public class DetectorTesterMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-        boolean usingDetectorInput = false;
+        Boolean usingDetectorInput = false;
         if (this.getOptionAsString("useDetectorInput").equals("Yes")) {
           usingDetectorInput = true;
         }
 
-        boolean access = hasAccess();
-        if (!access && usingDetectorInput) {
-          DataShopInstance.initialize();
-          System.err.println("User does not have access to use the JavaScript input for this component." +
-              "\n  Please request access from " + DataShopInstance.getDatashopHelpEmail() +
-              " to be able to use your own detectors as input to this component. " + 
-              "You may still use this component without access.  Select \"No\" in the first option in" +
-              " the options pane, then select the detector from the dropdown that you would like to use.");
-          return;
-        }
-
+        Boolean access = hasAccess();
+        Boolean reqsMet = false;
         if (usingDetectorInput) {
-          logger.debug("inputContainsRequire() = " + inputContainsRequire());
-          if (inputContainsRequire()) {
-            System.err.println("Detector script uses require().  This is not allowed for security reasons.");
-            return;
-          }
+	        if (!access) {
+	          DataShopInstance.initialize();
+	          addErrorMessage("User does not have access to use the JavaScript input for this component." +
+	              "\n  Please request access from " + DataShopInstance.getDatashopHelpEmail() +
+	              " to be able to use your own detectors as input to this component. " +
+	              "You may still use this component without access.  Select \"No\" in the first option in" +
+	              " the options pane, then select the detector from the dropdown that you would like to use.");
+	        } else if (inputContainsRequire()) {
+	        	logger.debug("inputContainsRequire() = " + inputContainsRequire());
+	            addErrorMessage("Detector script uses require().  This is not allowed for security reasons.");
+	        } else {
+	        	reqsMet = true;
+	        }
         }
 
-        File outputDirectory = null;
-        outputDirectory = this.runExternal();
-        if (outputDirectory != null) {
-            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-                logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
-                File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
+        if (reqsMet) {
+	        File outputDirectory = null;
+	        outputDirectory = this.runExternal();
+	        if (outputDirectory != null) {
+	            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+	                logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
+	                File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
 
-                if (outputFile != null && outputFile.exists()) {
-                    Integer nodeIndex = 0;
-                    Integer fileIndex = 0;
-                    String fileLabel = "tab-delimited";
-                    logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt"); // different slash for windows machines
+	                if (outputFile != null && outputFile.exists()) {
+	                    Integer nodeIndex = 0;
+	                    Integer fileIndex = 0;
+	                    String fileLabel = "tab-delimited";
+	                    logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt"); // different slash for windows machines
 
-                    this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
-                } else {
-                    errorMessages.add("cannot add output files");
-                }
-            } else {
-                errorMessages.add("Issue with output directory");
-            }
-        }
+	                    this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
+	                } else {
+	                    errorMessages.add("cannot add output files");
+	                }
+	            } else {
+	                errorMessages.add("Issue with output directory");
+	            }
+	        }
 
-        for (String err : errorMessages) {
-            logger.error(err);
-        }
-
+	        for (String err : errorMessages) {
+	            logger.error(err);
+	        }
+	    }
         // Send the component output bakc to the workflow.
         System.out.println(this.getOutput());
     }
     /**
      * Return true if the user has access to the DetectorTesterAccess project
      */
-    private boolean hasAccess() {
+    private Boolean hasAccess() {
       String appContextPath = this.getApplicationContextPath();
       logger.info("appContextPath: " + appContextPath);
 
@@ -126,7 +126,7 @@ public class DetectorTesterMain extends AbstractComponent {
       }
 
       UserDao userDao = DaoFactory.DEFAULT.getUserDao();
-      
+
       String userId = this.getUserId();
       if (userId == null) { //for use with ant runComponent
         logger.error("no userId");
@@ -144,11 +144,11 @@ public class DetectorTesterMain extends AbstractComponent {
       logger.debug("Access project name: " + accessProject);
 
       ArrayList<ProjectItem> projectsWithName = (ArrayList<ProjectItem>)projectDao.find(accessProject);
-      
+
       logger.debug("projectsWithName " + projectsWithName);
 
       if (projectsWithName.size() != 1) {
-        logger.error("No projects found with name " + accessProject + 
+        logger.error("No projects found with name " + accessProject +
             ". Unable to grant access to component.");
       }
 
@@ -166,7 +166,7 @@ public class DetectorTesterMain extends AbstractComponent {
         return false;
       }
 
-      if (authorization.equals(AuthorizationItem.LEVEL_EDIT) 
+      if (authorization.equals(AuthorizationItem.LEVEL_EDIT)
           || authorization.equals(AuthorizationItem.LEVEL_ADMIN)) {
         return true;
       } else {
@@ -177,7 +177,7 @@ public class DetectorTesterMain extends AbstractComponent {
 
     }
 
-    private boolean inputContainsRequire() {
+    private Boolean inputContainsRequire() {
       File inputFile = this.getAttachment(1, 0);
 
       if (inputFile.exists() && inputFile.isFile() && inputFile.canRead()) {

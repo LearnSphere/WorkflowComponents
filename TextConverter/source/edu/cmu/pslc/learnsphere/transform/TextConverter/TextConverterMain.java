@@ -34,7 +34,7 @@ public class TextConverterMain extends AbstractComponent {
     public TextConverterMain() {
         super();
     }
-        
+
     @Override
     protected void runComponent() {
             String ift = this.getOptionAsString("ift");
@@ -42,19 +42,21 @@ public class TextConverterMain extends AbstractComponent {
             String xmlFile = this.getAttachment(0, 0).getAbsolutePath();
             //output file
             File generatedFile = null;
-            if (ift.equals(XML_FILE_TYPE))
-                    generatedFile = convertXML(xmlFile, oft);
-            
-            if (generatedFile != null && generatedFile.exists()) {
-                    Integer nodeIndex = 0;
-                    Integer fileIndex = 0;
-                    String fileLabel = "tab-delimited";
-                    this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
-                    System.out.println(this.getOutput());
-                    return;
+            if (ift.equals(XML_FILE_TYPE)) {
+                generatedFile = convertXML(xmlFile, oft);
             }
+
+            if (generatedFile != null && generatedFile.exists()) {
+                Integer nodeIndex = 0;
+                Integer fileIndex = 0;
+                String fileLabel = "tab-delimited";
+                this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
+            }
+
+            System.out.println(this.getOutput());
+            return;
     }
-    
+
     private File convertXML(String inputFilePathName, String convertToFileType) {
             logger.info("Converting xml file: " + inputFilePathName);
             File generatedFile = null;
@@ -118,7 +120,7 @@ public class TextConverterMain extends AbstractComponent {
                                     }
                                     bw.append(row + "\n");
                             }
-                            
+
                     } catch (Exception e) {
                             String exErr = "Found error while writing output file: " + e.getMessage();
                             addErrorMessage(exErr);
