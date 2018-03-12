@@ -75,7 +75,7 @@ public class TetradEstimatorMain extends AbstractComponent {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "tetrad-graph";
+        String label0 = "inline-html";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
         Integer nodeIndex1 = 1;

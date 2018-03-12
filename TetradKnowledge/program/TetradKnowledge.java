@@ -114,8 +114,18 @@ public class TetradKnowledge {
           String knowledgeJsonStr = bReader.readLine();
 
           JSONParser parser = new JSONParser();
-          Object resultObject = parser.parse(knowledgeJsonStr.toString());
-          JSONObject knowledgeJson = (JSONObject) resultObject;
+          Object resultObject = null;
+          JSONObject knowledgeJson = null;
+          try {
+            resultObject = parser.parse(knowledgeJsonStr.toString());
+            knowledgeJson = (JSONObject) resultObject;
+          } catch (ClassCastException e) {
+            //knowledgeJson = new JSONObject();
+            Knowledge2 emptyKnowledge = new Knowledge2();
+            bWriter.append(emptyKnowledge.toString());
+            bWriter.close();
+            return;
+          }
 
           /*JSONObject knowledgeJson = null;
           try {

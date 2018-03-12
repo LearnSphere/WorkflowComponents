@@ -3,6 +3,8 @@
   <title>TetradGraphEditor</title>
   <script src="javascript/lib/cytoscape.min.js"></script>
   <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+  <script src="javascript/lib/dagre.min.js"></script>
+  <script src="javascript/lib/cytoscape-dagre.js"></script>
   <style>
     html {
       width : 100%;
@@ -105,22 +107,33 @@ var isSEM = false;
 
 var isEditor = false;
 
+
+var childNodeNames = [];
+var childNodeVal = [];
+
 if (isEditor) {
   //Getting the input to the component is asynchronous.  this allows the script to wait for 
   //the data to be received from the server.
   loadedGraph = loadGraph();
 
-  if (loadedGraph === undefined || loadedGraph === null || loadedGraph === "0") {
-    parent.getComponentInput(0, 0, -1);
-    var getComponentInputInterval = setInterval(function() {
-      if (parent.componentInputRequesting == false) {
-        clearInterval(getComponentInputInterval);
-        initiateTetradGraphEditor();
-      }
-    },50);
-  } else {
-    initiateTetradGraphEditor();
+  var componentIdPreSplit = jQuery('.advOptDialogClass', parent.document).attr("id");
+  var componentId = componentIdPreSplit.split("_")[1];
+  somethingChangedUpstream = parent.upstreamChange(componentId);
+
+
+  if (somethingChangedUpstream) {
+    parent.upstreamChange[componentId] = false;
   }
+
+  parent.getComponentInput(0, 0, -1);
+  var getComponentInputInterval = setInterval(function() {
+    if (parent.componentInputRequesting == false) {
+      //console.log('componenent input got:' + parent.componentInput);
+      clearInterval(getComponentInputInterval);
+      initiateTetradGraphEditor();
+    }
+  },50);
+
 } else {  //just viewing the graph
   loadedGraph = $("#graphData").text();
   initiateTetradGraphViewer();
@@ -198,18 +211,22 @@ function initiateTetradGraphEditor() {
 
   loadedGraph = loadGraph();
 
-  if (loadedGraph === undefined || loadedGraph === null || loadedGraph === "0") {
+  if (loadedGraph === undefined || loadedGraph === null || loadedGraph === "0" || somethingChangedUpstream) {
+
+    //if upstream change, don't display graph.  Ask user to run previous component or attach a new component
+    if (parent.componentInput == null || parent.componentInput == undefined) {
+      noInputToComponent();
+      return;
+    }
+
     if (parent.componentInput !== null && parent.componentInput !== undefined) {
       var inputWhole = parent.componentInput;
       var inputSplit = inputWhole.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
       var graphStr = inputSplit[1].split("</div>")[0];
       lines = graphStr.split('\n');
     }
-    //console.log("using graphStr from input file");
   } else {
-    //console.log("using graph that was saved in options before");
     lines = loadedGraph.split('\n');
-    //console.log(loadedGraph);
   }
 
   [nodes, childNodes] = getNodes(lines);
@@ -226,6 +243,7 @@ function initiateTetradGraphEditor() {
       d.data = {};
       //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.data.id = childNodes[j];
+      console.log(childNodes[j]);
       d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.classes = "SEM_Label";
       d.data.parent = nodes[j];
@@ -233,26 +251,18 @@ function initiateTetradGraphEditor() {
       cytContainer.elements.nodes.push(d);
     }
   }
+  var notifiedAboutSpacesOnce = false;
   for( var j = 0; j < nodes.length; j++ ){
     var d = {};
     d.data = {};
     d.data.id = nodes[j];
+    if (d.data.id.includes(' ') && !notifiedAboutSpacesOnce) {
+      notifiedAboutSpacesOnce = true;
+      notifyAboutSpacesInVarNames();
+    }
     d.data.idNumChars = nodes[j].length;
     cytContainer.elements.nodes.push(d);
   }
-  /*if (isSEM) {
-    for( var j = 0; j < childNodes.length; j++) {
-      var d = {};
-      d.data = {};
-      //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
-      d.data.id = childNodes[j];
-      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
-      d.classes = "SEM_Label";
-      d.data.parent = nodes[j];
-      d.data.idNumChars = nodes[j].length;
-      cytContainer.elements.nodes.push(d);
-    }
-  }*/
 
   //add edges to the container
   cytContainer.elements.edges = e;
@@ -274,7 +284,7 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
   //selection of nodes
   for (var j = 0; j < nodes.length; j++) {
     var id = nodes[j];
-    cy.$("#" + id).on('tap', function(evt){selectNode(evt)});
+    cy.$("#" + id.replace(new RegExp('\\.','g'), '\\\.')).on('tap', function(evt){selectNode(evt)});
   }
 
   //selection of edges
@@ -284,14 +294,16 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
   
 
   //delete selected nodes
-  $("#deleteNode").on("click", function (){
+  $("#deleteNode").on("click", function (evt){
     //console.log("deleteing");
-    //console.log(firstSelectedNode);
+    console.log(firstSelectedNode);
     if (firstSelectedNode != null) {
+      $("#to").text("");
       firstSelectedNode.remove();
       firstSelectedNode = null;
     }
     if (secondSelectedNode != null) {
+      $("#from").text("");
       secondSelectedNode.remove();
       secondSelectedNode = null;
     }
@@ -299,8 +311,12 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
 
   //delete selected edge
   $("#deleteEdge").on("click", function() {
-    selectedEdge.target.remove();
-    selectedEdge = null;
+    if (selectedEdge == null) {
+      alert("No edge selected");
+    } else {
+      selectedEdge.target.remove();
+      selectedEdge = null;
+    }
   });
 
   //Add node
@@ -325,12 +341,18 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
 
 function addNewNode() {
   var nodeName = $("#nodeName").val();
+  if (nodeName == '' || nodeName == null || nodeName == undefined) {
+    return;
+  }
+  if (nodeName.includes(' ')) {
+    notifyAboutSpacesInVarNames();
+  }
   var newNode = {group:"nodes", data: {id: nodeName} };
   newNode.data.idNumChars = nodeName.length;
   //cytContainer.elements.nodes.push(newNode);
   cy.add(newNode);
   //console.log(newNode);
-  cy.$("#" + nodeName).on('tap', function(evt){selectNode(evt)});
+  cy.$("#" + nodeName.replace(new RegExp('\\.','g'), '\\\.')).on('tap', function(evt){selectNode(evt)});
 
   if (isSEM) {
     var d = {};
@@ -343,6 +365,7 @@ function addNewNode() {
     //cytContainer.elements.nodes.push(d);
     cy.add(d);
   }
+  $("#nodeName").val('');
 }
 
 function addNewEdge () {
@@ -384,7 +407,7 @@ function addNewEdge () {
   }
 
   cy.add(newEdge);
-  cy.$("#" + newEdge.data.id).on('tap', function(evt){selectEdge(evt);});
+  cy.$("#" + newEdge.data.id.replace(new RegExp('\\.','g'), '\\\.')).on('tap', function(evt){selectEdge(evt);});
 }
 
 function selectNode (evt){
@@ -408,7 +431,7 @@ function setSelectionsOfNodes (evt) {
   if (isSEM && evt.target.parent().data() != undefined) {
     var parId = evt.target.parent().data().id;
     //cy.$("#" + parId).css("background-color","pink");
-    selectedNode = cy.$("#" + parId);
+    selectedNode = cy.$("#" + parId.replace(new RegExp('\\.','g'), '\\\.'));
   }
 
   selectedNode.addClass("selected");
@@ -444,11 +467,20 @@ function setSelectionsOfNodes (evt) {
 }
 
 function selectEdge (evt) {
-  evt.target.addClass("selected");
-  if (selectedEdge != null) {
-    selectedEdge.target.removeClass("selected");
+  if (selectedEdge == null) {
+    // No selected edge
+    selectedEdge = evt;
+    selectedEdge.target.addClass('selected');
+  } else if (selectedEdge.target == evt.target) {
+    // Deselect edge
+    selectedEdge.target.removeClass('selected');
+    selectedEdge = null;
+  } else {
+    // Select different edge then the one currently selected
+    selectedEdge.target.removeClass('selected');
+    selectedEdge = evt;
+    selectedEdge.target.addClass('selected');
   }
-  selectedEdge = evt;
 }
 
 function displayEdgeInfo() {
@@ -524,6 +556,8 @@ function getNodes(lines) {
           var tempToks = temp[j].split(" ");
           //console.log(tempToks);
           nodes.push(tempToks[0]);
+          childNodeNames.push(tempToks[0]);
+          childNodeVal.push(tempToks[1]);
           childNodes.push(tempToks[0] + tempToks[1]);
         }
       } else {
@@ -585,6 +619,18 @@ function getEdges(lines) {
         d.classes = "nondirected";
       }
 
+      if (isSEM) {
+        d_sem = {};
+        d_sem.data = {};
+        var ind = childNodeNames.indexOf(tokens[1]);
+        d_sem.data.source = tokens[1] + childNodeVal[ind];
+        ind = childNodeNames.indexOf(tokens[3]);
+        d_sem.data.target = tokens[3] + childNodeVal[ind];
+        d_sem.label = "edgeHello";
+        d_sem.classes = "SEM_edge"
+        e.push(d_sem);
+      }
+
       for (var j = 4; j < tokens.length; j++) {
         if (tokens[j] == 'nl') {
           d.classes += ' noLatent';
@@ -611,10 +657,8 @@ function getCytContainer() {
 
     layout: {
     //name:'grid|random'
-      name: 'circle',//'cose',
-      spacingFactor: .45,
-      directed: true,
-      sort: 'function(a, b){ return a.data.id.localeCompare(b.data.id); }'
+      name: 'dagre',//'cose',
+      spacingFactor: 1.5
     },
 
       
@@ -632,7 +676,7 @@ function getCytContainer() {
           'background-color': 'lightblue',
           'opacity' : 1,
 
-          "width": "mapData(idNumChars, 1, 100, 100, 2148)",//"label",
+          "width": "mapData(idNumChars, 1, 100, 70, 2100)",//"label",
           "height": '50%',
           //"padding": '20px',
 
@@ -640,7 +684,7 @@ function getCytContainer() {
           'color':'black',
           'shape':'roundrectangle',
 
-          'border-width':1,
+          'border-width':1.5,
           'border-style':'solid',
           'border-color':'black',
           'border-opacity':1,
@@ -670,7 +714,7 @@ function getCytContainer() {
       .selector('edge')
         .css({
           'content' : 'data(label)',
-          'text-outline-width':5,
+          'text-outline-width':8,
           'text-outline-color':'white',
           'font-family': 'verdana',
           'curve-style': 'bezier',
@@ -680,7 +724,7 @@ function getCytContainer() {
           'target-arrow-color': 'rgb(82, 120, 177)',
           'source-arrow-color': 'rgb(82, 120, 177)',
           'arrow-scale': 3,
-          'font-size' : '25%'
+          'font-size' : '35%'
         })
        .selector('edge.undirected')
         .css({
@@ -731,11 +775,16 @@ function getCytContainer() {
           'target-arrow-color': '#61bffc',
           'transition-property': 'background-color, line-color, target-arrow-color',
           'transition-duration': '0.5s'
+        })
+      .selector('edge.SEM_edge')
+        .css({
+          'display':'none'
         }),
 
     
     elements: {
     },
+    wheelSensitivity: 0.1
   }
 }
 
@@ -822,6 +871,26 @@ function saveGraph() {
   parent.saveData("TetradGraphEditor", graphToString());
 }
 
+function notifyAboutSpacesInVarNames() {
+  alert('Tetrad does not work well with variable names that contain spaces.\n' +
+      'Please consider using underscores instead');
+}
+
+/**
+ * The component doesn't have input or the previous component needs to be run
+ */
+function noInputToComponent() {
+  $("body").append('<div id="needsInput" style="width:60%;height:50%""></div>');
+  var div = $("#needsInput");
+  div.html("This component needs input.  Please connect a completed component's output to " + 
+      "this component, or run the component that is connected to this component."); 
+  div.css("font-size", "20px")
+      .css('margin-left', '20%')
+      .css('margin-top', '10%')
+      .css('color', '#a01313')
+      .css('text-align', 'center');
+}
+
 </script>
 
 </body>
@@ -902,6 +971,9 @@ function saveGraph() {
           </tr>
           <tr>
               <td colspan="3">If an edge is green that means it is definitely direct. Otherwise, it is possibly direct.</td>
+          </tr>
+          <tr>
+              <td colspan="3">If an edge is yellow that means it was originally not a directed edge, but was made into a directed edge to make the graph a directed acyclic graph.</td>
           </tr>
       </tfoot>
   </table>
