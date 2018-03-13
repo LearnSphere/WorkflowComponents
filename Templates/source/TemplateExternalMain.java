@@ -15,7 +15,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
      * @param args the arguments
      */
     public static void main(String[] args) {
-        
+
         %COMPONENT_NAME%Main tool = new %COMPONENT_NAME%Main();
         tool.startComponent(args);
     }
@@ -59,9 +59,5 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
 
         System.out.println(this.getOutput());
 
-        for (String err : this.errorMessages) {
-            // These will also be picked up by the workflows platform and relayed to the user.
-            System.err.println(err);
-        }
     }
 }

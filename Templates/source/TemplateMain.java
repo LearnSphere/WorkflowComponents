@@ -19,7 +19,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
      * @param args the arguments
      */
     public static void main(String[] args) {
-        
+
         %COMPONENT_NAME%Main tool = new %COMPONENT_NAME%Main();
         tool.startComponent(args);
     }
@@ -80,28 +80,28 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
             } finally {
                 if (in != null) { in.close(); }
             }
-            
+
             OutputStream outputStream = null;
             try {
                 byte[] label = null;
                 byte[] value = null;
-                
+
                 outputStream = new FileOutputStream(outputFile0);
-                
+
                 label = ("This file has the %OPT_NAME% value: ").getBytes("UTF-8");
                 value = %OPT_NAME%.getBytes("UTF-8");
-                
+
                 outputStream.write(label);
                 outputStream.write(value);
                 outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-                
+
                 outputStream = new FileOutputStream(outputFile0);
-                
+
                 label = ("This file has the number of input lines: " + lineCount).getBytes("UTF-8");
-                
+
                 outputStream.write(label);
                 outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-                
+
             } catch (Exception e) {
                 // This will be picked up by the workflows platform and relayed to the user.
                 e.printStackTrace();
@@ -123,9 +123,5 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
 
         System.out.println(this.getOutput());
 
-        for (String err : this.errorMessages) {
-            // These will also be picked up by the workflows platform and relayed to the user.
-            System.err.println(err);
-        }
     }
 }
