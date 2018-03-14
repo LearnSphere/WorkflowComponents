@@ -1,0 +1,26 @@
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,187 - Command-line args: [-componentXmlFile, C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/test/components/AnalysisFTest5X2.xml, -workflowDir, C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/test/, -toolDir, C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/, -schemaFile, C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/schemas/AnalysisFTest5X2_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,188 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 14 Mar 2018 12:45:34,267 - Reading C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/test/components/AnalysisFTest5X2.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 14 Mar 2018 12:45:34,267 - File absolute path: C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2\test\components\AnalysisFTest5X2.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper 14 Mar 2018 12:45:34,267 - File canonical path: C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2\test\components\AnalysisFTest5X2.xml
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,282 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,282 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,329 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,470 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,470 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,470 - Executing process with heap size: 1024
+INFO: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:34,470 - Arguments: [C:\Program, Files\R\R-3.4.3\bin\x64\Rscript.exe, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/program/FTest5X2.R, -programDir, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/, -workingDir, C:\Users\AlRousan\Documents\NetBeansProjects\WorkflowComponents\AnalysisFTest5X2/test/ComponentTestOutput/output/, -measure, "tAUC", -file0, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/test/test_data/model_result_values.xml, -file1, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/test/test_data/model_result_values1.xml, -file2, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/test/test_data/model_result_values1.xml, -file3, C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisFTest5X2/test/test_data/model_result_values1.xml, -Xmx1024m]
+ERROR: [main] edu.cmu.pslc.learnsphere.analysis.analysisFTest5X2.AnalysisFTest5X2 14 Mar 2018 12:45:35,392 - Exception in component program: <outputs>
+  <output0>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Analysis #1</component_id_human>
+    <component_type>analysis</component_type>
+    <component_name>AnalysisFTest5X2</component_name>
+    <elapsed_seconds>1</elapsed_seconds>
+    <errors />
+    <inputmeta />
+    <optionmeta>
+      <measure>tAUC</measure>
+    </optionmeta>
+  </output0>
+</outputs>
