@@ -34,8 +34,8 @@ public class AnalysisFTest5X2 extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program...
-        File outputDirectory = this.runExternal();
-        //File outputDirectory = this.runExternalMultipleFileOuput();
+       // File outputDirectory = this.runExternal();
+        File outputDirectory = this.runExternalMultipleFileOuput();
         Integer nodeIndex = 0;
         Integer fileIndex = 0;
         String fileLabel = "text";
