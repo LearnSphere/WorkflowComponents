@@ -51,11 +51,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
 %RUN_EXTERNAL_BLOCK%
 
 %OUTPUT_DEFN_BLOCK%
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
 %OUTPUT_USAGE_BLOCK%
-        }
 
         System.out.println(this.getOutput());
 

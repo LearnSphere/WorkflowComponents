@@ -115,11 +115,7 @@ public class %COMPONENT_NAME%Main extends AbstractComponent {
             e.printStackTrace();
         }
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
 %OUTPUT_USAGE_BLOCK%
-        }
 
         System.out.println(this.getOutput());
 

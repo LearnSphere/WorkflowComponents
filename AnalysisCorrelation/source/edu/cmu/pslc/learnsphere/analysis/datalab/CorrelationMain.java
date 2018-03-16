@@ -68,7 +68,7 @@ public class CorrelationMain extends AbstractComponent {
                 this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
 
         } catch (Exception e) {
-            String msg = "Failed to parse gradebook and compute correlation. " + e; 
+            String msg = "Failed to parse gradebook and compute correlation. " + e;
             logger.info(msg);
             this.addErrorMessage(msg);
         }
@@ -78,9 +78,7 @@ public class CorrelationMain extends AbstractComponent {
 
         // If we haven't seen any errors yet...
         if (this.errorMessages.size() == 0) {
-            if (this.isCancelled()) {
-                this.addErrorMessage("Cancelled workflow during component execution.");
-            } else if (correlationFile == null) {
+            if (correlationFile == null) {
                 this.addErrorMessage("Failed to create output correlation file.");
             } else {
                 Integer nodeIndex = 0;
@@ -117,7 +115,7 @@ public class CorrelationMain extends AbstractComponent {
 
         // Java try-with-resources
         try (OutputStream outputStream = new FileOutputStream(correlationFile)) {
-                
+
                 // Write header to export
                 for (int i = 0; i < headers.length; i++) {
                     if (i != 0) { outputStream.write(headers[i].getBytes("UTF-8")); }

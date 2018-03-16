@@ -151,20 +151,16 @@ public class AFMMain extends AbstractComponent {
             this.addErrorMessage("The results from AFM were empty.");
         }
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "student-step";
-            this.addOutputFile(predictedErrorRateFile, nodeIndex, fileIndex, fileType);
-            nodeIndex = 1;
-            fileType = "model-values";
-            this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileType);
-            nodeIndex = 2;
-            fileType = "parameters";
-            this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileType);
-        }
+        Integer nodeIndex = 0;
+        Integer fileIndex = 0;
+        String fileType = "student-step";
+        this.addOutputFile(predictedErrorRateFile, nodeIndex, fileIndex, fileType);
+        nodeIndex = 1;
+        fileType = "model-values";
+        this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileType);
+        nodeIndex = 2;
+        fileType = "parameters";
+        this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileType);
 
         System.out.println(this.getOutput());
 
