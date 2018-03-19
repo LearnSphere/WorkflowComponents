@@ -409,6 +409,12 @@ public class GraphEditor {
           }
         }
 
+        addToDebugMessages(tokens[0]);
+        addToDebugMessages(nodeList.toString());
+        addToDebugMessages(node0.toString());
+        addToDebugMessages(node1.toString());
+        addToDebugMessages(arrow);
+
         if ( arrow.equals("---") ) {
           //TODO: UNCOMMENT NEXT LINE
           g.addEdge(Edges.undirectedEdge(node0, node1));
