@@ -13,6 +13,11 @@ cd $dir
 rm -Rf */dist
 
 for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
+  if [ "$cdir" == "$dir/Templates" ]
+  then
+    echo "Skipping Templates dir"
+    continue
+  fi
   cd $cdir
 
   if [ -f build.xml ]; then
