@@ -32,7 +32,7 @@ public class OutcomeComparatorMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-        Boolean reqsMet = false;
+        Boolean reqsMet = true;
 		String fileType  = this.getOptionAsString("fileType");
         String file0 = this.getAttachment(0, 0).getAbsolutePath();
         String file1 = this.getAttachment(1, 0).getAbsolutePath();
