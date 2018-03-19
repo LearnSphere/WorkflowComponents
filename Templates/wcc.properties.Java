@@ -18,10 +18,10 @@ component.lang=Java
 component.pkg=edu.cmu.learnsphere.analysis
 
 # The author of the new component. [Default = system]
-component.author=ctipper
+component.author=janedoe
 
 # The email of the component author. [Default = datashop-help@lists.andrew.cmu.edu]
-component.author.email=ctipper@cs.cmu.edu
+component.author.email=janedoe@someemail.com
 
 # If the component lang is not Java, you must specify the directory
 # which contains the component program files, e.g., example.R

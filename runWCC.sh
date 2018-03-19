@@ -10,7 +10,7 @@
 
 dir=`pwd`
 
-if [ "$#" -eq 1 -a $1 == "help" ]; then
+if [ "$1" == "-help" ]; then
     echo 'Usage: runWCC.sh [dir] [propFile]'
     exit 0
 fi
@@ -20,7 +20,7 @@ if [ "$#" -gt 0 ]; then
 fi
 echo Directory is: $dir
 
-prop_file=./Templates/wcc.properties
+prop_file=$dir/Templates/wcc.properties.R
 if [ "$#" -gt 1 ]; then
     prop_file=$2
 fi
@@ -28,8 +28,8 @@ echo Using properties file: $prop_file
 
 cd $dir
 
-classpath=./CommonLibraries/datashop.jar:./CommonLibraries/commons-io-1.2.jar:./CommonLibraries/commons-lang-2.2.jar:./CommonLibraries/log4j-1.2.13.jar
-templates_dir=./Templates
+classpath=$dir/CommonLibraries/datashop.jar:$dir/CommonLibraries/commons-io-1.2.jar:$dir/CommonLibraries/commons-lang-2.2.jar:$dir/CommonLibraries/log4j-1.2.13.jar
+templates_dir=$dir/Templates
 classname=edu.cmu.pslc.datashop.extractors.workflows.WorkflowComponentCreator
 
 java -classpath $templates_dir:$classpath $classname -file $prop_file -dir $dir
