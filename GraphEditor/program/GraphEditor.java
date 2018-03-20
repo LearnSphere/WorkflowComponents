@@ -86,7 +86,7 @@ public class GraphEditor {
       return;
     }
 
-    if (cmdParams.containsKey("-file0")) {
+    /*if (cmdParams.containsKey("-file0")) {
       try {
         File inputFile = new File(cmdParams.get("-file0"));
         BufferedReader graphBReader = new BufferedReader(new FileReader(inputFile));
@@ -95,8 +95,8 @@ public class GraphEditor {
       } catch (IOException e) {
         addToErrorMessages("Exception opening input file: " + e.toString());
       }
-    }
-    addToDebugMessages("Graph: \n" + graph.toString());
+    }*/
+    //addToDebugMessages("Graph: \n" + graph.toString());
 
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
@@ -106,7 +106,9 @@ public class GraphEditor {
     String outputFile = workingDir + "EditedGraph.html";
 
     String graphStr = cmdParams.get("-TetradGraphEditor");
+    addToDebugMessages(graphStr);
     graphStr = graphStr.replaceAll("%NEW_LINE%","\n");
+    graphStr = graphStr.replaceAll("%HYPHEN%","-");
     addToDebugMessages(graphStr);
 
     try {
