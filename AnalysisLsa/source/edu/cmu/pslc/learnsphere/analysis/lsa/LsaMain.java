@@ -339,7 +339,7 @@ public class LsaMain extends AbstractComponent {
 
             sw.write("\t");
             for (String v : lin2) {
-                sw.write(v +"\t");
+                sw.write("_" + v +"\t");
             }
             sw.newLine();
 
