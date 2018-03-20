@@ -1,0 +1,195 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  
+   
+   <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="InputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList2" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="InputDefinition3">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList3" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType> 
+  
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="InFileList2">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList3">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
+      <xs:element name="input2" type="InputDefinition2" minOccurs="0" />
+      <xs:element name="input3" type="InputDefinition3" minOccurs="0" />
+    </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="file1" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="file2" minOccurs="0" />
+      <xs:element name="input2" type="xs:string" default="file3" minOccurs="0" />
+      <xs:element name="input3" type="xs:string" default="file4" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+  
+  
+
+<xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="comparableFileType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="XML" />
+      <xs:enumeration value="Properties File" />
+      <xs:enumeration value="Tabular" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="caseSensitive" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="removeNull" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="matchColumn0" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="compareColumn0" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="matchColumn1" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="compareColumn1" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency7" ls:dependentOption="matchColumn2" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency8" ls:dependentOption="compareColumn2" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="matchColumn3" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency10" ls:dependentOption="compareColumn3" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	</xs:choice>
+</xs:complexType>
+
+
+
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element type="comparableFileType" name="fileType" id="File_type" default="XML" />
+        <xs:element type="trueFalseType" name="caseSensitive" id="Case_sensitive" default="Yes" />
+        <xs:element type="trueFalseType" name="removeNull" id="Remove_empty_values" default="Yes" />
+        
+        <xs:element type="FileInputHeader" name="matchColumn0" id="File1_column_to_match" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="compareColumn0" id="File1_column_to_compare" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="matchColumn1" id="File2_column_to_match" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="compareColumn1" id="File2_column_to_compare" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="matchColumn2" id="File3_column_to_match" default=".*" ls:inputNodeIndex="2" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="compareColumn2" id="File3_column_to_compare" default=".*" ls:inputNodeIndex="2" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="matchColumn3" id="File4_column_to_match" default=".*" ls:inputNodeIndex="3" ls:inputFileIndex="0"/>
+        <xs:element type="FileInputHeader" name="compareColumn3" id="File4_column_to_compare" default=".*" ls:inputNodeIndex="3" ls:inputFileIndex="0"/>
+        
+    </xs:choice>
+  </xs:complexType>
+  
+  
+ 
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all >
+        <xs:element type="xs:integer" name="workflow_id"  />
+        <xs:element type="xs:string" name="component_id"  />
+        <xs:element type="xs:string" name="component_id_human"  />
+        <xs:element type="xs:string" name="component_name"  />
+        <xs:element type="xs:string" name="component_type"  />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
