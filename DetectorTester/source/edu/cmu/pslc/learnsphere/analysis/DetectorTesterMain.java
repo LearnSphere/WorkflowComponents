@@ -58,15 +58,18 @@ public class DetectorTesterMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
+        Boolean runTheScript = true;
+
         Boolean usingDetectorInput = false;
         if (this.getOptionAsString("useDetectorInput").equals("Yes")) {
           usingDetectorInput = true;
         }
 
         Boolean access = hasAccess();
-        Boolean reqsMet = false;
+
         if (usingDetectorInput) {
 	        if (!access) {
+            runTheScript = false;
 	          DataShopInstance.initialize();
 	          addErrorMessage("User does not have access to use the JavaScript input for this component." +
 	              "\n  Please request access from " + DataShopInstance.getDatashopHelpEmail() +
@@ -74,26 +77,27 @@ public class DetectorTesterMain extends AbstractComponent {
 	              "You may still use this component without access.  Select \"No\" in the first option in" +
 	              " the options pane, then select the detector from the dropdown that you would like to use.");
 	        } else if (inputContainsRequire()) {
+            runTheScript = false;
 	        	logger.debug("inputContainsRequire() = " + inputContainsRequire());
-	            addErrorMessage("Detector script uses require().  This is not allowed for security reasons.");
+	           addErrorMessage("Detector script uses require().  This is not allowed for security reasons.");
 	        } else {
-	        	reqsMet = true;
+	        	runTheScript = true;
 	        }
         }
 
-        if (reqsMet) {
+        if (runTheScript) {
 	        File outputDirectory = null;
 	        outputDirectory = this.runExternal();
 	        if (outputDirectory != null) {
 	            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-	                logger.debug(outputDirectory.getAbsolutePath() + "/output.txt");
-	                File outputFile = new File(outputDirectory.getAbsolutePath() + "\\output.txt");
+	                logger.debug(outputDirectory.getAbsolutePath() + File.separator + "output.txt");
+	                File outputFile = new File(outputDirectory.getAbsolutePath() + File.separator + "output.txt");
 
 	                if (outputFile != null && outputFile.exists()) {
 	                    Integer nodeIndex = 0;
 	                    Integer fileIndex = 0;
 	                    String fileLabel = "tab-delimited";
-	                    logger.debug(outputDirectory.getAbsolutePath() + "\\output.txt"); // different slash for windows machines
+	                    logger.debug(outputDirectory.getAbsolutePath() + File.separator + "output.txt"); 
 
 	                    this.addOutputFile(outputFile, nodeIndex, fileIndex, fileLabel);
 	                } else {
