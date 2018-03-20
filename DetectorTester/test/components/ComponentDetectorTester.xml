@@ -7,7 +7,7 @@
   <left>395</left>
   <top>23</top>
   <options>
-    <useDetectorInput>Yes</useDetectorInput>
+    <useDetectorInput>No</useDetectorInput>
     <detectorFromList>idle.js</detectorFromList>
   </options>
   <inputs>
@@ -15,15 +15,15 @@
       <component_id>Import-1-x948793</component_id>
       <component_id_human>Import #1</component_id_human>
       <component_type>import</component_type>
-      <component_name>Student Step</component_name>
+      <component_name>Tab Delimited</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
         <transaction>
-          <file_path>test/test_data/gill6.txt</file_path>
-          <file_name>gill6.txt</file_name>
+          <file_path>test/test_data/Gill6.txt</file_path>
+          <file_name>Gill6.txt</file_name>
           <index>0</index>
-          <label>Student Step</label>
+          <label>tab-delimited</label>
           <metadata>
           </metadata>
         </transaction>
@@ -31,7 +31,6 @@
       <inputmeta />
       <optionmeta />
     </input0>
-
     <input1>
       <component_id>Import-1-x948793</component_id>
       <component_id_human>Import #1</component_id_human>
