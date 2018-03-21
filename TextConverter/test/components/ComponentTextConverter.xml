@@ -26,9 +26,11 @@
       <errors/>
       <files>
       <tab-delimited>
-        <file_path>test/test_data/model result values.xml</file_path>
+        <!-- <file_path>test/test_data/model result values2.xml</file_path>-->
+        <file_path>test/test_data/cd_catalog.xml</file_path>
         <label>file</label>
-        <file_name>model result values.xml</file_name>
+        <!--  <file_name>model result values2.xml</file_name>-->
+        <file_name>cd_catalog.xml</file_name>
         <index>0</index>
       </tab-delimited>
       </files>

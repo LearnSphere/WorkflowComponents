@@ -16,7 +16,7 @@
     <tAccuracy>0.73584</tAccuracy>
     <tAUC>0.80865</tAUC>
   </model_output_fold_1_run_1>
-  <model_output_fold_2_run_1>
+  <model_output_fold_1_run_1>
     <N>27551</N>
     <Loglikelihood>-14585.81702</Loglikelihood>
     <Parameters>11</Parameters>
@@ -30,11 +30,11 @@
     <tRMSE>0.41807</tRMSE>
     <tAccuracy>0.74015</tAccuracy>
     <tAUC>0.81364</tAUC>
-  </model_output_fold_2_run_1>
-  <model_output_fold_1_run_2>
+  </model_output_fold_1_run_1>
+  <model_output_fold_1_run_1>
     
-  </model_output_fold_1_run_2>
-  <model_output_fold_2_run_2>
+  </model_output_fold_1_run_1>
+  <model_output_fold_1_run_1>
     <N>27594</N>
     <Loglikelihood>-14590.50647</Loglikelihood>
     <Parameters>11</Parameters>
@@ -49,7 +49,7 @@
     <tRMSE>0.41863</tRMSE>
     <tAccuracy>0.73815</tAccuracy>
     <tAUC>0.81234</tAUC>
-  </model_output_fold_2_run_2>
+  </model_output_fold_1_run_1>
   <model_output_fold_1_run_3>
     <N>27522</N>
     <Loglikelihood>-14432.84129</Loglikelihood>
@@ -118,7 +118,8 @@
   <model_output_fold_2_run_5>
     <N>27566</N>
     <Loglikelihood>-14652.56293</Loglikelihood>
-    <Parameters>11</Parameters>
+    <Parameters>12</Parameters>
+<Parameters>11</Parameters>
     <RMSE>0.42141</RMSE>
     <Accuracy>0.73616</Accuracy>
     <AUC>0.80837</AUC>
