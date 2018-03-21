@@ -8,7 +8,7 @@
 <author>Michael Yudelson
   <email>yudelson@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisBkt</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisBkt</url>
 <date>2016-06-08</date>
 <abstract>The <b>Bayesian Knowledge Tracing</b> (BKT) performs inference from time-series data of student attempts to apply their knowledge.</abstract>
 <description>BKT is a user modeling approach widely use in the area of Intelligent Tutoring Systems (ITS). In ITS, it is customary to tag problems and problem steps students are solving with knowledge quanta often called skills. When a student is attempting to solve a problem or a problem step, they are said to <em>practice a skill</em>. A student model in a general sense performs deductions on whether the skill(s) is (are) mastered given a sequence of correct and incorrect attempts to solve a problems/problem steps that are tagged with it. The goal of BKT is to infer whether the student has mastered a skill or not from a pattern of successful or unsuccessful attempts to apply it. BKT uses a formalism of a Hidden Markov Model to estimate student's skill mastery. In BKT, there are two types of nodes: binary state nodes capture skill mastery (one per skill) that assume values of <em>mastered</em> or <em>not mastered</em> and binary observation nodes (one per skill) that assume values of <em>correct</em> or <em>incorrect</em>.</description>

@@ -76,7 +76,7 @@ public class OLIDataImporter {
         
         ResourceUseOliHelper helper;
         
-        public static String IMPORT_FILE_TYPE_TRANSACTION = "transaction";
+        public static String IMPORT_FILE_TYPE_TRANSACTION = "tab-delimited";
         public static String IMPORT_FILE_TYPE_USER_SESS = "user_sess";
         
         private String[] ACTION_LOG_COLUMN_NAMES = {"guid", "sess_ref", "source", "time",

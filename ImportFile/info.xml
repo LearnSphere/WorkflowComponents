@@ -1,39 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Hui Cheng
-  <email>hcheng@cs.cmu.edu</email>
-</author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisAfm</url>
-<date>2016-06-08</date>
-<abstract>The <b>Additive Factor Model</b> (AFM) performs a logistic regression over the "error rate" learning curve data.</abstract>
-<description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>
-
-<inputs>
-<b>Student-Step</b>
-</inputs>
-
-<outputs>
-<b>Student-Step</b>
-<b>Parameter estimate values</b>
-<b>Model values</b>
-</outputs>
-
-<options>
-<b>Model</b> - the column containing the Knowledge Component Model (KCM) data <br/>
-<b>Cross-validation Folds</b> - the parameter for K-folds cross-validation
-</options>
-
-</info>
-
-
-
-<?xml version="1.0" encoding="UTF-8"?>
-
-<info>
 <author>Carnegie Mellon University</author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/ImportFile</url>
-<date>2017-03-09</date>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ImportFile</url>
+<date>2017-05-09</date>
 <abstract>Import a file.</abstract>
 <details>The <b>Import File</b> tool allows a file imported to a workflow component.</details>
 

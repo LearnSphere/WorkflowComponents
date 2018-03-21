@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Rojina Maharjan
+  <email>rmharjan@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationD3ForceLayout</url>
+<date>2017-10-01</date>
+<abstract>The <b>D3 Force Layout</b> component produces an undirected graph of any matrix input.</abstract>
+<description>
+    The D3 Force Layout components takes a 2 dimensional matrix, and outputs a force directed graph of same. It is designed to allow visualization of LSA matrices and other sorts of undirected graph situations.
+</description>
+
+<inputs>
+tab-delimited 2-dimensional association matrix with both column and row headers
+</inputs>
+
+<outputs>
+Force directed graph representation of input matrix.
+</outputs>
+
+<options>
+<b>There are no options</b><br/>
+</options>
+
+</info>

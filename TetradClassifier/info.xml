@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Tetrad Implemented by DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TetradClassifier</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>Classifier</b> box tries to predict the target variable’s value in each case based on the other variables’ values in that case.
+<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b> (training data),<br/>
+<b>tetrad-graph</b>,<br/>
+<b>tab-delimited</b> (test data)
+</inputs>
+
+<outputs>
+<b>tab-delimited</b> Classified data.<br/>
+<b>inline-html</b> ROC curve. <br/>
+<b>text</b> Confusion matrix.
+</outputs>
+
+<options>
+<b>Target Variable</b>: variable you wish to predict.<br/>
+<b>Target Category</b>: category that the classifier should be trained to predict.
+
+</options>
+
+</info>

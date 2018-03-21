@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+.axis {
+  shape-rendering: crispEdges;
+}
+text {
+  font-weight: bold;
+}
+
+.tick text {
+  font-weight: normal;
+}
+
+.x.axis line {
+}
+/*.x.axis .minor {
+  stroke-opacity: .5;
+}*/
+
+.x.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.y.axis line,
+.y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.auc {
+  position: fixed;
+  top: 370px;
+  left: 300px;
+}
+
+</style>
+<body>
+
+    <!--<script src="javascript/lib/d3.js"></script>
+    <script src="javascript/lib/jquery-1.7.1.min.js"></script>-->
+    <script src="javascript/lib/d3.js"></script>
+    <!--<script src="jquery-3.2.1.min.js"></script>-->
+
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 20, bottom: 50, left: 50},
+    width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// set the ranges
+var x = null;
+var y = null;
+if (d3.version.substring(0,1) === "3") {
+  x = d3.scale.linear().range([0, width]);
+  y = d3.scale.linear().range([height, 0]);
+} else if (d3.version.substring(0,1) === "4") {
+  x = d3.scaleLinear().range([0, width]);
+  y = d3.scaleLinear().range([height, 0]);
+}
+
+
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+  // Get the data
+  data = INSERTDATAHERE;
+
+  // Scale the range of the data
+  x.domain([0,1]);
+  y.domain([0,1]);
+
+      
+  // Add the scatterplot
+  svg.selectAll("dot")
+      .data(data)
+    .enter().append("circle")
+      .style("fill", "blue")
+      .attr("r", 3)
+      .attr("cx", function(d) { return x(d.x); })
+      .attr("cy", function(d) { return y(d.y); });
+
+  // Add the X Axis
+  var xAxis = null;
+  if (d3.version.substring(0,1) === "3") {
+    xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(8);
+  } else if (d3.version.substring(0,1) === "4") {
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+  }
+
+  /*var xAxis2 = null;
+  if (d3.version.substring(0,1) === "3") {
+    xAxis2 = d3.svg.axis().scale(x).orient("top").ticks(0);
+  } else if (d3.version.substring(0,1) === "4") {
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisTop(x));
+  }*/
+
+
+  // text label for the x axis
+  svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text("False Positive Fraction");
+
+  // Add the Y Axis
+  var yAxis = null;
+  if (d3.version.substring(0,1) === "3") {
+    yAxis = d3.svg.axis().scale(y).orient("left").ticks(8);        
+  } else if (d3.version.substring(0,1) === "4") {
+    svg.append("g")
+        .call(d3.axisLeft(y));
+  }
+
+  /*var yAxis2 = null;
+  if (d3.version.substring(0,1) === "3") {
+    yAxis2 = d3.svg.axis().scale(y).orient("right").ticks(0);        
+  } else if (d3.version.substring(0,1) === "4") {
+    svg.append("g")
+        .call(d3.axisRight(y));
+  }*/
+
+  if (d3.version.substring(0,1) === "3") {
+    svg.append("g")
+        .attr("class", "x axis")
+        //.attr("transform", "translate("+height+"," + height + ")")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    /*svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis2);*/
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(0,0)")
+        .call(yAxis);
+
+    /*svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate("+height+",0)")
+        .call(yAxis2);*/
+  }
+  
+
+  // text label for the y axis
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("True Positive Fraction");  
+
+  //Add title
+  svg.append("text")
+      .attr("x", (width / 2))             
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "1.3em") 
+      .style("font-weight", "bold")  
+      .text("ROC Plot, INSERTTITLEDATAHERE");
+
+//});
+
+</script>
+<div class="auc"><b>AUC = AUC_DATA_HERE</b></div>
+</body>

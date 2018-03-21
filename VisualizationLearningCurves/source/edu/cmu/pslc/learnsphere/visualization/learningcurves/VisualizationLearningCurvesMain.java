@@ -179,17 +179,13 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
 
         Integer counter = 0;
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
-            for (File imageFile : imageFiles) {
+        for (File imageFile : imageFiles) {
 
-                Integer nodeIndex = 0;
-                String fileLabel = "image";
+            Integer nodeIndex = 0;
+            String fileLabel = "image";
 
-                this.addOutputFile(imageFile, nodeIndex, counter, fileLabel);
-                counter++;
-            }
+            this.addOutputFile(imageFile, nodeIndex, counter, fileLabel);
+            counter++;
         }
 
         System.out.println(this.getOutput());

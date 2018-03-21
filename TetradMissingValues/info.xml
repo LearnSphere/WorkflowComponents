@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Tetrad Implemented by DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TetradMissingValues</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>missing values box</b> takes as input a data set, and can either replace the missing values with a real value or it can inject missing data into the set.  Missing Values are denoted by "*".
+<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b>
+</outputs>
+
+<options>
+<b>Operation</b> - What you would like to do to the data.<br/>
+<!--<b>Missing Value Marker</b> - What marker is used to denote missing values.-->
+</options>
+
+</info>

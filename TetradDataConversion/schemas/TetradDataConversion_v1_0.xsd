@@ -1,0 +1,105 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+      <xs:element type="conjunctive" name="numInstancesDependency" ls:dependentOption="numInstances" ls:dependsOn="conversion" ls:constraint="matches(Simulate_Tabular_From_Covariance)" />
+    </xs:choice>
+  </xs:complexType>
+
+   <xs:simpleType name="conversionType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Convert_to_Covariance_Matrix" />
+      <xs:enumeration value="Convert_to_Correlation_Matrix"/>
+      <xs:enumeration value="Inverse_Matrix"/>
+      <xs:enumeration value="Simulate_Tabular_From_Covariance"/>
+      <xs:enumeration value="Whiten"/>
+      <xs:enumeration value="Nonparanormal_Transform"/>
+      <xs:enumeration value="Standardize_Data"/>
+      <xs:enumeration value="Convert_Numerical_Discrete_To_Continuous"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="conversionType" name="conversion" id="conversion" default="Convert_to_Covariance_Matrix" />
+      <!--<xs:element type="MultiFileInputHeader" name="varsToStandardize" id="Variables_to_standardize" default=".*" />-->
+      <xs:element type="xs:integer" name="numInstances" id="Number_of_instances" default="100" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

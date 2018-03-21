@@ -1,0 +1,62 @@
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    background-image: url("background-65f92c5556aa8f14f430b5b9fef5aabf76646bb47e0ff3eef4ed35d14e5c9d37.png");
+    background-color: lightblue;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
+    font-size: 14;
+}
+
+
+div{
+	background:linear-gradient(#9dd1ff, #87bbed);
+	border-radius: 25px;
+}
+
+.outer-block{
+	padding: 25px;
+
+
+}
+
+.inner-block{
+	padding: 15px;
+	border-color:grey;
+	background:white;
+	border-style: solid;
+	border-width: 2px;
+}
+
+.myButton {
+	background-color:#44c767;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight: bold;
+	padding:4px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.myButton:hover {
+	background-color:#5cbf2a;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}

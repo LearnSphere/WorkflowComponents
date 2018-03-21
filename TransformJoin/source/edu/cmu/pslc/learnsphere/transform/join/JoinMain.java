@@ -121,64 +121,64 @@ public class JoinMain extends AbstractComponent {
         File file2 = this.getAttachment(1, 0);
 
 
-        if (file1 == null || file2 == null) {
-            System.err.println("The Transform -> Join component requires two input files.");
-            return;
-        }
-
-        // Output file
-        File generatedFile = this.createFile("Join", ".txt");
-
-        // Options
-        String joinTypeString = this.getOptionAsString("join");
-
-        String file1ColumnName = this.getOptionAsString("file1ColumnName");
-
-        String file2ColumnName = this.getOptionAsString("file2ColumnName");
-
-        String caseSensitiveString = this.getOptionAsString("caseSensitive");
-        String delimiterString = this.getOptionAsString("delimiterPattern");
-
-        Boolean caseSensitive = caseSensitiveString.equalsIgnoreCase("true")
-            ? true : false;
-
-        JoinType joinType = null;
-
-        // Processing
-
-        // Inner join
-        if (joinTypeString.equalsIgnoreCase(JoinType.INNER.toString())) {
-            joinType = JoinType.INNER;
-
-            // Call inner join method
-            generatedFile = this.innerJoin(file1, file2, delimiterString, true,
-                "File1-", "File2-", file1ColumnName, file2ColumnName,
-                    generatedFile, caseSensitive);
-
+        if (file1 == null || !file1.exists() || file2 == null || !file2.exists()) {
+            addErrorMessage("The Transform -> Join component requires two input files.");
         } else {
-            // Left outer join
-            if (joinTypeString.equalsIgnoreCase(JoinType.LEFT_OUTER.toString())) {
-                joinType = JoinType.LEFT_OUTER;
 
-            // Right outer join
-            } else if (joinTypeString.equalsIgnoreCase(JoinType.RIGHT_OUTER.toString())) {
-                joinType = JoinType.RIGHT_OUTER;
-            }
+	        // Output file
+	        File generatedFile = this.createFile("Join", ".txt");
 
-            // Call outer join method with left or right type
-            generatedFile = this.outerJoin(joinType, file1, file2, delimiterString, true,
-                    "File1-", "File2-", file1ColumnName, file2ColumnName,
-                        generatedFile, caseSensitive);
+	        // Options
+	        String joinTypeString = this.getOptionAsString("join");
+
+	        String file1ColumnName = this.getOptionAsString("file1ColumnName");
+
+	        String file2ColumnName = this.getOptionAsString("file2ColumnName");
+
+	        String caseSensitiveString = this.getOptionAsString("caseSensitive");
+	        String delimiterString = this.getOptionAsString("delimiterPattern");
+
+	        Boolean caseSensitive = caseSensitiveString.equalsIgnoreCase("true")
+	            ? true : false;
+
+	        JoinType joinType = null;
+
+	        // Processing
+
+	        // Inner join
+	        if (joinTypeString.equalsIgnoreCase(JoinType.INNER.toString())) {
+	            joinType = JoinType.INNER;
+
+	            // Call inner join method
+	            generatedFile = this.innerJoin(file1, file2, delimiterString, true,
+	                "File1-", "File2-", file1ColumnName, file2ColumnName,
+	                    generatedFile, caseSensitive);
+
+	        } else {
+	            // Left outer join
+	            if (joinTypeString.equalsIgnoreCase(JoinType.LEFT_OUTER.toString())) {
+	                joinType = JoinType.LEFT_OUTER;
+
+	            // Right outer join
+	            } else if (joinTypeString.equalsIgnoreCase(JoinType.RIGHT_OUTER.toString())) {
+	                joinType = JoinType.RIGHT_OUTER;
+	            }
+
+	            // Call outer join method with left or right type
+	            generatedFile = this.outerJoin(joinType, file1, file2, delimiterString, true,
+	                    "File1-", "File2-", file1ColumnName, file2ColumnName,
+	                        generatedFile, caseSensitive);
+	        }
+
+
+	        logger.info("Join type: " + joinType.toString());
+
+	        Integer nodeIndex = 0;
+	        Integer fileIndex = 0;
+	        String fileLabel = "tab-delimited";
+
+	        this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
         }
-
-
-        logger.info("Join type: " + joinType.toString());
-
-        Integer nodeIndex = 0;
-        Integer fileIndex = 0;
-        String fileLabel = "tab-delimited";
-
-        this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
 
         System.out.println(this.getOutput());
     }
@@ -233,6 +233,7 @@ public class JoinMain extends AbstractComponent {
                    for (String leftHeader : leftFileHeaders) {
                        if (leftHeader.equalsIgnoreCase(leftJoinColumn)) {
                            leftColumnIndex = leftColCount;
+                           break;
                        }
                        leftColCount++;
                    }
@@ -241,6 +242,7 @@ public class JoinMain extends AbstractComponent {
                    for (String rightHeader : rightFileHeaders) {
                        if (rightHeader.equalsIgnoreCase(rightJoinColumn)) {
                            rightColumnIndex = rightColCount;
+                           break;
                        }
                        rightColCount++;
                    }

@@ -1,0 +1,125 @@
+html {
+	width: 100%; 
+	height: 100%; 
+	margin: 0px; 
+}
+
+body { 
+	width: 100%; 
+	height: 100%; 
+	margin: 0px; 
+}
+
+#container {
+	display: flex; 
+	flex-flow: column;
+	width: 900px; 
+	height: 500px; 
+	border: 5px solid black; 
+	background-color: #D1E8C5;
+}
+
+#topPanel {
+	display: flex;
+	flex: none;
+	padding: 5px;
+}
+
+#HintWindow {
+	flex: auto;
+}
+
+#topRightPanel {
+	display: flex;
+	margin-left: 5px;
+	flex-flow: column;
+	justify-content: space-between;
+}
+
+#middlePanel {
+	display: flex;
+	flex: none;
+}
+
+.problemText {
+	flex: 1;
+	padding: 5px;
+	font-size: 20;
+	font-weight: 900;
+	text-align: center;
+	color: darkblue;
+	font-family: "Verdana", sans-serif;
+}
+
+.alignProblem {
+	width: 108px;
+}
+
+#startLeft {
+	text-align: right;
+	width: 110px;
+	font-size: 20;
+	margin-top: 5px;
+}
+
+#startRight {
+	text-align: left;
+	width: 110px;
+	font-size: 20;
+	margin-top: 5px;
+}
+
+.row {
+	display: flex;
+	justify-content: center;
+}
+
+#bottomPanel {
+	flex: auto;
+	border: 5px solid black; 
+	background-color: #679ACF;
+	margin: 5px;
+	overflow: scroll;
+	height: 300px;
+}
+
+#equationColumn {
+	width:300px;
+	margin: 5 auto;
+}
+
+.equalsSign {
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 5px;
+}
+
+.stepEqual {
+	padding: 5px;
+}
+
+.CTATTextInput {
+	padding: 5px;
+	display: flex;
+}
+
+.leftTextColumn>input[type="text"] {
+	text-align: right;
+}
+
+.rightTextColumn>input[type="text"] {
+	text-align: left;
+}
+
+.CTATTextInput>input[type="text"] {
+    background-color: white;
+}
+
+.CTATComboBox {
+	margin-top: 5px;
+}
+
+.CTATGroupingComponent {
+	display: flex;
+}
+

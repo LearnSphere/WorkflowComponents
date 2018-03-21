@@ -1,0 +1,16 @@
+//Ken's detector component
+
+//to get npm to install webworker package on my windows machine, I had to run:
+npm install --global --production windows-build-tools
+
+//install webworker ability in node. 
+cd /datashop/workflow_components/DetectorTester/
+npm install tiny-worker
+sudo npm install build-tools  -g
+
+
+download node-v8.9.3-linux-x86.tar.xz
+
+tar -xJF node-v8.9.3-linux-x86.tar.xz
+
+sudo mv node-v8.9.3-linux-x86 /usr/lib/

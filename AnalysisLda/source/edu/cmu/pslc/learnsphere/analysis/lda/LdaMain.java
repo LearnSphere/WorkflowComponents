@@ -369,14 +369,10 @@ public class LdaMain extends AbstractComponent {
         sw.close();
         oStream.close();
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else {
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "student-step";
-            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
-        }
+        Integer nodeIndex = 0;
+        Integer fileIndex = 0;
+        String fileType = "student-step";
+        this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
     }
 
 }

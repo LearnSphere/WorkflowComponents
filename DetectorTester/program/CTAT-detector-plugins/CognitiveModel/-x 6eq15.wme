@@ -1,0 +1,48 @@
+(require* wmeTypes "wmeTypes.clp")
+
+(assert (MAIN::initial-fact))   ; probably don't need this, but does not hurt
+(bind ?*n* 1)   ; used to number facts so that a newly asserted fact is never a duplicate
+
+;;-------------------------------------------------------------------------------------
+;;
+;; Template for equations of the form ax + b = c 
+
+;;-------------------------------------------------------------------------------------
+;;
+;; To create new problem of the form solve ax + b = c, only edit this part
+;;
+
+(bind ?a -1)
+(bind ?b 6)
+(bind ?c 15)
+(bind ?var "x")
+
+(bind ?start-left-str "-x + 6")    ; this should be literally what is in the interface in the start state
+(bind ?start-right-str "15")       ; ditto
+
+
+;;-------------------------------------------------------------------------------------
+;;
+;; Create facts representing the equation
+;;
+
+(bind ?ax-term (assert (simple-term (coeff ?a)(var ?var))))
+(bind ?b-term (assert (simple-term (coeff ?b))))
+(bind ?c-term (assert (simple-term (coeff ?c))))
+(bind ?left-expr (assert (expr (terms ?ax-term ?b-term))))
+(bind ?right-expr (assert (expr (terms ?c-term))))
+(bind ?eq (assert (equation (sides ?left-expr ?right-expr))))
+
+;;-------------------------------------------------------------------------------------
+;;
+;; Now store equation in problem fact, which is created in productionRules.pr (because
+;;    the interface facts are the same for every problem)
+;;
+
+(modify ?this-problem (cur-equation ?eq))
+
+(bind ?start-left (assert (interface-element (name startLeft)(value ?start-left-str))))
+(bind ?start-right (assert (interface-element (name startRight)(value ?start-right-str))))
+(bind ?start-line (assert (line (solution-steps ?start-left ?start-right))))
+
+(modify ?this-problem (closed-lines ?start-line))  ; this is for the reorder rule

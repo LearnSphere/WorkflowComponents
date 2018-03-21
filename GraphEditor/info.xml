@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GraphEditor</url>
+
+<date>2017-09-19</date>
+
+<abstract>The <b>Graph Editor</b> has an optional input for a tetrad graph.  In this component, one can edit an already existing graph (using the graph as input), or create an entirely new graph.  Specify which nodes to add and which edges to add between these nodes. 
+<br/><url><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a></url>
+</abstract>
+
+<description></description>
+
+<inputs>
+tetrad-graph (optional)
+</inputs>
+
+<outputs>
+<b>tetrad-graph</b>
+</outputs>
+
+
+</info>

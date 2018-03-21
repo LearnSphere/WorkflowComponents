@@ -1,0 +1,255 @@
+html {
+	margin: 0px; 
+}
+
+body { 
+	margin: 0px; 
+}
+
+#container {
+	display: flex; 
+	flex-flow: column;
+	width: 900px; 
+	height: 500px; 
+	border: 5px solid black; 
+	background-color: #D1E8C5;
+}
+
+#topPanel {
+	display: flex;
+	flex: none;
+	padding: 5px;
+}
+
+#HintWindow {
+	flex: auto;
+}
+
+#topRightPanel {
+	display: flex;
+	margin-left: 5px;
+	flex-flow: column;
+	justify-content: space-between;
+}
+
+#solve1Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl1Group{
+	margin-left: 25px;
+}
+
+#solve2Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl2Group{
+	margin-left: 25px;
+}
+
+#solve3Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl3Group{
+	margin-left: 25px;
+}
+
+#solve4Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl4Group{
+	margin-left: 25px;
+}
+
+#solve5Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl5Group{
+	margin-left: 25px;
+}
+
+#solve6Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl6Group{
+	margin-left: 25px;
+}
+
+#solve7Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl7Group{
+	margin-left: 25px;
+}
+
+#solve8Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl8Group{
+	margin-left: 25px;
+}
+
+#solve9Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl9Group{
+	margin-left: 25px;
+}
+
+#solve10Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl10Group{
+	margin-left: 25px;
+}
+
+#solve11Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl11Group{
+	margin-left: 25px;
+}
+
+#solve12Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl12Group{
+	margin-left: 25px;
+}
+
+#solve13Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl13Group{
+	margin-left: 25px;
+}
+
+#solve14Group{
+	margin-left: 160px;
+	margin-right: 0px;
+}
+
+#postExpl14Group{
+	margin-left: 25px;
+}
+
+
+#middlePanel {
+	display: flex;
+	flex: none;
+}
+
+.problemText {
+	flex: 1;
+	padding: 5px;
+	margin-left: 10px;
+	font-size: 20;
+	font-weight: 900;
+	text-align: left;
+	color: darkblue;
+	font-family: "Verdana", sans-serif;
+}
+
+.alignProblem {
+	width: 108px;
+}
+
+#startLeft {
+	text-align: right;
+	width: 110px;
+	font-size: 20;
+	margin-top: 45px;
+	position: relative;
+	left: -170px; 
+}
+
+#startRight {
+	text-align: left;
+	width: 110px;
+	font-size: 20;
+	margin-top: 45px;
+	position: relative;
+	left: -130px; 
+}
+
+.row {
+	display: flex;
+	justify-content: center;
+}
+
+#bottomPanel {
+	flex: auto;
+	border: 5px solid black; 
+	background-color: #679ACF;
+	margin: 5px;
+	overflow: scroll;
+	height: 300px;
+}
+
+#equationColumn {
+	width:300px;
+	margin: 5 auto;
+}
+
+.equalsSign {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 45px;
+	position: relative;
+	left: -155px; 
+}
+
+.stepEqual {
+	padding: 5px;
+}
+
+.CTATTextInput {
+	padding: 5px;
+	display: flex;
+}
+
+.leftTextColumn>input[type="text"] {
+	text-align: right;
+}
+
+.rightTextColumn>input[type="text"] {
+	text-align: left;
+}
+
+.CTATTextInput>input[type="text"] {
+    background-color: white;
+}
+
+.CTATComboBox {
+	margin-top: 5px;
+}
+
+.CTATGroupingComponent {
+	display: flex;
+}
+

@@ -40,14 +40,17 @@ public class DescriptiveMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/factor.html");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/factorbyfactor.html");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/histogram.png");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/histogramfff.png");
+            File file3 = new File(outputDirectory.getAbsolutePath() + "/factorbyfactorbyfactor.html");
+            File file4 = new File(outputDirectory.getAbsolutePath() + "/histogramff.png");
+            File file5 = new File(outputDirectory.getAbsolutePath() + "/histogramf.png");
 
-            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
+            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file4 != null && file4.exists() && file5 != null && file5.exists()) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
@@ -63,6 +66,21 @@ public class DescriptiveMain extends AbstractComponent {
                 Integer fileIndex2 = 0;
                 String label2 = "image";
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
+                
+                Integer nodeIndex3 = 3;
+                Integer fileIndex3 = 0;
+                String label3 = "html";
+                this.addOutputFile(file3, nodeIndex3, fileIndex3, label3);
+                
+                Integer nodeIndex4 = 4;
+                Integer fileIndex4 = 0;
+                String label4 = "image";
+                this.addOutputFile(file4, nodeIndex4, fileIndex4, label4);
+                
+                 Integer nodeIndex5 = 5;
+                Integer fileIndex5 = 0;
+                String label5 = "image";
+                this.addOutputFile(file5, nodeIndex5, fileIndex5, label5);
                 
             } else {
                 this.addErrorMessage("An unknown error has occurred with the Descriptive component.");

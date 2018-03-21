@@ -87,6 +87,9 @@ if __name__ == "__main__":
     parser.add_argument('-kc_model', type=str,
                        help='the KC model that you would like to use; e.g., "Item"')
 
+    parser.add_argument('-userId', type=str,
+                       help='placeholder for WF', default='')
+
 
     args = parser.parse_args()
 
@@ -133,6 +136,12 @@ if __name__ == "__main__":
     outfilePath = args.workingDir + "/output.txt"
     outfile = open(outfilePath, 'w')
     outfile.write("\t".join(headers) + "\n")
+    cntRowMissOpp = 0
     for i, row in enumerate(original_step_data):
-        d = row + ["%0.4f" % yHat[i]]
+        oppCell = row[len(row)-1]
+        if oppCell is None or oppCell == "":
+            cntRowMissOpp += 1;
+            d = row + [""]
+        else:
+            d = row + ["%0.4f" % yHat[i-cntRowMissOpp]]
         outfile.write("\t".join(d) + "\n")

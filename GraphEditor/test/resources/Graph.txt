@@ -1,0 +1,12 @@
+Graph Nodes:
+Pretest,activities_started,play,T.Quiz,Fina__Exam,non_activities_pageview
+
+Graph Edges:
+1. Pretest --> T.Quiz
+2. Pretest --> activities_started
+3. T.Quiz --> Fina__Exam
+4. activities_started --> T.Quiz
+5. non_activities_pageview --> T.Quiz
+6. non_activities_pageview --> activities_started
+7. play --> T.Quiz
+8. play --- non_activities_pageview

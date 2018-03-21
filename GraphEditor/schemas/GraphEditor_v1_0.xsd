@@ -1,0 +1,223 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tetrad-graph" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tetrad-graph" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+      <!-- EDGES -->
+      <!--<xs:element type="conjunctive" name="operation1Dependency" ls:dependentOption="operation1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="fromNode1Dependency" ls:dependentOption="fromNode1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="toNode1Dependency" ls:dependentOption="toNode1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="edge1Dependency" ls:dependentOption="edge1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
+
+      <xs:element type="conjunctive" name="operation2Dependency" ls:dependentOption="operation2" ls:dependsOn="numEdgeEdits" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="fromNode2Dependency" ls:dependentOption="fromNode2" ls:dependsOn="numEdgeEdits" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="toNode2Dependency" ls:dependentOption="toNode2" ls:dependsOn="numEdgeEdits" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="edge2Dependency" ls:dependentOption="edge2" ls:dependsOn="numEdgeEdits" ls:constraint="gte(2)" />
+
+      <xs:element type="conjunctive" name="operation3Dependency" ls:dependentOption="operation3" ls:dependsOn="numEdgeEdits" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="fromNode3Dependency" ls:dependentOption="fromNode3" ls:dependsOn="numEdgeEdits" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="toNode3Dependency" ls:dependentOption="toNode3" ls:dependsOn="numEdgeEdits" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="edge3Dependency" ls:dependentOption="edge3" ls:dependsOn="numEdgeEdits" ls:constraint="gte(3)" />
+
+      <xs:element type="conjunctive" name="operation4Dependency" ls:dependentOption="operation4" ls:dependsOn="numEdgeEdits" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="fromNode4Dependency" ls:dependentOption="fromNode4" ls:dependsOn="numEdgeEdits" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="toNode4Dependency" ls:dependentOption="toNode4" ls:dependsOn="numEdgeEdits" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="edge4Dependency" ls:dependentOption="edge4" ls:dependsOn="numEdgeEdits" ls:constraint="gte(4)" />
+
+      <xs:element type="conjunctive" name="operation5Dependency" ls:dependentOption="operation5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="fromNode5Dependency" ls:dependentOption="fromNode5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="toNode5Dependency" ls:dependentOption="toNode5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="edge5Dependency" ls:dependentOption="edge5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
+    -->
+
+      <!-- NODES -->
+      <!--<xs:element type="conjunctive" name="nodeOperation1Dependency" ls:dependentOption="nodeOperation1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="nodeType1Dependency" ls:dependentOption="nodeType1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
+      <xs:element type="conjunctive" name="nodeName1Dependency" ls:dependentOption="nodeName1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
+
+      <xs:element type="conjunctive" name="nodeOperation2Dependency" ls:dependentOption="nodeOperation2" ls:dependsOn="numNodeEdits" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="nodeType2Dependency" ls:dependentOption="nodeType2" ls:dependsOn="numNodeEdits" ls:constraint="gte(2)" />
+      <xs:element type="conjunctive" name="nodeName2Dependency" ls:dependentOption="nodeName2" ls:dependsOn="numNodeEdits" ls:constraint="gte(2)" />
+
+      <xs:element type="conjunctive" name="nodeOperation3Dependency" ls:dependentOption="nodeOperation3" ls:dependsOn="numNodeEdits" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="nodeType3Dependency" ls:dependentOption="nodeType3" ls:dependsOn="numNodeEdits" ls:constraint="gte(3)" />
+      <xs:element type="conjunctive" name="nodeName3Dependency" ls:dependentOption="nodeName3" ls:dependsOn="numNodeEdits" ls:constraint="gte(3)" />
+
+      <xs:element type="conjunctive" name="nodeOperation4Dependency" ls:dependentOption="nodeOperation4" ls:dependsOn="numNodeEdits" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="nodeType4Dependency" ls:dependentOption="nodeType4" ls:dependsOn="numNodeEdits" ls:constraint="gte(4)" />
+      <xs:element type="conjunctive" name="nodeName4Dependency" ls:dependentOption="nodeName4" ls:dependsOn="numNodeEdits" ls:constraint="gte(4)" />
+
+      <xs:element type="conjunctive" name="nodeOperation5Dependency" ls:dependentOption="nodeOperation5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="nodeType5Dependency" ls:dependentOption="nodeType5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="nodeName5Dependency" ls:dependentOption="nodeName5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />-->
+
+    </xs:choice>
+  </xs:complexType>
+
+   <xs:simpleType name="edgeOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Add_Edge" />
+      <xs:enumeration value="Remove_Edge"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="nodeOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Add_Node" />
+      <xs:enumeration value="Remove_Node"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="edgeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Directed" />
+      <xs:enumeration value="Bidirected"/>
+      <xs:enumeration value="Undirected" />
+      <xs:enumeration value="Partially_Oriented"/>
+      <xs:enumeration value="Nondirected" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="nodeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Variable" />
+      <xs:enumeration value="Latent_Variable"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+      <xs:element type="TetradGraphEditor" name="TetradGraphEditor" id="TetradGraphEditor" default="0" />
+
+      <!-- EDGES -->
+      <!--<xs:element type="xs:integer" name="numEdgeEdits" id="Number_of_edge_edits" default="0" />
+
+      <xs:element type="edgeOperationType" name="operation1" id="_1_Operation" default="Add_Edge" />
+      <xs:element type="xs:string" name="fromNode1" id="_1_From_Node" default="" />
+      <xs:element type="xs:string" name="toNode1" id="_1_To_Node" default="" />
+      <xs:element type="edgeType" name="edge1" id="_1_Edge_Type" default="Directed" />
+
+      <xs:element type="edgeOperationType" name="operation2" id="_2_Operation" default="Add_Edge" />
+      <xs:element type="xs:string" name="fromNode2" id="_2_From_Node" default="" />
+      <xs:element type="xs:string" name="toNode2" id="_2_To_Node" default="" />
+      <xs:element type="edgeType" name="edge2" id="_2_Edge_Type" default="Directed" />
+
+      <xs:element type="edgeOperationType" name="operation3" id="_3_Operation" default="Add_Edge" />
+      <xs:element type="xs:string" name="fromNode3" id="_3_From_Node" default="" />
+      <xs:element type="xs:string" name="toNode3" id="_3_To_Node" default="" />
+      <xs:element type="edgeType" name="edge3" id="_3_Edge_Type" default="Directed" />
+
+      <xs:element type="edgeOperationType" name="operation4" id="_4_Operation" default="Add_Edge" />
+      <xs:element type="xs:string" name="fromNode4" id="_4_From_Node" default="" />
+      <xs:element type="xs:string" name="toNode4" id="_4_To_Node" default="" />
+      <xs:element type="edgeType" name="edge4" id="_4_Edge_Type" default="Directed" />
+
+      <xs:element type="edgeOperationType" name="operation5" id="_5_Operation" default="Add_Edge" />
+      <xs:element type="xs:string" name="fromNode5" id="_5_From_Node" default="" />
+      <xs:element type="xs:string" name="toNode5" id="_5_To_Node" default="" />
+      <xs:element type="edgeType" name="edge5" id="_5_Edge_Type" default="Directed" />
+      -->
+      <!-- NODES -->
+     <!-- <xs:element type="xs:integer" name="numNodeEdits" id="Number_of_Node_Edits" default="0" />
+
+      <xs:element type="nodeOperationType" name="nodeOperation1" id="_1_Node_Operation" default="Add_Node" />
+      <xs:element type="nodeType" name="nodeType1" id="_1_Node_Type" default="Variable" />
+      <xs:element type="xs:string" name="nodeName1" id="_1_Node_Name" default="" />
+
+      <xs:element type="nodeOperationType" name="nodeOperation2" id="_2_Node_Operation" default="Add_Node" />
+      <xs:element type="nodeType" name="nodeType2" id="_2_Node_Type" default="Variable" />
+      <xs:element type="xs:string" name="nodeName2" id="_2_Node_Name" default="" />
+
+      <xs:element type="nodeOperationType" name="nodeOperation3" id="_3_Node_Operation" default="Add_Node" />
+      <xs:element type="nodeType" name="nodeType3" id="_3_Node_Type" default="Variable" />
+      <xs:element type="xs:string" name="nodeName3" id="_3_Node_Name" default="" />
+
+      <xs:element type="nodeOperationType" name="nodeOperation4" id="_4_Node_Operation" default="Add_Node" />
+      <xs:element type="nodeType" name="nodeType4" id="_4_Node_Type" default="Variable" />
+      <xs:element type="xs:string" name="nodeName4" id="_4_Node_Name" default="" />
+
+      <xs:element type="nodeOperationType" name="nodeOperation5" id="_5_Node_Operation" default="Add_Node" />
+      <xs:element type="nodeType" name="nodeType5" id="_5_Node_Type" default="Variable" />
+      <xs:element type="xs:string" name="nodeName5" id="_5_Node_Name" default="" />
+-->
+      <!--<xs:element type="conversionType" name="conversion" id="conversion" default="Convert_to_Covariance_Matrix" />-->
+      <!--<xs:element type="MultiFileInputHeader" name="varsToStandardize" id="Variables_to_standardize" default=".*" />-->
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OutputComparator</url>
+<date>2018-01-14</date>
+<abstract>The <b>Output Comparator</b> component can compare up to 4 files of type XML, properties or tab-delimited.</abstract>
+<description>This component allows you to compare files of XML, properties or tabular format. Output file contains variables lined up next to each other so the values can be compared clearly.</description>
+
+<inputs><ul>
+<li>Four input files: 2 are required. Allowed format are XML, properties and tabular.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains comparison result.
+</outputs>
+
+<options>
+ <ul>
+<li>File format: XML, properties file or tabular</li>
+<li>Case sensitive: only pertinent for tabular format</li>
+<li>Remove empty values: only pertinent for tablular format</li>
+<li>File1 column to match: only pertinent for tablular format</li>
+<li>File1 column to compare: only pertinent for tablular format</li>
+<li>File2 column to match: only pertinent for tablular format</li>
+<li>File2 column to compare: only pertinent for tablular format</li>
+<li>File3 column to match: only pertinent for tablular format</li>
+<li>File3 column to compare: only pertinent for tablular format</li>
+<li>File4 column to match: only pertinent for tablular format</li>
+<li>File4 column to compare: only pertinent for tablular format</li>
+</ul>
+</options>
+
+</info>

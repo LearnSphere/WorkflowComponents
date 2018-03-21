@@ -54,26 +54,29 @@ public class LsaMain extends AbstractComponent {
             lsa = new LSAUtil();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage("Failed to initialize LSAUtil.");
         }
+
         //loding semantic space to the program from given directory
+        Boolean spaceLoaded = false;
         try {
-            //lsa.loadSpace(this.getToolDir() + "/program");
-                //lsa.loadSpace("C:\\SemanticSpace\\"+corpus);  
-        	lsa.loadSpace("/datashop/SemanticSpace/"+corpus);  
+            if (lsa != null) {
+                lsa.loadSpace("/datashop/SemanticSpace/"+corpus);
+                spaceLoaded = true;
+            }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage(e.getMessage());
         }
         //Generating required out
         try {
-            lSAsimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc);
-
+            if (spaceLoaded) {
+                lSAsimilarityCalc(inputFile, col1, col2, lag, returnvals, simfunc);
+            }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.addErrorMessage(e.getMessage());
         }
-
 
         System.out.println(this.getOutput());
 
@@ -98,7 +101,7 @@ public class LsaMain extends AbstractComponent {
         }
 
         File generatedFile = this.createFile(
-                "Step-values-with-predictions", ".txt");
+                "LSA-predictions", ".txt");
 
         FileWriter oStream = new FileWriter(generatedFile);
         BufferedWriter sw = new BufferedWriter(oStream);
@@ -172,7 +175,7 @@ public class LsaMain extends AbstractComponent {
                         } else if(simfunc.equals("euclidean")){
                             x = lsa.getEuclidean(term1, term2);
                         }else {
-                            this.addErrorMessage("Requested Similarity function not available");  
+                            this.addErrorMessage("Requested Similarity function not available");
                             return;
                         }
 
@@ -197,7 +200,7 @@ public class LsaMain extends AbstractComponent {
                     this.addErrorMessage("Anon Student Id required for this operation");
                     return;
                 }
-                
+
                 List<String> allLines = new ArrayList<String>();
                 List<String> lines1 = new ArrayList<String>();
                 List<String> lines2 = new ArrayList<String>();
@@ -285,16 +288,16 @@ public class LsaMain extends AbstractComponent {
             if (indexCol2 == -1) {
                 indexCol2 = indexCol1;
             }
-            
+
             //Use HashSet for unique value
 
             //HashSet<String> lin1 = new HashSet<String>();
             //HashSet<String> lin2 = new HashSet<String>();
-            
+
             List<String> lin1 = new ArrayList<String>();
             List<String> lin2 = new ArrayList<String>();
 
-            
+
             String line = sr.readLine();
             while (line != null) {
                 line = line.trim();
@@ -315,10 +318,10 @@ public class LsaMain extends AbstractComponent {
                 } catch (Exception e) {
                     term2 = "";
                 }
-                
+
                 if (!term1.equals("") && !lin1.contains(term1))
                     lin1.add(term1);
-                
+
                 if (!term2.equals("") && !lin2.contains(term2))
                     lin2.add(term2);
 
@@ -333,10 +336,10 @@ public class LsaMain extends AbstractComponent {
                 this.addErrorMessage("No entry in given column2");
                 return;
             }
-            
+
             sw.write("\t");
             for (String v : lin2) {
-                sw.write(v +"\t");
+                sw.write("_" + v +"\t");
             }
             sw.newLine();
 
@@ -376,23 +379,19 @@ public class LsaMain extends AbstractComponent {
         sw.close();
         oStream.close();
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else{
-        	if (returnvals.equals("col")){
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "student-step";
-            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
-        	}
-            else if (returnvals.equals("uniqmat"))  {
-	            Integer nodeIndex = 0;
-	            Integer fileIndex = 0;
-	            String fileType = "text";
-	            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
-            }
-            else{this.addErrorMessage("No output Generated for return type: "+returnvals);}
-        }
+		if (returnvals.equals("col")) {
+			Integer nodeIndex = 0;
+			Integer fileIndex = 0;
+			String fileType = "tab-delimited";
+			this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+		} else if (returnvals.equals("uniqmat")) {
+			Integer nodeIndex = 0;
+			Integer fileIndex = 0;
+			String fileType = "tab-delimited";
+			this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+		} else {
+			this.addErrorMessage("No output Generated for return type: "+returnvals);
+		}
 
-}
+    }
 }
