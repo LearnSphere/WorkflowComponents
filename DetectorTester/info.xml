@@ -9,12 +9,14 @@
 
 <date>2017-09-19</date>
 
-<abstract>The <b>DetectorTester</b> component allows users to run a detector on a DataShop dataset and view its output.
+<abstract>The <b>Apply Detector</b> component allows users to run a detector on a DataShop dataset and view its output.
 <br/>
+Users can use one of five existing detectors to analyze their data or they can request permission to upload and run their own JavaScript detector. More information on the detectors can be found here: 
 <a target="_blank" href="https://github.com/d19fe8/CTAT-detector-plugins">Detector Plugin Github</a>
 <br/>
-<b>***Permission from DataShop is needed to use the JavaScript detector file for this component.  Please contact <u>datashop-help@lists.andrew.cmu.edu</u> if you would like to request access to this feature.</b>
-All users may still run the pre-screened detectors in the dropdown on the options pane of this component.
+<br/>
+All users may run any of the pre-screened detectors listed in the dropdown on the options pane of this component.
+<b>Please contact <u>datashop-help@lists.andrew.cmu.edu</u> to request access to use your own detector.</b>
 <br/>
 </abstract>
 
@@ -32,7 +34,13 @@ All users may still run the pre-screened detectors in the dropdown on the option
 <options>
 <b>Use detector from input</b> - Select "Yes" if you would like to use the JavaScript detector file input (second input node) as the detector for this component.  Only select "Yes" if you have access as described above.  Otherwise, select "No" and use one of the detectors from the dropdown below.<br/>
 <b>Detector</b> - Select the detector to use.  All users, regardless of access, are able to use these detectors.
-
+<ul>
+ <li>critical_struggle.js</li>
+ <li>idle.js</li>
+ <li>struggle__moving_average.js</li>
+ <li>student_doing_well__moving_average.js</li>
+ <li>system_misuse.js</li>
+</ul>
 </options>
 
 </info>
