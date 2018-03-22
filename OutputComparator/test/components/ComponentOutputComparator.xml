@@ -71,7 +71,7 @@
       </file>
       </files>
     </input1>
-    <input2>
+    <!-- <input2>
       <component_id>Import-1-x393353</component_id>
       <component_id_human>Import #3</component_id_human>
       <component_type>import</component_type>
@@ -102,7 +102,7 @@
         <index>3</index>
       </file>
       </files>
-    </input3>
+    </input3>-->
    <!--  <input0>
       <component_id>Import-1-x393351</component_id>
       <component_id_human>Import #1</component_id_human>

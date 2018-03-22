@@ -75,7 +75,7 @@
         <xs:element type="FileInputHeader" name="valueColumn" id="Column_to_Match" default=".*" />
   	<xs:element type="trueFalseType" name="caseSensitive" id="Case_Sensitive" default="Yes" />
         <xs:element type="trueFalseType" name="removeNull" id="Remove_Empty_Values" default="Yes" />
-        <xs:element type="xs:string" name="removeValues" id="Values_to_Remove" default="ex: aWord, 0"/>
+        <xs:element type="xs:string" name="removeValues" id="Values_to_Remove_or_Keep" default="ex: aWord, 0"/>
     
     </xs:choice>
   </xs:complexType>

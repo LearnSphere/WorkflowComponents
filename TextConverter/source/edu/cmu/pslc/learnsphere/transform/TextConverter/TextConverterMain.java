@@ -73,28 +73,28 @@ public class TextConverterMain extends AbstractComponent {
                     List<Element> cList = doc.getRootElement().getChildren();
                     logger.info("Found root: " + doc.getRootElement().getName() + " with " + cList.size() + " children.");
                     Iterator<Element> iter = cList.iterator();
-                    HashMap<String, HashMap<String, String>> data = new HashMap<String, HashMap<String, String>>();
+                    List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
                     List<String> colNames = new ArrayList<String>();
                     List<String> rowNames = new ArrayList<String>();
                     while (iter.hasNext()) {
                             Element e = (Element) iter.next();
                             String rowName = e.getName();
+                            rowNames.add(rowName);
                             HashMap<String, String> dataRow = new HashMap<String, String>();
-                            data.put(rowName, dataRow);
-                            if (!rowNames.contains(rowName)) {
-                                    rowNames.add(rowName);
-                                    List<Element> e_cList = e.getChildren();
-                                    Iterator<Element> e_iter = e_cList.iterator();
-                                    while (e_iter.hasNext()) {
-                                            Element sub_e = (Element) e_iter.next();
-                                            String entryKey = sub_e.getName();
-                                            String entryVal = sub_e.getValue();
+                            data.add(dataRow);
+                            List<Element> e_cList = e.getChildren();
+                            Iterator<Element> e_iter = e_cList.iterator();
+                            while (e_iter.hasNext()) {
+                                    Element sub_e = (Element) e_iter.next();
+                                    String entryKey = sub_e.getName();
+                                    String entryVal = sub_e.getValue();
+                                    if (!dataRow.containsKey(entryKey))
                                             dataRow.put(entryKey, entryVal);
-                                            if (!colNames.contains(entryKey))
-                                                    colNames.add(entryKey);
-                                    }
+                                    if (!colNames.contains(entryKey))
+                                            colNames.add(entryKey);
                             }
                     }
+                    
                     //output
                     generatedFile = this.createFile(OUTPUT_FILR_NAME, ".txt");
                     BufferedWriter bw = null;
@@ -108,9 +108,9 @@ public class TextConverterMain extends AbstractComponent {
                                 headers += "\t" + colName;
                             }
                             bw.append(headers + "\n");
-                            //write out content
-                            for (String row : rowNames) {
-                                    HashMap<String, String> rowData = data.get(row);
+                            for (int i = 0; i < rowNames.size(); i++) {
+                                    String row = rowNames.get(i);
+                                    HashMap<String, String> rowData = data.get(i);
                                     for (String colName : colNames) {
                                             if (rowData.containsKey(colName)) {
                                                     row += "\t" + rowData.get(colName);
