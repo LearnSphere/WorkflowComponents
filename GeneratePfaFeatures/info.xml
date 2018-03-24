@@ -4,7 +4,7 @@
 <author>Philip Pavlik
   <email>ppavlik@memphis.edu</email>
 </author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/GeneratePfaFeatures</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GeneratePfaFeatures</url>
 <date>2016-07-14</date>
 <abstract>Performance Factors Analysis (PFA) performs a logistic regression over the "error rate" learning curve data. This component computes the values needed by the Analysis PFA component.</abstract>
 <details>This component computes the data features that are used by the PFA model (Pavlik, Cen, &amp; Koedinger, 2009). This component uses a KC model specified in the options dialog to compute  for each student for each row the number of prior success and failures for the KC used. Also computed is the number of prior trials that are neither success or failures for that KC, but this value is not used in any current models. These 3 features are added as 3 columns of the data<br/><br/> Email the author directly with bug reports for this component.</details>

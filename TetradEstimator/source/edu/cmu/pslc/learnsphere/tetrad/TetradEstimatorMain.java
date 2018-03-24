@@ -62,24 +62,36 @@ public class TetradEstimatorMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-      File file0 = new File(outputDirectory.getAbsolutePath() + "/Graph.txt");
-      File file1 = new File(outputDirectory.getAbsolutePath() + "/BayesIm.txt");
+      File file0 = new File(outputDirectory.getAbsolutePath() + "/Graph.html");
+      File file1 = new File(outputDirectory.getAbsolutePath() + "/ModelStatistics.txt");
+      File file2 = new File(outputDirectory.getAbsolutePath() + "/EstimatorTable.txt");
+      File file3 = new File(outputDirectory.getAbsolutePath() + "/CorrelationMatrix.txt");
 
 
       if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "inline-html";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
         Integer nodeIndex1 = 1;
         Integer fileIndex1 = 0;
         String label1 = "text";
         this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
+
+        Integer nodeIndex2 = 2;
+        Integer fileIndex2 = 0;
+        String label2 = "tab-delimited";
+        this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
+
+        Integer nodeIndex3 = 3;
+        Integer fileIndex3 = 0;
+        String label3 = "text";
+        this.addOutputFile(file3, nodeIndex3, fileIndex3, label3);
       } else {
         errorMessages.add("cannot add output files");
       }

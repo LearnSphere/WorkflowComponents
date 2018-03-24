@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TextConverter</url>
+<date>2018-02-02</date>
+<abstract>The <b>Text Converter</b> component converts various types of text file to other text file types.</abstract>
+<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert a XML file to a tab-delimited text file.</description>
+
+<inputs><ul>
+<li>A text file to be converted.</li>
+</ul></inputs>
+
+<outputs>
+.<ul>
+<li>Text file converted to a new format.</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Input file type, currently only XML is accepted</li>
+<li>Output file type, currently tab-delimited is available</li>
+</ul>
+</options>
+
+</info>

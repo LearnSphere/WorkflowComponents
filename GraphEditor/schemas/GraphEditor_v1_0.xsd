@@ -14,9 +14,9 @@
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:sequence>
+    <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-    </xs:sequence>
+    </xs:all>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
@@ -58,7 +58,7 @@
   <xs:complexType name="option_dependency">
     <xs:choice>
       <!-- EDGES -->
-      <xs:element type="conjunctive" name="operation1Dependency" ls:dependentOption="operation1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
+      <!--<xs:element type="conjunctive" name="operation1Dependency" ls:dependentOption="operation1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
       <xs:element type="conjunctive" name="fromNode1Dependency" ls:dependentOption="fromNode1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
       <xs:element type="conjunctive" name="toNode1Dependency" ls:dependentOption="toNode1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
       <xs:element type="conjunctive" name="edge1Dependency" ls:dependentOption="edge1" ls:dependsOn="numEdgeEdits" ls:constraint="gte(1)" />
@@ -82,9 +82,10 @@
       <xs:element type="conjunctive" name="fromNode5Dependency" ls:dependentOption="fromNode5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
       <xs:element type="conjunctive" name="toNode5Dependency" ls:dependentOption="toNode5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
       <xs:element type="conjunctive" name="edge5Dependency" ls:dependentOption="edge5" ls:dependsOn="numEdgeEdits" ls:constraint="gte(5)" />
+    -->
 
       <!-- NODES -->
-      <xs:element type="conjunctive" name="nodeOperation1Dependency" ls:dependentOption="nodeOperation1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
+      <!--<xs:element type="conjunctive" name="nodeOperation1Dependency" ls:dependentOption="nodeOperation1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
       <xs:element type="conjunctive" name="nodeType1Dependency" ls:dependentOption="nodeType1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
       <xs:element type="conjunctive" name="nodeName1Dependency" ls:dependentOption="nodeName1" ls:dependsOn="numNodeEdits" ls:constraint="gte(1)" />
 
@@ -102,7 +103,7 @@
 
       <xs:element type="conjunctive" name="nodeOperation5Dependency" ls:dependentOption="nodeOperation5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />
       <xs:element type="conjunctive" name="nodeType5Dependency" ls:dependentOption="nodeType5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />
-      <xs:element type="conjunctive" name="nodeName5Dependency" ls:dependentOption="nodeName5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />
+      <xs:element type="conjunctive" name="nodeName5Dependency" ls:dependentOption="nodeName5" ls:dependsOn="numNodeEdits" ls:constraint="gte(5)" />-->
 
     </xs:choice>
   </xs:complexType>
@@ -140,8 +141,11 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+      <xs:element type="TetradGraphEditor" name="TetradGraphEditor" id="TetradGraphEditor" default="0" />
+
       <!-- EDGES -->
-      <xs:element type="xs:integer" name="numEdgeEdits" id="Number_of_edge_edits" default="0" />
+      <!--<xs:element type="xs:integer" name="numEdgeEdits" id="Number_of_edge_edits" default="0" />
 
       <xs:element type="edgeOperationType" name="operation1" id="_1_Operation" default="Add_Edge" />
       <xs:element type="xs:string" name="fromNode1" id="_1_From_Node" default="" />
@@ -167,9 +171,9 @@
       <xs:element type="xs:string" name="fromNode5" id="_5_From_Node" default="" />
       <xs:element type="xs:string" name="toNode5" id="_5_To_Node" default="" />
       <xs:element type="edgeType" name="edge5" id="_5_Edge_Type" default="Directed" />
-
+      -->
       <!-- NODES -->
-      <xs:element type="xs:integer" name="numNodeEdits" id="Number_of_Node_Edits" default="0" />
+     <!-- <xs:element type="xs:integer" name="numNodeEdits" id="Number_of_Node_Edits" default="0" />
 
       <xs:element type="nodeOperationType" name="nodeOperation1" id="_1_Node_Operation" default="Add_Node" />
       <xs:element type="nodeType" name="nodeType1" id="_1_Node_Type" default="Variable" />
@@ -190,7 +194,7 @@
       <xs:element type="nodeOperationType" name="nodeOperation5" id="_5_Node_Operation" default="Add_Node" />
       <xs:element type="nodeType" name="nodeType5" id="_5_Node_Type" default="Variable" />
       <xs:element type="xs:string" name="nodeName5" id="_5_Node_Name" default="" />
-
+-->
       <!--<xs:element type="conversionType" name="conversion" id="conversion" default="Convert_to_Covariance_Matrix" />-->
       <!--<xs:element type="MultiFileInputHeader" name="varsToStandardize" id="Variables_to_standardize" default=".*" />-->
     </xs:choice>

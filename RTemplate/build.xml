@@ -36,9 +36,9 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/export/RTemplate/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/RTemplate/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.export.RTemplate.RTemplate" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.RTemplate.RTemplate" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -80,7 +80,7 @@
     </target>
 
     <target name="runComponent" depends="clean, compile, dist" description="executes RTemplate">
-        <java classname="edu.cmu.pslc.learnsphere.export.RTemplate.RTemplate" fork="true">
+        <java classname="edu.cmu.pslc.learnsphere.analysis.RTemplate.RTemplate" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
             <arg value="${basedir}/test/components/RTemplate.xml" />

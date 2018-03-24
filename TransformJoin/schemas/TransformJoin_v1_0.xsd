@@ -89,8 +89,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="FileInputHeader" name="file1ColumnName" id="File_1_Column_Name" default=".*" />
-      <xs:element type="FileInputHeader" name="file2ColumnName" id="File_2_Column_Name" default=".*" />
+      <xs:element type="FileInputHeader" name="file1ColumnName" id="File_1_Column_Name" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0" />
+      <xs:element type="FileInputHeader" name="file2ColumnName" id="File_2_Column_Name" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="0"  />
       <xs:element type="joinType" name="join" id="Join_Type" default="inner" />
       <xs:element type="xs:boolean" name="caseSensitive" id="Case_Sensitive" default="false" />
       <xs:element type="xs:string" name="delimiterPattern" id="Delimiter_Pattern" default="\t" />

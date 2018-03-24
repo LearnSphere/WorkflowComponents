@@ -11,7 +11,9 @@
             <from>ComponentStudentStep</from>
         </connection>
     </connections>
-    <options/>
+    <options>
+        <dummyOption>silentBobStrikesAgain</dummyOption>
+    </options>
     <inputs>
     <input0>
       <component_id>ComponentStudentStep</component_id>

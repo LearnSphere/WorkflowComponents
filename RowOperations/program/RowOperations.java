@@ -35,6 +35,7 @@ import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
 import edu.cmu.tetrad.regression.*;
 import edu.cmu.tetrad.graph.*;
+import edu.cmu.tetrad.util.RandomUtil;
 import edu.cmu.tetrad.util.*;
 import edu.cmu.tetradapp.model.*;
 import edu.cmu.tetradapp.model.datamanip.*;
@@ -112,33 +113,39 @@ public class RowOperations {
           fWriter = new FileWriter(outputFile);
           bWriter = new BufferedWriter(fWriter);
 
-          char[] chars = fileToCharArray(inputFile);
-
-          DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(4);
-          reader.setDelimiter(DelimiterType.TAB);
-
-          DataSet data = reader.parseTabular(chars);
-
-          addToDebugMessages("parsed data: \n" + data.toString().substring(0,500));
-
           String convertedData = "";
           DataSet newData = null;
 
           switch ( operation ) {
           case "Bootstrap_Sample":
+            /* The tetrad implementation will manipulate data
             BootstrapSampler bootstrapper = new BootstrapSampler();
             String t = cmdParams.get("-sampleSize");
             int sampleSize = Integer.parseInt(t);
             newData = bootstrapper.sample(data, sampleSize);
-            convertedData = newData.toString();
+            convertedData = newData.toString();*/
+            String t = cmdParams.get("-sampleSize");
+            int sampleSize = Integer.parseInt(t);
+            convertedData = bootstrapData(inputFile, sampleSize);
             break;
           case "Permute_Rows":
+            /* The tetrad implementation will manipulate data
             newData = data.copy();
             newData.permuteRows();
-            convertedData = newData.toString();
+            convertedData = newData.toString();*/
+            convertedData = permuteRows(inputFile);
             break;
           case "First_Differences":
+            char[] chars = fileToCharArray(inputFile);
+
+            DataReader reader = new DataReader();
+            reader.setMaxIntegralDiscrete(4);
+            reader.setDelimiter(DelimiterType.TAB);
+
+            DataSet data = reader.parseTabular(chars);
+
+            addToDebugMessages("parsed data: \n" + data.toString().substring(0,500));
+
             DataWrapper dw = new DataWrapper(data);
             FirstDifferencesWrapper differenceWrapper = 
                 new FirstDifferencesWrapper(dw, new Parameters());
@@ -149,12 +156,13 @@ public class RowOperations {
             }
             newData = (DataSet)(dmList.get(0));
             convertedData = newData.toString();
+            convertedData = convertedData.replaceFirst("\n", "");
             break;
           }
 
           convertedData = convertedData.replaceAll("\n\n","\n");
 
-          bWriter.append( convertedData.replaceFirst("\n", "") );
+          bWriter.append( convertedData );
           bWriter.close();
 
         } catch (IOException e) {
@@ -174,6 +182,85 @@ public class RowOperations {
     System.setErr(sysErr);
 
   }
+
+  private static String bootstrapData(File inputFile, int samples) {
+    ArrayList<String> rows = new ArrayList<String>();
+    String header = null;
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(inputFile));
+      boolean firstRow = true;
+      while (br.ready()) {
+        if (firstRow) {
+          header = br.readLine();
+          firstRow = false;
+          continue;
+        }
+        rows.add(br.readLine());
+      }
+    } catch (IOException e) {
+      addToErrorMessages("Couldn't read inputFile while bootrapping the data. " + e.toString());
+    }
+
+    ArrayList<String> bootstrappedData = new ArrayList<String>();
+    int datasetSize = rows.size();
+    for (int row = 0; row < samples; row++) {
+      int index = RandomUtil.getInstance().nextInt(datasetSize);
+      
+      bootstrappedData.add(rows.get(index));
+    }
+    
+    StringBuilder buf = new StringBuilder();
+    buf.append(header);
+    buf.append("\n");
+    for (int i = 0; i < samples; i++) {
+      buf.append(bootstrappedData.get(i));
+      if (i != samples - 1) {
+        buf.append("\n");
+      }
+    }
+
+    return buf.toString();
+  }
+
+  private static String permuteRows(File inputFile) {
+    ArrayList<String> rowsOriginal = new ArrayList<String>();
+    String header = null;
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(inputFile));
+      boolean firstRow = true;
+      while (br.ready()) {
+        if (firstRow) {
+          header = br.readLine();
+          firstRow = false;
+          continue;
+        }
+        rowsOriginal.add(br.readLine());
+      }
+    } catch (IOException e) {
+      addToErrorMessages("Couldn't read inputFile while permuting the data. " + e.toString());
+    }
+
+    ArrayList<String> rowsPermuted = new ArrayList<String>();
+    int datasetSize = rowsOriginal.size();
+    for (int i = 0; i < datasetSize; i++) {
+      int randInd = RandomUtil.getInstance().nextInt(rowsOriginal.size());
+
+      rowsPermuted.add(rowsOriginal.remove(randInd));
+    }
+
+    StringBuilder buf = new StringBuilder();
+    buf.append(header);
+    buf.append("\n");
+    for (int i = 0; i < datasetSize; i++) {
+      buf.append(rowsPermuted.get(i));
+      if (i != datasetSize - 1) {
+        buf.append("\n");
+      }
+    }
+
+    return buf.toString();
+  }
+
   private static char[] fileToCharArray(File file) {
     try {
       FileReader reader = new FileReader(file);

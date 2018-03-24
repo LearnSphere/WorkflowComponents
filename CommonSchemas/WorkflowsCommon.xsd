@@ -47,6 +47,17 @@
 	<xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="TetradGraphEditor" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="TetradKnowledge" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="DetectorTester" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
 
 <xs:simpleType name="FileOptionHeader" >
    <xs:restriction base="xs:string" />
@@ -65,5 +76,8 @@
 <xs:simpleType name="conjunctive">
   <xs:restriction base="xs:string" />
 </xs:simpleType>
+
+<xs:attribute name="inputNodeIndex" type="xs:string" />
+<xs:attribute name="inputFileIndex" type="xs:string" />
 
 </xs:schema>

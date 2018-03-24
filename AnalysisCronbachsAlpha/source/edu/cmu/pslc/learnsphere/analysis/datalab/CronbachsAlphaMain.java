@@ -66,7 +66,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
                 this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
 
         } catch (Exception e) {
-            String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e; 
+            String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e;
             logger.info(msg);
             this.addErrorMessage(msg);
         }
@@ -76,9 +76,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
         // If we haven't seen any errors yet...
         if (this.errorMessages.size() == 0) {
-            if (this.isCancelled()) {
-                this.addErrorMessage("Cancelled workflow during component execution.");
-            } else if (outputFile == null) {
+            if (outputFile == null) {
                 this.addErrorMessage("Failed to create output Cronbach's alpha file.");
             } else {
                 Integer nodeIndex = 0;
@@ -117,7 +115,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
         // Java try-with-resources
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-                
+
                 // Write values to export
                 Double[] cronbachValues = getCronbachValues(data);
                 for (int i = 0; i < numItems; i++) {
@@ -145,7 +143,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
      * @param data Array2DRowRealMatrix
      * @return double[] with n+1 values where n is the number of columns of data.
      *  The first value is for the whole set, the rest is for eliminating each column
-     * 
+     *
      */
     private Double[] getCronbachValues (Array2DRowRealMatrix data) {
         int allRowCnt = data.getRowDimension();
@@ -327,7 +325,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
                 returnValues_D[i] = returnValues[i];
             }
         }
-                
+
         return returnValues_D;
     }
 

@@ -26,6 +26,16 @@ public class ExportZipMain extends AbstractComponent {
         super();
     }
 
+    @Override
+    protected void processOptions() {
+
+    }
+
+    @Override
+    protected void parseOptions() {
+
+    }
+
 
     @Override
     /**
@@ -57,11 +67,7 @@ public class ExportZipMain extends AbstractComponent {
      */
     @Override
     protected Boolean test() {
-        Boolean passing = false;
-        if (this.getAttachments(0) != null && !this.getAttachments(0).isEmpty()) {
-            passing = true;
-        }
-        return passing;
+        return true;
     }
 
 

@@ -43,13 +43,13 @@ public class PFAMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction file output.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/random effect parameters.txt");
-            File file3 = new File(outputDirectory.getAbsolutePath() + "/model result values.xml");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/transaction_file_output.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/random_effect_parameters.txt");
+            File file3 = new File(outputDirectory.getAbsolutePath() + "/model_result_values.xml");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
@@ -67,7 +67,7 @@ public class PFAMain extends AbstractComponent {
                 Integer fileIndex2 = 0;
                 String label2 = "tab-delimited";
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
-                
+
                 Integer nodeIndex3 = 3;
                 Integer fileIndex3 = 0;
                 String label3 = "text";

@@ -1,0 +1,83 @@
+<html>
+<head>
+
+<script src="Assets/papaparse.min.js"></script>
+<script src="Test_Rig.js"></script>
+<link rel="stylesheet" href="Assets/Test_Rig.css"></link>
+
+<script>
+	parseConfig = {
+					delimiter: "",	// auto-detect
+					newline: "",	// auto-detect
+					quoteChar: '"',
+					header: false,
+					dynamicTyping: false,
+					preview: 0,
+					encoding: "",
+					worker: false,
+					comments: false,
+					step: function(results, parser) {
+							simulateDataStream(results,parser)
+						},
+					complete: undefined,
+					error: undefined,
+					download: false,
+					skipEmptyLines: false,
+					chunk: undefined,
+					fastMode: undefined,
+					beforeFirstChunk: undefined,
+					withCredentials: undefined
+				};
+
+	function runSimulation(){
+		//update detector list with user-selected values
+		//...
+		inputFilePath = document.getElementById('fileItem').files[0];
+		console.log(inputFilePath);
+		Papa.parse(inputFilePath, parseConfig);
+	}
+
+	function changeColor(str){
+		document.getElementById(str).style.background='#000000';
+	}
+</script>
+
+</head>
+
+<body>
+
+	<div class=outer-block><center><b><p  style="font-size:22px">CTAT+TutorShop<br> Detector Design Tools<p></b>
+	<div class=inner-block>
+	<p style="font-size:16px"><b>1. Import</b></p>
+	<label id="one" for="fileItem" class="myButton" onclick="changeColor('one')">Select dataset</b> <input id="fileItem" type="file" style="display:none" /></label>
+	
+	<br><br>
+	<b><label id="two" for="detectorItem" class="myButton" onclick="changeColor('two')">Select detectors</b> <br><br><input id="detectorItem" type="file" multiple style="display:none" /></label></div>
+
+	<br>
+	
+	<div class=inner-block>
+	<p style="font-size:16px"><b>2. Analyze</b></p>
+	<input id="runButton" class="myButton" type="button" value="Generate detector logs" onclick="runSimulation();" />
+	<br><br>
+	<input id="ReplayButton" class="myButton" type="button" value="Student replay" onclick="" />  
+	<input id="SPACLEButton" class="myButton"  type="button" value="Classroom replay (SPACLE)" onclick="" />
+	</div>
+
+	<br>
+
+
+	<div class=inner-block>
+	<p style="font-size:16px"><b>3. Export</b></p>
+	<center><a href='#' class="myButton"
+        onclick='downloadCSV({ filename: "output.csv" });'
+    ><b>Download CSV</b></a></center>
+	</div>
+
+	</div>
+
+
+</body>
+
+
+</html>

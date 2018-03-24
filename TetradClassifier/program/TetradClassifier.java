@@ -154,7 +154,7 @@ public class TetradClassifier {
           reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           DataSet testData = reader.parseTabular(chars);
-          System.out.println("loaded data");
+          addToDebugMessages("loaded data");
 
           //Ensure both data sets have same variables
           List<String> trainVars = trainData.getVariableNames();
@@ -307,19 +307,15 @@ public class TetradClassifier {
               scStr += sc + ",";
             }
 
-            //addToDebugMessages(scStr);
-            addToDebugMessages("inCategory " + inCategory.length);
-            addToDebugMessages("1 score length " + scores.length);
             RocCalculator rocc =
                     new RocCalculator(scores, inCategory, RocCalculator.ASCENDING);
-            addToDebugMessages("1.3");
+            
             double area1 = rocc.getAuc();
-            addToDebugMessages("1.5");
+            
             double[][] points = rocc.getScaledRocPlot();
-            addToDebugMessages("1.6");
+            
             double area = rocc.getAuc();
             String auc = area + "";
-            addToDebugMessages("1.75");
 
             String rocData = "[";
             int useOnly100Points = Math.max(1,(int)points.length/200);
@@ -338,15 +334,14 @@ public class TetradClassifier {
             }
             rocData += "]";
 
-            addToDebugMessages("2");
 
             String htmlTemplate = programDir + "program/rocCurve.html";
-            //addToDebugMessages(htmlTemplate);
+            
             BufferedReader htmlReader = new BufferedReader(
                 new FileReader(htmlTemplate));
             String line = null;
             while ((line = htmlReader.readLine()) != null) {
-              //addToDebugMessages(line);
+              
                 if (line.contains("INSERTDATAHERE")) {
                     line = line.replaceAll("INSERTDATAHERE", rocData); 
                 }
@@ -538,11 +533,36 @@ public class TetradClassifier {
 
   private static Graph getGraphFromText(BufferedReader b) {
     try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+      
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr.substring(0,100));
+      
+      String [] graphLines = graphStr.split("\n");
+
+
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
       boolean onNodes = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+      //  String line = b.readLine();
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
         if ( !onNodes ) {
           if ( line.contains("Graph Nodes:") ) {
             onNodes = true;
@@ -561,8 +581,10 @@ public class TetradClassifier {
 
       //Get edges
       boolean onEdges = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+       // String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
         if ( !onEdges ) {
           if ( line.contains("Graph Edges:") ) {
             onEdges = true;

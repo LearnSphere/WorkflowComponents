@@ -62,7 +62,18 @@ public class TetradKnowledgeMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    String knowledgeJsonStr = this.getOptionAsString("TetradKnowledge");
+    logger.debug("knowledgeJsonStr: " + knowledgeJsonStr);
+    try {
+      BufferedWriter knowledgeWriter = new BufferedWriter(new FileWriter("knowledgeJsonStr.txt"));
+      knowledgeWriter.append(knowledgeJsonStr);
+      knowledgeWriter.flush();
+      knowledgeWriter.close();
+    } catch (IOException e) {
+      errorMessages.add("coudn't write the knowledge json to file: " + e.toString());
+    }
+
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/Knowledge.txt");
