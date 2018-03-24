@@ -39,15 +39,15 @@
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="tab-delimited" minOccurs="0" />
     </xs:all>
   </xs:complexType>
@@ -71,14 +71,17 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="transaction" />
+      <xs:element ref="file" />
     </xs:choice>
   </xs:complexType>
 
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-     
+    <xs:element type="xs:string" name="oldcol" id="OldCol" default="Studentnumber"/>
+    <xs:element type="xs:string" name="newcol" id="NewCol" default="CF..Cor."/>
+    <xs:element type="xs:string" name="keycol" id="KeyCol" default="Anon.Student.Id"/>
+    <xs:element type="xs:string" name="addcol" id="AddCol" default="Name"/>     
     </xs:choice>
   </xs:complexType>
   
