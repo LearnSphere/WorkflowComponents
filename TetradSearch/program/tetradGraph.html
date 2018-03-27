@@ -113,6 +113,7 @@ var cytContainer = null;
 var isSEM = false;
 
 var isEditor = false;
+
 var childNodeNames = [];
 var childNodeVal = [];
 
@@ -307,18 +308,7 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
 
   //delete selected nodes
   $("#deleteNode").on("click", function (evt){
-    //console.log("deleteing");
-    //console.log(firstSelectedNode);
-    if (firstSelectedNode != null) {
-      $("#to").text("");
-      firstSelectedNode.remove();
-      firstSelectedNode = null;
-    }
-    if (secondSelectedNode != null) {
-      $("#from").text("");
-      secondSelectedNode.remove();
-      secondSelectedNode = null;
-    }
+    deleteNode(evt);
   });
 
   //delete selected edge
@@ -431,6 +421,22 @@ function addNewEdge () {
   if (secondSelectedNode != null) {
     $("#from").text("");
     secondSelectedNode.removeClass("selected");
+    secondSelectedNode = null;
+  }
+}
+
+function deleteNode (evt) {
+  //console.log("deleteing");
+  //console.log(firstSelectedNode);
+  if (firstSelectedNode != null) {
+    $("#to").text("");
+    var id = firstSelectedNode.id();
+    firstSelectedNode.remove();
+    firstSelectedNode = null;
+  }
+  if (secondSelectedNode != null) {
+    $("#from").text("");
+    secondSelectedNode.remove();
     secondSelectedNode = null;
   }
 }
@@ -803,7 +809,7 @@ function getCytContainer() {
         })
       .selector('edge.SEM_edge')
         .css({
-          'display':'none'
+          'visibility': 'hidden'
         }),
 
     
@@ -864,6 +870,11 @@ function graphToString() {
   var edges = cy.edges();
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i].data();
+
+    if (edges[i].hasClass('SEM_edge')) {
+      // Don't write out these fake edges used to draw the graph well with Dagre
+      continue;
+    }
 
     edgeArrow = "-->";
     if (edges[i].hasClass("bidirected")) {
