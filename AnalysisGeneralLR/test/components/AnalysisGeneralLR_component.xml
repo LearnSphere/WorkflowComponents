@@ -1,0 +1,43 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <workflow_id>104</workflow_id>
+    <component_name>AnalysisGeneralLR</component_name>
+    <component_type>transform</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <from>ImportTransaction1</from>
+        </connection>
+        <connection>
+      <from>Import-1-x352396</from>
+    </connection>
+    </connections>
+<options>
+    <k>afmlog</k>
+    <j>afmline</j>
+    <l>memory</l>
+</options>
+    <inputs>
+    <input0>
+      <component_id>Import-1-x084422</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/transactions/ds1465_tx_All_Data_64_2016_0720_222352.txt</file_path>
+          <file_name>ds1465_tx_All_Data_64_2016_0720_222352.txt</file_name>
+          <label>tab-delimited</label>
+        </tab-delimited>
+        
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>

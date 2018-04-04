@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/AnalysisGeneralLR</url>
+<date>2018-04-03</date>
+<abstract>General Logistic Regression (LR) Analysis performs among selected different features under different environment defined by specifying parameters of General LR models</abstract>
+    
+<details> This components used the classic Logistic Regression to analysis the different features from the learning data.Three parameters k,j and i are used for the creation of LR analysis environment. All the produced indators (Deviance Residuals, Coefficients, and Dispersion parameter et al.)and  are also recorded and output. <br/>
+    <br/> Email the author directly with bug reports for this component.</details>
+
+<inputs>
+<b>Transaction export</b>
+</inputs>
+
+<outputs>
+<b>Transaction export for listed with Logistic Regression results </b>
+</outputs>
+
+<options>
+    <k>afmlog</k>-Here, k is defined as "afmlog" by default. Actually, the k can be selected from these following parameters like "afmline","afmlog","afmlogpowdec","afmpowdec","afmexpdec","propdec","logit","line","prop","log",and "expdec". <br/>
+    <j>afmline</j>-Here,j is defined as "afmline" by default. Actually, the j can be selected from these following parameters like "afmline","afmlog","afmlogpowdec","afmpowdec","afmexpdec","propdec","logit","line","prop","log",and "expdec"<br/>
+    <l>memory</l>-Here l is defined as "memory" by default. Actually, the l can be selected from these following parameters like "memory","exmcon",and "3level". <br/>
+</options>
+
+</info>
+
