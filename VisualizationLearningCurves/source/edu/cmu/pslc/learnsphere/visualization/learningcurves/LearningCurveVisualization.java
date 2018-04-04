@@ -679,7 +679,7 @@ public class LearningCurveVisualization {
         StringBuffer sBuffer = new StringBuffer();
         for (String key : lcData.keySet()) {
             lcImage = null;
-            String filePrefix = key.replaceAll(WorkflowHelper.BAD_FILEPATH_CHARS, "_");
+            String filePrefix = key.replaceAll("^a-zA-Z0-9\\-", "_");
             String fileSuffix = ".png";
 
             File imageFile;
