@@ -85,7 +85,6 @@ setwd(workingDirectory)
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 
 #Feature Creation
-val<-val[1:100, ]
   val$CF..Time.<- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%S"))
   val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
   
