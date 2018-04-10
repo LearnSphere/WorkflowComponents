@@ -45,6 +45,7 @@
 	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
 
+<xs:element name="lightside-model" substitutionGroup="file" />
   <xs:element name="analysis-summary" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
 	  <xs:element name="sql" substitutionGroup="text" />

@@ -1,0 +1,56 @@
+<component>
+  <component_id>LightsideModel</component_id>
+  <component_id_human>Lightside Transformation</component_id_human>
+  <workflow_id>50</workflow_id>
+  <component_name>File</component_name>
+  <component_type>transform</component_type>
+  <left>101.00001525878906</left>
+  <connections>
+    <connection>
+      <to>Import-1-x094576</to>
+      <index>0</index>
+      <frindex>0</frindex>
+    </connection>
+  </connections>
+  <options>
+    <text>description</text>
+    <classificationColumnName>fishness</classificationColumnName>
+  </options>
+  <inputs>
+    <input0>
+	<component_id>Import1</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>tab-separated</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/data/animal.tsv</file_path>
+        <label>tab-separated</label>
+        <file_name>animal.tsv</file_name>
+        <index>0</index>
+      </file>
+      </files>
+</input0>
+    <input1>
+	<component_id>Import2</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>lightside-model</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <file>
+        <file_path>test/data/test.predict.xml</file_path>
+        <label>lightside-model</label>
+        <file_name>test.predict.xml</file_name>
+        <index>1</index>
+      </file>
+      </files>
+</input1>
+
+</inputs>
+  <top>40</top>
+</component>
+

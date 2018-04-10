@@ -1,0 +1,87 @@
+class	fishness	description
+fish	fish	a koi in the pool has golden scales.
+fish	not_animal	eel is less eatable, less delcious!
+fish	fish	pike swim out to sea.
+fish	fish	the fish swim upstream!
+fish	fish	sea creatures, these are slimy water animals.
+fish	not_animal	fresh swordfish is delicious!
+fish	fish	pike swim out to sea?
+fish	fish	the salmon swim upstream.
+bird	bird	this is a duck in the air?
+bird	bird	chicken is delicious!
+bird	bird	peacocks are beautiful.
+bird	bird	birds have feathers.
+bird	bird	our nests have eggs in them!
+bird	bird	fossils in amber have shown protofeathers in nonavian species
+mammal	mammal	shaggy dog?
+mammal	mammal	dog with brown fur
+mammal	mammal	deer with hooves
+mammal	not_animal	buffalo stampede
+mammal	mammal	furry creature!
+mammal	mammal	mammals feed their young with milk.
+mammal	mammal	bear in the forest.
+mammal	mammal	cow in the field?
+mammal	mammal	furry creature.
+mammal	mammal	mammals feed their young with milk?
+mammal	mammal	bear in the forest
+mammal	mammal	cow in the field
+fish	fish	this animal is a halibut in the water.
+fish	not_animal	trout is delicious!
+fish	fish	carp swim out to sea.
+fish	fish	the salmon swim upstream!
+bird	bird	this is a duck in the air.
+bird	bird	chicken, when roasted, is delicious!
+bird	bird	peacocks are beautiful?
+bird	bird	we have feathers!
+bird	bird	emu stampedes are dangerous!
+mammal	mammal	hairy beast?
+mammal	mammal	furry animals feed their young with milk.
+mammal	mammal	a bear in the forest!
+mammal	mammal	cow in the field
+not_animal	not_animal	I am a person.
+not_animal	not_animal	hello!
+not_animal	not_animal	this is a sentence.
+not_animal	not_animal	???
+not_animal	not_animal	colon:awesome
+not_animal	not_animal	nobody knows
+not_animal	not_animal	rocks are not edible.
+not_animal	not_animal	a tree grows in the forest.
+not_animal	not_animal	apples and _mangoes_ are delicious!
+not_animal	not_animal	mountains are for roaming.
+not_animal	not_animal	pittsburgh pennsylvania
+not_animal	not_animal	new delhi is relatively near to the taj mahal.
+not_animal	not_animal	backpacks contain many objects!
+not_animal	not_animal	horrible terrible robots
+not_animal	not_animal	doors tables and windows
+not_animal	not_animal	laptops and thermonuclear weapons.
+not_animal	not_animal	archibald was a vacuum salesman.
+not_animal	not_animal	nice to meet you.
+not_animal	not_animal	she was fluid in her grace.
+not_animal	not_animal	aribtirary words in a sentence.
+not_animal	not_animal	politics, gender, and identity
+not_animal	not_animal	midas had a golden touch.
+mammal	not_animal	moose are large hulking beasts!
+mammal	mammal	furry chinchillas are nice pets
+mammal	mammal	hair grows on most mammals, and gets in the milk.
+mammal	mammal	milk is the stuff of mother cows and other creatures with fur.
+mammal	not_animal	bears eat fish, berries, and honey.
+mammal	not_animal	wolf packs hunt together, for food and to stay warm.
+mammal	not_animal	mouse bones are found within owl stomachs, and hairballs.
+fish	fish	salmon are a favorite food of cats.
+fish	not_animal	trout are large freshwater swimmers.
+fish	fish	bass have big mouths and are favored by fishermen on the sea.
+fish	fish	eel is found in sushi and can be electric.
+fish	fish	manta rays are a kind of ocean animal.
+fish	fish	koi are a kind of goldfish in Japan.
+fish	fish	swordfish have blue scales and long pointy noses and live in the water.
+bird	bird	emu are dinosaurs, and so are all birds.
+bird	bird	chicken are dinosaurs but smaller, and lay eggs.
+bird	bird	kite are small birds of prey and attack other animals in flight!
+bird	bird	feathers keep birds warm and help them in flight!
+bird	not_animal	wing design makes some birds fly differently.
+bird	not_animal	most avians hatch from eggs.
+bird	not_animal	a robin feathering his nest has very little time to rest!
+bird	bird	peacock feathers are bright and beautiful displays.
+not_animal	not_animal	computer machines are not alive.
+not_animal	not_animal	cello music is lovely!
+not_animal	not_animal	I love the moun\tains! :-) happy :-P

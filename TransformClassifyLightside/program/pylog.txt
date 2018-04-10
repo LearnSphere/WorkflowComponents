@@ -1,0 +1,17 @@
+-----Starting python wrapper at 2018-04-09 13:06:06.370620-----Starting python wrapper at 2018-04-09 13:08:27.034357
+Executing bash program/predict.sh /datashop/dataset_files/workflows/94/Import-1-x942985/output/test.predict.ser utf-8 /datashop/dataset_files/workflows/94/Import-1-x153620/output/animal1.tsv.csv /datashop/dataset_files/workflows/94/Transform-1-x752532/output/tmpoutput.csv   @ /datashop/dataset_files/workflows/94/Transform-1-x752532/output/
+Executed!
+-----Starting python wrapper at 2018-04-09 13:12:31.346599
+Executing bash program/predict.sh /datashop/dataset_files/workflows/95/Import-1-x928261/output/test.predict.ser utf-8 /datashop/dataset_files/workflows/95/Import-1-x288045/output/animal1.tsv.csv /datashop/dataset_files/workflows/95/Transform-1-x143748/output/tmpoutput.csv   @ /datashop/dataset_files/workflows/95/Transform-1-x143748/output/
+Executed!
+-----Starting python wrapper at 2018-04-09 13:25:12.920444
+Executing bash /datashop/workflow_components/TransformClassifyLightside/program/predict.sh /datashop/dataset_files/workflows/95/Import-1-x928261/output/test.predict.ser utf-8 /datashop/dataset_files/workflows/95/Import-1-x288045/output/animal1.tsv.csv /datashop/dataset_files/workflows/95/Transform-1-x143748/output/tmpoutput.csv   @ /datashop/dataset_files/workflows/95/Transform-1-x143748/output/
+Executed!
+-----Starting python wrapper at 2018-04-09 13:30:26.272445
+Executing bash program/predict.sh /datashop/dataset_files/workflows/95/Import-1-x928261/output/test.predict.ser utf-8 /datashop/dataset_files/workflows/95/Import-1-x288045/output/animal1.tsv.csv /datashop/dataset_files/workflows/95/Transform-1-x143748/output/tmpoutput.csv   @ /datashop/workflow_components/TransformClassifyLightside/
+Executed!
+Wrote output to /datashop/dataset_files/workflows/95/Transform-1-x143748/output/output.txt
+-----Starting python wrapper at 2018-04-09 13:30:58.697967
+Executing bash program/predict.sh /datashop/dataset_files/workflows/95/Import-1-x928261/output/test.predict.ser utf-8 /datashop/dataset_files/workflows/95/Import-1-x288045/output/animal1.tsv.csv /datashop/dataset_files/workflows/95/Transform-1-x143748/output/tmpoutput.csv   @ /datashop/workflow_components/TransformClassifyLightside/
+Executed!
+Wrote output to /datashop/dataset_files/workflows/95/Transform-1-x143748/output/output.txt

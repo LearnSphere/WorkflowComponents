@@ -1,0 +1,19 @@
+2013-09-26 11:16:30 weka.gui.explorer.Explorer main
+INFO: Logging started
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/bayesianLogisticRegression/bayesianLogisticRegression.jar is already in the CLASSPATH
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/chiSquaredAttributeEval/chiSquaredAttributeEval.jar is already in the CLASSPATH
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/LibLINEAR/lib/liblinear-1.8.jar is already in the CLASSPATH
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/LibLINEAR/LibLINEAR.jar is already in the CLASSPATH
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/LibSVM/lib/libsvm.jar is already in the CLASSPATH
+URL file:/Users/lightsidelabs/Documents/workspace/lightside/wekafiles/packages/LibSVM/LibSVM.jar is already in the CLASSPATH
+Refreshing GOE props...
+[KnowledgeFlow] Loading properties and plugins...
+[KnowledgeFlow] Initializing KF...
+2013-09-26 11:16:31 weka.gui.explorer.Explorer <init>
+INFO: Weka Explorer
+2013-09-26 11:16:31 weka.gui.explorer.Explorer <init>
+INFO: (c) 1999-2011 The University of Waikato, Hamilton, New Zealand
+2013-09-26 11:16:31 weka.gui.explorer.Explorer <init>
+INFO: web: http://www.cs.waikato.ac.nz/~ml/weka/
+2013-09-26 11:16:31 weka.gui.explorer.Explorer <init>
+INFO: Started on Thursday, 26 September 2013

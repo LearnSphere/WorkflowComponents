@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformClassifyLightside</url>
+<date>2017-09-14</date>
+<abstract>
+<p>The <b>Transform Classify Lightside</b> component allows users to apply a machine-learned text classifier to a column of their data.
+For example if the input has a column "post" that contains student postings in a MOOC chat,
+select "Post" as the column to classify, enter "transactivity" as a name for a new column, 
+and upload a lightside .XML model file that detects transactivity in English text.  The component will
+add a new column "transactivity" with 1 or 0 values in it marking which postings exhibit this property.
+All the other columns will remain the same.
+	</p></abstract>
+<description></description>
+
+<inputs>
+<ul><li>A tab-delimited data file containing a column of textual data </li></ul>
+<ul><li>A Lightside model definition file</li></ul>
+</inputs>
+
+<outputs><ul>
+<li>A tab-delimited data file with an additional column indicating a classification</li>
+</ul></outputs>
+
+<options>
+<ul>
+<li>Column to be used as textual input</li>
+<li>Name of new column to add as classification</li>
+</ul>
+</options>
+
+</info>
