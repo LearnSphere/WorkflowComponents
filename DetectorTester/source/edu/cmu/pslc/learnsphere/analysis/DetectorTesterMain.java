@@ -116,7 +116,7 @@ public class DetectorTesterMain extends AbstractComponent {
         System.out.println(this.getOutput());
     }
     /**
-     * Return true if the user has access to the DetectorTesterAccess project
+     * Return true if the user has access to the DetectorTesterAccess project or is a DS admin
      */
     private Boolean hasAccess() {
       String appContextPath = this.getApplicationContextPath();
@@ -171,7 +171,8 @@ public class DetectorTesterMain extends AbstractComponent {
       }
 
       if (authorization.equals(AuthorizationItem.LEVEL_EDIT)
-          || authorization.equals(AuthorizationItem.LEVEL_ADMIN)) {
+          || authorization.equals(AuthorizationItem.LEVEL_ADMIN)
+          || userItem.getAdminFlag()) {
         return true;
       } else {
         logger.error("User does not have edit or admin authorization to project " + accessProject +
