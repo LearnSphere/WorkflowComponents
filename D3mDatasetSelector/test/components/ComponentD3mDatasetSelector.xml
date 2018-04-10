@@ -1,0 +1,22 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>D3mDatasetSelector</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+</inputs>
+
+<options>
+<ds_name>185_baseball</ds_name>
+</options>
+
+</component>
