@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -324,13 +325,37 @@ public class GraphEditor {
     }
   }
 
-  private static Graph getGraphFromText(BufferedReader b) {
+  private static Graph getGraphFromText( BufferedReader b ) {
     try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+      
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr);
+      
+      String [] graphLines = graphStr.split("\n");
+
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
       boolean onNodes = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        //String line = b.readLine();
         if ( !onNodes ) {
           if ( line.contains("Graph Nodes:") ) {
             onNodes = true;
@@ -349,8 +374,10 @@ public class GraphEditor {
 
       //Get edges
       boolean onEdges = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+        //String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
         if ( !onEdges ) {
           if ( line.contains("Graph Edges:") ) {
             onEdges = true;
@@ -368,7 +395,7 @@ public class GraphEditor {
         String n0 = ""; //tokens[1];
         String n1 = ""; //tokens[3];
         boolean onFirstNodeName = true;
-        //get node names (even if they have spaces)
+        //get node names (even if they have spaces) UPDATE NO SUPPORT FOR SPACES (SINCE FCI GRAPHS)
         for (int i = 1; i < tokens.length; i++) {
           String t = tokens[i];
           if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
@@ -381,10 +408,12 @@ public class GraphEditor {
             }
             n0 += t;
           } else {
-            if (n1.length() > 0) {
+            /*if (n1.length() > 0) {
               n1 += "_";
             }
-            n1 += t;
+            n1 += t;*/
+            n1 = t;
+            break;
           }
 
         }
@@ -411,24 +440,40 @@ public class GraphEditor {
           }
         }
 
-        addToDebugMessages(tokens[0]);
-        addToDebugMessages(nodeList.toString());
-        addToDebugMessages(node0.toString());
-        addToDebugMessages(node1.toString());
-        addToDebugMessages(arrow);
-
+        Edge newEdge = null;
         if ( arrow.equals("---") ) {
-          //TODO: UNCOMMENT NEXT LINE
-          g.addEdge(Edges.undirectedEdge(node0, node1));
-        } else if (arrow.equals("-->")) {
-          g.addEdge(Edges.directedEdge( node0, node1 ) );
-        } else if (arrow.equals("<--")) {
-          g.addEdge(Edges.directedEdge(node1, node0));
-        } else if (arrow.equals("<->")) {
-          g.addEdge(Edges.bidirectedEdge(node0, node1));
+          newEdge = Edges.undirectedEdge(node0, node1);
+        } else if ( arrow.equals("-->") ) {
+          newEdge = Edges.directedEdge(node0, node1);
+        } else if ( arrow.equals("<--") ) {
+          newEdge = Edges.directedEdge(node1, node0);
+        } else if ( arrow.equals("<->") ) {
+          newEdge = Edges.bidirectedEdge(node0, node1);
+        } else if ( arrow.equals("o->") ) {
+          newEdge = Edges.partiallyOrientedEdge(node0, node1);
+        } else if ( arrow.equals("o-o") ) {
+          newEdge = Edges.nondirectedEdge(node0, node1);
         } else {
           addToDebugMessages("edge is unreadable" + arrow);
+          continue;
         }
+
+        // Set if the edge is dashed, colored
+        for (String t : tokens) {
+          switch (t) {
+            case "nl":
+              newEdge.setDashed(true);
+              newEdge.addProperty(Edge.Property.nl);
+            case "y":
+              newEdge.setLineColor(Color.YELLOW);
+            case "dd":
+              newEdge.setLineColor(Color.GREEN);
+              newEdge.addProperty(Edge.Property.dd);
+          }
+        }
+
+        addToDebugMessages("" + newEdge);
+        g.addEdge(newEdge);
       }
       return g;
     } catch ( Exception e ) {
