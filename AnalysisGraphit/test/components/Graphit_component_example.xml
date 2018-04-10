@@ -1,0 +1,33 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>TKT #1</component_id_human>
+    <workflow_id>104</workflow_id>
+    <component_name>component</component_name>
+    <component_type>analysis</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <from>ImportTransaction1</from>
+        </connection>
+    </connections>
+
+    <inputs>
+    <input0>
+      <component_id>ImportTransaction1</component_id>
+      <component_id_human>Import Transaction #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>component</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <transaction>
+              <file_path>test/example_transactions/transaction_file_output.txt</file_path>
+              <file_name>transaction_file_output.txt</file_name>
+              <index>0</index>
+              <label>file</label>
+          </transaction>
+      </files>
+    </input0>
+  </inputs>
+</component>

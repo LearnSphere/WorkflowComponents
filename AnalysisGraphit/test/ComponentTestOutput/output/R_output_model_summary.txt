@@ -1,0 +1,4 @@
+[1] "Hello"
+[1] "C:/Users/AlRousan/Documents/NetBeansProjects/WorkflowComponents/AnalysisGraphit/test/example_transactions/transaction_file_output.txt"
+There were 50 or more warnings (use warnings() to see the first 50)
+[1] "Hello 333"

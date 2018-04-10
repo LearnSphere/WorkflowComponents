@@ -289,9 +289,11 @@
     </xs:simpleType>
 
 
+
+
     <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element type="evaluationMeasure"  name="measure"  id="Evaluation_Measure" default="tRMSE"/>
+            <xs:element type="evaluationMeasure"  name="measure"  id="measure" default="tRMSE"/>
         </xs:choice>
     </xs:complexType>
 

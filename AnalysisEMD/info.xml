@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/AnalysisTkt</url>
+<date>2017-07-28</date>
+<abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model performs a logistic regression over the "error rate" learning curve data.</abstract>
+<details>TKT combines aspects of Performance Factors Analysis (PFA) avaliable in LearnSphere and the ACT-R model of human cognition. <br/><br/> Email the author directly with bug reports for this component.</details>
+
+<inputs>
+<b>Transaction export with TKT features</b>
+</inputs>
+
+<outputs>
+<b>Transaction export, R model output, R model statistics in xml,</b>
+</outputs>
+
+<options>
+  <p>  <b>Type</b> - the user can select to find the best fitting model, or 5 times 2 fold cross-validation. 5 times 2 fold crossvalidation works only at the subject level (subject stratified) under the assumption that generalization to other subjects is what is desired. The user has the option to randomly create folds or to use the folds exisiting in a prior run of this component (i.e. if you feed the transaction file back into the analysis, you can choose read to use the exact folds for a replication).</p>
+  <p><b>Use categorical intercepts</b> - allows either a single intercept for the model, or intercepts for any single categorical variable. This allows the user to estimate prior knowledge based on a KC model. This mechancism is very flexible and can be used for other categorical varaibles, such as the student identifier or the content unit (e.g. pretest, practice, posttest).</p>
+    <p><b>Optimized parameters</b> - The LearnSphere implementation is thus highly configurable, allowing 3 performance tracing features and 4 memory tracing features to be used for predicition of learner performance. The user to compute the model using any combination of these 7 factors, each of which can be either fixed or optimally fitted. These 7 features are, in order, turned on with a 1 value in the first 7 positions of the Used Parameters boolean option. For example, 1,1,1,0,0,0,0,0,0,0 turns on the first 3 tracking feature, but turns off the recency and the 3 memory factors. The final 3 values (of the 10) set at 0, turn off forgetting, spacing effects and between session interference for the model.</p>
+    <p>In order the 10 options of the model refer to (all are computed invidual for each user):</p>
+    <ol>
+        <li>log(successes of subordinate KC/failures of subordiante KC)</li>
+     <li>log(successes of same response term/ failures of same response term) depends on CF (Correct Answer) in data</li>
+     <li> log(successes sum for all subKCS/ failures sum for all sub KCs)</li>
+     <li>recency compute as spacing from last trial to the negative decay rate power (which is item 8 below)</li>
+     <li>interactive function of decay from last first superordinate trial, log of the count of prior subordinate repetitions, and mean spacing</li>
+     <li>interactive function of decay from last first superordinate trial and log of the count of prior superordinate repetitions</li>
+     <li>interactive function of decay from last first superordinate trial and log of the count of prior response repetitions</li>
+     <li>decay parameter used for 4,5,6 and 7 (set to 0 to omit decay from the model)</li>
+     <li>spacing parameter used for 5 (set to 0 to omit spacing effects from the model)</li>
+     <li>interference parameter which is multiplied by time not in practice to reduce the effect of this low interference expereince, see Pavlik and Anderson (2005)</li>
+    </ol>
+     <p><b>Fixed parameters</b> - In the event that a parameter is turned off (set to 0 in optimized list), then the fixed vlaue listed here will be used. The default fixed values turn each componnent off.  (Note that a default of 1 turns interference off.)</p>
+    
+    <p><b>Categorical intercept column</b> - If the user requests categorical intercepts, the column designating the categories to be fit with an additional intercept is designated here.</p>
+</options>
+
+</info>

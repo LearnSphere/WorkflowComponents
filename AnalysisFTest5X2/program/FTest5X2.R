@@ -10,16 +10,22 @@ library(htmlTable)
 
 # parse commandline args
 i = 1
+
+files<-vector()
+Models<-vector()
+index=1
 while (i <= length(args)) {
-  if (args[i] == "-file0") {
+  if (args[i] == "-file0" || args[i] == "-file1" || args[i] == "-file2" || args[i] == "-file3" || args[i] == "-file4" || args[i] == "-file5" || args[i] == "-file6" || args[i] == "-file7" || args[i] == "-file8" || args[i] == "-file9" || args[i] == "-file10" || args[i] == "-file11") {
     if (length(args) == i) {
       stop("input file name must be specified")
     }
 
     inputFile = args[i+1]
+    files<-c(files,inputFile)
+    Models<-c(Models,paste("Model ",index))
+    index = index + 1
     i = i+1
-    inputFile2 = args[i+2]
-    i = i+2 
+     
   }  else if (args[i] == "-optimizedParameters") {
     if (length(args) == i) {
       stop("optimizedParameters must be specified")
@@ -88,18 +94,18 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 
 
-files<-vector()
-Models<-vector()
-index=1
-for (i in 8:length(args) ) {
-if(i%%2==0){
-files<-c(files,args[i])
-Models<-c(Models,paste("Model ",index))
-index = index + 1
-}
-}
+#files<-vector()
+#Models<-vector()
+#index=1
+#for (i in 8:length(args) ) {
+#if(i%%2==0){
+#files<-c(files,args[i])
+#Models<-c(Models,paste("Model ",index))
+#index = index + 1
+#}
+#}
 
-print ("TET")
+
 print(measure)
 
 testfoldvals<-numeric(0)

@@ -1,0 +1,38 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>EMD #1</component_id_human>
+    <workflow_id>104</workflow_id>
+    <component_name>EMD</component_name>
+    <component_type>analysis</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <from>ImportTransaction1</from>
+        </connection>
+    </connections>
+    <options>
+        <header1>Anon.Student.Id</header1>
+        <header2>KC..Unique.step.</header2>
+        <header3>Duration..sec.</header3>
+        <header4>Outcome</header4>
+  </options>
+    <inputs>
+    <input0>
+      <component_id>AnalysisEMD</component_id>
+      <component_id_human>Import Transaction #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>EMD</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <text>
+              <file_path>test/example_transactions/data.txt</file_path>
+              <file_name>data.txt</file_name>
+              <index>0</index>
+              <label>text</label>
+          </text>
+      </files>
+    </input0>
+  </inputs>
+</component>
