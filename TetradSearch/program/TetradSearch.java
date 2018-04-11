@@ -90,12 +90,13 @@ public class TetradSearch {
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
 
+    String programDir = cmdParams.get("-programDir");
     String infile0 = cmdParams.get("-file0");
     File inputFile0 = new File( infile0 );
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
-      String outputFile = workingDir + "Graph.txt";
+      String outputFile = workingDir + "Graph.html";
 
       try {
 
@@ -126,8 +127,9 @@ public class TetradSearch {
 
           addToDebugMessages("Results graph: \n" + graph.toString());
 
-          bWriter.append( graph.toString() );
-          bWriter.close();
+          //bWriter.append( graph.toString() );
+          //bWriter.close();
+          writeGraphToHtml(graph.toString(), programDir, bWriter);
 
         } catch (IOException e) {
           addToErrorMessages(e.toString());
@@ -201,5 +203,28 @@ public class TetradSearch {
       return false;
     }
     return true;
+  }
+
+  private static void writeGraphToHtml(String graphStr, String programDir, BufferedWriter bWriter) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(programDir + "/program/tetradGraph.html"));
+
+      StringBuilder htmlStr = new StringBuilder();
+      while(br.ready()) {
+        htmlStr.append(br.readLine());
+        if (br.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+      
+      s = s.replaceAll("PutGraphDataHere", graphStr);
+
+      bWriter.write(s);
+      bWriter.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph to file. " + e.toString());
+    }
   }
 }

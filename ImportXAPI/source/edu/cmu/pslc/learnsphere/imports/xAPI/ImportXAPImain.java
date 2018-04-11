@@ -28,18 +28,18 @@ import gov.adlnet.xapi.model.Verb;
 import gov.adlnet.xapi.model.Verbs;
 
 public class ImportXAPImain extends AbstractComponent {
-	
+
     public static void main(String[] args) {
 
     	ImportXAPImain tool = new ImportXAPImain();
         tool.startComponent(args);
 		}
-		
+
 		public ImportXAPImain() {
 		    super();
-		
+
 		}
-				
+
 	    @Override
 	    protected void runComponent() {
 	        // Parse arguments
@@ -51,14 +51,14 @@ public class ImportXAPImain extends AbstractComponent {
 	        String customfilter = null;
 	        String filterValue = null;
 
-	        
+
 	        username = this.getOptionAsString("username");
 	        password = this.getOptionAsString("password");
 	        url = this.getOptionAsString("url");
 	        filter = this.getOptionAsString("filter");
 	        customfilter = this.getOptionAsString("customFilter");
 	        filterValue = this.getOptionAsString("filterValue");
-	        
+
 	        //inputFile = this.getAttachment(0,  0);
 
 	        //Generating required out
@@ -77,26 +77,22 @@ public class ImportXAPImain extends AbstractComponent {
 	            // These will also be picked up by the workflows platform and relayed to the user.
 	            System.err.println(err);
 	        }
-	        
-	        if (this.isCancelled()) {
-	            this.addErrorMessage("Cancelled workflow during component execution.");
-	        } else{
-	            Integer nodeIndex = 0;
-	            Integer fileIndex = 0;
-	            String fileType = "text";
-	        }
+
+	        Integer nodeIndex = 0;
+            Integer fileIndex = 0;
+            String fileType = "text";
 
 	    }
-		
+
 	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
 	    	//String url = "https://lrs.adlnet.gov/xAPI";
 	    	//String username="SKOAdmin";
 	    	//String password = "password";
 	    	StatementClient client = new StatementClient(url, username, password);
 	    	String jsonTxt =null;
-	    	
+
 	        switch (filter) {
-	        case "Null": 	
+	        case "Null":
 	        	break;
 	        case "filterByVerb":
 	        	client.filterByVerb(filterValue);
@@ -124,7 +120,7 @@ public class ImportXAPImain extends AbstractComponent {
 	            this.addErrorMessage("Invalid filter type");
 
 	        }
-	        
+
 	    	// Retrieving xAPI statements
 	        try {
 		    	StatementResult results = client.getStatements();
@@ -136,7 +132,7 @@ public class ImportXAPImain extends AbstractComponent {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	        }
-    	
+
 	    	JsonFlattener parser = new JsonFlattener();
 	    	TabTextWriter writer = new TabTextWriter();
 	        List<Map<String, String>> flatJson = parser.parseJson(jsonTxt);
@@ -145,7 +141,7 @@ public class ImportXAPImain extends AbstractComponent {
 	        FileWriter oStream = new FileWriter(generatedFile);
 	        BufferedWriter sw = new BufferedWriter(oStream);
 	        sw.write(writer.writeAsTxt(flatJson));
-	        
+
 	        Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "text";

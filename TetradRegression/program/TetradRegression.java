@@ -97,6 +97,7 @@ public class TetradRegression {
       return;
     }
 
+    String programDir = cmdParams.get("-programDir");
     String regrType = cmdParams.get("-regression");
     String target = cmdParams.get("-target");
     target = target.replaceAll(" ","_");
@@ -130,7 +131,7 @@ public class TetradRegression {
     if (inputFile.exists() && inputFile.isFile() && inputFile.canRead() ) {
 
       String regressionTableFile = workingDir + "RegressionTable.txt";
-      String regressionGraphFile = workingDir + "RegressionGraph.txt";
+      String regressionGraphFile = workingDir + "RegressionGraph.html";
 
       boolean multiLinRegr = false;
       if ( regrType.equals("Multiple_Linear_Regression") ) {
@@ -224,8 +225,9 @@ public class TetradRegression {
           bWriterTable.append( table );
           bWriterTable.close();
 
-          bWriterGraph.append( graph.toString() );
-          bWriterGraph.close();
+          //bWriterGraph.append( graph.toString() );
+          //bWriterGraph.close();
+          writeGraphToHtml(graph.toString(), programDir, bWriterGraph);
 
         } catch (IOException e) {
           addToErrorMessages(e.toString());
@@ -320,5 +322,28 @@ public class TetradRegression {
       return false;
     }
     return true;
+  }
+
+  private static void writeGraphToHtml(String graphStr, String programDir, BufferedWriter bWriter) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(programDir + "/program/tetradGraph.html"));
+
+      StringBuilder htmlStr = new StringBuilder();
+      while(br.ready()) {
+        htmlStr.append(br.readLine());
+        if (br.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+      
+      s = s.replaceAll("PutGraphDataHere", graphStr);
+
+      bWriter.write(s);
+      bWriter.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph to file. " + e.toString());
+    }
   }
 }

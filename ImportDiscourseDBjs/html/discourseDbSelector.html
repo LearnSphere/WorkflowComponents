@@ -1,0 +1,88 @@
+
+<html>
+<head>
+	<title>DiscourseDbSelector</title>
+	<script src="../../lib/jquery-1.7.1.min.js"></script>
+
+<script>
+
+
+var queriesAvailable = {}
+function afterDiscourseDbConsulted(result) {
+	console.log(result);
+	queriesAvailable = result;
+	old = loadChoice();
+	populateDatasetChoice(JSON.parse(old.propValue).database);
+	populateSubsetChoice(old.propName);
+}
+function afterUserKnown() {
+	$.getJSON("https://erebor.lti.cs.cmu.edu:5398/browsing/user_access",
+			{ userid: parent.loggedInUser},
+			afterDiscourseDbConsulted,
+			function(err) { console.log("ajax error: " , err); }
+			);
+}
+parent.getLoggedInUser(afterUserKnown);
+
+function populateDatasetChoice(preselect) {
+	$("#datasetChoice").find('option').remove();
+	Object.keys(queriesAvailable).forEach( dataset => {
+		$("#datasetChoice").append($('<option>', {
+			value: dataset,
+			text: dataset,
+			selected: dataset == preselect})); }
+	);
+}
+
+function populateSubsetChoice(preselect) {
+	$("#subsetChoice").find('option').remove();
+	var ds = $("#datasetChoice")[0].value;
+	console.log("Selected dataset is", ds);
+	queriesAvailable[ds].forEach( qry => {
+		parsed = JSON.parse(qry);
+		console.log(parsed);
+		$("#subsetChoice").append($('<option>', {
+			value: parsed.propName,
+			text: parsed.propName,
+			"data-querytext": qry,
+			selected: preselect == parsed.propName
+		}));
+	});
+	saveChoice();
+}
+
+window.onload = function () {
+	$("#datasetChoice").change( function () {
+		console.log("dschange");
+		populateSubsetChoice();
+		saveChoice();
+	});
+	$("#subsetChoice").change( () => {
+		console.log("sbchange");
+		saveChoice();
+	});
+}
+
+function loadChoice() {
+	return parent.loadData("DiscourseDbSelector");
+}
+function saveChoice() {
+	parent.saveData("DiscourseDbSelector", $("#subsetChoice")[0].selectedOptions[0].dataset.querytext)
+}
+
+</script>
+
+
+</head>
+<body>
+Choose dataset: <select id="datasetChoice">
+</select><br/>
+
+Choose subset <select id="subsetChoice">
+</select><br/>
+
+Create new subsets: <a href="https://erebor.lti.cs.cmu.edu/discoursedb/index.html">DiscourseDB interface</a><br/>
+<i>(To create a subset: log in, choose a database, select data items, then click "remember" to save the selection)</i>
+
+
+</body>

@@ -68,7 +68,7 @@ public class TetradClassifierMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/ClassifiedData.txt");
@@ -81,7 +81,7 @@ public class TetradClassifierMain extends AbstractComponent {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "tab-delimited";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
         Integer nodeIndex1 = 1;

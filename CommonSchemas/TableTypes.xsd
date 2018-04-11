@@ -61,7 +61,7 @@
 		  <xs:element name="html" substitutionGroup="xml" />
 		  <xs:element name="ctat-log" substitutionGroup="xml" />
 
-      <xs:element name="tetrad-graph" substitutionGroup="tab-delimited" />
+      <xs:element name="tetrad-graph" substitutionGroup="inline-html" />
       <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
       <xs:element name="tetrad-regression" substitutionGroup="tab-delimited" />
       <xs:element name="tetrad-im" substitutionGroup="tab-delimited" />

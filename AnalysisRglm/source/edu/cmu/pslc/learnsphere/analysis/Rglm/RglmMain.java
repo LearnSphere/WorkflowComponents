@@ -14,7 +14,7 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.IOUtil;
 
 public class RglmMain extends AbstractComponent {
-        private static String[] R_REQUIRED_OPTIONS= {"modelingFunc", "family", "response", "terms", "fixedEffects", "randomEffects"}; 
+        private static String[] R_REQUIRED_OPTIONS= {"modelingFunc", "family", "response", "terms", "fixedEffects", "randomEffects"};
 
     public static void main(String[] args) {
 
@@ -36,26 +36,22 @@ public class RglmMain extends AbstractComponent {
             String formula = response + " ~ ";
             String fixedEffectsOpt = this.getOptionAsString("fixedEffects");
             String randomEffectsOpt = this.getOptionAsString("randomEffects");
-            
+
             //handle errors due to required field empty
             if (modelingFuncOpt.equals("glm") || modelingFuncOpt.equals("lm")) {
                     if (fixedEffectsOpt == null || fixedEffectsOpt.equals("")) {
                             String errMsg = "Fixed effects is required for lm or glm function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             } else if (modelingFuncOpt.equals("glmer") || modelingFuncOpt.equals("lmer")) {
                     if ((randomEffectsOpt == null || randomEffectsOpt.equals(""))){
                             String errMsg = "Random effects is required for lmer or glmer function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             }
-            
+
             //handle formula
             String fixedEffectsForFormula = "";
             String randomEffectsForFormula = "";
@@ -67,13 +63,13 @@ public class RglmMain extends AbstractComponent {
                                   //replace [ ()-] with .
                                     fixedEffectsForFormula += fixedEffectTerm.replaceAll("[\\(\\[\\]\\)\\-\\s]", ".");
                                    if (cnt < fixedEffectsList.size() - 1) {
-                                           fixedEffectsForFormula += " + ";  
+                                           fixedEffectsForFormula += " + ";
                                    }
                                    cnt ++;
                             }
                     }
             }
-            if ((modelingFuncOpt.equals("glmer") || modelingFuncOpt.equals("lmer")) 
+            if ((modelingFuncOpt.equals("glmer") || modelingFuncOpt.equals("lmer"))
                             && randomEffectsOpt != null && !randomEffectsOpt.equals("")) {
                     List<String> randomEffectsList = Arrays.asList(randomEffectsOpt.split("\\s*,\\s*"));
                     if (randomEffectsList != null) {
@@ -91,16 +87,16 @@ public class RglmMain extends AbstractComponent {
                                     randomEffect = matcher.replaceAll("+");
                                     randomEffectsForFormula += "(" + randomEffect.replaceAll("[\\(\\[\\]\\)\\-\\s]", ".") + ")";
                                     if (cnt < randomEffectsList.size() - 1) {
-                                            randomEffectsForFormula += " + ";  
+                                            randomEffectsForFormula += " + ";
                                     }
-                                    cnt ++;  
+                                    cnt ++;
                             }
                     }
             }
             if (!fixedEffectsForFormula.equals("")) {
                     formula += fixedEffectsForFormula;
                     if (!randomEffectsForFormula.equals(""))
-                            formula += " + " + randomEffectsForFormula;  
+                            formula += " + " + randomEffectsForFormula;
             } else {
                     formula += randomEffectsForFormula;
             }
@@ -121,12 +117,12 @@ public class RglmMain extends AbstractComponent {
                                     Matcher matcher = pattern.matcher(text);
                                     text = matcher.replaceAll("^|");
                                     optionElementInner.setText(text);
-                                    
+
                                     break;
                             }
                     }
             }
-            
+
             //do data format checking:
             //1.binomial must be 0/1 or correct/incorrect/hint when glm/glmer
             //2.numeric
@@ -135,36 +131,28 @@ public class RglmMain extends AbstractComponent {
                     String errMsg = "Response column not found in headers.";
                     addErrorMessage(errMsg);
                     logger.info(errMsg);
-                    System.err.println(errMsg);
-                    return;
             }
             if (modelingFuncOpt.equals("glm") || modelingFuncOpt.equals("glmer")) {
                     if (familyOpt.indexOf("binomial") != -1 && !getColBinaryConvertible(fileName, responseColInd)) {
                             String errMsg = "Values for response column must be 0 or 1 for binomial function.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     } else if (familyOpt.indexOf("binomial") == -1 && !isColNumeric(fileName, responseColInd) && !getColBinaryConvertible(fileName, responseColInd)) {
                             String errMsg = "Response column must be numeric.";
                             addErrorMessage(errMsg);
                             logger.info(errMsg);
-                            System.err.println(errMsg);
-                            return;
                     }
             } else if (!isColNumeric(fileName, responseColInd) && !getColBinaryConvertible(fileName, responseColInd)) {
                     String errMsg = "Response column must be numeric.";
                     addErrorMessage(errMsg);
                     logger.info(errMsg);
-                    System.err.println(errMsg);
-                    return;
-                    
+
             }
-            
-            File outputDirectory = this.runExternalMultipleFileOuput();
+
+            File outputDirectory = this.runExternal();
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                     logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-                    File file0 = new File(outputDirectory.getAbsolutePath() + "/R output model summary.txt");
+                    File file0 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
                     if (file0 != null && file0.exists()) {
                             Integer nodeIndex0 = 0;
                             Integer fileIndex0 = 0;
@@ -174,13 +162,13 @@ public class RglmMain extends AbstractComponent {
                             this.addErrorMessage("An unknown error has occurred with the Rglm component.");
                     }
             }
-            
+
             // Send the component output back to the workflow.
             System.out.println(this.getOutput());
-            
-            
+
+
     }
-    
+
     private int getColInd(String filePathName, String colName) {
             String[][] fContent = IOUtil.read2DStringArray(filePathName);
             String[] headers = fContent[0];
@@ -192,7 +180,7 @@ public class RglmMain extends AbstractComponent {
             }
             return -1;
     }
-    
+
     private boolean isColNumeric(String filePathName, int colInd) {
             String[][] fContent = IOUtil.read2DStringArray(filePathName);
             for (int rowCnt = 1; rowCnt < fContent.length; rowCnt++) {

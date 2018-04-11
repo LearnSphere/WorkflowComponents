@@ -25,10 +25,10 @@
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:sequence>
+    <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
       <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-    </xs:sequence>
+    </xs:all>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">

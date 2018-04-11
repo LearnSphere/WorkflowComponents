@@ -39,7 +39,7 @@ public class DssppMain extends AbstractComponent {
         int lag = 0;
         String returnvals = null;
         String simfunc = "cosine";
-        
+
         //double minWeight = 0;
         //double minStrength = 0;
         //double minRankby = 0;
@@ -54,7 +54,7 @@ public class DssppMain extends AbstractComponent {
         //returnvals = this.getOptionAsString("returnvals");
         //corpus = this.getAttachment(1, 0);
         //simfunc = this.getOptionAsString("simfunc");
-        
+
         //category = this.getOptionAsString("category");
         SS = this.getOptionAsString("SS");
         domain = this.getOptionAsString("domain");
@@ -171,7 +171,7 @@ public class DssppMain extends AbstractComponent {
 					//line.split("[,\\s\\-:\\?\\|]");
 					String stA =st[indexCol1].trim();
 					String stB =st[indexCol2].trim();
-					
+
 					String[] term1 = stA.split("[,\\s\\-:\\?\\|]");
 					String[] term2 = stB.split("[,\\s\\-:\\?\\|]");
 					if (stA.equals("") || stB.equals("")) {
@@ -387,10 +387,7 @@ public class DssppMain extends AbstractComponent {
         sw.close();
         oStream.close();
 
-        if (this.isCancelled()) {
-            this.addErrorMessage("Cancelled workflow during component execution.");
-        } else{
-        	if (returnvals.equals("col")){
+        if (returnvals.equals("col")){
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "student-step";
@@ -403,7 +400,6 @@ public class DssppMain extends AbstractComponent {
 	            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
             }
             else{this.addErrorMessage("No output Generated for return type: "+returnvals);}
-        }
     }
 
 }

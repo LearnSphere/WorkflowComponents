@@ -1,0 +1,18 @@
+<component>
+    <component_id>ComponentTestOutput</component_id>
+    <component_id_human>Import Discourse DB Remote #1</component_id_human>
+    <workflow_id>104</workflow_id>
+    <component_name>ImportDiscourseDBRest</component_name>
+    <component_type>import</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <to>AnalysisComponent</to>
+        </connection>
+    </connections>
+    <options>
+    <discourse_part>1491</discourse_part>
+    <authorized_email>nobody@nowhere.com</authorized_email>
+    </options>
+</component>

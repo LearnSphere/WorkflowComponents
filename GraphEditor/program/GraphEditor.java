@@ -75,28 +75,89 @@ public class GraphEditor {
       }
     }
 
+    
+
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
     }
+    if ( cmdParams.containsKey("-programDir") == false ) {
+      addToErrorMessages("No programDir");
+      return;
+    }
 
-    if (cmdParams.containsKey("-file0")) {
+    /*if (cmdParams.containsKey("-file0")) {
       try {
         File inputFile = new File(cmdParams.get("-file0"));
         BufferedReader graphBReader = new BufferedReader(new FileReader(inputFile));
         graph = getGraphFromText(graphBReader);
+        graphBReader.close();
       } catch (IOException e) {
         addToErrorMessages("Exception opening input file: " + e.toString());
       }
-    }
-    addToDebugMessages("Graph: \n" + graph.toString());
+    }*/
+    //addToDebugMessages("Graph: \n" + graph.toString());
 
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
 
-    String outputFile = workingDir + "EditedGraph.txt";
+    String programDir = cmdParams.get("-programDir");
+
+    String outputFile = workingDir + "EditedGraph.html";
+
+    String graphStr = cmdParams.get("-TetradGraphEditor");
+    addToDebugMessages(graphStr);
+    graphStr = graphStr.replaceAll("%NEW_LINE%","\n");
+    graphStr = graphStr.replaceAll("%HYPHEN%","-");
+    addToDebugMessages(graphStr);
 
     try {
+      BufferedReader bReader = null;
+      FileReader fReader = null;
+
+      bReader = new BufferedReader( new FileReader(programDir + "/program/tetradGraphVisualizationEditor.html"));
+
+      BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+
+      // If the graph editor didn't have edits, use original graph
+      if (graphStr == "0" || graphStr.length() < 10) {
+        addToDebugMessages("using original graph.  not custom graph given");
+        // No edits were made, write out the original graph
+        BufferedReader inputReader = new BufferedReader(
+            new FileReader(new File(cmdParams.get("-file0"))));
+        addToDebugMessages("1");
+        StringBuilder origGraphBuf = new StringBuilder();
+        while (inputReader.ready()) {
+          origGraphBuf.append(inputReader.readLine());
+          if (inputReader.ready()) {
+            origGraphBuf.append("\n");
+          }
+        }
+        addToDebugMessages(origGraphBuf.toString());
+        bw.append(origGraphBuf.toString());
+        bw.flush();
+        bw.close();
+      } else {
+        addToDebugMessages("3");
+        StringBuilder buf = new StringBuilder();
+        while(bReader.ready()) {
+          String line = bReader.readLine();
+          buf.append(line.replaceAll("PutGraphDataHere", graphStr));
+          if (bReader.ready()) {
+            buf.append("\n");
+          }
+        }
+        addToDebugMessages("4");
+
+        //bw.append(graphStr);
+        bw.append(buf.toString());
+        bw.flush();
+        bw.close();
+      }
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph out to file: " + e.toString());
+    }
+    /*try {
 
       BufferedReader bReader = null;
       FileReader fReader = null;
@@ -132,7 +193,7 @@ public class GraphEditor {
       }
     } catch (Exception e) {
       addToErrorMessages(e.toString());
-    }
+    }*/
 
     System.setErr(sysErr);
 
@@ -349,6 +410,12 @@ public class GraphEditor {
             break;
           }
         }
+
+        addToDebugMessages(tokens[0]);
+        addToDebugMessages(nodeList.toString());
+        addToDebugMessages(node0.toString());
+        addToDebugMessages(node1.toString());
+        addToDebugMessages(arrow);
 
         if ( arrow.equals("---") ) {
           //TODO: UNCOMMENT NEXT LINE

@@ -19,7 +19,7 @@ public class ImportDiscourseDB extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
         // Attach the output files to the component output.
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             Integer nodeIndex = 0;

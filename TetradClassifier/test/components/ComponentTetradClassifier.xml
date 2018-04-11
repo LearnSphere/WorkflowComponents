@@ -135,7 +135,7 @@
       <errors />
       <files>
         <text>
-          <file_path>test/resources/Graph.txt</file_path>
+          <file_path>test/resources/graph.html</file_path>
           <file_name>Graph.txt</file_name>
           <index>0</index>
           <label>text</label>

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Philip Pavlik
-  <email>ppavlik@memphis.edu</email>
+<author>Liang Zhang
+  <email>lzhang13@memphis.edu</email>
 </author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/CopyCovariate</url>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/CopyCovariate</url>
 <date>2018-01-31</date>
 <abstract>CopyCovariate performs a features addition process over a tab-delimited datafile. This component can effectively pass new produced features into the source datafile</abstract>
-<details>This compoment can pass the feature (Studentnumber) to the source datafile following each student' name autimatically. So the new output datafile is added with one more column that include the new feature.<br/>
-    <br/> Email the author directly with bug reports for this component.</details>
+<details>This compoment can pass the feature (Studentnumber) to the source datafile following each student' name autimatically. So the new output datafile is added with one more column that include the new feature. Email the author directly with bug reports for this component.</details>
 
 <inputs>
 <b>A tab-delimited file</b>
-<b>A file with specific Studentnumber and Name.
+<b>A file with specific Studentnumber and Name.</b>
 </inputs>
 
 <outputs>

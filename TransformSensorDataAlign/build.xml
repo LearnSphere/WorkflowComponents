@@ -1,6 +1,7 @@
 <project name="TransformSensorDataAlign" default="dist" basedir=".">
     <description>
-        Java-based TransformJoin workflow component.
+        R-based TransformSensordataAlign workflow component.
+        
     </description>
 
     <!-- set global properties for this build -->
@@ -14,7 +15,7 @@
     <property name="version" value="1.0" />
 
     <property name="component.id" value="TransformSensorDataAlign" />
-    <property name="component.version" value="v${version} 2015" />
+    <property name="component.version" value="v${version} 2017" />
 
     <property name="ToolTemplate.jar" value="${dist}/${component.id}-${version}.jar" />
 
@@ -38,24 +39,24 @@
         </manifestclasspath>
         <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/sensordataalign/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain" />
-                <attribute name="Class-Path" value="${lib.list}" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain"/>
+                <attribute name="Class-Path" value="${lib.list}"/>
             </manifest>
         </jar>
     </target>
 
     <path id="run.classpath">
-        <pathelement path="${ToolTemplate.jar}" />
-        <path refid="lib.path" />
-        <pathelement path="." />
+        <pathelement path="${ToolTemplate.jar}"/>
+        <path refid="lib.path"/>
+        <pathelement path="."/>
     </path>
 
     <target name="init">
         <!-- Create the time stamp in DSTAMP -->
         <tstamp />
         <!-- Create the build directory structure used by compile -->
-        <mkdir dir="${build}" />
-        <mkdir dir="${dist}" />
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
     </target>
 
     <target name="compile" depends="init" description="compile the source ">
@@ -67,29 +68,29 @@
 
     <!-- Delete the temporary directories. -->
     <target name="clean" description="clean up">
-        <delete dir="${build}" />
-        <delete dir="${dist}" />
-        <delete dir="${javadoc}" />
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${javadoc}"/>
     </target>
 
     <target name="javadoc" depends="compile" description="Create javadoc documentation">
-        <mkdir dir="${javadoc}" />
+        <mkdir dir="${javadoc}"/>
         <javadoc sourcepath="${source}" destdir="${javadoc}" packagenames="*.*" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.id} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.id} (Version ${component.version})">
-            <classpath refid="lib.path" />
+            <classpath refid="lib.path"/>
         </javadoc>
     </target>
 
     <target name="runComponent" depends="clean, compile, dist" description="executes SensorDataAlign">
         <java classname="edu.cmu.pslc.learnsphere.transform.sensordataalign.SensorDataAlignMain" fork="true">
-            <classpath refid="run.classpath" />
+            <classpath refid="run.classpath"/>
             <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/ComponentSensorDataAlign.xml" />
-            <arg value="-workflowDir" />
-            <arg value="${basedir}/test/" />
-            <arg value="-toolDir" />
-            <arg value="${basedir}/" />
-            <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/TransformSensorDataAlign_v1.xsd" />
+            <arg value="${basedir}/test/components/ComponentSensorDataAlign.xml"/>
+            <arg value="-workflowDir"/>
+            <arg value="${basedir}/test/"/>
+            <arg value="-toolDir"/>
+            <arg value="${basedir}/"/>
+            <arg value="-schemaFile"/>
+            <arg value="${basedir}/schemas/TransformSensorDataAlign_v1.xsd"/>
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>

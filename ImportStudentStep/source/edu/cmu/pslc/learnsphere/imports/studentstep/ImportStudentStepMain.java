@@ -40,14 +40,15 @@ public class ImportStudentStepMain extends AbstractComponent {
         File theFile = this.getAttachment(0, 0);
 
         try {
-
-            verifyInputFile(this.getAttachment(0, 0));
+        	if (theFile != null && theFile.exists()) {
+        		verifyInputFile(this.getAttachment(0, 0));
+        	} else {
+        		addErrorMessage("Could not read required input file.");
+        	}
 
         } catch (Exception e) {
             logger.info("Verify of first " + NUM_INPUT_LINES_TO_CHECK + " failed: " + e);
             this.addErrorMessage(e.toString());
-            System.err.println(e);
-            return;
         }
 
         System.out.println(this.getOutput());

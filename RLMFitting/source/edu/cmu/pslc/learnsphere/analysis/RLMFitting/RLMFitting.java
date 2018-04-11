@@ -32,7 +32,7 @@ public class RLMFitting extends AbstractComponent {
                     if (independentVars.lastIndexOf(",") == independentVars.length()-1) {
                             independentVars = independentVars.substring(0, independentVars.length()-1);
                     }
-            } 
+            }
             if (dependentVarList != null && dependentVarList.size() != 0){
                     for (String key : dependentVarList)
                             dependentVars += key + ",";
@@ -46,17 +46,14 @@ public class RLMFitting extends AbstractComponent {
                     String errMsg = "Analysis variables are not defined properly.";
                     addErrorMessage(errMsg);
                     logger.info("RLMFitting aborted: " + errMsg + ". ");
-                    System.err.println(errMsg);
-                    return;
-            }
-                    
-            this.componentOptions.addContent(0, new Element("i").setText(independentVars));
-            this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
-            this.componentOptions.addContent(0, new Element("outputFile").setText("R-summary.txt"));
-            // Run the program and return its stdout to a file.
-            //File output = this.runExternal();
-            File outputDirectory = this.runExternalMultipleFileOuput();
-            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+            } else {
+
+	            this.componentOptions.addContent(0, new Element("i").setText(independentVars));
+	            this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
+	            this.componentOptions.addContent(0, new Element("outputFile").setText("R-summary.txt"));
+	            // Run the program and return its stdout to a file.
+	            File outputDirectory = this.runExternal();
+	            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                     logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
                     File file0 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");
                     if (file0 != null && file0.exists()) {
@@ -67,11 +64,11 @@ public class RLMFitting extends AbstractComponent {
                     } else {
                             this.addErrorMessage("An unknown error has occurred with the Rglm component.");
                     }
+	            }
             }
-            
             // Send the component output back to the workflow.
             System.out.println(this.getOutput());
-            
+
     }
 
 }

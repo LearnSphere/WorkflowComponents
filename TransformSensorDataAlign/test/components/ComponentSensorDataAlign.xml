@@ -15,15 +15,17 @@
   </connections>
   <top>178</top>
   <options>
-    <delimiterPattern>\t</delimiterPattern>
-    <caseSensitive>false</caseSensitive>
-    <initialtime1>0</initialtime1>
-    <resamplingscale1>2.0</resamplingscale1>
-    <initialtime2>0</initialtime2>
-    <resamplingscale2>3.0</resamplingscale2>
-    <file1ColumnName>EEG data</file1ColumnName>
-    <file2ColumnName>EEG data</file2ColumnName>
-    
+      <file1ColumnName>0</file1ColumnName>
+      <signal1samplingrate>512</signal1samplingrate>
+      <file2ColumnName>0</file2ColumnName>
+      <signal2samplingrate>1024</signal2samplingrate>
+      
+      <offsetofsignal2fromsignal1>1</offsetofsignal2fromsignal1>
+      <outputresamplerate>1024</outputresamplerate>
+      <interpolationtype>linear</interpolationtype>
+      <generatetimevector>true</generatetimevector>
+      <inputHeader>false</inputHeader>
+      
   </options>
   <inputs>
   <input0>
@@ -35,8 +37,8 @@
       <errors />
       <files>
           <tab-delimited>
-          <file_path>test/example_files/EEG_Data_1.txt</file_path>
-          <file_name>EEG_Data_1.txt</file_name>
+          <file_path>test/example_files/Z001.txt</file_path>
+          <file_name>Z001.txt</file_name>
           <index>0</index>
           <label>file</label>
           <metadata>
@@ -61,8 +63,8 @@
       <errors />
       <files>
         <tab-delimited>
-          <file_path>test/example_files/EEG_Data_2.txt</file_path>
-          <file_name>EEG_Data_2.txt</file_name>
+          <file_path>test/example_files/Z002.txt</file_path>
+          <file_name>Z002.txt</file_name>
           <index>1</index>
           <label>file</label>
           <metadata>

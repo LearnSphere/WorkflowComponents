@@ -5,7 +5,7 @@ echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
-#print(args)
+print(args)
 
 #initialize 
 inputFile0 = NULL
@@ -124,13 +124,33 @@ outputFilePath <- paste(workingDirectory,"SensorDataAligned.txt", sep="")
 
 # Get program location
 datalocation <- paste(componentDirectory, "/program/", sep="")
+
 #Get input Files
 if(inputHeader){
 FileInputData1 <-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 FileInputData2 <-read.table(inputFile1,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+# Change the HeaderName to match with the table column header 
+file1ColumnName <- make.names(file1ColumnName)
+file2ColumnName <-make.names(file2ColumnName)
+
 }else{
+# if there is no header to the input column
 FileInputData1 <-read.table(inputFile0,sep="\t", header=FALSE,na.strings="",quote="",comment.char = "")
 FileInputData2 <-read.table(inputFile1,sep="\t", header=FALSE,na.strings="",quote="",comment.char = "")
+
+# Get the index of that selected column
+if(is.numeric(as.numeric(file1ColumnName))){
+  file1ColumnName <- as.numeric(file1ColumnName)
+  file1ColumnName <- file1ColumnName+1
+ }
+if(is.numeric(as.numeric(file2ColumnName))){
+ file2ColumnName <- as.numeric(file2ColumnName)
+file2ColumnName <- file2ColumnName+1
+}
+# Change the column name of the table data 
+ colnames(FileInputData1)[file1ColumnName] <- file1ColumnName
+ colnames(FileInputData2)[file2ColumnName] <- file2ColumnName
+
 }
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
@@ -139,16 +159,14 @@ sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=130)
 
-#Get the column from input data file0 and file1 to resample it 
 
+
+#Get the column from input data file0 and file1 to resample it 
 InputData1 <-as.numeric(FileInputData1[[file1ColumnName]])
 #Get the column from input data file1 to resample it 
 InputData2 <-as.numeric(FileInputData2[[file2ColumnName]])
+   
 
-    # test input1 n input2
-     InputData1[] <-2
-     InputData2[] <-2
-     # end input test
 # Sensordata Align functions
 # original sampling rate of InputData1 and InputData2
 SampIn1 <- as.numeric(signal1samplingrate)
@@ -161,13 +179,6 @@ offset <- as.numeric(offsetofsignal2fromsignal1)
 # Output sampling rate after interpolation (sps)
 SampOut <- as.numeric(outputresamplerate)
  
-        # variable set
-        SampIn1 <-512
-        SampIn2 <-512
-        offset <-0
-        SampOut <-1024
-        #End
-
 # CALCULATION starts from here
 # Determine lengths of input vectors
 LenInput1 <- length(InputData1)
@@ -206,7 +217,7 @@ OutputData2 <- Out2$y
 offsetSamp <- (offset*SampOut)
 
 if ((length(OutputData1)) > (length(OutputData2)+offsetSamp)) {
-   maxSamp <- length(OutputData1)
+  maxSamp <- length(OutputData1)
    if (offsetSamp > 0) {    
       OutputData2off <- 1:offsetSamp
       OutputData2off[] <- 0
@@ -217,23 +228,23 @@ if ((length(OutputData1)) > (length(OutputData2)+offsetSamp)) {
       } else {
          OutputData2 <- c(OutputData2off, OutputData2)
       }
-   } else {
+  } else {
       OutputData2na <- 1:(maxSamp-(length(OutputData2)))
       OutputData2na[] <- 0
-      OutputData2 <- c(OutputData2, OutputData2na)
+     OutputData2 <- c(OutputData2, OutputData2na)
    }
 } else {
    if (offsetSamp > 0) {   
       OutputData2off <- 1:offsetSamp
-      OutputData2off[] <- 0
+     OutputData2off[] <- 0
       OutputData2 <- c(OutputData2off, OutputData2) 
    }
-   maxSamp <- (length(OutputData2))
-   if (maxSamp-length(OutputData1) > 0) {
+  maxSamp <- (length(OutputData2))
+  if (maxSamp-length(OutputData1) > 0) {
       OutputData1na <- 1:(maxSamp-length(OutputData1))
       OutputData1na[] <- 0
-      OutputData1 <- c(OutputData1, OutputData1na)
-   } else {
+     OutputData1 <- c(OutputData1, OutputData1na)
+  } else {
       OutputData1 <- c(OutputData1)
    }
 }
@@ -256,7 +267,7 @@ OutputData <- cbind(time, OutputData1, OutputData2)
     colnames(OutputData)[1] <-"Sampling Rate"
     colnames(OutputData)[2] <- "Signal 1 Sensor data"
     colnames(OutputData)[3] <- "Signal 2 Sensor data"
-  }
+ }
 }else{
     # columns: OutputData1, OutputData2
     OutputData <- cbind(OutputData1, OutputData2)
@@ -271,7 +282,10 @@ OutputData <- cbind(time, OutputData1, OutputData2)
 }
 
 
+
+# Output data
 write.table(OutputData,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+
 # Stop logging
 sink()
 sink(type="message")

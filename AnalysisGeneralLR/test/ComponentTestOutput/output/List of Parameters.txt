@@ -1,0 +1,2 @@
+"j" "k" "l"
+"1" "afmline" "afmlog" "memory"

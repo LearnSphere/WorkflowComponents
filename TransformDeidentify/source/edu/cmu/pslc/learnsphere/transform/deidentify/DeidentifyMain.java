@@ -156,24 +156,24 @@ public class DeidentifyMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-            String appContextPath = this.getApplicationContextPath();
-            logger.info("appContextPath: " + appContextPath);
-            //System.out.println("appContextPath: " + appContextPath);
+    	Boolean reqsMet = true;
+        String appContextPath = this.getApplicationContextPath();
+        logger.info("appContextPath: " + appContextPath);
+        //System.out.println("appContextPath: " + appContextPath);
 
-            // Do not follow symbolic links so we can prevent unwanted directory traversals if someone
-            // does manage to create a symlink to somewhere dangerous (like /datashop/deploy/)
-            if (Files.exists(Paths.get(appContextPath), LinkOption.NOFOLLOW_LINKS)) {
-                /** Initialize the Spring Framework application context. */
-                SpringContext.getApplicationContext(appContextPath);
-            }
-            // Input files
+        // Do not follow symbolic links so we can prevent unwanted directory traversals if someone
+        // does manage to create a symlink to somewhere dangerous (like /datashop/deploy/)
+        if (Files.exists(Paths.get(appContextPath), LinkOption.NOFOLLOW_LINKS)) {
+            /** Initialize the Spring Framework application context. */
+            SpringContext.getApplicationContext(appContextPath);
+        }
 
+        // Input files
+        userMapFile = this.getAttachment(0, 0);
+        logger.info("user map file: " + userMapFile.getAbsolutePath());
 
-            userMapFile = this.getAttachment(0, 0);
-            logger.info("user map file: " + userMapFile.getAbsolutePath());
-
-            fileToDeidentify = this.getAttachment(1, 0);
-            logger.info("file to be mapped: " + fileToDeidentify.getAbsolutePath());
+        fileToDeidentify = this.getAttachment(1, 0);
+        logger.info("file to be mapped: " + fileToDeidentify.getAbsolutePath());
 
 
         // Output files
@@ -181,91 +181,91 @@ public class DeidentifyMain extends AbstractComponent {
         File newUserMapFile = this.createFile("newUserMap", ".txt");
         // Options
 
-
         //set column index for actual id and anon id for map and fileToDeidentify
-        if (mapAnonIdColName != null && !mapAnonIdColName.equals("")) {
-                mapAnonIdColInd = getColumnIndex(mapAnonIdColName, userMapFile);
-                if (mapAnonIdColInd == -1) {
-                        String errorMsg = "Anonymous id column name: " + mapAnonIdColName + " in user map is invalid.";
-                        logger.error(errorMsg);
-                        this.addErrorMessage(errorMsg);
-                        return;
-                }
-        }
-        if (mapActualIdColName != null && !mapActualIdColName.equals("")) {
-                mapActualIdColInd = getColumnIndex(mapActualIdColName, userMapFile);
-                if (mapActualIdColInd == -1) {
-                        String errorMsg = "Actual id column name: " + mapActualIdColName + " in user map is invalid.";
-                        logger.error(errorMsg);
-                        this.addErrorMessage(errorMsg);
-                        return;
-                }
-        }
-        if (fileActualIdColName != null && !fileActualIdColName.equals("")) {
-                fileActualIdColInd = getColumnIndex(fileActualIdColName, fileToDeidentify);
-                if (fileActualIdColInd == -1) {
-                        String errorMsg = "Actual id column name: " + fileActualIdColName + " in data file is invalid.";
-                        logger.error(errorMsg);
-                        this.addErrorMessage(errorMsg);
-                        return;
-                }
-        }
+		if (mapAnonIdColName != null && !mapAnonIdColName.equals("")) {
+			mapAnonIdColInd = getColumnIndex(mapAnonIdColName, userMapFile);
+			if (mapAnonIdColInd == -1) {
+				String errorMsg = "Anonymous id column name: " + mapAnonIdColName + " in user map is invalid.";
+				logger.error(errorMsg);
+				this.addErrorMessage(errorMsg);
+				reqsMet = false;
+			}
+		}
+		if (mapActualIdColName != null && !mapActualIdColName.equals("")) {
+			mapActualIdColInd = getColumnIndex(mapActualIdColName, userMapFile);
+			if (mapActualIdColInd == -1) {
+				String errorMsg = "Actual id column name: " + mapActualIdColName + " in user map is invalid.";
+				logger.error(errorMsg);
+				this.addErrorMessage(errorMsg);
+				reqsMet = false;
+			}
+		}
+		if (fileActualIdColName != null && !fileActualIdColName.equals("")) {
+			fileActualIdColInd = getColumnIndex(fileActualIdColName, fileToDeidentify);
+			if (fileActualIdColInd == -1) {
+				String errorMsg = "Actual id column name: " + fileActualIdColName + " in data file is invalid.";
+				logger.error(errorMsg);
+				this.addErrorMessage(errorMsg);
+				reqsMet = false;
+			}
+		}
 
         // Processing
-        //hashmap that stores actual id as the key and anonymous id as the value
-        Map<String, String> studentIdPairsOfMap = new HashMap<String, String>();
-        Map<String, String> studentIdPairsOfFile = new HashMap<String, String>();
+		if (reqsMet) {
+	        //hashmap that stores actual id as the key and anonymous id as the value
+	        Map<String, String> studentIdPairsOfMap = new HashMap<String, String>();
+	        Map<String, String> studentIdPairsOfFile = new HashMap<String, String>();
 
-        //load map file into studentIdPairsOfMap
-        if (this.userMapFile != null)
-                studentIdPairsOfMap = getStudentIdPairsFromMap();
-        //get all distinct students in toBeDeidentifiedFile into studentIdPairsOfFile
-        studentIdPairsOfFile = getStudentIdsFromFile();
-        //loop thru studentIdPairsOfFile, for each student check:
-        for (String thisStudentActualId  : studentIdPairsOfFile.keySet()) {
-                //check if thisStudentActualId is in map
-                String anonIdInMap = null;
-                String actualIdInMap = null;
-                for (Map.Entry<String, String> entry : studentIdPairsOfMap.entrySet()) {
-                        String curActualId = entry.getKey();
-                        String curAnonId = entry.getValue();
-                        if ((caseSensitive && curActualId.equals(thisStudentActualId)) ||
-                                        (!caseSensitive && curActualId.equalsIgnoreCase(thisStudentActualId))) {
-                                anonIdInMap = curAnonId;
-                                actualIdInMap = curActualId;
-                                break;
-                        }
-                }
-                //if in map, update studentIdPairsOfFile with map's anon student id
-                //if not, check if the id is in DS database
-                if (actualIdInMap != null && anonIdInMap != null && !anonIdInMap.trim().equals("")) {
-                        studentIdPairsOfFile.put(thisStudentActualId, anonIdInMap);
-                        continue;
-                } else {
-                        String anonIdInDS = getDSAnonStudentId(thisStudentActualId);
-                        if (anonIdInDS != null && anonIdInDS.trim().equals("")) {
-                                studentIdPairsOfFile.put(thisStudentActualId, anonIdInDS);
-                                studentIdPairsOfMap.put(thisStudentActualId, anonIdInDS);
-                                continue;
-                        }
-                }
-                //if not found in DS
-                String newAnonId = getStudentAnonId(thisStudentActualId);
-                studentIdPairsOfFile.put(thisStudentActualId, newAnonId);
-                studentIdPairsOfMap.put(thisStudentActualId, newAnonId);
-        }
+	        //load map file into studentIdPairsOfMap
+	        if (this.userMapFile != null)
+	                studentIdPairsOfMap = getStudentIdPairsFromMap();
+	        //get all distinct students in toBeDeidentifiedFile into studentIdPairsOfFile
+	        studentIdPairsOfFile = getStudentIdsFromFile();
+	        //loop thru studentIdPairsOfFile, for each student check:
+	        for (String thisStudentActualId  : studentIdPairsOfFile.keySet()) {
+	                //check if thisStudentActualId is in map
+	                String anonIdInMap = null;
+	                String actualIdInMap = null;
+	                for (Map.Entry<String, String> entry : studentIdPairsOfMap.entrySet()) {
+	                        String curActualId = entry.getKey();
+	                        String curAnonId = entry.getValue();
+	                        if ((caseSensitive && curActualId.equals(thisStudentActualId)) ||
+	                                        (!caseSensitive && curActualId.equalsIgnoreCase(thisStudentActualId))) {
+	                                anonIdInMap = curAnonId;
+	                                actualIdInMap = curActualId;
+	                                break;
+	                        }
+	                }
+	                //if in map, update studentIdPairsOfFile with map's anon student id
+	                //if not, check if the id is in DS database
+	                if (actualIdInMap != null && anonIdInMap != null && !anonIdInMap.trim().equals("")) {
+	                        studentIdPairsOfFile.put(thisStudentActualId, anonIdInMap);
+	                        continue;
+	                } else {
+	                        String anonIdInDS = getDSAnonStudentId(thisStudentActualId);
+	                        if (anonIdInDS != null && anonIdInDS.trim().equals("")) {
+	                                studentIdPairsOfFile.put(thisStudentActualId, anonIdInDS);
+	                                studentIdPairsOfMap.put(thisStudentActualId, anonIdInDS);
+	                                continue;
+	                        }
+	                }
+	                //if not found in DS
+	                String newAnonId = getStudentAnonId(thisStudentActualId);
+	                studentIdPairsOfFile.put(thisStudentActualId, newAnonId);
+	                studentIdPairsOfMap.put(thisStudentActualId, newAnonId);
+	        }
 
-        //make the new map file
-        writeMapToFile(studentIdPairsOfMap, newUserMapFile);
-        //deidentify file
-        deidentifyFile(studentIdPairsOfFile, deidentifiedFile);
+	        //make the new map file
+	        writeMapToFile(studentIdPairsOfMap, newUserMapFile);
+	        //deidentify file
+	        deidentifyFile(studentIdPairsOfFile, deidentifiedFile);
 
-        Integer fileIndex = 0;
-        Integer nodeIndex = 0;
-        this.addOutputFile(newUserMapFile, nodeIndex, fileIndex, "user-map");
-        nodeIndex = 1;
-        this.addOutputFile(deidentifiedFile, nodeIndex, fileIndex, "tab-delimited");
-
+	        Integer fileIndex = 0;
+	        Integer nodeIndex = 0;
+	        this.addOutputFile(newUserMapFile, nodeIndex, fileIndex, "user-map");
+	        nodeIndex = 1;
+	        this.addOutputFile(deidentifiedFile, nodeIndex, fileIndex, "tab-delimited");
+		}
         System.out.println(this.getOutput());
     }
 

@@ -48,7 +48,7 @@ public class PyAfmMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         // Run the program and return its stdout to a file.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
 
         Integer nodeIndex = 0;
         Integer fileIndex = 0;

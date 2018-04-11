@@ -1,0 +1,2 @@
+"alg" "intc" "levs" "pracv1" "pracv2" "R2v" "pars" "d1v" "d2v"
+"1" "dummy" "single" "memory" "afmline" "afmlog" "0.145634167542237" "3" "0" "0"

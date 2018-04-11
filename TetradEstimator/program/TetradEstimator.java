@@ -31,6 +31,7 @@ import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.Math;
+import java.text.NumberFormat;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -42,6 +43,7 @@ import edu.cmu.tetradapp.model.datamanip.*;
 import edu.cmu.tetrad.regression.LogisticRegression.Result;
 import edu.cmu.tetrad.bayes.*;
 import edu.cmu.tetrad.sem.*;
+import edu.cmu.tetrad.util.NumberFormatUtil;
 
 
 public class TetradEstimator {
@@ -50,6 +52,7 @@ public class TetradEstimator {
   private static final String DEBUG_PREPEND = "DEBUG: ";
   private static boolean verbose = false;
   private static String outputDir = "";
+  public static SemPm semPm = null;
 
   public TetradEstimator () {}
 
@@ -99,6 +102,8 @@ public class TetradEstimator {
       return;
     }
 
+    String programDir = cmdParams.get("-programDir");
+
     String estimator = cmdParams.get("-estimator");
     String infile0 = cmdParams.get("-file0");
     String infile1 = cmdParams.get("-file1");
@@ -134,24 +139,24 @@ public class TetradEstimator {
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
-      String regressionTableFile = workingDir + "BayesIm.txt";
-      String regressionGraphFile = workingDir + "Graph.txt";
+      //String regressionTableFile = workingDir + "BayesIm.txt";
+      String regressionGraphFile = workingDir + "Graph.html";
 
       try {
 
         BufferedReader bReader = null;
         FileReader fReader = null;
 
-        BufferedWriter bWriterTable = null;
-        FileWriter fWriterTable = null;
+        //BufferedWriter bWriterTable = null;
+        //FileWriter fWriterTable = null;
 
         BufferedWriter bWriterGraph = null;
         FileWriter fWriterGraph = null;
 
         try {
 
-          fWriterTable = new FileWriter(regressionTableFile);
-          bWriterTable = new BufferedWriter(fWriterTable);
+          //fWriterTable = new FileWriter(regressionTableFile);
+          //bWriterTable = new BufferedWriter(fWriterTable);
 
           fWriterGraph = new FileWriter(regressionGraphFile);
           bWriterGraph = new BufferedWriter(fWriterGraph);
@@ -172,13 +177,26 @@ public class TetradEstimator {
           bReader = new BufferedReader( fReader );
 
           Graph graph = getGraphFromText( bReader, data );
+
+          addToDebugMessages("Graph from getGraphFromText(): \n" + graph.toString());
+
           //Make graph into a dag if it isn't already
+          ArrayList<Edge> newEdges = new ArrayList<Edge>();
           try {
             Dag dag = new Dag(graph);
           } catch (IllegalArgumentException e) {
             addToDebugMessages("Graph is not a dag, will make one now..." + e.toString());
             DagInPatternWrapper dagWrapper = new DagInPatternWrapper(graph);
+            Graph oldGraph = graph;
             graph = dagWrapper.getGraph();
+
+            //Determine which were the new edges
+            for (Edge edge : graph.getEdges()) {
+              if (!oldGraph.containsEdge(edge)) {
+                newEdges.add(edge);
+                addToDebugMessages("newEdge: " + edge.toString());
+              }
+            }
           }
 
           Parameters params = new Parameters();
@@ -230,7 +248,7 @@ public class TetradEstimator {
                 bayesInstantiatedModel.randomizeIncompleteRows( i );
               }
             }
-            bWriterTable.append( bayesInstantiatedModel.toString() );
+            //bWriterTable.append( bayesInstantiatedModel.toString() );
             bWriterGraph.append( graph.toString() );
             break;
 
@@ -249,7 +267,7 @@ public class TetradEstimator {
               opt = new SemOptimizerRicf();
             }
 
-            SemPm semPm = new SemPm(graph);
+            semPm = new SemPm(graph);
             addToDebugMessages("made semWrapper");
 
             DataSet continuousData = DataUtils.convertNumericalDiscreteToContinuous( data );
@@ -291,17 +309,37 @@ public class TetradEstimator {
             int i = 1;
             for (Edge edge : graph.getEdges()) {
               buf += (i++) + ". " + edge.toString() + " " +
-                     semInstantiatedModel.getEdgeCoef(edge) + "\n";
+                     semInstantiatedModel.getEdgeCoef(edge);
+              if (newEdges.contains(edge)) {
+                buf += " y";
+              }
+              buf += "\n";
             }
-            bWriterGraph.append(buf);
-            buf += semInstantiatedModel.toString();
+            //bWriterGraph.append(buf);
+            writeGraphToHtml(buf, programDir, bWriterGraph);
 
-            bWriterTable.append(buf);
+            outputModelInformation(semInstantiatedModel);
+            //buf += semInstantiatedModel.toString();
+
+            //bWriterTable.append(buf);
             break;
           }
 
-          bWriterTable.close();
+          //bWriterTable.close();
           bWriterGraph.close();
+
+          // Output correlation matrix
+          String correlationMatrixFileName = outputDir + "CorrelationMatrix.txt";
+          try {
+            FileWriter fw = new FileWriter(correlationMatrixFileName);
+            BufferedWriter bw = new BufferedWriter( fw );
+
+            TetradMatrix corrMat = data.getCorrelationMatrix();
+            bw.write(corrMat.toString());
+            bw.close();
+          } catch (IOException e) {
+            addToErrorMessages("Could not write correlation matrix to output: " + e.toString());
+          }
 
         } catch (IOException e) {
           addToErrorMessages("IOException main case: " + e.toString());
@@ -326,6 +364,251 @@ public class TetradEstimator {
   }
 
   private static Graph getGraphFromText( BufferedReader b, DataSet d ) {
+    try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+      
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr);
+      
+      String [] graphLines = graphStr.split("\n");
+
+      //Get nodes
+      List<Node> nodeList = new ArrayList<Node>();
+      boolean onNodes = false;
+      //while ( b.ready() ) {
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        //String line = b.readLine();
+        if ( !onNodes ) {
+          if ( line.contains("Graph Nodes:") ) {
+            onNodes = true;
+            continue;
+          }
+        }
+
+        String [] nodeAr = line.split(",");
+        for ( int i = 0; i < nodeAr.length; i++ ) {
+          nodeList.add( new GraphNode( nodeAr[i].replaceAll(" ", "_") ));
+        }
+        break;
+      }
+
+      Graph g = new EdgeListGraph( nodeList );
+
+      //Get edges
+      boolean onEdges = false;
+      //while ( b.ready() ) {
+        //String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        if ( !onEdges ) {
+          if ( line.contains("Graph Edges:") ) {
+            onEdges = true;
+            continue;
+          }
+          continue;
+        }
+
+        String [] tokens = line.split("\\s+");
+
+        if ( tokens.length < 4 ) {
+          continue;
+        }
+
+        String n0 = ""; //tokens[1];
+        String n1 = ""; //tokens[3];
+        boolean onFirstNodeName = true;
+        //get node names (even if they have spaces)
+        for (int i = 1; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            onFirstNodeName = false;
+            continue;
+          }
+          if (onFirstNodeName) {
+            if (i != 1) {
+              n0 += "_";
+            }
+            n0 += t;
+          } else {
+            if (n1.length() > 0) {
+              n1 += "_";
+            }
+            n1 += t;
+          }
+
+        }
+        Node node0 = new GraphNode("");
+        Node node1 = new GraphNode("");
+
+        for ( int i = 0; i < nodeList.size(); i++ ) {
+          Node curr = nodeList.get(i);
+          if ( curr.getName().equals(n0) ) {
+            node0 = curr;
+          }
+          if ( curr.getName().equals(n1) ) {
+            node1 = curr;
+          }
+        }
+
+        //get the arrow from the line
+        String arrow = "";
+        for (int i = 0; i < tokens.length; i++) {
+          String t = tokens[i];
+          if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
+            arrow = t;
+            break;
+          }
+        }
+
+        if ( arrow.equals("---") ) {
+          //TODO: UNCOMMENT NEXT LINE
+          addToDebugMessages("" + g.addEdge( Edges.undirectedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("-->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node0, node1 ) ));
+        } else if ( arrow.equals("<--") ) {
+          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node1, node0 ) ));
+        } else if ( arrow.equals("<->") ) {
+          addToDebugMessages("" + g.addEdge( Edges.bidirectedEdge(node0, node1)));
+        } else {
+          addToDebugMessages("edge is unreadable" + arrow);
+        }
+      }
+      return g;
+    } catch ( Exception e ) {
+      addToDebugMessages("Error getting graph: " + e.toString() );
+      return new EdgeListGraph();
+    }
+  }
+
+  private static void outputModelInformation(SemIm semIm) {
+    String modelStatisticsFileName = outputDir + "ModelStatistics.txt";
+    String estimatorTableFileName = outputDir + "EstimatorTable.txt";
+    String correlationMatrixFileName = outputDir + "CorrelationMatrix.txt";
+    
+    FileWriter fw = null;
+    BufferedWriter bw = null;
+
+    // Output Model Statistics
+    try {
+      fw = new FileWriter(modelStatisticsFileName);
+      bw = new BufferedWriter( fw );
+
+      double modelChiSquare = semIm.getChiSquare();
+      double modelDof = semPm.getDof();
+      double modelPValue = semIm.getPValue();
+      double modelBicScore = semIm.getBicScore();
+      double modelCfi = semIm.getCfi();
+      double modelRmsea = semIm.getRmsea();
+
+      String modelText = "The above chi square test assumes that the maximum likelihood function over" + 
+          " the measured variables has been minimized. Under that assumption, the null hypothesis for" +
+          " the test is that the population covariance matrix over all of the measured variables is" + 
+          " equal to the estimated covariance matrix over all of the measured variables written as a" + 
+          " function of the free model parameters--that is, the unfixed parameters for each directed" +
+          " edge (the linear coefficient for that edge), each exogenous variable (the variance for" +
+          " the error term for that variable), and each bidirected edge (the covariance for the" +
+          " exogenous variables it connects).  The model is explained in Bollen, Structural" +
+          " Equations with Latent Variable, 110. Degrees of freedom are calculated as m (m + 1)" +
+          " / 2 - d, where d is the number of linear coefficients, variance terms, and error" +
+          " covariance terms that are not fixed in the model. For latent models, the degrees of" +
+          " freedom are termed 'estimated' since extra contraints (e.g. pentad constraints) are not" +
+          " taken into account.";
+      NumberFormat nf = NumberFormat.getInstance();
+      nf.setMaximumFractionDigits(2);
+      bw.write("Degrees of Freedom = " + formatDouble(modelDof, nf) + "\n");
+      bw.write("Chi Square = " + formatDouble(modelChiSquare, nf) + "\n");
+      bw.write("P Value = " + formatDouble(modelPValue, nf) + "\n");
+      bw.write("BIC Score = " + formatDouble(modelBicScore, nf) + "\n");
+      bw.write("CFI = " + formatDouble(modelCfi, nf) + "\n");
+      bw.write("RMSEA = " + formatDouble(modelRmsea, nf) + "\n");
+      addToDebugMessages("dof"+modelDof);
+      addToDebugMessages("Chi"+modelChiSquare);
+      addToDebugMessages("P"+modelPValue);
+      addToDebugMessages("BIC"+modelBicScore);
+      addToDebugMessages("CFI"+modelCfi);
+      addToDebugMessages("RMSEA"+modelRmsea);
+
+      bw.write(modelText);
+      bw.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write model statistics to output: " + e.toString());
+    }
+
+    // Output Tabular editor table
+    try {
+      fw = new FileWriter(estimatorTableFileName);
+      bw = new BufferedWriter( fw );
+
+      ParamTableModel table = new ParamTableModel(semIm);
+
+      int numRows = table.getRowCount();
+      int numCols = table.getColumnCount();
+
+      //write column headers
+      for (int i = 0; i < numCols; i++) {
+        bw.write(table.getColumnName(i));
+        if (i != numCols - 1) {
+          bw.write("\t");
+        }
+      }
+      bw.write("\n");
+
+      for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+          bw.write(table.getValueAt(i, j).toString());
+          if (j != numCols - 1) {
+            bw.write("\t");
+          }
+        }
+        if (i != numRows - 1) {
+          bw.write("\n");
+        }
+      }
+      bw.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write tabular model data to output: " + e.toString());
+    }
+
+    // Output correlation matrix 
+
+  }
+
+  /**
+   * Format the double into a string
+   */
+  private static String formatDouble(double d, NumberFormat nf) {
+    if (d == Double.POSITIVE_INFINITY) {
+      return "Infinity";
+    }
+
+    if (-0.001 < d && d < 0.001) {
+      return "0.0";
+    }
+
+    if (Double.isNaN(d)) {
+      return "NaN";
+    }
+
+    return nf.format(d);
+  }
+
+  /*private static Graph getGraphFromText( BufferedReader b, DataSet d ) {
     try {
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
@@ -430,7 +713,7 @@ public class TetradEstimator {
       addToDebugMessages("Error getting graph: " + e.toString() );
       return new EdgeListGraph();
     }
-  }
+  }*/
 
   private static char[] fileToCharArray(File file) {
     try {
@@ -484,4 +767,224 @@ public class TetradEstimator {
     return true;
   }
 
+  private static void writeGraphToHtml(String graphStr, String programDir, BufferedWriter bWriter) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(programDir + "/program/tetradGraph.html"));
+
+      StringBuilder htmlStr = new StringBuilder();
+      while(br.ready()) {
+        htmlStr.append(br.readLine());
+        if (br.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+      
+      s = s.replaceAll("PutGraphDataHere", graphStr);
+
+      bWriter.write(s);
+      bWriter.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph to file. " + e.toString());
+    }
+  }
+
+  /**
+   * Helper class for outputting the tabular statistics.  This code comes from the Tetrad
+   * class SemImEditor.java
+   */
+  private static class ParamTableModel {
+    private final NumberFormat nf = NumberFormatUtil.getInstance().getNumberFormat();
+    //private final SemImWrapper wrapper;
+    //private SemImEditor.OneEditor editor = null;
+    private int maxFreeParamsForStatistics = 500;
+    private boolean editable = true;
+
+    private SemIm semIm = null;
+
+    public ParamTableModel (SemIm s) {
+      semIm = s;
+    }
+
+    public int getRowCount() {
+        int numNodes = semIm().getVariableNodes().size();
+        return semIm().getNumFreeParams() + semIm().getFixedParameters().size() + numNodes;
+    }
+
+    public int getColumnCount() {
+        return 7;
+    }
+
+    public String getColumnName(int column) {
+      switch (column) {
+        case 0:
+            return "From";
+        case 1:
+            return "To";
+        case 2:
+            return "Type";
+        case 3:
+            return "Value";
+        case 4:
+            return "SE";
+        case 5:
+            return "T";
+        case 6:
+            return "P";
+      }
+
+      return null;
+    }
+
+    public Object getValueAt(int row, int column) {
+          List nodes = semIm().getVariableNodes();
+          List parameters = new ArrayList<>(semIm().getFreeParameters());
+          parameters.addAll(semIm().getFixedParameters());
+
+          int numParams = semIm().getNumFreeParams() + semIm().getFixedParameters().size();
+
+          if (row < numParams) {
+              Parameter parameter = ((Parameter) parameters.get(row));
+
+              switch (column) {
+                  case 0:
+                      return parameter.getNodeA();
+                  case 1:
+                      return parameter.getNodeB();
+                  case 2:
+                      return typeString(parameter);
+                  case 3:
+                      return asString(paramValue(parameter));
+                  case 4:
+                      if (parameter.isFixed()) {
+                          return "*";
+                      } else {
+                          return asString(semIm().getStandardError(parameter,
+                                  maxFreeParamsForStatistics));
+                      }
+                  case 5:
+                      if (parameter.isFixed()) {
+                          return "*";
+                      } else {
+                          return asString(semIm().getTValue(parameter,
+                                  maxFreeParamsForStatistics));
+                      }
+                  case 6:
+                      if (parameter.isFixed()) {
+                          return "*";
+                      } else {
+                          return asString(semIm().getPValue(parameter,
+                                  maxFreeParamsForStatistics));
+                      }
+              }
+          } else if (row < numParams + nodes.size()) {
+              int index = row - numParams;
+              Node node = semIm().getVariableNodes().get(index);
+              int n = semIm().getSampleSize();
+              int df = n - 1;
+              double mean = semIm().getMean(node);
+              double stdDev = semIm().getMeanStdDev(node);
+              double stdErr = stdDev / Math.sqrt(n);
+
+              double tValue = mean / stdErr;
+              double p = 2.0 * (1.0 - ProbUtils.tCdf(Math.abs(tValue), df));
+
+              switch (column) {
+                  case 0:
+                      return nodes.get(index);
+                  case 1:
+                      return nodes.get(index);
+                  case 2:
+                      if (false) {
+                          return "Intercept";
+                      } else {
+                          return "Mean";
+                      }
+                  case 3:
+                      if (false) {
+                          double intercept = semIm().getIntercept(node);
+                          return asString(intercept);
+                      } else {
+                          return asString(mean);
+                      }
+                  case 4:
+                      return asString(stdErr);
+                  case 5:
+                      return asString(tValue);
+                  case 6:
+                      return asString(p);
+              }
+          }
+
+          return null;
+      }
+
+      private double paramValue(Parameter parameter) {
+          double paramValue = semIm().getParamValue(parameter);
+
+          if (false) {
+              if (parameter.getType() == ParamType.VAR) {
+                  paramValue = 1.0;
+              }
+              if (parameter.getType() == ParamType.COVAR) {
+                  Node nodeA = parameter.getNodeA();
+                  Node nodeB = parameter.getNodeB();
+
+                  double varA = semIm().getParamValue(nodeA, nodeA);
+                  double varB = semIm().getParamValue(nodeB, nodeB);
+
+                  paramValue *= Math.sqrt(varA * varB);
+              }
+          } else {
+              if (parameter.getType() == ParamType.VAR) {
+                  paramValue = Math.sqrt(paramValue);
+              }
+          }
+
+          return paramValue;
+      }
+
+      private String asString(double value) {
+          if (Double.isNaN(value)) {
+              return " * ";
+          } else {
+              return nf.format(value);
+          }
+      }
+
+      private String typeString(Parameter parameter) {
+          ParamType type = parameter.getType();
+
+          if (type == ParamType.COEF) {
+              return "Edge Coef.";
+          }
+
+          if (false) {
+              if (type == ParamType.VAR) {
+                  return "Correlation";
+              }
+
+              if (type == ParamType.COVAR) {
+                  return "Correlation";
+              }
+          }
+
+          if (type == ParamType.VAR) {
+              //return "Variance";
+              return "Std. Dev.";
+          }
+
+          if (type == ParamType.COVAR) {
+              return "Covariance";
+          }
+
+          throw new IllegalStateException("Unknown param type.");
+      }
+
+      private SemIm semIm() {
+          return semIm;
+      }
+
+  }
 }

@@ -117,7 +117,7 @@
         </javadoc>
     </target>
 
-    
+
     <target name="runComponent" depends="clean, compile, dist" description="executes GenerateMOOCdbFeatures">
         <java classname="edu.cmu.pslc.learnsphere.transform.MOOCdb.GenerateMOOCdbFeatures" fork="true">
             <classpath refid="run.classpath" />
@@ -128,7 +128,7 @@
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/MOOCdbGenerateFeatures_v1_0.xsd" />
+            <arg value="${basedir}/schemas/Featuretools-MOOCdb_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
 
