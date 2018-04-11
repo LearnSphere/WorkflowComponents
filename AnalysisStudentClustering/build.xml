@@ -36,9 +36,9 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/emd/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/studentClustering/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.emd.EMDMain" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.emd.StudentClusteringMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -79,17 +79,17 @@
         </javadoc>
     </target>
 
-    <target name="runComponent" depends="clean, compile, dist" description="executes EMD">
-        <java classname="edu.cmu.pslc.learnsphere.analysis.emd.EMDMain" fork="true">
+    <target name="runComponent" depends="clean, compile, dist" description="executes StudentClustering">
+        <java classname="edu.cmu.pslc.learnsphere.analysis.studentClustering.StudentClusteringMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/EMD_component_example.xml" />
+            <arg value="${basedir}/test/components/StudentClustering_component_example.xml" />
             <arg value="-workflowDir" />
             <arg value="${basedir}/test/" />
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/AnalysisEMD_v1_0.xsd" />
+            <arg value="${basedir}/schemas/AnalysisStudentClustering_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>
