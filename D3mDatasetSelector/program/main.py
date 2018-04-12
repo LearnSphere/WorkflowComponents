@@ -5,6 +5,7 @@
 
 import logging
 import os.path as path
+import json
 import argparse
 
 __version__ = '0.1'
@@ -17,6 +18,7 @@ logger.setLevel(logging.DEBUG)
 config = {}
 config['dataset_dir'] = "/rdata/dataStore/d3m/datasets/seed_datasets_current"
 config['dataset_json'] = 'datasetDoc.json'
+config['out_file'] = 'datasetDoc.json'
 
 
 def get_dataset_path(ds):
@@ -30,6 +32,11 @@ def get_dataset_path(ds):
                      config['dataset_json'])
 
 def get_default_arg_parser(desc):
+    """
+    Define an argument parser for use with Tigris Components and
+    mandatory arguments
+
+    """
     parser = argparse.ArgumentParser(description=desc)
 
     parser.add_argument('-programDir', type=str,
@@ -60,11 +67,16 @@ if __name__ == '__main__':
     json_file = open(json_path, 'r')
     lines = json_file.readlines()
 
-    # Write dataset json to output directory
-    out_file_path = path.join(args.workingDir, config['dataset_json'])
+    # Write dataset info to output file
+    ds_info = {'root_path': path.join(config['dataset_dir'], ds),
+               'dataset_dir': ds + '_dataset',
+               'dataset_json': path.join(config['dataset_dir'], ds, ds+'_dataset', config['dataset_json'])
+    }
+    out_file_path = path.join(args.workingDir, config['out_file'])
     logger.debug("Writing dataset json to: %s" % out_file_path)
     out_file = open(out_file_path, 'w')
-    for line in lines:
-        out_file.write(line)
+    json.dump(ds_info, out_file)
+    # for line in lines:
+        # out_file.write(line)
     out_file.close()
 

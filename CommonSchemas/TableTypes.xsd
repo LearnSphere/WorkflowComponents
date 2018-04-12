@@ -24,11 +24,11 @@
 
 
   <xs:element name="file" type="FileContainer" />
-  <xs:element name="text" substitutionGroup="file" />
-  <xs:element name="image" substitutionGroup="file" />
-  <xs:element name="audio" substitutionGroup="file" />
-  <xs:element name="video" substitutionGroup="file" />
-  <xs:element name="binary" substitutionGroup="file" />
+      <xs:element name="text" substitutionGroup="file" />
+      <xs:element name="image" substitutionGroup="file" />
+      <xs:element name="audio" substitutionGroup="file" />
+      <xs:element name="video" substitutionGroup="file" />
+      <xs:element name="binary" substitutionGroup="file" />
 
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />

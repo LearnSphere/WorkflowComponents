@@ -36,9 +36,9 @@
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
             <classpath refid="build-classpath" />
         </manifestclasspath>
-        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/learnsphere/analysis/**">
+        <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/learnsphere/d3m/analysis/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.learnsphere.analysis.D3mPipelineSearchMain" />
+                <attribute name="Main-Class" value="edu.cmu.learnsphere.d3m.analysis.D3mPipelineSearchMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -80,7 +80,7 @@
     </target>
 
     <target name="runComponent" depends="clean, compile, dist" description="executes D3mPipelineSearch">
-        <java classname="edu.cmu.learnsphere.analysis.D3mPipelineSearchMain" fork="true">
+        <java classname="edu.cmu.learnsphere.d3m.analysis.D3mPipelineSearchMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
             <arg value="${basedir}/test/components/ComponentD3mPipelineSearch.xml" />

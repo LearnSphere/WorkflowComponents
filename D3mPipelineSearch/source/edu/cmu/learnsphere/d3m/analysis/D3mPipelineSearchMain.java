@@ -1,4 +1,4 @@
-package edu.cmu.learnsphere.analysis;
+package edu.cmu.learnsphere.d3m.analysis;
 
 import java.io.File;
 
@@ -33,6 +33,10 @@ public class D3mPipelineSearchMain extends AbstractComponent {
 
         // The addMetaData* methods make the meta data available to downstream components.
 
+	// Add input meta-data (headers) to output file.
+	this.addMetaDataFromInput("d3m-dataset", 0, 0, ".*");
+	// Add additional meta-data to output file.
+	this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, "New Column Name");
 
     }
 
@@ -52,9 +56,9 @@ public class D3mPipelineSearchMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/dataset.json");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/output.txt");
 
-		this.addOutputFile(outputFile0, 0, 0, "d3m-dataset");
+		this.addOutputFile(outputFile0, 0, 0, "text");
 
 
         System.out.println(this.getOutput());
