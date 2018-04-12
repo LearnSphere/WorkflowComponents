@@ -23,16 +23,14 @@
 <files>
 <d3m-dataset>
 <index>0</index>
-<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
+<file_path>/rdata/Sandbox/learnsphere/WorkflowComponents/D3mPipelineSearch/test/components</file_path>
 <label>text</label>
-<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
+<file_name>datasetDoc.json</file_name>
 </d3m-dataset>
 </files>
 <inputmeta />
 </input0>
 </inputs>
-
 <options>
 </options>
-
 </component>

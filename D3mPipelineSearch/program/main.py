@@ -6,6 +6,7 @@ import sys
 from os import path
 import argparse
 import json
+import pathlib
 
 import core_pb2 as core_pb2
 import core_pb2_grpc as core_pb2_grpc
@@ -35,6 +36,11 @@ def print_msg(msg):
     for line in msg.splitlines():
         print("    | %s" % line)
     print("    \\____________________")
+
+def get_file_uri(path_str):
+    uri = pathlib.Path(path_str).as_uri()
+    logger.debug("Got file uri: %s" % str(uri))
+    return uri
 
 
 _map_progress = dict((k, v) for v, k in core_pb2.Progress.items())
@@ -120,7 +126,7 @@ def main():
     print("\n> Calling CreatePipelines...")
     create_stream = stub.CreatePipelines(core_pb2.PipelineCreateRequest(
         context=context,
-        dataset_uri=ds_info['dataset_json'],
+        dataset_uri=get_file_uri(ds_info['dataset_json']),
         task=core_pb2.CLASSIFICATION,
         task_subtype=core_pb2.NONE,
         task_description="Debugging task",
@@ -189,7 +195,7 @@ def main():
         execute_stream = stub.ExecutePipeline(core_pb2.PipelineExecuteRequest(
             context=context,
             pipeline_id=pipeline_id,
-            dataset_uri=ds_info['dataset_json'],
+            dataset_uri=get_file_uri(ds_info['dataset_json']),
         ))
         print("  Stream open")
         for execd in execute_stream:
