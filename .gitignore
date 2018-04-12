@@ -22,7 +22,7 @@ AnalysisBkt/test/ComponentTestOutput/*
 
 ### virtualenv generated directories ###
 #################################
-*/venv/
+*/env/
 
 ### component generator files ###
 ##################################
