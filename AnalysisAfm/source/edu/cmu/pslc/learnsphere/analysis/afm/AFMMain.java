@@ -12,6 +12,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMSource;
+
+import static javax.xml.transform.OutputKeys.INDENT;
+import static javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import edu.cmu.pslc.afm.dataObject.AFMDataObject;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.dataStructure.TrainingResult;
 
@@ -42,6 +55,9 @@ public class AFMMain extends AbstractComponent {
     /** Component option (model). */
     String modelName = null;
 
+    /** XML doc transformer. */
+    Transformer transformer = null;
+
     /**
      * Main method.
      * @param args the arguments
@@ -50,7 +66,6 @@ public class AFMMain extends AbstractComponent {
 
         AFMMain tool = new AFMMain();
         tool.startComponent(args);
-
     }
 
     /**
@@ -82,12 +97,6 @@ public class AFMMain extends AbstractComponent {
         Integer outNodeIndex0 = 0;
         this.addMetaDataFromInput("student-step", 0, outNodeIndex0, ".*");
         this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "Predicted Error Rate (" + modelName + ")");
-        Integer outNodeIndex2 = 2;
-        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label1", 0, "type");
-        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label2", 1, "name");
-        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label3", 2, "intercept");
-        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label4", 3, "slope");
-
     }
 
     @Override
@@ -106,8 +115,8 @@ public class AFMMain extends AbstractComponent {
     protected void runComponent() {
 
         File predictedErrorRateFile = this.createFile("Step-values-with-predictions", ".txt");
-        File modelValuesFile = this.createFile("KC-model-values", ".txt");
-        File parametersFile = this.createFile("Parameter-estimate-values", ".txt");
+        File modelValuesFile = this.createFile("KC-model-values", ".xml");
+        File parametersFile = this.createFile("Parameter-estimate-values", ".xml");
 
         // The decimal format for predicted error rates.
         decimalFormat = new DecimalFormat("0.000#");
@@ -132,10 +141,12 @@ public class AFMMain extends AbstractComponent {
             e.printStackTrace();
         }
 
-        TrainingResult trainingResult = theModel.getTrainingResult();
-        ;
+        // Initialize the transformer.
+        initializeTransformer();
 
-        if ((theModel != null) && (trainingResult != null)) {
+        TrainingResult trainingResult = theModel.getTrainingResult();
+
+        if ((theModel != null) && (trainingResult != null) && (transformer != null)) {
 
             // Write the predicted error rates to the first output file.
             predictedErrorRateFile = populatePredictedErrorRateFile(predictedErrorRateFile,
@@ -147,20 +158,21 @@ public class AFMMain extends AbstractComponent {
             // Finally, write the parameter estimate values to the third output file.
             parametersFile = populateParametersFile(parametersFile, theModel);
 
+        } else if (transformer == null) {
+            this.addErrorMessage("Unable to generate output XML file.");
         } else {
             this.addErrorMessage("The results from AFM were empty.");
         }
 
         Integer nodeIndex = 0;
         Integer fileIndex = 0;
-        String fileType = "student-step";
-        this.addOutputFile(predictedErrorRateFile, nodeIndex, fileIndex, fileType);
+        String label = "student-step";
+        this.addOutputFile(predictedErrorRateFile, nodeIndex, fileIndex, label);
+        label = "text";
         nodeIndex = 1;
-        fileType = "model-values";
-        this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileType);
+        this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, label);
         nodeIndex = 2;
-        fileType = "parameters";
-        this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileType);
+        this.addOutputFile(parametersFile, nodeIndex, fileIndex, label);
 
         System.out.println(this.getOutput());
 
@@ -170,6 +182,19 @@ public class AFMMain extends AbstractComponent {
             System.err.println(err);
         }
 
+    }
+
+    private void initializeTransformer() {
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(INDENT, "yes");
+            transformer.setOutputProperty(OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        } catch (Exception e) {
+            transformer = null;
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
     }
 
     // Constant
@@ -321,58 +346,44 @@ public class AFMMain extends AbstractComponent {
 
         Integer numSkills = ado.getSkills().size();
         Integer numStudents = ado.getStudents().size();
+        Integer numParameters = 2*numSkills + numStudents;
 
-        String kcPrefix = "KC Model Values for " + modelName + " model: ";
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            doc.appendChild(doc.createElement("model_values"));
 
-        // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+            // append elements for: name, AIC, BIC, log_likelihood, number_of_parameters, number_of_observations
+            Node modelNode = doc.createElement("model");
+            addElement(doc, modelNode, "name", modelName);
+            addElement(doc, modelNode, "AIC", kcmFormat.format(aic));
+            addElement(doc, modelNode, "BIC", kcmFormat.format(bic));
+            addElement(doc, modelNode, "log_likelihood", kcmFormat.format(logLikelihood));
+            addElement(doc, modelNode, "number_of_parameters", integerFormat.format(numParameters));
+            addElement(doc, modelNode, "number_of_observations", integerFormat.format(numObs));
+            doc.getDocumentElement().appendChild(modelNode);
 
-                // Write values to export
-                byte[] label = null;
-                byte[] value = null;
+            transformer.transform(new DOMSource(doc.getDocumentElement()), new StreamResult(theFile));
 
-                // AIC
-                label = (kcPrefix + "AIC" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-                value = (kcmFormat.format(aic)).getBytes("UTF-8");
-                outputStream.write(value);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // BIC
-                label = (kcPrefix + "BIC" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-                value = (kcmFormat.format(bic)).getBytes("UTF-8");
-                outputStream.write(value);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Log Likelihood
-                label = (kcPrefix + "Log Likelihood" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-                value = (kcmFormat.format(logLikelihood)).getBytes("UTF-8");
-                outputStream.write(value);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Number of parameters
-                Integer numParameters = 2*numSkills + numStudents;
-                label = (kcPrefix + "Number of Parameters" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-                value = (integerFormat.format(numParameters)).getBytes("UTF-8");
-                outputStream.write(value);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Number of Observations
-                label = (kcPrefix + "Number of Observations" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-                value = (integerFormat.format(numObs)).getBytes("UTF-8");
-                outputStream.write(value);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-            } catch (Exception e) {
-                // This will be picked up by the workflows platform and relayed to the user.
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
         return theFile;
+    }
+
+    /**
+     * Helper method to create and append an element to specified doc and node.
+     * @param doc the XML Document
+     * @param parent the Node
+     * @param tag the name of the element to create
+     * @param value the value of the new text node
+     */
+    private void addElement(Document doc, Node parent, String tag, Object value) {
+        Element ele = doc.createElement(tag);
+        String valueStr = (value == null) ? "NULL" : value.toString();
+        ele.appendChild(doc.createTextNode(valueStr));
+        parent.appendChild(ele);
     }
 
     /**
@@ -395,50 +406,41 @@ public class AFMMain extends AbstractComponent {
         List<String> studentNames = ado.getStudents();
         double[] stuParams = model.getStudentParameters();
 
-        // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            doc.appendChild(doc.createElement("parameters"));
 
-                // Header: Type, Name, Intercept, Slope
-                byte[] header = ("Type" + TAB_CHAR + "Name" + TAB_CHAR
-                                 + "Intercept" + TAB_CHAR + "Slope")
-                    .getBytes("UTF-8");
-                outputStream.write(header);
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+            // append elements (type, name, intercept, slope) for each skill and student
 
-                // Write values to export
-                byte[] label = null;
-                byte[] value = null;
-
-                int count = 0;
-                for (String s : skillNames) {
-                    label = ("Skill" + TAB_CHAR + s + TAB_CHAR).getBytes("UTF-8");
-                    outputStream.write(label);
-                    double intercept = getIntercept(count, skillParams);
-                    double slope = getSlope(count, skillParams);
-                    value = (kcmFormat.format(intercept) + TAB_CHAR
-                             + decimalFormat.format(slope)).getBytes("UTF-8");
-                    outputStream.write(value);
-                    outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                    count++;
-                }
-
-                count = 0;
-                // Null slope for students
-                for (String s : studentNames) {
-                    label = ("Student" + TAB_CHAR + s + TAB_CHAR).getBytes("UTF-8");
-                    outputStream.write(label);
-                    value = (kcmFormat.format(stuParams[count]) + TAB_CHAR).getBytes("UTF-8");
-                    outputStream.write(value);
-                    outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                    count++;
-                }
-
-            } catch (Exception e) {
-                // This will be picked up by the workflows platform and relayed to the user.
-                e.printStackTrace();
+            int count = 0;
+            for (String s : skillNames) {
+                Node parameter = doc.createElement("parameter");
+                addElement(doc, parameter, "type", "Skill");
+                addElement(doc, parameter, "name", s);
+                addElement(doc, parameter, "intercept", kcmFormat.format(getIntercept(count, skillParams)));
+                addElement(doc, parameter, "slope", decimalFormat.format(getSlope(count, skillParams)));
+                doc.getDocumentElement().appendChild(parameter);
+                count++;
             }
+
+            count = 0;
+            // Null slope for students
+            for (String s : studentNames) {
+                Node parameter = doc.createElement("parameter");
+                addElement(doc, parameter, "type", "Student");
+                addElement(doc, parameter, "name", s);
+                addElement(doc, parameter, "intercept", kcmFormat.format(stuParams[count]));
+                addElement(doc, parameter, "slope", null);
+                doc.getDocumentElement().appendChild(parameter);
+                count++;
+            }
+
+            transformer.transform(new DOMSource(doc.getDocumentElement()), new StreamResult(theFile));
+
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
         return theFile;
     }
