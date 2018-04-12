@@ -1,3 +1,7 @@
+# Auto-generated compiled binaries
 program/standard-bkt-public-standard-bkt/*.exe
 program/standard-bkt-public-standard-bkt/*.o
+program/standard-bkt-public-standard-bkt/inputconvert
+program/standard-bkt-public-standard-bkt/predicthmm
 program/*.exe
+program/*.o
