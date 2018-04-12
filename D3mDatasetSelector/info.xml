@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/D3mDatasetSelector</url>
+<date>April 11, 2018</date>
+<abstract>The <b>D3mDatasetSelector</b> component is an example of a(n) Python component.</abstract>
+<description>A selector to specify a D3m Dataset to operate on.</description>
+
+<inputs>
+</inputs>
+
+<outputs>
+<b>d3m-dataset</b>
+</outputs>
+
+<options>
+<b>ds_name -- type Enum(1491_one_hundred_plants_margin, 185_baseball, 1567_poker_hand, 196_autoMpg, 22_handgeometry)</b>
+</options>
+
+</info>

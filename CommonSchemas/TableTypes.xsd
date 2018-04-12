@@ -24,11 +24,12 @@
 
 
   <xs:element name="file" type="FileContainer" />
-  <xs:element name="text" substitutionGroup="file" />
-  <xs:element name="image" substitutionGroup="file" />
-  <xs:element name="audio" substitutionGroup="file" />
-  <xs:element name="video" substitutionGroup="file" />
-  <xs:element name="binary" substitutionGroup="file" />
+	  <xs:element name="text" substitutionGroup="file" />
+	  <xs:element name="image" substitutionGroup="file" />
+	  <xs:element name="audio" substitutionGroup="file" />
+	  <xs:element name="video" substitutionGroup="file" />
+	  <xs:element name="binary" substitutionGroup="file" />
+  
 
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
@@ -45,27 +46,29 @@
 	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
 
-<xs:element name="lightside-model" substitutionGroup="file" />
-  <xs:element name="analysis-summary" substitutionGroup="text" />
-	  <xs:element name="csv" substitutionGroup="text" />
-	  <xs:element name="sql" substitutionGroup="text" />
-		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
-<xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
-<xs:element name="coursera-anonymized-general" substitutionGroup="text" />
-	<xs:element name="MOOCdb" substitutionGroup="file" />
-<xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
-<xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
-<xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />
-	  <xs:element name="discoursedb" substitutionGroup="text" />
-	  <xs:element name="xml" substitutionGroup="text" />
-		  <xs:element name="inline-html" substitutionGroup="xml" />
-		  <xs:element name="html" substitutionGroup="xml" />
-		  <xs:element name="ctat-log" substitutionGroup="xml" />
+  <xs:element name="csv" substitutionGroup="text" />
+  <xs:element name="sql" substitutionGroup="text" />
+  <xs:element name="json" substitutionGroup="text" />
+  <xs:element name="xml" substitutionGroup="text" />
+      <xs:element name="inline-html" substitutionGroup="xml" />
+      <xs:element name="html" substitutionGroup="xml" />
+      <xs:element name="ctat-log" substitutionGroup="xml" />
 
-      <xs:element name="tetrad-graph" substitutionGroup="inline-html" />
-      <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
-      <xs:element name="tetrad-regression" substitutionGroup="tab-delimited" />
-      <xs:element name="tetrad-im" substitutionGroup="tab-delimited" />
+  <xs:element name="lightside-model" substitutionGroup="file" />
+  <xs:element name="analysis-summary" substitutionGroup="text" />
+  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
+  <xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
+  <xs:element name="coursera-anonymized-general" substitutionGroup="text" />
+  <xs:element name="MOOCdb" substitutionGroup="file" />
+  <xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
+  <xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
+  <xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />
+  <xs:element name="discoursedb" substitutionGroup="text" />
+
+  <xs:element name="tetrad-graph" substitutionGroup="inline-html" />
+  <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
+  <xs:element name="tetrad-regression" substitutionGroup="tab-delimited" />
+  <xs:element name="tetrad-im" substitutionGroup="tab-delimited" />
 
   <xs:element name="png" substitutionGroup="image" />
   <xs:element name="jpg" substitutionGroup="image" />
@@ -88,5 +91,6 @@
 
   <xs:element name="pdf" substitutionGroup="binary" />
 
+  <xs:element name="d3m-dataset" substitutionGroup="json" />
 
 </xs:schema>

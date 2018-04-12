@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/D3mPipelineSearch</url>
+<date>April 12, 2018</date>
+<abstract>The <b>D3mPipelineSearch</b> component is an example of a(n) Python component.</abstract>
+<description>A D3M TA2 Pipeline Search Call</description>
+
+<inputs>
+<b>d3m-dataset</b>
+</inputs>
+
+<outputs>
+<b>text</b>
+</outputs>
+
+<options>
+</options>
+
+</info>
