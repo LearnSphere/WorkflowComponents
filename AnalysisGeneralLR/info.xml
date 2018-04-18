@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
+    <experimental>EXPERIMENTAL</experimental>
 <author>Philip Pavlik
   <email>ppavlik@memphis.edu</email>
 </author>
