@@ -332,6 +332,10 @@ public class BKTMain extends AbstractComponent {
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
         this.addMetaDataFromInput("student-step", 0, 0, ".*");
         this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "Predicted Error Rate (" + modelName + ")");
+        Integer outNodeIndex1 = 1;
+        this.addMetaData("model-values", outNodeIndex1, META_DATA_LABEL, "label1", 0, null);
+        Integer outNodeIndex2 = 2;
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label2", 0, null);
     }
 
     /**
