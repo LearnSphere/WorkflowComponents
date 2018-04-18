@@ -3,3 +3,5 @@
 /.project
 **/test
 WorkflowComponent.log
+**/build
+**/dist
