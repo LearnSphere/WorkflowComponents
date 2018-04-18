@@ -5,3 +5,4 @@
 WorkflowComponent.log
 **/build
 **/dist
+build.properties
