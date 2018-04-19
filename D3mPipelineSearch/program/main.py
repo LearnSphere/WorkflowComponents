@@ -23,11 +23,11 @@ logger.setLevel(logging.DEBUG)
 
 __version__ = '0.1'
 config = {
-# 'dataset_dir': "file:///rdata/dataStore/d3m/datasets/seed_datasets_current",
+'dataset_dir': "/home/datashop/d3mDatasets",
 # 'dataset_json': 'datasetDoc.json',
-# 'dataset_uri': "file:///rdata/dataStore/d3m/test_datasets/185_baseball/185_baseball_dataset",
-# 'dataset_json': 'datasetDoc.json',
-'ta2_address': 'sophia.stevencdang.com:45042'
+'dataset_uri': "/home/datashop/d3mDatasets/185_baseball/185_baseball_dataset",
+'dataset_json': 'datasetDoc.json',
+'ta2_address': 'glacier.andrew.cmu.edu:45042'
 }
 # config['ta2_address'] = 'lyra.auton.cs.cmu.edu:45042'
 

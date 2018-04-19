@@ -16,7 +16,7 @@ logger = logging.getLogger('d3m_dataset_selector')
 logger.setLevel(logging.DEBUG)
 
 config = {}
-config['dataset_dir'] = "/rdata/dataStore/d3m/datasets/seed_datasets_current"
+config['dataset_dir'] = "/home/datashop/d3mDatasets"
 config['dataset_json'] = 'datasetDoc.json'
 config['out_file'] = 'datasetDoc.json'
 
@@ -60,6 +60,7 @@ if __name__ == '__main__':
 
     # Get selected dataset name
     ds = args.ds_name
+    logger.debug(ds) 
 
     # Read in the dataset json
     json_path = get_dataset_path(ds)
