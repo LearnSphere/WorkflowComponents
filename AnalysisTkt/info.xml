@@ -28,7 +28,7 @@
         <p>In order the 10 options of the model refer to (all are computed invidual for each user):</p>
         <ol>
             <li>log(successes of subordinate KC/failures of subordiante KC)</li>
-            <li> successess of superordinate KC - failures for superordinate KC
+            <li> successess of superordinate KC - failures for superordinate KC</li>
                 <li>log(successes of same response term/ failures of same response term) depends on CF (Correct Answer) in data</li>
                 <li> log(successes sum for all subKCS/ failures sum for all sub KCs)</li>
                 <li>interactive function of decay from first superordinate trial, log of the count of prior subordinate repetitions, and mean spacing</li>
