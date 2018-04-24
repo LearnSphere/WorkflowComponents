@@ -163,23 +163,29 @@ public class DetectorTesterMain extends AbstractComponent {
       Integer projectId = (Integer)detectorProject.getId();
       logger.debug("Project ID : " + projectId);
 
+      boolean userIsAuthorized = false;
+
       String authorization = authorizationDao.getAuthorization(userId, projectId);
       logger.debug("Authorization level: " + authorization);
       if (authorization == null) {
         logger.error("Could not find authorization data on user for project: " + accessProject);
-        return false;
-      }
-
-      if (authorization.equals(AuthorizationItem.LEVEL_EDIT)
-          || authorization.equals(AuthorizationItem.LEVEL_ADMIN)
-          || userItem.getAdminFlag()) {
-        return true;
+        userIsAuthorized =  false;
       } else {
-        logger.error("User does not have edit or admin authorization to project " + accessProject +
-            ".  Get access to this project to be able to run written code.");
-        return false;
+        if (authorization.equals(AuthorizationItem.LEVEL_EDIT)
+            || authorization.equals(AuthorizationItem.LEVEL_ADMIN)) {
+          userIsAuthorized = true;
+        } else if (!userItem.getAdminFlag()) {
+          logger.error("User does not have edit or admin authorization to project " + accessProject +
+              ".  Get access to this project to be able to run written code.");
+          userIsAuthorized = false;
+        }
       }
 
+      if (userItem.getAdminFlag()) {
+        userIsAuthorized = true;
+      }
+
+      return userIsAuthorized;
     }
 
     private Boolean inputContainsRequire() {
