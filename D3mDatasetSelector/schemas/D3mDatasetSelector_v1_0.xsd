@@ -1,11 +1,5 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified">
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
-  <xs:complexType name="InputType">
-    <xs:all/>
-  </xs:complexType>
-  <xs:complexType name="InputLabel">
-    <xs:all/>
-  </xs:complexType>
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -51,8 +45,6 @@
         <xs:element name="left" type="xs:double"/>
         <xs:element name="top" type="xs:double"/>
         <xs:element maxOccurs="1" minOccurs="0" name="connections" type="ConnectionType"/>
-        <xs:element minOccurs="0" name="inputs" type="InputType"/>
-        <xs:element minOccurs="0" name="inputLabels" type="InputLabel"/>
         <xs:element minOccurs="0" name="outputs" type="OutputType"/>
         <xs:element minOccurs="0" name="options" type="OptionsType"/>
       </xs:all>

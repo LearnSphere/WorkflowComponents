@@ -31,10 +31,10 @@ public class D3mDatasetSelectorMain extends AbstractComponent {
 
     @Override
     protected void processOptions() {
-        logger.info("Processing Options");
+        logger.trace("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
-
+        this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
@@ -56,13 +56,14 @@ public class D3mDatasetSelectorMain extends AbstractComponent {
 	// Run the program...
 	File outputDirectory = this.runExternal();
 
+	//File outputDirectory = this.runExternalMultipleFileOutput();
 
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/datasetDoc.json");
+	logger.trace("*** outputFile0 exists " + outputFile0.exists());
 
-		this.addOutputFile(outputFile0, 0, 0, "d3m-dataset");
+	this.addOutputFile(outputFile0, 0, 0, "text");
 
-
-        System.out.println(this.getOutput());
+	System.out.println(this.getOutput());
 
     }
 }
