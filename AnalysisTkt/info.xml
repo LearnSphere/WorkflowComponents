@@ -7,8 +7,7 @@
     <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisTkt</url>
     <date>2018-03-28</date>
     <abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model is logistic regression predicting Outcome column correctness.</abstract>
-    <details>TKT combines aspects of Performance Factors Analysis (PFA) available in LearnSphere and the ACT-R model of human cognition. <br/>
-        <br/> Email the author directly with bug reports for this component.</details>
+    <details>TKT combines aspects of Performance Factors Analysis (PFA) available in LearnSphere and the ACT-R model of human cognition. Email the author directly with bug reports for this component.</details>
 
     <inputs>
         <b>Transaction export with TKT features (from Generate TKT Features Transform component)</b>
@@ -24,8 +23,8 @@
         <p>
             <b>Use categorical intercepts</b> - allows either a single fixed effect intercept for the model, or fixed effect intercepts for any single categorical variable. This allows the user to estimate prior knowledge based on a KC model. This mechanism is very flexible and can be used for other categorical variables, such as the student identifier or the content unit (e.g. pretest, practice, posttest).</p>
         <p>
-            <b>Optimized parameters</b> - The LearnSphere implementation is highly configurable, allowing 4 performance tracing features and 3 memory tracing features to be used for prediction of learner performance. The user can compute the model using any combination of these 7 factors, each of which can be either use fixed parameters or optimally fitted. These 7 features are, in order, turned on with a 1 value in the first 7 positions of the Used Parameters Boolean option, with Fixed Parameters 1 to 7 used to set fixed values if needed. For example, 1,1,1,0,0,0,0,0,0,0 turns on the first 3 tracking feature, but turns off the overall tracking and the 3 memory factors. The final 3 values (of the 10) set at 0, turn off forgetting, spacing effects and between session interference for the model.</p>
-        <p>In order the 10 options of the model refer to (all are computed individually for each user):</p>
+            <b>Optimized parameters</b> - The LearnSphere implementation is highly configurable, allowing 4 performance tracing features and 3 memory tracing features to be used for prediction of learner performance. The user can compute the model using any combination of these 7 factors, each of which can be either use fixed parameters or optimally fitted. </p>
+        <p>In order the 10 options (set to 1 to optimize, 0 to use fixed) of the model refer to:</p>
         <ol>
                 <li>successes of subordinate KC - failures of subordinate KC</li>
                 <li>successes of superordinate KC - failures for superordinate KC</li>
@@ -34,9 +33,9 @@
                 <li>interactive function of decay from first superordinate trial, log of the count of prior subordinate repetitions, and mean spacing</li>
                 <li>interactive function of decay from first superordinate trial and log of the count of prior superordinate repetitions</li>
                 <li>interactive function of decay from first superordinate trial and log of the count of prior response repetitions</li>
-                <li>decay parameter switch used for 5,6 and 7 (set to 0 to used fixed parameter 8)</li>
+                <li>decay parameter switch used for 5,6 and 7 (set to 0 to use fixed parameter 8)</li>
                 <li>spacing parameter switch used for 5 (set to 0 to use fixed parameters 9 and 11)</li>
-                <li>interference parameter see Pavlik and Anderson (2005) switch used for 5,6 and 7 (set to 0 to used fixed parameter 10)</li>
+                <li>interference parameter see Pavlik and Anderson (2005) switch used for 5,6 and 7 (set to 0 to use fixed parameter 10)</li>
         </ol>
         <p>
             <b>Fixed parameters</b> - In the event that a parameter is turned off (set to 0 in optimized list), then the fixed value listed here will be used. The default fixed values turn each component off.  (Note that a default of 1 turns interference (10th parameter) off. Similarly, the default of 1 is also needed for the 11th fixed parameter, which is also for spacing effects)</p>
