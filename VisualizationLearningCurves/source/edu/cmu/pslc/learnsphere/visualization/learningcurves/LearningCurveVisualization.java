@@ -19,6 +19,7 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
@@ -679,7 +680,8 @@ public class LearningCurveVisualization {
         StringBuffer sBuffer = new StringBuffer();
         for (String key : lcData.keySet()) {
             lcImage = null;
-            String filePrefix = key.replaceAll("^a-zA-Z0-9\\-", "_");
+            String filePrefix = key.replaceAll("[^a-zA-Z0-9\\-]", "_");
+
             String fileSuffix = ".png";
 
             File imageFile;
