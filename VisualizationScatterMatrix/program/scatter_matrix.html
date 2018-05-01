@@ -2,96 +2,39 @@
 <!-- saved from url=(0054)https://getbootstrap.com/docs/4.0/examples/dashboard/# -->
 <html lang="en"><head>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <style>
       
-    .feather {
-      width: 16px;
-      height: 16px;
-      vertical-align: text-bottom;
+
+    .side-bar{
+        position: absolute;
+        top: 0;
+        right: 0;
+        overflow-y: auto;
+        max-height: 100vh;
+        background: white;
     }
 
-    /*
-     * Sidebar
-     */
+    .svg-container {
+      display:inline-block;
+      position: absolute;
+      top:0;
+      left:0;
+      width: 100%;
+      padding-bottom: 100%;
+      vertical-align: top;
+      overflow: hidden;
+    }
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
+    .svg-content-responsive {
+      display: inline-block;
+      position: absolute;
+      max-height: 100vh;
+      top:0;
       left: 0;
-      z-index: 100; /* Behind the navbar */
-      padding: 0;
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
     }
-
-    .sidebar-sticky {
-      position: -webkit-sticky;
-      position: sticky;
-      /*top: 48px;  Height of navbar */
-      height: calc(100vh);
-      padding-top: .5rem;
-      overflow-x: hidden;
-      overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    }
-
-    .sidebar .nav-link {
-      font-weight: 500;
-      color: #333;
-    }
-
-    .sidebar .nav-link {
-      margin-right: 4px;
-      color: #999;
-    }
-
-    .sidebar .nav-link.active {
-      color: #007bff;
-    }
-
-    .sidebar .nav-link:hover,
-    .sidebar .nav-link.active {
-      color: inherit;
-    }
-
-    /*
-     * Navbar
-     */
-
-    .navbar-brand {
-      padding-top: .75rem;
-      padding-bottom: .75rem;
-      font-size: 1rem;
-      background-color: rgba(0, 0, 0, .25);
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-    }
-
-    .navbar .form-control {
-      padding: .75rem 1rem;
-      border-width: 0;
-      border-radius: 0;
-    }
-
-    .form-control-dark {
-      color: #fff;
-      background-color: rgba(255, 255, 255, .1);
-      border-color: rgba(255, 255, 255, .1);
-    }
-
-    .form-control-dark:focus {
-      border-color: transparent;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-    }
-
-    /*
-     * Utilities
-     */
-
-    .border-top { border-top: 1px solid #e5e5e5; }
-    .border-bottom { border-bottom: 1px solid #e5e5e5; }
-
     </style>
 
     <!-- <link type="text/css" rel="stylesheet" href="demo.css"> -->
@@ -140,21 +83,22 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-md-3 d-none d-md-block bg-light sidebar">
-          <div id="controls" class="sidebar-sticky">
+        <div id="plot-panel" class="col-md-9 col-sm-8 col-xs-12">
+          <div class="svg-container">
+            <svg class="svg-content-responsive" viewBox="0 0 750 750" preserveAspectRatio="xMinYMin meet"></svg>
           </div>
-        </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
-          <div id="scatter-matrix-container"></div>
-        </main>
+        </div>
+        <div id="property-container" class="col-md-3 col-sm-4 col-xs-6">
+          <div id="property-panel"></div>
+        </div>
       </div>
     </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script type="text/javascript">
     // Modified from https://github.com/benjiec/scatter-matrix
     // Heavily influenced by Mike Bostock's Scatter Matrix example
