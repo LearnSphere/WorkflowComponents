@@ -11,12 +11,20 @@
         </connection>
     </connections>
   <options>
-    <filter>filterByVerb</filter>
-    <url>https://lrs.adlnet.gov/xAPI</url>
-    <username>SKOAdmin</username>
-    <password>password</password>
-    <filterValue>helo</filterValue>
+    <filter>filterByActor</filter>
+    <url>http://lrs.x-in-y.com/data/xAPI/</url>
+    <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
+    <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
+    <filterValue>5a832557de8b7005cc16c3c0</filterValue>
     <customFilter>Null</customFilter>
+        <files>
+            <tab-delimited>
+                <file_path>test/test_data/Configuration.txt</file_path>
+                <file_name>Configuration.txt</file_name>
+                <index>0</index>
+                <label>tab-delimited</label>
+            </tab-delimited>
+        </files>    
   </options>
     <top>106</top>
 </component>

@@ -1,25 +1,31 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
+import java.io.BufferedReader;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
-public class TabTextWriter {
 
+public class TabTextWriter {
     public String writeAsTxt(List<Map<String, String>> flatJson) throws FileNotFoundException {
         Set<String> headers = collectHeaders(flatJson);
-        String output = StringUtils.join(headers.toArray(), "\t") + "\n";
+        
+        String array1 = StringUtils.join(headers.toArray(), "\t") + "\n";
+        String output= replaceHeaders(array1);
         for (Map<String, String> map : flatJson) {
             output = output + getCommaSeperatedRow(headers, map) + "\n";
         }
         //writeToFile(output, fileName);
         return output;
     }
-
+    
     private void writeToFile(String output, String fileName) throws FileNotFoundException {
         BufferedWriter writer = null;
         try {
@@ -61,4 +67,9 @@ public class TabTextWriter {
         }
         return headers;
     }
+        private String replaceHeaders(String output){
+        output=output.replaceAll("-"," ");
+        return output;
+    }
+       
 }

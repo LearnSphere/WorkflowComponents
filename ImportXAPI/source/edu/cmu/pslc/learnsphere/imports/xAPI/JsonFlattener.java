@@ -74,17 +74,17 @@ public class JsonFlattener {
             
             if (obj.get(key).getClass() == JSONObject.class) {
                 JSONObject jsonObject = (JSONObject) obj.get(key);
-                String prefixNew= prefix.equals("")? key : prefix+"-"+key;
+                String prefixNew= prefix.equals("")? key : prefix+" "+key;
                 flatten(jsonObject, flatJson, prefixNew);
             } else if (obj.get(key).getClass() == JSONArray.class) {
                 JSONArray jsonArray = (JSONArray) obj.get(key);
                 if (jsonArray.length() < 1) continue;
-                String prefixNew= prefix.equals("")? key : prefix+"-"+key;
+                String prefixNew= prefix.equals("")? key : prefix+" "+key;
                 flatten(jsonArray, flatJson, prefixNew);
             } else {
                 String value = obj.get(key).toString();
                 if (value != null && !value.equals("null"))
-                	flatJson.put(prefix.equals("")? key : prefix+"-"+key, value);
+                	flatJson.put(prefix.equals("")? key : prefix+" "+key, value);
             }
         }
     }
