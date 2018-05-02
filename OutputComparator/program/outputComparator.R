@@ -250,7 +250,12 @@ if (tolower(file.type) == "tabular") {
   
   for (i in 1:length(inputfiles)) {
     cur.file = inputfiles[i]
-    ds<-read.table(file=cur.file, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+    ds<-read.table(file=cur.file, row.names=NULL, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+    #sometimes row.names is added, check if true then delete
+    if (colnames(ds)[1] == "row.names") {
+      colnames(ds) = colnames(ds)[-1]
+    }
+    
     ds = unique(ds[, c(columns.match[i], columns.compare[i])])
     if (i == 1) {
       allData = ds
