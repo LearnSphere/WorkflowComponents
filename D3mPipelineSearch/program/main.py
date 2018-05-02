@@ -5,9 +5,14 @@ import logging
 import sys
 from os import path
 import argparse
-import json
-import pathlib
 
+# Workflow component specific imports
+from ls_logging import setup_logging
+from cmd_parser import get_default_arg_parser
+from ls_wf_settings import Settings as stg
+from ls_dataset import LSDataset
+
+# D3M TA2 API imports
 import core_pb2 as core_pb2
 import core_pb2_grpc as core_pb2_grpc
 
@@ -19,16 +24,15 @@ import dataflow_ext_pb2_grpc as dataflow_ext_pb2_grpc
 
 logging.basicConfig()
 logger = logging.getLogger('d3m_pipeline_search')
-logger.setLevel(logging.DEBUG)
 
 __version__ = '0.1'
-config = {
+# config = {
 # 'dataset_dir': "file:///rdata/dataStore/d3m/datasets/seed_datasets_current",
 # 'dataset_json': 'datasetDoc.json',
 # 'dataset_uri': "file:///rdata/dataStore/d3m/test_datasets/185_baseball/185_baseball_dataset",
 # 'dataset_json': 'datasetDoc.json',
-'ta2_address': 'sophia.stevencdang.com:45042'
-}
+# 'ta2_address': 'sophia.stevencdang.com:45042'
+# }
 # config['ta2_address'] = 'lyra.auton.cs.cmu.edu:45042'
 
 def print_msg(msg):
@@ -37,10 +41,6 @@ def print_msg(msg):
         print("    | %s" % line)
     print("    \\____________________")
 
-def get_file_uri(path_str):
-    uri = pathlib.Path(path_str).as_uri()
-    logger.debug("Got file uri: %s" % str(uri))
-    return uri
 
 
 _map_progress = dict((k, v) for v, k in core_pb2.Progress.items())
@@ -49,60 +49,34 @@ _map_status = dict((k, v)
                    for v, k in dataflow_ext_pb2.ModuleResult.Status.items())
 map_status = lambda p: _map_status.get(p, p)
 
-# def get_dataset_uri():
-    # return path.join(config['dataset_uri'], config['dataset_json'])
 
-def get_dataset_path(ds):
-    """
-    Generate path to dataset json based on name of dataset
-
-    """
-    return path.join(config['dataset_dir'], 
-                     ds, 
-                     ds + '_dataset', 
-                     config['dataset_json'])
-
-def get_default_arg_parser(desc):
-    """
-    Define an argument parser for use with Tigris Components and
-    mandatory arguments
-
-    """
-    parser = argparse.ArgumentParser(description=desc)
-
-    parser.add_argument('-programDir', type=str,
-                       help='the component program directory')
-
-    parser.add_argument('-workingDir', type=str,
-                       help='the component instance working directory')
-
-    return parser
-
-
-
-def main():
-    logger.info("Running Pipeline Search on TA2")
-
+if __name__ == '__main__':
     # Parse argumennts
     parser = get_default_arg_parser("D3M Pipeline Search")
     parser.add_argument('-file0', type=argparse.FileType('r'),
                        help='the dataset json provided for the search')
     args = parser.parse_args()
+
+    # Get config file
+    if args.programDir is None:
+        config = stg()
+    else:
+        config = stg(path.join(args.programDir, 'settings.cfg'))
+
+    # Setup Logging
+    logger = setup_logging(logger, config.parse_logging(), args.workingDir, args.is_test == 1)
+
+    ### Begin Script ###
+    logger.info("Running Pipeline Search on TA2")
     logger.debug("Running D3M Pipeline Search with arguments: %s" % str(args))
 
-    # Open and pring lines of dataset json
-    # ds_file = open(args.file0, 'r')
-    # for line in ds_file.readlines():
-        # logger.debug(line)
-    # ds_file.close()
-    ds_file = args.file0
-    ds_info = json.load(ds_file)
-    logger.debug("Dataset json parse: %s" % str(ds_info))
+    # Open dataset json
+    ds = LSDataset.from_json(args.file0)
+    logger.debug("Dataset json parse: %s" % str(ds))
 
-
-    address = config['ta2_address']
+    address = config.get("TA2", 'ta2_url')
     
-    print("using server at addres %s" % address)
+    print("using server at address %s" % address)
     channel = grpc.insecure_channel(address)
     stub = core_pb2_grpc.CoreStub(channel)
     stub_dataflow_ext = dataflow_ext_pb2_grpc.DataflowExtStub(channel)
@@ -126,7 +100,7 @@ def main():
     print("\n> Calling CreatePipelines...")
     create_stream = stub.CreatePipelines(core_pb2.PipelineCreateRequest(
         context=context,
-        dataset_uri=get_file_uri(ds_info['dataset_json']),
+        dataset_uri=ds.get_schema_uri(),
         task=core_pb2.CLASSIFICATION,
         task_subtype=core_pb2.NONE,
         task_description="Debugging task",
@@ -195,7 +169,7 @@ def main():
         execute_stream = stub.ExecutePipeline(core_pb2.PipelineExecuteRequest(
             context=context,
             pipeline_id=pipeline_id,
-            dataset_uri=get_file_uri(ds_info['dataset_json']),
+            dataset_uri=ds.get_schema_uri()
         ))
         print("  Stream open")
         for execd in execute_stream:
@@ -260,5 +234,3 @@ def main():
           context.session_id, reply.status.code))
 
 
-if __name__ == '__main__':
-    main()

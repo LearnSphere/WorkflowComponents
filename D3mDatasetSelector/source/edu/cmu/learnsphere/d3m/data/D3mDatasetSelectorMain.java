@@ -34,6 +34,10 @@ public class D3mDatasetSelectorMain extends AbstractComponent {
         logger.info("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
+		this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
+
+		this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
+
 
 
     }

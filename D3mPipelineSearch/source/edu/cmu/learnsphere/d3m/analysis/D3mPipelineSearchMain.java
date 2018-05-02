@@ -32,11 +32,14 @@ public class D3mPipelineSearchMain extends AbstractComponent {
         logger.info("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
+		this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
+
 
 	// Add input meta-data (headers) to output file.
 	this.addMetaDataFromInput("d3m-dataset", 0, 0, ".*");
-	// Add additional meta-data to output file.
-	this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, "New Column Name");
+
+	// Add additional meta-data for each output file.
+	this.addMetaData("text", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
