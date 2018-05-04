@@ -61,20 +61,30 @@ public class VisualizationScatterMatrixMain extends AbstractComponent {
         */
     }
 
+    private String formatOutputPath(String fileName) {
+         String outputSubpath = this.componentOutputDir
+                .replaceAll("\\\\", "/")
+                    .replaceAll("^.*/workflows/", "workflows/");
+        return "LearnSphere?htmlPath=" + outputSubpath + "/" + fileName;
+    }
+
     @Override
     protected void runComponent() {
         StringBuffer sBuffer = new StringBuffer();
         File inputFile = this.getAttachment(0, 0);
 
         File htmlTemplateFile = new File(this.getToolDir() + "/program/scatter_matrix.html");
+        File cssTempaltefile = new File(this.getToolDir()+ "/program/resources/component.css");
+        File jsTempaltefile = new File(this.getToolDir()+ "/program/resources/component.js");
+
+
         if (inputFile.exists() && inputFile.isFile() && inputFile.canRead()
                 && htmlTemplateFile.exists() && htmlTemplateFile.isFile() && htmlTemplateFile.canRead()) {
             File outputFile = this.createFile("visualization.html");
             File dataFile = this.createFile("data.txt");
-            String outputSubpath = this.componentOutputDir
-                .replaceAll("\\\\", "/")
-                    .replaceAll("^.*/workflows/", "workflows/");
-            String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + "/data.txt";
+            File cssFile = this.createFile("component.css");
+            File jsFile = this.createFile("component.js");
+           
 
 
             try {
@@ -95,9 +105,18 @@ public class VisualizationScatterMatrixMain extends AbstractComponent {
 
                     String line = null;
                     while ((line = bReader.readLine()) != null) {
+
                         if (line.contains("${input0}")) {
                             line = line.replaceAll(Pattern.quote("${input0}"),
-                                    dataFilePath); // name is data.txt
+                                    this.formatOutputPath("data.txt")); // name is data.txt
+                        }
+                        if (line.contains("${compcss}")) {
+                            line = line.replaceAll(Pattern.quote("${compcss}"),
+                                    this.formatOutputPath("component.css"));
+                        }
+                        if(line.contains("${compjs}")) {
+                            line = line.replaceAll(Pattern.quote("${compjs}"),
+                                    this.formatOutputPath("component.js"));
                         }
                         bWriter.append(line + "\n");
                     }
@@ -117,6 +136,8 @@ public class VisualizationScatterMatrixMain extends AbstractComponent {
                 }
 
                 FileUtils.copyFile(inputFile, dataFile);
+                FileUtils.copyFile(cssTempaltefile, cssFile);
+                FileUtils.copyFile(jsTempaltefile, jsFile);
 
                 // Html rendering
                 Integer nodeIndex = 0;

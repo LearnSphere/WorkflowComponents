@@ -1,3 +1,31 @@
+.side-bar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow-y: auto;
+    max-height: 100vh;
+    background: white;
+}
+
+.svg-container {
+  display:inline-block;
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  max-height: 100vh;
+  top:0;
+  left: 0;
+}
+
 svg { font-size: 14px; }
 
 .axis { shape-rendering: crispEdges; }
@@ -13,7 +41,7 @@ circle { fill: #ccc; fill-opacity: .5; }
 .legend circle { fill-opacity: 1; }
 .legend text { font-size: 18px; font-style: oblique; }
 
-.cell text { pointer-events: none; }
+.cell text { pointer-events: none; fill: #000; }
 
 .color-0  { fill: #800; }
 .color-1  { fill: #080; }
@@ -33,9 +61,3 @@ circle { fill: #ccc; fill-opacity: .5; }
 .color-15 { fill: #c00; }
 .color-16 { fill: #0c0; }
 .color-17 { fill: #00c; }
-
-/*.scatter-matrix-filter-control ul { list-style: none; padding-left: 10px; }
-.scatter-matrix-variable-control ul { list-style: none; padding-left: 10px; }
-.scatter-matrix-drill-control ul { list-style: none; padding-left: 10px; }
-
-*/
