@@ -90,6 +90,7 @@
   <xs:element name="pdf" substitutionGroup="binary" />
   
   <xs:element name="d3m-dataset" substitutionGroup="json" />
+  <xs:element name="d3m-dataset-predict" substitutionGroup="d3m-dataset" />
 
 
 </xs:schema>
