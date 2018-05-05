@@ -94,19 +94,7 @@
         </xs:sequence>
     </xs:complexType>
 
-       <xs:complexType name="OptionsType">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-             <xs:element type="FileInputHeader" name="header1" id="header1" default="(?i)Level..Unitname.*"  />
-             <xs:element type="FileInputHeader" name="header2" id="header2" default="(?i)Anon.Student.Id*" />
-              <xs:element type="FileInputHeader" name="header3" id="header3" default="(?i)KC..Cluster.*" />
-             <xs:element type="FileInputHeader" name="header4" id="header4" default="(?i)Level..Unit.*" />
-             <xs:element type="FileInputHeader" name="header5" id="header5" default="(?i)Condition.Name.1*"  />
-             <xs:element type="FileInputHeader" name="header6" id="header6" default="(?i)Condition.Name.2*" />
-              <xs:element type="FileInputHeader" name="header7" id="header7" default="(?i)Outcome*" />
-             <xs:element type="FileInputHeader" name="header8" id="header8" default="(?i)KC..Default.*" />
-             <xs:element type="FileInputHeader" name="header9" id="header9" default="(?i)Time*" />
-        </xs:choice>
-    </xs:complexType>
+    
 
     <xs:element name="component">
         <xs:complexType>
@@ -122,7 +110,7 @@
                 <xs:element name="inputs" type="InputType" minOccurs="0" />
                 <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
                 <xs:element name="outputs" type="OutputType" minOccurs="0" />
-                <xs:element name="options" type="OptionsType" minOccurs="0" />
+                
 
             </xs:all>
         </xs:complexType>

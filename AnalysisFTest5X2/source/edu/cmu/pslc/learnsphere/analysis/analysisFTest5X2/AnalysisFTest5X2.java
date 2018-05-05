@@ -38,8 +38,8 @@ public class AnalysisFTest5X2 extends AbstractComponent {
         File outputDirectory = this.runExternal();
         Integer nodeIndex = 0;
         Integer fileIndex = 0;
-        String fileLabel = "inline-html";
-        File studentStepFile = new File(outputDirectory.getAbsolutePath() + "/test.html");
+        String fileLabel = "text";
+        File studentStepFile = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
         this.addOutputFile(studentStepFile, nodeIndex, fileIndex, fileLabel);
 /*
 	nodeIndex = 1;
