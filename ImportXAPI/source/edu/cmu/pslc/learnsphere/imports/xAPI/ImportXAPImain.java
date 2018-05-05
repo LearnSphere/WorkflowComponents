@@ -26,11 +26,19 @@ import gov.adlnet.xapi.model.Statement;
 import gov.adlnet.xapi.model.StatementResult;
 import gov.adlnet.xapi.model.Verb;
 import gov.adlnet.xapi.model.Verbs;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 
 public class ImportXAPImain extends AbstractComponent {
 
     public static void main(String[] args) {
-
     	ImportXAPImain tool = new ImportXAPImain();
         tool.startComponent(args);
 		}
@@ -39,8 +47,8 @@ public class ImportXAPImain extends AbstractComponent {
 		    super();
 
 		}
-
-	    @Override
+          
+            @Override
 	    protected void runComponent() {
 	        // Parse arguments
 	        //File inputFile = null;
@@ -50,16 +58,13 @@ public class ImportXAPImain extends AbstractComponent {
 	        String filter = null;
 	        String customfilter = null;
 	        String filterValue = null;
-
-
+               
 	        username = this.getOptionAsString("username");
 	        password = this.getOptionAsString("password");
 	        url = this.getOptionAsString("url");
 	        filter = this.getOptionAsString("filter");
 	        customfilter = this.getOptionAsString("customFilter");
 	        filterValue = this.getOptionAsString("filterValue");
-
-	        //inputFile = this.getAttachment(0,  0);
 
 	        //Generating required out
 	        try {
@@ -70,7 +75,6 @@ public class ImportXAPImain extends AbstractComponent {
 	            e.printStackTrace();
 	        }
 
-
 	        System.out.println(this.getOutput());
 
 	        for (String err : this.errorMessages) {
@@ -79,52 +83,51 @@ public class ImportXAPImain extends AbstractComponent {
 	        }
 
 	        Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "text";
+                Integer fileIndex = 0;
+                String fileType = "text";
 
 	    }
-
+ 
 	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
-	    	//String url = "https://lrs.adlnet.gov/xAPI";
-	    	//String username="SKOAdmin";
-	    	//String password = "password";
+                
 	    	StatementClient client = new StatementClient(url, username, password);
 	    	String jsonTxt =null;
-
+                StatementResult results =null;
+                Statement statement = new Statement();
+                
 	        switch (filter) {
 	        case "Null":
 	        	break;
 	        case "filterByVerb":
-	        	client.filterByVerb(filterValue);
+	        	results=client.filterByVerb(filterValue).getStatements();
 	        	break;
-	        /*case "filterByActor":
-	        	Actor actor = new Actor();
+	        case "filterByActor":
+	        	Actor actor = new Agent();
 	        	actor.setName(filterValue);
-	        	client.filterByActor(actor);*/
+	        	results=client.filterByActor(actor).getStatements();
 	        case "filterByActivity":
-	        	client.filterByActivity(filterValue);
+	        	results=client.filterByActivity(filterValue).getStatements();
 	        	break;
 	        case "filterByRegistration":
-	        	client.filterByRegistration(filterValue);
+	        	results=client.filterByRegistration(filterValue).getStatements();
 	        	break;
 	        case "filterBySince":
-	        	client.filterBySince(filterValue);
+	        	results=client.filterBySince(filterValue).getStatements();
 	        	break;
 	        case "filterByUntil":
-	        	client.filterByUntil(filterValue);
+	        	results=client.filterByUntil(filterValue).getStatements();
 	        	break;
 	        case "Custom":
 	        	client.addFilter(customfilter,filterValue);
 	        	break;
 	        default:
 	            this.addErrorMessage("Invalid filter type");
-
 	        }
-
+           
 	    	// Retrieving xAPI statements
 	        try {
-		    	StatementResult results = client.getStatements();
-				//StatementResult nextPage = client.getStatements(results.getMore());
+//		    	StatementResult results = client.getStatements();
+				//StatementResult nextPage = client.getStatements(results.getMore());  
 				Object object= results.getStatements();
 				Gson gson = new Gson();
 				jsonTxt= gson.toJson(object);
@@ -132,20 +135,109 @@ public class ImportXAPImain extends AbstractComponent {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	        }
+                
+                       //import Configuration File
+                
+                File theFile = this.getAttachment(0, 0);
+                
+                //Read Configuration File as list
+                List<String> list = new ArrayList<String>();
+                    try {
+                       if (theFile.isFile() && theFile.exists()) {
+                         InputStreamReader read = new InputStreamReader(new FileInputStream(theFile));
+                         BufferedReader bufferedReader = new BufferedReader(read);
+                         String lineTxt = null;
+                         
+                         while ((lineTxt = bufferedReader.readLine()) != null) {
+                             if (!lineTxt.startsWith("#"))
+                                 list.add(lineTxt); 
+                         }
+                         read.close();
+                       } else{
+                       System.out.println("Configuration file missing");
+                       }
+                    }catch(IOException e){
+                        System.out.println("Error Happened");
+                    } 
 
+                    //Read Configuration File (list to array)
+                    String array[][] = new String[list.size()][];
+                    for (int i=0;i<list.size();i++){
+                        array[i]=new String[2];
+                        String linetxt=list.get(i);
+                        String[] myArray=linetxt.split("=");
+                        System.arraycopy(myArray, 0, array[i], 0, myArray.length);
+                    }
+                
+                //writer.writeAsTxt(flatJson, "sample.txt");
 	    	JsonFlattener parser = new JsonFlattener();
-	    	TabTextWriter writer = new TabTextWriter();
+                TabTextWriter writer = new TabTextWriter();
 	        List<Map<String, String>> flatJson = parser.parseJson(jsonTxt);
- 	        //writer.writeAsTxt(flatJson, "sample.txt");
+               
+               int rows=array.length;
+               int columns=array[0].length;
+               List<String> items = new ArrayList<String>();
+               
+               Set<String> headers = collectHeaders(flatJson);
+               List mainKeys= new ArrayList();
+               int count=0; 
+               for (String index : headers){
+                    count++;
+                    mainKeys.add(index);
+                }
+               
+               for (int row=0;row<rows;row++){
+                   for (int column=0;column<columns;column++){
+                       if(mainKeys.contains(array[row][column])){
+                           mainKeys.remove(array[row][column]);
+                       }
+                   }
+               }
+               
+                 File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
+                 FileWriter oStream_0 = new FileWriter(generatedFile_0);
+	         BufferedWriter sw_0 = new BufferedWriter(oStream_0);
+	         sw_0.write(writer.writeAsTxt(flatJson));
+                 
+               int length=mainKeys.size();
+               for (int k=0;k<mainKeys.size();k++){
+                   for (Map<String, String> map: flatJson){
+                       if (map.containsKey(mainKeys.get(k))){
+                            map.remove(mainKeys.get(k));
+                            for (int row=0;row<rows;row++){
+                                String key=array[row][0];
+                                String value=map.get(array[row][1]);
+                                map.put(key, value);
+                            }
+                        }
+                    }
+               }
+               
+               
+               for (int r=0;r<rows;r++){
+                   for (Map<String, String> map: flatJson){
+                       map.remove(array[r][1]);
+                   }  
+               }
+               
+
 	        File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
 	        FileWriter oStream = new FileWriter(generatedFile);
 	        BufferedWriter sw = new BufferedWriter(oStream);
 	        sw.write(writer.writeAsTxt(flatJson));
 
-	        Integer nodeIndex = 0;
+	    Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "text";
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
 	    }
+            
+            private Set<String> collectHeaders(List<Map<String, String>> flatJson) {
+                Set<String> headers = new TreeSet<String>();
+                for (Map<String, String> map : flatJson) {
+                     headers.addAll(map.keySet());
+                }
+            return headers;
+            }
 
 }
