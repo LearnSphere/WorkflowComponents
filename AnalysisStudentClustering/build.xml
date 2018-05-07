@@ -38,7 +38,7 @@
         </manifestclasspath>
         <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/analysis/studentClustering/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.studentclustering.StudentClusteringMain" />
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.analysis.studentClustering.StudentClusteringMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
