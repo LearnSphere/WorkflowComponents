@@ -29,7 +29,7 @@ System.out.println("Main After call");
     protected void runComponent() {
         System.out.println("run component\n");
         // Run the program and add the files it generates to the component output.
-        File outputDirectory = this.runExternalMultipleFileOuput();
+        File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             System.out.println("inside if 1\n");

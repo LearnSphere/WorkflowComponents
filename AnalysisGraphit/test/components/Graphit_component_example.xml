@@ -11,7 +11,17 @@
             <from>ImportTransaction1</from>
         </connection>
     </connections>
-
+<options>
+        <header1>Level..Unitname.</header1>
+        <header2>Anon.Student.Id</header2>
+        <header3>KC..Cluster.</header3>
+        <header4>Level..Unit.</header4>
+        <header5>Condition.Name.1</header5>
+        <header6>Condition.Name.2</header6>
+        <header7>Outcome</header7>
+        <header8>KC..Default.</header8>
+        <header9>Time</header9>
+  </options>
     <inputs>
     <input0>
       <component_id>ImportTransaction1</component_id>

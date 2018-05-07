@@ -2,9 +2,6 @@
 # Creates output log file
 
 args <- commandArgs(trailingOnly = TRUE)
-print (length(args))
-print ("Start")
-
 
 
 #=============================
@@ -81,6 +78,9 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 # Creates output log file
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
+sink(clean,append=TRUE)
+sink(clean,append=TRUE,type="message") # get error reports also
+options(width=300)
 
 print("-----------------------------")
 print (workingDirectory)
@@ -102,10 +102,11 @@ val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
 val1<-val[,c(header1,header2,header3,header4)]
 
 
-val1$Outcome <- as.character(val1$Outcome)
-val1$Outcome[val1$Outcome=="CORRECT"] <-"1"
-val1$Outcome[val1$Outcome=="INCORRECT"] <- "0"
-val1$Outcome[val1$Outcome=="STUDY"] <- "0"
+val1[,header4] <- as.character(val1[,header4])
+val1<-val1[val1[,header4]=="CORRECT" | val1[,header4]=="INCORRECT",]
+val1[,header4][val1[,header4]=="CORRECT"] <-"1"
+val1[,header4][val1[,header4]=="INCORRECT"] <- "0"
+#val1$Outcome[val1$Outcome=="STUDY"] <- "0"
 
 
 #dt<-read.csv('dataset1.csv')
@@ -114,7 +115,7 @@ val1$Outcome[val1$Outcome=="STUDY"] <- "0"
 dt1<-val1[,c(1,2,3,4)]
 
 #aggregation
-dt1<-aggregate(dt1,by=list(dt1$Anon.Student.Id,dt1$KC..Unique.step.),FUN=mean)
+dt1<-aggregate(dt1,by=list(dt1[,header1],dt1[,header2]),FUN=mean)
 #dt1<-aggregate(dt1,by=list(dt1$StudentId,dt1$KC..Theoretical.Levels.),FUN=mean)
 dt1<-dt1[,c(1,2,5,6)]
 colnames(dt1)<-c('StudentId','TheoLevel','Duration','Correct')
