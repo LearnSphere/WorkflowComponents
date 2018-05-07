@@ -94,13 +94,15 @@ while (i <= length(args)) {
       stop("input file name must be specified")
     }
     cmd.args.inputfiles = rbind(cmd.args.inputfiles, c(substr(args[i], nchar("-file")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
+    
     i = i+1
   } #if argument is in this format: -xmlfile1
   else if (grepl("-xmlfile[0-9]+", args[i])) {
     if (length(args) == i) {
       stop("xml input file name must be specified")
     }
-    cmd.args.xmlinputfiles = rbind(cmd.args.xmlinputfiles, c(substr(args[i], nchar("-file")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
+    cmd.args.xmlinputfiles = rbind(cmd.args.xmlinputfiles, c(substr(args[i], nchar("-xmlfile")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
+    
     i = i+1
   } #if argument is in this format: -matchColumn1
   else if (grepl("-matchColumn[0-9]+", args[i])) {
@@ -135,6 +137,7 @@ if (tolower(file.type) == "xml") {
   cmd.args.inputfiles = cmd.args.xmlinputfiles
 }
 colnames(cmd.args.inputfiles) = c("file.position", "file.name")
+
 file.postions = as.character(cmd.args.inputfiles$file.position)
 if (length(file.postions) != length(unique(file.postions))) {
   print(length(file.postions))
@@ -142,8 +145,11 @@ if (length(file.postions) != length(unique(file.postions))) {
   stop("command arguments are incorrect")
 }
 inputfiles = character()
+inputfilesPositions = character()
 for (i in 1:length(file.postions)) {
   position = file.postions[i]
+  displayPosition = as.numeric(file.postions[i]) + 1
+  inputfilesPositions = c(inputfilesPositions, paste("file", displayPosition, sep=""))
   inputFileName = cmd.args.inputfiles[cmd.args.inputfiles$file.position == position, 2]
   inputfiles = c(inputfiles, inputFileName)
 }
@@ -156,6 +162,9 @@ if (tolower(file.type) == "xml") {
     cur.file = inputfiles[i]
     ds<-read.table(file=cur.file, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
     name <- as.character(ds[,1])
+    for (j in 1:length(name)) {
+      name[j] = paste(inputfilesPositions[i], name[j], sep=".")
+    }
     # transpose all but the first column (name)
     ds <- as.data.frame(t(ds[,-1]))
     colnames(ds) <- name
@@ -169,7 +178,9 @@ if (tolower(file.type) == "xml") {
         allData <- full_join(allData, rownames_to_column(ds), by = ("rowname" = "rowname"))
     }
   }
-} 
+  colnames(allData)[1] = ""
+}
+
 
 if (tolower(file.type) == "properties file") {
   for (i in 1:length(inputfiles)) {
@@ -196,7 +207,8 @@ if (tolower(file.type) == "properties file") {
     ds$V1 = new.V1.values
     #change column names
     col.suffix = gsub("[ ()-]", ".", basename(cur.file))
-    colnames(ds) <- paste(colnames(ds), col.suffix, sep=".")
+    colnames(ds) <- paste(col.suffix, colnames(ds), sep=".")
+    
     #combine dataframe
     if (i == 1) {
       dataframe.length = ncol(ds)
@@ -216,6 +228,7 @@ if (tolower(file.type) == "properties file") {
     }
   }
   allData=rownames_to_column(allData)
+  colnames(allData)[1] = ""
 } 
 
 if (tolower(file.type) == "tabular") {
