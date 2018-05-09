@@ -1,10 +1,12 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
+import static com.google.common.io.Files.map;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.imports.xAPI.JsonFlattener;
 import edu.cmu.pslc.learnsphere.imports.xAPI.TabTextWriter;
 
 import com.google.gson.Gson;
+import com.google.gson.*;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
@@ -12,18 +14,38 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 
 import gov.adlnet.xapi.client.StatementClient;
+import gov.adlnet.xapi.model.Activity;
+import gov.adlnet.xapi.model.ActivityDefinition;
 import gov.adlnet.xapi.model.Actor;
 import gov.adlnet.xapi.model.Agent;
+import gov.adlnet.xapi.model.InteractionComponent;
+import gov.adlnet.xapi.model.Statement;
 import gov.adlnet.xapi.model.StatementResult;
+import gov.adlnet.xapi.model.Verb;
+import gov.adlnet.xapi.model.Verbs;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import javax.xml.transform.Result;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 
 public class ImportXAPImain extends AbstractComponent {
 
@@ -104,8 +126,7 @@ public class ImportXAPImain extends AbstractComponent {
 	            e.printStackTrace();
 	        }
                 
-                       //import Configuration File
-                
+                //import Configuration File
                 File theFile = this.getAttachment(0, 0);
                 
                 //Read Configuration File as list
@@ -154,19 +175,19 @@ public class ImportXAPImain extends AbstractComponent {
                
                //Write headers as list
                Set<String> headers = collectHeaders(flatJson);
-               List mainKeys= new ArrayList();
+               List<String> mainKeys= new ArrayList<String>();
                int count=0; 
                for (String index : headers){
                     count++;
                     mainKeys.add(index);
                 }
-               
+                       
                //Headers: List to array
                String[] tabNames=new String[mainKeys.size()];
                for (int i=0; i<mainKeys.size();i++){
-                   tabNames[i]=(String) mainKeys.get(i);
+                   tabNames[i]= mainKeys.get(i);
                }
-
+               
                //Values filled into array matrix 
                List<String> mainValueList = new ArrayList<String>();
                String [][] mainContent=new String[tabNames.length][];
@@ -174,79 +195,67 @@ public class ImportXAPImain extends AbstractComponent {
                     mainValueList.clear();
                     for (Map<String, String> map: flatJson){
                        String mainValue=map.get(tabNames[k]);
+                       if(mainValue == null){
+                           mainValue = "null";
+                       }
                        mainValueList.add(mainValue); 
                     } 
                     
                     Object[] mainValueArr= mainValueList.toArray();
+                    
                     String mainValueArrStr[]=new String[mainValueArr.length];
                     System.arraycopy(mainValueArr, 0, mainValueArrStr,0, mainValueArr.length);
                     mainContent[k]=mainValueArrStr;
                }
-               
+                
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("id")){
-                       for(int rs=0;rs<mainContent[0].length;rs++){
+                       for(int rs=0;rs<mainContent[k].length;rs++){
                            mainContent[k][rs]=mainContent[k][rs].replace("-","");
                        }
                    }
                }
-               
+              
                //Transfer Time Format
                for(int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("stored")){
-                       for(int rs=0;rs<mainContent[0].length;rs++){
+                       for(int rs=0;rs<mainContent[k].length;rs++){
                            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                            Date date = dt.parse(mainContent[k][rs]);
                            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                            mainContent[k][rs]=dt1.format(date);
                        }
                    }
-               }
-             
-               for(int k=0;k<tabNames.length;k++){
-                   if(tabNames[k].equals("timestamp")){
-                       for(int rs=0;rs<mainContent[0].length;rs++){
-                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
-                           Date date = dt.parse(mainContent[k][rs]);
-                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                           mainContent[k][rs]=dt1.format(date);
-                       }
-                   }
                }               
-               
+                            
                //Create array matrix about selected columns
-               String [][] selectContent=new String[array.length][];
-               for(int sc=0;sc<array.length;sc++){
-                   for (int k=0;k<tabNames.length;k++){
-                       if(tabNames[k].equals(array[sc][1])){
-                       selectContent[sc]=mainContent[k];
-                       }
-                   }
-               }
-                
-               //output the combination of tabNames and selectContents
-               
-               	File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
-                try {
-                    if (!generatedFile.exists()) {
-                         generatedFile.createNewFile();
+                String [][] selectContent=new String[array.length][];
+                for(int sc=0;sc<array.length;sc++){
+                    for (int k=0;k<tabNames.length;k++){
+                        if(array[sc][1].equals(tabNames[k])){
+                            selectContent[sc]=mainContent[k];    
+                        }
                     }
+                }
+                            
+               	File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
                     FileWriter fw = new FileWriter(generatedFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
 //                    bw.write(key, 0, key.length());
                         for (String[] array1 : array) {
                             bw.write(array1[0]+"\t");
                         }
-                        for (int rs=0;rs<selectContent[0].length;rs++){
-                            bw.newLine();
-                            for (String[] array2:selectContent){
-                            bw.write(array2[rs]+"\t");
-                           }
+                        
+                        for (int col=0;col<selectContent.length;col++){
+                             for(int rs=0;rs<selectContent[col].length;rs++){
+                             bw.newLine();
+                             for (String[] array2:selectContent){
+                             bw.write(array2[rs]+"\t");
+                            }
+                            }                          
                         }
                     }
-                } catch (IOException e) {
-                }
                 
 	    Integer nodeIndex = 0;
             Integer fileIndex = 0;
