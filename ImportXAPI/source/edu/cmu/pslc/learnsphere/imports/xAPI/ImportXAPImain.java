@@ -118,15 +118,16 @@ public class ImportXAPImain extends AbstractComponent {
                         results = client.getStatements(moreString);
                         Object obj = results.getStatements();
                         sb.append(gson.toJson(object));
-                     }  
-			
+                     }
+
                      jsonTxt= gson.toJson(object);
 	        } catch (Exception e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	        }
                 
-                //import Configuration File
+                       //import Configuration File
+                
                 File theFile = this.getAttachment(0, 0);
                 
                 //Read Configuration File as list
@@ -228,7 +229,7 @@ public class ImportXAPImain extends AbstractComponent {
                        }
                    }
                }               
-                            
+                                        
                //Create array matrix about selected columns
                 String [][] selectContent=new String[array.length][];
                 for(int sc=0;sc<array.length;sc++){
@@ -247,16 +248,15 @@ public class ImportXAPImain extends AbstractComponent {
                             bw.write(array1[0]+"\t");
                         }
                         
-                        for (int col=0;col<selectContent.length;col++){
-                             for(int rs=0;rs<selectContent[col].length;rs++){
-                             bw.newLine();
-                             for (String[] array2:selectContent){
-                             bw.write(array2[rs]+"\t");
-                            }
+                        for(int rs=0;rs<selectContent[0].length;rs++){
+                            bw.newLine();
+                            for (String[] array2:selectContent){
+                                bw.write(array2[rs]+"\t");
                             }                          
                         }
                     }
                 
+
 	    Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "text";

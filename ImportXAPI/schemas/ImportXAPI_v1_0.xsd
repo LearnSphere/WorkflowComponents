@@ -8,6 +8,35 @@
     </xs:choice>
   </xs:complexType>
 
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
 
 
   <xs:complexType name="OutputDefinition0">
@@ -21,19 +50,38 @@
     </xs:complexContent>
   </xs:complexType>
 
-
-  <xs:complexType name="OutputType">
-    <xs:sequence>
-      <xs:element name="output0" type="OutputDefinition0" />
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
-
+  
+  
+    <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+    <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  
   <xs:simpleType name="filterType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Null" />
@@ -71,6 +119,8 @@
         <xs:element type="xs:double" name="top" />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
       </xs:all>
