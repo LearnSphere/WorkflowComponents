@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-    <author>EXPERIMENTAL</author>
+<author>Liang Zhang
+  <email>lzhang13@memphis.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
+<date>2018-05-08</date>
+<abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
+<details>1.Require configuration file. The values on the left of the equals is the new header name that you prefer to use, while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly. Choose the headers' names from the xAPI-JsonFlattener-file.txt. 2.Two output files: xAPI-JsonFlattener-file.txt and xAPI-TabDelimited-file.txt.</details>
+
+<inputs>
+<b>Configuration file</b>
+<b>url,username,password,filter, filterValue and customFilter</b>
+</inputs>
+
+<outputs>
+<b>xAPI-JsonFlattener-file.txt</b>
+<b>xAPI-TabDelimited-file.txt</b>
+</outputs>
 
 </info>
