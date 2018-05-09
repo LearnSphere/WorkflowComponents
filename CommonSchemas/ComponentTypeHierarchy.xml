@@ -34,7 +34,7 @@
 		<Column_Remover />
 		<Row_Operations />
 		<Data_Conversion />
-		<generate_tkt_features />
+		<Generate_TKT_Features />
 	</Transform>
 	<Analysis>
 		<AFM />
@@ -42,7 +42,7 @@
 		<RLM_Fitting />
 		<OLI_Resource_Use />
 		<PFA />
-		<Python_Afm />
+		<Python_AFM />
 		<Correlation />
 		<Cronbachs-Alpha />
 		<Linear_Modeling />
