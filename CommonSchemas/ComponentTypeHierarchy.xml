@@ -1,17 +1,23 @@
-<tags>
+<component_menu>
 	<Import>
-		<DataShop>
-			<student_step />
-			<transaction />
-		</DataShop>
-		<User_Session_Map />
-		<Outcome />
-		<Resource_Use_to_Outcome />
-		<Discourse_DB />
-		<gradebook />
-		<User_Map />
+	    <Other_Text />
 		<File />
 		<CSV />
+		<Tab-Delimited />
+		<Discourse_DB />
+		<DataLab>
+			<Gradebook />
+	    </DataLab>
+		<DataShop>
+			<Student-Step />
+			<Transaction />
+		</DataShop>
+		<OLI>
+			<User_Map />
+			<User_Session_Map />
+			<Outcome />
+			<Resource_Use_to_Outcome />
+		</OLI>
 	</Import>
 	<Transform>
 		<Deidentify />
@@ -31,24 +37,22 @@
 		<generate_tkt_features />
 	</Transform>
 	<Analysis>
-	<D3m_Dataset />
-		<afm />
-		<bkt />
+		<AFM />
+		<BKT />
 		<RLM_Fitting />
 		<OLI_Resource_Use />
 		<PFA />
 		<Python_Afm />
-		<correlation />
-		<cronbachs-alpha />
+		<Correlation />
+		<Cronbachs-Alpha />
 		<Linear_Modeling />
-		<lsa />
-		<tkt />
-		<Tab_Delimited />
+		<LSA />
+		<TKT />
 		<iAFM />
 	</Analysis>
 	<Visualization>
-		<learning_curves />
-		<d3_force_layout />
+		<Learning_Curves />
+		<D3_Force_Layout />
 	</Visualization>
 	<Tetrad>
 		<Search />
@@ -59,4 +63,4 @@
 		<Tetrad_Graph_Editor />
 		<Classifier />
 	</Tetrad>
-</tags>
+</component_menu>
