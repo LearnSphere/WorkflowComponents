@@ -1,6 +1,5 @@
 <component_menu>
 	<Import>
-	    <Other_Text />
 		<File />
 		<CSV />
 		<Tab-Delimited />
