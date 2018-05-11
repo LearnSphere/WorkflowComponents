@@ -18,6 +18,8 @@ public class JsonFlattener {
     public List<Map<String, String>> parse(JSONArray jsonArray)throws Exception {
         List<Map<String, String>> flatJson = new ArrayList<Map<String, String>>();
         int length = jsonArray.length();
+        
+        System.out.println(length);
         for (int i = 0; i < length; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Map<String, String> stringMap = parse(jsonObject);

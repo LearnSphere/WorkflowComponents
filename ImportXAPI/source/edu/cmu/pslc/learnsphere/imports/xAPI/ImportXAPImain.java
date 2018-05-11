@@ -1,12 +1,10 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
-import static com.google.common.io.Files.map;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.imports.xAPI.JsonFlattener;
 import edu.cmu.pslc.learnsphere.imports.xAPI.TabTextWriter;
 
 import com.google.gson.Gson;
-import com.google.gson.*;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
@@ -14,38 +12,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 
 import gov.adlnet.xapi.client.StatementClient;
-import gov.adlnet.xapi.model.Activity;
-import gov.adlnet.xapi.model.ActivityDefinition;
 import gov.adlnet.xapi.model.Actor;
 import gov.adlnet.xapi.model.Agent;
-import gov.adlnet.xapi.model.InteractionComponent;
-import gov.adlnet.xapi.model.Statement;
 import gov.adlnet.xapi.model.StatementResult;
-import gov.adlnet.xapi.model.Verb;
-import gov.adlnet.xapi.model.Verbs;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import javax.xml.transform.Result;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
 
 public class ImportXAPImain extends AbstractComponent {
 
@@ -101,8 +77,9 @@ public class ImportXAPImain extends AbstractComponent {
 	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
                 
 	    	StatementClient client = new StatementClient(url, username, password);
-	    	String jsonTxt =null;
-                StatementResult results = null;
+	    	String jsonTxt = null;
+                String jsonTxtSpr;
+                StatementResult results;
                 client = getStatementClientWithFilter(filter,filterValue, client,customfilter);
                 results = client.getStatements();
                 
@@ -112,15 +89,16 @@ public class ImportXAPImain extends AbstractComponent {
                      Object object= results.getStatements();
                      Gson gson = new Gson();
 	             sb.append(gson.toJson(object));
+                     
                      while(results.hasMore()){
                         String moreString = results.getMore();
                         moreString = moreString.replace("/data/xAPI", "");
                         results = client.getStatements(moreString);
                         Object obj = results.getStatements();
-                        sb.append(gson.toJson(object));
+                        sb.append(gson.toJson(obj));
                      }
-
-                     jsonTxt= gson.toJson(object);
+                     jsonTxtSpr= sb.toString();
+                     jsonTxt = jsonTxtSpr.replace("][",","); 
 	        } catch (Exception e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
@@ -144,7 +122,7 @@ public class ImportXAPImain extends AbstractComponent {
                          }
                          read.close();
                        } else{
-                       System.out.println("Configuration file missing");
+                       System.out.println("Configuration file missing"); 
                        }
                     }catch(IOException e){
                         System.out.println("Error Happened");
@@ -163,13 +141,12 @@ public class ImportXAPImain extends AbstractComponent {
 	    	JsonFlattener parser = new JsonFlattener();
                 TabTextWriter writer = new TabTextWriter();
 	        List<Map<String, String>> flatJson = parser.parseJson(jsonTxt);
-               
-                File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
-                FileWriter oStream_0 = new FileWriter(generatedFile_0);
-	        BufferedWriter sw_0 = new BufferedWriter(oStream_0);
-	        sw_0.write(writer.writeAsTxt(flatJson));
-                
-                
+                 
+//                File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
+//                FileWriter oStream_0 = new FileWriter(generatedFile_0);
+//	        BufferedWriter sw_0 = new BufferedWriter(oStream_0);
+//	        sw_0.write(writer.writeAsTxt(flatJson));
+ 
                int rows=array.length;
                int columns=array[0].length;
                List<String> items = new ArrayList<String>();
@@ -208,7 +185,24 @@ public class ImportXAPImain extends AbstractComponent {
                     System.arraycopy(mainValueArr, 0, mainValueArrStr,0, mainValueArr.length);
                     mainContent[k]=mainValueArrStr;
                }
-                
+                     
+                    File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
+                    FileWriter fw_0 = new FileWriter(generatedFile_0.getAbsoluteFile());
+                    try (BufferedWriter bw_0 = new BufferedWriter(fw_0)) {
+                        for (String names:tabNames){
+                            bw_0.write(names+"\t");
+                        }                     
+                        
+                        for(int line=0;line<mainContent[0].length;line++){
+                            bw_0.newLine();
+                                for (int col=0;col<mainContent.length;col++) {
+                                    bw_0.write(mainContent[col][line].replace("\n","") + "\t");
+                                }
+                        }
+                    }
+                    
+                    System.out.println(mainContent[0].length);
+               
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("id")){
@@ -217,18 +211,19 @@ public class ImportXAPImain extends AbstractComponent {
                        }
                    }
                }
-              
+               
+               
                //Transfer Time Format
-               for(int k=0;k<tabNames.length;k++){
-                   if(tabNames[k].equals("stored")){
-                       for(int rs=0;rs<mainContent[k].length;rs++){
-                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                           Date date = dt.parse(mainContent[k][rs]);
-                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                           mainContent[k][rs]=dt1.format(date);
-                       }
-                   }
-               }               
+//               for(int k=0;k<tabNames.length;k++){
+//                   if(tabNames[k].equals("stored")){
+//                       for(int rs=0;rs<mainContent[k].length;rs++){
+//                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//                           Date date = dt.parse(mainContent[k][rs]);
+//                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//                           mainContent[k][rs]=dt1.format(date);
+//                       }
+//                   }
+//               }               
                                         
                //Create array matrix about selected columns
                 String [][] selectContent=new String[array.length][];
@@ -256,7 +251,6 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 
-
 	    Integer nodeIndex = 0;
             Integer fileIndex = 0;
             String fileType = "text";
