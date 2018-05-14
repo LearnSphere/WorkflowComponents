@@ -79,7 +79,7 @@
   <xs:element name="gif" substitutionGroup="image" />
   <xs:element name="psd" substitutionGroup="image" />
   <xs:element name="bmp" substitutionGroup="image" />
-  <xs:element name="svg-xml" substitutionGroup="image" />
+  <xs:element name="svg" substitutionGroup="image" />
 
   <xs:element name="compressed" substitutionGroup="binary" />
 	  <xs:element name="zip" substitutionGroup="compressed" />
@@ -92,8 +92,6 @@
 	  <xs:element name="excel" substitutionGroup="microsoft" />
 	  <xs:element name="word" substitutionGroup="microsoft" />
 	  <xs:element name="powerpoint" substitutionGroup="microsoft" />
-
-  <xs:element name="pdf" substitutionGroup="binary" />
 
   <xs:element name="other_text" substitutionGroup="text" />
 
