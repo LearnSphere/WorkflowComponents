@@ -28,7 +28,14 @@
   <xs:element name="image" substitutionGroup="file" />
   <xs:element name="audio" substitutionGroup="file" />
   <xs:element name="video" substitutionGroup="file" />
+  <xs:element name="application" substitutionGroup="file" />
+
+  <xs:element name="pdf" substitutionGroup="application" />
+
   <xs:element name="binary" substitutionGroup="file" />
+
+  <xs:element name="json" substitutionGroup="text" />
+  	  <xs:element name="d3m-dataset" substitutionGroup="json" />
 
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
@@ -72,7 +79,7 @@
   <xs:element name="gif" substitutionGroup="image" />
   <xs:element name="psd" substitutionGroup="image" />
   <xs:element name="bmp" substitutionGroup="image" />
-  <xs:element name="svg" substitutionGroup="image" />
+  <xs:element name="svg-xml" substitutionGroup="image" />
 
   <xs:element name="compressed" substitutionGroup="binary" />
 	  <xs:element name="zip" substitutionGroup="compressed" />
@@ -88,5 +95,6 @@
 
   <xs:element name="pdf" substitutionGroup="binary" />
 
+  <xs:element name="other_text" substitutionGroup="text" />
 
 </xs:schema>
