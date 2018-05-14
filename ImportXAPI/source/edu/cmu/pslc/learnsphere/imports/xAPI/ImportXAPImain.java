@@ -20,6 +20,7 @@ import gov.adlnet.xapi.model.StatementResult;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -98,7 +99,7 @@ public class ImportXAPImain extends AbstractComponent {
                         sb.append(gson.toJson(obj));
                      }
                      jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); 
+                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
 	        } catch (Exception e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
@@ -117,8 +118,10 @@ public class ImportXAPImain extends AbstractComponent {
                          String lineTxt = null;
                          
                          while ((lineTxt = bufferedReader.readLine()) != null) {
-                             if (!lineTxt.startsWith("#"))
-                                 list.add(lineTxt); 
+                             if(lineTxt.length()>0){
+                                 if (!lineTxt.startsWith("#"))
+                                 list.add(lineTxt);
+                             }
                          }
                          read.close();
                        } else{
@@ -127,16 +130,27 @@ public class ImportXAPImain extends AbstractComponent {
                     }catch(IOException e){
                         System.out.println("Error Happened");
                     } 
-
+                    
                     //Read Configuration File (list to array)
-                    String array[][] = new String[list.size()][];
+                    String arrayConf[][] = new String[list.size()][];
+                    String[] myArray = null;
                     for (int i=0;i<list.size();i++){
-                        array[i]=new String[2];
-                        String linetxt=list.get(i);
-                        String[] myArray=linetxt.split("=");
-                        System.arraycopy(myArray, 0, array[i], 0, myArray.length);
+                        arrayConf[i]=new String[2];
+                            String linetxt=list.get(i);
+                            myArray=linetxt.split("=");
+                            System.arraycopy(myArray, 0, arrayConf[i], 0, myArray.length);
+                    }                    
+                    
+                    String array[][]=new String[list.size()-3][];
+                    for (int ar=0;ar<list.size()-3;ar++){
+                        array[ar]=arrayConf[ar];
                     }
-                
+                    
+                    String arrayAnal[][]=new String[3][];
+                    arrayAnal[0]=arrayConf[list.size()-3];
+                    arrayAnal[1]=arrayConf[list.size()-2];
+                    arrayAnal[2]=arrayConf[list.size()-1];
+                                                                              
                 //writer.writeAsTxt(flatJson, "sample.txt");
 	    	JsonFlattener parser = new JsonFlattener();
                 TabTextWriter writer = new TabTextWriter();
@@ -149,7 +163,7 @@ public class ImportXAPImain extends AbstractComponent {
  
                int rows=array.length;
                int columns=array[0].length;
-               List<String> items = new ArrayList<String>();
+               List<String> items = new ArrayList<>();
                
                //Write headers as list
                Set<String> headers = collectHeaders(flatJson);
@@ -200,9 +214,7 @@ public class ImportXAPImain extends AbstractComponent {
                                 }
                         }
                     }
-                    
-                    System.out.println(mainContent[0].length);
-               
+                     
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("id")){
@@ -212,6 +224,21 @@ public class ImportXAPImain extends AbstractComponent {
                    }
                }
                
+               for (int k=0;k<tabNames.length;k++){
+                   if(tabNames[k].equals("object id")){
+                        for(int rs=0;rs<mainContent[k].length;rs++){
+                            mainContent[k][rs]=mainContent[k][rs].replace("-","");
+                        }
+                   }
+               }
+
+               for (int k=0;k<tabNames.length;k++){
+                   if(tabNames[k].equals("actor mbox")){
+                        for(int rs=0;rs<mainContent[k].length;rs++){
+                            mainContent[k][rs]=mainContent[k][rs].replace("mailto:","");
+                        }
+                   }
+               }               
                
                //Transfer Time Format
 //               for(int k=0;k<tabNames.length;k++){
@@ -234,8 +261,60 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 }
-                            
-               	File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
+               
+                
+               String sizeFilter = null;
+               String sizeFilter1 = null;
+               String sizeFilter2 = null;
+               List filterList = new ArrayList();
+               String [][] selectContentFil=new String[array.length][];
+               if(  !"null".equals(arrayAnal[1][1])){
+                   sizeFilter=arrayAnal[2][1]; 
+                        sizeFilter1 = sizeFilter.replace("<"," "); 
+                        sizeFilter2 = sizeFilter1.replace(">"," ");
+                        List<String> sizeFilterList = new ArrayList<>(Arrays.asList(sizeFilter2.split(",")));
+                        double minValue=Double.parseDouble(sizeFilterList.get(0));               
+                        double maxValue=Double.parseDouble(sizeFilterList.get(1));
+                        
+                        for(int sc=0;sc<array.length;sc++){
+                            if(array[sc][0].contains(arrayAnal[1][1])){
+                                for(int rs=0;rs<selectContent[0].length;rs++){
+                                    if(Double.parseDouble(selectContent[sc][rs])>minValue&Double.parseDouble(selectContent[sc][rs])<maxValue){
+                                        filterList.add(rs);
+                                    }
+                                }   
+                            }
+                        }
+
+                        List<String> filterValueList = new ArrayList<String>();
+                        for (int sc=0;sc<array.length;sc++){
+                            filterValueList.clear();
+                            for(int nf=0;nf<filterList.size();nf++){
+                                filterValueList.add(selectContent[sc][(Integer) filterList.get(nf)]);  
+                            }
+                            Object[] filterValueArr= filterValueList.toArray();
+                            String filterValueArrStr[]=new String[filterValueArr.length];
+                            System.arraycopy(filterValueArr, 0, filterValueArrStr,0, filterValueArr.length);
+                            selectContentFil[sc]=filterValueArrStr;
+                        }
+                   selectContent=selectContentFil;
+               }else{
+                   selectContent=selectContent;
+               }
+               
+               int ns;
+               if(  !"null".equals(arrayAnal[0][1])){
+                   ns=Integer.parseInt(arrayAnal[0][1]);  //numStatements
+                   if(Integer.parseInt(arrayAnal[0][1])>selectContent[0].length){
+                       ns=selectContent[0].length;
+                   }
+               }
+               
+               else{
+                   ns=selectContent[0].length; //numStatements
+               }
+
+               File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
                     FileWriter fw = new FileWriter(generatedFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
 //                    bw.write(key, 0, key.length());
@@ -243,7 +322,7 @@ public class ImportXAPImain extends AbstractComponent {
                             bw.write(array1[0]+"\t");
                         }
                         
-                        for(int rs=0;rs<selectContent[0].length;rs++){
+                        for(int rs=0;rs<ns;rs++){
                             bw.newLine();
                             for (String[] array2:selectContent){
                                 bw.write(array2[rs]+"\t");
@@ -257,14 +336,6 @@ public class ImportXAPImain extends AbstractComponent {
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
 	    }
             
-            private Set<String> collectHeaders(List<Map<String, String>> flatJson) {
-                Set<String> headers = new TreeSet<String>();
-                for (Map<String, String> map : flatJson) {
-                     headers.addAll(map.keySet());
-                }
-            return headers;
-            }
-
             private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){
                 StatementClient outputClient = null;
                 try{
@@ -301,6 +372,15 @@ public class ImportXAPImain extends AbstractComponent {
                     logger.fatal(e.toString());
                     return null;
                 }
-            }            
+            }
+            
+            private Set<String> collectHeaders(List<Map<String, String>> flatJson) {
+                Set<String> headers = new TreeSet<String>();
+                for (Map<String, String> map : flatJson) {
+                     headers.addAll(map.keySet());
+                }
+            return headers;
+            }
+            
             
 }

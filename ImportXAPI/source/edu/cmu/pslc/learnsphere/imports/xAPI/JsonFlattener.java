@@ -4,13 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
 import java.util.*;
 
 public class JsonFlattener {
     public Map<String, String> parse(JSONObject jsonObject)throws Exception {
         Map<String, String> flatJson = new HashMap<String, String>();
+        
         flatten(jsonObject, flatJson, "");
         return flatJson;
     }
@@ -18,8 +17,7 @@ public class JsonFlattener {
     public List<Map<String, String>> parse(JSONArray jsonArray)throws Exception {
         List<Map<String, String>> flatJson = new ArrayList<Map<String, String>>();
         int length = jsonArray.length();
-        
-        System.out.println(length);
+        System.out.println();
         for (int i = 0; i < length; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Map<String, String> stringMap = parse(jsonObject);
