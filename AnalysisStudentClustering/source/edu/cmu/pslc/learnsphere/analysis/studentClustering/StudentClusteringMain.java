@@ -41,14 +41,18 @@ public class StudentClusteringMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
              System.out.println("Start");
             File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.jpeg");
- 
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.text");
 System.out.println(outputDirectory.getAbsolutePath());
-            if (file0 != null && file0.exists() ) {
+            if (file0 != null && file0.exists() && file1 != null && file1.exists()  ) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
                 String label0 = "jpeg";
+                Integer nodeIndex1 = 1;
+                Integer fileIndex1 = 0;
+                String label1 = "text";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
+                this.addOutputFile(file0, nodeIndex0, fileIndex0, label1);
 
               
 
