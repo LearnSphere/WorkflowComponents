@@ -300,10 +300,15 @@ public class AFMMain extends AbstractComponent {
 
                         if (replaceHeaderIndex < valueArray.length
                                 && replaceHeaderIndex == colIndex) {
-                            bytes = (predictedValueString + TAB_CHAR)
-                                    .getBytes("UTF-8");
+                                if (colIndex == valueArray.length -1)
+                                        bytes = (predictedValueString).getBytes("UTF-8");
+                                else
+                                        bytes = (predictedValueString + TAB_CHAR).getBytes("UTF-8");
                         } else {
-                            bytes = (value + TAB_CHAR).getBytes("UTF-8");
+                                if (colIndex == valueArray.length -1)
+                                        bytes = (value).getBytes("UTF-8");
+                                else    
+                                        bytes = (value + TAB_CHAR).getBytes("UTF-8");
                         }
 
                         outputStream.write(bytes);
