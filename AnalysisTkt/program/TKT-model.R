@@ -271,8 +271,8 @@ switch(mode,
          dat$CF..modbin.<-pred
          val$CF..modbin.<-NA
          val$CF..baselevel.<-NA
-         dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])
-         
+         dat<-rbind.fill(dat,val[!(val$CF..ansbin.==0 | val$CF..ansbin.==1),])         
+         dat<-dat[order(dat$Anon.Student.Id, dat$Time),]
        },
 
        "five times 2 fold crossvalidated create folds" = {
@@ -554,13 +554,13 @@ switch(mode,
                decmod <- function(tem) {
                  j<<-tem[1]
                  k<<-tem[2]
-                 f<<-tem[3]
+                 f<<-tem[3]/10
                  w<<-tem[4]*10
                  trainfold$CF..baselevel. <<- baselevel(trainfold,j,f)
                  trainfold$CF..meanspacingval. <<- f*(trainfold$CF..meanspacing.-trainfold$CF..meanspacingint.)+trainfold$CF..meanspacingint.
                  fitmodel <<- glm(as.formula(composedform),data=trainfold,family=binomial(logit))
                  -logLik(fitmodel)[1]}
-               fitoptim<-optim(c(.4,.05,.05,.5),decmod,method = c("L-BFGS-B"),lower = .001, upper = .7, control = list(maxit = 1000))
+               fitoptim<-optim(c(.3,.3,.3,.3),decmod,method = c("L-BFGS-B"),lower = .0001, upper = .7, control = list(maxit = 1000))
                pr<-4}
                           
              testfold$CF..baselevel. <- baselevel(testfold,j,f)
