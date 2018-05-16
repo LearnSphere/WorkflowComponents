@@ -65,12 +65,12 @@ public class ImportXAPImain extends AbstractComponent {
 	            e.printStackTrace();
 	        }
 
-	        System.out.println(this.getOutput());
-
-	        for (String err : this.errorMessages) {
-	            // These will also be picked up by the workflows platform and relayed to the user.
-	            System.err.println(err);
-	        }
+//	        System.out.println(this.getOutput());
+//
+//	        for (String err : this.errorMessages) {
+//	            // These will also be picked up by the workflows platform and relayed to the user.
+//	            System.err.println(err);
+//	        }
 
 	        Integer nodeIndex = 0;
                 Integer fileIndex = 0;
@@ -127,10 +127,13 @@ public class ImportXAPImain extends AbstractComponent {
                          }
                          read.close();
                        } else{
-                       System.out.println("Configuration file missing"); 
+//                       System.out.println("Configuration file missing");
+                       logger.info("Configuration file missing");
+                       
                        }
                     }catch(IOException e){
-                        System.out.println("Error Happened");
+//                        System.out.println("Error Happened");
+                        logger.info("Error Happened in inputting Configuration File");
                     } 
                     
                     //Read Configuration File (list to array)
@@ -220,7 +223,8 @@ public class ImportXAPImain extends AbstractComponent {
             Integer fileIndex0 = 0;
             String fileType0 = "tab-delimited";
             this.addOutputFile(generatedFile_0, nodeIndex0, fileIndex0, fileType0);
-            System.out.println(this.getOutput());
+//            System.out.println(this.getOutput());
+            logger.info(this.getOutput());
                      
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
