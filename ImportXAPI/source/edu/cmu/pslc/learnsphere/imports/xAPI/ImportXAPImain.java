@@ -40,6 +40,8 @@ public class ImportXAPImain extends AbstractComponent {
 	    protected void runComponent() {
 	        // Parse arguments
 	        //File inputFile = null;
+                
+                
 	        String username = null;
 	        String password = null;
 	        String url = null;
@@ -214,6 +216,11 @@ public class ImportXAPImain extends AbstractComponent {
                                 }
                         }
                     }
+            Integer nodeIndex0 = 0;
+            Integer fileIndex0 = 0;
+            String fileType0 = "tab-delimited";
+            this.addOutputFile(generatedFile_0, nodeIndex0, fileIndex0, fileType0);
+            System.out.println(this.getOutput());
                      
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
@@ -330,10 +337,12 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 
-	    Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileType = "text";
-            this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileType);
+	    Integer nodeIndex1 = 1;
+            Integer fileIndex1 = 0;
+            String fileType1 = "tab-delimited";
+            this.addOutputFile(generatedFile, nodeIndex1, fileIndex1, fileType1);
+            System.out.println(this.getOutput());
+                        
 	    }
             
             private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){
