@@ -71,10 +71,6 @@ public class ImportXAPImain extends AbstractComponent {
 //	            // These will also be picked up by the workflows platform and relayed to the user.
 //	            System.err.println(err);
 //	        }
-
-	        Integer nodeIndex = 0;
-                Integer fileIndex = 0;
-                String fileType = "text";
 	    }
  
 	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
@@ -110,6 +106,12 @@ public class ImportXAPImain extends AbstractComponent {
                        //import Configuration File
                 
                 File theFile = this.getAttachment(0, 0);
+                
+                Integer nodeIndex0 = 0;
+                Integer fileIndex0 = 0;
+                String fileType = "text";
+                this.addOutputFile(theFile, nodeIndex0, fileIndex0, fileType);
+                logger.info(this.getOutput());
                 
                 //Read Configuration File as list
                 List<String> list = new ArrayList<String>();
@@ -219,10 +221,10 @@ public class ImportXAPImain extends AbstractComponent {
                                 }
                         }
                     }
-            Integer nodeIndex0 = 0;
-            Integer fileIndex0 = 0;
-            String fileType0 = "tab-delimited";
-            this.addOutputFile(generatedFile_0, nodeIndex0, fileIndex0, fileType0);
+            Integer nodeIndex1 = 1;
+            Integer fileIndex1 = 0;
+            String fileType1 = "tab-delimited";
+            this.addOutputFile(generatedFile_0, nodeIndex1, fileIndex1, fileType1);
 //            System.out.println(this.getOutput());
             logger.info(this.getOutput());
                      
@@ -341,10 +343,11 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 
-	    Integer nodeIndex1 = 1;
-            Integer fileIndex1 = 0;
-            String fileType1 = "tab-delimited";
-            this.addOutputFile(generatedFile, nodeIndex1, fileIndex1, fileType1);
+	    Integer nodeIndex2 = 2;
+            Integer fileIndex2 = 0;
+            String fileType2 = "tab-delimited";
+            this.addOutputFile(generatedFile, nodeIndex2, fileIndex2, fileType2);
+            
             System.out.println(this.getOutput());
                         
 	    }
