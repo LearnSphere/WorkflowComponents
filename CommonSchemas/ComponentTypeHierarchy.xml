@@ -1,5 +1,6 @@
 <component_menu>
 	<Import>
+	    <Recently_Used />
 		<File />
 		<CSV />
 		<Tab-Delimited />
@@ -19,6 +20,7 @@
 		</OLI>
 	</Import>
 	<Transform>
+	    <Recently_Used />
 		<Deidentify />
 		<Join />
 		<Generate_PFA_Features />
@@ -38,6 +40,7 @@
 		<Text_Converter />
 	</Transform>
 	<Analysis>
+	    <Recently_Used />
 		<AFM />
 		<BKT />
 		<RLM_Fitting />
@@ -54,10 +57,13 @@
 		<Apply_Detector />
 	</Analysis>
 	<Visualization>
+	    <Recently_Used />
 		<Learning_Curves />
 		<D3_Force_Layout />
+		<DS_Plot />
 	</Visualization>
 	<Tetrad>
+	    <Recently_Used />
 		<Search />
 		<Estimator />
 		<Knowledge />
