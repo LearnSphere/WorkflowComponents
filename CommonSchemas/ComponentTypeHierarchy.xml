@@ -60,7 +60,6 @@
 	</Visualization>
 	<Tetrad>
 		<Search />
-		<Visualize_Tetrad_Graph />
 		<Estimator />
 		<Knowledge />
 		<Regression />
