@@ -56,6 +56,6 @@ public class AnalysisFTest5X2 extends AbstractComponent {
 */
 	
         // Send the component output back to the workflow.
-        
+        System.out.println(this.getOutput());
     }
 }
