@@ -13,10 +13,12 @@ workingDir = NULL
 programDir = NULL
 #operation either remove or keep
 operation<-"remove"
-column.var.name<-"Problem Name"
 remove.values<-NULL
 case.sensitive<-NULL
 remove.null<-NULL
+columns.var.name<-NULL
+column.var.name<-NULL
+
 
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -55,13 +57,14 @@ while (i <= length(args)) {
     
     i = i+1
   } 
-  else if (args[i] == "-valueColumn") {
+  else if (args[i] == "-valueColumns") {
     if (length(args) == i) {
-      stop("valueColumn must be specified")
+      stop("valueColumns must be specified")
     }
-    column.var.name = args[i+1]
+    valueColumns = args[i+1]
     #replace all angle brackets, parenthses, space an ash with period
-    column.var.name <- gsub("[ ()-]", ".", column.var.name)
+    valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    columns.var.name = as.list(strsplit(valueColumns, ",")[[1]])
     i = i+1
   } else if (args[i] == "-removeValues") {
     #split by comma
@@ -108,8 +111,10 @@ ds<-read.table(inputDataFile, sep="\t", header=TRUE, quote="\"",comment.char = "
 
 #make the column.var.name into character
 #ex: ds$Problem.Name <- as.character(ds$Problem.Name)
-cmdString = paste("ds$", column.var.name, " <- as.character(ds$", column.var.name, ")", sep="")
-eval(parse(text=cmdString))
+for (column.var.name in columns.var.name) {
+  cmdString = paste("ds$", column.var.name, " <- as.character(ds$", column.var.name, ")", sep="")
+  eval(parse(text=cmdString))
+}
 
 #if null is in remove.values, take it out
 #hasNull<-FALSE
@@ -119,7 +124,9 @@ eval(parse(text=cmdString))
 #  hasNull<-TRUE
 #}
 
+
 if (operation == "remove") {
+  for (column.var.name in columns.var.name) {
   if (length(remove.values) > 0) {
     if (case.sensitive) {
         #ex: ds<-ds[which(!(ds$Problem.Name %in% remove.values)),]
@@ -135,35 +142,50 @@ if (operation == "remove") {
     cmdString = paste("ds<-ds[!is.na(ds$", column.var.name, ") & ds$", column.var.name, " != \"\",]", sep="")
     eval(parse(text=cmdString))
   }
+  }
 } else {
   temp.ds<-NULL
   temp.ds.null<-NULL
-  if (length(remove.values) > 0) {
-    if (case.sensitive) {
-      #ex: temp.ds<-ds[which(ds$Problem.Name %in% remove.values),]
-      cmdString = paste("temp.ds<-ds[which(ds$", column.var.name, " %in% remove.values),]", sep="")
-      eval(parse(text=cmdString))
-    } else {
-      #ex: temp.ds<-ds[which(tolower(ds$Problem.Name) %in% tolower(remove.values)),]
-      cmdString = paste("temp.ds<-ds[which(tolower(ds$", column.var.name, ") %in% tolower(remove.values)),]", sep="")
+  final.temp.ds<-NULL
+  final.temp.ds.null<-NULL
+  cnt = 0
+  for (column.var.name in columns.var.name) {
+    if (length(remove.values) > 0) {
+      if (case.sensitive) {
+        #ex: temp.ds<-ds[which(ds$Problem.Name %in% remove.values),]
+        cmdString = paste("temp.ds<-ds[which(ds$", column.var.name, " %in% remove.values),]", sep="")
+        eval(parse(text=cmdString))
+      } else {
+        #ex: temp.ds<-ds[which(tolower(ds$Problem.Name) %in% tolower(remove.values)),]
+        cmdString = paste("temp.ds<-ds[which(tolower(ds$", column.var.name, ") %in% tolower(remove.values)),]", sep="")
+        eval(parse(text=cmdString))
+      }
+    }
+    if (remove.null){
+      #ex: temp.ds.null<-ds[is.na(ds$Problem.Name) | ds$Problem.Name == "",]
+      cmdString = paste("temp.ds.null<-ds[is.na(ds$", column.var.name, ") | ds$", column.var.name, "  == \"\",]", sep="")
       eval(parse(text=cmdString))
     }
-  }
-  if (remove.null){
-    #ex: temp.ds.null<-ds[is.na(ds$Problem.Name) | ds$Problem.Name == "",]
-    cmdString = paste("temp.ds.null<-ds[is.na(ds$", column.var.name, ") | ds$", column.var.name, "  == \"\",]", sep="")
-    eval(parse(text=cmdString))
-  }
-  if (length(temp.ds) == 0 && length(temp.ds.null) == 0) {
+    if (cnt == 0) {
+      final.temp.ds = temp.ds
+      final.temp.ds.null = temp.ds.null
+    } else {
+      final.temp.ds<-rbind(final.temp.ds, temp.ds)
+      final.temp.ds.null<-rbind(final.temp.ds.null, temp.ds.null)
+    }
+    cnt = cnt + 1
+  }  
+  
+  if (length(final.temp.ds) == 0 && length(final.temp.ds.null) == 0) {
     ds <- names(ds)
-  } else if (length(temp.ds) != 0 && length(temp.ds.null) != 0) {
-    ds<-rbind(temp.ds, temp.ds.null)
+  } else if (length(final.temp.ds) != 0 && length(final.temp.ds.null) != 0) {
+    ds<-rbind(final.temp.ds, final.temp.ds.null)
     rn<-rownames(ds)
     ds<-ds[order(as.numeric(rn)), ]
-  } else if (length(temp.ds) != 0 && length(temp.ds.null) == 0) {
-    ds<-temp.ds
-  } else if (length(temp.ds) == 0 && length(temp.ds.null) != 0) {
-    ds<-temp.ds.null
+  } else if (length(final.temp.ds) != 0 && length(final.temp.ds.null) == 0) {
+    ds<-final.temp.ds
+  } else if (length(final.temp.ds) == 0 && length(final.temp.ds.null) != 0) {
+    ds<-final.temp.ds.null
   }
 }
 

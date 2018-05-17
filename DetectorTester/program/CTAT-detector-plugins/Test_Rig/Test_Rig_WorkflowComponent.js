@@ -321,7 +321,8 @@ useDetectorInputInd = process.argv.indexOf("-useDetectorInput");
 if (useDetectorInputInd >= 0) {
 	if (process.argv[useDetectorInputInd + 1] === "No") {
 		var detectorName = process.argv[process.argv.indexOf("-detectorFromList") + 1];
-		file1 = programDir + "program/CTAT-detector-plugins/Test_Rig/Detectors/" + detectorName;
+		//file1 = programDir + "program/CTAT-detector-plugins/Test_Rig/Detectors/" + detectorName;
+		file1 = process.argv[process.argv.indexOf("-detectorFromList") + 1];
 	}
 }
 

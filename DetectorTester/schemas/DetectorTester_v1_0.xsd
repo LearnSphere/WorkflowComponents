@@ -100,7 +100,8 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="useDetectorInputType" name="useDetectorInput" id="Use_detector_from_input" default="No" />
-      <xs:element type="detectorType" name="detectorFromList" id="Detector" default="idle.js" />
+      <!--<xs:element type="detectorType" name="detectorFromList" id="Detector" default="idle.js" />-->
+      <xs:element type="Detectors" name="detectorFromList" id="Detectors" default=".*" />
       <!--<xs:element type="DetectorTester" name="DetectorTester" id="DetectorTester" default="0" />-->
     </xs:choice>
   </xs:complexType>

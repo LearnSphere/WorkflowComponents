@@ -55,7 +55,7 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
-<xs:simpleType name="DetectorTester" >
+<xs:simpleType name="Detectors" >
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 

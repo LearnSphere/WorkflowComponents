@@ -36,12 +36,23 @@ public class RowRemoverMain extends AbstractComponent {
             }
 
             if (reqsMet) {
-	            String valueColumn = this.getOptionAsString("valueColumn");
+	            List<String> valueColumns = this.getMultiOptionAsString("valueColumn");
+	            String valueColumnsStr = "";
+	            if (valueColumns != null && valueColumns.size() != 0){
+	                    for (String key : valueColumns)
+	                            valueColumnsStr += key + ",";
+	                    //delete the last comma
+	                    if (valueColumnsStr.lastIndexOf(",") == valueColumnsStr.length()-1) {
+	                            valueColumnsStr = valueColumnsStr.substring(0, valueColumnsStr.length()-1);
+	                    }
+	            }
+	            //add this to parameters
+	            this.setOption("valueColumns", valueColumnsStr);
 	            String caseSensitive = this.getOptionAsString("caseSensitive");
 	            String removeNull = this.getOptionAsString("removeNull");
 	            String removeValues = this.getOptionAsString("removeValues");
 	            logger.info("RowRemover, operation: " + operation);
-	            logger.info("RowRemover, valueColumn: " + valueColumn);
+	            logger.info("RowRemover, valueColumns: " + valueColumns);
 	            logger.info("RowRemover, caseSensitive: " + caseSensitive);
 	            logger.info("RowRemover, RowNull: " + removeNull);
 	            logger.info("RowRemover, removeValues: " + removeValues);

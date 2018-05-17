@@ -1,38 +1,38 @@
 <html>
 <head>
-	<title>TetradGraphEditor</title>
-	<script src="javascript/lib/cytoscape.min.js"></script>
+  <title>TetradGraphEditor</title>
+  <script src="javascript/lib/cytoscape.min.js"></script>
   <script src="javascript/lib/jquery-1.7.1.min.js"></script>
   <script src="javascript/lib/dagre.min.js"></script>
   <script src="javascript/lib/cytoscape-dagre.js"></script>
-	<style>
+  <style>
     html {
       width : 100%;
       height:100%;
     }
-  	body {
-  	  //font-family: helvetica;
+    body {
+      //font-family: helvetica;
       font: verdana;
-  	  font-size: 14px;
+      font-size: 14px;
       //-webkit-transform: scale(0.5, 0.5);
       //-webkit-transform-origin: top left;
       width:96%;
       height:96%;
       background-color:white;
-  	}
+    }
 
-  	#cy {
-  	  //min-width: 950px;
-  	  //min-height: 450px;
+    #cy {
+      //min-width: 950px;
+      //min-height: 450px;
       //max-width: 2000px;
       //max-height:1000px;
       width: 100%;
       height: 100%;
-  	  position: absolute;
-  	  left: 0px;
-  	  top: 0;
-  	  z-index: 1;
-  	}
+      position: absolute;
+      left: 0px;
+      top: 0;
+      z-index: 1;
+    }
     canvas {
       width: 100%;
       height: 100%;
@@ -84,11 +84,18 @@
       opacity:1;
       background:white
     }
-  	h1 {
-  	  opacity : 0.5;
-  	  font-size : 1em;
-  	}
-	</style>
+    h1 {
+      opacity : 0.5;
+      font-size : 1em;
+    }
+    #downloadGraphButton {
+      position: absolute;
+      bottom: 2%;
+      left: 13px;
+      max-width: 140px;
+      z-index: 999999;
+    }
+  </style>
 </head>
 
 <body>
@@ -106,7 +113,6 @@ var cytContainer = null;
 var isSEM = false;
 
 var isEditor = false;
-
 
 var childNodeNames = [];
 var childNodeVal = [];
@@ -136,6 +142,8 @@ if (isEditor) {
 
 } else {  //just viewing the graph
   loadedGraph = $("#graphData").text();
+  loadedGraph = loadedGraph.replace(/%HYPHEN%/g, "-");
+
   initiateTetradGraphViewer();
 }
 
@@ -193,6 +201,8 @@ function initiateTetradGraphViewer() {
 
   //Create the graph
   cy = window.cy = cytoscape(cytContainer);
+
+  allowSaveableCanvas();
 }
 
 function initiateTetradGraphEditor() {
@@ -226,6 +236,7 @@ function initiateTetradGraphEditor() {
       lines = graphStr.split('\n');
     }
   } else {
+    loadedGraph = loadedGraph.replace(/%HYPHEN%/g, "-");
     lines = loadedGraph.split('\n');
   }
 
@@ -243,7 +254,7 @@ function initiateTetradGraphEditor() {
       d.data = {};
       //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.data.id = childNodes[j];
-      console.log(childNodes[j]);
+      //console.log(childNodes[j]);
       d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.classes = "SEM_Label";
       d.data.parent = nodes[j];
@@ -256,9 +267,9 @@ function initiateTetradGraphEditor() {
     var d = {};
     d.data = {};
     d.data.id = nodes[j];
-    if (d.data.id.includes(' ') && !notifiedAboutSpacesOnce) {
+    if ((d.data.id.includes(' ')|| d.data.id.includes(',')) && !notifiedAboutSpacesOnce) {
       notifiedAboutSpacesOnce = true;
-      notifyAboutSpacesInVarNames();
+      notifyBadVariableName();
     }
     d.data.idNumChars = nodes[j].length;
     cytContainer.elements.nodes.push(d);
@@ -278,6 +289,8 @@ function initiateTetradGraphEditor() {
   ///GRAPH EDITOR STUFF
 
   initiateGraphEditorFunctionality(nodes, childNodes);
+
+  allowSaveableCanvas();
 }
 
 function initiateGraphEditorFunctionality(nodes, childNodes) {
@@ -295,18 +308,7 @@ function initiateGraphEditorFunctionality(nodes, childNodes) {
 
   //delete selected nodes
   $("#deleteNode").on("click", function (evt){
-    //console.log("deleteing");
-    console.log(firstSelectedNode);
-    if (firstSelectedNode != null) {
-      $("#to").text("");
-      firstSelectedNode.remove();
-      firstSelectedNode = null;
-    }
-    if (secondSelectedNode != null) {
-      $("#from").text("");
-      secondSelectedNode.remove();
-      secondSelectedNode = null;
-    }
+    deleteNode(evt);
   });
 
   //delete selected edge
@@ -344,8 +346,9 @@ function addNewNode() {
   if (nodeName == '' || nodeName == null || nodeName == undefined) {
     return;
   }
-  if (nodeName.includes(' ')) {
-    notifyAboutSpacesInVarNames();
+  if (nodeName.includes(' ') || nodeName.includes(',')) {
+    notifyBadVariableName();
+    return;
   }
   var newNode = {group:"nodes", data: {id: nodeName} };
   newNode.data.idNumChars = nodeName.length;
@@ -408,6 +411,34 @@ function addNewEdge () {
 
   cy.add(newEdge);
   cy.$("#" + newEdge.data.id.replace(new RegExp('\\.','g'), '\\\.')).on('tap', function(evt){selectEdge(evt);});
+
+  // Deselect nodes
+  if (firstSelectedNode != null) {
+    $("#to").text("");
+    firstSelectedNode.removeClass("selected");
+    firstSelectedNode = null;
+  }
+  if (secondSelectedNode != null) {
+    $("#from").text("");
+    secondSelectedNode.removeClass("selected");
+    secondSelectedNode = null;
+  }
+}
+
+function deleteNode (evt) {
+  //console.log("deleteing");
+  //console.log(firstSelectedNode);
+  if (firstSelectedNode != null) {
+    $("#to").text("");
+    var id = firstSelectedNode.id();
+    firstSelectedNode.remove();
+    firstSelectedNode = null;
+  }
+  if (secondSelectedNode != null) {
+    $("#from").text("");
+    secondSelectedNode.remove();
+    secondSelectedNode = null;
+  }
 }
 
 function selectNode (evt){
@@ -778,7 +809,7 @@ function getCytContainer() {
         })
       .selector('edge.SEM_edge')
         .css({
-          'display':'none'
+          'visibility': 'hidden'
         }),
 
     
@@ -840,6 +871,11 @@ function graphToString() {
   for (var i = 0; i < edges.length; i++) {
     var e = edges[i].data();
 
+    if (edges[i].hasClass('SEM_edge')) {
+      // Don't write out these fake edges used to draw the graph well with Dagre
+      continue;
+    }
+
     edgeArrow = "-->";
     if (edges[i].hasClass("bidirected")) {
       edgeArrow = "<->";
@@ -859,8 +895,10 @@ function graphToString() {
     graphStr += (i+1) + ". " + e.source + " " + edgeArrow + ' ' + e.target + edgeValue + '\n';
   }
 
-
-  return graphStr.replace(/\n/g, "%NEW_LINE%");
+  graphStr = graphStr.replace(/\n/g, "%NEW_LINE%");
+  graphStr = graphStr.replace(/-/g, "%HYPHEN%");
+  
+  return graphStr;
 }
 
 function loadGraph() {
@@ -871,9 +909,18 @@ function saveGraph() {
   parent.saveData("TetradGraphEditor", graphToString());
 }
 
-function notifyAboutSpacesInVarNames() {
-  alert('Tetrad does not work well with variable names that contain spaces.\n' +
+function notifyBadVariableName() {
+  alert('Tetrad does not work well with variable names that contain spaces or commas.\n' +
       'Please consider using underscores instead');
+}
+
+function allowSaveableCanvas() {
+  $('canvas').attr('id', 'canvas');
+  $('body').append('<button id="downloadGraphButton"><a id="downloadGraphImage" download="tetradGraph.png">Download Graph as an Image.</a></button>');
+  document.getElementById('downloadGraphImage').addEventListener('click', function() {
+    var dataUrl = cy.png();
+    this.href = dataUrl;
+  }, false);
 }
 
 /**
