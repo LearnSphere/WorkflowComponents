@@ -19,8 +19,10 @@ import gov.adlnet.xapi.model.Agent;
 import gov.adlnet.xapi.model.StatementResult;
 import java.io.FileInputStream;
 import java.io.IOException;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+//import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -65,15 +67,10 @@ public class ImportXAPImain extends AbstractComponent {
 	            e.printStackTrace();
 	        }
 
-//	        System.out.println(this.getOutput());
-//
 	        for (String err : this.errorMessages) {
 	            // These will also be picked up by the workflows platform and relayed to the user.
 	            System.err.println(err);
 	        }
-                Integer nodeIndex = 0;
-                Integer fileIndex = 0;
-                String fileType = "text";
 	    }
             
 	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
@@ -108,13 +105,19 @@ public class ImportXAPImain extends AbstractComponent {
                 
                        //import Configuration File
                 
-                File theFile = this.getAttachment(0, 0);
+                File confiFile = this.getAttachment(0, 0);
+                
+                Integer nodeIndex0 = 0;
+                Integer fileIndex0 = 0;
+                String fileType0 = "text";
+                this.addOutputFile(confiFile, nodeIndex0, fileIndex0, fileType0);
+                logger.info(this.getOutput());  
                 
                 //Read Configuration File as list
                 List<String> list = new ArrayList<String>();
                     try {
-                       if (theFile.isFile() && theFile.exists()) {
-                         InputStreamReader read = new InputStreamReader(new FileInputStream(theFile));
+                       if (confiFile.isFile() && confiFile.exists()) {
+                         InputStreamReader read = new InputStreamReader(new FileInputStream(confiFile));
                          BufferedReader bufferedReader = new BufferedReader(read);
                          String lineTxt = null;
                          
@@ -159,12 +162,7 @@ public class ImportXAPImain extends AbstractComponent {
 	    	JsonFlattener parser = new JsonFlattener();
                 TabTextWriter writer = new TabTextWriter();
 	        List<Map<String, String>> flatJson = parser.parseJson(jsonTxt);
-                 
-//                File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
-//                FileWriter oStream_0 = new FileWriter(generatedFile_0);
-//	        BufferedWriter sw_0 = new BufferedWriter(oStream_0);
-//	        sw_0.write(writer.writeAsTxt(flatJson));
- 
+                  
                int rows=array.length;
                int columns=array[0].length;
                List<String> items = new ArrayList<>();
@@ -204,8 +202,8 @@ public class ImportXAPImain extends AbstractComponent {
                     mainContent[k]=mainValueArrStr;
                }
                      
-                    File generatedFile_0 = this.createFile("xAPI-JsonFlattener-file", ".txt");
-                    FileWriter fw_0 = new FileWriter(generatedFile_0.getAbsoluteFile());
+                    File jsonFlatFile = this.createFile("xAPI-JsonFlattener-file", ".txt");
+                    FileWriter fw_0 = new FileWriter(jsonFlatFile.getAbsoluteFile());
                     try (BufferedWriter bw_0 = new BufferedWriter(fw_0)) {
                         for (String names:tabNames){
                             bw_0.write(names+"\t");
@@ -218,13 +216,12 @@ public class ImportXAPImain extends AbstractComponent {
                                 }
                         }
                     }
-            Integer nodeIndex0 = 0;
-            Integer fileIndex0 = 0;
-            String fileType0 = "tab-delimited";
-            this.addOutputFile(generatedFile_0, nodeIndex0, fileIndex0, fileType0);
-//            System.out.println(this.getOutput());
-            logger.info(this.getOutput());
-                     
+            Integer nodeIndex1 = 1;
+            Integer fileIndex1 = 0;
+            String fileType1 = "tab-delimited";
+            this.addOutputFile(jsonFlatFile, nodeIndex1, fileIndex1, fileType1);
+            logger.info(this.getOutput());            
+                                
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("id")){
@@ -261,7 +258,19 @@ public class ImportXAPImain extends AbstractComponent {
 //                       }
 //                   }
 //               }               
-                                        
+                
+               //Transfer Time Format
+//               for(int kt=0;kt<tabNames.length;kt++){
+//                   if(tabNames[kt].equals("stored")){
+//                       for(int rs=0;rs<mainContent[kt].length;rs++){
+//                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//                           Date date = dt.parse(mainContent[kt][rs]);
+//                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//                           mainContent[kt][rs]=dt1.format(date);
+//                       }
+//                   }
+//               }
+               
                //Create array matrix about selected columns
                 String [][] selectContent=new String[array.length][];
                 for(int sc=0;sc<array.length;sc++){
@@ -272,7 +281,6 @@ public class ImportXAPImain extends AbstractComponent {
                     }
                 }
                
-                
                String sizeFilter = null;
                String sizeFilter1 = null;
                String sizeFilter2 = null;
@@ -324,10 +332,9 @@ public class ImportXAPImain extends AbstractComponent {
                    ns=selectContent[0].length; //numStatements
                }
 
-               File generatedFile = this.createFile("xAPI-TabDelimited-file", ".txt");
-                    FileWriter fw = new FileWriter(generatedFile.getAbsoluteFile());
+               File tabDeliFile = this.createFile("xAPI-TabDelimited-file", ".txt");
+                    FileWriter fw = new FileWriter(tabDeliFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
-//                    bw.write(key, 0, key.length());
                         for (String[] array1 : array) {
                             bw.write(array1[0]+"\t");
                         }
@@ -340,11 +347,11 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 
-	    Integer nodeIndex1 = 1;
-            Integer fileIndex1 = 0;
-            String fileType1 = "tab-delimited";
-            this.addOutputFile(generatedFile, nodeIndex1, fileIndex1, fileType1);
-            
+	    Integer nodeIndex2 = 2;
+            Integer fileIndex2 = 0;
+            String fileType2 = "tab-delimited";
+            this.addOutputFile(tabDeliFile, nodeIndex2, fileIndex2, fileType2);
+            logger.info(this.getOutput());
             System.out.println(this.getOutput());
                         
 	    }
