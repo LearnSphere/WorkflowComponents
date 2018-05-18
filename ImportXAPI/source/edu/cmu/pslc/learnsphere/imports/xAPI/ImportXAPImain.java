@@ -246,19 +246,7 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                    }
                }               
-               
-               //Transfer Time Format
-//               for(int k=0;k<tabNames.length;k++){
-//                   if(tabNames[k].equals("stored")){
-//                       for(int rs=0;rs<mainContent[k].length;rs++){
-//                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//                           Date date = dt.parse(mainContent[k][rs]);
-//                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-//                           mainContent[k][rs]=dt1.format(date);
-//                       }
-//                   }
-//               }               
-                
+                                            
                //Transfer Time Format
 //               for(int kt=0;kt<tabNames.length;kt++){
 //                   if(tabNames[kt].equals("stored")){
