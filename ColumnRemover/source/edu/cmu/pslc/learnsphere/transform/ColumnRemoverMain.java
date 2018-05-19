@@ -133,10 +133,10 @@ public class ColumnRemoverMain extends AbstractComponent {
               continue;
             }
             modifiedData.add(i, new ArrayList<String>());
-            for (int j = 0; j < data.get(0).size(); j++) {
-              /*logger.debug("i "+i+ " j "+j+ "  cell "+data.get(i).get(j));
-              logger.debug("data.get(i): "+data.get(i));
-              logger.debug(data.get(i).size());*/
+            for (int j = 0; j < data.get(i).size(); j++) {
+              //logger.debug("i "+i+ " j "+j+ "  cell "+data.get(i).get(j));
+              //logger.debug("data.get(i): "+data.get(i));
+              //logger.debug(data.get(i).size());
               String cell = data.get(i).get(j);
               boolean selected = selectedColumns.contains(new Integer(j));
               if (!selected && removeSelectedColumns) {
@@ -153,11 +153,11 @@ public class ColumnRemoverMain extends AbstractComponent {
           //Write modifiedData to output file
           StringBuilder buf = new StringBuilder();
           for (int i = 0; i < modifiedData.size(); i++) {
-            for (int j = 0; j < modifiedData.get(0).size(); j++) {
+            for (int j = 0; j < modifiedData.get(i).size(); j++) {
               //logger.debug("daata.geti"+modifiedData.get(i));
               //logger.debug("i "+i+ " j "+j+ "  cell "+modifiedData.get(i).get(j));
               buf.append(modifiedData.get(i).get(j));
-              if (j != modifiedData.get(0).size()-1) {
+              if (j != modifiedData.get(i).size()-1) {
                 buf.append("\t");
               }
             }

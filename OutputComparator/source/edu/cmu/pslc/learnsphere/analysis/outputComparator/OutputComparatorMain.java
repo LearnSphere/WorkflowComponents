@@ -33,7 +33,7 @@ public class OutputComparatorMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         Boolean reqsMet = true;
-		String fileType  = this.getOptionAsString("fileType");
+        String fileType  = this.getOptionAsString("fileType");
         String file0 = this.getAttachment(0, 0).getAbsolutePath();
         String file1 = this.getAttachment(1, 0).getAbsolutePath();
         String file2 = null;
@@ -54,14 +54,14 @@ public class OutputComparatorMain extends AbstractComponent {
         }
 
         if (fileType.equalsIgnoreCase("XML")) {
-            File file0Converted = convertXML(file0);
-            File file1Converted = convertXML(file1);
+            File file0Converted = convertXML(file0, 0);
+            File file1Converted = convertXML(file1, 1);
             File file2Converted = null;
             File file3Converted = null;
             if (file2 != null)
-                    file2Converted = convertXML(file2);
+                file2Converted = convertXML(file2, 2);
             if (file3 != null)
-                    file3Converted = convertXML(file3);
+                file3Converted = convertXML(file3, 3);
             if (file0Converted == null || file1Converted == null ||
                             (file2 != null && file2Converted == null) ||
                             (file3 != null && file3Converted == null)) {
@@ -130,15 +130,16 @@ public class OutputComparatorMain extends AbstractComponent {
         System.out.println(this.getOutput());
     }
 
-    private File convertXML(String inputFilePathName) {
+    /**
+     * Method to convert input XML file to tab-delimited text file.
+     * @param inputFilePathName path to the input file
+     * @param index the index for the input (0-3)
+     * @return the generated text file
+     */
+    private File convertXML(String inputFilePathName, Integer index) {
             logger.info("Converting xml file: " + inputFilePathName);
-            String inputFileName = (new File(inputFilePathName)).getName();
-            int pos = inputFileName.lastIndexOf(".");
-            if (pos > 0) {
-                    inputFileName = inputFileName.substring(0, pos);
-            }
             File generatedFile = null;
-            String generatedFileName = inputFileName + "_converted.txt";
+            String generatedFileName = "file" + index + "_converted.txt";
             SAXBuilder builder = new SAXBuilder();
             // Setting reuse parser to false is a workaround
             // for a JDK 1.7u45 bug described in
@@ -183,10 +184,12 @@ public class OutputComparatorMain extends AbstractComponent {
                                     Element sub_e = (Element) e_iter.next();
                                     String entryKey = sub_e.getName();
                                     String entryVal = sub_e.getValue();
-                                    if (!dataRow.containsKey(entryKey))
+                                    if (!dataRow.containsKey(entryKey)) {
                                             dataRow.put(entryKey, entryVal);
-                                    if (!colNames.contains(entryKey))
+                                    }
+                                    if (!colNames.contains(entryKey)) {
                                             colNames.add(entryKey);
+                                    }
                             }
                     }
                     //output
@@ -197,7 +200,7 @@ public class OutputComparatorMain extends AbstractComponent {
                             bw = new BufferedWriter(fstream);
                             generatedFile.createNewFile();
                             //write out header
-                            String headers = "name";
+                            String headers = "tag";
                             for (String colName : colNames) {
                                 headers += "\t" + colName;
                             }

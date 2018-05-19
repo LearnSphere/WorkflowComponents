@@ -6,6 +6,8 @@ npm install --global --production windows-build-tools
 //install webworker ability in node. 
 cd /datashop/workflow_components/DetectorTester/
 npm install tiny-worker
+	//If npm isn't working, try using this to run it:
+	// /usr/lib/node-v8.9.3-linux-x86/bin/node /usr/lib/node-v8.9.3-linux-x86/bin/npm install [module name]
 sudo npm install build-tools  -g
 
 
@@ -14,3 +16,5 @@ download node-v8.9.3-linux-x86.tar.xz
 tar -xJF node-v8.9.3-linux-x86.tar.xz
 
 sudo mv node-v8.9.3-linux-x86 /usr/lib/
+
+sudo ln -s /usr/lib/node-v8.9.3-linux-x86/bin/node /usr/sbin/node

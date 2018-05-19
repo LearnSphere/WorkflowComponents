@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.Math;
 import java.text.NumberFormat;
+import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -433,7 +434,7 @@ public class TetradEstimator {
         String n0 = ""; //tokens[1];
         String n1 = ""; //tokens[3];
         boolean onFirstNodeName = true;
-        //get node names (even if they have spaces)
+        //get node names (even if they have spaces) UPDATE NO SUPPORT FOR SPACES (SINCE FCI GRAPHS)
         for (int i = 1; i < tokens.length; i++) {
           String t = tokens[i];
           if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
@@ -446,10 +447,12 @@ public class TetradEstimator {
             }
             n0 += t;
           } else {
-            if (n1.length() > 0) {
+            /*if (n1.length() > 0) {
               n1 += "_";
             }
-            n1 += t;
+            n1 += t;*/
+            n1 = t;
+            break;
           }
 
         }
@@ -476,18 +479,40 @@ public class TetradEstimator {
           }
         }
 
+        Edge newEdge = null;
         if ( arrow.equals("---") ) {
-          //TODO: UNCOMMENT NEXT LINE
-          addToDebugMessages("" + g.addEdge( Edges.undirectedEdge( node0, node1 ) ));
+          newEdge = Edges.undirectedEdge(node0, node1);
         } else if ( arrow.equals("-->") ) {
-          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node0, node1 ) ));
+          newEdge = Edges.directedEdge(node0, node1);
         } else if ( arrow.equals("<--") ) {
-          addToDebugMessages("" + g.addEdge( Edges.directedEdge( node1, node0 ) ));
+          newEdge = Edges.directedEdge(node1, node0);
         } else if ( arrow.equals("<->") ) {
-          addToDebugMessages("" + g.addEdge( Edges.bidirectedEdge(node0, node1)));
+          newEdge = Edges.bidirectedEdge(node0, node1);
+        } else if ( arrow.equals("o->") ) {
+          newEdge = Edges.partiallyOrientedEdge(node0, node1);
+        } else if ( arrow.equals("o-o") ) {
+          newEdge = Edges.nondirectedEdge(node0, node1);
         } else {
           addToDebugMessages("edge is unreadable" + arrow);
+          continue;
         }
+
+        // Set if the edge is dashed, colored
+        for (String t : tokens) {
+          switch (t) {
+            case "nl":
+              newEdge.setDashed(true);
+              newEdge.addProperty(Edge.Property.nl);
+            case "y":
+              newEdge.setLineColor(Color.YELLOW);
+            case "dd":
+              newEdge.setLineColor(Color.GREEN);
+              newEdge.addProperty(Edge.Property.dd);
+          }
+        }
+
+        addToDebugMessages("" + newEdge);
+        g.addEdge(newEdge);
       }
       return g;
     } catch ( Exception e ) {

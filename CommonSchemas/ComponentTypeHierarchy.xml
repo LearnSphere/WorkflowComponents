@@ -1,0 +1,62 @@
+<tags>
+	<Import>
+		<DataShop>
+			<student_step />
+			<transaction />
+		</DataShop>
+		<User_Session_Map />
+		<Outcome />
+		<Resource_Use_to_Outcome />
+		<Discourse_DB />
+		<gradebook />
+		<User_Map />
+		<File />
+		<CSV />
+	</Import>
+	<Transform>
+		<Deidentify />
+		<Join />
+		<Generate_PFA_Features />
+		<AppendCF />
+		<Coursera_MOOCdb_Translator />
+		<MOOCdb_Feature_Extractor />
+		<Pivot />
+		<MOOCdb />
+		<Convert_Multiskill />
+		<Discretize />
+		<Missing_Values />
+		<Column_Remover />
+		<Row_Operations />
+		<Data_Conversion />
+		<generate_tkt_features />
+	</Transform>
+	<Analysis>
+	<D3m_Dataset />
+		<afm />
+		<bkt />
+		<RLM_Fitting />
+		<OLI_Resource_Use />
+		<PFA />
+		<Python_Afm />
+		<correlation />
+		<cronbachs-alpha />
+		<Linear_Modeling />
+		<lsa />
+		<tkt />
+		<Tab_Delimited />
+		<iAFM />
+	</Analysis>
+	<Visualization>
+		<learning_curves />
+		<d3_force_layout />
+	</Visualization>
+	<Tetrad>
+		<Search />
+		<Visualize_Tetrad_Graph />
+		<Estimator />
+		<Knowledge />
+		<Regression />
+		<Tetrad_Graph_Editor />
+		<Classifier />
+	</Tetrad>
+</tags>

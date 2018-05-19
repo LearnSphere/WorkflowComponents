@@ -1,3 +1,4 @@
 component.interpreter.path="/usr/bin/nodejs"
 component.program.path=program/CTAT-detector-plugins/Test_Rig/Test_Rig_WorkflowComponent.js
-authorizationProject=DetectorTesterAccess
+authorizationProject=ApplyDetectorAccess
+detectorsDataset=Detectors

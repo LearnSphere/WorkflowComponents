@@ -52,12 +52,12 @@ System.out.println(outputDirectory.getAbsolutePath());
                 Integer fileIndex1 = 0;
                 String label1 = "text";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
-                this.addOutputFile(file0, nodeIndex0, fileIndex0, label1);
+                this.addOutputFile(file0, nodeIndex1, fileIndex1, label1);
 
               
 
             } else {
-                this.addErrorMessage("An unknown error has occurred with the EMD component.");
+                this.addErrorMessage("An unknown error has occurred with the AnalysisStudentClustering component.");
             }
 
         }
