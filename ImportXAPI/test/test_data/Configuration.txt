@@ -1,0 +1,32 @@
+#This is one configuration file for ImportXAPI of Workflows in DataShop.
+#The values on the left of the equals is the new header name that you prefer to use, 
+#while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly.  
+#Note that: xAPI-JsonFlattener-file.txt is used for Choosing the headers' names.
+#If you want to specify the required Tab-delimited format, you may see https://datashop.memphis.edu/help?page=importFormatTd .
+#
+Statement Id=id
+Time=stored
+Student Name=actor name
+Score=result score raw
+Anon Student Id=actor mbox
+Session Id=object id
+Time Spent=context extensions http://autotutor.x-in-y.com/AT timeTaken
+CF(Verb)=verb display en-US
+KC (Default)=result response
+Problem Name=context extensions http://autotutor.x-in-y.com/AT school
+Selection=context extensions http://autotutor.x-in-y.com/AT rp
+Action=context extensions http://autotutor.x-in-y.com/AT u
+Input=context contextActivities parent1 definition extensions https://umiis.github.io/ITSProfile/Extensions/parent ST
+Level=authority name
+
+
+
+#If you specify the top numbers of statements, you may specify the actual number values or "null";
+#
+numStatements=null
+
+
+#If you want to select the data by quantity of the data, you may specify the name of headers on the left and the actual value.
+#<minValue,maxValue>
+filterTabs=Score
+sizeInterval=<0.5,1.0>
