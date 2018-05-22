@@ -218,7 +218,7 @@ public class ImportXAPImain extends AbstractComponent {
                     }
             Integer nodeIndex1 = 1;
             Integer fileIndex1 = 0;
-            String fileType1 = "tab-delimited";
+            String fileType1 = "text";
             this.addOutputFile(jsonFlatFile, nodeIndex1, fileIndex1, fileType1);
             logger.info(this.getOutput());            
                                 
@@ -253,7 +253,7 @@ public class ImportXAPImain extends AbstractComponent {
 //                       for(int rs=0;rs<mainContent[kt].length;rs++){
 //                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //                           Date date = dt.parse(mainContent[kt][rs]);
-//                           SimpleDateFormat dt1 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//                           SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 //                           mainContent[kt][rs]=dt1.format(date);
 //                       }
 //                   }
@@ -337,7 +337,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
 	    Integer nodeIndex2 = 2;
             Integer fileIndex2 = 0;
-            String fileType2 = "tab-delimited";
+            String fileType2 = "text";
             this.addOutputFile(tabDeliFile, nodeIndex2, fileIndex2, fileType2);
             logger.info(this.getOutput());
             System.out.println(this.getOutput());
