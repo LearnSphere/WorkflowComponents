@@ -8,36 +8,6 @@
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="InputDefinition0">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList0" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList0">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InputType">
-    <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-    </xs:all>
-  </xs:complexType>
-
-  <xs:complexType name="InputLabel">
-    <xs:all>
-      <xs:element name="input0" type="xs:string" default="Configuration-File" minOccurs="0" />
-    </xs:all>
-  </xs:complexType>
-
-
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -54,8 +24,8 @@
       <xs:element ref="text" />
     </xs:choice>
   </xs:complexType>
-  
-  
+
+
     <xs:complexType name="OutputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -66,13 +36,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
     <xs:complexType name="OutFileList1">
     <xs:choice>
       <xs:element ref="text" />
     </xs:choice>
   </xs:complexType>
-  
+
       <xs:complexType name="OutputDefinition2">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -83,13 +53,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
     <xs:complexType name="OutFileList2">
     <xs:choice>
       <xs:element ref="text" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
@@ -97,8 +67,8 @@
       <xs:element name="output2" type="OutputDefinition2" />
     </xs:sequence>
   </xs:complexType>
-  
-  
+
+
   <xs:simpleType name="filterType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Null" />
