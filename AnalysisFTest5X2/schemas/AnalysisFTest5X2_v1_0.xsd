@@ -2,15 +2,15 @@
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
-  
+
 <xs:element name="stringvalues" type="valuelist"/>
 
 <xs:simpleType name="valuelist">
   <xs:list itemType="xs:string"/>
 </xs:simpleType>
-  
 
-  
+
+
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -21,7 +21,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -32,7 +32,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
    <xs:complexType name="InputDefinition2">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -43,7 +43,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition3">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -55,8 +55,8 @@
     </xs:complexContent>
   </xs:complexType>
 
-  
-  
+
+
   <xs:complexType name="InputDefinition4">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -67,7 +67,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition5">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -78,7 +78,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
    <xs:complexType name="InputDefinition6">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -89,7 +89,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition7">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -100,7 +100,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition8">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -111,7 +111,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition9">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -122,7 +122,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
    <xs:complexType name="InputDefinition10">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -133,7 +133,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InputDefinition11">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -144,7 +144,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
 
 
 
@@ -179,7 +179,7 @@
       <xs:element name="input8" type="xs:string" default="text" minOccurs="0" />
       <xs:element name="input9" type="xs:string" default="text" minOccurs="0" />
       <xs:element name="input10" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input11" type="xs:string" default="text" minOccurs="0" />      
+      <xs:element name="input11" type="xs:string" default="text" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -188,19 +188,19 @@
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList1">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
    <xs:complexType name="InFileList2">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList3">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
@@ -212,43 +212,43 @@
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList5">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
    <xs:complexType name="InFileList6">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList7">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
    <xs:complexType name="InFileList8">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList9">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
    <xs:complexType name="InFileList10">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList11">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
@@ -268,12 +268,12 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="inline-html" />
+      <xs:element ref="text" />
     </xs:choice>
   </xs:complexType>
 
-  
- 
+
+
 
   <xs:complexType name="OutputDefinition1">
     <xs:complexContent>
@@ -298,7 +298,7 @@
       <xs:element name="output1" type="OutputDefinition1" />
     </xs:sequence>
   </xs:complexType>
- 
+
 
     <xs:simpleType name="evaluationMeasure" final="restriction">
         <xs:restriction base="xs:string">
