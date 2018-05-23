@@ -22,7 +22,7 @@
       <component_id>AnalysisStudentClustering</component_id>
       <component_id_human>Import Transaction #1</component_id_human>
       <component_type>import</component_type>
-      <component_name>EMD</component_name>
+      <component_name>ImportFile</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors/>
       <files>

@@ -3,8 +3,39 @@ package edu.cmu.pslc.learnsphere.analysis.graphit;
 import java.io.File;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GraphitMain extends AbstractComponent {
+private static void copyFileUsingFileChannels(File source, File dest)
+
+        throws IOException {
+
+    FileChannel inputChannel = null;
+
+    FileChannel outputChannel = null;
+
+    try {
+
+        inputChannel = new FileInputStream(source).getChannel();
+
+        outputChannel = new FileOutputStream(dest).getChannel();
+
+        outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+
+    } finally {
+
+        inputChannel.close();
+
+        outputChannel.close();
+
+    }
+
+}
 
     public static void main(String[] args) {
            System.out.println("main 1 \n");
@@ -42,7 +73,13 @@ System.out.println("Main After call");
   System.out.print("inside if 3\n");
                
 
-            
+           File source = new File("plotly-latest.min.js");
+            File dest = new File(outputDirectory.getAbsolutePath() + "/plotly-latest.min.js");
+                try {
+                    copyFileUsingFileChannels(source, dest);
+                } catch (IOException ex) {
+                    Logger.getLogger(GraphitMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
                 String label0 = "text";

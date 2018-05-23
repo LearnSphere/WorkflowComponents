@@ -79,7 +79,7 @@ public class SensorDataAlignMain extends AbstractComponent {
         }
 
         // Send the component output back to the workflow.
-       // System.out.println(this.getOutput());
+       System.out.println(this.getOutput());
         
     }
 

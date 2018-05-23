@@ -1,0 +1,108 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>AnalysisFTest5X2</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+    <connection>
+      <to>Visualization-1-x938260</to>
+      <index>0</index>
+    </connection>
+  </connections>
+  <top>218</top>
+  
+   <options>
+      <measure>tAUC</measure>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>0</index>
+          <file_path>test/test_data/model_result_values.xml</file_path>
+          <label>text</label>
+        
+          <file_name>model_result_values.xml</file_name>
+          
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    
+     <input1>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>1</index>
+          <file_path>test/test_data/model_result_values1.xml</file_path>
+          <label>text</label>
+          <file_name>model_result_values1.xml</file_name>
+          
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+    
+    <input2>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>2</index>
+          <file_path>test/test_data/model_result_values1.xml</file_path>
+          <label>text</label>
+          <file_name>model_result_values1.xml</file_name>
+          
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input2>
+    
+    <input3>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>3</index>
+          <file_path>test/test_data/model_result_values1.xml</file_path>
+          <label>text</label>
+          <file_name>model_result_values1.xml</file_name>
+          
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input3>
+    
+  </inputs>
+ 
+
+</component>

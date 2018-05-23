@@ -159,7 +159,7 @@ sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=130)
 
-
+print("work")
 
 #Get the column from input data file0 and file1 to resample it 
 InputData1 <-as.numeric(FileInputData1[[file1ColumnName]])

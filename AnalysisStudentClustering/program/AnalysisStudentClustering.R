@@ -1,6 +1,6 @@
 
 # Creates output log file
-
+echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 
 
@@ -71,16 +71,15 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
-# Get data
-#outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
-#outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
-#val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
+
 
 # Creates output log file
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
+options(scipen=999)
+
 
 print("-----------------------------")
 print (workingDirectory)
