@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,6 +63,37 @@ public class TetradClassifier {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(args);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		inFiles.put(nodeIndex, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -80,13 +115,13 @@ public class TetradClassifier {
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
+    } else if (!inFiles.containsKey(0)) {
       addToErrorMessages("No infile0 ");
       return;
-    } else if ( cmdParams.containsKey("-file1") == false ) {
+    } else if (!inFiles.containsKey(1)) {
       addToErrorMessages("No infile1 ");
       return;
-    } else if ( cmdParams.containsKey("-file2") == false ) {
+    } else if (!inFiles.containsKey(2)) {
       addToErrorMessages("No infile2 ");
       return;
     }else if ( cmdParams.containsKey("-target") == false ) {
@@ -97,18 +132,16 @@ public class TetradClassifier {
     String model = cmdParams.get("-model");
     String workingDir = cmdParams.get("-workingDir");
     String programDir = cmdParams.get("-programDir");
-    String infile0 = cmdParams.get("-file0");
-    String infile1 = cmdParams.get("-file1");
-    String infile2 = cmdParams.get("-file2");
+
     String target = cmdParams.get("-target");
     target = target.replaceAll(" ","_");
     String parametricModel = cmdParams.get("-parametricModel");
     int targetCat = Integer.parseInt(cmdParams.get("-targetCategory"));
     outputDir = workingDir;
 
-    File inputFile0 = new File( infile0 );
-    File inputFile1 = new File( infile1 );
-    File inputFile2 = new File( infile2 );
+    File inputFile0 = inFiles.get(0);
+    File inputFile1 = inFiles.get(1);
+    File inputFile2 = inFiles.get(2);
 
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
@@ -202,7 +235,7 @@ public class TetradClassifier {
           int numNodes = graph.getNumNodes();
 
           if (trainData.isContinuous() || trainData.isMixed()) {
-            addToErrorMessages("Training data set is continuous or mixed, " + 
+            addToErrorMessages("Training data set is continuous or mixed, " +
                 "but it must be compoletely discrete.");
           }
 
@@ -302,7 +335,7 @@ public class TetradClassifier {
             }
             addToDebugMessages(incatstr);
 
-            
+
             String scStr = "";
             for (double sc : scores) {
               scStr += sc + ",";
@@ -310,11 +343,11 @@ public class TetradClassifier {
 
             RocCalculator rocc =
                     new RocCalculator(scores, inCategory, RocCalculator.ASCENDING);
-            
+
             double area1 = rocc.getAuc();
-            
+
             double[][] points = rocc.getScaledRocPlot();
-            
+
             double area = rocc.getAuc();
             String auc = area + "";
 
@@ -337,20 +370,20 @@ public class TetradClassifier {
 
 
             String htmlTemplate = programDir + "program/rocCurve.html";
-            
+
             BufferedReader htmlReader = new BufferedReader(
                 new FileReader(htmlTemplate));
             String line = null;
             while ((line = htmlReader.readLine()) != null) {
-              
+
                 if (line.contains("INSERTDATAHERE")) {
-                    line = line.replaceAll("INSERTDATAHERE", rocData); 
+                    line = line.replaceAll("INSERTDATAHERE", rocData);
                 }
                 if (line.contains("INSERTTITLEDATAHERE")) {
-                    line = line.replaceAll("INSERTTITLEDATAHERE", target + " = " + targetCat); 
+                    line = line.replaceAll("INSERTTITLEDATAHERE", target + " = " + targetCat);
                 }
                 if (line.contains("AUC_DATA_HERE")) {
-                    line = line.replaceAll("AUC_DATA_HERE", auc.substring(0,6)); 
+                    line = line.replaceAll("AUC_DATA_HERE", auc.substring(0,6));
                 }
                 bWriterROC.append(line + "\n");
             }
@@ -549,10 +582,10 @@ public class TetradClassifier {
       if (graphStrSplit.length < 2) {
         addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
       }
-      
+
       String graphStr = graphStrSplit[1].split("</div>")[0];
       addToDebugMessages("graphStr: \n" + graphStr);
-      
+
       String [] graphLines = graphStr.split("\n");
 
       //Get nodes

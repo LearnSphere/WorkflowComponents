@@ -1,17 +1,17 @@
 #usage
 #C:/Rscript.exe RLMFitting.r data.txt -d 6,7 -i "2,3,4,5, Video"
 
-#SET UP LIBRARIES 
+#SET UP LIBRARIES
 options(scipen=999)
 #options(warn=-1)
 
 
-#SET UP LOADING DATE FUNCTION 
+#SET UP LOADING DATE FUNCTION
 import.data <- function(filename){
   return(read.table(filename,sep="\t" ,header=TRUE))
 }
 
-#verify column 
+#verify column
 verifyColumn <- function(col, colNames){
   matched = FALSE;
   #first try to match col with colNames
@@ -58,7 +58,7 @@ while (i <= length(args)) {
     dependendVariableColumns = args[i+1]
     i = i+1
   }
-  
+
   #-i independent variable
   else if (args[i] == "-i") {
     independendVarSpecified = TRUE
@@ -68,7 +68,7 @@ while (i <= length(args)) {
     independendVariableColumns = args[i+1]
     i = i+1
   }
-  
+
   #workingDir
   else if (args[i] == "-workingDir") {
     if (length(args) == i) {
@@ -77,8 +77,8 @@ while (i <= length(args)) {
     # This dir is the working dir for the component instantiation.
     workingDir = args[i+1]
     i = i+1
-  } 
-  
+  }
+
   #output file
   else if (args[i] == "-outputFile") {
     if (length(args) == i) {
@@ -86,60 +86,40 @@ while (i <= length(args)) {
     }
     outputFile = paste(workingDir, "/", args[i+1], sep="")
     i = i+1
-  } 
-  
+  }
+
   #process file
-  else if (args[i] == "-f") {
-    if (length(args) == i) {
-      stop("file must be provided")
-    }
-    if (!file.exists(args[i+1])) {
-      stop(paste("file ", args[i+1], " doesn't exist"))
-    }
-    
-    #read data and get the first row of the file and set it for column names
-    #only do once
-    if (!dataIsRead) {
-      myData <- import.data(args[i+1])
-      dataIsRead = TRUE;
-      #change column name
-      colNamesFromDataFile <- colnames(myData)
-      for (j in 1:length(colNamesFromDataFile)) {
-        colnames(myData)[j] <- paste(colNamesFromDataFile[j], "_after_change", sep="")
-      }
-      colNamesAfterChange <- colnames(myData)
-    }
-    i = i+1
+  else if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
+       }
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       fileName <- args[i + 4]
+
+       if (!dataIsRead) {
+          myData <- import.data(fileName)
+          dataIsRead = TRUE;
+          #change column name
+          colNamesFromDataFile <- colnames(myData)
+          for (j in 1:length(colNamesFromDataFile)) {
+            colnames(myData)[j] <- paste(colNamesFromDataFile[j], "_after_change", sep="")
+          }
+          colNamesAfterChange <- colnames(myData)
+       }
+       i = i + 4
+    } else {
+      #read data and get the first row of the file and set it for column names
+      #only do once
   }
-  
-  else if (args[i] == "-file0") {
-    if (length(args) == i) {
-      stop("file must be provided")
-    }
-    if (!file.exists(args[i+1])) {
-      stop(paste("file ", args[i+1], " doesn't exist"))
-    }
-    #read data and get the first row of the file and set it for column names
-    #only do once
-    if (!dataIsRead) {
-      myData <- import.data(args[i+1])
-      dataIsRead = TRUE;
-      #change column name
-      colNamesFromDataFile <- colnames(myData)
-      for (j in 1:length(colNamesFromDataFile)) {
-        colnames(myData)[j] <- paste(colNamesFromDataFile[j], "_after_change", sep="")
-      }
-      colNamesAfterChange <- colnames(myData)
-    }
-    i = i+1
-  }
-  
-  else {
-    #read data and get the first row of the file and set it for column names
-    #only do once
-    
-  }
-  i = i+1
+  i = i + 1
 }
 
 if (!dataIsRead) {
@@ -155,7 +135,7 @@ if (!dataIsRead) {
       }
       colNamesAfterChange <- colnames(myData)
     }
-	
+
 if (!dataIsRead) {
   stop("file must be provided")
 }

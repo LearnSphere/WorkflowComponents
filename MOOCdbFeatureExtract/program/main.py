@@ -14,8 +14,8 @@ import ConfigParser
 #example of running on command line
 #python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -startDateWF 2013-10-14
 #-earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall
-#-featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
-    
+#-featureExtractionId 1 -featuresToExtractWF "1,3,4" -node 0 -fileIndex 0 placeholder
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Feature Extraction MoocDb.')
     parser.add_argument('-programDir', type=str, help='the component program directory', default=".")
@@ -38,10 +38,10 @@ if __name__ == "__main__":
     parser.add_argument('-exportFormat', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     parser.add_argument('-exportFormatWF', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     parser.add_argument('-userId', type=str, help='placeholder for WF', default='')
-    parser.add_argument('-file0', type=str, help='placeholder for WF', default='')
-    parser.add_argument('-file1', type=str, help='placeholder for WF', default='')
-    
-    args = parser.parse_args()
+    p.add_argument("-node", nargs=1, action='append')
+    p.add_argument("-fileIndex", nargs=2, action='append')
+
+    args, option_file_index_args = parser.parse_known_args()
 
     #read config file
     config = ConfigParser.RawConfigParser()
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     userName = args.un
     password = args.p
-    
+
 
     dbPort = int(dbPort)
 
@@ -66,14 +66,14 @@ if __name__ == "__main__":
     logFile = workingDir + "/" + logFileName + ".log"
 
     log = Logger(logToConsole=True, logFilePath=logFile)
-    
+
     if args.runExtraction == "true":
         runExtraction = True
         log.log("runExtraction is true for: " + args.MOOCdbName)
     else:
         runExtraction = False
         log.log("runExtraction is false for: " + args.MOOCdbName)
-        
+
     featuresToExtract = args.featuresToExtractWF
     if not featuresToExtract or featuresToExtract == "all":
             featuresToExtract = fe.featureDict.keys()

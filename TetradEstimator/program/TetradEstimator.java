@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,6 +66,37 @@ public class TetradEstimator {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(args);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		inFiles.put(nodeIndex, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -89,12 +124,12 @@ public class TetradEstimator {
     } else if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
+    } else if (!inFiles.containsKey(0)) {
       addToErrorMessages("No infile0 ");
-      //return;
-    } else if ( cmdParams.containsKey("-file1") == false ) {
+      return;
+    } else if (!inFiles.containsKey(1)) {
       addToErrorMessages("No infile1 ");
-      //return;
+      return;
     } else if ( cmdParams.containsKey("-incompleteRows") == false ) {
       addToErrorMessages("No method of filling incomplete rows. ");
       return;
@@ -106,8 +141,8 @@ public class TetradEstimator {
     String programDir = cmdParams.get("-programDir");
 
     String estimator = cmdParams.get("-estimator");
-    String infile0 = cmdParams.get("-file0");
-    String infile1 = cmdParams.get("-file1");
+    String infile0 = inFiles.get(0);
+    String infile1 = inFiles.get(1);
     String incompleteRows = cmdParams.get("-incompleteRows");
     String parametricModel = cmdParams.get("-parametricModel");
     String optimizer = cmdParams.get("-optimizer");
@@ -381,10 +416,10 @@ public class TetradEstimator {
       if (graphStrSplit.length < 2) {
         addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
       }
-      
+
       String graphStr = graphStrSplit[1].split("</div>")[0];
       addToDebugMessages("graphStr: \n" + graphStr);
-      
+
       String [] graphLines = graphStr.split("\n");
 
       //Get nodes
@@ -525,7 +560,7 @@ public class TetradEstimator {
     String modelStatisticsFileName = outputDir + "ModelStatistics.txt";
     String estimatorTableFileName = outputDir + "EstimatorTable.txt";
     String correlationMatrixFileName = outputDir + "CorrelationMatrix.txt";
-    
+
     FileWriter fw = null;
     BufferedWriter bw = null;
 
@@ -541,10 +576,10 @@ public class TetradEstimator {
       double modelCfi = semIm.getCfi();
       double modelRmsea = semIm.getRmsea();
 
-      String modelText = "The above chi square test assumes that the maximum likelihood function over" + 
+      String modelText = "The above chi square test assumes that the maximum likelihood function over" +
           " the measured variables has been minimized. Under that assumption, the null hypothesis for" +
-          " the test is that the population covariance matrix over all of the measured variables is" + 
-          " equal to the estimated covariance matrix over all of the measured variables written as a" + 
+          " the test is that the population covariance matrix over all of the measured variables is" +
+          " equal to the estimated covariance matrix over all of the measured variables written as a" +
           " function of the free model parameters--that is, the unfixed parameters for each directed" +
           " edge (the linear coefficient for that edge), each exogenous variable (the variance for" +
           " the error term for that variable), and each bidirected edge (the covariance for the" +
@@ -610,7 +645,7 @@ public class TetradEstimator {
       addToErrorMessages("Could not write tabular model data to output: " + e.toString());
     }
 
-    // Output correlation matrix 
+    // Output correlation matrix
 
   }
 
@@ -805,7 +840,7 @@ public class TetradEstimator {
       }
 
       String s = htmlStr.toString();
-      
+
       s = s.replaceAll("PutGraphDataHere", graphStr);
 
       bWriter.write(s);

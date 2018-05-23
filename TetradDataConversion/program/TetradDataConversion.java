@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,6 +58,36 @@ public class TetradDataConversion {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    File inFile = null;
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(args);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -80,22 +113,17 @@ public class TetradDataConversion {
     } else if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
-      addToErrorMessages("No outfile name");
-      return;
+    } else if (inFile == null) {
+      addToErrorMessages("No input file found");
+	  return;
     }
 
     String conversionType = cmdParams.get("-conversion");
 
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
-    String infile = cmdParams.get("-file0");
 
-    File inputFile = new File( infile );
-
-
-
-    if (inputFile.exists() && inputFile.isFile() && inputFile.canRead() ) {
+    if (inFile.exists() && inFile.isFile() && inFile.canRead() ) {
 
       String outputFile = workingDir + "ConvertedData.txt";
 
@@ -113,7 +141,7 @@ public class TetradDataConversion {
           fWriter = new FileWriter(outputFile);
           bWriter = new BufferedWriter(fWriter);
 
-          char[] chars = fileToCharArray(inputFile);
+          char[] chars = fileToCharArray(inFile);
 
           DataReader reader = new DataReader();
           //reader.setDelimiter(DelimiterType.WHITESPACE);
@@ -221,7 +249,7 @@ public class TetradDataConversion {
             break;
           case "Standardize_Data":
             try {
-              char[] newchars = fileToCharArray(inputFile);
+              char[] newchars = fileToCharArray(inFile);
               DataReader reReader = new DataReader();
               reReader.setMaxIntegralDiscrete(0);
               reReader.setDelimiter(DelimiterType.TAB);
@@ -246,7 +274,7 @@ public class TetradDataConversion {
           }
 
           convertedData = convertedData.replaceAll("\n\n","\n");
-          
+
           bWriter.append( convertedData.replaceFirst("\n", "") );
           bWriter.close();
 
@@ -257,11 +285,11 @@ public class TetradDataConversion {
         addToErrorMessages(e.toString());
       }
 
-    } else if (inputFile == null || !inputFile.exists()
-               || !inputFile.isFile()) {
+    } else if (inFile == null || !inFile.exists()
+               || !inFile.isFile()) {
       addToErrorMessages("Tab-delimited file does not exist.");
 
-    } else if (!inputFile.canRead()) {
+    } else if (!inFile.canRead()) {
       addToErrorMessages("Tab-delimited file cannot be read.");
     }
     System.setErr(sysErr);

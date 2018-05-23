@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,6 +58,36 @@ public class TetradRegression {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(args);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		inFiles.put(nodeIndex, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
 
     //List<String> regressors = new ArrayList<String>();
     List<String> regressors = getMultiFileInputHeaders("regressors", args);
@@ -86,8 +119,8 @@ public class TetradRegression {
     } else if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
-      addToErrorMessages("No outfile name");
+    } else if (!inFiles.containsKey(0)) {
+      addToErrorMessages("No infile ");
       return;
     } else if ( cmdParams.containsKey("-regressors") == false ) {
       addToErrorMessages("No regressors specified.");
@@ -105,7 +138,6 @@ public class TetradRegression {
     double alpha = t1.doubleValue();
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
-    String infile = cmdParams.get("-file0");
 
     //remove duplicates
     Set<String> hs = new HashSet<String>();
@@ -124,7 +156,7 @@ public class TetradRegression {
     addToDebugMessages(target + "target");
     addToDebugMessages("regressors" + regressors.toString());
 
-    File inputFile = new File( infile );
+    File inputFile = inFiles.get(0);
 
 
 
@@ -270,7 +302,7 @@ public class TetradRegression {
         i++;
       }
     }
-    
+
     return ret;
   }
 
@@ -337,7 +369,7 @@ public class TetradRegression {
       }
 
       String s = htmlStr.toString();
-      
+
       s = s.replaceAll("PutGraphDataHere", graphStr);
 
       bWriter.write(s);

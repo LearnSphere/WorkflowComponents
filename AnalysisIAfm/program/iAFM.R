@@ -22,13 +22,23 @@ if (length(args) == 2) {
 } else {
   i = 1
   while (i <= length(args)) {
-      if (args[i] == "-file0") {
-         if (length(args) == i) {
-            stop("file name must be specified")
-         }
-         stuStepFileName = args[i+1]
-         i = i+1
-      } else if (args[i] == "-model") {
+      if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
+       }
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       stuStepFileName <- args[i + 4]
+       i = i + 4
+
+    } else if (args[i] == "-model") {
          if (length(args) == i) {
             stop("model name must be specified")
          }

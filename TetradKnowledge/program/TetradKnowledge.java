@@ -33,6 +33,9 @@ import java.io.ByteArrayOutputStream;
 //import org.json.*;
 //import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import cern.colt.Arrays;
+
 import org.json.simple.*;
 
 import edu.cmu.tetrad.data.*;
@@ -61,6 +64,37 @@ public class TetradKnowledge {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(args);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		inFiles.put(nodeIndex, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -82,14 +116,14 @@ public class TetradKnowledge {
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
-      addToErrorMessages("No infile0 ");
+    } else if (!inFiles.containsKey(0)) {
+      addToErrorMessages("No infile ");
       //return;
-    } 
+    }
 
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
-    String knowledgeJsonStrFileName = workingDir + "/knowledgeJsonStr.txt";//cmdParams.get("-file0");
+    String knowledgeJsonStrFileName = workingDir + "/knowledgeJsonStr.txt";
 
     File knowledgeJsonStrFile = new File( knowledgeJsonStrFileName );
 
@@ -210,7 +244,7 @@ public class TetradKnowledge {
             } catch (Exception e) {
               addToErrorMessages("Could not parse numTiers" + e.toString());
             }
-            
+
             for (int i = 1; i <= numTiers; i++) {
               ArrayList<String> varsInTier = getMultiFileInputHeaders("tier" + i + "Vars", args);
               try {
@@ -220,7 +254,7 @@ public class TetradKnowledge {
               } catch (Exception e) {
                 addToErrorMessages("Exception setting variables to tier" + e);
               }
-              
+
               try {
                 if (cmdParams.get("-forbiddenTier" + i).equals("Yes")) {
                   addToDebugMessages("Setting tier " + i + " as forbidden within.");
@@ -239,7 +273,7 @@ public class TetradKnowledge {
             for (String var : varsNotInTiers) {
               knowledge.addVariable(var);
             }
-            
+
             //EDGES
             int numEdges = 0;
             try {
