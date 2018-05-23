@@ -3,13 +3,6 @@
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
 
-<xs:element name="stringvalues" type="valuelist"/>
-
-<xs:simpleType name="valuelist">
-  <xs:list itemType="xs:string"/>
-</xs:simpleType>
-
-
 
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>

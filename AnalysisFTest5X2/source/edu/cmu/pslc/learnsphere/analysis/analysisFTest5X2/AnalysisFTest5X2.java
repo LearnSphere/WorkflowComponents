@@ -50,7 +50,7 @@ public class AnalysisFTest5X2 extends AbstractComponent {
         } else {
           this.addErrorMessage("Files missing.");
         }
-        this.addErrorMessage("Directory missing.");
+      
       }
       // Send the component output back to the workflow.
       System.out.println(this.getOutput());
