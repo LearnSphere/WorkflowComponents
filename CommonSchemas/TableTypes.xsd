@@ -39,6 +39,7 @@
 
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
+	<xs:element name="oli-log" substitutionGroup="tab-delimited" />
 	  <xs:element name="user-map" substitutionGroup="tab-delimited" />
 	  <xs:element name="resource-use" substitutionGroup="tab-delimited" />
 	  <xs:element name="outcome" substitutionGroup="tab-delimited" />
@@ -52,8 +53,7 @@
 
 	  <xs:element name="model-values" substitutionGroup="text" />
 	  <xs:element name="parameters" substitutionGroup="text" />
-
-  <xs:element name="analysis-summary" substitutionGroup="text" />
+	    <xs:element name="analysis-summary" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
 	  <xs:element name="sql" substitutionGroup="text" />
 		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
