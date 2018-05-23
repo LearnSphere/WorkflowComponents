@@ -25,7 +25,7 @@ while (i <= length(args)) {
     Models<-c(Models,paste("Model ",index))
     index = index + 1
     i = i+1
-     
+
   }  else if (args[i] == "-optimizedParameters") {
     if (length(args) == i) {
       stop("optimizedParameters must be specified")
@@ -156,3 +156,8 @@ print(results)}
 
 
 write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html"))
+
+
+# Stop logging
+sink()
+sink(type="message")

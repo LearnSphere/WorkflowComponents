@@ -6,8 +6,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
 public class AnalysisFTest5X2 extends AbstractComponent {
 
-    /** Component option (model). */
-    String modelName = null;
 
     public static void main(String[] args) {
 
@@ -21,8 +19,6 @@ public class AnalysisFTest5X2 extends AbstractComponent {
 
     @Override
     protected void parseOptions() {
-
-
 
     }
 
@@ -54,7 +50,7 @@ public class AnalysisFTest5X2 extends AbstractComponent {
         } else {
           this.addErrorMessage("Files missing.");
         }
-  this.addErrorMessage("Directory missing.");
+        this.addErrorMessage("Directory missing.");
       }
       // Send the component output back to the workflow.
       System.out.println(this.getOutput());
