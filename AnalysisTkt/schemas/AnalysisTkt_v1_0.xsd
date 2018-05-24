@@ -93,7 +93,6 @@
             <xs:element name="output2" type="OutputDefinition2" />
         </xs:sequence>
     </xs:complexType>
-
     <xs:simpleType name="modeType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="best fit model"/>

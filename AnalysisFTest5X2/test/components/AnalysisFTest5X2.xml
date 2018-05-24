@@ -16,9 +16,9 @@
     </connection>
   </connections>
   <top>218</top>
-  
+
    <options>
-      <measure>tAUC</measure>
+      <measure>tRMSE</measure>
   </options>
   <inputs>
     <input0>
@@ -33,15 +33,15 @@
           <index>0</index>
           <file_path>test/test_data/model_result_values.xml</file_path>
           <label>text</label>
-        
+
           <file_name>model_result_values.xml</file_name>
-          
+
         </student-step>
       </files>
       <inputmeta />
       <optionmeta />
     </input0>
-    
+
      <input1>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
@@ -55,13 +55,13 @@
           <file_path>test/test_data/model_result_values1.xml</file_path>
           <label>text</label>
           <file_name>model_result_values1.xml</file_name>
-          
+
         </student-step>
       </files>
       <inputmeta />
       <optionmeta />
     </input1>
-    
+
     <input2>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
@@ -75,13 +75,13 @@
           <file_path>test/test_data/model_result_values1.xml</file_path>
           <label>text</label>
           <file_name>model_result_values1.xml</file_name>
-          
+
         </student-step>
       </files>
       <inputmeta />
       <optionmeta />
     </input2>
-    
+
     <input3>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
@@ -95,14 +95,14 @@
           <file_path>test/test_data/model_result_values1.xml</file_path>
           <label>text</label>
           <file_name>model_result_values1.xml</file_name>
-          
+
         </student-step>
       </files>
       <inputmeta />
       <optionmeta />
     </input3>
-    
+
   </inputs>
- 
+
 
 </component>
