@@ -131,7 +131,7 @@ print(round(resultp,5))
 print(results)}
 
 
-write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.txt"))
+write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html",sep=""))
 
 
 # Stop logging
