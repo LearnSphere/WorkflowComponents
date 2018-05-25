@@ -428,7 +428,10 @@ function sendTerminationCommand() {
 	setTimeout(function(){
 		for (k in activeDetectors){
 			activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
-			//activeDetectors[k].terminate();
+			
+			setTimeout(function() {
+				activeDetectors[k].terminate();
+			},5000);
 		}
 		//activeDetectors = null;
 	},500);
