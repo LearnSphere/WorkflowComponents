@@ -19,10 +19,10 @@ import gov.adlnet.xapi.model.Agent;
 import gov.adlnet.xapi.model.StatementResult;
 import java.io.FileInputStream;
 import java.io.IOException;
-//import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Date;
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -109,7 +109,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
-                String fileType0 = "text";
+                String fileType0 = "tab-delimited";
                 this.addOutputFile(confiFile, nodeIndex0, fileIndex0, fileType0);
                 logger.info(this.getOutput());  
                 
@@ -218,7 +218,7 @@ public class ImportXAPImain extends AbstractComponent {
                     }
             Integer nodeIndex1 = 1;
             Integer fileIndex1 = 0;
-            String fileType1 = "text";
+            String fileType1 = "tab-delimited";
             this.addOutputFile(jsonFlatFile, nodeIndex1, fileIndex1, fileType1);
             logger.info(this.getOutput());            
                                 
@@ -337,7 +337,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
 	    Integer nodeIndex2 = 2;
             Integer fileIndex2 = 0;
-            String fileType2 = "text";
+            String fileType2 = "tab-delimited";
             this.addOutputFile(tabDeliFile, nodeIndex2, fileIndex2, fileType2);
             logger.info(this.getOutput());
             System.out.println(this.getOutput());
