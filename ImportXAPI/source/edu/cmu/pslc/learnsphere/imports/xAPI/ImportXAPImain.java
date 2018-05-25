@@ -248,16 +248,16 @@ public class ImportXAPImain extends AbstractComponent {
                }               
                                             
                //Transfer Time Format
-//               for(int kt=0;kt<tabNames.length;kt++){
-//                   if(tabNames[kt].equals("stored")){
-//                       for(int rs=0;rs<mainContent[kt].length;rs++){
-//                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//                           Date date = dt.parse(mainContent[kt][rs]);
-//                           SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-//                           mainContent[kt][rs]=dt1.format(date);
-//                       }
-//                   }
-//               }
+               for(int kt=0;kt<tabNames.length;kt++){
+                   if(tabNames[kt].equals("stored")){
+                       for(int rs=0;rs<mainContent[kt].length;rs++){
+                           SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                           Date date = dt.parse(mainContent[kt][rs]);
+                           SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                           mainContent[kt][rs]=dt1.format(date);
+                       }
+                   }
+               }
                
                //Create array matrix about selected columns
                 String [][] selectContent=new String[array.length][];
