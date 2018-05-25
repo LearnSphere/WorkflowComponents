@@ -290,7 +290,7 @@
   </xs:complexType>
 
 
-    <xs:simpleType name="evaluationMeasure" final="restriction">
+    <xs:simpleType name="evaluationMeasureType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="tRMSE"/>
             <xs:enumeration value="tAccuracy"/>
