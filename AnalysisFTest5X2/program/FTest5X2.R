@@ -4,9 +4,9 @@ args <- commandArgs(trailingOnly = TRUE)
 
 
 
-library(stats)
-library(XML)
-library(htmlTable)
+suppressMessages(library(stats))
+suppressMessages(library(XML))
+suppressMessages(library(htmlTable))
 
 # parse commandline args
 i = 1
@@ -26,37 +26,13 @@ while (i <= length(args)) {
     index = index + 1
     i = i+1
 
-  }  else if (args[i] == "-optimizedParameters") {
-    if (length(args) == i) {
-      stop("optimizedParameters must be specified")
-    }
-    optimizedParameters = args[i+1]
-    i = i+1
-  } else if (args[i] == "-fixedParameters") {
-    if (length(args) == i) {
-      stop("fixedParameters must be specified")
-    }
-    fixedParameters = args[i+1]
-    i = i+1
-  } else if (args[i] == "-constHeader") {
-    if (length(args) == i) {
-      stop("constHeader must be specified")
-    }
-    constHeader = args[i+1]
-    i = i+1
   } else if (args[i] == "-measure") {
     if (length(args) == i) {
       stop("mode name must be specified")
     }
     measure = args[i+1]
     i = i+1
-  } else if (args[i] == "-const") {
-    if (length(args) == i) {
-      stop("const must be specified")
-    }
 
-    const = args[i+1]
-    i = i+1
   } else if (args[i] == "-workingDir") {
     if (length(args) == i) {
       stop("workingDir name must be specified")

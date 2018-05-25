@@ -138,10 +138,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-
-
-
-
   <xs:complexType name="InputType">
     <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
