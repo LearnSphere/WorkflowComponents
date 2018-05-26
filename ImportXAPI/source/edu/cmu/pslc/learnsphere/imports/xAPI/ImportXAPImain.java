@@ -109,7 +109,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
-                String fileType0 = "tab-delimited";
+                String fileType0 = "text";
                 this.addOutputFile(confiFile, nodeIndex0, fileIndex0, fileType0);
                 logger.info(this.getOutput());  
                 
