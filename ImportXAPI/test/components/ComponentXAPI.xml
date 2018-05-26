@@ -28,12 +28,12 @@
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
-        <tab-delimited>
+        <text>
             <file_path>test/test_data/Configuration.txt</file_path>
             <file_name>Configuration.txt</file_name>
             <index>0</index>
-            <label>tab-delimited</label>
-        </tab-delimited>
+            <label>text</label>
+        </text>
       </files>
       <inputmeta />
       <optionmeta />
