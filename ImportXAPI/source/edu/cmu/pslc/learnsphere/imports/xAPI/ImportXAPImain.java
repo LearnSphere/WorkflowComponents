@@ -202,7 +202,7 @@ public class ImportXAPImain extends AbstractComponent {
                     mainContent[k]=mainValueArrStr;
                }
                      
-                    File jsonFlatFile = this.createFile("xAPI-JsonFlattener-file", ".txt");
+                    File jsonFlatFile = this.createFile("xAPI_JsonFlattener_file", ".txt");
                     FileWriter fw_0 = new FileWriter(jsonFlatFile.getAbsoluteFile());
                     try (BufferedWriter bw_0 = new BufferedWriter(fw_0)) {
                         for (String names:tabNames){
@@ -320,7 +320,7 @@ public class ImportXAPImain extends AbstractComponent {
                    ns=selectContent[0].length; //numStatements
                }
 
-               File tabDeliFile = this.createFile("xAPI-TabDelimited-file", ".txt");
+               File tabDeliFile = this.createFile("xAPI_TabDelimited_file", ".txt");
                     FileWriter fw = new FileWriter(tabDeliFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
                         for (String[] array1 : array) {
