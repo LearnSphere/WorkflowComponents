@@ -81,19 +81,6 @@ options(width=300)
 options(scipen=999)
 
 
-print("-----------------------------")
-print (workingDirectory)
-print (inputFile)
-print (componentDirectory)
-print (header1)
-print (header2)
-print (header3)
-print (header4)
-print("-----------------------------")
-#=============================
-
-
-
 #This dataset has been cleaned beforehand
 #val<-read.table("data.txt",sep="\t", header=TRUE,quote="",comment.char = "")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
@@ -137,4 +124,4 @@ plot(fit) # display dendogram
 rect.hclust(fit, k=4, border='red')
 group4 <- cutree(fit, k=4)
 student_theolevel<-cbind(student_theolevel,group4)
-print ("final")
+
