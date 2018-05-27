@@ -11,7 +11,7 @@ AnalysisBkt/test/ComponentTestOutput/*
 ################################
 */build/
 */dist/
-*/test/ComponentTestOutput/output/*
+*/test/ComponentTestOutput/*
 
 ### node generated directories ###
 ################################
@@ -32,4 +32,3 @@ WorkflowComponent.log
 ##################################################
 staging
 *.zip
-
