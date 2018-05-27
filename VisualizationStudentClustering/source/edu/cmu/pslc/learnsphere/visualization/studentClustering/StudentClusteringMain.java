@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.analysis.studentClustering;
+package edu.cmu.pslc.learnsphere.visualization.studentClustering;
 
 import java.io.File;
 
@@ -61,7 +61,7 @@ public class StudentClusteringMain extends AbstractComponent {
 
         }
 
-        //System.out.println(this.getOutput());
+        System.out.println(this.getOutput());
     }
 
 }
