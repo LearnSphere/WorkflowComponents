@@ -61,7 +61,7 @@ public class StudentClusteringMain extends AbstractComponent {
 
         }
 
-        System.out.println(this.getOutput());
+       // System.out.println(this.getOutput());
     }
 
 }
