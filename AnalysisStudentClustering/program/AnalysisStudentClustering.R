@@ -80,6 +80,10 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 options(scipen=999)
 
+print(header1)
+print(header2)
+print(header3)
+print(header4)
 
 #This dataset has been cleaned beforehand
 #val<-read.table("data.txt",sep="\t", header=TRUE,quote="",comment.char = "")
