@@ -125,3 +125,6 @@ rect.hclust(fit, k=4, border='red')
 group4 <- cutree(fit, k=4)
 student_theolevel<-cbind(student_theolevel,group4)
 
+# Stop logging
+sink()
+sink(type="message")
