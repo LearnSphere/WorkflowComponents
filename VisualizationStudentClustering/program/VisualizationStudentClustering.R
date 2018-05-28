@@ -116,7 +116,7 @@ mydata<-scale(mydata)
 d <- dist(mydata, method = "euclidean") # distance matrix
 fit <- hclust(d, method="ward.D2")
 
-jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
+jpeg(file = paste(workingDirectory, "myplot.jpg", sep=""))
 
 plot(fit) # display dendogram
 
