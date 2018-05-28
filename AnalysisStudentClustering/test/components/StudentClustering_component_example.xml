@@ -12,9 +12,9 @@
         </connection>
     </connections>
     <options>
-        <header1>Anon.Student.Id</header1>
-        <header2>KC..Unique.step.</header2>
-        <header3>Duration..sec.</header3>
+        <header1>Anon Student Id</header1>
+        <header2>KC (Unique.step)</header2>
+        <header3>Duration (sec)</header3>
         <header4>Outcome</header4>
   </options>
     <inputs>

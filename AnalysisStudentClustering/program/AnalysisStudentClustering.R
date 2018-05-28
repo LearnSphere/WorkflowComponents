@@ -80,6 +80,10 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 options(scipen=999)
 
+header1 = gsub("[ ()-]", ".", header1)
+header2 = gsub("[ ()-]", ".", header2)
+header3 = gsub("[ ()-]", ".", header3)
+header4 = gsub("[ ()-]", ".", header4)
 print(header1)
 print(header2)
 print(header3)
