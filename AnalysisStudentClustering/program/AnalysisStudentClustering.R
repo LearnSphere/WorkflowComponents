@@ -116,7 +116,7 @@ mydata<-scale(mydata)
 d <- dist(mydata, method = "euclidean") # distance matrix
 fit <- hclust(d, method="ward.D2")
 
-jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
+jpeg(file = paste(workingDirectory, "myplot.jpg", sep=""))
 
 plot(fit) # display dendogram
 
@@ -125,3 +125,6 @@ rect.hclust(fit, k=4, border='red')
 group4 <- cutree(fit, k=4)
 student_theolevel<-cbind(student_theolevel,group4)
 
+# Stop logging
+sink()
+sink(type="message")

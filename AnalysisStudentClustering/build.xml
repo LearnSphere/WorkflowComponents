@@ -1,4 +1,4 @@
-<project name="AnalysisStudentClustering" default="dist" basedir=".">
+<project name="VisualizationStudentClustering" default="dist" basedir=".">
     <description>
        AnalysisStudentClustering workflow component.
     </description>

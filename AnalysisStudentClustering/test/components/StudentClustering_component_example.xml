@@ -19,7 +19,7 @@
   </options>
     <inputs>
     <input0>
-      <component_id>AnalysisStudentClustering</component_id>
+      <component_id>analysisStudentClustering</component_id>
       <component_id_human>Import Transaction #1</component_id_human>
       <component_type>import</component_type>
       <component_name>ImportFile</component_name>
