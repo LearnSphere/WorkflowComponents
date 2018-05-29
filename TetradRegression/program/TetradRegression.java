@@ -7,6 +7,7 @@
 */
 
 import java.io.BufferedReader;
+import java.util.regex.Pattern;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
-
+import java.util.regex.Pattern;
 import cern.colt.Arrays;
 
 import java.util.HashMap;

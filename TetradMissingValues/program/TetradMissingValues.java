@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
-
+import java.util.regex.Pattern;
 import cern.colt.Arrays;
 
 import java.util.HashMap;
@@ -88,7 +88,9 @@ public class TetradMissingValues {
         		}
         		nodeIndex = args[i+1];
         		fileIndex = args[i+3];
-        		inFiles.put(nodeIndex, inFile);
+        		if (nodeIndex.trim().matches("[0-9]+")) {
+        			inFiles.put(Integer.parseInt(nodeIndex.trim()), inFile);
+        		}
         		// 5 arguments, but for loop still calls i++ after
         		i += 4;
         	}

@@ -1,15 +1,10 @@
 package edu.cmu.pslc.learnsphere.transform.multiskill;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jdom.Element;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.ArrayUtils;
