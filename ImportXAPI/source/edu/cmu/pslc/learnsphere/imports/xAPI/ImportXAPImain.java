@@ -18,6 +18,8 @@ import gov.adlnet.xapi.model.Actor;
 import gov.adlnet.xapi.model.Agent;
 import gov.adlnet.xapi.model.StatementResult;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,16 +105,43 @@ public class ImportXAPImain extends AbstractComponent {
 	            e.printStackTrace();
 	        }
                 
-                       //import Configuration File
-                
+                //import Configuration File
                 File confiFile = this.getAttachment(0, 0);
+                
+                File configFile = this.createFile("Config", ".txt");
+                try{
+                // read file content from file
+                StringBuffer sb= new StringBuffer("");
+                FileReader reader = new FileReader(confiFile);
+                BufferedReader br = new BufferedReader(reader);
+                String str = null;
+            
+                while((str = br.readLine()) != null) {
+                  sb.append(str+"\r\n");
+                }
+                br.close();
+                reader.close();
+                
+                // write string to file
+                FileWriter cf = new FileWriter(configFile.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(cf);
+                bw.write(sb.toString()+"\t");
+                bw.close();
+                cf.close();
+                }   
+                catch(FileNotFoundException e) {
+                  e.printStackTrace();
+            }
+            catch(IOException e) {
+                  e.printStackTrace();
+            }
                 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
                 String fileType0 = "text";
-                this.addOutputFile(confiFile, nodeIndex0, fileIndex0, fileType0);
-                logger.info(this.getOutput());  
-                
+                this.addOutputFile(configFile, nodeIndex0, fileIndex0, fileType0);
+                logger.info(this.getOutput());
+        
                 //Read Configuration File as list
                 List<String> list = new ArrayList<String>();
                     try {
@@ -120,9 +149,10 @@ public class ImportXAPImain extends AbstractComponent {
                          InputStreamReader read = new InputStreamReader(new FileInputStream(confiFile));
                          BufferedReader bufferedReader = new BufferedReader(read);
                          String lineTxt = null;
-                         
+                                 
                          while ((lineTxt = bufferedReader.readLine()) != null) {
                              if(lineTxt.length()>0){
+                                 
                                  if (!lineTxt.startsWith("#"))
                                  list.add(lineTxt);
                              }
@@ -152,12 +182,12 @@ public class ImportXAPImain extends AbstractComponent {
                     for (int ar=0;ar<list.size()-3;ar++){
                         array[ar]=arrayConf[ar];
                     }
-                    
+                                        
                     String arrayAnal[][]=new String[3][];
                     arrayAnal[0]=arrayConf[list.size()-3];
                     arrayAnal[1]=arrayConf[list.size()-2];
                     arrayAnal[2]=arrayConf[list.size()-1];
-                                                                              
+                                                                                                  
                 //writer.writeAsTxt(flatJson, "sample.txt");
 	    	JsonFlattener parser = new JsonFlattener();
                 TabTextWriter writer = new TabTextWriter();
@@ -201,7 +231,7 @@ public class ImportXAPImain extends AbstractComponent {
                     System.arraycopy(mainValueArr, 0, mainValueArrStr,0, mainValueArr.length);
                     mainContent[k]=mainValueArrStr;
                }
-                     
+                    
                     File jsonFlatFile = this.createFile("xAPI_JsonFlattener_file", ".txt");
                     FileWriter fw_0 = new FileWriter(jsonFlatFile.getAbsoluteFile());
                     try (BufferedWriter bw_0 = new BufferedWriter(fw_0)) {
@@ -216,6 +246,7 @@ public class ImportXAPImain extends AbstractComponent {
                                 }
                         }
                     }
+                      
             Integer nodeIndex1 = 1;
             Integer fileIndex1 = 0;
             String fileType1 = "tab-delimited";
