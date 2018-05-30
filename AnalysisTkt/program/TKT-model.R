@@ -13,6 +13,7 @@ suppressMessages(library(TTR))
 suppressMessages(library(plyr))
 suppressMessages(library(pROC))
 
+inputFile = NULL
 
 # parse commandline args
 i = 1
