@@ -82,7 +82,7 @@ outputFilePath<- paste(workingDirectory, "transaction_file_with_added_features.t
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")
-val<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+val<-read.table(file=inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "PFA-features-log.wfl", sep=""))
