@@ -39,38 +39,28 @@ public class StudentClusteringMain extends AbstractComponent {
         File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-           //  System.out.println("Start");
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.jpeg");
+           
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.jpg");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
            
-System.out.println(outputDirectory.getAbsolutePath() );
-            // System.out.println("Start");
-            // System.out.println(file0 != null);
-            // System.out.println( file0.exists());
-            // System.out.println(file1 != null);
-             System.out.println( file1.exists());
+
             if (file0 != null && file0.exists() && file1 != null && file1.exists() ) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
-                String label0 = "jpeg";
+                String label0 = "image";
                 Integer nodeIndex1 = 1;
                 Integer fileIndex1 = 0;
                 String label1 = "text";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
                 this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
-           //  System.out.println("*******************");
-
-              
 
             } else {
-                this.addErrorMessage("An unknown error has occurred with the AnalysisStudentClustering component.");
+                 this.addErrorMessage("Files missing.");
             }
 
         }
 
-        // Send the component output back to the workflow.
-      //  System.out.println("END");
         System.out.println(this.getOutput());
     }
 

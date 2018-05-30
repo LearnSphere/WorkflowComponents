@@ -80,19 +80,14 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 options(scipen=999)
 
-
-print("-----------------------------")
-print (workingDirectory)
-print (inputFile)
-print (componentDirectory)
-print (header1)
-print (header2)
-print (header3)
-print (header4)
-print("-----------------------------")
-#=============================
-
-
+header1 = gsub("[ ()-]", ".", header1)
+header2 = gsub("[ ()-]", ".", header2)
+header3 = gsub("[ ()-]", ".", header3)
+header4 = gsub("[ ()-]", ".", header4)
+print(header1)
+print(header2)
+print(header3)
+print(header4)
 
 #This dataset has been cleaned beforehand
 #val<-read.table("data.txt",sep="\t", header=TRUE,quote="",comment.char = "")
@@ -129,7 +124,7 @@ mydata<-scale(mydata)
 d <- dist(mydata, method = "euclidean") # distance matrix
 fit <- hclust(d, method="ward.D2")
 
-jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
+jpeg(file = paste(workingDirectory, "myplot.jpg", sep=""))
 
 plot(fit) # display dendogram
 
@@ -137,4 +132,7 @@ plot(fit) # display dendogram
 rect.hclust(fit, k=4, border='red')
 group4 <- cutree(fit, k=4)
 student_theolevel<-cbind(student_theolevel,group4)
-print ("final")
+
+# Stop logging
+sink()
+sink(type="message")
