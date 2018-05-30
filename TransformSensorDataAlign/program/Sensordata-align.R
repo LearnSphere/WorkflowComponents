@@ -6,7 +6,8 @@ ech<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
 #print(args)
-
+inputFile0 = NULL
+inputFile1 = NULL
 
 # parse commandline args
 i = 1
