@@ -1,17 +1,17 @@
 #usage
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/program/RLMFitting.R -programDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/ -workingDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/test/ComponentTestOutput/output/ -d "Total.Quiz,Final_Exam" -d_wf "Total.Quiz,Final_Exam" -i "Activities,Non Activities_Reading,Video,Pretest" -i_wf "Activities,Non Activities_Reading,Video,Pretest" -node 0 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting\test\test_data\data.txt
 
-#SET UP LIBRARIES 
+#SET UP LIBRARIES
 options(scipen=999)
 options(width=120)
 #options(warn=-1)
 
-#SET UP LOADING DATE FUNCTION 
+#SET UP LOADING DATE FUNCTION
 import.data <- function(filename){
   return(read.table(filename,sep="\t" ,header=TRUE))
 }
 
-#verify column 
+#verify column
 verifyColumn <- function(col, colNames){
   matched = FALSE;
   #first try to match col with colNames
@@ -56,7 +56,7 @@ while (i <= length(args)) {
     dependendVariableColumns = args[i+1]
     i = i+1
   }
-  
+
   #-i independent variable
   else if (args[i] == "-i") {
     independendVarSpecified = TRUE
@@ -66,7 +66,7 @@ while (i <= length(args)) {
     independendVariableColumns = args[i+1]
     i = i+1
   }
-  
+
   #workingDir
   else if (args[i] == "-workingDir") {
     if (length(args) == i) {
@@ -75,32 +75,8 @@ while (i <= length(args)) {
     # This dir is the working dir for the component instantiation.
     workingDir = args[i+1]
     i = i+1
-  } 
-  
-  #process file
-  else if (args[i] == "-f") {
-    if (length(args) == i) {
-      stop("file must be provided")
-    }
-    if (!file.exists(args[i+1])) {
-      stop(paste("file ", args[i+1], " doesn't exist"))
-    }
-    
-    #read data and get the first row of the file and set it for column names
-    #only do once
-    if (!dataIsRead) {
-      myData <- import.data(args[i+1])
-      dataIsRead = TRUE;
-      #change column name
-      colNamesFromDataFile <- colnames(myData)
-      for (j in 1:length(colNamesFromDataFile)) {
-        colnames(myData)[j] <- paste(colNamesFromDataFile[j], "_after_change", sep="")
-      }
-      colNamesAfterChange <- colnames(myData)
-    }
-    i = i+1
   }
-  
+
   #process file
   else if (args[i] == "-node") {
        # Syntax follows: -node m -fileIndex n <infile>
@@ -128,20 +104,20 @@ while (i <= length(args)) {
     }
     i = i+4
   }
-  
+
   else {
     #read data and get the first row of the file and set it for column names
     #only do once
-    
+
   }
   i = i+1
 }
 
 if (!dataIsRead) {
-      if (!file.exists(args[i])) {
-        stop(paste("file ", args[i], " doesn't exist"))
+      if (!file.exists(fileName)) {
+        stop(paste("file ", fileName, " doesn't exist"))
       }
-      myData <- import.data(args[i])
+      myData <- import.data(fileName)
       dataIsRead = TRUE;
       #change column name
       colNamesFromDataFile <- colnames(myData)
@@ -150,7 +126,7 @@ if (!dataIsRead) {
       }
       colNamesAfterChange <- colnames(myData)
     }
-	
+
 if (!dataIsRead) {
   stop("file must be provided")
 }
@@ -160,8 +136,8 @@ if (!dataIsRead) {
 # clean.summary <- file(summary.file,  open = "wt")
 # sink(clean.summary,append=T)
 # sink(clean.summary,type="message") # get error reports also
-# 
-# 
+#
+#
 # # Creates output model-values file
 # clean.model.values <- file(model.values.file,  open = "wt")
 # sink(clean.model.values,append=TRUE)
@@ -272,7 +248,7 @@ for (i in 1:length(dependendVariableColInds)) {
   else
     capture.output(modelSum, file = summary.file, append = TRUE)
   cnt = cnt + 1
-  
+
   write("<model>",file=model.values.file,sep="",append=TRUE)
   write(paste("<name>",dependendVariables.z[i],"</name>",sep=""),file=model.values.file,sep="",append=TRUE)
   write(paste("<formula>",modelSum$call[2],"</formula>",sep=""),file=model.values.file,sep="",append=TRUE)
@@ -287,13 +263,13 @@ for (i in 1:length(dependendVariableColInds)) {
   intercept.sd = NULL
   intercept.tval = NULL
   for (x in 1:length(rownames(modelSum$coefficients))) {
-    
+
     if (x==1) {
       intercept.val = modelSum$coefficients[x,1]
       intercept.sd = modelSum$coefficients[x,2]
       intercept.tval = modelSum$coefficients[x,3]
     } else {
-      
+
       #write to parameters and model_values files
       write("<parameter>",file=parameters.values.file,sep="",append=TRUE)
       name = rownames(modelSum$coefficients)[x]
@@ -306,32 +282,32 @@ for (i in 1:length(dependendVariableColInds)) {
       write(paste("<intercept>", intercept.val, "</intercept>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","intercept",sep="")
       write(paste("<", tag.name, ">", intercept.val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-      
+
       write(paste("<intercept_Std.Error>", intercept.sd, "</intercept_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","intercept_Std.Error",sep="")
       write(paste("<", tag.name, ">", intercept.sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-      
+
       write(paste("<intercept_t.value>", intercept.tval, "</intercept_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","intercept_t.value",sep="")
       write(paste("<", tag.name, ">", intercept.tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-      
+
       write(paste("<slope>", val, "</slope>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","slope",sep="")
       write(paste("<", tag.name, ">", val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-      
+
       write(paste("<slope_Std.Error>", sd, "</slope_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","slope_Std.Error",sep="")
       write(paste("<", tag.name, ">", sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-      
+
       write(paste("<slope_t.value>", tval, "</slope_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
       tag.name = paste(name,".","slope_t.value",sep="")
       write(paste("<", tag.name, ">", tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
       write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
-      
+
     }
-    
+
   }
-  
+
   #residuals
   write(paste("<residual.min>", min(modelSum$residuals), "</residual.min>", sep=""),file=model.values.file,sep="",append=TRUE)
   write(paste("<residual.1st.Qu>", quantile(modelSum$residuals,0.25)[[1]], "</residual.1st.Qu>", sep=""),file=model.values.file,sep="",append=TRUE)
@@ -347,8 +323,8 @@ for (i in 1:length(dependendVariableColInds)) {
   write(paste("<f.Statistic.value>", modelSum$fstatistic["value"][[1]], "</f.Statistic.value>", sep=""),file=model.values.file,sep="",append=TRUE)
   write(paste("<f.Statistic.numdf>", modelSum$fstatistic["numdf"][[1]], "</f.Statistic.numdf>", sep=""),file=model.values.file,sep="",append=TRUE)
   write(paste("<f.Statistic.dendf>", modelSum$fstatistic["dendf"][[1]], "</f.Statistic.dendf>", sep=""),file=model.values.file,sep="",append=TRUE)
-  
-  
+
+
   write("</model>",file=model.values.file,sep="",append=TRUE)
 }
 write("</model_values>",file=model.values.file,sep="",append=TRUE)
