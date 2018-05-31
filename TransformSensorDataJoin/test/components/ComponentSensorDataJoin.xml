@@ -1,0 +1,83 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>ComponentSensorDataJoin #1</component_id_human>
+  <workflow_id>16</workflow_id>
+  <component_name>ComponentSensorDataJoin</component_name>
+  <component_type>transform</component_type>
+  <left>860</left>
+  <connections>
+    <connection>
+      <from>Import-1-x581366</from>
+    </connection>
+    <connection>
+      <from>Import-1-x352396</from>
+    </connection>
+  </connections>
+  <top>178</top>
+  <options>
+      <file2ColumnName>0</file2ColumnName>
+      <signal2samplingrate>2048</signal2samplingrate>
+      
+      <offsetofsignal2fromsignal1>0</offsetofsignal2fromsignal1>
+      <outputresamplerate>2048</outputresamplerate>
+      <interpolationtype>linear</interpolationtype>
+      <generatetimevector>true</generatetimevector>
+      <inputHeader>false</inputHeader>
+      
+  </options>
+  <inputs>
+  <input0>
+      <component_id>Import-1-x352396</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+          <tab-delimited>
+          <file_path>test/example_files/Z002.txt</file_path>
+          <file_name>Z002.txt</file_name>
+          <index>0</index>
+          <label>file</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>EEG data</name>
+            </header>
+  
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input1>
+      <component_id>Import-1-x581366</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/example_files/Z001.txt</file_path>
+          <file_name>Z002.txt</file_name>
+          <index>1</index>
+          <label>file</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>EEG data</name>
+            </header>
+            
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>
+

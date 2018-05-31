@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Dr. Morshed
+  <email>bmorshed@memphis.edu</email>
+</author>
+<author>Ms. Afroz
+  <email>safroz@memphis.edu</email>
+</author>
+
+<abstract>The <b>Sensor Data Join</b> component joins two sensor data and interpolate the second signal data as required to match the output sampling rate.</abstract>
+<description>Sensor Data Join component accepts two tab delimited raw sensor data input.Also the first file accepts modified sensor data from "TransferSensorDataAlign" compoent. The user needs to specify the sampling rate of second signal data inputs. User can also specify if there is any offset (in seconds) of sensor data 2 from sensor data 1. The interpolation algorithm will resample only the second input data to the output sampling rate. The user can select an interpolation algorithm from a list of 3 algorithms: spline, linear, and constant. The user can also generate a time vector, which will be added at the first column in the output file.All the data from first input signal data comes with the resulted output data </description>
+
+<inputs>
+<b>tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b>
+<b>Join of two sensor data</b>
+</outputs>
+
+<options>
+<b>Signal 2 Column_Name</b>- Choice of the sensor column from input file2 for alignment<br/>
+<b>Signal 2 sampling rate</b> - The sampling rate of the Signal 2 (Sensordata from file2)<br/>
+<b>Offset of Signal2 from_Signal1</b> - The Signal 2 must be lagging behind the signal 1 and offset is how much time it lagging behind <br/>
+<b>Output Resample rate</b> - The sampling rate of resulted output of two signal (sensor data)</br>
+<b>Interpolation_Type</b> - Choice of interpolation type from where the data is being interpolated</br>
+<b>Generate time vector</b> - Choice of generating a column for time sequence for ouput signal data</br>
+<b>Input_Header</b>Input header is going to be output header name or not
+</options>
+
+</info>
