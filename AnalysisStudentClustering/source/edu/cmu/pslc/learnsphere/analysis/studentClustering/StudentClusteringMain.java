@@ -40,7 +40,7 @@ public class StudentClusteringMain extends AbstractComponent {
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
            
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.jpeg");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
            
 

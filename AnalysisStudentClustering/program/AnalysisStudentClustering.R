@@ -122,16 +122,28 @@ for(i in 1:ncol(student_theolevel)){
 mydata<-student_theolevel[,c(2:9)]
 mydata<-scale(mydata)
 d <- dist(mydata, method = "euclidean") # distance matrix
+
+
+#jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
+switch(Sys.info()[['sysname']],
+
+
+
+
+
+Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
 fit <- hclust(d, method="ward.D2")
-
-jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
-
 plot(fit) # display dendogram
 
 
 rect.hclust(fit, k=4, border='red')
 group4 <- cutree(fit, k=4)
 student_theolevel<-cbind(student_theolevel,group4)
+dev.off()
+
+
 
 # Stop logging
 sink()
