@@ -12,12 +12,6 @@
 			<Student-Step />
 			<Transaction />
 		</DataShop>
-		<OLI>
-			<User_Map />
-			<User_Session_Map />
-			<Outcome />
-			<Resource_Use_to_Outcome />
-		</OLI>
 	</Import>
 	<Transform>
 	    <Recently_Used />
