@@ -35,6 +35,7 @@
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
+	    <Import />
 		<AFM />
 		<BKT />
 		<RLM_Fitting />
