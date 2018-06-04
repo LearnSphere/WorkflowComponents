@@ -310,11 +310,27 @@ function simulateDataStream(e, parser){
 //Get command line arguments
 programDir = process.argv[process.argv.indexOf("-programDir") + 1];
 workingDir = process.argv[process.argv.indexOf("-workingDir") + 1];
-file0 = process.argv[process.argv.indexOf("-file0") + 1];
+
+'use strict';
+file0 = null;
 file1 = null;
-if (process.argv.indexOf("-file1") >= 0) {
-	file1 = process.argv[process.argv.indexOf("-file1") + 1];
+for (let j = 0; j < process.argv.length; j++) {
+	if (process.argv[j] == "-node" ) {
+		if (process.argv[j + 1] == "0") { 
+			file0 = process.argv[j + 4];
+		} else if (process.argv[j + 1] == "1") {
+			file1 = process.argv[j + 4];
+		}
+		j = j + 4;	
+	}
 }
+
+
+//file0 = process.argv[process.argv.indexOf("-file0") + 1];
+//file1 = null;
+//if (process.argv.indexOf("-file1") >= 0) {
+//	file1 = process.argv[process.argv.indexOf("-file1") + 1];
+//}
 
 //check if user wanted to use a detector that was in the list of pre-screened detectors
 useDetectorInputInd = process.argv.indexOf("-useDetectorInput");
