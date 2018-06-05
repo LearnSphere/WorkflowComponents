@@ -77,7 +77,7 @@ public class TetradDiscretize {
     				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
         		String fileParamsString = Arrays.toString(args);
         		// Use regExp to get the file path
-        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		String regExp = "^\\[.*?-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
         		Pattern pattern = Pattern.compile(regExp);
         		if (fileParamsString.matches(regExp)) {
         			// Get the third argument in parens from regExp
