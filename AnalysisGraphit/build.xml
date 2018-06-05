@@ -1,6 +1,6 @@
 <project name="AnalysisGraphit" default="dist" basedir=".">
     <description>
-        Java-based TKT workflow component.
+         Grphit workflow component.
     </description>
 
     <!-- set global properties for this build -->

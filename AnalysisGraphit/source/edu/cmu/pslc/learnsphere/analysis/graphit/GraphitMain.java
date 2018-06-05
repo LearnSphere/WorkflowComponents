@@ -58,19 +58,15 @@ System.out.println("Main After call");
 
     @Override
     protected void runComponent() {
-        System.out.println("run component\n");
         // Run the program and add the files it generates to the component output.
         File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            System.out.println("inside if 1\n");
             File file0 = new File(outputDirectory.getAbsolutePath() + "/Statistics Practice - SamSam Spacing Effects Full Model.html");
-            System.out.println(outputDirectory.getAbsolutePath());
             File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
           File file2 = new File(outputDirectory.getAbsolutePath() + "/Posttest - SamSam Spacing Effects Full Model.html");
-            System.out.println("inside if 2\n");
-            if ( file1 != null && file1.exists()) {
-  System.out.print("inside if 3\n");
+   
+            if (file0 != null && file0.exists()&& file1 != null && file1.exists() && file2 != null && file2.exists()) {
                
 
            File source = new File("plotly-latest.min.js");
@@ -95,20 +91,14 @@ System.out.println("Main After call");
                 String label2 = "text";
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
 
-                
-                
-                System.out.println("last statemet if \n");
             } else {
-                System.out.print("else\n");
                 this.addErrorMessage("An unknown error has occurred with the Graphit component.");
             }
 
         }
 
         // Send the component output back to the workflow.
-        System.out.println("before out\n");
        System.out.println(this.getOutput());
-        System.out.println("after out\n");
     }
 
 }

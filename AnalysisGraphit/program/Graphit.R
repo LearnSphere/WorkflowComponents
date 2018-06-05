@@ -12,6 +12,7 @@ suppressMessages(library(plyr))
 suppressMessages(library(pROC))
 
 
+
 # parse commandline args
 i = 1
 while (i <= length(args)) {
@@ -136,7 +137,15 @@ print(header9)
 datafile<-inputFile # CHANGE THIS VALUE TO THE DataShop export file IN YOUR R WORKING DIRECTORY
 setwd(workingDirectory)
 
-
+header1 = gsub("[ ()-]", ".", header1)
+header2 = gsub("[ ()-]", ".", header2)
+header3 = gsub("[ ()-]", ".", header3)
+header4 = gsub("[ ()-]", ".", header4)
+header5 = gsub("[ ()-]", ".", header5)
+header6 = gsub("[ ()-]", ".", header6)
+header7 = gsub("[ ()-]", ".", header7)
+header8 = gsub("[ ()-]", ".", header8)
+header9 = gsub("[ ()-]", ".", header9)
 outlocation<- getwd()
 
 #Get Data
