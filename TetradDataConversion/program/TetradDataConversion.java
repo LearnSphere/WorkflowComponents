@@ -69,14 +69,12 @@ public class TetradDataConversion {
         String filePath = null;
         if (i < args.length - 4) {
         	if (arg.equalsIgnoreCase("-node")) {
-
-        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+        	        String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
     				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
-        		String fileParamsString = Arrays.toString(args);
+        		String fileParamsString = Arrays.toString(fileParamsArray);
         		// Use regExp to get the file path
-        		//String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
-        		String regExp = "^\\[.*?-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
-                        
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		
         		if (fileParamsString.matches(regExp)) {
         			// Get the third argument in parens from regExp
         			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));

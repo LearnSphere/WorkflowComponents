@@ -77,7 +77,7 @@ public class GraphEditor {
 
         		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
     				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
-        		String fileParamsString = Arrays.toString(args);
+        		String fileParamsString = Arrays.toString(fileParamsArray);
         		// Use regExp to get the file path
         		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
         		Pattern pattern = Pattern.compile(regExp);
@@ -164,7 +164,7 @@ public class GraphEditor {
         addToDebugMessages("using original graph.  not custom graph given");
         // No edits were made, write out the original graph
         BufferedReader inputReader = new BufferedReader(
-            new FileReader(new File(inFile)));
+            new FileReader(inFile));
         addToDebugMessages("1");
         StringBuilder origGraphBuf = new StringBuilder();
         while (inputReader.ready()) {

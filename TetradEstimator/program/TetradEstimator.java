@@ -79,7 +79,7 @@ public class TetradEstimator {
         		File inFile = null;
         		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
     				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
-        		String fileParamsString = Arrays.toString(args);
+        		String fileParamsString = Arrays.toString(fileParamsArray);
         		// Use regExp to get the file path
         		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
         		Pattern pattern = Pattern.compile(regExp);
@@ -88,8 +88,9 @@ public class TetradEstimator {
         			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
         		}
         		nodeIndex = args[i+1];
+        		Integer nodeIndexInt = Integer.parseInt(nodeIndex);
         		fileIndex = args[i+3];
-        		inFiles.put(nodeIndex, inFile);
+        		inFiles.put(nodeIndexInt, inFile);
         		// 5 arguments, but for loop still calls i++ after
         		i += 4;
         	}
@@ -141,8 +142,8 @@ public class TetradEstimator {
     String programDir = cmdParams.get("-programDir");
 
     String estimator = cmdParams.get("-estimator");
-    String infile0 = inFiles.get(0);
-    String infile1 = inFiles.get(1);
+    String infile0 = inFiles.get(0).getAbsolutePath();
+    String infile1 = inFiles.get(1).getAbsolutePath();
     String incompleteRows = cmdParams.get("-incompleteRows");
     String parametricModel = cmdParams.get("-parametricModel");
     String optimizer = cmdParams.get("-optimizer");

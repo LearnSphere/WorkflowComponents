@@ -100,7 +100,7 @@ public class SearchAlgorithmWrapper {
 		try {
 
 			if (inFile != null) {
-		    File inputFile1 = new File( inFile );
+		    File inputFile1 = inFile;
 		    if (inputFile1.exists() && inputFile1.isFile() && inputFile1.canRead()) {
 		    	getKnowledgeFromFile(inputFile1);
 		    } else {
