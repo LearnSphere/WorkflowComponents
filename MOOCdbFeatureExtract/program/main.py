@@ -38,8 +38,8 @@ if __name__ == "__main__":
     parser.add_argument('-exportFormat', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     parser.add_argument('-exportFormatWF', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     parser.add_argument('-userId', type=str, help='placeholder for WF', default='')
-    p.add_argument("-node", nargs=1, action='append')
-    p.add_argument("-fileIndex", nargs=2, action='append')
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
 
     args, option_file_index_args = parser.parse_known_args()
 
