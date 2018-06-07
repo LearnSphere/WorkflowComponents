@@ -10,6 +10,7 @@ fi
 
 cd $dir
 
+rm -f ${dir}/build_errors.txt ${dir}/build_errors_info.txt
 rm -Rf */dist
 
 for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
@@ -39,10 +40,11 @@ done
 
 rm -Rf */test/ComponentTestOutput */WorkflowComponent.log */build
 
-if [ ! -s diff ${dir}/build_errors.txt ]; then
-   echo "Errors were found during the build process. Please see build_errors.txt or build_errors_info.txt for additional details."
-else
+if [ -s ${dir}/build_errors.txt ]; then
+   # the file is empty
    rm ${dir}/build_errors.txt ${dir}/build_errors_info.txt
+else
+   echo "Errors were found during the build process. Please see build_errors.txt or build_errors_info.txt for additional details."
 fi
 
 
