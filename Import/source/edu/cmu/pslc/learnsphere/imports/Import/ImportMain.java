@@ -126,8 +126,11 @@ public class ImportMain extends AbstractComponent {
 			try {
 				Object importProcessorObj = Class.forName(className).newInstance();
 				importProcessor = (AbstractImportDataType)importProcessorObj;
+
+				logger.debug("Found specific data type processor class: " + className);
 			} catch (Exception e) {
-				logger.debug("Couldn't create specific data type processor class.. " + e.toString());
+				logger.debug("Couldn't create specific data type processor class.  " + 
+						"Using default. " + e.toString());
 			}
 		}
 
@@ -145,17 +148,15 @@ public class ImportMain extends AbstractComponent {
 		try {
 			// Navigate through the xml until the filetype is found
 			SAXBuilder saxBuilder = new SAXBuilder();
-			File fileTypeXml = new File(this.getToolDir() + File.separator + "program" + 
-					File.separator + "importDataTypes.xml");
+			String typeFilePath = getWorkflowComponentsDir() + File.separator + 
+					"CommonResources" + File.separator + "ImportDataTypes.xml";
+			File fileTypeXml = new File(typeFilePath);
 			Document document = saxBuilder.build(fileTypeXml);
 
 			Element root = document.getRootElement();
-			logger.debug(out.outputString(root));
+			logger.debug("Substring of root: " + out.outputString(root).substring(0,200));
 
-			Element topTier = root.getChild("tier");
-			logger.debug(out.outputString(topTier));
-
-			List<Element> topDataTypes = topTier.getChildren("data_type");
+			List<Element> topDataTypes = root.getChildren("data_type");
 
 			Element targetElement = null;
 
@@ -197,17 +198,13 @@ public class ImportMain extends AbstractComponent {
 		// If you're here, you're not the target element.  DO depth first search
 		Element ret = null;
 
-		Element tier = typeEl.getChild("tier");
-		if (tier != null) {
-			List<Element> childDataTypes = tier.getChildren("data_type");
-			for (Element childDataType : childDataTypes) {
-				ret = parseDataTypeXml(childDataType, targetFileType);
-				if (ret != null) {
-					// Somewhere down the line, we found the target element
-					return ret;
-				}
+		List<Element> childDataTypes = typeEl.getChildren("data_type");
+		for (Element childDataType : childDataTypes) {
+			ret = parseDataTypeXml(childDataType, targetFileType);
+			if (ret != null) {
+				// Somewhere down the line, we found the target element
+				return ret;
 			}
-
 		}
 		return ret;
 	}
