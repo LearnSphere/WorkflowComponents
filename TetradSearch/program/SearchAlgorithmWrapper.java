@@ -88,19 +88,19 @@ public class SearchAlgorithmWrapper {
 	 * Public contstructor.
 	 * inputs: data set, and command line arguments (params)
 	 */
-	public SearchAlgorithmWrapper (DataSet data, HashMap<String,String> params) {
+	public SearchAlgorithmWrapper (DataSet data, HashMap<String,String> params, File inFile) {
 		//addToDebugMessages("in SearchAlgorithmWrapper constructor");
 
-		if( data == null ) { 
+		if( data == null ) {
 			throw new IllegalArgumentException("Data cannot be null");
 		}
 		this.data = data;
 
 		//Get Knowledge if the user gave it as input
 		try {
-			String infile1 = params.get("-file1");
-			if (infile1 != null) {
-		    File inputFile1 = new File( infile1 );
+
+			if (inFile != null) {
+		    File inputFile1 = inFile;
 		    if (inputFile1.exists() && inputFile1.isFile() && inputFile1.canRead()) {
 		    	getKnowledgeFromFile(inputFile1);
 		    } else {
@@ -114,13 +114,13 @@ public class SearchAlgorithmWrapper {
 		}
     addToDebugMessages("Knowledge: \n" + this.knowledge.toString());
 
-		parseParameters(params);		
+		parseParameters(params);
 
-		if( this.algorithmType == null ) { 
+		if( this.algorithmType == null ) {
 			addToErrorMessages("No algorithm type selected");
 			throw new IllegalArgumentException("No algorithm type");
 		}
-		
+
 		switch (this.algorithmType) {
 			case "PC":
 				try {
@@ -240,7 +240,7 @@ public class SearchAlgorithmWrapper {
 	/**
 	 *Private methods
 	*/
-	
+
 	private boolean getIndTest() throws IllegalArgumentException {
 
 		if( this.testType == null ) {
@@ -277,7 +277,7 @@ public class SearchAlgorithmWrapper {
 			*/
 			case "Conditional_Gaussian_LRT":
 				try {
-					IndTestConditionalGaussianLRT test = 
+					IndTestConditionalGaussianLRT test =
 							new IndTestConditionalGaussianLRT (this.data, this.alpha);
 					test.setNumCategoriesToDiscretize( this.numCatForDiscretize );
 					test.setPenaltyDiscount( this.penaltyDiscount );
@@ -446,7 +446,7 @@ public class SearchAlgorithmWrapper {
 				this.faithfulnessAssumed = true;
 			} else if (temp.equals("no")) {
 				this.faithfulnessAssumed = false;
-			} 
+			}
 		} catch (Exception e){
 			addToErrorMessages("Issue parsing faithfulnessAssumed:"+ e );
 		}
@@ -464,7 +464,7 @@ public class SearchAlgorithmWrapper {
 				this.symmetricFirstStep = true;
 			} else if (temp.equals("no")) {
 				this.symmetricFirstStep = false;
-			} 
+			}
 		} catch (Exception e){
 			addToErrorMessages("Issue parsing symmetricFirstStep:"+ e );
 		}
@@ -515,7 +515,7 @@ public class SearchAlgorithmWrapper {
 				addToErrorMessages("Exception trying to create SemBicScore: "+e.toString());
 				return false;
 			}
-			return true;			
+			return true;
 		}
 		else if (this.scoreType.equals("Conditional_Gaussian_BIC")){
 			try {

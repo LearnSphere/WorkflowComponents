@@ -7,7 +7,7 @@
   <left>395</left>
   <top>23</top>
   <options>
-    <useDetectorInput>No</useDetectorInput>
+    <useDetectorInput>Yes</useDetectorInput>
     <detectorFromList>idle.js</detectorFromList>
   </options>
   <inputs>

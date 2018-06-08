@@ -35,12 +35,22 @@ componentDirectory = NULL
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-    if (args[i] == "-file0") {
-       if (length(args) == i) {
-          stop("input file name must be specified")
+    if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
        }
-       inputFile = args[i+1]
-       i = i+1
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       inputFile <- args[i + 4]
+       i = i + 4
+
     } else if (args[i] == "-subordinateGroupingCategory") {
        if (length(args) == i) {
           stop("Subordinate grouping Category must be specified")
@@ -86,24 +96,24 @@ while (i <= length(args)) {
        # This dir is the root dir of the component code.
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
 
 if (is.null(inputFile) ||  is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile)) {
-      warning("Missing required input parameter: -file0")
+      warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
    }
-   
+
    if (is.null(workingDirectory)) {
       warning("Missing required input parameter: -workingDir")
    }
    if (is.null(componentDirectory)) {
       warning("Missing required input parameter: -programDir")
    }
-   
 
- stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -groupingCategory Anon.Student.Id")
+
+ stop("Usage: -programDir component_directory -workingDir output_directory -node m -fileIndex n <infile> -groupingCategory Anon.Student.Id")
 }
 
 # This dir contains the R program or any R helper scripts
@@ -152,12 +162,12 @@ if("Outcome" %in% colnames(val))
   meanOn<-"Outcome"
 
     # subset the data based on dependent
-    if(dependent=="Correct Latency") 
+    if(dependent=="Correct Latency")
     {
         val <-val[val$Outcome ==1,]
         meanOn<-latency
     }
-    if(dependent=="Incorrect Latency") 
+    if(dependent=="Incorrect Latency")
     {
         val<-val[val$Outcome==0,]
         meanOn<-latency
@@ -174,12 +184,12 @@ if("First.Attempt" %in% colnames(val))
     meanOn<-"First.Attempt"
 
     # subset the data based on dependent
-    if(dependent=="Correct Latency") 
+    if(dependent=="Correct Latency")
     {
         val <-val[val$First.Attempt ==1,]
         meanOn<-latency
     }
-    if(dependent=="Incorrect Latency") 
+    if(dependent=="Incorrect Latency")
     {
         val<-val[val$First.Attempt==0,]
         meanOn<-latency
@@ -232,7 +242,7 @@ res <- merge(res,stdev,by=superordinateGroupingCategory)
 res <- merge(res,freq,by=superordinateGroupingCategory)
 
 
-#to print histogram 
+#to print histogram
 
 #for factorbyfactorbyfactor
  tryCatch(
@@ -240,26 +250,26 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
             #message("This is the 'try' part")
 
            if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=nrow(meanValue)*100)
-			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-			print(h)
-			dev.off()
-			}
+            {
+            options(bitmapType='cairo')
+            png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=nrow(meanValue)*100)
+            h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+            print(h)
+            dev.off()
+            }
         },
         error=function(cond) {
         # message("Error")
          #   message("Here's the original error message:")
           #  message(cond)
            if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=30000)
-			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-			print(h)
-			dev.off()
-			}
+            {
+            options(bitmapType='cairo')
+            png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=30000)
+            h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+            print(h)
+            dev.off()
+            }
             # Choose a return value in case of error
             return(NA)
         },
@@ -268,20 +278,20 @@ res <- merge(res,freq,by=superordinateGroupingCategory)
             #message("Here's the original warning message:")
             #message(cond)
            if (length(unitCategory)>0)
-			{
-			options(bitmapType='cairo')
-			png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=30000)
-			h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
-			print(h)
-			dev.off()
-			}
+            {
+            options(bitmapType='cairo')
+            png( paste(workingDirectory,'histogramfff.png',sep=""),width=1000,height=30000)
+            h<-histogram( ~meanValue$mean | as.character(meanValue[[superordinateGroupingCategory]])+as.character(meanValue[[subordinateGroupingCategory]])+as.character(meanValue[[unitCategory]]),main = 'Histogram', xlab = 'mean', outer = TRUE, line = -2)
+            print(h)
+            dev.off()
+            }
             # Choose a return value in case of warning
             return(NULL)
         },
         finally={
                    # message("Done")
         }
-    ) 
+    )
 
 #for factorbyfactor
 options(bitmapType='cairo')

@@ -1,19 +1,20 @@
-<tags>
+<component_menu>
 	<Import>
-		<DataShop>
-			<student_step />
-			<transaction />
-		</DataShop>
-		<User_Session_Map />
-		<Outcome />
-		<Resource_Use_to_Outcome />
-		<Discourse_DB />
-		<gradebook />
-		<User_Map />
+	    <Recently_Used />
 		<File />
 		<CSV />
+		<Tab-Delimited />
+		<Discourse_DB />
+		<DataLab>
+			<Gradebook />
+	    </DataLab>
+		<DataShop>
+			<Student-Step />
+			<Transaction />
+		</DataShop>
 	</Import>
 	<Transform>
+	    <Recently_Used />
 		<Deidentify />
 		<Join />
 		<Generate_PFA_Features />
@@ -28,35 +29,40 @@
 		<Column_Remover />
 		<Row_Operations />
 		<Data_Conversion />
-		<generate_tkt_features />
+		<Generate_TKT_Features />
+		<Row_Remover />
+		<Text_Converter />
 	</Transform>
 	<Analysis>
-	<D3m_Dataset />
-		<afm />
-		<bkt />
+	    <Recently_Used />
+	    <Import />
+		<AFM />
+		<BKT />
 		<RLM_Fitting />
 		<OLI_Resource_Use />
 		<PFA />
-		<Python_Afm />
-		<correlation />
-		<cronbachs-alpha />
+		<Python_AFM />
+		<Correlation />
+		<Cronbachs-Alpha />
 		<Linear_Modeling />
-		<lsa />
-		<tkt />
-		<Tab_Delimited />
+		<LSA />
+		<TKT />
 		<iAFM />
+		<Output_Comparator />
+		<Apply_Detector />
 	</Analysis>
 	<Visualization>
-		<learning_curves />
-		<d3_force_layout />
+	    <Recently_Used />
+		<Learning_Curves />
+		<D3_Force_Layout />
 	</Visualization>
 	<Tetrad>
+	    <Recently_Used />
 		<Search />
-		<Visualize_Tetrad_Graph />
 		<Estimator />
 		<Knowledge />
 		<Regression />
 		<Tetrad_Graph_Editor />
 		<Classifier />
 	</Tetrad>
-</tags>
+</component_menu>

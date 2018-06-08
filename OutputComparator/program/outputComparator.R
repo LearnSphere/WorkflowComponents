@@ -1,9 +1,8 @@
 #usage
 #test 
-#"C:\Program Files\R\R-3.4.1\bin\Rscript.exe" outputComparator.R -workingDir "." -programDir "." -fileType "Tabular" -caseSensitive "no" -removeNull "no" -file0 "ds76_student_step_export1.txt" -matchColumn1 "Anon Student Id2" -file1 "ds76_student_step_export2.txt" -file2 "ds76_student_step_export3.txt" -matchColumn0 "Anon Student Id"  -matchColumn2 "Anon Student Id" -compareColumn0 "Problem Name" -compareColumn1 "Problem View" -compareColumn2 "Step Name"
-#"C:\Program Files\R\R-3.4.1\bin\Rscript.exe" outputComparator.R -workingDir "." -programDir "." -fileType "XML" -file0 "convertedData1.txt" -file1 "convertedData2.txt" -file2 "convertedData3.txt" -xmlfile0 "convertedData1.txt" -xmlfile1 "convertedData2.txt" -xmlfile2 "convertedData3.txt" 
-#"C:\Program Files\R\R-3.4.1\bin\Rscript.exe" outputComparator.R -workingDir "." -programDir "." -fileType "properties file" -file0 "test1.properties" -file1 "test2.properties" -file2 "test3.properties" -file3 "test3.properties"
-#"C:\Program Files\R\R-3.4.1\bin\Rscript.exe" outputComparator.R -workingDir "." -programDir "." -fileType "properties file" -file0 "C:/WPIDevelopment/dev06_dev/WorkflowComponents/OutcomeComparator/test/test_data/test1.properties" -file1 "C:/WPIDevelopment/dev06_dev/WorkflowComponents/OutcomeComparator/test/test_data/test2.properties" -file2 "C:/WPIDevelopment/dev06_dev/WorkflowComponents/OutcomeComparator/test/test_data/test3.properties" -file3 "C:/WPIDevelopment/dev06_dev/WorkflowComponents/OutcomeComparator/test/test_data/test4.properties"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" outputComparator.R -programDir . -workingDir . -fileType "Properties File" -node 0 -fileIndex 0 test1.properties -node 0 -fileIndex 1 test2.properties -node 0 -fileIndex 2 test3.properties -node 0 -fileIndex 3 test4.properties
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" outputComparator.R -programDir . -workingDir . -fileType XML -xmlfile0 file0_converted.txt -xmlfile1 file1_converted.txt -xmlfile2 file2_converted.txt -node 0 -fileIndex 0 model_result_values1.xml -node 0 -fileIndex 1 model_result_values2.xml -node 0 -fileIndex 2 model_result_values3.xml
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" outputComparator.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 1 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 1 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 1 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 1 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Name" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 1 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Hierarchy" -compareColumn_nodeIndex 0 -compareColumn_fileIndex 2 -compareColumn "Problem Name" -fileType Tabular -matchColumn_nodeIndex 0 -matchColumn_fileIndex 0 -matchColumn "Anon Student Id" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 1 -matchColumn "Anon Student Id2" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 2 -matchColumn "Anon Student Id3" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 0 -matchColumn "Anon Student Id" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 1 -matchColumn "Anon Student Id2" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 2 -matchColumn "Anon Student Id3" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 0 -matchColumn "Anon Student Id" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 1 -matchColumn "Anon Student Id2" -matchColumn_nodeIndex 0 -matchColumn_fileIndex 2 -matchColumn "Anon Student Id3" -removeNull Yes -node 0 -fileIndex 0 ds76_student_step_export1.txt -node 0 -fileIndex 1 ds76_student_step_export2.txt -node 0 -fileIndex 2 ds76_student_step_export3.txt
 
 
 options(echo=FALSE)
@@ -88,40 +87,80 @@ while (i <= length(args)) {
     }
     
     i = i+1
-  } #if argument is in this format: -file1
-  else if (grepl("-file[0-9]+", args[i])) {
-    if (length(args) == i) {
-      stop("input file name must be specified")
+  } else if (args[i] == "-node") {
+    # Syntax follows: -node m -fileIndex n <infile>
+    if (i > length(args) - 4) {
+      stop("node and fileIndex must be specified")
     }
-    cmd.args.inputfiles = rbind(cmd.args.inputfiles, c(substr(args[i], nchar("-file")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
-    i = i+1
-  } #if argument is in this format: -xmlfile1
+    
+    nodeIndex <- args[i+1]
+    fileIndex = NULL
+    fileIndexParam <- args[i+2]
+    if (fileIndexParam == "-fileIndex") {
+      fileIndex <- args[i+3]
+    }
+    
+    #inputFiles[nodeIndex] <- args[i + 4]
+    cmd.args.inputfiles = rbind(cmd.args.inputfiles, c(fileIndex, args[i+4]), stringsAsFactors=FALSE)
+
+    i = i+4
+  }
+  
+  #if argument is in this format: -xmlfile1
   else if (grepl("-xmlfile[0-9]+", args[i])) {
     if (length(args) == i) {
       stop("xml input file name must be specified")
     }
-    cmd.args.xmlinputfiles = rbind(cmd.args.xmlinputfiles, c(substr(args[i], nchar("-file")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
-    i = i+1
-  } #if argument is in this format: -matchColumn1
-  else if (grepl("-matchColumn[0-9]+", args[i])) {
-    if (length(args) == i) {
-      stop("match column name must be specified")
-    }
-    thisArgVal = gsub("[ ()-]", ".", args[i+1])
-    cmd.args.columns.match <- rbind(cmd.args.columns.match, c(substr(args[i], nchar("-matchColumn")+1, nchar(args[i])), thisArgVal), stringsAsFactors=FALSE)
-    i = i+1
-  } #if argument is in this format: -compareColumn1
-  else if (grepl("-compareColumn[0-9]+", args[i])) {
-    if (length(args) == i) {
-      stop("compare column name must be specified")
-    }
-    thisArgVal = gsub("[ ()-]", ".", args[i+1])
-    cmd.args.columns.compare <- rbind(cmd.args.columns.compare, c(substr(args[i], nchar("-compareColumn")+1, nchar(args[i])), thisArgVal), stringsAsFactors=FALSE)
+    cmd.args.xmlinputfiles = rbind(cmd.args.xmlinputfiles, c(substr(args[i], nchar("-xmlfile")+1, nchar(args[i])), args[i+1]), stringsAsFactors=FALSE)
+    
     i = i+1
   } 
+  
+  else if (args[i] == "-compareColumn_nodeIndex") {
+    # Syntax follows: -compareColumn_nodeIndex 0 -compareColumn_fileIndex 0 -compareColumn "Problem Hierarchy"
+    if (i > length(args) - 5) {
+      stop("node and fileIndex must be specified")
+    }
+    
+    nodeIndex <- args[i+1]
+    fileIndex = NULL
+    fileIndexParam <- args[i+2]
+    if (fileIndexParam == "-compareColumn_fileIndex") {
+      fileIndex <- args[i+3]
+    }
+    
+    if (args[i+4] == "-compareColumn") {
+      thisArgVal = gsub("[ ()-]", ".", args[i+5])
+      
+      cmd.args.columns.compare = rbind(cmd.args.columns.compare, c(fileIndex, thisArgVal), stringsAsFactors=FALSE)
+    }
+    cmd.args.columns.compare = unique(cmd.args.columns.compare)
+    i = i+5
+  }
+  
+  else if (args[i] == "-matchColumn_nodeIndex") {
+    # Syntax follows: -matchColumn_nodeIndex 0 -matchColumn_fileIndex 0 -matchColumn "Anon Student Id"
+    if (i > length(args) - 5) {
+      stop("node and fileIndex must be specified")
+    }
+    
+    nodeIndex <- args[i+1]
+    fileIndex = NULL
+    fileIndexParam <- args[i+2]
+    if (fileIndexParam == "-matchColumn_fileIndex") {
+      fileIndex <- args[i+3]
+    }
+    
+    if (args[i+4] == "-matchColumn") {
+      thisArgVal = gsub("[ ()-]", ".", args[i+5])
+      cmd.args.columns.match = rbind(cmd.args.columns.match, c(fileIndex, thisArgVal), stringsAsFactors=FALSE)
+    }
+    cmd.args.columns.match = unique(cmd.args.columns.match)
+    i = i+5
+  }
+  
   i = i+1
 }
-
 
 suppressMessages(library(lme4))
 suppressMessages(library(dplyr))
@@ -130,11 +169,15 @@ suppressMessages(library(tibble))
 
 
 
+cmd.args.oriinputfiles = cmd.args.inputfiles
+colnames(cmd.args.oriinputfiles) = c("file.position", "file.name")
 
 if (tolower(file.type) == "xml") {
   cmd.args.inputfiles = cmd.args.xmlinputfiles
 }
 colnames(cmd.args.inputfiles) = c("file.position", "file.name")
+
+
 file.postions = as.character(cmd.args.inputfiles$file.position)
 if (length(file.postions) != length(unique(file.postions))) {
   print(length(file.postions))
@@ -142,8 +185,11 @@ if (length(file.postions) != length(unique(file.postions))) {
   stop("command arguments are incorrect")
 }
 inputfiles = character()
+inputfilesPositions = character()
 for (i in 1:length(file.postions)) {
   position = file.postions[i]
+  displayPosition = as.numeric(file.postions[i]) + 1
+  inputfilesPositions = c(inputfilesPositions, paste("file", displayPosition, sep=""))
   inputFileName = cmd.args.inputfiles[cmd.args.inputfiles$file.position == position, 2]
   inputfiles = c(inputfiles, inputFileName)
 }
@@ -156,6 +202,12 @@ if (tolower(file.type) == "xml") {
     cur.file = inputfiles[i]
     ds<-read.table(file=cur.file, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
     name <- as.character(ds[,1])
+    for (j in 1:length(name)) {
+      #name[j] = paste(inputfilesPositions[i], name[j], sep=".")
+      #name[j] = paste(cmd.args.oriinputfiles$file.name[i], name[j], sep=".")
+      fn = sub('\\.xml$', '', basename(cmd.args.oriinputfiles$file.name[i]))
+	name[j] = paste(fn, name[j], sep=".") 
+    }
     # transpose all but the first column (name)
     ds <- as.data.frame(t(ds[,-1]))
     colnames(ds) <- name
@@ -169,7 +221,9 @@ if (tolower(file.type) == "xml") {
         allData <- full_join(allData, rownames_to_column(ds), by = ("rowname" = "rowname"))
     }
   }
-} 
+  colnames(allData)[1] = ""
+}
+
 
 if (tolower(file.type) == "properties file") {
   for (i in 1:length(inputfiles)) {
@@ -196,7 +250,8 @@ if (tolower(file.type) == "properties file") {
     ds$V1 = new.V1.values
     #change column names
     col.suffix = gsub("[ ()-]", ".", basename(cur.file))
-    colnames(ds) <- paste(colnames(ds), col.suffix, sep=".")
+    colnames(ds) <- paste(col.suffix, colnames(ds), sep=".")
+    
     #combine dataframe
     if (i == 1) {
       dataframe.length = ncol(ds)
@@ -216,6 +271,7 @@ if (tolower(file.type) == "properties file") {
     }
   }
   allData=rownames_to_column(allData)
+  colnames(allData)[1] = ""
 } 
 
 if (tolower(file.type) == "tabular") {
@@ -227,13 +283,14 @@ if (tolower(file.type) == "tabular") {
   column.compare.postions = as.character(cmd.args.columns.compare$compare.column.position)
   
   #check to make sure files and columns have the index number
-  if (nrow(cmd.args.inputfiles) != nrow(cmd.args.columns.match) || 
-      nrow(cmd.args.inputfiles) != nrow(cmd.args.columns.compare) ||
-      length(file.postions) != length(unique(file.postions)) ||
-      length(column.match.postions) != length(unique(column.match.postions)) ||
-      length(column.compare.postions) != length(unique(column.compare.postions))) {
-    stop("command arguments are incorrect")
-  }
+  # if (nrow(cmd.args.inputfiles) != nrow(cmd.args.columns.match) || 
+  #     nrow(cmd.args.inputfiles) != nrow(cmd.args.columns.compare) ||
+  #     length(file.postions) != length(unique(file.postions)) ||
+  #     length(column.match.postions) != length(unique(column.match.postions)) ||
+  #     length(column.compare.postions) != length(unique(column.compare.postions))) {
+  #   stop("command arguments are incorrect")
+  # }
+  
   
   columns.match = character()
   columns.compare = character()
@@ -241,17 +298,24 @@ if (tolower(file.type) == "tabular") {
     position = file.postions[i]
     matchName = cmd.args.columns.match[cmd.args.columns.match$match.column.position == position, 2]
     compareName = cmd.args.columns.compare[cmd.args.columns.compare$compare.column.position == position, 2]
-    if (length(matchName) == 0 || length(compareName) == 0) {
+    if (length(matchName) == 0 ) {
       stop("command arguments are incorrect")
     }
     columns.match = c(columns.match, matchName)
-    columns.compare = c(columns.compare, compareName)
+    
   }
   
   for (i in 1:length(inputfiles)) {
     cur.file = inputfiles[i]
-    ds<-read.table(file=cur.file, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
-    ds = unique(ds[, c(columns.match[i], columns.compare[i])])
+    position = file.postions[i]
+    ds<-read.table(file=cur.file, row.names=NULL, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+    #sometimes row.names is added, check if true then delete
+    if (colnames(ds)[1] == "row.names") {
+      colnames(ds) = colnames(ds)[-1]
+    }
+    matchName = cmd.args.columns.match[cmd.args.columns.match$match.column.position == position, 2]
+    compareName = cmd.args.columns.compare[cmd.args.columns.compare$compare.column.position == position, 2]
+    ds = unique(ds[, c(matchName, compareName)])
     if (i == 1) {
       allData = ds
     } else {
@@ -284,6 +348,4 @@ if (tolower(file.type) == "tabular") {
 
 outputFile <- paste(workingDir, "/comparison_result.txt", sep="")
 write.table(allData,file=outputFile,sep="\t",quote=FALSE,na="",col.names=TRUE,append=FALSE,row.names=FALSE)
-
-
 

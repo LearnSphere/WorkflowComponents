@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,10 +59,43 @@ public class TetradMissingValues {
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
-    
+
     String argLine = "";
     for (String s : args) {
       argLine += s + " ";
+    }
+
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(fileParamsArray);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		if (nodeIndex.trim().matches("[0-9]+")) {
+        			inFiles.put(Integer.parseInt(nodeIndex.trim()), inFile);
+        		}
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
     }
 
     HashMap<String, String> cmdParams = new HashMap<String, String>();
@@ -78,7 +115,7 @@ public class TetradMissingValues {
         i++;
       }
     }
-    
+
     String workingDir = cmdParams.get("-workingDir");
 
     outputDir = workingDir;
@@ -86,16 +123,16 @@ public class TetradMissingValues {
     addToDebugMessages(argLine);
 
     if (cmdParams.containsKey("-operation") == false) {
-      addToErrorMessages("No operation Specified."); 
+      addToErrorMessages("No operation Specified.");
       return;
     } else if (cmdParams.containsKey("-workingDir") == false){
-      addToErrorMessages("No workingDir"); 
+      addToErrorMessages("No workingDir");
       return;
-    } else if (cmdParams.containsKey("-file0") == false){
-      addToErrorMessages("No outfile name"); 
+    } else if (!inFiles.containsKey(0)) {
+      addToErrorMessages("No infile0 ");
       return;
     } /*else if (cmdParams.containsKey("-missingValueMarker") == false){
-      addToErrorMessages("No missingValueMarker name"); 
+      addToErrorMessages("No missingValueMarker name");
       return;
     }*/
 
@@ -105,13 +142,12 @@ public class TetradMissingValues {
 
     addToDebugMessages("missing value marker: " + marker + ".");
 
-    String infile = cmdParams.get("-file0");
-    File inputFile = new File(infile);
+    File inputFile = inFiles.get(0);
 
     if (inputFile.exists() && inputFile.isFile() && inputFile.canRead()) {
-            
+
       String outputFile = workingDir + "ManipulatedData.txt";
-            
+
       try {
         BufferedReader bReader = null;
         FileReader fReader = null;
@@ -122,16 +158,16 @@ public class TetradMissingValues {
 
           fWriter = new FileWriter(outputFile);
           bWriter = new BufferedWriter(fWriter);
-          
+
           char[] chars = fileToCharArray(inputFile);
 
           DataReader reader = new DataReader();
           reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           reader.setMissingValueMarker(marker);
-  
+
           DataSet data = reader.parseTabular(chars);
-          
+
           String manipulatedData = "";
 
           switch (operation) {
@@ -161,7 +197,7 @@ public class TetradMissingValues {
                 Parameters params = new Parameters();
                 params.set("prob", probOfInjection);
 
-                MissingDataInjectorWrapper mdiw = 
+                MissingDataInjectorWrapper mdiw =
                     new MissingDataInjectorWrapper(dw, params);*/
                 double [] probs = new double[data.getVariableNames().size()];
                 for (int i = 0; i < probs.length; i++) {
@@ -181,7 +217,7 @@ public class TetradMissingValues {
 
                 Parameters params = new Parameters();
 
-                RemoveMissingValueCasesWrapper rmvcw = 
+                RemoveMissingValueCasesWrapper rmvcw =
                   new RemoveMissingValueCasesWrapper(dw, params);
 
                 DataModel newData = rmvcw.getDataModels().get(0);
@@ -191,14 +227,14 @@ public class TetradMissingValues {
                 addToErrorMessages("Error replacing missing values: "+e);
               }
               break;
-            
+
             case "Replace_Missing_Values_with_Column_Mean":
               try {
                 DataWrapper dw = new DataWrapper(data);
 
                 Parameters params = new Parameters();
 
-                /*MeanInterpolatorWrapper miw = 
+                /*MeanInterpolatorWrapper miw =
                   new MeanInterpolatorWrapper(dw, params);
 
                 DataModel newData = miw.getDataModels().get(0);*/
@@ -218,7 +254,7 @@ public class TetradMissingValues {
 
                 Parameters params = new Parameters();
 
-                RegressionInterpolatorWrapper riw = 
+                RegressionInterpolatorWrapper riw =
                   new RegressionInterpolatorWrapper(dw, params);
 
                 DataModel newData = riw.getDataModels().get(0);
@@ -234,7 +270,7 @@ public class TetradMissingValues {
 
                 Parameters params = new Parameters();
 
-                ExtraCategoryInterpolatorWrapper eci = 
+                ExtraCategoryInterpolatorWrapper eci =
                   new ExtraCategoryInterpolatorWrapper(dw, params);
 
                 DataModel newData = eci.getDataModels().get(0);
@@ -254,7 +290,7 @@ public class TetradMissingValues {
                 addToErrorMessages("Error replacing missing values: "+e);
               }
               break;
-             
+
           }
 
           manipulatedData = manipulatedData.replaceAll("\n\n","\n");
@@ -264,7 +300,7 @@ public class TetradMissingValues {
 
         } catch (IOException e) {
           addToErrorMessages(e.toString());
-        } 
+        }
 
       } catch (Exception e) {
         addToErrorMessages(e.toString());

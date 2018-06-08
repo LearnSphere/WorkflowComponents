@@ -2,13 +2,13 @@
 
 #load libraries and set optins
 options(echo=FALSE)
-options(warn=-1) 
+options(warn=-1)
 options(width=10000)
 
 
 #all variables
-inputDataFile<-NULL
-#ex: inputDataFile<-"ds76_student_step_export.txt"
+inputFile<-NULL
+#ex: inputFile<-"ds76_student_step_export.txt"
 workingDir = NULL
 programDir = NULL
 #operation either remove or keep
@@ -25,13 +25,23 @@ args <- commandArgs(trailingOnly = TRUE)
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-  if (args[i] == "-file0") {
-    if (length(args) == i) {
-      stop("input data file name must be specified")
-    }
-    inputDataFile = args[i+1]
-    i = i+1
-  } else if (args[i] == "-workingDir") {
+  if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
+       }
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       inputFile <- args[i + 4]
+       i = i + 4
+
+    } else if (args[i] == "-workingDir") {
     if (length(args) == i) {
       stop("workingDir name must be specified")
     }
@@ -54,9 +64,9 @@ while (i <= length(args)) {
     if (operation != "remove" & operation != "keep" ) {
       stop("operation must be remove or keep")
     }
-    
+
     i = i+1
-  } 
+  }
   else if (args[i] == "-valueColumns") {
     if (length(args) == i) {
       stop("valueColumns must be specified")
@@ -86,7 +96,7 @@ while (i <= length(args)) {
     } else {
       case.sensitive = FALSE
     }
-    
+
     i = i+1
   } else if (args[i] == "-removeNull") {
     if (length(args) == i) {
@@ -101,13 +111,13 @@ while (i <= length(args)) {
     } else {
       remove.null = FALSE
     }
-    
+
     i = i+1
-  } 
+  }
   i = i+1
 }
 # Load raw data
-ds<-read.table(inputDataFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
 #make the column.var.name into character
 #ex: ds$Problem.Name <- as.character(ds$Problem.Name)
@@ -137,7 +147,7 @@ if (operation == "remove") {
         cmdString = paste("ds<-ds[which(!(tolower(ds$", column.var.name, ") %in% tolower(remove.values))),]", sep="")
         eval(parse(text=cmdString))
     }
-  } 
+  }
   if (remove.null) {
     cmdString = paste("ds<-ds[!is.na(ds$", column.var.name, ") & ds$", column.var.name, " != \"\",]", sep="")
     eval(parse(text=cmdString))
@@ -174,8 +184,8 @@ if (operation == "remove") {
       final.temp.ds.null<-rbind(final.temp.ds.null, temp.ds.null)
     }
     cnt = cnt + 1
-  }  
-  
+  }
+
   if (length(final.temp.ds) == 0 && length(final.temp.ds.null) == 0) {
     ds <- names(ds)
   } else if (length(final.temp.ds) != 0 && length(final.temp.ds.null) != 0) {
