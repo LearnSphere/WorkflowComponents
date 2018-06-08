@@ -1,0 +1,8 @@
+[Dataset]
+dataset_dir = <Set to root directory of all datasets>
+out_file = dataset-list.tsv
+[Logging]
+log_level = INFO
+enable_syslog = True
+enable_file_log = True
+file_log_path = <Set to absolute path to some directory within this component dir>
