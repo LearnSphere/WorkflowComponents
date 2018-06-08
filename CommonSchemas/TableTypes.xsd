@@ -34,12 +34,9 @@
 
   <xs:element name="binary" substitutionGroup="file" />
 
-  <xs:element name="json" substitutionGroup="text" />
-  	  <xs:element name="d3m-dataset" substitutionGroup="json" />
-
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />
-	<xs:element name="oli-log" substitutionGroup="tab-delimited" />
+	  <xs:element name="oli-log" substitutionGroup="tab-delimited" />
 	  <xs:element name="user-map" substitutionGroup="tab-delimited" />
 	  <xs:element name="resource-use" substitutionGroup="tab-delimited" />
 	  <xs:element name="outcome" substitutionGroup="tab-delimited" />
@@ -50,6 +47,14 @@
 	  <xs:element name="gradebook" substitutionGroup="tab-delimited" />
 	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
+      
+      <xs:element name="dataset" substitutionGroup="tab-delimited" />
+      <xs:element name="dataset-list" substitutionGroup="tab-delimited" />
+      <xs:element name="model-fitter-set" substitutionGroup="tab-delimited" />
+      <xs:element name="fit-model-set" substitutionGroup="tab-delimited" />
+      <xs:element name="problem-target" substitutionGroup="tab-delimited" />
+      <xs:element name="problem-task" substitutionGroup="tab-delimited" />
+
 
 	  <xs:element name="model-values" substitutionGroup="text" />
 	  <xs:element name="parameters" substitutionGroup="text" />
@@ -94,5 +99,10 @@
 	  <xs:element name="powerpoint" substitutionGroup="microsoft" />
 
   <xs:element name="other_text" substitutionGroup="text" />
+
+  <xs:element name="json" substitutionGroup="text" />
+      <xs:element name="fit-model" substitutionGroup="json" />
+      <xs:element name="json" substitutionGroup="tab-delimited" />
+      <xs:element name="modeling-problem" substitutionGroup="json" />
 
 </xs:schema>
