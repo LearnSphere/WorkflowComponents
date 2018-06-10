@@ -78,7 +78,10 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         logger.debug("Secondary model option: " + secondaryModelOption);
         String viewSecondaryStr = this.getOptionAsString("viewSecondary");
         logger.debug("viewSecondary option: " + viewSecondaryStr);
-        Boolean viewSecondary = viewSecondaryStr.equalsIgnoreCase("true") ? true : false;
+        Boolean viewSecondary = false;
+        if (viewSecondaryStr != null) {
+            viewSecondary = viewSecondaryStr.equalsIgnoreCase("true") ? true : false;
+        }
 
         if (!viewSecondary) {
             secondaryModelOption = null;
