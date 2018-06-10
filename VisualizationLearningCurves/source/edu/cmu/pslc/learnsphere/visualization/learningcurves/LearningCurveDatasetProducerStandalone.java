@@ -218,7 +218,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
         Date time = new Date();
 
         dataset = new YIntervalSeriesCollection();
-        YIntervalSeries series, lfaSeries, hsSeries;
+        YIntervalSeries series, lfaSeries, lfaSeries2, hsSeries;
         if (createObservationTable) {
             observationTableMap.clear();
         }
@@ -240,6 +240,17 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             lcGraphOptions.getTitle() + " - "
                 + lcOptions.getPrimaryModelName() + " (Predicted)", true, false);
         lfaSeries.setDescription(PREDICTED);
+
+        if (lcOptions.getSecondaryModelName() != null) {
+            lfaSeries2 = new YIntervalSeries(lcGraphOptions.getTitle() + " - "
+                                             + lcOptions.getSecondaryModelName()
+                                             + " (Predicted)", true, false);
+        } else {
+            // Initialize dummy series...
+            lfaSeries2 = new YIntervalSeries(lcGraphOptions.getTitle()
+                                             + " - none (Predicted)", true, false);
+        }
+        lfaSeries2.setDescription(SECONDARY_PREDICTED);
 
         hsSeries = new YIntervalSeries(lcGraphOptions.getTitle() + " - HighStakes", true, false);
         hsSeries.setDescription(HIGHSTAKES);
@@ -304,8 +315,20 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                                     " X-Value=", graphPoint.getOpportunityNumber());
                         }
                     }
-                }
 
+                    //Add a secondary LFA curve: no error bar info
+                    if (viewPredicted && lcOptions.getSecondaryModelName() != null) {
+                        Double lfaScore = graphPoint.getSecondaryPredictedErrorRate();
+                        if (lfaScore != null) {
+                            Double lfaX = graphPoint.getOpportunityNumber().doubleValue();
+                            Double lfaY = lfaScore * ONE_HUNDRED;
+                            lfaSeries2.add(lfaX, lfaY, lfaY, lfaY);
+                            logDebug("Adding Secondary LFA point to dataset: Y-Value="
+                                     + lfaScore
+                                     + " X-Value=" + graphPoint.getOpportunityNumber());
+                        }
+                    }
+                }
 
             } else if (lcMetric.equals(LearningCurveMetric.ASSISTANCE_SCORE)) {
                 if (graphPoint.getAssistanceScore() != null
@@ -434,6 +457,10 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         if (viewPredicted && lcMetric.equals(LearningCurveMetric.ERROR_RATE)) {
             dataset.addSeries(lfaSeries);
+
+            if (lcOptions.getSecondaryModelName() != null) {
+                dataset.addSeries(lfaSeries2);
+            }
         }
 
         if (viewHighStakes) {

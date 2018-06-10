@@ -14,7 +14,8 @@
   <top>106</top>
   <options>
     <learningCurve>Knowledge Components</learningCurve>
-    <model>Predicted Error Rate (principles_of_computing_1_10)</model>
+    <model>Predicted Error Rate (Item Model)</model>
+    <secondaryModel>Predicted Error Rate (Modules)</secondaryModel>
     <stdDevCutOff>0</stdDevCutOff>
     <opportunityCutOffMax>INF</opportunityCutOffMax>
     <learningCurveMetric>Error Rate</learningCurveMetric>
@@ -31,8 +32,8 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/example_student_step/ds1806_student_step_with_CF.txt</file_path>
-          <file_name>ds1806_student_step_with_CF.txt</file_name>
+          <file_path>test/example_student_step/ds9.txt</file_path>
+          <file_name>ds9.txt</file_name>
           <index>0</index>
           <label>student-step</label>
           <metadata>

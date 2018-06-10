@@ -26,6 +26,7 @@ import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisual
 public class VisualizationLearningCurvesMain extends AbstractComponent {
     /** The model header to use when creating the visualization. */
     String modelName = null;
+    String secondaryModelName = null;
     /** The learning curve visualization options. */
     LearningCurveVisualizationOptions visualizationOptions;
 
@@ -73,6 +74,8 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         }
         String modelOption = this.getOptionAsString("model");
         logger.debug("Model option: " + modelOption);
+        String secondaryModelOption = this.getOptionAsString("secondaryModel");
+        logger.debug("Secondary model option: " + secondaryModelOption);
 
         visualizationOptions = new LearningCurveVisualizationOptions();
 
@@ -81,7 +84,11 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
                 modelOption.replaceAll("(?i)\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
             visualizationOptions.setPrimaryModelName(modelName);
         }
-
+        if (secondaryModelOption != null) {
+            secondaryModelName =
+                secondaryModelOption.replaceAll("(?i)\\s*Predicted Error Rate\\s*\\((.*)\\)\\s*", "$1");
+            visualizationOptions.setSecondaryModelName(secondaryModelName);
+        }
 
         // Though we want integer values for min/max opportunities,
         // only the "xs:double" data type supports "INF" (infinity).
@@ -127,6 +134,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         }
 
         logger.debug("Model name: " + modelName);
+        logger.debug("Secondary model name: " + secondaryModelName);
 
         String learningCurveMetricAttribute = this.getOptionAsString("learningCurveMetric");
 
@@ -154,6 +162,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         }
 
         String highStakesCFName = this.getOptionAsString("highStakesCF");
+        logger.debug("highStakesCFName = " + highStakesCFName);
         visualizationOptions.setHighStakesCFName(highStakesCFName);
 
         LearningCurveVisualization lcPrototype = new LearningCurveVisualization();

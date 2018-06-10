@@ -125,6 +125,7 @@ public class LearningCurveVisualization {
         Map<String, Double> avgCorrectStepDuration = new Hashtable<String, Double>();
         Map<String, Double> avgErrorStepDuration = new Hashtable<String, Double>();
         Map<String, Double> avgPredictedErrorRate = new Hashtable<String, Double>();
+        Map<String, Double> avgSecondaryPredictedErrorRate = new Hashtable<String, Double>();
         Map<String, Double> countObservations = new Hashtable<String, Double>();
         Map<String, Double> stepDurationObs = new Hashtable<String, Double>();
         Map<String, Double> correctStepDurationObs = new Hashtable<String, Double>();
@@ -170,6 +171,7 @@ public class LearningCurveVisualization {
             String opportunityName = "Opportunity (" + lcOptions.getPrimaryModelName() + ")";
             String predictedErrorRateName = "Predicted Error Rate (" + lcOptions.getPrimaryModelName() + ")";
             Integer maxOpportunityCutoff = lcOptions.getOpportunityCutOffMax();
+            String secondaryPredictedErrorRateName = "Predicted Error Rate (" + lcOptions.getSecondaryModelName() + ")";
 
             Vector<String> skillsSelected = new Vector<String>();
             Vector<String> studentsSelected = new Vector<String>();
@@ -249,6 +251,7 @@ public class LearningCurveVisualization {
 
                     // The predicted error rate is set later to prevent exceptions during type casting
                     Double predictedErrorRate = null;
+                    Double secondaryPredictedErrorRate = null;
                     String skillName = skillNamesSplit[skillCounter];
                     skillNames.put(criteria, skillName);
                     String opportunity = opportunitiesSplit[skillCounter];
@@ -298,6 +301,9 @@ public class LearningCurveVisualization {
                     if (!avgPredictedErrorRate.containsKey(criteria))
                         avgPredictedErrorRate.put(criteria, new Double(0));
 
+                    if (!avgSecondaryPredictedErrorRate.containsKey(criteria))
+                        avgSecondaryPredictedErrorRate.put(criteria, new Double(0));
+
                     if (!countObservations.containsKey(criteria))
                         countObservations.put(criteria, new Double(0));
 
@@ -325,6 +331,10 @@ public class LearningCurveVisualization {
                     // Parse double values, provided the value exists
                     if (!fields[headingMap.get(predictedErrorRateName)].isEmpty()) {
                         predictedErrorRate = Double.parseDouble(fields[headingMap.get(predictedErrorRateName)]);
+                    }
+                    if (!fields[headingMap.get(secondaryPredictedErrorRateName)].isEmpty()) {
+                        secondaryPredictedErrorRate =
+                            Double.parseDouble(fields[headingMap.get(secondaryPredictedErrorRateName)]);
                     }
                     if (!fields[headingMap.get("Incorrects")].isEmpty()) {
                         incorrects = Double.parseDouble(fields[headingMap.get("Incorrects")]);
@@ -400,6 +410,11 @@ public class LearningCurveVisualization {
 			avgPredictedErrorRate.put(criteria,
 						  (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
 		    }
+		    if (secondaryPredictedErrorRate != null) {
+			avgSecondaryPredictedErrorRate.put(criteria,
+                                                           (avgSecondaryPredictedErrorRate.get(criteria)
+                                                            + secondaryPredictedErrorRate));
+                    }
 
                     // Handle missing values which are allowed for some fields
                     if (stepDuration != null) {
@@ -480,7 +495,6 @@ public class LearningCurveVisualization {
 
                 // If not null, this is the 'highStakesErrorRate' criteria.
                 if (hsCounts.get(criteria) != null) {
-                    logger.debug("*** getting hsErrorRate for criteria = " + criteria);
                     Integer hsCount = hsCounts.get(criteria);
 
                     if ((hsErrorRate.get(criteria) != null) && (hsCount > 0)) {
@@ -538,6 +552,10 @@ public class LearningCurveVisualization {
                     avgPredictedErrorRate.get(criteria) / new Double(validRowCount);
                 avgPredictedErrorRate.put(criteria, avgPredictedErrorRateResult);
 
+                Double avgSecondaryPredictedErrorRateResult =
+                    avgSecondaryPredictedErrorRate.get(criteria) / new Double(validRowCount);
+                avgSecondaryPredictedErrorRate.put(criteria, avgSecondaryPredictedErrorRateResult);
+
                 Object[] result = {
                     skillNames.get(criteria),
                     opportunities.get(criteria),
@@ -553,7 +571,8 @@ public class LearningCurveVisualization {
                     countSteps.get(criteria).size(),
                     countSkills.get(criteria).size(),
                     countStudents.get(criteria).size(),
-                    countProblems.get(criteria).size()
+                    countProblems.get(criteria).size(),
+                    avgSecondaryPredictedErrorRate.get(criteria),
                 };
 
                 LearningCurvePoint lcp = new LearningCurvePoint();
@@ -610,6 +629,10 @@ public class LearningCurveVisualization {
 
                 if (avgPredictedErrorRateResult != null) {
                     lcp.setPredictedErrorRate(avgPredictedErrorRateResult.doubleValue());
+                }
+
+                if (avgSecondaryPredictedErrorRateResult != null) {
+                    lcp.setSecondaryPredictedErrorRate(avgSecondaryPredictedErrorRateResult.doubleValue());
                 }
 
                 if (countProblems.get(criteria) != null) {
