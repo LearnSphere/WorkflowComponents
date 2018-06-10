@@ -21,7 +21,7 @@ import edu.cmu.pslc.statisticalCorrectnessModeling.utils.FileHelper;
 import static edu.cmu.pslc.datashop.util.FileUtils.truncateFile;
 
 
-public abstract class StudentStep extends AbstractImportDataType {
+public class StudentStep extends AbstractImportDataType {
 
 	private static Integer NUM_INPUT_LINES_TO_CHECK = 200;
 
