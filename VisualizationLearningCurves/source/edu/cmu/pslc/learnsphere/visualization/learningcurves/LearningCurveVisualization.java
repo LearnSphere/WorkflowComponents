@@ -171,7 +171,10 @@ public class LearningCurveVisualization {
             String opportunityName = "Opportunity (" + lcOptions.getPrimaryModelName() + ")";
             String predictedErrorRateName = "Predicted Error Rate (" + lcOptions.getPrimaryModelName() + ")";
             Integer maxOpportunityCutoff = lcOptions.getOpportunityCutOffMax();
-            String secondaryPredictedErrorRateName = "Predicted Error Rate (" + lcOptions.getSecondaryModelName() + ")";
+            String secondaryPredictedErrorRateName = null;
+            if (lcOptions.getSecondaryModelName() != null) {
+                secondaryPredictedErrorRateName = "Predicted Error Rate (" + lcOptions.getSecondaryModelName() + ")";
+            }
 
             Vector<String> skillsSelected = new Vector<String>();
             Vector<String> studentsSelected = new Vector<String>();
@@ -332,9 +335,11 @@ public class LearningCurveVisualization {
                     if (!fields[headingMap.get(predictedErrorRateName)].isEmpty()) {
                         predictedErrorRate = Double.parseDouble(fields[headingMap.get(predictedErrorRateName)]);
                     }
-                    if (!fields[headingMap.get(secondaryPredictedErrorRateName)].isEmpty()) {
-                        secondaryPredictedErrorRate =
-                            Double.parseDouble(fields[headingMap.get(secondaryPredictedErrorRateName)]);
+                    if (secondaryPredictedErrorRateName != null) {
+                        if (!fields[headingMap.get(secondaryPredictedErrorRateName)].isEmpty()) {
+                            secondaryPredictedErrorRate =
+                                Double.parseDouble(fields[headingMap.get(secondaryPredictedErrorRateName)]);
+                        }
                     }
                     if (!fields[headingMap.get("Incorrects")].isEmpty()) {
                         incorrects = Double.parseDouble(fields[headingMap.get("Incorrects")]);

@@ -90,6 +90,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" />
       <xs:element type="FileInputHeader" name="secondaryModel" id="Secondary_Model"  default="Predicted Error Rate\s*(.*)\s*" />
+      <xs:element type="xs:boolean" name="viewSecondary" id="View_Secondary" default="false" />
       <xs:element type="learningCurveType" name="learningCurve" id="Learning_Curve_Type"
         default="Knowledge Components" />
       <xs:element type="xs:double" name="stdDevCutOff" id="Standard_Deviation_Cutoff"
