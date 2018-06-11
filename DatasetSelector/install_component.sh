@@ -9,7 +9,7 @@ echo "Setting up D3MDatasetSelector Tigris Components for local system"
 
 virtualenv env --python=python3.6
 source env/bin/activate
-pip install --upgrade pip
+#pip install --upgrade pip==9.0.2
 pip install -r requirements.txt
 
 ### Rebuild build.properties using local system path to venv python
