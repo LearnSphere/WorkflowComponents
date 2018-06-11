@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatasetSelector</url>
+<date>June 08, 2018</date>
+<abstract>The <b>DatasetSelector</b> component is an example of a(n) Python component.</abstract>
+<description>Allow user to select a dataset from a dataset repository</description>
+
+<inputs>
+<b>dataset-list</b>
+</inputs>
+
+<outputs>
+<b>dataset</b>
+</outputs>
+
+<options>
+<b>ds_name -- type FileInputHeader</b>
+</options>
+
+</info>
