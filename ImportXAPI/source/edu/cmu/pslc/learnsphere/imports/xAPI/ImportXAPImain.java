@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -140,7 +141,6 @@ public class ImportXAPImain extends AbstractComponent {
                 Integer fileIndex0 = 0;
                 String fileType0 = "text";
                 this.addOutputFile(configFile, nodeIndex0, fileIndex0, fileType0);
-                logger.info(this.getOutput());
         
                 //Read Configuration File as list
                 List<String> list = new ArrayList<String>();
@@ -161,7 +161,6 @@ public class ImportXAPImain extends AbstractComponent {
                        } else{
 //                       System.out.println("Configuration file missing");
                        logger.info("Configuration file missing");
-                       
                        }
                     }catch(IOException e){
 //                        System.out.println("Error Happened");
@@ -250,8 +249,7 @@ public class ImportXAPImain extends AbstractComponent {
             Integer nodeIndex1 = 1;
             Integer fileIndex1 = 0;
             String fileType1 = "tab-delimited";
-            this.addOutputFile(jsonFlatFile, nodeIndex1, fileIndex1, fileType1);
-            logger.info(this.getOutput());            
+            this.addOutputFile(jsonFlatFile, nodeIndex1, fileIndex1, fileType1);            
                                 
                //remove the "-" symbol of id
                for(int k=0;k<tabNames.length;k++){
@@ -270,10 +268,25 @@ public class ImportXAPImain extends AbstractComponent {
                    }
                }
 
+               //transfer "actor mabox" into hashcode (add "Stu_" and make same length)
+               ArrayList<Integer> strInt = new ArrayList<Integer>();
+               int str;
                for (int k=0;k<tabNames.length;k++){
                    if(tabNames[k].equals("actor mbox")){
                         for(int rs=0;rs<mainContent[k].length;rs++){
-                            mainContent[k][rs]=mainContent[k][rs].replace("mailto:","");
+//                            mainContent[k][rs]=mainContent[k][rs].replace("mailto:","");
+                            str=Math.abs(mainContent[k][rs].hashCode());
+                            strInt.add(String.valueOf(str).length());
+                        }
+                        Integer max=Collections.max(strInt);
+                        for (int rs=0;rs<mainContent[k].length;rs++){
+                            if (strInt.get(rs)<max){
+                                for(int a=0;a<max-strInt.get(rs);a++){
+                                    mainContent[k][rs]="Stu_"+String.valueOf(Math.abs(mainContent[k][rs].hashCode()))+"#";
+                                }
+                            }else{
+                                mainContent[k][rs]="Stu_"+String.valueOf(Math.abs(mainContent[k][rs].hashCode()));
+                            }
                         }
                    }
                }               
@@ -370,9 +383,8 @@ public class ImportXAPImain extends AbstractComponent {
             Integer fileIndex2 = 0;
             String fileType2 = "tab-delimited";
             this.addOutputFile(tabDeliFile, nodeIndex2, fileIndex2, fileType2);
-            logger.info(this.getOutput());
-            System.out.println(this.getOutput());
-                        
+            System.out.println(this.getOutput()); 
+            
 	    }
             
             private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){

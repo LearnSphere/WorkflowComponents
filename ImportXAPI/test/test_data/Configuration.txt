@@ -10,14 +10,6 @@ Student Name=actor name
 Score=result score raw
 Anon Student Id=actor mbox
 Session Id=object id
-Time Spent=context extensions http://autotutor.x-in-y.com/AT timeTaken
-CF(Verb)=verb display en-US
-KC (Default)=result response
-Problem Name=context extensions http://autotutor.x-in-y.com/AT school
-Selection=context extensions http://autotutor.x-in-y.com/AT rp
-Action=context extensions http://autotutor.x-in-y.com/AT u
-Input=context contextActivities parent1 definition extensions https://umiis.github.io/ITSProfile/Extensions/parent ST
-Level=authority name
 
 
 
