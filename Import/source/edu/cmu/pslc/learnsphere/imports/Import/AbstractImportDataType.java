@@ -10,7 +10,9 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 
-public abstract class AbstractImportDataType {
+import edu.cmu.pslc.datashop.workflows.AbstractComponent;
+
+public abstract class AbstractImportDataType extends AbstractComponent{
 
 	public Logger logger = null;
 
@@ -21,7 +23,7 @@ public abstract class AbstractImportDataType {
 	/*
 		Use this function to add meta data and preprocess the input
 	*/
-	public void processImportFile(File importedFile) {
+	public void processImportFile(File importedFile, ImportMain component) {
 		return;
 	}
 

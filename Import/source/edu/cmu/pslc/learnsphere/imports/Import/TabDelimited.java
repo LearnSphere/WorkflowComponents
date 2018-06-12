@@ -15,7 +15,10 @@ public class TabDelimited extends AbstractImportDataType {
 		Use this function to add meta data and preprocess the input
 	*/
 	@Override
-	public void processImportFile(File importedFile) {
+	public void processImportFile(File importedFile, ImportMain component) {
+		Integer outNodeIndex0 = 0;
+		String type = "tab-delimited";
+		//this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
 		return;
 	}
 

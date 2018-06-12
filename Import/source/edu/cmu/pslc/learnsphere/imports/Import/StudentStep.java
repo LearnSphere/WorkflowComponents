@@ -29,7 +29,10 @@ public class StudentStep extends AbstractImportDataType {
 		Use this function to add meta data and preprocess the input
 	*/
 	@Override
-	public void processImportFile(File importedFile) {
+	public void processImportFile(File importedFile, ImportMain component) {
+		Integer outNodeIndex0 = 0;
+		String type = "student-step";
+		//component.addMetaDataFromInput(type, 0, outNodeIndex0, ".*");
 		return;
 	}
 
@@ -42,6 +45,7 @@ public class StudentStep extends AbstractImportDataType {
 			verifyInputFile(importedFile);
 		} catch (Exception e) {
 			logger.error("Couldn't verify Imported file as student-step: " + e.toString());
+			return false;
 		}
 		return true;
 	}

@@ -36,44 +36,9 @@ public class ImportMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-    	logger.debug("in main runComponent");
-
-        // Parse the Options state into JSON from the options pane in the ui
-        String optionString = this.getOptionAsString("Import");
-        logger.debug(optionString);
-        //this.addErrorMessage(optionString);
-        JSONObject options = null;
-        try {
-        	/*JSONParser parser = new JSONParser();
-        	Object obj = parser.parse(optionString);
-        	options = (JSONObject)obj;*/
-        	options = new JSONObject(optionString);
-        } catch (Exception e) {
-        	logger.error("Could not parse options JSON: " + e.toString());
-        	System.out.println(this.getOutput());
-        	return;
-        }
-
-        // Get the value of the options set in the ui options pane
-        String fileName = null;
-        String fileType = null;
-
-        try {
-        	fileName = options.getString("fileName");
-        	fileType = options.getString("fileType");
-        } catch (Exception e) {
-        	logger.error("Could not get fileName or fileType from JSON options: " + e.toString());
-        	System.out.println(this.getOutput());
-        	return;
-        }
+        String fileType = getFileType();
 
         File theFile = this.getAttachment(0, 0);
-        if (theFile != null) {
-        	logger.debug(theFile.getPath());
-        	logger.debug(theFile.getName());
-        } else {
-        	logger.debug("The file is null");
-        }
 
     	if (theFile == null || !theFile.exists()) {
     		logger.error("Could not read required input file.");
@@ -86,17 +51,10 @@ public class ImportMain extends AbstractComponent {
     	}
 
     	// Using the type of file and the file, ensure that it is properly formatted
-    	fileType = "student-step"; //CHANGE ME CHANGE ME TODOTODOTDODTODODO
     	AbstractImportDataType processor = getProcessingClass(fileType);
 
     	if (!processor.validateImportedFile(theFile)) {
     		logger.error("Input file is not a valid " + fileType);
-    	} else {
-    		Integer nodeIndex0 = 0;
-	        Integer fileIndex0 = 0;
-	        String label0 = fileType;
-	        //label0 = "tab-delimited";
-	        this.addOutputFile(theFile, nodeIndex0, fileIndex0, label0);
     	}
 
         System.out.println(this.getOutput());
@@ -104,11 +62,59 @@ public class ImportMain extends AbstractComponent {
 
 	@Override
 	protected void processOptions() {
-		// addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-		logger.debug("processing options");
-		Integer outNodeIndex0 = 0;
-		String type = "tab-delimited";
-		this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
+		String fileType = getFileType();
+
+		File theFile = this.getAttachment(0, 0);
+
+    	if (theFile == null || !theFile.exists()) {
+    		logger.error("Could not read required input file.");
+    		return;
+    	} else if (fileType == null) {
+    		logger.error("fileType is null");
+    		return;
+    	}
+    	
+		AbstractImportDataType processor = getProcessingClass(fileType);
+		
+		if (processor != null) {
+			//processor.processImportFile(theFile, this);
+		} else {
+			logger.error("Import type processor is null");
+		}
+		
+		String type = "student-step";
+		
+		//this.addMetaDataFromInput(type, 0, 0, ".*");
+	}
+
+	/**
+	 * Return a string of the file type.  This is selected in the options pane of the component.
+	 */
+	private String getFileType() {
+		// Parse the Options state into JSON from the options pane in the ui
+        String optionString = this.getOptionAsString("Import");
+        
+        JSONObject options = null;
+        try {
+        	options = new JSONObject(optionString);
+        } catch (Exception e) {
+        	logger.error("Could not parse options JSON: " + e.toString());
+        	System.out.println(this.getOutput());
+        	return null;
+        }
+
+        // Get the value of the options set in the ui options pane
+        String fileType = null;
+
+        try {
+        	fileType = options.getString("fileType");
+        } catch (Exception e) {
+        	logger.error("Could not get fileType from JSON options: " + e.toString());
+        	System.out.println(this.getOutput());
+        	return null;
+        }
+
+        return fileType;
 	}
 
 	/**
@@ -126,6 +132,7 @@ public class ImportMain extends AbstractComponent {
 			try {
 				Object importProcessorObj = Class.forName(className).newInstance();
 				importProcessor = (AbstractImportDataType)importProcessorObj;
+				importProcessor.addLogger(logger);
 
 				logger.debug("Found specific data type processor class: " + className);
 			} catch (Exception e) {

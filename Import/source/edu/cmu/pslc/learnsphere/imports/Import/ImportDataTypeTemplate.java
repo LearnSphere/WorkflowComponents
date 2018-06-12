@@ -14,7 +14,7 @@ public class ImportDataTypeTemplate extends AbstractImportDataType {
 	 * Use this function to add meta data and preprocess the input
 	 */
 	@Override
-	public void processImportFile(File importedFile) {
+	public void processImportFile(File importedFile, ImportMain component) {
 		return;
 	}
 
