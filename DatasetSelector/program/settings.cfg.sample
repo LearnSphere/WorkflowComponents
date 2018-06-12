@@ -1,9 +1,0 @@
-[Dataset]
-out_file = datasetDoc.json
-[Logging]
-log_level = DEBUG
-enable_syslog = True
-enable_file_log = True
-file_log_path = /rdata/dataStore/d3m/tmp
-
-
