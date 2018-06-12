@@ -40,9 +40,10 @@ done
 
 rm -Rf */test/ComponentTestOutput */WorkflowComponent.log */build
 
-if [ -s ${dir}/build_errors.txt ]; then
+if [ ! -s ${dir}/build_errors.txt ]; then
    # the file is empty
    rm ${dir}/build_errors.txt ${dir}/build_errors_info.txt
+   echo "No errors were found during the build process."
 else
    echo "Errors were found during the build process. Please see build_errors.txt or build_errors_info.txt for additional details."
 fi
