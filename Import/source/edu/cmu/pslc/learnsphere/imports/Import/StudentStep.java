@@ -23,41 +23,39 @@ import static edu.cmu.pslc.datashop.util.FileUtils.truncateFile;
 
 public class StudentStep extends AbstractImportDataType {
 
-	private static Integer NUM_INPUT_LINES_TO_CHECK = 200;
+    private static Integer NUM_INPUT_LINES_TO_CHECK = 200;
 
-	/*
-		Use this function to add meta data and preprocess the input
-	*/
-	@Override
-	public void processImportFile(File importedFile, ImportMain component) {
-		Integer outNodeIndex0 = 0;
-		String type = "student-step";
-		//component.addMetaDataFromInput(type, 0, outNodeIndex0, ".*");
-		return;
-	}
+    /*
+    	Use this function to add meta data and preprocess the input
+    */
+    @Override
+    public void processImportFile(File importedFile, ImportMain component) {
+        Integer outNodeIndex0 = 0;
+        String type = "student-step";
+        //component.addMetaDataFromInput(type, 0, outNodeIndex0, ".*");
+        return;
+    }
 
-	/*
-		Determine if the imported file is in the correct format for the data type selected
-	*/
-	@Override
-	public boolean validateImportedFile(File importedFile) {
-		try {
-			verifyInputFile(importedFile);
-		} catch (Exception e) {
-			logger.error("Couldn't verify Imported file as student-step: " + e.toString());
-			return false;
-		}
-		return true;
-	}
+    /*
+    	Determine if the imported file is in the correct format for the data type selected
+    */
+    @Override
+    public boolean validateImportedFile(File importedFile) {
+        try {
+            verifyInputFile(importedFile);
+        } catch (Exception e) {
+            logger.error("Couldn't verify Imported file as student-step: " + e.toString());
+            return false;
+        }
+        return true;
+    }
 
-	/**
+    /**
      * Verify the input file.
      * @param inputFile the File
      * @throws failure to verify the file will throw an exception
      */
-    private void verifyInputFile(File inputFile)
-        throws Exception
-    {
+    private void verifyInputFile(File inputFile) throws Exception {
         File shortFile = null;
         try {
             // truncate file...
@@ -71,9 +69,9 @@ public class StudentStep extends AbstractImportDataType {
             // Verify for each model
             for (String modelName : modelNames) {
                 File sssvsFile = FileHelper.getSSSVSFromStepRollupExport(shortFile, modelName,
-                                                                         false, invalidLines);
+                                 false, invalidLines);
                 if (sssvsFile != null && sssvsFile.length() > 0
-                    && sssvsFile.exists() && sssvsFile.canRead()) {
+                        && sssvsFile.exists() && sssvsFile.canRead()) {
                     logger.debug("File verified for KC: " + modelName);
                 }
             }
@@ -100,9 +98,7 @@ public class StudentStep extends AbstractImportDataType {
      * @param inputFile the file
      * @return list of KC model names
      */
-    private List<String> getKCModelNames(File inputFile)
-        throws Exception
-    {
+    private List<String> getKCModelNames(File inputFile) throws Exception {
         List<String> result = new ArrayList<String>();
 
         BufferedReader br = null;
@@ -115,10 +111,10 @@ public class StudentStep extends AbstractImportDataType {
             String line = null;
             if ((line = br.readLine()) != null) {
                 for (String header : line.split("\t")) {
-                	/* 	DID THIS EVER WORK?
-                	String modelName = this.getOptionAsString("model")
-            			.replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
-                	result.add(modelName);*/
+                    /* 	DID THIS EVER WORK?
+                    String modelName = this.getOptionAsString("model")
+                    	.replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
+                    result.add(modelName);*/
                 }
             }
         } catch (Exception e) {

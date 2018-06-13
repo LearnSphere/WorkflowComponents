@@ -17,28 +17,26 @@ import edu.cmu.pslc.datashop.extractors.ffi.HeadingReport;
 
 public class Transaction extends AbstractImportDataType {
 
-	/**
-	 * Determine if the imported file is in the correct format for the data type selected
-	 */
-	@Override
-	public boolean validateImportedFile(File importedFile) {
-		try {
-			verifyInputFile(importedFile);
-		} catch (Exception e) {
-			logger.error("Couldn't verify Imported file as student-step: " + e.toString());
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Determine if the imported file is in the correct format for the data type selected
+     */
+    @Override
+    public boolean validateImportedFile(File importedFile) {
+        try {
+            verifyInputFile(importedFile);
+        } catch (Exception e) {
+            logger.error("Couldn't verify Imported file as student-step: " + e.toString());
+            return false;
+        }
+        return true;
+    }
 
-	/**
+    /**
      * Verify the input file.
      * @param inputFile the File
      * @throws failure to verify the file will throw an exception
      */
-    private void verifyInputFile(File inputFile)
-        throws Exception
-    {
+    private void verifyInputFile(File inputFile) throws Exception {
         File shortFile = null;
         try {
             // Initially, we're just verifying the headers.
@@ -79,9 +77,7 @@ public class Transaction extends AbstractImportDataType {
      * @return the headings, or first line of the file
      * @throws Exception any failure to read the file
      */
-    private String getHeadings(File inputFile)
-        throws Exception
-    {
+    private String getHeadings(File inputFile) throws Exception {
         String result = null;
 
         BufferedReader br = null;
