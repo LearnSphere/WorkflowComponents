@@ -1,4 +1,5 @@
 <component_menu>
+    <Import />
 	<Import>
 	    <Recently_Used />
 		<File />
@@ -35,7 +36,6 @@
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
-	    <Import />
 		<AFM />
 		<BKT />
 		<RLM_Fitting />
