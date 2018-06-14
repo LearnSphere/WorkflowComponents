@@ -306,18 +306,6 @@ public class ImportXAPImain extends AbstractComponent {
                    }
                }
                
-               //Transfer Duration Format
-               for(int kt=0;kt<tabNames.length;kt++){
-                   if(tabNames[kt].equals("context extensions http://autotutor.x-in-y.com/AT timeTaken")){
-                       for(int rs=0;rs<mainContent[kt].length;rs++){          
-                           double duration=Double.parseDouble(mainContent[kt][rs])/1000;
-                           BigDecimal b =new BigDecimal(duration); 
-                           double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();  
-                           mainContent[kt][rs]=Double.toString(f1);
-                       }
-                   }
-               }
-               
                //Create array matrix about selected columns
                 String [][] selectContent=new String[array.length][];
                 for(int sc=0;sc<array.length;sc++){
@@ -366,7 +354,7 @@ public class ImportXAPImain extends AbstractComponent {
                }else{
                    selectContent=selectContent;
                }
-               
+  
                int ns;
                if(  !"null".equals(arrayAnal[0][1])){
                    ns=Integer.parseInt(arrayAnal[0][1]);  //numStatements
@@ -451,8 +439,20 @@ public class ImportXAPImain extends AbstractComponent {
                        }
                    }
                }
-               
-               File tabDeliFile = this.createFile("xAPI_TabDelimited_file", ".txt");
+                                
+               //Transfer Duration Format
+               for(int sc=0;sc<array.length;sc++){
+                   if (array[sc][0].contains("Duration (sec)")){
+                       for (int rs=0;rs<mainContent[sc].length;rs++){
+                           double duration=Double.parseDouble(selectContent[sc][rs])/1000;
+                           BigDecimal b =new BigDecimal(duration);
+                           double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                           selectContent[sc][rs]=Double.toString(f1);
+                       }
+                   }   
+               }
+             
+          File tabDeliFile = this.createFile("xAPI_TabDelimited_file", ".txt");
                     FileWriter fw = new FileWriter(tabDeliFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
                         for (String[] array1 : array) {        
