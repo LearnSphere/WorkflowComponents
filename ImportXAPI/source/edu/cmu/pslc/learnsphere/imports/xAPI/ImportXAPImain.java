@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 
 public class ImportXAPImain extends AbstractComponent {
 
@@ -300,6 +302,18 @@ public class ImportXAPImain extends AbstractComponent {
                            Date date = dt.parse(mainContent[kt][rs]);
                            SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                            mainContent[kt][rs]=dt1.format(date);
+                       }
+                   }
+               }
+               
+               //Transfer Duration Format
+               for(int kt=0;kt<tabNames.length;kt++){
+                   if(tabNames[kt].equals("context extensions http://autotutor.x-in-y.com/AT timeTaken")){
+                       for(int rs=0;rs<mainContent[kt].length;rs++){          
+                           double duration=Double.parseDouble(mainContent[kt][rs])/1000;
+                           BigDecimal b =new BigDecimal(duration); 
+                           double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();  
+                           mainContent[kt][rs]=Double.toString(f1);
                        }
                    }
                }
