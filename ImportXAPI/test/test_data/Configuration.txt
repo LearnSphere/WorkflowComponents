@@ -3,22 +3,40 @@
 #while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly.  
 #Note that: xAPI-JsonFlattener-file.txt is used for Choosing the headers' names.
 #If you want to specify the required Tab-delimited format, you may see https://datashop.memphis.edu/help?page=importFormatTd .
-#
+#Basic Required Tags: "Statement Id=id  Time=stored  Anon Student Id=actor mbox  Session Id=object id".
+
 Statement Id=id
 Time=stored
-Student Name=actor name
-Score=result score raw
 Anon Student Id=actor mbox
 Session Id=object id
-
+KC(Default)=result response
+Problem Name=context extensions http://autotutor.x-in-y.com/AT SKOTitle
+Level(Unitname)=context contextActivities parent1 definition extensions https://umiis.github.io/ITSProfile/Extensions/parent SKOTitle
+Duration(ms)=context extensions http://autotutor.x-in-y.com/AT timeTaken
+Action=verb display en-US
+Selection=authority name
+Input=context contextActivities parent1 definition extensions https://umiis.github.io/ITSProfile/Extensions/parent ST
+Score=result score raw
 
 
 #If you specify the top numbers of statements, you may specify the actual number values or "null";
-#
+
 numStatements=null
 
 
-#If you want to select the data by quantity of the data, you may specify the name of headers on the left and the actual value.
+#If you want to select the data by quantity of the data, you may specify the name of headers on the left and the actual value or "null".
 #<minValue,maxValue>
-filterTabs=Score
+
+filterTabs=null
 sizeInterval=<0.5,1.0>
+
+#Created Tags: "Row"
+
+orderTag=Row
+
+#Created Tags "Outcome",or "null";
+#Outcome is based on "result score raw"; if the value>=Threshold, the Outcome is "correct", else "incorrect".
+
+addTag=Outcome
+basedTag=Score
+Threshold=0.5

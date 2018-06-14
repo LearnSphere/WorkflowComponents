@@ -177,16 +177,17 @@ public class ImportXAPImain extends AbstractComponent {
                             System.arraycopy(myArray, 0, arrayConf[i], 0, myArray.length);
                     }                    
                     
-                    String array[][]=new String[list.size()-3][];
-                    for (int ar=0;ar<list.size()-3;ar++){
+                    //Create the array for replacing taps
+                    String array[][]=new String[list.size()-7][];
+                    for (int ar=0;ar<list.size()-7;ar++){
                         array[ar]=arrayConf[ar];
                     }
-                                        
-                    String arrayAnal[][]=new String[3][];
-                    arrayAnal[0]=arrayConf[list.size()-3];
-                    arrayAnal[1]=arrayConf[list.size()-2];
-                    arrayAnal[2]=arrayConf[list.size()-1];
-                                                                                                  
+                    //Create the array for analytics
+                    String arrayAnal[][]=new String[7][];
+                    for (int aa=0;aa<7;aa++){
+                        arrayAnal[aa]=arrayConf[list.size()-7+aa];                     
+                    }
+                    
                 //writer.writeAsTxt(flatJson, "sample.txt");
 	    	JsonFlattener parser = new JsonFlattener();
                 TabTextWriter writer = new TabTextWriter();
@@ -268,7 +269,7 @@ public class ImportXAPImain extends AbstractComponent {
                    }
                }
 
-               //transfer "actor mabox" into hashcode (add "Stu_" and make same length)
+               //transfer "actor mabox" into hashcode (add the prefix "Stu_" and make same length by append "#")
                ArrayList<Integer> strInt = new ArrayList<Integer>();
                int str;
                for (int k=0;k<tabNames.length;k++){
@@ -312,7 +313,7 @@ public class ImportXAPImain extends AbstractComponent {
                         }
                     }
                 }
-               
+                
                String sizeFilter = null;
                String sizeFilter1 = null;
                String sizeFilter2 = null;
@@ -358,16 +359,89 @@ public class ImportXAPImain extends AbstractComponent {
                    if(Integer.parseInt(arrayAnal[0][1])>selectContent[0].length){
                        ns=selectContent[0].length;
                    }
-               }
-               
-               else{
+               }else{
                    ns=selectContent[0].length; //numStatements
                }
 
+               //Add new tag: Row
+               ArrayList<String> row=new ArrayList<String>();
+               ArrayList<String> addTags=new ArrayList<String>();
+               String [][] selectContent1=new String[array.length+1][];
+               String [][] arrayAdd=new String[array.length+1][];
+               if (!"null".equals(arrayAnal[3][1])){
+                   int count1=0;
+                        for (String selectContent2 : selectContent[0]) {
+                            count1++;
+                            row.add(String.valueOf(count1));
+                        }
+                        Object[] rowArray=row.toArray();
+                        String rowAdd1[]=new String[rowArray.length];
+                        System.arraycopy(rowArray, 0, rowAdd1,0,rowArray.length);
+                        selectContent1[0]=rowAdd1;
+                        for (int sc1=1;sc1<array.length+1;sc1++){
+                            selectContent1[sc1]=selectContent[sc1-1];
+                        }
+                        selectContent=selectContent1;
+                        
+                        addTags.add(arrayAnal[3][1]); 
+                        Object[] rowAdd=addTags.toArray();
+                        String rowAdd2[]=new String[rowAdd.length];
+                        System.arraycopy(rowAdd, 0, rowAdd2, 0, rowAdd.length);
+                        arrayAdd[0]=rowAdd2;
+                        for(int sc2=1;sc2<array.length+1;sc2++){
+                            arrayAdd[sc2]=array[sc2-1];
+                        }
+                        array=arrayAdd;
+               }else{
+                   selectContent=selectContent;
+               }
+
+               //Add new tag: "Outcome"
+               ArrayList<String> column=new ArrayList<String>();
+               ArrayList<String> columnTags=new ArrayList<String>();
+               String [][] selectContent2=new String[array.length+1][];
+               String [][] arrayAdd2=new String[array.length+1][];
+
+               if(!"null".equals(arrayAnal[4][1])){
+                   for(int sc=0;sc<array.length;sc++){
+                       if (array[sc][0].contains(arrayAnal[5][1])){
+                           double threshold=Double.parseDouble(arrayAnal[6][1]);
+                           for(int rs=0;rs<selectContent[0].length;rs++){
+                               if(Double.parseDouble(selectContent[sc][rs])>=threshold){
+                                   column.add("CORRECT");
+                               }else{
+                                   column.add("INCORRECT");   
+                               }
+                           }
+                            
+                           Object[] columnArray=column.toArray();
+                           String columnAdd1[]=new String[columnArray.length];
+                           System.arraycopy(columnArray, 0, columnAdd1,0,columnArray.length);
+                           selectContent2[array.length]=columnAdd1;
+                           for (int sc1=0;sc1<array.length;sc1++){
+                               selectContent2[sc1]=selectContent[sc1];
+                           }
+                           selectContent=selectContent2;
+                           
+                           columnTags.add(arrayAnal[4][1]);
+                           Object[] columnTagsArray=columnTags.toArray();
+                           String columnTags1[]=new String[columnTagsArray.length];
+                           System.arraycopy(columnTagsArray, 0, columnTags1, 0, columnTagsArray.length);
+                           
+                           for (int columnNum=0;columnNum<array.length;columnNum++){
+                               arrayAdd2[columnNum]=array[columnNum];
+                           }
+                           arrayAdd2[array.length]=columnTags1;
+                           array=arrayAdd2;
+
+                       }
+                   }
+               }
+               
                File tabDeliFile = this.createFile("xAPI_TabDelimited_file", ".txt");
                     FileWriter fw = new FileWriter(tabDeliFile.getAbsoluteFile());
                     try (BufferedWriter bw = new BufferedWriter(fw)) {
-                        for (String[] array1 : array) {
+                        for (String[] array1 : array) {        
                             bw.write(array1[0]+"\t");
                         }
                         
