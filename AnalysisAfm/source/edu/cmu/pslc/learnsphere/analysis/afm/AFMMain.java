@@ -259,7 +259,7 @@ public class AFMMain extends AbstractComponent {
                 if (replaceHeaderIndex == headerArray.length) {
                     String newHeader = headerLine + TAB_CHAR
                             + "Predicted Error Rate (" + modelName
-                            + ")\n";
+                            + ")";
                     outputStream.write(newHeader.getBytes("UTF-8"));
                 } else {
                     outputStream.write(headerLine.getBytes("UTF-8"));
