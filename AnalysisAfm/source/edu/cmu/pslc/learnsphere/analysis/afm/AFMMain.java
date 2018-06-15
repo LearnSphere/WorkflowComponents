@@ -255,7 +255,7 @@ public class AFMMain extends AbstractComponent {
                     }
                     headerCount++;
                 }
-
+                
                 if (replaceHeaderIndex == headerArray.length) {
                     String newHeader = headerLine + TAB_CHAR
                             + "Predicted Error Rate (" + modelName
@@ -293,7 +293,6 @@ public class AFMMain extends AbstractComponent {
                     }
                     String[] valueArray = line.split(TAB_CHAR);
 
-
                     Integer colIndex = 0;
                     for (String value : valueArray) {
                         byte[] bytes = null;
@@ -315,8 +314,8 @@ public class AFMMain extends AbstractComponent {
                         colIndex++;
                     }
                     if (replaceHeaderIndex == headerArray.length) {
-                        outputStream.write(predictedValueString
-                                .getBytes("UTF-8"));
+                        byte[] bytes = (TAB_CHAR + predictedValueString).getBytes("UTF-8");
+                        outputStream.write(bytes);
                     }
 
                     outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
