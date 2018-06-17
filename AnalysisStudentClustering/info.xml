@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-    <author>EXPERIMENTAL</author>
+<author>Ying Fang
+  <email>ying.fang07@gmail.com</email>
+</author>
+<author>Suhaib Al-Rousan
+  <email>slrousan@memphis.edu</email>
+</author>
+ <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
+<abstract>The <b>Student Clusterning</b> component applies clustering analysis to capture learning patterns between students.</abstract>
+<description>Student Clusterning component accepts one tab delimited  data input. The user needs to specify the Id column dor students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of cluster shoulb be specified, between 2 and 16. Iit is 4 by default.</description>
+
+<inputs>
+<b>tab-delimited</b>
+</inputs>
+
+<outputs>
+    <b>image</b>
+    <b>Data Clusters</b>
+    <b>tab-delimited</b>
+    <b>Student Theolevel</b>
+</outputs>
+
+<options>
+<b>student</b>- Student ID<br/>
+<b>model</b> - The KC columns<br/>
+<b>duration</b> - The duration column in Secondes <br/>
+<b>output</b> - The output column</br>
+<b>k</b> - Number of clusters (K must me between 2 and 16)</br>
+<b>cluster desired</b> - cluster desired</br>
+</options>
 
 </info>

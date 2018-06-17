@@ -12,10 +12,12 @@
         </connection>
     </connections>
     <options>
-        <header1>Anon Student Id</header1>
-        <header2>KC (Unique.step)</header2>
-        <header3>Duration (sec)</header3>
-        <header4>Outcome</header4>
+        <student>Anon Student Id</student>
+        <model>KC (Unique.step)</model>
+        <duration>Duration (sec)</duration>
+        <outcome>Outcome</outcome>
+        <k>4</k>
+        <clusterDesired>clusterDesired</clusterDesired>
   </options>
     <inputs>
     <input0>

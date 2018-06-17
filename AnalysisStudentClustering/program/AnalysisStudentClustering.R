@@ -15,35 +15,41 @@ while (i <= length(args)) {
     }
     inputFile = args[i+1]
     i = i+1
-  }   else if (args[i] == "-header1") {
+  }   else if (args[i] == "-student") {
     if (length(args) == i) {
-      stop("header1 must be specified")
+      stop("student must be specified")
     }
-    header1 = args[i+1]
+    student = args[i+1]
     i = i+1
-  }  else if (args[i] == "-header2") {
+  }  else if (args[i] == "-model") {
     if (length(args) == i) {
-      stop("header2 must be specified")
+      stop("model must be specified")
     }
-    header2 = args[i+1]
+    model = args[i+1]
     i = i+1
-  } else if (args[i] == "-header3") {
+  } else if (args[i] == "-duration") {
     if (length(args) == i) {
-      stop("header3 must be specified")
+      stop("duration must be specified")
     }
-    header3 = args[i+1]
+    duration = args[i+1]
     i = i+1
-  } else if (args[i] == "-header4") {
+  } else if (args[i] == "-outcome") {
     if (length(args) == i) {
-      stop("header1 must be specified")
+      stop("outcome must be specified")
     }
-    header4 = args[i+1]
+    outcome = args[i+1]
     i = i+1
   } else if (args[i] == "-workingDir") {
     if (length(args) == i) {
       stop("workingDir name must be specified")
     }
     workingDirectory = args[i+1]
+    i = i+1
+  } else if (args[i] == "-k") {
+    if (length(args) == i) {
+      stop("k (number of clusters) name must be specified")
+    }
+    kClusters = args[i+1]
     i = i+1
   } else if (args[i] == "-programDir") {
     if (length(args) == i) {
@@ -72,7 +78,7 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 
-
+kClusters <- as.numeric(kClusters)
 # Creates output log file
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
@@ -80,10 +86,10 @@ sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 options(scipen=999)
 
-header1 = gsub("[ ()-]", ".", header1)
-header2 = gsub("[ ()-]", ".", header2)
-header3 = gsub("[ ()-]", ".", header3)
-header4 = gsub("[ ()-]", ".", header4)
+header1 = gsub("[ ()-]", ".", student)
+header2 = gsub("[ ()-]", ".", model)
+header3 = gsub("[ ()-]", ".", duration)
+header4 = gsub("[ ()-]", ".", outcome)
 print(header1)
 print(header2)
 print(header3)
@@ -138,12 +144,14 @@ fit <- hclust(d, method="ward.D2")
 plot(fit) # display dendogram
 
 
-rect.hclust(fit, k=4, border='red')
-group4 <- cutree(fit, k=4)
+rect.hclust(fit, k=kClusters, border='red')
+group4 <- cutree(fit, k=kClusters)
 student_theolevel<-cbind(student_theolevel,group4)
 dev.off()
 
-
+# Output data
+outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
+write.table(student_theolevel,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
 # Stop logging
 sink()
