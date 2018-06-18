@@ -64,28 +64,12 @@
 
     <xs:complexType name="OutFileList1">
         <xs:choice>
-            <xs:element ref="text" />
-        </xs:choice>
-    </xs:complexType>
-
-
-     <xs:complexType name="OutputDefinition2">
-        <xs:complexContent>
-            <xs:extension base="InputContainer">
-                <xs:sequence>
-                    <xs:element type="OutFileList2" name="files" />
-                    <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-
-    <xs:complexType name="OutFileList2">
-        <xs:choice>
             <xs:element ref="tab-delimited" />
         </xs:choice>
     </xs:complexType>
+
+
+    
 
 
 
@@ -94,7 +78,6 @@
         <xs:sequence>
             <xs:element name="output0" type="OutputDefinition0" />
             <xs:element name="output1" type="OutputDefinition1" />
-            <xs:element name="output2" type="OutputDefinition2" />
         </xs:sequence>
     </xs:complexType>
 
@@ -107,8 +90,8 @@
              <xs:element type="FileInputHeader" name="model" id="model" default="\s*KC\s*(.*)\s*" />
              <xs:element type="FileInputHeader" name="duration" id="duration" default="(?i).*duration..sec.*" />
              <xs:element type="FileInputHeader" name="outcome" id="outcome" default="(?i).*outcome.*" />
-             <xs:element type="xs:string" name="k" id="number_of_clusters" default="4" />
-             <xs:element type="xs:string" name="clusterDesired" id="Cluster_Desired" default="Cluster Desired" />
+             <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
+           
         </xs:choice>
     </xs:complexType>
 

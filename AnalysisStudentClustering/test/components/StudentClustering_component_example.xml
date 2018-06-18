@@ -13,11 +13,10 @@
     </connections>
     <options>
         <student>Anon Student Id</student>
-        <model>KC (Unique.step)</model>
+        <model>KC (Default)</model>
         <duration>Duration (sec)</duration>
         <outcome>Outcome</outcome>
-        <k>4</k>
-        <clusterDesired>clusterDesired</clusterDesired>
+        <numberOfClusters>3</numberOfClusters>
   </options>
     <inputs>
     <input0>

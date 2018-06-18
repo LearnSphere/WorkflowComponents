@@ -45,7 +45,7 @@ while (i <= length(args)) {
     }
     workingDirectory = args[i+1]
     i = i+1
-  } else if (args[i] == "-k") {
+  } else if (args[i] == "-numberOfClusters") {
     if (length(args) == i) {
       stop("k (number of clusters) name must be specified")
     }
@@ -145,8 +145,8 @@ plot(fit) # display dendogram
 
 
 rect.hclust(fit, k=kClusters, border='red')
-group4 <- cutree(fit, k=kClusters)
-student_theolevel<-cbind(student_theolevel,group4)
+Clusters <- cutree(fit, k=kClusters)
+student_theolevel<-cbind(student_theolevel[,1],Clusters,student_theolevel[,2:length(colnames(student_theolevel))])
 dev.off()
 
 # Output data

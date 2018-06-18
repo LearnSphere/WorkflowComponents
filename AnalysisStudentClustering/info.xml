@@ -8,18 +8,18 @@
   <email>slrousan@memphis.edu</email>
 </author>
  <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
-<abstract>The <b>Student Clusterning</b> component applies clustering analysis to capture learning patterns between students.</abstract>
-<description>Student Clusterning component accepts one tab delimited  data input. The user needs to specify the Id column dor students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of cluster shoulb be specified, between 2 and 16. Iit is 4 by default.</description>
+<abstract>The <b>Student Clustering</b> component applies clustering analysis to capture learning patterns among students.</abstract>
+<description>Student Clustering component accepts one tab-delimited data input. The user needs to specify the Id column for students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of clusters should be specified, between 2 and 16. It is 4 by default.
+</description>
 
 <inputs>
 <b>tab-delimited</b>
 </inputs>
 
 <outputs>
-    <b>image</b>
-    <b>Data Clusters</b>
-    <b>tab-delimited</b>
-    <b>Student Theolevel</b>
+    <b>Hierarchical Plot (png)</b>- It show the clusters hierarchically. 
+    <b>Data with clusters (txt)</b>- It shows clusters and the data realted to each one in a tabular form.
+    
 </outputs>
 
 <options>
@@ -27,8 +27,7 @@
 <b>model</b> - The KC columns<br/>
 <b>duration</b> - The duration column in Secondes <br/>
 <b>output</b> - The output column</br>
-<b>k</b> - Number of clusters (K must me between 2 and 16)</br>
-<b>cluster desired</b> - cluster desired</br>
+<b>k</b> - Number of clusters (It  must me between 2 and 16)</br>
 </options>
 
 </info>

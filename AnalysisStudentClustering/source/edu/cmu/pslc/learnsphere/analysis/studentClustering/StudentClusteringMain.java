@@ -41,22 +41,22 @@ public class StudentClusteringMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
            
             File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
+          //  File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/Results.txt");
 
-            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists() ) {
+            if (file0 != null && file0.exists()  && file2 != null && file2.exists() ) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
                 String label0 = "image";
-                Integer nodeIndex1 = 1;
-                Integer fileIndex1 = 0;
-                String label1 = "text";
-                 Integer nodeIndex2 = 2;
+//                Integer nodeIndex1 = 1;
+//                Integer fileIndex1 = 0;
+//                String label1 = "text";
+                 Integer nodeIndex2 = 1;
                 Integer fileIndex2 = 0;
                 String label2 = "tab-delimited";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
-                this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
+               // this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
                 this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
             } else {
                  this.addErrorMessage("Files missing.");
