@@ -33,6 +33,7 @@
 		<Generate_TKT_Features />
 		<Row_Remover />
 		<Text_Converter />
+		<Datastage_Aggregator />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
