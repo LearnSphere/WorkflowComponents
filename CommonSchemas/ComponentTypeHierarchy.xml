@@ -15,7 +15,8 @@
 		</DataShop>
 	</Import>
 	<Transform>
-	    <Recently_Used />
+		<Recently_Used />
+		<Anonymize />
 		<Deidentify />
 		<Join />
 		<Generate_PFA_Features />
