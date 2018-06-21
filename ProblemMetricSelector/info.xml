@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemMetricSelector</url>
+<date>June 21, 2018</date>
+<abstract>The <b>ProblemMetricSelector</b> component is an example of a(n) Python component.</abstract>
+<description>Allow user to select metrics for the model search to use in its optimization</description>
+
+<inputs>
+<b>dataset</b>
+<b>problem-task</b>
+</inputs>
+
+<outputs>
+<b>modeling-problem</b>
+</outputs>
+
+<options>
+<b>metric -- type FileInputHeader</b>
+</options>
+
+</info>
