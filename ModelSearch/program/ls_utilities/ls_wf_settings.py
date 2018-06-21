@@ -97,6 +97,9 @@ class Settings(object):
     def get_out_path(self):
         return self.working_dir
 
+    def get_ta2_url(self):
+        return self.cfg.get('TA2', 'ta2_url')
+
     def get(self, sect, key):
         """
         Manually retrieve specific configuration from settings. Basically a wrapper around
@@ -135,3 +138,6 @@ class D3MSettings(Settings):
 
     def get_out_path(self):
         return self.d3m_cfg.get('Data', 'out_dir_root')
+
+    def get_ta2_url(self):
+        return self.d3m_cfg.get('TA2', 'ta2_url')
