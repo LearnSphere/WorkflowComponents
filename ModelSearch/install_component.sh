@@ -5,7 +5,7 @@
 # Assumed dependencies:
 # -- python pip
 # -- python virtualenv
-echo "Setting up D3MPipelineSearch Tigris Components for local system"
+echo "Setting up Model Search Tigris Components for local system"
 
 virtualenv env --python=python3.6
 source env/bin/activate

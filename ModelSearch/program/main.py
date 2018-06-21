@@ -72,7 +72,7 @@ if __name__ == '__main__':
     logger.debug("Got Problem Description: %s" % prob.print())
 
     # Init the server connection
-    address = config.get("TA2", 'ta2_url')
+    address = config.get_ta2_url()
     
     logger.info("using server at address %s" % address)
     serv = TA2Client(address)
