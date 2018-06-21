@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemTaskSelector</url>
+<date>June 21, 2018</date>
+<abstract>The <b>ProblemTaskSelector</b> component is an example of a(n) Python component.</abstract>
+<description>Allow user to select a problem task for the model search to perform</description>
+
+<inputs>
+<b>dataset</b>
+<b>problem-target</b>
+</inputs>
+
+<outputs>
+<b>problem-task</b>
+</outputs>
+
+<options>
+<b>task_name -- type FileInputHeader</b>
+</options>
+
+</info>

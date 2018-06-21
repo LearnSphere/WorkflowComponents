@@ -1,0 +1,9 @@
+[Dataset]
+out_file = problemTask.tsv
+[Logging]
+log_level = INFO
+enable_syslog = True
+enable_file_log = True
+file_log_path = /rdata/dataStore/d3m/tmp
+
+

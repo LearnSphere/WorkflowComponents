@@ -1,0 +1,56 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>ProblemTaskSelector</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+<input0>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<dataset>
+<index>0</index>
+<file_path>/datashop/workflow_components/ProblemTaskSelector/test/components/datasetDoc.tsv</file_path>
+<label>text</label>
+<file_name>datasetDoc.tsv</file_name>
+</dataset>
+</files>
+<inputmeta />
+</input0>
+<input1>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<problem-target>
+<index>1</index>
+<file_path>/datashop/workflow_components/ProblemTaskSelector/test/components/datasetDoc.tsv</file_path>
+<label>text</label>
+<file_name>datasetDoc.tsv</file_name>
+</problem-target>
+</files>
+<inputmeta />
+</input1>
+</inputs>
+
+<options>
+<task_name>.*</task_name>
+</options>
+
+</component>
