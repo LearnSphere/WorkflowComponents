@@ -54,7 +54,7 @@
   </xs:complexType>
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="model-fitter-set"/>
+      <xs:element ref="model-set"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="OutputType">

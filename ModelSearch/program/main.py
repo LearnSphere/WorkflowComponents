@@ -146,19 +146,19 @@ if __name__ == '__main__':
         # logger.debug("Received solution: %s" % str(soln.to_dict()))
         # logger.debug("###########################################")
         
-    # out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
-    # with open(out_file_path, 'w') as out_file:
-        # out = csv.writer(out_file, delimiter='\t')
-        # out.writerow([solns[sln].id for sln in solns])
-        # out.writerow([solns[sln].to_dict() for sln in solns])
-        # out.writerow([scores[sln].to_dict() for sln in solns])
+    out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
+    with open(out_file_path, 'w') as out_file:
+        out = csv.writer(out_file, delimiter='\t')
+        out.writerow([solns[sln].id for sln in solns])
+        out.writerow([solns[sln].to_dict() for sln in solns])
+        out.writerow([scores[sln].to_dict() for sln in solns])
 
     # Write dataset info to output file
-    # out_file_path = path.join(args.workingDir, config.get('Output', 'dataset_out_file'))
-    # ds.to_component_out_file(out_file_path)
-    # if args.is_test == 1:
-        # # Write out human readable version for debugging
-        # ds.to_json_pretty(out_file_path + '.readable')
+    out_file_path = path.join(args.workingDir, config.get('Output', 'dataset_out_file'))
+    ds.to_component_out_file(out_file_path)
+    if args.is_test == 1:
+        # Write out human readable version for debugging
+        ds.to_json_pretty(out_file_path + '.readable')
 
     # Write Solution workflows to file
 

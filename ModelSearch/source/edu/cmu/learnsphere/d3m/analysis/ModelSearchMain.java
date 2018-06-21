@@ -39,7 +39,7 @@ public class ModelSearchMain extends AbstractComponent {
 	this.addMetaDataFromInput("dataset", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
-	this.addMetaData("model-fitter-set", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("model-set", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
@@ -61,7 +61,7 @@ public class ModelSearchMain extends AbstractComponent {
 
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/model-flows.tsv");
 
-		this.addOutputFile(outputFile0, 0, 0, "model-fitter-set");
+		this.addOutputFile(outputFile0, 0, 0, "model-set");
 
 
         System.out.println(this.getOutput());
