@@ -34,7 +34,7 @@ public class ImportMain extends AbstractComponent {
     /**
      * Processes the file
      */
-    @Override
+    /*@Override
     protected void runComponent() {
         String fileType = getFileType();
 
@@ -85,7 +85,7 @@ public class ImportMain extends AbstractComponent {
         String type = "student-step";
 
         //this.addMetaDataFromInput(type, 0, 0, ".*");
-    }
+    }*/
 
     /**
      * Return a string of the file type.  This is selected in the options pane of the component.
