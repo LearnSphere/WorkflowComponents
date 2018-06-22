@@ -15,7 +15,8 @@
 		</DataShop>
 	</Import>
 	<Transform>
-	    <Recently_Used />
+		<Recently_Used />
+		<Anonymize />
 		<Deidentify />
 		<Join />
 		<Generate_PFA_Features />
@@ -33,6 +34,7 @@
 		<Generate_TKT_Features />
 		<Row_Remover />
 		<Text_Converter />
+		<Datastage_Aggregator />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
