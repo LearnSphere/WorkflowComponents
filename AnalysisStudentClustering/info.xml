@@ -6,7 +6,7 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
 <abstract>The <b>Student Clustering</b> component applies clustering analysis to capture learning patterns among students.</abstract>
-<description>Student Clustering component accepts one tab-delimited data input. The user needs to specify the Id column for students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of clusters should be specified, between 2 and 16. It is 4 by default. The R package “hclust” (Murtagh and Legendre, 2014) is applied in this clustering analysis.</description>
+<details>Student Clustering component accepts one tab-delimited data input. The user needs to specify the Id column for students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of clusters should be specified, between 2 and 16. It is 4 by default. The R package “hclust” (Murtagh and Legendre, 2014) is applied in this clustering analysis.</details>
 <inputs>
   <b>tab-delimited</b>
 </inputs>
