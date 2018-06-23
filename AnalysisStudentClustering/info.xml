@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <info>
-<author>Ying Fang
-  <email>ying.fang07@gmail.com</email>
+  <author>Ying Fang <email>ying.fang07@gmail.com</email>
 </author>
-<author>Suhaib Al-Rousan
-  <email>slrousan@memphis.edu</email>
+<author>Suhaib Al-Rousan <email>slrousan@memphis.edu</email>
 </author>
- <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
 <abstract>The <b>Student Clustering</b> component applies clustering analysis to capture learning patterns among students.</abstract>
-<description>Student Clustering component accepts one tab-delimited data input. The user needs to specify the Id column for students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of clusters should be specified, between 2 and 16. It is 4 by default.
-</description>
-
+<description>Student Clustering component accepts one tab-delimited data input. The user needs to specify the Id column for students. User also to select the model header from the KC columns. Moreover, the duration and output headers should be selected by the user. The number of clusters should be specified, between 2 and 16. It is 4 by default. The R package “hclust” (Murtagh and Legendre, 2014) is applied in this clustering analysis.</description>
 <inputs>
-<b>tab-delimited</b>
+  <b>tab-delimited</b>
 </inputs>
-
 <outputs>
-    <b>Hierarchical Plot (png)</b>- It show the clusters hierarchically. 
-    <b>Data with clusters (txt)</b>- It shows clusters and the data realted to each one in a tabular form.
-    
-</outputs>
-
-<options>
-<b>student</b>- Student ID<br/>
-<b>model</b> - The KC columns<br/>
-<b>duration</b> - The duration column in Secondes <br/>
-<b>output</b> - The output column</br>
-<b>k</b> - Number of clusters (It  must me between 2 and 16)</br>
-</options>
-
-</info>
+  <b>Hierarchical Plot (png)</b>- It show the clusters hierarchically.    <b>Data with clusters (txt)</b>- It shows clusters and the student data related to each one in a tabular form.</outputs>
+  <options>
+    <ol>
+      <li>
+        <b>student</b>- Student ID</li>
+        <li>
+          <b>model</b> - The KC column</li>
+          <li>
+            <b>duration</b> - The duration column in Seconds </li>
+            <li>
+              <b>output</b> - The output column</li>
+              <li>
+                <b>k</b> - Number of clusters (at least 2)</li>
+              </ol>
+            </options>
+          </info>
