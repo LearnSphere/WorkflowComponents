@@ -14,7 +14,8 @@
   <top>106</top>
   <options>
   	<salt>testSalt</salt>
-	<columnToHash>col2</columnToHash>
+	<columnsToHash>col1</columnsToHash>
+	<columnsToHash>col3</columnsToHash>
   </options>
   <inputs>
     <input0>

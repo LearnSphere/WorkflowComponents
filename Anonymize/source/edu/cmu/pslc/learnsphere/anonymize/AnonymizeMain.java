@@ -105,57 +105,8 @@ public class AnonymizeMain extends AbstractComponent {
 
     @Override
     protected void processOptions() {
-        //Integer outNodeIndex0 = 0;
-        //this.addMetaDataFromInput("csv", 0, outNodeIndex0, ".*");
-
-        // Open the input file.  Read the first line and
-        // add the comma separated headers to the metadata
-
-        File inputFile = this.getAttachment(0, 0);
-        if (!(inputFile.exists() && inputFile.isFile() && inputFile.canRead())) {
-            // There is no input.  No need to output an error here
-            return;
-        }
-
-        FileReader fReader = null;
-        BufferedReader bReader = null;
-        try {
-            fReader = new FileReader(inputFile);
-            bReader = new BufferedReader(fReader);
-
-            // Get the headers as an ArrayList
-            ArrayList<String> headers = new ArrayList<String>();
-
-            String firstLine = bReader.readLine();
-
-            if (firstLine != null) {
-                String [] firstLineTokens = firstLine.split(",");
-                for (String token : firstLineTokens) {
-                    headers.add(token);
-                }
-            }
-
-            logger.debug("Headers : " + headers.toString());
-
-            // Add the headers to the metadata
-            int c = 0;
-            for (String header : headers) {
-                this.addMetaData("csv", 0, META_DATA_HEADER, "asdfheader" + c, c, header);
-                c++;
-            }
-        } catch (IOException e) {
-            logger.error("Couldn't read from input file in AnonymizeMain.processOptions: " +
-                         e.toString());
-        } finally {
-            if (bReader != null) {
-                try {
-                    bReader.close();
-                } catch (IOException e) {
-                    logger.error("Couldn't close the input file in AnonymizeMain.processOptions: " +
-                                 e.toString());
-                }
-            }
-        }
+        Integer outNodeIndex0 = 0;
+        this.addMetaDataFromInput("csv", 0, outNodeIndex0, ".*");
     }
 
 }
