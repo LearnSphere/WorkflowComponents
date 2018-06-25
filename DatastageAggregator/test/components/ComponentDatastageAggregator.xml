@@ -27,7 +27,7 @@
     <options/>
       
   <inputs>
-     <!-- <input0>
+     <input0>
       <component_id>Import-1-x346027</component_id>
       <component_id_human>Import #3</component_id_human>
       <component_type>import</component_type>
@@ -36,9 +36,9 @@
       <errors />
       <files>
       <file>
-        <file_path>test/test_data/course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_VideoInteraction.csv</file_path>
+        <file_path>test/test_data/HumanitiesSciences_Econ_1_Summer2015_VideoInteraction.csv</file_path>
         <label>File</label>
-        <file_name>course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_VideoInteraction.csv</file_name>
+        <file_name>HumanitiesSciences_Econ_1_Summer2015_VideoInteraction.csv</file_name>
         <index>0</index>
       </file>
       </files>
@@ -52,9 +52,9 @@
       <errors />
       <files>
 	<file>
-        <file_path>test/test_data/course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_EventXtract.csv</file_path>
+        <file_path>test/test_data/HumanitiesSciences_Econ_1_Summer2015_EventXtract.csv</file_path>
         <label>File</label>
-        <file_name>course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_EventXtract.csv</file_name>
+        <file_name>HumanitiesSciences_Econ_1_Summer2015_EventXtract.csv</file_name>
         <index>0</index>
       </file>
       </files>
@@ -68,9 +68,9 @@
       <errors />
       <files>
       <file>
-        <file_path>test/test_data/course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_ActivityGrade.csv</file_path>
+        <file_path>test/test_data/HumanitiesSciences_Econ_1_Summer2015_ActivityGrade.csv</file_path>
         <label>File</label>
-        <file_name>course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_ActivityGrade.csv</file_name>
+        <file_name>HumanitiesSciences_Econ_1_Summer2015_ActivityGrade.csv</file_name>
         <index>0</index>
       </file>
       </files>
@@ -84,14 +84,14 @@
       <errors />
       <files>
 	<file>
-        <file_path>test/test_data/course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_Performance.csv</file_path>
+        <file_path>test/test_data/HumanitiesSciences_Econ_1_Summer2015_FinalGrade.csv</file_path>
         <label>File</label>
-        <file_name>course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_Performance.csv</file_name>
+        <file_name>HumanitiesSciences_Econ_1_Summer2015_FinalGrade.csv</file_name>
         <index>0</index>
       </file>
       </files>
-    </input0>-->
-    <input0>
+    </input0>
+    <!-- <input0>
       <component_id>Import-1-x346027</component_id>
       <component_id_human>Import #3</component_id_human>
       <component_type>import</component_type>
@@ -106,7 +106,7 @@
         <index>0</index>
       </file>
       </files>
-     </input0>
+     </input0>-->
     
     
     </inputs>

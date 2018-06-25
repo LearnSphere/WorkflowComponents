@@ -19,7 +19,9 @@ def newAggrDataRow():
                 "distinct_forum_HL_participation_count": 0,
                 "forum_LL_participation_count": 0,
                 "distinct_forum_LL_participation_count": 0,
-                "performance_grade": 0}
+                "performance_grade": 0,
+                "final_grade1": 0,
+                "final_grade2": 0}
     return aggrDataRow
 
 
@@ -239,6 +241,13 @@ def differentForumSession (studentId, forumTime) :
 # -homeworkFile "course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_ActivityGrade.csv"
 # -videoInteractionFile "course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_VideoInteraction.csv"
 # -performanceFile "course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_Performance.csv"
+
+# -eventXtractFile "HumanitiesSciences_Econ_1_Summer2015_EventXtract.csv"
+# -homeworkFile "HumanitiesSciences_Econ_1_Summer2015_ActivityGrade.csv"
+# -videoInteractionFile "HumanitiesSciences_Econ_1_Summer2015_VideoInteraction.csv"
+# -finalGradeFile "HumanitiesSciences_Econ_1_Summer2015_FinalGrade.csv"
+
+
 if __name__ == "__main__":
     #input files
     #eventXtractFile = "course-v1_OLI_UCLA+StatReasoning+Stigler_PSYC100A_001_Winter2017_EventXtract_test.csv"
@@ -249,12 +258,14 @@ if __name__ == "__main__":
     parser.add_argument('-homeworkFile', type=str, help='Homework data location', default="")
     parser.add_argument('-videoInteractionFile', type=str, help='VideoInteraction data location', default="")
     parser.add_argument('-performanceFile', type=str, help='Performance data location', default="")
+    parser.add_argument('-finalGradeFile', type=str, help='Final grade data location', default="")
     args, unknown = parser.parse_known_args()
  
     eventXtractFile = args.eventXtractFile
     homeworkFile = args.homeworkFile
     videoInteractionFile = args.videoInteractionFile
     performanceFile = args.performanceFile
+    finalGradeFile = args.finalGradeFile
     
     debug = False
     debugEventXtractOutputFile = None
@@ -503,6 +514,29 @@ if __name__ == "__main__":
             studentId = data[i][performanceStudentInd]
             if studentId in studentAggData.keys():
                 studentAggData[studentId]["performance_grade"] = data[i][performanceGradeColInd]
+
+    #set finalGrade
+    hasSecondFinalGradeCol = False
+    if finalGradeFile != "":
+        finalGradeStudentInd = 0
+        finalGrade1GradeColInd = 2
+        finalGrade2GradeColInd = 3
+        with open(finalGradeFile,'r') as dest_f:
+            data_iter = csv.reader(dest_f, 
+                                   delimiter = ",", 
+                                   quotechar = '"')
+            data = [data for data in data_iter]
+        rows = len(data)
+        cols = len(data[0])
+        
+        for i in range(1, rows):
+            studentId = data[i][finalGradeStudentInd]
+            if studentId in studentAggData.keys():
+                studentAggData[studentId]["final_grade1"] = data[i][finalGrade1GradeColInd]
+                if cols == 4:
+                    studentAggData[studentId]["final_grade2"] = data[i][finalGrade2GradeColInd]
+                    hasSecondFinalGradeCol = True
+
             
     if debug:
         debugEventXtractOutputFile.close()
@@ -538,7 +572,12 @@ if __name__ == "__main__":
                     "distinct_forum_LL_participation_count"]
 
     if performanceFile != "":
-        aggrDataHeader.append("performance_grade") 
+        aggrDataHeader.append("performance_grade")
+
+    if finalGradeFile != "":
+        aggrDataHeader.append("final_grade1") 
+        if hasSecondFinalGradeCol:
+            aggrDataHeader.append("final_grade2") 
     
 
     aggOutputFile.write("student\t" + "\t".join(aggrDataHeader) + "\n")

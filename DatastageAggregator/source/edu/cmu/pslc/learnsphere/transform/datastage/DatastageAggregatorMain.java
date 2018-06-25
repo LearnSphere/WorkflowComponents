@@ -33,6 +33,7 @@ public class DatastageAggregatorMain extends AbstractComponent {
         String videoInteractionFileName = "";
         String homeworkFileName = "";
         String performanceFileName = "";
+        String finalGradeFileName = "";
         if (inputFiles != null) {
                 int inFileIndex = 0;
                 for (File file : inputFiles) {
@@ -52,6 +53,7 @@ public class DatastageAggregatorMain extends AbstractComponent {
                                 videoInteractionFileName = "";
                                 homeworkFileName = "";
                                 performanceFileName = "";
+                                finalGradeFileName = "";
                                 try {
                                         zipOutputDirectory = this.getAttachmentAndUnzip(inNodeIndex, inFileIndex);
                                 } catch (Exception e) {
@@ -72,6 +74,8 @@ public class DatastageAggregatorMain extends AbstractComponent {
                                                         homeworkFileName = thisFile.getAbsolutePath();
                                                 } else if (thisFile.getName().matches(".*_Performance\\.csv")) {
                                                         performanceFileName = thisFile.getAbsolutePath();
+                                                } else if (thisFile.getName().matches(".*_FinalGrade\\.csv")) {
+                                                        finalGradeFileName = thisFile.getAbsolutePath();
                                                 }
                                         }
                                 }
@@ -85,6 +89,8 @@ public class DatastageAggregatorMain extends AbstractComponent {
                                         homeworkFileName = file.getAbsolutePath();
                                 } else if (file.getName().matches(".*_Performance\\.csv")) {
                                         performanceFileName = file.getAbsolutePath();
+                                } else if (file.getName().matches(".*_FinalGrade\\.csv")) {
+                                        finalGradeFileName = file.getAbsolutePath();
                                 } 
                         }
                         inFileIndex++;
@@ -101,6 +107,8 @@ public class DatastageAggregatorMain extends AbstractComponent {
                         this.setOption("homeworkFile", homeworkFileName);
                 if (performanceFileName != "")
                         this.setOption("performanceFile", performanceFileName);
+                if (finalGradeFileName != "")
+                        this.setOption("finalGradeFile", finalGradeFileName);
         } else {
                 String exErr = "No input files uploaded.";
                 addErrorMessage(exErr);
