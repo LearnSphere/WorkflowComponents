@@ -37,6 +37,11 @@ class Metric(object):
     __ignore_chars__ = ['-', '_']
 
     def __init__(self, my_type, k=None, pos=None ):
+        """
+        my_type is either a string or an int that correlates with an enum of
+        all available types
+
+        """
         logger.debug("Initializing Metric with type: %s" % my_type)
         self.type = self.get_match(my_type)
         self.k = k

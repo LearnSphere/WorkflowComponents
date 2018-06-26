@@ -5,7 +5,9 @@
 
 import logging
 import json
+from json import JSONDecodeError
 from abc import ABC, abstractmethod
+import ast
 
 from google.protobuf import json_format
 from protobuf_to_dict import protobuf_to_dict
@@ -101,18 +103,25 @@ class Model(object):
         """
         logger.debug("type of data to load from json: %s" % str(type(data)))
         if isinstance(data, str):
-            d = json.loads(data)
-            logger.debug(d)
-            d = json_format.Parse(data, pipeline_pb2.PipelineDescription())
+            try: 
+                d = json.loads(data)
+            except JSONDecodeError:
+                d = ast.literal_eval(data)
         elif isinstance(data, dict):
             logger.debug(data)
-            d = json_format.Parse(str(data), pipeline_pb2.PipelineDescription())
+            d = data
         else:
             raise Exception("Invalid type given: %s" % str(type(data)))
+
+        logger.debug("got json data for new model: %s" % str(d))
         
-        out = Model(d.id, model=d)
-        logger.debug("Got pipeline parsed: %s" % str(d))
-        return out
+        mdl = Model(d['id'])
+        mdl.name = d['name']
+        mdl.desc = d['description']
+        mdl.add_description(d['model'])
+	
+        logger.debug("Got pipeline parsed: %s" % str(mdl))
+        return mdl
 
 
     def to_file(self, fpath):
@@ -131,6 +140,9 @@ class Model(object):
             'description': self.desc,
             'model': self.model
         }
+    
+    # def from_dict(self, data):
+        
 
     def __str__(self):
         return str(self.to_dict())

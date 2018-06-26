@@ -202,6 +202,12 @@ class TA2Client(object):
         if metrics is None:
             m = msg.performance_metrics.add()
             m.metric = problem_pb2.ACCURACY
+        else:
+            for met in metrics:
+                metric = met.to_protobuf()
+                m = msg.performance_metrics.add()
+                m.metric = metric.metric
+                
 
         logger.debug("Sending Score solution request: \n%s" % str(msg))
         reply = self.serv.ScoreSolution(msg)

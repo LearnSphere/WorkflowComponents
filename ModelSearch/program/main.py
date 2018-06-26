@@ -110,30 +110,31 @@ if __name__ == '__main__':
     # search_id = serv.search_solutions(prob, ds)
     # soln_ids = serv.get_search_solutions_results(search_id)
     # if soln_ids is None:
-        # raise Exception("No solution returned")
-    fit_req_ids = {}
-    fitted_solns = {}
-    fitted_results = {}
-    for sid, soln in solns.items():
-        fit_req_ids[sid] = serv.fit_solution(soln, ds)
-    for sid, rid in fit_req_ids.items():
-        logger.debug("solution id: %s\tfit solution request id: %s" % (sid, rid))
-        fitted_solns[sid], fitted_results[sid] = serv.get_fit_solution_results(rid)
+        # raise Exception("No solution returned") 
 
-    logger.debug("Got fitted solutions with ids: %s" % str(fitted_solns) )
-
-    
-    req_ids = {}
-    solution_predictions = {}
-    for sid, fsid in fitted_solns.items():
-        # req_ids[mid] = serv.produce_solution(model, ds)
-        req_ids[fsid] = serv.produce_solution(fsid, solns[sid], ds)
-    logger.debug("Created predoce solution requests with ids: %s" % str(req_ids))
-    for fsid, rid in req_ids.items():
-        solution_predictions[fsid] = serv.get_produce_solution_results(rid)
-
-    for fsid, predictions in solution_predictions.items():
-        logger.debug("Got predictions from fitted solution, %s: %s" % (fsid, predictions))
+    # fit_req_ids = {}
+    # fitted_solns = {}
+    # fitted_results = {}
+    # for sid, soln in solns.items():
+        # fit_req_ids[sid] = serv.fit_solution(soln, ds)
+    # for sid, rid in fit_req_ids.items():
+        # logger.debug("solution id: %s\tfit solution request id: %s" % (sid, rid))
+        # fitted_solns[sid], fitted_results[sid] = serv.get_fit_solution_results(rid)
+# 
+    # logger.debug("Got fitted solutions with ids: %s" % str(fitted_solns) )
+# 
+   #  
+    # req_ids = {}
+    # solution_predictions = {}
+    # for sid, fsid in fitted_solns.items():
+        # # req_ids[mid] = serv.produce_solution(model, ds)
+        # req_ids[fsid] = serv.produce_solution(fsid, solns[sid], ds)
+    # logger.debug("Created predoce solution requests with ids: %s" % str(req_ids))
+    # for fsid, rid in req_ids.items():
+        # solution_predictions[fsid] = serv.get_produce_solution_results(rid)
+# 
+    # for fsid, predictions in solution_predictions.items():
+        # logger.debug("Got predictions from fitted solution, %s: %s" % (fsid, predictions))
 
 
     # serv.end_search_solutions(search_id)
@@ -151,7 +152,7 @@ if __name__ == '__main__':
         out = csv.writer(out_file, delimiter='\t')
         out.writerow([solns[sln].id for sln in solns])
         out.writerow([solns[sln].to_dict() for sln in solns])
-        out.writerow([scores[sln].to_dict() for sln in solns])
+        # out.writerow([scores[sln].to_dict() for sln in solns])
 
     # Write dataset info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'dataset_out_file'))
