@@ -80,7 +80,7 @@ if __name__ == '__main__':
     
     # Get fitted solution
     fit_req_ids = {}
-    fitted_solns = {}
+    fitted_models = {}
     fitted_results = {}
     for mid, model in models.items():
         logger.debug("Fitting model: %s" % str(model))
