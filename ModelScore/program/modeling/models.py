@@ -108,20 +108,18 @@ class Model(object):
             except JSONDecodeError:
                 d = ast.literal_eval(data)
         elif isinstance(data, dict):
-            logger.debug(data)
             d = data
         else:
             raise Exception("Invalid type given: %s" % str(type(data)))
 
         logger.debug("got json data for new model: %s" % str(d))
         
-        mdl = Model(d['id'])
-        mdl.name = d['name']
-        mdl.desc = d['description']
-        mdl.add_description(d['model'])
-	
-        logger.debug("Got pipeline parsed: %s" % str(mdl))
-        return mdl
+        out = Model(d['id'])
+        out.name = d['name']
+        out.desc = d['description']
+        out.add_description(d['model'])
+        logger.debug("Got pipeline parsed: %s" % str(out))
+        return out
 
 
     def to_file(self, fpath):

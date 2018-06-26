@@ -36,7 +36,7 @@ __version__ = '0.1'
 
 if __name__ == '__main__':
     # Parse argumennts
-    parser = get_default_arg_parser("Model Search")
+    parser = get_default_arg_parser("Model Score")
     parser.add_argument('-metric', type=str,
                        help='the metric to use to compare the models')
     parser.add_argument('-file0', type=argparse.FileType('r'),
@@ -69,22 +69,25 @@ if __name__ == '__main__':
     ds = D3MDataset.from_component_out_file(args.file0)
     logger.debug("Dataset json parse: %s" % str(ds))
 
+    # Decode the models from file
+    logger.debug("Model file input: %s" % args.file1)
     # Read in the the models from tsv
     reader = csv.reader(args.file1, delimiter='\t')
     rows = [row for row in reader]
+    # reader.close()
+    # Initialize the set of models by model id
+    solns = {mid: None for mid in rows[0]}
+    for i, mid in enumerate(rows[0]):
+        solns[mid] = Model.from_json(rows[1][i])
 
-    solns = {}
-    for i, mdl in enumerate(rows[1]):
-        solns[rows[0][i]] = Model.from_json(mdl)
-	
-    
     # Init the server connection
     address = config.get_ta2_url()
     
+    # Crete the metric(s) to use in the score request
     logger.info("using server at address %s" % address)
     serv = TA2Client(address)
-
-    # Crete the metric(s) to use in the score request
+   
+    # Create the metric(s) to use in the score request
     metric = Metric(args.metric)
 
     # Get Score for each solution
