@@ -23,4 +23,5 @@ logs
 
 # Ignore auto generate log file when generating component
 gen_component.log
+add_component.sql
 
