@@ -42,7 +42,7 @@
 		<Apply_Detector />
 		<BKT />
 		<Correlation />
-		<Cronbachs-Alpha />
+		<Cronbachs_Alpha />
 		<iAFM />
 		<Linear_Modeling />
 		<LSA />
