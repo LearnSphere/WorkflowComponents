@@ -17,54 +17,54 @@
 	<Transform>
 		<Recently_Used />
 		<Anonymize />
-		<Deidentify />
-		<Join />
-		<Generate_PFA_Features />
 		<AppendCF />
+		<Column_Remover />
+		<Convert_Multiskill />
 		<Coursera_MOOCdb_Translator />
+		<Data_Conversion />
+		<Datastage_Aggregator />
+		<Deidentify />
+		<Discretize />
+		<Generate_PFA_Features />
+		<Generate_TKT_Features />
+		<Join />
+		<Missing_Values />
+		<MOOCdb />
 		<MOOCdb_Feature_Extractor />
 		<Pivot />
-		<MOOCdb />
-		<Convert_Multiskill />
-		<Discretize />
-		<Missing_Values />
-		<Column_Remover />
 		<Row_Operations />
-		<Data_Conversion />
-		<Generate_TKT_Features />
 		<Row_Remover />
 		<Text_Converter />
-		<Datastage_Aggregator />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
 		<AFM />
+		<Apply_Detector />
 		<BKT />
-		<RLM_Fitting />
-		<OLI_Resource_Use />
-		<PFA />
-		<Python_AFM />
 		<Correlation />
 		<Cronbachs-Alpha />
+		<iAFM />
 		<Linear_Modeling />
 		<LSA />
-		<TKT />
-		<iAFM />
+		<OLI_Resource_Use />
 		<Output_Comparator />
-		<Apply_Detector />
+		<PFA />
+		<Python_AFM />
+		<RLM_Fitting />
+		<TKT />
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
-		<Learning_Curves />
 		<D3_Force_Layout />
+		<Learning_Curves />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />
-		<Search />
-		<Estimator />
+		<Classifier />
+	    <Estimator />
 		<Knowledge />
 		<Regression />
+		<Search />
 		<Tetrad_Graph_Editor />
-		<Classifier />
 	</Tetrad>
 </component_menu>
