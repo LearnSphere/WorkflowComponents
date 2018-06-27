@@ -17,6 +17,7 @@
 	<Transform>
 		<Recently_Used />
 		<Anonymize />
+		<Anonymize_Standalone />
 		<AppendCF />
 		<Column_Remover />
 		<Convert_Multiskill />
