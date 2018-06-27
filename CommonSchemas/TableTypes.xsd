@@ -105,5 +105,6 @@
   <xs:element name="json" substitutionGroup="text" />
       <xs:element name="fit-model" substitutionGroup="json" />
       <xs:element name="modeling-problem" substitutionGroup="json" />
+      <xs:element name="model" substitutionGroup="json" />
 
 </xs:schema>
