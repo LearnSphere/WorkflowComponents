@@ -63,6 +63,10 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="Anonymize" >
+  	<xs:restriction base="xs:string" />
+</xs:simpleType>
+
 <xs:simpleType name="FileOptionHeader" >
    <xs:restriction base="xs:string" />
 </xs:simpleType>
