@@ -57,10 +57,26 @@
       <xs:element ref="fitted-model-set"/>
     </xs:choice>
   </xs:complexType>
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList1"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="dataset"/>
+    </xs:choice>
+  </xs:complexType>
   <xs:complexType name="OutputType">
-    <xs:all>
+    <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0"/>
-    </xs:all>
+      <xs:element name="output1" type="OutputDefinition1"/>
+    </xs:sequence>
   </xs:complexType>
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0"/>

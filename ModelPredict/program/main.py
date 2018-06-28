@@ -20,11 +20,12 @@ from ls_utilities.ls_logging import setup_logging
 from ls_utilities.cmd_parser import get_default_arg_parser
 from ls_utilities.ls_wf_settings import SettingsFactory
 from ls_dataset.d3m_dataset import D3MDataset
-from ls_dataset.d3m_prediction import D3MPrediction
+# from ls_dataset.d3m_prediction import D3MPrediction
 # from ls_problem_desc.ls_problem import ProblemDesc
 # from ls_problem_desc.d3m_problem import D3MProblemDesc
-from ls_workflow.workflow import Workflow
+# from ls_workflow.workflow import Workflow
 from d3m_ta2.ta2_v3_client import TA2Client
+from modeling.models import *
 
 
 __version__ = '0.1'
@@ -60,40 +61,42 @@ if __name__ == '__main__':
     logger.debug("Predicting with models with arguments: %s" % str(args))
 
     # Open dataset json
-    ds = D3MDataset.from_json(args.file0)
+    ds = D3MDataset.from_component_out_file(args.file0)
     logger.debug("Dataset: %s" % str(ds))
 
-    # Import all the models
+    # Import all the fitted models
     reader = csv.reader(args.file1, delimiter='\t')
     rows = [row for row in reader]
-    models =  {mid: Workflow.from_json(rows[1][i]) for i, mid in enumerate(rows[0])}
-    logger.info("Got %i models to fit" % len(models))
+    models = {mid: None for mid in rows[0]}
+    fitted_models = {}
+    for i, mid in enumerate(rows[0]):
+        models[mid] = Model.from_json(rows[2][i])
+        fitted_models[mid] = rows[1][i]
 
     # Init the server connection
-    address = config.get("TA2", 'ta2_url')
-    
+    address = config.get_ta2_url()
     logger.info("using server at address %s" % address)
     serv = TA2Client(address)
     
     # Get Model Predictions
     req_ids = {}
     predictions = {}
-    for sid, fsid in fitted_solns.items():
+    for mid, fmid in fitted_models.items():
         # req_ids[mid] = serv.produce_solution(model, ds)
-        req_ids[fsid] = serv.produce_solution(fsid, solns[sid], ds)
+        req_ids[fmid] = serv.produce_solution(fmid, models[mid], ds)
     logger.debug("Created predict solution requests with ids: %s" % str(req_ids))
-    for fsid, rid in req_ids.items():
-        predictions[fsid] = serv.get_produce_solution_results(rid)
+    for fmid, rid in req_ids.items():
+        logger.info("Requesting predictions with request id: %s" % rid)
+        predictions[fmid] = serv.get_produce_solution_results(rid)
+        # solution_predictions[fsid] = serv.get_produce_solution_results(rid)
 
-    for fsid, predictions in solution_predictions.items():
-        logger.debug("Got predictions from fitted solution, %s: %s" % (fsid, predictions))
+    for fmid, pdata in predictions.items():
+        logger.debug("Got predictions from fitted solution, %s: %s" % (fmid, pdata))
 
     
     # # Write model fit id info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))
-    with open(out_file_path, 'w') as out_file:
-        writer = csv.writer(out_file, delimiter='\t')
-        writer.writerow([model.id for model in models])
-        writer.writerow([model.fit for model in models])
-
-
+    logger.info("Writing dataset json to: %s" % out_file_path)
+    ds.to_component_out_file(out_file_path)
+    if args.is_test == 1:
+        ds.to_json_pretty(out_file_path + '.readable')

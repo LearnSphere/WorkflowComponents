@@ -310,7 +310,10 @@ class TA2Client(object):
         if outputs is None:
             msg.expose_outputs.extend([soln.get_default_output()])
             msg.expose_value_types.extend(self.__allowed_values__)
-
+        logger.info("****************************************")
+        msg_js = json_format.MessageToJson(msg)
+        logger.info("Sending produce solution with msg: %s" % msg_js)
+        logger.info("****************************************")
         reply = self.serv.ProduceSolution(msg)
 
         self.produce_solution_requests[reply.request_id] = msg

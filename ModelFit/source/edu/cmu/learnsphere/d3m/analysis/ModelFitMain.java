@@ -40,6 +40,7 @@ public class ModelFitMain extends AbstractComponent {
 
 	// Add additional meta-data for each output file.
 	this.addMetaData("fitted-model-set", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("dataset", 1, META_DATA_LABEL, "label1", 0, null);
 
     }
 
@@ -60,8 +61,10 @@ public class ModelFitMain extends AbstractComponent {
 
 
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/fit-models.tsv");
+	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/datasetDoc.tsv");
 
 		this.addOutputFile(outputFile0, 0, 0, "fitted-model-set");
+		this.addOutputFile(outputFile1, 1, 0, "dataset");
 
 
         System.out.println(this.getOutput());

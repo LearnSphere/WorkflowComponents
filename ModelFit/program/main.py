@@ -89,21 +89,30 @@ if __name__ == '__main__':
         logger.debug("Model id: %s\tfit model request id: %s" % (mid, rid))
         fitted_models[mid], fitted_results[mid] = serv.get_fit_solution_results(rid)
 
-    # for sid, soln in solns.items():
-        # fit_req_ids[sid] = serv.fit_solution(soln, ds)
-    # for sid, rid in fit_req_ids.items():
-        # logger.debug("solution id: %s\tfit solution request id: %s" % (sid, rid))
-        # fitted_solns[sid], fitted_results[sid] = serv.get_fit_solution_results(rid)
-# 
-    # serv.end_search_solutions(search_id)
-
+    for mid in fitted_models:
+        logger.debug("Got fitted model with model id: %s" % mid)
+        logger.debug("Model:\t%s" % str(fitted_models[mid]))
     
     # # Write model fit id info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))
+    row2 = [] # Model id
+    row3 = [] # Fitted Model id
+    row4 = [] # Model json
+    for mid in models:
+        # row1 = mids[mid]
+        row2.append(mid)
+        row3.append(fitted_models[mid])
+        row4.append(models[mid].to_dict())
+
     with open(out_file_path, 'w') as out_file:
         writer = csv.writer(out_file, delimiter='\t')
-        writer.writerow([mid for mid in models])
-        writer.writerow([models[mid].to_dict() for mid in models])
-        writer.writerow([fitted_models[mid].to_dict() for mid in fitted_models])
+        writer.writerow(row2)
+        writer.writerow(row3)
+        writer.writerow(row4)
 
 
+    out_file_path = path.join(args.workingDir, config.get('Output', 'data_out_file'))
+    # Just write out original dataset for now without adding in the fitted data
+    ds.to_component_out_file(out_file_path)
+    if args.is_test == 1:
+        ds.to_json_pretty(out_file_path + '.readable')
