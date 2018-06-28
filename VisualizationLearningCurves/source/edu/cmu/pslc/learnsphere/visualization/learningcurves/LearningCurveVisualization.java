@@ -22,7 +22,6 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
-import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
 import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
@@ -125,7 +124,6 @@ public class LearningCurveVisualization {
         Map<String, Double> avgCorrectStepDuration = new Hashtable<String, Double>();
         Map<String, Double> avgErrorStepDuration = new Hashtable<String, Double>();
         Map<String, Double> avgPredictedErrorRate = new Hashtable<String, Double>();
-        Map<String, Double> avgSecondaryPredictedErrorRate = new Hashtable<String, Double>();
         Map<String, Double> countObservations = new Hashtable<String, Double>();
         Map<String, Double> stepDurationObs = new Hashtable<String, Double>();
         Map<String, Double> correctStepDurationObs = new Hashtable<String, Double>();
@@ -135,6 +133,9 @@ public class LearningCurveVisualization {
         Map<String, HashSet<String>> countStudents = new Hashtable<String, HashSet<String>>();
         Map<String, HashSet<String>> countProblems = new Hashtable<String, HashSet<String>>();
         Map<String, Integer> maxOpportunities = new Hashtable<String, Integer>();
+
+        // We now support multiple secondary curves so keep a map of them (by model name).
+        Map<String, Map<String, Double>> avgSecondaryPERMap = new Hashtable<String, Map<String, Double>>();
 
         Map<String, String> aggregateBy = new Hashtable<String, String>();
 
@@ -171,9 +172,12 @@ public class LearningCurveVisualization {
             String opportunityName = "Opportunity (" + lcOptions.getPrimaryModelName() + ")";
             String predictedErrorRateName = "Predicted Error Rate (" + lcOptions.getPrimaryModelName() + ")";
             Integer maxOpportunityCutoff = lcOptions.getOpportunityCutOffMax();
-            String secondaryPredictedErrorRateName = null;
-            if (lcOptions.getSecondaryModelName() != null) {
-                secondaryPredictedErrorRateName = "Predicted Error Rate (" + lcOptions.getSecondaryModelName() + ")";
+            List<String> secondaryPredictedErrorRateNames = new ArrayList<String>();
+            for (String s : lcOptions.getSecondaryModelNames()) {
+                String secondaryHeaderName = "Predicted Error Rate (" + s + ")";
+                secondaryPredictedErrorRateNames.add(secondaryHeaderName);
+                Map<String, Double> avgSecondaryPER = new Hashtable<String, Double>();
+                avgSecondaryPERMap.put(secondaryHeaderName, avgSecondaryPER);
             }
 
             Vector<String> skillsSelected = new Vector<String>();
@@ -254,7 +258,7 @@ public class LearningCurveVisualization {
 
                     // The predicted error rate is set later to prevent exceptions during type casting
                     Double predictedErrorRate = null;
-                    Double secondaryPredictedErrorRate = null;
+                    Map<String, Double> secondaryPredictedErrorRate = new Hashtable<String, Double>();
                     String skillName = skillNamesSplit[skillCounter];
                     skillNames.put(criteria, skillName);
                     String opportunity = opportunitiesSplit[skillCounter];
@@ -304,9 +308,6 @@ public class LearningCurveVisualization {
                     if (!avgPredictedErrorRate.containsKey(criteria))
                         avgPredictedErrorRate.put(criteria, new Double(0));
 
-                    if (!avgSecondaryPredictedErrorRate.containsKey(criteria))
-                        avgSecondaryPredictedErrorRate.put(criteria, new Double(0));
-
                     if (!countObservations.containsKey(criteria))
                         countObservations.put(criteria, new Double(0));
 
@@ -331,14 +332,19 @@ public class LearningCurveVisualization {
                     if (!countProblems.containsKey(criteria))
                         countProblems.put(criteria, new HashSet<String>());
 
+                    for (String s : secondaryPredictedErrorRateNames) {
+                        Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
+                        if (!avgSecondaryPER.containsKey(criteria))
+                            avgSecondaryPER.put(criteria, new Double(0));
+                    }
+
                     // Parse double values, provided the value exists
                     if (!fields[headingMap.get(predictedErrorRateName)].isEmpty()) {
                         predictedErrorRate = Double.parseDouble(fields[headingMap.get(predictedErrorRateName)]);
                     }
-                    if (secondaryPredictedErrorRateName != null) {
-                        if (!fields[headingMap.get(secondaryPredictedErrorRateName)].isEmpty()) {
-                            secondaryPredictedErrorRate =
-                                Double.parseDouble(fields[headingMap.get(secondaryPredictedErrorRateName)]);
+                    for (String s : secondaryPredictedErrorRateNames) {
+                        if (!fields[headingMap.get(s)].isEmpty()) {
+                            secondaryPredictedErrorRate.put(s, Double.parseDouble(fields[headingMap.get(s)]));
                         }
                     }
                     if (!fields[headingMap.get("Incorrects")].isEmpty()) {
@@ -415,10 +421,11 @@ public class LearningCurveVisualization {
 			avgPredictedErrorRate.put(criteria,
 						  (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
 		    }
-		    if (secondaryPredictedErrorRate != null) {
-			avgSecondaryPredictedErrorRate.put(criteria,
-                                                           (avgSecondaryPredictedErrorRate.get(criteria)
-                                                            + secondaryPredictedErrorRate));
+                    for (String s : secondaryPredictedErrorRateNames) {
+                        Double per = secondaryPredictedErrorRate.get(s);
+                        Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
+			avgSecondaryPER.put(criteria,
+                                            (avgSecondaryPER.get(criteria) + per));
                     }
 
                     // Handle missing values which are allowed for some fields
@@ -557,9 +564,14 @@ public class LearningCurveVisualization {
                     avgPredictedErrorRate.get(criteria) / new Double(validRowCount);
                 avgPredictedErrorRate.put(criteria, avgPredictedErrorRateResult);
 
-                Double avgSecondaryPredictedErrorRateResult =
-                    avgSecondaryPredictedErrorRate.get(criteria) / new Double(validRowCount);
-                avgSecondaryPredictedErrorRate.put(criteria, avgSecondaryPredictedErrorRateResult);
+                Map<String, Double> avgSecondaryPERResult = new Hashtable<String, Double>();
+                for (String s : secondaryPredictedErrorRateNames) {
+                    Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
+                    Double result = avgSecondaryPER.get(criteria) / new Double(validRowCount);
+                    avgSecondaryPER.put(criteria, result);
+                    avgSecondaryPERMap.put(s, avgSecondaryPER);  // ???
+                    avgSecondaryPERResult.put(s, result);
+                }
 
                 Object[] result = {
                     skillNames.get(criteria),
@@ -577,7 +589,7 @@ public class LearningCurveVisualization {
                     countSkills.get(criteria).size(),
                     countStudents.get(criteria).size(),
                     countProblems.get(criteria).size(),
-                    avgSecondaryPredictedErrorRate.get(criteria),
+                    //                    avgSecondaryPredictedErrorRate.get(criteria),
                 };
 
                 LearningCurvePoint lcp = new LearningCurvePoint();
@@ -636,8 +648,8 @@ public class LearningCurveVisualization {
                     lcp.setPredictedErrorRate(avgPredictedErrorRateResult.doubleValue());
                 }
 
-                if (avgSecondaryPredictedErrorRateResult != null) {
-                    lcp.setSecondaryPredictedErrorRate(avgSecondaryPredictedErrorRateResult.doubleValue());
+                if (avgSecondaryPERResult.size() > 0) {
+                    lcp.setSecondaryPredictedErrorRateMap(avgSecondaryPERResult);
                 }
 
                 if (countProblems.get(criteria) != null) {
@@ -673,7 +685,13 @@ public class LearningCurveVisualization {
                     lcData.put(aggregateBy.get(criteria), lcDataList);
                 }
 
-                logger.fatal("Result: " + Arrays.toString(result));
+                StringBuffer sb = new StringBuffer("[");
+                for (String s : secondaryPredictedErrorRateNames) {
+                    sb.append(avgSecondaryPERResult.get(s));
+                    sb.append(", ");
+                }
+                sb.append("]");
+                logger.fatal("Result: " + Arrays.toString(result) + sb.toString());
             }
 
             if (br != null) {

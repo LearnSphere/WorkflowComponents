@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
@@ -14,9 +14,9 @@
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
-    </xs:all>
+    <xs:choice>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" maxOccurs="unbounded" />
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
@@ -88,8 +88,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" />
-      <xs:element type="FileInputHeader" name="secondaryModel" id="Secondary_Model"  default="Predicted Error Rate\s*(.*)\s*" />
+      <xs:element type="FileInputHeader" name="model" id="Model"  default="Predicted Error Rate\s*(.*)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="MultiFileInputHeader" name="secondaryModel" id="Secondary_Model"  default="Predicted Error Rate\s*(.*)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
       <xs:element type="xs:boolean" name="viewSecondary" id="View_Secondary" default="false" />
       <xs:element type="learningCurveType" name="learningCurve" id="Learning_Curve_Type"
         default="Knowledge Components" />
