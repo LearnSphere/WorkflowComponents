@@ -13,11 +13,11 @@ REPLACE INTO `workflow_component` (
 )
 VALUES (
 	'Analysis',
-	'Problem_Target_Selector',
-	'/datashop/workflow_components/ProblemTargetSelector/',
-	'/datashop/workflow_components/ProblemTargetSelector/schemas/ProblemTargetSelector_v1_0.xsd',
+	'Problem_Creator',
+	'/datashop/workflow_components/ProblemCreator/',
+	'/datashop/workflow_components/ProblemCreator/schemas/ProblemCreator_v1_0.xsd',
 	'/usr/bin/java -jar',
-	'/datashop/workflow_components/ProblemTargetSelector/dist/ProblemTargetSelector-1.0.jar', 
+	'/datashop/workflow_components/ProblemCreator/dist/ProblemCreator-1.0.jar', 
 	1,
 	'system',
 	'Steven_C_Dang',
