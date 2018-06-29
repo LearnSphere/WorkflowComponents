@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Tetrad Implemented by DataShop@CMU
+<author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
 
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TetradSearch</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Anonymize</url>
 
-<date>2017-09-19</date>
+<date>2018-06-26</date>
 
-<abstract>The <b>search box</b> takes as input a data set (in either a data or simulation box) and optionally a knowledge box, and searches for causal explanations represented by directed graphs. The result of a search is not necessarily—and not usually—a unique graph, but an object such as a pattern that represents a set of graphs, usually a Markov Equivalence class. More alternatives can be found by varying the parameters of search algorithms.
-<br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
-</abstract>
+<abstract>This component will read an input CSV file and anonymize specified column(s). This component differs from the <b>AnonymizeStandalone</b> component in that it will keep a version of the input file on the server. As such, the output, with anonymized data, is then available for use in downstream components.</abstract>
 
 <description></description>
 
-<inputs>
-<b>tab-delimited (required)</b><br/>
-tetrad-knowledge (optional)
-</inputs>
-
-<outputs>
-<b>tetrad-graph</b>
-</outputs>
-
 <options>
-
+<b>Upload CSV File</b> - the CSV file containing column(s) to be anonymized<br/>
+<b>Column(s) to Hash</b> - the column(s) to be anonymized<br/>
+<b>(Optional) File Name</b> - the name of the output file.<br/>
+<b>Secret Word</b> - the salt value to use in the anonymization<br/>
 </options>
 
 </info>
