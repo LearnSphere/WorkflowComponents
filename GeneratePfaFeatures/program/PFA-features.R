@@ -15,13 +15,23 @@ flags = NULL
 
 # parse commandline args
 i = 1
-while (i <= length(args)) {
-    if (args[i] == "-file0") {
-       if (length(args) == i) {
-          stop("input file name must be specified")
+while (i < length(args)) {
+    if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
        }
-       inputFile = args[i+1]
-       i = i+1
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       inputFile <- args[i + 4]
+       i = i + 4
+
     } else if (args[i] == "-model") {
        if (length(args) == i) {
           stop("model name must be specified")
@@ -42,13 +52,13 @@ while (i <= length(args)) {
 # This dir is the root dir of the component code.
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
 
 if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile)) {
-      warning("Missing required input parameter: -file0")
+      warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
    }
    if (is.null(KCmodel)) {
       warning("Missing required input parameter: -model")
@@ -61,14 +71,14 @@ if (is.null(inputFile) || is.null(KCmodel) || is.null(workingDirectory) || is.nu
    }
 
 
-   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file -model kc_model")
+   stop("Usage: -programDir component_directory -workingDir output_directory -node 0 -fileIndex 0 input_file -model kc_model")
 }
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 # Get data
-outputFilePath<- paste(workingDirectory, "transaction file with added features.txt", sep="")
+outputFilePath<- paste(workingDirectory, "transaction_file_with_added_features.txt", sep="")
 
 # Get data
 datalocation<- paste(componentDirectory, "/program/", sep="")

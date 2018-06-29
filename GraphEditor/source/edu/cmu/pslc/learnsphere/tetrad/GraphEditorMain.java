@@ -74,17 +74,18 @@ public class GraphEditorMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
+    //File outputDirectory = this.createFile("EditedGraph.html");
 
-    if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-      File file0 = new File(outputDirectory.getAbsolutePath() + "/EditedGraph.txt");
-
+    if (true){//outputDirectory.isDirectory() && outputDirectory.canRead()) {
+      File file0 = new File(outputDirectory.getAbsolutePath() + "/EditedGraph.html");
+      //File file0 = outputDirectory;
 
       if (file0 != null && file0.exists() ) {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "tab-delimited";
+        String label0 = "inline-html";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
       } else {
@@ -94,8 +95,8 @@ public class GraphEditorMain extends AbstractComponent {
       errorMessages.add("issue with output directory");
     }
 
-    String outputPath = outputDirectory.getAbsolutePath() + "/";
-    addErrorsAndDebugsToLogger(outputPath);
+    //String outputPath = outputDirectory.getAbsolutePath() + "/";
+    //addErrorsAndDebugsToLogger(outputPath);
 
     for (String err : errorMessages) {
       logger.error(err);
@@ -123,8 +124,13 @@ public class GraphEditorMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
+  }
 
-
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tetrad-graph", 0, outNodeIndex0, ".*");
   }
 
 

@@ -19,6 +19,19 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMSource;
+
+import static javax.xml.transform.OutputKeys.INDENT;
+import static javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions;
 // import edu.cmu.pslc.learnsphere.analysis.bkt.BKTOptions.ConjugateGradientDescentOption; // Yudelson: obsolete
@@ -33,6 +46,12 @@ public class BKTMain extends AbstractComponent {
 
     /** The model name used in BKT. */
     private String modelName;
+
+    /** XML doc transformer. */
+    Transformer transformer = null;
+
+    /** XML doc for parameters Node. */
+    Document parametersDoc = null;
 
     /** The string split parameter,
      * http://docs.oracle.com/javase/7/docs/api/java/lang/String.html. */
@@ -68,10 +87,12 @@ public class BKTMain extends AbstractComponent {
 
     /** Cross-validation: non-stratified. */
     Double nonStratifiedValue = null;
-    StringBuffer parameterTable = null;
 
     /** Decimal format used for predicted error rates. */
     private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
+
+    /** Decimal format used for p values. */
+    private DecimalFormat pFormat = new DecimalFormat("0.0000000000");
 
     /** Keep track of the rows that have no skills*/
     private List<Integer> rowsMissingSkill;
@@ -128,8 +149,8 @@ public class BKTMain extends AbstractComponent {
 
             }
             File generatedFile = this.createFile("Step-values-with-predictions", ".txt");
-	    	File modelValuesFile = this.createFile("Model-values", ".txt");
- 			File parametersFile = this.createFile("Parameter-estimate-values", ".txt"); // Yudelson, parameters file
+            File modelValuesFile = this.createFile("Model-values", ".xml");
+            File parametersFile = this.createFile("Parameter-estimate-values", ".xml"); // Yudelson, parameters file
 
             String newLineChar = "\n";
 
@@ -237,6 +258,9 @@ public class BKTMain extends AbstractComponent {
 
             }
 
+            // Initialize the transformer.
+            initializeTransformer();
+
             // Now, write the model values to the second output file.
             modelValuesFile = populateModelValuesFile(modelValuesFile);
             // Finally, write the parameter estimate values to the third output file. // Yudelson
@@ -247,14 +271,26 @@ public class BKTMain extends AbstractComponent {
             Integer fileIndex = 0;
             String fileLabel = "student-step";
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
+            fileLabel = "text";
             nodeIndex = 1;
-            fileLabel = "model-values";
             this.addOutputFile(modelValuesFile, nodeIndex, fileIndex, fileLabel);
             nodeIndex = 2; // Yudelson
-            fileLabel = "parameters";  // Yudelson
             this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileLabel);  // Yudelson
 
             System.out.println(this.getOutput());
+        }
+    }
+
+    private void initializeTransformer() {
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(INDENT, "yes");
+            transformer.setOutputProperty(OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        } catch (Exception e) {
+            transformer = null;
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
         }
     }
 
@@ -296,6 +332,10 @@ public class BKTMain extends AbstractComponent {
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
         this.addMetaDataFromInput("student-step", 0, 0, ".*");
         this.addMetaData("student-step", 0, META_DATA_LABEL, "label0", 0, "Predicted Error Rate (" + modelName + ")");
+        Integer outNodeIndex1 = 1;
+        this.addMetaData("model-values", outNodeIndex1, META_DATA_LABEL, "label1", 0, null);
+        Integer outNodeIndex2 = 2;
+        this.addMetaData("parameters", outNodeIndex2, META_DATA_LABEL, "label2", 0, null);
     }
 
     /**
@@ -613,34 +653,34 @@ public class BKTMain extends AbstractComponent {
                 Boolean saveLines = false;
                 Boolean saveParameters = false;
                 for (String resultLine : strResult.toString().split("\\n")) {
-					String[] splitLine;
-					if (resultLine.startsWith("loglikelihood:")) {
-						splitLine = resultLine.split("\\t");
-						logLikelihoodValue = Double.parseDouble(splitLine[1]);
-					}
-					if (resultLine.startsWith("AIC:")) {
-						splitLine = resultLine.split("\\t");
-						aicValue = Double.parseDouble(splitLine[1]);
-					}
-					if (resultLine.startsWith("BIC:")) {
-						splitLine = resultLine.split("\\t");
-						bicValue = Double.parseDouble(splitLine[1]);
-					}
-					if (resultLine.startsWith("RMSE:")) {
-						splitLine = resultLine.split("\\t");
-						rmseValue = Double.parseDouble(splitLine[1]);
-					}
-					if (resultLine.startsWith("Accuracy:")) {
-						splitLine = resultLine.split("\\t");
-						accuracyValue = Double.parseDouble(splitLine[1]);
-					}
-					if (resultLine.startsWith("Student Stratified")) {
-						splitLine = resultLine.split("\\t");
-						studentStratifiedValue = Double.parseDouble(splitLine[0].split(" ")[2]);;
-						itemStratifiedValue = Double.parseDouble(splitLine[1].split(" ")[2]);
-						nonStratifiedValue = Double.parseDouble(splitLine[2].split(" ")[1]);
-					}
-					// save predicted error rate
+                    String[] splitLine;
+                    if (resultLine.startsWith("loglikelihood:")) {
+                        splitLine = resultLine.split("\\t");
+                        logLikelihoodValue = Double.parseDouble(splitLine[1]);
+                    }
+                    if (resultLine.startsWith("AIC:")) {
+                        splitLine = resultLine.split("\\t");
+                        aicValue = Double.parseDouble(splitLine[1]);
+                    }
+                    if (resultLine.startsWith("BIC:")) {
+                        splitLine = resultLine.split("\\t");
+                        bicValue = Double.parseDouble(splitLine[1]);
+                    }
+                    if (resultLine.startsWith("RMSE:")) {
+                        splitLine = resultLine.split("\\t");
+                        rmseValue = Double.parseDouble(splitLine[1]);
+                    }
+                    if (resultLine.startsWith("Accuracy:")) {
+                        splitLine = resultLine.split("\\t");
+                        accuracyValue = Double.parseDouble(splitLine[1]);
+                    }
+                    if (resultLine.startsWith("Student Stratified")) {
+                        splitLine = resultLine.split("\\t");
+                        studentStratifiedValue = Double.parseDouble(splitLine[0].split(" ")[2]);;
+                        itemStratifiedValue = Double.parseDouble(splitLine[1].split(" ")[2]);
+                        nonStratifiedValue = Double.parseDouble(splitLine[2].split(" ")[1]);
+                    }
+                    // save predicted error rate
                     if (resultLine.matches("Fitted values:")) {
                         saveLines = true;
                         saveParameters = false;
@@ -653,22 +693,28 @@ public class BKTMain extends AbstractComponent {
                     if (resultLine.matches("Id\tKC\tpLo\tpT\tpS\tpG")) {
                         saveParameters = true;
                         saveLines = false;
-                        parameterTable = new StringBuffer();
-                        parameterTable.append(resultLine + "\n");
+                        parametersDoc = DocumentBuilderFactory.newInstance()
+                            .newDocumentBuilder().newDocument();
+                        parametersDoc.appendChild(parametersDoc.createElement("parameters"));
                     } else if (saveParameters && !resultLine.isEmpty()) {
                         splitLine = resultLine.split("\\t");
-//                         System.out.println("-- skill id |" + splitLine[0] + "|"); // Yudelson debug
+                        Node parameter = parametersDoc.createElement("parameter");
                         Integer id = Integer.parseInt(splitLine[0]);
+                        addElement(parametersDoc, parameter, "id", id);
                         String skill = splitLine[1];
+                        addElement(parametersDoc, parameter, "skill", skill);
                         Double pinit = Double.parseDouble(splitLine[2]);
+                        addElement(parametersDoc, parameter, "p_init", pFormat.format(pinit));
                         Double plearn = Double.parseDouble(splitLine[3]);
+                        addElement(parametersDoc, parameter, "p_learn", pFormat.format(plearn));
                         Double pslip = Double.parseDouble(splitLine[4]);
+                        addElement(parametersDoc, parameter, "p_slip", pFormat.format(pslip));
                         Double pguess = Double.parseDouble(splitLine[5]);
-						parameterTable.append(resultLine + "\n");
+                        addElement(parametersDoc, parameter, "p_guess", pFormat.format(pguess));
+                        parametersDoc.getDocumentElement().appendChild(parameter);
                     } // Yudelson ^^^^
 
                 }
-//                 logger.debug("Fit statistics files parsed."); // Yudelson debug
                 resultString = predictedValues.toString();
 
             } else {
@@ -721,10 +767,13 @@ public class BKTMain extends AbstractComponent {
                     i++;
                     continue;
                 }
+                /*
+                 * For now, don't drop these args... pass them on to the C++ code.
                 if ((args[i].equals("-u") || args[i].equals("-l") || args[i].equals("-0")) && i < args.length - 1) {
                     i++;
                     continue;
                 }
+                */
 
                 modifiedArgs.add(args[i]);
             }
@@ -749,11 +798,13 @@ public class BKTMain extends AbstractComponent {
                     i++;
                     continue;
                 }
-
+                /*
+                 * For now, don't drop these args... pass them on to the C++ code.
                 if ((args[i].equals("-u") || args[i].equals("-l") || args[i].equals("-0")) && i < args.length - 1) {
                     i++;
                     continue;
                 }
+                */
 
                 if (args[i].equals("-f") && i < args.length - 1 && !bySkill) {
                     i++;
@@ -1176,96 +1227,54 @@ public class BKTMain extends AbstractComponent {
             return theFile;
         }
 
-        String prefix = "Model Values for '" + modelName + "' model: ";
+        if (transformer == null) {
+            this.addErrorMessage("Unable to generate XML output.");
+            return theFile;
+        }
 
-        // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(theFile)) {
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            doc.appendChild(doc.createElement("model_values"));
 
-                // Write values to export
-                byte[] label = null;
-                byte[] value = null;
+            // append elements for: name, AIC, BIC, log_likelihood, RMSE, Accuracy,
+            // CV student-stratified, CV item-stratified, CV non-stratified
+            Node modelNode = doc.createElement("model");
+            addElement(doc, modelNode, "name", modelName);
+            addElement(doc, modelNode, "log_likelihood", decimalFormat.format(logLikelihoodValue));
+            addElement(doc, modelNode, "AIC", decimalFormat.format(aicValue));
+            addElement(doc, modelNode, "BIC", decimalFormat.format(bicValue));
+            addElement(doc, modelNode, "RMSE", decimalFormat.format(rmseValue));
+            addElement(doc, modelNode, "accuracy", decimalFormat.format(accuracyValue));
+            addElement(doc, modelNode, "cv_student_stratified",
+                       decimalFormat.format(studentStratifiedValue));
+            addElement(doc, modelNode, "cv_item_stratified",
+                       decimalFormat.format(itemStratifiedValue));
+            addElement(doc, modelNode, "cv_non_stratified",
+                       decimalFormat.format(nonStratifiedValue));
+            doc.getDocumentElement().appendChild(modelNode);
 
-                // Log Likelihood
-                label = (prefix + "Log Likelihood" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (logLikelihoodValue != null) {
-		    value = (decimalFormat.format(logLikelihoodValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+            transformer.transform(new DOMSource(doc.getDocumentElement()), new StreamResult(theFile));
 
-                // AIC
-                label = (prefix + "AIC" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (aicValue != null) {
-		    value = (decimalFormat.format(aicValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // BIC
-                label = (prefix + "BIC" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (bicValue != null) {
-		    value = (decimalFormat.format(bicValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // RMSE
-                label = (prefix + "RMSE" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (rmseValue != null) {
-		    value = (decimalFormat.format(rmseValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Accuracy
-                label = (prefix + "Accuracy" + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (accuracyValue != null) {
-		    value = (decimalFormat.format(accuracyValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-		prefix = "Cross validation ";
-                // Student-stratified CV
-                label = (prefix + "student-stratified: " + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (studentStratifiedValue != null) {
-		    value = (decimalFormat.format(studentStratifiedValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Item-stratified CV
-                label = (prefix + "item-stratified: " + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (itemStratifiedValue != null) {
-		    value = (decimalFormat.format(itemStratifiedValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Non-stratified CV
-                label = (prefix + "non-stratified: " + TAB_CHAR).getBytes("UTF-8");
-                outputStream.write(label);
-		if (nonStratifiedValue != null) {
-		    value = (decimalFormat.format(nonStratifiedValue)).getBytes("UTF-8");
-		    outputStream.write(value);
-		}
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-            } catch (Exception e) {
-                // This will be picked up by the workflows platform and relayed to the user.
-//                 e.printStackTrace();
-				logger.error("Error occured in BKT: " + e.getMessage());
-                addErrorMessage(e.getMessage()); // Yudelson for uniformity
-            }
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
         return theFile;
+    }
+
+    /**
+     * Helper method to create and append an element to specified doc and node.
+     * @param doc the XML Document
+     * @param parent the Node
+     * @param tag the name of the element to create
+     * @param value the value of the new text node
+     */
+    private void addElement(Document doc, Node parent, String tag, Object value) {
+        Element ele = doc.createElement(tag);
+        String valueStr = (value == null)? "NULL"  : value.toString();
+        ele.appendChild(doc.createTextNode(valueStr));
+        parent.appendChild(ele);
     }
 
 	// Yudelson VVVV
@@ -1276,19 +1285,24 @@ public class BKTMain extends AbstractComponent {
      */
     private File populateParametersFile(File theFile) {
 
-        if (parameterTable == null) {
+        /*
+         * We generated the XML doc while processing the BKT output file.
+         * Now transform it and write it to the file.
+         */
+        if (parametersDoc == null) {
             this.addErrorMessage("Parameter value results from BKT were empty.");
             return theFile;
         }
 
-         try (OutputStream outputStream = new FileOutputStream(theFile)) {
- 			outputStream.write( parameterTable.toString().getBytes("UTF-8") );
- 		} catch (Exception e) {
- 			logger.error("Error occured in BKT: " + e.getMessage());
- 			addErrorMessage(e.getMessage()); // Yudelson, for uniformity
- 		}
+        try {
+            transformer.transform(new DOMSource(parametersDoc.getDocumentElement()),
+                                  new StreamResult(theFile));
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
-         return theFile;
-     }
-	// Yudelson ^^^^
+        return theFile;
+    }
+    // Yudelson ^^^^
 }

@@ -4,10 +4,10 @@
 <author>Philip Pavlik
   <email>ppavlik@memphis.edu</email>
 </author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/AnalysisTkt</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisTkt</url>
 <date>2017-07-28</date>
 <abstract>The <b>Temporal Knowledge Tracing</b> (TKT) model performs a logistic regression over the "error rate" learning curve data.</abstract>
-<details>TKT combines aspects of Performance Factors Analysis (PFA) avaliable in LearnnSphere and the ACT-R model of human cognition. <br/><br/> Email the author directly with bug reports for this component.</details>
+<details>TKT combines aspects of Performance Factors Analysis (PFA) avaliable in LearnSphere and the ACT-R model of human cognition. <br/><br/> Email the author directly with bug reports for this component.</details>
 
 <inputs>
 <b>Transaction export with TKT features</b>

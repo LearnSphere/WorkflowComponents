@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatastageAggregator</url>
+<date>2018-06-18</date>
+<abstract>The <b>Datastage Aggregator</b> component aggregates student Datastage transaction data.</abstract>
+<description>The <b>Datastage Aggregator</b> component aggregates student transaction data from EventXtract.csv, VideoInteraction.csv, ActivityGrade.csv and Performance.csv files; and output student page reading, problem solving, video watching, forum participating and performance grade for the entire course.</description>
+
+<inputs>You can choose to import zip file that contains EventXtract.csv, VidoeInteraction.csv, ActivityGrade.csv, FinalGrade.csv and/or Performance.csv; or import these files individually. EventXtract.csv is required because page viewing, problem solving and forum participating activities are extracted from it. ActivityGrade.csv is used to retrieve homework activities and are aggregated into problem solving activites. VideoInteraction.csv is used to retrieve video playing activities.
+</inputs>
+
+<outputs>
+Tab-delimited file contains columns: student, page_view_count, distinct_page_view_count, problem_action_count, distinct_problem_action_count, video_play_count, distinct_video_play_count, forum_session_count, forum_HL_participation_count, distinct_forum_HL_participation_count, forum_LL_participation_count, distinct_forum_LL_participation_count, performance_grade, final_grade1, final_grade2. LL praticipation stands for low level participation which includes: "endorse", "upvote", "unvote", "update", "follow", "search". HL praticipation stands for high level participation which includes: "upload", "create", "reply".
+</outputs>
+
+<options>
+ </options>
+
+</info>

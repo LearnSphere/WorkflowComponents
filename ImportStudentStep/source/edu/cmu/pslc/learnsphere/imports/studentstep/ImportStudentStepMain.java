@@ -40,14 +40,15 @@ public class ImportStudentStepMain extends AbstractComponent {
         File theFile = this.getAttachment(0, 0);
 
         try {
-
-            verifyInputFile(this.getAttachment(0, 0));
+        	if (theFile != null && theFile.exists()) {
+        		verifyInputFile(this.getAttachment(0, 0));
+        	} else {
+        		addErrorMessage("Could not read required input file.");
+        	}
 
         } catch (Exception e) {
             logger.info("Verify of first " + NUM_INPUT_LINES_TO_CHECK + " failed: " + e);
             this.addErrorMessage(e.toString());
-            System.err.println(e);
-            return;
         }
 
         System.out.println(this.getOutput());
@@ -58,7 +59,7 @@ public class ImportStudentStepMain extends AbstractComponent {
      * @param inputFile the File
      * @throws failure to verify the file will throw an exception
      */
-    private void verifyInputFile(File inputFile) 
+    private void verifyInputFile(File inputFile)
         throws Exception
     {
         File shortFile = null;
@@ -96,7 +97,7 @@ public class ImportStudentStepMain extends AbstractComponent {
     /*
      * Regex for KCM names... the name will be in group(2).
      */
-    private static final Pattern KCM_PATTERN = Pattern.compile("(KC \\()(.*)\\)");
+    private static final Pattern KCM_PATTERN = Pattern.compile("(?i)\\s*KC\\s*\\(.*\\)\\s*");
 
     /**
      * Method to determine what KC models are present in the input file.
@@ -118,10 +119,9 @@ public class ImportStudentStepMain extends AbstractComponent {
             String line = null;
             if ((line = br.readLine()) != null) {
                 for (String header : line.split("\t")) {
-                    Matcher m = KCM_PATTERN.matcher(header);
-                    while (m.find()) {
-                        result.add(m.group(2));
-                    }
+                	String modelName = this.getOptionAsString("model")
+            			.replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
+                	result.add(modelName);
                 }
             }
         } catch (Exception e) {

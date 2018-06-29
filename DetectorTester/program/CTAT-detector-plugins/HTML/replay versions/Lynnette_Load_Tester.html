@@ -1,0 +1,57 @@
+<html>
+    <head>
+
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="Master_Lynnette_Load_Tester.js"></script>
+		
+		<style>
+			#replayInfo
+			{
+				background-color: white;
+				font-size: 120%;
+				border: 3px solid lightgreen;
+				width:500px;
+			}
+			td
+			{
+				border: 2px solid lightblue;
+				padding: 1% 1%;
+			}
+			#tutor{
+				
+			}
+			#tutorFrame{
+				padding: 0px 0px;
+				margin: 0px 0px;
+				width: 920px;
+				height: 520px;
+				display: inline-block;
+			}
+			#saiTable{
+				width:650px;
+				height:200px;
+			}
+			#saiTableHolder{
+				margin: 0px 0px;
+				background-color: white;
+			}
+			iframe{
+				
+				border:1px;
+			}
+			body{
+				background-color: lightblue;
+			}
+		</style>
+	</head>
+	<body>
+		<table id="replayInfo">
+			<tr>
+				<td id="student_info" style="width:10%"></td>
+				<td id="problem_info" style="width:30%"></td>
+			</tr>
+		</table>
+		<div id="tutorFrame"></div>
+		<iframe id="saiTable" srcdoc="<html></html>"></iframe>
+	</body>
+</html>

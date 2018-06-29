@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls">
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
@@ -55,9 +55,9 @@
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-      <xs:element name="input2" type="InputDefinition2" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
+      <xs:element name="input2" type="InputDefinition2" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 
@@ -149,7 +149,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <!--<xs:element type="parametricModelType" name="parametricModel" id="parametricModel" default="Bayes_Parametric_Model" />
       <xs:element type="modelType" name="model" id="model" default="ML_Bayes_Estimator" />-->
-      <xs:element type="FileInputHeader" name="target" id="Target_Variable" default=".*" />
+      <xs:element type="FileInputHeader" name="target" id="Target_Variable" default=".*" ls:inputNodeIndex="2" ls:inputFileIndex="0"/>
       <xs:element type="xs:integer" name="targetCategory" id="Target_Category" default="0" />
     </xs:choice>
   </xs:complexType>

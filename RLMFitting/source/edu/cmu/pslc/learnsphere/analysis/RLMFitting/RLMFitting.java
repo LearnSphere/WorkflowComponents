@@ -18,6 +18,18 @@ public class RLMFitting extends AbstractComponent {
     public RLMFitting() {
         super();
     }
+    
+    @Override
+    protected Boolean test() {
+        Boolean passing = true;
+
+        return passing;
+    }
+    
+    @Override
+    protected void processOptions() {
+        logger.info("Processing Options");
+    }
 
     @Override
     protected void runComponent() {
@@ -32,7 +44,7 @@ public class RLMFitting extends AbstractComponent {
                     if (independentVars.lastIndexOf(",") == independentVars.length()-1) {
                             independentVars = independentVars.substring(0, independentVars.length()-1);
                     }
-            } 
+            }
             if (dependentVarList != null && dependentVarList.size() != 0){
                     for (String key : dependentVarList)
                             dependentVars += key + ",";
@@ -46,22 +58,45 @@ public class RLMFitting extends AbstractComponent {
                     String errMsg = "Analysis variables are not defined properly.";
                     addErrorMessage(errMsg);
                     logger.info("RLMFitting aborted: " + errMsg + ". ");
-                    System.err.println(errMsg);
-                    return;
+            } else {
+                    /*
+	            this.componentOptions.addContent(0, new Element("i").setText(independentVars));
+	            this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
+	            this.componentOptions.addContent(0, new Element("outputFile").setText("R-summary.txt"));
+	            */
+                    this.setOption("i", independentVars);
+                    this.setOption("d", dependentVars);
+	            // Run the program and return its stdout to a file.
+	            File outputDirectory = this.runExternal();
+	            if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+                            logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+                            File file0 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");
+                            File file1 = new File(outputDirectory.getAbsolutePath() + "/model-values.xml");
+                            File file2 = new File(outputDirectory.getAbsolutePath() + "/Parameter-estimate-values.xml");
+                            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
+                                    Integer nodeIndex = 0;
+                                    Integer fileIndex = 0;
+                                    String label = "analysis-summary";
+                                    this.addOutputFile(file0, nodeIndex, fileIndex, label);
+                                    nodeIndex = 1;
+                                    label = "model-values";
+                                    this.addOutputFile(file1, nodeIndex, fileIndex, label);
+                                    nodeIndex = 2;
+                                    label = "parameters";
+                                    this.addOutputFile(file2, nodeIndex, fileIndex, label);
+                            } else {
+                                    this.addErrorMessage("Can't find expected output file.");
+                            }
+	            }
             }
-                    
-            this.componentOptions.addContent(0, new Element("i").setText(independentVars));
-            this.componentOptions.addContent(0, new Element("d").setText(dependentVars));
-            // Run the program and return its stdout to a file.
-            File output = this.runExternal();
-
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileLabel = "analysis-summary";
-
-            this.addOutputFile(output, nodeIndex, fileIndex, fileLabel);
             // Send the component output back to the workflow.
             System.out.println(this.getOutput());
+            
+            for (String err : this.errorMessages) {
+                    // These will also be picked up by the workflows platform and relayed to the user.
+                    System.err.println(err);
+            }
+
     }
 
 }

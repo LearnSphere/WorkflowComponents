@@ -81,7 +81,7 @@ public class TetradDiscretizeMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/output.txt");
@@ -131,8 +131,13 @@ public class TetradDiscretizeMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
+  }
 
-
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
   }
 
 

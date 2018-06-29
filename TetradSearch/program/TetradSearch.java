@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,6 +59,38 @@ public class TetradSearch {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(fileParamsArray);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		Integer nodeIndexInt = Integer.parseInt(nodeIndex);
+        		fileIndex = args[i+3];
+        		inFiles.put(nodeIndexInt, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -79,23 +115,24 @@ public class TetradSearch {
     } else if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
-      addToErrorMessages("No outfile name");
+    } else if (!inFiles.containsKey(0)) {
+      addToErrorMessages("No infile ");
       return;
     } else if ( cmdParams.containsKey("-dataType") == false ) {
       addToErrorMessages("No dataType");
       return;
     }
- 
+
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
 
-    String infile0 = cmdParams.get("-file0");
-    File inputFile0 = new File( infile0 );
+    String programDir = cmdParams.get("-programDir");
+
+    File inputFile0 = inFiles.get(0);
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
-      String outputFile = workingDir + "Graph.txt";
+      String outputFile = workingDir + "Graph.html";
 
       try {
 
@@ -114,11 +151,11 @@ public class TetradSearch {
           reader.setMaxIntegralDiscrete(25);
 
           DataSet data = reader.parseTabular(chars);
-          
+
           addToDebugMessages("In TetradSearch.java: about to create SearchAlgorithmWrapper");
 
           SearchAlgorithmWrapper alg = new SearchAlgorithmWrapper(
-            data, cmdParams );
+            data, cmdParams, inputFile0 );
 
           GraphSearch gs = alg.getGraphSearch();
 
@@ -126,8 +163,9 @@ public class TetradSearch {
 
           addToDebugMessages("Results graph: \n" + graph.toString());
 
-          bWriter.append( graph.toString() );
-          bWriter.close();
+          //bWriter.append( graph.toString() );
+          //bWriter.close();
+          writeGraphToHtml(graph.toString(), programDir, bWriter);
 
         } catch (IOException e) {
           addToErrorMessages(e.toString());
@@ -170,6 +208,8 @@ public class TetradSearch {
    */
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -187,6 +227,8 @@ public class TetradSearch {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");
@@ -197,5 +239,28 @@ public class TetradSearch {
       return false;
     }
     return true;
+  }
+
+  private static void writeGraphToHtml(String graphStr, String programDir, BufferedWriter bWriter) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(programDir + "/program/tetradGraph.html"));
+
+      StringBuilder htmlStr = new StringBuilder();
+      while(br.ready()) {
+        htmlStr.append(br.readLine());
+        if (br.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      s = s.replaceAll("PutGraphDataHere", graphStr);
+
+      bWriter.write(s);
+      bWriter.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph to file. " + e.toString());
+    }
   }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Chris Bogart
+  <email>cbogart@cs.cmu.edu</email>
+</author>
+
+<date>2017-12-11</date>
+
+<abstract>This component imports subsets of DiscourseDB datasets.  
+To use this component you 
+must first define a query in the <url>
+<a target="discoursedb" href="https://erebor.lti.cs.cmu.edu/discoursedb/index.html">DiscourseDB</a></url>
+interface.  To do so:<ul><li>Log in using your google ID,</li>
+<li>Select a dataset/database (far left dropdown)</li>
+<li>Choose discourseParts (tree control below that)</li>
+<li>Save that selection ("Remember" button in top center)</li>
+</ul>
+</abstract>
+
+<inputs>
+None
+</inputs>
+
+<outputs>
+<b>tab-separated</b>
+</outputs>
+
+
+</info>

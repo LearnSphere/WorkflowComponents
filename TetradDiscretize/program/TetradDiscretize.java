@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.CharArrayWriter;
@@ -59,6 +62,36 @@ public class TetradDiscretize {
     ArrayList<String> varsToDiscretize =
       getMultiFileInputHeaders("variables", args);
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    File inFile = null;
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(fileParamsArray);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -86,9 +119,9 @@ public class TetradDiscretize {
     } else if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
-      addToErrorMessages("No outfile name");
-      return;
+    } else if (inFile == null) {
+		addToErrorMessages("No input file found");
+		return;
     } else if ( cmdParams.containsKey("-variables") == false ) {
       addToErrorMessages("No variables specified to discretize");
       return;
@@ -99,11 +132,8 @@ public class TetradDiscretize {
     int numCategories = t1.intValue();
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
-    String infile = cmdParams.get("-file0");
-
 
     try {
-      File inputFile = new File( infile );
 
       BufferedWriter bWriter = null;
       FileWriter fWriter = null;
@@ -116,10 +146,10 @@ public class TetradDiscretize {
         bWriter = new BufferedWriter(fWriter);
 
 
-        char[] chars = fileToCharArray(inputFile);
+        char[] chars = fileToCharArray(inFile);
 
         DataReader reader = new DataReader();
-        reader.setMaxIntegralDiscrete(10);
+        reader.setMaxIntegralDiscrete(4);
         reader.setDelimiter(DelimiterType.TAB);
 
         DataSet data = reader.parseTabular(chars);
@@ -144,7 +174,7 @@ public class TetradDiscretize {
             addToDebugMessages("colInds to discretize: " + i);
           }
         }
-        
+
 
         if (distributionType.equals("Evenly Distribute Values") ) {
           addToDebugMessages("in evenly distribute values");
@@ -157,12 +187,12 @@ public class TetradDiscretize {
             double[] doubleData = data.getDoubleData().getColumn(ind).toArray();
             double[] breakpoints = Discretizer.getEqualFrequencyBreakPoints(doubleData, numCategories);
             List<String> categories = new DiscreteVariable(name, numCategories).getCategories();
-            
+
             ContinuousDiscretizationSpec spec
               = new ContinuousDiscretizationSpec(breakpoints, categories);
-            
+
             spec.setMethod(ContinuousDiscretizationSpec.EVENLY_DISTRIBUTED_VALUES);
-            
+
             specs.put(node, spec);
           }
           params.set("discretizationSpecs", specs);
@@ -195,9 +225,9 @@ public class TetradDiscretize {
           }
           params.set("discretizationSpecs", specs);
         }
-        
+
         DiscretizationWrapper disWrap = new DiscretizationWrapper( dw, params );
-        
+
         DataModel newData = disWrap.getDataModels().get(0);
 
         String convertedData = newData.toString();
@@ -348,6 +378,8 @@ public class TetradDiscretize {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -365,6 +397,8 @@ public class TetradDiscretize {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

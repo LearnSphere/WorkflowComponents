@@ -13,7 +13,9 @@
     </connection>
   </connections>
   <options>
-    <nodeName5 />
+    <TetradGraphEditor>Graph Nodes:%NEW_LINE%page_view_time,action_to_page_view_count,action_to_page_view_time,page_view_to_action_count,page_view_to_action_time,quiz_finished,quiz_first_attempt_mean,total_quiz_proportion,quiz_first_attempt_stdev,final_grade_in_number%NEW_LINE%%NEW_LINE%Graph Edges:%NEW_LINE%1. page_view_to_action_count --> total_quiz_proportion%NEW_LINE%2. page_view_to_action_time --> total_quiz_proportion%NEW_LINE%3. page_view_to_action_count --> quiz_finished%NEW_LINE%4. quiz_finished --> final_grade_in_number%NEW_LINE%5. quiz_first_attempt_stdev --> final_grade_in_number%NEW_LINE%6. total_quiz_proportion --> final_grade_in_number%NEW_LINE%7. page_view_to_action_count --> quiz_first_attempt_stdev%NEW_LINE%
+</TetradGraphEditor>
+    <!--<nodeName5 />
     <nodeName4 />
     <nodeName3 />
     <nodeName2 />
@@ -49,7 +51,7 @@
     <nodeOperation5>Add_Node</nodeOperation5>
     <operation5>Add_Edge</operation5>
     <operation4>Add_Edge</operation4>
-    <operation3>Add_Edge</operation3>
+    <operation3>Add_Edge</operation3>-->
   </options>
   <top>452</top>
   <inputs>

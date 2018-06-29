@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -58,6 +63,38 @@ public class TetradClassifier {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    Map<Integer, File> inFiles = new HashMap<Integer, File>();
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+        		File inFile = null;
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(fileParamsArray);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		Integer nodeIndexInt = Integer.parseInt(nodeIndex);
+        		inFiles.put(nodeIndexInt, inFile);
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -79,13 +116,13 @@ public class TetradClassifier {
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
-    } else if ( cmdParams.containsKey("-file0") == false ) {
+    } else if (!inFiles.containsKey(0)) {
       addToErrorMessages("No infile0 ");
       return;
-    } else if ( cmdParams.containsKey("-file1") == false ) {
+    } else if (!inFiles.containsKey(1)) {
       addToErrorMessages("No infile1 ");
       return;
-    } else if ( cmdParams.containsKey("-file2") == false ) {
+    } else if (!inFiles.containsKey(2)) {
       addToErrorMessages("No infile2 ");
       return;
     }else if ( cmdParams.containsKey("-target") == false ) {
@@ -96,18 +133,16 @@ public class TetradClassifier {
     String model = cmdParams.get("-model");
     String workingDir = cmdParams.get("-workingDir");
     String programDir = cmdParams.get("-programDir");
-    String infile0 = cmdParams.get("-file0");
-    String infile1 = cmdParams.get("-file1");
-    String infile2 = cmdParams.get("-file2");
+
     String target = cmdParams.get("-target");
     target = target.replaceAll(" ","_");
     String parametricModel = cmdParams.get("-parametricModel");
     int targetCat = Integer.parseInt(cmdParams.get("-targetCategory"));
     outputDir = workingDir;
 
-    File inputFile0 = new File( infile0 );
-    File inputFile1 = new File( infile1 );
-    File inputFile2 = new File( infile2 );
+    File inputFile0 = inFiles.get(0);
+    File inputFile1 = inFiles.get(1);
+    File inputFile2 = inFiles.get(2);
 
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
@@ -144,18 +179,30 @@ public class TetradClassifier {
           // train data
           char[] chars = fileToCharArray(inputFile0);
           DataReader reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           DataSet trainData = reader.parseTabular(chars);
 
           // test data
           chars = fileToCharArray(inputFile2);
           reader = new DataReader();
-          reader.setMaxIntegralDiscrete(10);
+          reader.setMaxIntegralDiscrete(4);
           reader.setDelimiter(DelimiterType.TAB);
           DataSet testData = reader.parseTabular(chars);
+          addToDebugMessages("loaded data");
 
-          //List<String> variableNames = data.getVariableNames();
+          //Ensure both data sets have same variables
+          List<String> trainVars = trainData.getVariableNames();
+          List<String> testVars = testData.getVariableNames();
+          if (trainVars.size() != testVars.size()) {
+            addToErrorMessages("Test and Training data have different number of variables");
+          }
+          for (int i = 0; i < trainVars.size(); i++) {
+            if (trainVars.contains(testVars.get(i)) == false ||
+                testVars.contains(trainVars.get(i)) == false) {
+              addToErrorMessages("Test and Training data have different variables");
+            }
+          }
 
 
 
@@ -189,7 +236,7 @@ public class TetradClassifier {
           int numNodes = graph.getNumNodes();
 
           if (trainData.isContinuous() || trainData.isMixed()) {
-            addToErrorMessages("Training data set is continuous or mixed, " + 
+            addToErrorMessages("Training data set is continuous or mixed, " +
                 "but it must be compoletely discrete.");
           }
 
@@ -289,25 +336,21 @@ public class TetradClassifier {
             }
             addToDebugMessages(incatstr);
 
-            
+
             String scStr = "";
             for (double sc : scores) {
               scStr += sc + ",";
             }
 
-            //addToDebugMessages(scStr);
-            addToDebugMessages("inCategory " + inCategory.length);
-            addToDebugMessages("1 score length " + scores.length);
             RocCalculator rocc =
                     new RocCalculator(scores, inCategory, RocCalculator.ASCENDING);
-            addToDebugMessages("1.3");
+
             double area1 = rocc.getAuc();
-            addToDebugMessages("1.5");
+
             double[][] points = rocc.getScaledRocPlot();
-            addToDebugMessages("1.6");
+
             double area = rocc.getAuc();
             String auc = area + "";
-            addToDebugMessages("1.75");
 
             String rocData = "[";
             int useOnly100Points = Math.max(1,(int)points.length/200);
@@ -326,23 +369,22 @@ public class TetradClassifier {
             }
             rocData += "]";
 
-            addToDebugMessages("2");
 
             String htmlTemplate = programDir + "program/rocCurve.html";
-            //addToDebugMessages(htmlTemplate);
+
             BufferedReader htmlReader = new BufferedReader(
                 new FileReader(htmlTemplate));
             String line = null;
             while ((line = htmlReader.readLine()) != null) {
-              //addToDebugMessages(line);
+
                 if (line.contains("INSERTDATAHERE")) {
-                    line = line.replaceAll("INSERTDATAHERE", rocData); 
+                    line = line.replaceAll("INSERTDATAHERE", rocData);
                 }
                 if (line.contains("INSERTTITLEDATAHERE")) {
-                    line = line.replaceAll("INSERTTITLEDATAHERE", target + " = " + targetCat); 
+                    line = line.replaceAll("INSERTTITLEDATAHERE", target + " = " + targetCat);
                 }
                 if (line.contains("AUC_DATA_HERE")) {
-                    line = line.replaceAll("AUC_DATA_HERE", auc.substring(0,6)); 
+                    line = line.replaceAll("AUC_DATA_HERE", auc.substring(0,6));
                 }
                 bWriterROC.append(line + "\n");
             }
@@ -524,13 +566,37 @@ public class TetradClassifier {
     return (DataSet)newData;
   }
 
-  private static Graph getGraphFromText(BufferedReader b) {
+  private static Graph getGraphFromText( BufferedReader b ) {
     try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr);
+
+      String [] graphLines = graphStr.split("\n");
+
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
       boolean onNodes = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        //String line = b.readLine();
         if ( !onNodes ) {
           if ( line.contains("Graph Nodes:") ) {
             onNodes = true;
@@ -549,8 +615,10 @@ public class TetradClassifier {
 
       //Get edges
       boolean onEdges = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+        //String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
         if ( !onEdges ) {
           if ( line.contains("Graph Edges:") ) {
             onEdges = true;
@@ -568,7 +636,7 @@ public class TetradClassifier {
         String n0 = ""; //tokens[1];
         String n1 = ""; //tokens[3];
         boolean onFirstNodeName = true;
-        //get node names (even if they have spaces)
+        //get node names (even if they have spaces) UPDATE NO SUPPORT FOR SPACES (SINCE FCI GRAPHS)
         for (int i = 1; i < tokens.length; i++) {
           String t = tokens[i];
           if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
@@ -581,10 +649,12 @@ public class TetradClassifier {
             }
             n0 += t;
           } else {
-            if (n1.length() > 0) {
+            /*if (n1.length() > 0) {
               n1 += "_";
             }
-            n1 += t;
+            n1 += t;*/
+            n1 = t;
+            break;
           }
 
         }
@@ -611,18 +681,40 @@ public class TetradClassifier {
           }
         }
 
+        Edge newEdge = null;
         if ( arrow.equals("---") ) {
-          //TODO: UNCOMMENT NEXT LINE
-          g.addEdge(Edges.undirectedEdge(node0, node1));
-        } else if (arrow.equals("-->")) {
-          g.addEdge(Edges.directedEdge( node0, node1 ) );
-        } else if (arrow.equals("<--")) {
-          g.addEdge(Edges.directedEdge(node1, node0));
-        } else if (arrow.equals("<->")) {
-          g.addEdge(Edges.bidirectedEdge(node0, node1));
+          newEdge = Edges.undirectedEdge(node0, node1);
+        } else if ( arrow.equals("-->") ) {
+          newEdge = Edges.directedEdge(node0, node1);
+        } else if ( arrow.equals("<--") ) {
+          newEdge = Edges.directedEdge(node1, node0);
+        } else if ( arrow.equals("<->") ) {
+          newEdge = Edges.bidirectedEdge(node0, node1);
+        } else if ( arrow.equals("o->") ) {
+          newEdge = Edges.partiallyOrientedEdge(node0, node1);
+        } else if ( arrow.equals("o-o") ) {
+          newEdge = Edges.nondirectedEdge(node0, node1);
         } else {
           addToDebugMessages("edge is unreadable" + arrow);
+          continue;
         }
+
+        // Set if the edge is dashed, colored
+        for (String t : tokens) {
+          switch (t) {
+            case "nl":
+              newEdge.setDashed(true);
+              newEdge.addProperty(Edge.Property.nl);
+            case "y":
+              newEdge.setLineColor(Color.YELLOW);
+            case "dd":
+              newEdge.setLineColor(Color.GREEN);
+              newEdge.addProperty(Edge.Property.dd);
+          }
+        }
+
+        addToDebugMessages("" + newEdge);
+        g.addEdge(newEdge);
       }
       return g;
     } catch ( Exception e ) {
@@ -698,6 +790,8 @@ public class TetradClassifier {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -715,6 +809,8 @@ public class TetradClassifier {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

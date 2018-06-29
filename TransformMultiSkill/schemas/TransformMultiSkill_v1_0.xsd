@@ -12,10 +12,10 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList0">
     <xs:choice>
-      <xs:element ref="student-step"  minOccurs="0" />
+      <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
 
@@ -25,7 +25,11 @@
     </xs:all>
   </xs:complexType>
 
-  
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
 
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
@@ -37,7 +41,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="student-step" />
@@ -50,7 +54,7 @@
       <xs:element name="output0" type="OutputDefinition0" />
     </xs:sequence>
   </xs:complexType>
-  
+
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -58,12 +62,12 @@
     	<xs:element type="xs:boolean" name="keepOtherKcs" id="Keep_Other_KCs" default="true" />
     	<xs:element type="xs:boolean" name="includeEmpty" id="Include_Rows_with_No_Skill" default="false" />
     </xs:choice>
-    
-  </xs:complexType>
-  
-  
 
-  
+  </xs:complexType>
+
+
+
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all >
@@ -77,6 +81,7 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
         <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType"/>
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
 

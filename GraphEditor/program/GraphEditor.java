@@ -7,6 +7,7 @@
 */
 
 import java.io.BufferedReader;
+import java.util.regex.Pattern;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +19,11 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.*;
+
+import org.apache.commons.lang.StringUtils;
+
+import cern.colt.Arrays;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.data.DataReader;
@@ -57,6 +64,36 @@ public class GraphEditor {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     System.setErr(new PrintStream(baos));
 
+    /* The new parameter syntax for files is -node m -fileIndex n <infile>. */
+    File inFile = null;
+
+    for ( int i = 0; i < args.length; i++) {	// Cursory parse to get the input files
+        String arg = args[i];
+        String nodeIndex = null;
+        String fileIndex = null;
+        String filePath = null;
+        if (i < args.length - 4) {
+        	if (arg.equalsIgnoreCase("-node")) {
+
+        		String[] fileParamsArray = { args[i] /* -node */, args[i+1] /* node (index) */,
+    				args[i+2] /* -fileIndex */, args[i+3] /* fileIndex */, args[i+4] /* infile */ };
+        		String fileParamsString = Arrays.toString(fileParamsArray);
+        		// Use regExp to get the file path
+        		String regExp = "^\\[-node, ([0-9]+), -fileIndex, ([0-9]+), ([^\\]]+)\\]$";
+        		Pattern pattern = Pattern.compile(regExp);
+        		if (fileParamsString.matches(regExp)) {
+        			// Get the third argument in parens from regExp
+        			inFile = new File(fileParamsString.replaceAll(regExp, "$3"));
+        		}
+        		nodeIndex = args[i+1];
+        		fileIndex = args[i+3];
+        		// 5 arguments, but for loop still calls i++ after
+        		i += 4;
+        	}
+        }
+
+    }
+
     HashMap<String, String> cmdParams = new HashMap<String, String>();
     for ( int i = 0; i < args.length; i++ ) {
       String s = args[i];
@@ -74,30 +111,93 @@ public class GraphEditor {
         i++;
       }
     }
-    addToDebugMessages("Command Params: " + cmdParams.toString());
+
+
 
     if ( cmdParams.containsKey("-workingDir") == false ) {
       addToErrorMessages("No workingDir");
       return;
     }
-
-    if (cmdParams.containsKey("-file0")) {
+    if ( cmdParams.containsKey("-programDir") == false ) {
+      addToErrorMessages("No programDir");
+      return;
+    }
+	if (inFile == null) {
+		addToErrorMessages("No input file found");
+		return;
+	}
+    /*if (inFile != null) {
       try {
-        File inputFile = new File(cmdParams.get("-file0"));
-        BufferedReader graphBReader = new BufferedReader(new FileReader(inputFile));
+
+        BufferedReader graphBReader = new BufferedReader(new FileReader(inFile));
         graph = getGraphFromText(graphBReader);
+        graphBReader.close();
       } catch (IOException e) {
         addToErrorMessages("Exception opening input file: " + e.toString());
       }
-    }
-    addToDebugMessages("Graph: \n" + graph.toString());
+    }*/
+    //addToDebugMessages("Graph: \n" + graph.toString());
 
     String workingDir = cmdParams.get("-workingDir");
     outputDir = workingDir;
 
-    String outputFile = workingDir + "EditedGraph.txt";
+    String programDir = cmdParams.get("-programDir");
+
+    String outputFile = workingDir + "EditedGraph.html";
+
+    String graphStr = cmdParams.get("-TetradGraphEditor");
+    addToDebugMessages(graphStr);
+    graphStr = graphStr.replaceAll("%NEW_LINE%","\n");
+    graphStr = graphStr.replaceAll("%HYPHEN%","-");
+    addToDebugMessages(graphStr);
 
     try {
+      BufferedReader bReader = null;
+      FileReader fReader = null;
+
+      bReader = new BufferedReader( new FileReader(programDir + "/program/tetradGraphVisualizationEditor.html"));
+
+      BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+
+      // If the graph editor didn't have edits, use original graph
+      if (graphStr == "0" || graphStr.length() < 10) {
+        addToDebugMessages("using original graph.  not custom graph given");
+        // No edits were made, write out the original graph
+        BufferedReader inputReader = new BufferedReader(
+            new FileReader(inFile));
+        addToDebugMessages("1");
+        StringBuilder origGraphBuf = new StringBuilder();
+        while (inputReader.ready()) {
+          origGraphBuf.append(inputReader.readLine());
+          if (inputReader.ready()) {
+            origGraphBuf.append("\n");
+          }
+        }
+        addToDebugMessages(origGraphBuf.toString());
+        bw.append(origGraphBuf.toString());
+        bw.flush();
+        bw.close();
+      } else {
+        addToDebugMessages("3");
+        StringBuilder buf = new StringBuilder();
+        while(bReader.ready()) {
+          String line = bReader.readLine();
+          buf.append(line.replaceAll("PutGraphDataHere", graphStr));
+          if (bReader.ready()) {
+            buf.append("\n");
+          }
+        }
+        addToDebugMessages("4");
+
+        //bw.append(graphStr);
+        bw.append(buf.toString());
+        bw.flush();
+        bw.close();
+      }
+    } catch (IOException e) {
+      addToErrorMessages("Could not write graph out to file: " + e.toString());
+    }
+    /*try {
 
       BufferedReader bReader = null;
       FileReader fReader = null;
@@ -133,7 +233,7 @@ public class GraphEditor {
       }
     } catch (Exception e) {
       addToErrorMessages(e.toString());
-    }
+    }*/
 
     System.setErr(sysErr);
 
@@ -179,7 +279,7 @@ public class GraphEditor {
             node.setNodeType(NodeType.LATENT);
           }
         } catch (Exception e) {
-          addToErrorMessages("Unable to create node (to be deleted) " + 
+          addToErrorMessages("Unable to create node (to be deleted) " +
               nodeName + ": " + e.toString());
         }
         try {
@@ -204,11 +304,11 @@ public class GraphEditor {
     //Check params
     List<String> variables = graph.getNodeNames();
     if (variables.contains(from) == false) {
-      addToErrorMessages("Error. Variable " + from + " is trying to be edited in spot #" + 
+      addToErrorMessages("Error. Variable " + from + " is trying to be edited in spot #" +
           (index+1) + ". but it does not exist in graph.");
     }
     if (variables.contains(to) == false) {
-      addToErrorMessages("Error. Variable " + to + " is trying to be edited in spot #" + 
+      addToErrorMessages("Error. Variable " + to + " is trying to be edited in spot #" +
           (index+1) + ". but it does not exist in graph.");
     }
 
@@ -247,7 +347,7 @@ public class GraphEditor {
             addToErrorMessages("Was not able to add edge: " + edge.toString());
           }
         } catch (Exception e) {
-          addToErrorMessages("Exception adding edge: " + 
+          addToErrorMessages("Exception adding edge: " +
               edge.toString() + " ... " + e.toString());
         }
         break;
@@ -257,20 +357,44 @@ public class GraphEditor {
             addToErrorMessages("Was not able to remove edge: " + edge.toString());
           }
         } catch (Exception e) {
-          addToErrorMessages("Exception removing edge: " + 
+          addToErrorMessages("Exception removing edge: " +
               edge.toString() + " ... " + e.toString());
         }
         break;
     }
   }
 
-  private static Graph getGraphFromText(BufferedReader b) {
+  private static Graph getGraphFromText( BufferedReader b ) {
     try {
+      //retrieve graph from html
+      StringBuilder htmlStr = new StringBuilder();
+      while(b.ready()) {
+        htmlStr.append(b.readLine());
+        if (b.ready()) {
+          htmlStr.append("\n");
+        }
+      }
+
+      String s = htmlStr.toString();
+
+      String [] graphStrSplit = s.split("<div id=\"graphData\" style=\"visibility:hidden\">\n");
+      if (graphStrSplit.length < 2) {
+        addToErrorMessages("Couldn't get graph.  When splitting input graph, not enough tokens.");
+      }
+
+      String graphStr = graphStrSplit[1].split("</div>")[0];
+      addToDebugMessages("graphStr: \n" + graphStr);
+
+      String [] graphLines = graphStr.split("\n");
+
       //Get nodes
       List<Node> nodeList = new ArrayList<Node>();
       boolean onNodes = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+      int c = 0;
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
+        //String line = b.readLine();
         if ( !onNodes ) {
           if ( line.contains("Graph Nodes:") ) {
             onNodes = true;
@@ -289,8 +413,10 @@ public class GraphEditor {
 
       //Get edges
       boolean onEdges = false;
-      while ( b.ready() ) {
-        String line = b.readLine();
+      //while ( b.ready() ) {
+        //String line = b.readLine();
+      for ( ; c < graphLines.length; c++) {
+        String line = graphLines[c];
         if ( !onEdges ) {
           if ( line.contains("Graph Edges:") ) {
             onEdges = true;
@@ -308,7 +434,7 @@ public class GraphEditor {
         String n0 = ""; //tokens[1];
         String n1 = ""; //tokens[3];
         boolean onFirstNodeName = true;
-        //get node names (even if they have spaces)
+        //get node names (even if they have spaces) UPDATE NO SUPPORT FOR SPACES (SINCE FCI GRAPHS)
         for (int i = 1; i < tokens.length; i++) {
           String t = tokens[i];
           if (t.equals("---") || t.equals("-->") || t.equals("<->") || t.equals("o->") || t.equals("o-o")) {
@@ -321,10 +447,12 @@ public class GraphEditor {
             }
             n0 += t;
           } else {
-            if (n1.length() > 0) {
+            /*if (n1.length() > 0) {
               n1 += "_";
             }
-            n1 += t;
+            n1 += t;*/
+            n1 = t;
+            break;
           }
 
         }
@@ -351,18 +479,40 @@ public class GraphEditor {
           }
         }
 
+        Edge newEdge = null;
         if ( arrow.equals("---") ) {
-          //TODO: UNCOMMENT NEXT LINE
-          g.addEdge(Edges.undirectedEdge(node0, node1));
-        } else if (arrow.equals("-->")) {
-          g.addEdge(Edges.directedEdge( node0, node1 ) );
-        } else if (arrow.equals("<--")) {
-          g.addEdge(Edges.directedEdge(node1, node0));
-        } else if (arrow.equals("<->")) {
-          g.addEdge(Edges.bidirectedEdge(node0, node1));
+          newEdge = Edges.undirectedEdge(node0, node1);
+        } else if ( arrow.equals("-->") ) {
+          newEdge = Edges.directedEdge(node0, node1);
+        } else if ( arrow.equals("<--") ) {
+          newEdge = Edges.directedEdge(node1, node0);
+        } else if ( arrow.equals("<->") ) {
+          newEdge = Edges.bidirectedEdge(node0, node1);
+        } else if ( arrow.equals("o->") ) {
+          newEdge = Edges.partiallyOrientedEdge(node0, node1);
+        } else if ( arrow.equals("o-o") ) {
+          newEdge = Edges.nondirectedEdge(node0, node1);
         } else {
           addToDebugMessages("edge is unreadable" + arrow);
+          continue;
         }
+
+        // Set if the edge is dashed, colored
+        for (String t : tokens) {
+          switch (t) {
+            case "nl":
+              newEdge.setDashed(true);
+              newEdge.addProperty(Edge.Property.nl);
+            case "y":
+              newEdge.setLineColor(Color.YELLOW);
+            case "dd":
+              newEdge.setLineColor(Color.GREEN);
+              newEdge.addProperty(Edge.Property.dd);
+          }
+        }
+
+        addToDebugMessages("" + newEdge);
+        g.addEdge(newEdge);
       }
       return g;
     } catch ( Exception e ) {
@@ -389,6 +539,8 @@ public class GraphEditor {
 
   public static boolean addToErrorMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(ERROR_PREPEND + message + "\n");
@@ -406,6 +558,8 @@ public class GraphEditor {
    */
   public static boolean addToDebugMessages(String message) {
     try {
+      System.out.println(message);
+
       FileWriter fw = new FileWriter(outputDir + FILENAME, true);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(DEBUG_PREPEND + message + "\n");

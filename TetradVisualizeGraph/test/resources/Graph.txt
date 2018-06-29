@@ -1,6 +1,0 @@
-Graph Nodes:
-Case,taste,Acetic,H2S,Lactic
-
-Graph Edges:
-1. Acetic --- Lactic
-2. taste --- H2S

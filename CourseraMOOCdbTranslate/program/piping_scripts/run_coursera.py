@@ -32,11 +32,10 @@ if __name__ == "__main__":
     #parser.add_argument('-dbPort', type=str, help='host port number to access mooc-db', default="3306")
     parser.add_argument('-customMOOCdbName', type=str, help='place holder, no use', default="")
     parser.add_argument('-userId', type=str, help='placeholder for WF', default='')
-    parser.add_argument('-file0', type=str, help='place holder for WF, no use', default="")
-    parser.add_argument('-file1', type=str, help='place holder for WF, no use', default="")
-    parser.add_argument('-file2', type=str, help='place holder for WF, no use', default="")
-    
-    args = parser.parse_args()
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
+
+    args, option_file_index_args = parser.parse_known_args()
 
     #read config file
     config = ConfigParser.RawConfigParser()
@@ -49,11 +48,11 @@ if __name__ == "__main__":
 
     userName = args.un
     password = args.p
-    
-    
+
+
     dbPort = int(dbPort)
 
-    
+
     vars = {
         'source': {
             'platform_format': 'coursera_2',
@@ -68,14 +67,14 @@ if __name__ == "__main__":
             'general_db': args.anonymizedGeneralDBName,
             'forum_db': args.anonymizedForumDBName,
         },
-    
+
         'core': {
             'host': dbHost,
             'user': userName,
             'password': password,
             'port': dbPort,
         },
-    
+
         'target': {
             'host': dbHost,
             'user': userName,
@@ -83,7 +82,7 @@ if __name__ == "__main__":
             'port': dbPort,
             'db': args.MOOCdbName,
         },
-    
+
         'options': {
             'log_path': args.workingDir,
             'log_to_console': True,
@@ -94,7 +93,7 @@ if __name__ == "__main__":
     start_dt = datetime.now()
     vars['task_id'] = "{0:04d}{1:02d}{2:02d}{3:02d}{4:02d}{5:02d}-{6}".format(start_dt.year, start_dt.month, start_dt.day, start_dt.hour, start_dt.minute, start_dt.second, vars['target']['db'])
     vars['task_static_id'] = vars['target']['db']
-    
+
     vars['logger'] = logger
     vars['log_file'] = vars['options']['log_path'] + "/{}.log".format(vars['task_id'])
 
@@ -102,12 +101,12 @@ if __name__ == "__main__":
     vars['logger'].Log(vars, "password: {}".format(password))
     vars['logger'].Log(vars, "host: {}".format(dbHost))
     vars['logger'].Log(vars, "port: {}".format(dbPort))
-    
+
     #run restore databases with file
-    restoreDB (vars, vars['source']['hash_mapping_db'], args.hashMapBackupFilePath)    
-    restoreDB (vars, vars['source']['general_db'], args.anonymizedGeneralBackupFilePath)
-    restoreDB (vars, vars['source']['forum_db'], args.anonymizedForumFilePath)
-    
+    restoreDB (vars, vars['source']['hash_mapping_db'], args.hashMapBackupFilePath, dbHost)
+    restoreDB (vars, vars['source']['general_db'], args.anonymizedGeneralBackupFilePath, dbHost)
+    restoreDB (vars, vars['source']['forum_db'], args.anonymizedForumFilePath, dbHost)
+
     #translation
     main(vars)
     vars['logger'].Log(vars, "Finish translating")
@@ -121,7 +120,7 @@ if __name__ == "__main__":
     if startDate == None:
         startDate = datetime.now()
     startDate = startDate.strftime('%Y-%m-%d %H:%M:%S')
-        
+    vars['logger'].Log(vars, "startDate: " + startDate)
     cu.curate(vars,
               dbName     = vars['target']['db'],
             userName    = vars['target']['user'],

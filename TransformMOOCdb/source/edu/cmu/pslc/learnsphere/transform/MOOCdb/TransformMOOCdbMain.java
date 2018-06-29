@@ -44,7 +44,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
 
         }
 
-    
+
     @Override
     protected void runComponent() {
             // Dao-enabled components require an applicationContext.xml in the component directory,
@@ -55,7 +55,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
             // Do not follow symbolic links so we can prevent unwanted directory traversals if someone
             // does manage to create a symlink to somewhere dangerous (like /datashop/deploy/)
             if (Files.exists(Paths.get(appContextPath), LinkOption.NOFOLLOW_LINKS)) {
-                //Initialize the Spring Framework application context. 
+                //Initialize the Spring Framework application context.
                 SpringContext.getApplicationContext(appContextPath);
             }
             File MOOCdbFile = getAttachment(0, 0);
@@ -73,7 +73,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
                             String err = "MOOCdb file has incorrect format: " + MOOCdbFilePath;
                             addErrorMessage(err);
                             logger.info("MOOCdbImport aborted: " + err);
-                            System.err.println(err);
+                            System.out.println(getOutput());
                             return;
                     } else {
                             if (!databaseExist(MOOCdbName) || !isMOOCdb(MOOCdbName)) {
@@ -81,80 +81,82 @@ public class TransformMOOCdbMain extends AbstractComponent {
                                     String err = "MOOCdb doesn't exist: " + MOOCdbName;
                                     addErrorMessage(err);
                                     logger.info("MOOCdbImport aborted: " + err);
-                                    System.err.println(err);
+                                    System.out.println(getOutput());
                                     return;
                             } else {
-                                    //output MOOCdb file and feature name
-                                    outputFilesWithExistingDbInfo(MOOCdbName);
-                                    return;
+                                // output MOOCdb file and feature name
+                            	// (This calls getOutput() from inside the method)
+                                outputFilesWithExistingDbInfo(MOOCdbName);
+                                return;
                             }
                     }
             } else {//file is a database backup
-                    //use backup file name as MOOCdb name
-                    //***
-                    //database backup command example: mysqldump --user=datashop --password=datashop moocdb_test > moocdb_test_backup.sql
-                    //****
-                    MOOCdbName = MOOCdbFileName.substring(0, SQLfileInd).replaceAll("[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\?\\*\\+\\.\\>]", "");
-                    //just to be sure
-                    MOOCdbName = MOOCdbName.replaceAll("\\W", "");
-                    MOOCdbName = MOOCdbName.toLowerCase();
-                    logger.info("escaped MOOCdb name: " + MOOCdbName);
-                    if (MOOCdbName.equals(MOOCDB_CLEAN) || MOOCdbName.equals(MOOCDB_CORE)){
-                            //send error message
-                            String errMsg = "Wrong MOOCdb name: " + MOOCDB_CLEAN + " or " + MOOCDB_CORE + " is not allowed.";
-                            addErrorMessage(errMsg);
+                //use backup file name as MOOCdb name
+                //***
+                //database backup command example: mysqldump --user=datashop --password=datashop moocdb_test > moocdb_test_backup.sql
+                //****
+                MOOCdbName = MOOCdbFileName.substring(0, SQLfileInd).replaceAll("[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\?\\*\\+\\.\\>]", "");
+                //just to be sure
+                MOOCdbName = MOOCdbName.replaceAll("\\W", "");
+                MOOCdbName = MOOCdbName.toLowerCase();
+                logger.info("escaped MOOCdb name: " + MOOCdbName);
+                if (MOOCdbName.equals(MOOCDB_CLEAN) || MOOCdbName.equals(MOOCDB_CORE)){
+                        //send error message
+                        String errMsg = "Wrong MOOCdb name: " + MOOCDB_CLEAN + " or " + MOOCDB_CORE + " is not allowed.";
+                        addErrorMessage(errMsg);
+                        logger.info("MOOCdbImport aborted: " + errMsg);
+                        System.out.println(getOutput());
+                        return;
+                }
+                //moocdb exists
+                if (databaseExist(MOOCdbName)) {
+                    //is a MOOCdb
+                    if (isMOOCdb(MOOCdbName)) {
+                       //if exist in moocdbs table
+                       MOOCdbItem currMOOCdbItem = findMOOCdb(MOOCdbName);
+                       if (currMOOCdbItem != null) {
+                           String progress = currMOOCdbItem.getCurrentProgress();
+                           if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
+                               String errMsg = "A MOOCdb " + MOOCdbName + " is currently undergoing recovery by another process.";
+                               addErrorMessage(errMsg + " You can either wait till it's done or rename your MOOCdb backup file and start a new import process.");
+                               logger.info("MOOCdbImport aborted: " + errMsg);
+                               System.out.println(getOutput());
+                               return;
+                           } else {
+                               String curItemMOOCdbMd5HashValue = currMOOCdbItem.getMoocdbFileMd5HashValue();
+                               if (MOOCdbMd5HashValue.equals(curItemMOOCdbMd5HashValue)) {
+                                   //output MOOCdb file and feature name
+                            	   // (This calls getOutput() from inside the method)
+                                   outputFilesWithExistingDbInfo(MOOCdbName);
+                                   return;
+                               } else { //md5Hash is not the same
+                                   String errMsg = "A MOOCdb with the same name already exists but SQL backup file is different. MOOCdb name: " + MOOCdbName + ". ";
+                                   logger.info("MOOCdbImport aborted: " + errMsg);
+                                   errMsg += " You can rename your MOOCdb backup file and start a new import process.";
+                                   addErrorMessage(errMsg);
+                                   System.out.println(getOutput());
+                                   return;
+                               }
+                           }
+                       } else { //not found in moocdbs table
+                           String errMsg = "A MOOCdb with the same name already exists. MOOCdb name: " + MOOCdbName + ". ";
+                           logger.info("MOOCdbImport aborted: " + errMsg);
+                           errMsg += " Find the existing MOOCdb from Datashop; or rename your MOOCdb backup file and start a new import process.";
+                           addErrorMessage(errMsg);
+                           System.out.println(getOutput());
+                           return;
+                       }
+
+                    } else {
+                          //db with the same name but it's not a moocdb
+                            String errMsg = "A database with the same name already exists. Database name: " + MOOCdbName + ". ";
                             logger.info("MOOCdbImport aborted: " + errMsg);
+                            errMsg += " Rename your MOOCdb backup file and start a new import process.";
+                            addErrorMessage(errMsg);
                             System.err.println(errMsg);
                             return;
                     }
-                    //moocdb exists
-                    if (databaseExist(MOOCdbName)) {
-                            //is a MOOCdb
-                            if (isMOOCdb(MOOCdbName)) {
-                                   //if exist in moocdbs table
-                                   MOOCdbItem currMOOCdbItem = findMOOCdb(MOOCdbName);
-                                   if (currMOOCdbItem != null) {
-                                           String progress = currMOOCdbItem.getCurrentProgress();
-                                           if (progress != null && !progress.equals("") && !progress.equals(MOOCdbItem.PROGRESS_DONE)) {
-                                                   String errMsg = "A MOOCdb " + MOOCdbName + " is currently undergoing recovery by another process.";
-                                                   addErrorMessage(errMsg + " You can either wait till it's done or rename your MOOCdb backup file and start a new import process.");
-                                                   logger.info("MOOCdbImport aborted: " + errMsg);
-                                                   System.err.println(errMsg);
-                                                   return;
-                                           } else {
-                                                   String curItemMOOCdbMd5HashValue = currMOOCdbItem.getMoocdbFileMd5HashValue();
-                                                   if (MOOCdbMd5HashValue.equals(curItemMOOCdbMd5HashValue)) {
-                                                           //output MOOCdb file and feature name
-                                                           outputFilesWithExistingDbInfo(MOOCdbName);
-                                                           return;
-                                                   } else { //md5Hash is not the same
-                                                           String errMsg = "A MOOCdb with the same name already exists but SQL backup file is different. MOOCdb name: " + MOOCdbName + ". ";
-                                                           logger.info("MOOCdbImport aborted: " + errMsg);
-                                                           errMsg += " You can rename your MOOCdb backup file and start a new import process.";
-                                                           addErrorMessage(errMsg);
-                                                           System.err.println(errMsg);
-                                                           return;
-                                                   }
-                                           }
-                                   } else { //not found in moocdbs table
-                                           String errMsg = "A MOOCdb with the same name already exists. MOOCdb name: " + MOOCdbName + ". ";
-                                           logger.info("MOOCdbImport aborted: " + errMsg);
-                                           errMsg += " Find the existing MOOCdb from Datashop; or rename your MOOCdb backup file and start a new import process.";
-                                           addErrorMessage(errMsg);
-                                           System.err.println(errMsg);
-                                           return;
-                                   }
-
-                            } else {
-                                  //db with the same name but it's not a moocdb
-                                    String errMsg = "A database with the same name already exists. Database name: " + MOOCdbName + ". ";
-                                    logger.info("MOOCdbImport aborted: " + errMsg);
-                                    errMsg += " Rename your MOOCdb backup file and start a new import process.";
-                                    addErrorMessage(errMsg);
-                                    System.err.println(errMsg);
-                                    return;
-                            }
-                    }
+                }
             }
             //possible that moocdb doesn't exist yet but moocdbs table has an record, very unlikely though
             MOOCdbItem currMOOCdbItem = findMOOCdb(MOOCdbName);
@@ -162,7 +164,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
                     String errMsg = "Inconsistency found between real MOOCdb database and a record in moocdbs table; MOOCdb name: " + MOOCdbName;
                     addErrorMessage(errMsg + " Rename your MOOCdb backup file and start a new import process.");
                     logger.info("MOOCdbImport aborted: " + errMsg);
-                    System.err.println(errMsg);
+                    System.out.println(getOutput());
                     return;
             }
             //start a new moocdb
@@ -190,7 +192,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
                             String errMsg = "Error found when creating user for accessing new DB: " + moocdbItem.getUsername();
                             addErrorMessage(errMsg);
                             logger.info("MOOCdbImport aborted: " + errMsg);
-                            System.err.println(errMsg);
+                            System.out.println(getOutput());
                             return;
                     }
                     createDBUser(moocdbItem.getUsername(), moocdbItem.getPassword());
@@ -207,7 +209,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
                             String errMsg = "MOOCdb backup file is not a MOOCdb. MOOCdb file: " +  MOOCdbFilePath;
                             addErrorMessage(errMsg);
                             logger.info("MOOCdbImport aborted: " + errMsg);
-                            System.err.println(errMsg);
+                            System.out.println(getOutput());
                             return;
                     }
             } catch (Exception ex) {
@@ -222,19 +224,19 @@ public class TransformMOOCdbMain extends AbstractComponent {
                                             "; Exception: " + innerex.getMessage();
                             addErrorMessage(errMsg);
                             logger.info("MOOCdbImport aborted: " + errMsg);
-                            System.err.println(errMsg);
+                            System.out.println(getOutput());
                             return;
                     }
                     String errMsg = "Found error restoring MOOCdb backup file: " + MOOCdbFilePath + "; Exception: " + ex.getMessage();
                     addErrorMessage(errMsg);
                     logger.info("MOOCdbImport aborted: " + errMsg);
-                    System.err.println(errMsg);
+                    System.out.println(getOutput());
                     return;
             }
             logger.info("Created MOOCdb: " + MOOCdbName);
             logger.info("Created MOOCdb user: " + moocdbItem.getUsername());
-            Date earliestSubmissionTime = getEarliestSubmissionTime(MOOCdbName); 
-            moocdbItem.setEarliestSubmissionTimestamp(earliestSubmissionTime); 
+            Date earliestSubmissionTime = getEarliestSubmissionTime(MOOCdbName);
+            moocdbItem.setEarliestSubmissionTimestamp(earliestSubmissionTime);
             moocdbItem.setCurrentProgress(MOOCdbItem.PROGRESS_DONE);
             moocdbItem.setEndTimestamp(new Date());
             moocdbItem.setLastProgress(MOOCdbItem.PROGRESS_RESTORE_MOOCDB);
@@ -242,9 +244,9 @@ public class TransformMOOCdbMain extends AbstractComponent {
             logger.info("Completed restoring MOOCdb: " + MOOCdbName);
             saveOrUpdateMOOCdb(moocdbItem);
 
-            //output MOOCdb file and feature name
+            // output MOOCdb file and feature name
+            // (This calls getOutput() from inside the method)
             outputFilesWithExistingDbInfo(MOOCdbName);
-            return;
     }
 
 
@@ -337,6 +339,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
           //output MOOCdb file and feature name
             File dbPointerFile = this.createFile("MOOCdbPointer", ".txt");
             File featuresFile = this.createFile("MOOCdbFeatures", ".txt");
+            Boolean reqsMet = true;
 
             //write to dbPointerFile
             try (OutputStream outputStream = new FileOutputStream(dbPointerFile)) {
@@ -345,8 +348,8 @@ public class TransformMOOCdbMain extends AbstractComponent {
                     cname = (MOOCdbItem.MOOCdb_PROPERTY_NAME + "=" + MOOCdbName).getBytes("UTF-8");
                     outputStream.write(cname);
             } catch (Exception e) {
-                    // This will be picked up by the workflows platform and relayed to the user.
-                    e.printStackTrace();
+                    addErrorMessage(e.toString());
+                    reqsMet = false;
             }
 
             //write one line to featureFile
@@ -361,23 +364,24 @@ public class TransformMOOCdbMain extends AbstractComponent {
                     }
                     outputStream.write(features);
             } catch (Exception e) {
-                    // This will be picked up by the workflows platform and relayed to the user.
-                    e.printStackTrace();
+                    addErrorMessage(e.toString());
+                    reqsMet = false;
             }
 
-            Integer nodeIndex = 0;
-            Integer fileIndex = 0;
-            String fileLabel = "MOOCdb";
-            this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
-            nodeIndex = 1;
-            fileIndex = 0;
-            fileLabel = "MOOCdb-features";
-            this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
+            if (reqsMet) {
+	            Integer nodeIndex = 0;
+	            Integer fileIndex = 0;
+	            String fileLabel = "MOOCdb";
+	            this.addOutputFile(dbPointerFile, nodeIndex, fileIndex, fileLabel);
+	            nodeIndex = 1;
+	            fileIndex = 0;
+	            fileLabel = "MOOCdb-features";
+	            this.addOutputFile(featuresFile, nodeIndex, fileIndex, fileLabel);
 
-            logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
+	            logger.info("Output MOOCdb to previously existing MOOCdb: " + MOOCdbName);
+            }
             // Send the component output back to the workflow.
             System.out.println(this.getOutput());
-            return;
     }
 
     private String getSaltString() {
@@ -397,7 +401,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             dbDao.saveOrUpdate(dbItem);
     }
-    
+
     private Date getEarliestSubmissionTime (String MOOCdbName) {
             MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
             return dbDao.getEarliestSubmissionTime(MOOCdbName);

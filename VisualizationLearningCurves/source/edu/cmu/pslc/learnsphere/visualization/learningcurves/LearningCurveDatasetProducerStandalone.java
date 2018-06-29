@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,6 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.VerticalAlignment;
 import org.jfree.util.ShapeUtilities;
 
-import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
 import edu.cmu.pslc.datashop.item.SkillItem;
 import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.util.LogUtils;
@@ -219,6 +219,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         dataset = new YIntervalSeriesCollection();
         YIntervalSeries series, lfaSeries, hsSeries;
+        // secondary models
+        Map<String, YIntervalSeries> lfaSeriesList = new Hashtable<String, YIntervalSeries>();
         if (createObservationTable) {
             observationTableMap.clear();
         }
@@ -235,13 +237,20 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
 
         //iterate those points creating the JFreeChart dataset.
-        series = new YIntervalSeries(lcGraphOptions.getTitle(), true, false);
-        lfaSeries = new YIntervalSeries(
-            lcGraphOptions.getTitle() + " - "
-                + lcOptions.getPrimaryModelName() + " (Predicted)", true, false);
+        String oldTitle = lcGraphOptions.getTitle();
+        series = new YIntervalSeries("Observed data (Actual)", true, false);
+        lfaSeries = new YIntervalSeries(lcOptions.getPrimaryModelName()
+                                        + " model (Predicted)", true, false);
         lfaSeries.setDescription(PREDICTED);
 
-        hsSeries = new YIntervalSeries(lcGraphOptions.getTitle() + " - HighStakes", true, false);
+        for (String s : lcOptions.getSecondaryModelNames()) {
+            YIntervalSeries lfaSeries2 = new YIntervalSeries(s
+                                                             + " model (Predicted)", true, false);
+            lfaSeries2.setDescription(SECONDARY_PREDICTED);
+            lfaSeriesList.put(s, lfaSeries2);
+        }
+
+        hsSeries = new YIntervalSeries("Observed data (HighStakes)", true, false);
         hsSeries.setDescription(HIGHSTAKES);
 
         Integer maxOppCount = 30;
@@ -304,8 +313,24 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                                     " X-Value=", graphPoint.getOpportunityNumber());
                         }
                     }
-                }
 
+                    //Add a secondary LFA curve: no error bar info
+                    if (viewPredicted && lcOptions.getSecondaryModelNames().size() > 0) {
+                        Map<String, Double> secondaryPERMap = graphPoint.getSecondaryPredictedErrorRateMap();
+                        for (String s : lcOptions.getSecondaryModelNames()) {
+                            String secondaryHeaderName = "Predicted Error Rate (" + s + ")";
+                            Double lfaScore = secondaryPERMap.get(secondaryHeaderName);
+                            if (lfaScore != null) {
+                                Double lfaX = graphPoint.getOpportunityNumber().doubleValue();
+                                Double lfaY = lfaScore * ONE_HUNDRED;
+                                lfaSeriesList.get(s).add(lfaX, lfaY, lfaY, lfaY);
+                                logDebug("Adding Secondary LFA point to dataset: Y-Value="
+                                         + lfaScore
+                                         + " X-Value=" + graphPoint.getOpportunityNumber());
+                            }
+                        }
+                    }
+                }
 
             } else if (lcMetric.equals(LearningCurveMetric.ASSISTANCE_SCORE)) {
                 if (graphPoint.getAssistanceScore() != null
@@ -434,6 +459,11 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         if (viewPredicted && lcMetric.equals(LearningCurveMetric.ERROR_RATE)) {
             dataset.addSeries(lfaSeries);
+
+            for (String s : lcOptions.getSecondaryModelNames()) {
+                YIntervalSeries lfaSeries2 = lfaSeriesList.get(s);
+                dataset.addSeries(lfaSeries2);
+            }
         }
 
         if (viewHighStakes) {
@@ -792,7 +822,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 if (!isThumb) {
                     renderer.setSeriesShapesVisible(i, false);
                 }
-                renderer.setSeriesStroke(i, PREDICTED_STROKE_2);
+                renderer.setSeriesStroke(i, PREDICTED_STROKE);
             } else if (HIGHSTAKES.equals(aSeries.getDescription())) {
                 renderer.setSeriesLinesVisible(i, false);
                 renderer.setSeriesShapesVisible(i, true);

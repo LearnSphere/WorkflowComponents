@@ -1,0 +1,55 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #2</component_id_human>
+  <workflow_id>2</workflow_id>
+  <component_name>DetectorTester</component_name>
+  <component_type>analysis</component_type>
+  <left>395</left>
+  <top>23</top>
+  <options>
+    <useDetectorInput>Yes</useDetectorInput>
+    <detectorFromList>idle.js</detectorFromList>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x948793</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <file_path>test/test_data/Gill6.txt</file_path>
+          <file_name>Gill6.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata>
+          </metadata>
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input1>
+      <component_id>Import-1-x948793</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <file_path>test/test_data/idle.js</file_path>
+          <file_name>idle.js</file_name>
+          <index>0</index>
+          <label>Student Step</label>
+          <metadata>
+          </metadata>
+        </file>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>

@@ -21,7 +21,7 @@
 
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:all>
   </xs:complexType>
 
@@ -228,7 +228,8 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="KnowledgeTypeType" name="knowledgeType" id="Type_of_Knowledge_Component" default="Tiers_and_Edges" />
+      <xs:element type="TetradKnowledge" name="TetradKnowledge" id="TetradKnowledge" default="0" />
+      <!--<xs:element type="KnowledgeTypeType" name="knowledgeType" id="Type_of_Knowledge_Component" default="Tiers_and_Edges" />
 
       <xs:element type="xs:integer" name="numTiers" id="Number_of_tiers" default="2" />
       <xs:element type="MultiFileInputHeader" name="tier1Vars" id="Variables_In_tier_1" default=".*" />
@@ -242,7 +243,7 @@
       <xs:element type="MultiFileInputHeader" name="tier5Vars" id="Variables_In_tier_5" default=".*" />
       <xs:element type="Tier5ForbidType" name="forbiddenTier5" id="Forbid_Within_Tier_Edges_5" default="No" />
 
-      <xs:element type="xs:integer" name="numEdges" id="Number_of_Forbidden_or_Requireds" default="0" />
+      <xs:element type="xs:integer" name="numEdges" id="Number_of_Additional_Forbidden_or_Requireds" default="0" />
       <xs:element type="Edge1Type" name="edge1Type" id="Edge_1_Type" default="Forbidden" />
       <xs:element type="FileInputHeader" name="startEdge1" id="Edge_1_tail" default=".*" />
       <xs:element type="FileInputHeader" name="endEdge1" id="Edge_1_tip" default=".*" />
@@ -264,7 +265,7 @@
       <xs:element type="MultiFileInputHeader" name="cluster2Vars" id="Variables_In_Cluster_2" default=".*" />
       <xs:element type="MultiFileInputHeader" name="cluster3Vars" id="Variables_In_Cluster_3" default=".*" />
       <xs:element type="MultiFileInputHeader" name="cluster4Vars" id="Variables_In_Cluster_4" default=".*" />
-      <xs:element type="MultiFileInputHeader" name="cluster5Vars" id="Variables_In_Cluster_5" default=".*" />
+      <xs:element type="MultiFileInputHeader" name="cluster5Vars" id="Variables_In_Cluster_5" default=".*" />-->
     </xs:choice>
   </xs:complexType>
 

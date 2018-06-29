@@ -67,17 +67,17 @@ public class TetradSearchMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-      File file0 = new File(outputDirectory.getAbsolutePath() + "/Graph.txt");
+      File file0 = new File(outputDirectory.getAbsolutePath() + "/Graph.html");
 
 
       if (file0 != null && file0.exists() ) {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "inline-html";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
       } else {
@@ -117,8 +117,15 @@ public class TetradSearchMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
+  }
 
-
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    
+    //fix this when tetrad-graph has a standard meta data
+    this.addMetaData("tetrad-graph", 0, META_DATA_HEADER, "header0", 0, "dummyMetaData");
   }
 
 
@@ -180,7 +187,7 @@ public class TetradSearchMain extends AbstractComponent {
 
       return messageArray;
     } catch (IOException e) {
-      errorMessages.add("Could not read from error message file: " + e.toString());
+      //errorMessages.add("Could not read from error message file: " + e.toString());
       return new ArrayList<String>();
     }
   }
@@ -213,7 +220,7 @@ public class TetradSearchMain extends AbstractComponent {
 
       return messageArray;
     } catch (IOException e) {
-      errorMessages.add("Could not read from debug message file: " + e.toString());
+      //errorMessages.add("Could not read from debug message file: " + e.toString());
       return new ArrayList<String>();
     }
   }

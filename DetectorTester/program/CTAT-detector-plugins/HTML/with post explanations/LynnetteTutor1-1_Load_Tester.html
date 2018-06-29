@@ -1,0 +1,551 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="Assets/CTAT.css">
+        <link rel="stylesheet" type="text/css" href="LynnetteTutor.css">
+
+        <script src="Assets/jquery.min.js"></script>
+        <script src="Assets/ctat.min.js"></script>
+        <script src="Assets/ctatloader.js"></script>
+        <script src="Assets/transaction_mailer_users.js"></script> 
+
+        <script>
+        //     var myVars =
+        //     {
+        //     question_file: "-x+6eq15.brd",
+        //     tutoring_service_communication: "http"
+        //     };
+
+        //     function ctatOnload ()
+        //     {
+        //         initTutor(myVars);
+        //     }
+
+       </script>
+    </head>
+
+    <body data-width="910" data-height="510">
+        <div id="container">
+            <!--TOP PANEL-->
+            <div id="topPanel">
+                <!--TOP LEFT PANEL-->
+                <div id="HintWindow" class="CTATHintWindow"></div>
+                <!--TOP RIGHT PANEL-->
+                <div id="topRightPanel">
+                    <!--HINT BUTTON-->
+                    <div id="hint-button" class="CTATHintButton"></div>
+                    <!--DONE BUTTON-->
+                    <div id="done-button" class="CTATDoneButton"></div>
+                </div>
+            </div>
+
+            <!--MIDDLE PANEL-->
+            <div id="middlePanel">
+                <div class="problemText alignProblem">Please solve for x:</div>
+                <div class="row">
+                    <div class="solveLeft"> 
+                        <div id="startLeft" class="CTATTextField"></div>
+                    </div>
+                    <div class="equalsSign"> = </div>
+                    <div class="solveRight"> 
+                        <div id="startRight" class="CTATTextField"></div>
+                    </div>
+                </div>
+                <div class="problemText"></div>
+            </div>
+
+            <!--BOTTOM PANEL-->
+            <div id="bottomPanel">
+                <div class="row">
+
+                    <div id="solve1Group" class="CTATGroupingComponent" data-ctat-use-componentlist="true" data-ctat-componentlist="solveLeft1,eq1,solveRight1"></div>
+                    
+                    <div id="solveLeft1" class="CTATTextInput leftTextColumn" ></div>
+                    <div id= "eq1" class="stepEqual"> = </div>
+                    <div id="solveRight1" class="CTATTextInput rightTextColumn"></div>
+
+                    <div id="postExpl1Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" style="visibility:hidden;">
+
+                        <div id="postExplOp1" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum1" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide1" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve2Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft2,eq2,solveRight2" style="visibility:hidden;">
+                    
+                        <div id="solveLeft2" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq2" class="stepEqual"> = </div>
+                        <div id="solveRight2" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl2Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp2,postExplNum2,postExplSide2" style="visibility:hidden;">
+
+                        <div id="postExplOp2" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum2" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide2" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve3Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft3,eq3,solveRight3" style="visibility:hidden;">
+                    
+                        <div id="solveLeft3" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq3" class="stepEqual"> = </div>
+                        <div id="solveRight3" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl3Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp3,postExplNum3,postExplSide3" style="visibility:hidden;">
+
+                        <div id="postExplOp3" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum3" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide3" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve4Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft4,eq4,solveRight4" style="visibility:hidden;">
+                    
+                        <div id="solveLeft4" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq4" class="stepEqual"> = </div>
+                        <div id="solveRight4" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl4Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp4,postExplNum4,postExplSide4" style="visibility:hidden;">
+
+                        <div id="postExplOp4" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum4" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide4" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve5Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft5,eq5,solveRight5" style="visibility:hidden;">
+                    
+                        <div id="solveLeft5" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq5" class="stepEqual"> = </div>
+                        <div id="solveRight5" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl5Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp5,postExplNum5,postExplSide5" style="visibility:hidden;">
+
+                        <div id="postExplOp5" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum5" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide5" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve6Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft6,eq6,solveRight6" style="visibility:hidden;">
+                    
+                        <div id="solveLeft6" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq6" class="stepEqual"> = </div>
+                        <div id="solveRight6" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl6Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp6,postExplNum6,postExplSide6" style="visibility:hidden;">
+
+                        <div id="postExplOp6" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum6" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide6" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve7Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft7,eq7,solveRight7" style="visibility:hidden;">
+                    
+                        <div id="solveLeft7" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq7" class="stepEqual"> = </div>
+                        <div id="solveRight7" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl7Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp7,postExplNum7,postExplSide7" style="visibility:hidden;">
+
+                        <div id="postExplOp7" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum7" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide7" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve8Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft8,eq8,solveRight8" style="visibility:hidden;">
+                    
+                        <div id="solveLeft8" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq8" class="stepEqual"> = </div>
+                        <div id="solveRight8" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl8Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp8,postExplNum8,postExplSide8" style="visibility:hidden;">
+
+                        <div id="postExplOp8" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum8" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide8" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve9Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft9,eq9,solveRight9" style="visibility:hidden;">
+                    
+                        <div id="solveLeft9" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq9" class="stepEqual"> = </div>
+                        <div id="solveRight9" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl9Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp9,postExplNum9,postExplSide9" style="visibility:hidden;">
+
+                        <div id="postExplOp9" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum9" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide9" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve10Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft10,eq10,solveRight10" style="visibility:hidden;">
+                    
+                        <div id="solveLeft10" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq10" class="stepEqual"> = </div>
+                        <div id="solveRight10" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl10Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp10,postExplNum10,postExplSide10" style="visibility:hidden;">
+
+                        <div id="postExplOp10" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum10" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide10" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve11Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft11,eq11,solveRight11" style="visibility:hidden;">
+                    
+                        <div id="solveLeft11" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq11" class="stepEqual"> = </div>
+                        <div id="solveRight11" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                     <div id="postExpl11Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp11,postExplNum11,postExplSide11" style="visibility:hidden;">
+
+                        <div id="postExplOp11" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum11" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide11" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve12Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft12,eq12,solveRight12" style="visibility:hidden;">
+                    
+                        <div id="solveLeft12" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq12" class="stepEqual"> = </div>
+                        <div id="solveRight12" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl12Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp12,postExplNum12,postExplSide12" style="visibility:hidden;">
+
+                        <div id="postExplOp12" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum12" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide12" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve13Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft13,eq13,solveRight13" style="visibility:hidden;">
+                    
+                        <div id="solveLeft13" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq13" class="stepEqual"> = </div>
+                        <div id="solveRight13" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl13Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp13,postExplNum13,postExplSide13" style="visibility:hidden;">
+
+                        <div id="postExplOp13" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum13" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide13" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div id="solve14Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="solveLeft14,eq14,solveRight14" style="visibility:hidden;">
+                    
+                        <div id="solveLeft14" class="CTATTextInput leftTextColumn" ></div>
+                        <div id= "eq14" class="stepEqual"> = </div>
+                        <div id="solveRight14" class="CTATTextInput rightTextColumn"></div>
+
+                    </div>
+
+                    <div id="postExpl14Group" class="CTATGroupingComponent" data-ctat-use-componentlist="false" data-ctat-componentlist="postExplOp14,postExplNum14,postExplSide14" style="visibility:hidden;">
+
+                        <div id="postExplOp14" class="CTATComboBox" >
+                            <option>What did you do</option>
+                            <option>Added</option>
+                            <option>Subtracted</option>
+                            <option>Multiplied</option>
+                            <option>Divided</option>
+                            <option>Combined like terms</option>
+                            <option>Distributed</option>
+                        </div>
+
+                        <div id="postExplNum14" class="CTATTextInput middleTextColumn"></div>
+
+                        <div id="postExplSide14" class="CTATComboBox" >
+                            <option>to which side</option>
+                            <option>to the right side</option>
+                            <option>to the left side</option>
+                            <option>to/from both sides</option>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

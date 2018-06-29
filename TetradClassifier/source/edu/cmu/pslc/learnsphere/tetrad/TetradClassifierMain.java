@@ -68,7 +68,7 @@ public class TetradClassifierMain extends AbstractComponent {
   @Override
   protected void runComponent() {
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/ClassifiedData.txt");
@@ -81,7 +81,7 @@ public class TetradClassifierMain extends AbstractComponent {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "tab-delimited";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
         Integer nodeIndex1 = 1;
@@ -129,9 +129,13 @@ public class TetradClassifierMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
-
-
   }
+
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+  }
+
 
 
   private char[] fileToCharArray(File file) {
@@ -153,12 +157,12 @@ public class TetradClassifierMain extends AbstractComponent {
   private void addErrorsAndDebugsToLogger(String outputPath) {
     ArrayList<String> errors = getErrorMessagesFromComponent(outputPath);
     for (int i = 0; i < errors.size(); i++) {
-      errorMessages.add("[error from TetradEstimator.java] " + errors.get(i));
+      errorMessages.add("[error from TetradClassifier.java] " + errors.get(i));
     }
 
     ArrayList<String> debugMessages = getDebugMessagesFromComponent(outputPath);
     for (int i = 0; i < debugMessages.size(); i++) {
-      logger.debug("[debug from TetradEstimator.java] " + debugMessages.get(i));
+      logger.debug("[debug from TetradClassifier.java] " + debugMessages.get(i));
     }
 
     clearComponentOutputFile(outputPath);

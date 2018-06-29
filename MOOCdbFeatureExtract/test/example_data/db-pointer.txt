@@ -1,1 +1,1 @@
-MOOCdbName = test
+MOOCdbName = testmoocdb

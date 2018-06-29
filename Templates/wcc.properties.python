@@ -1,0 +1,75 @@
+# Example properties file for generating an Python component.
+# Contact us (datashop-help@lists.andrew.cmu.edu) if you have questions
+# or find yourself wanting to do something that isn't obvious here.
+
+# The name of the new component. [Required]
+component.name=AnalysisPyAfmCopy
+
+# The type of the new component. [Required]
+# Options include: import, analysis, transform, visualization, tetrad
+component.type=analysis
+
+# The language the component is written in. [Required]
+# Options include: Java, R, Python, Jar
+# If Python, we default to 2.7. Update build.properties if otherwise.
+component.lang=Python
+
+# The Java package for the generated Main class. [Default = edu.cmu.learnsphere]
+component.pkg=edu.cmu.learnsphere.analysis
+
+# The author of the new component. [Default = system]
+component.author=janedoe
+
+# The email of the component author. [Default = datashop-help@lists.andrew.cmu.edu]
+component.author.email=janedoe@someemail.com
+
+# If the component lang is not Java, you must specify the directory
+# which contains the component program files, e.g., example.R
+component.program.dir=/Users/janedoe/dev/GitRepos/WorkflowComponents/AnalysisPyAfm/program
+
+# If the component lang is not Java, you must specify the file to be run.
+# This file is expected to be found in the component.program.dir.
+component.program.file=afms_workflow_predict.py
+
+# The version of the new component. [Default = 1.0]
+component.version=1.0
+
+# Some descriptive text of the new component.
+component.description=Now is the time for all good mean to come to the aid of their country.
+
+# The number of inputs for the new component. 
+component.num_inputs=1
+
+# The number of outputs for the new component. 
+component.num_outputs=1
+
+# The number of options for the new component. 
+component.num_options=3
+
+# For each input, specify the type, e.g., file, tab-delimited, csv, student-step
+input.0.type=student-step
+
+# For each output, specify the name and type, e.g., file, tab-delimited, csv, student-step
+output.0.type=student-step
+output.0.name=output.txt
+
+# For each option, specify the type, name, id and default.
+# Common option types include: FileInputHeader, Enum, xs:string, xs:double
+# If using an enum, the syntax is "Enum(Foo, Bar, Baz)"
+# If the 'default' looks like a regular expression, we'll try to treat it as such.
+# The options will be passed to your program as command-line args using the option name.
+# For example, the following option is available to your program as "-kc_model <string>"
+option.0.type=FileInputHeader
+option.0.name=kc_model
+option.0.id=KC_Model
+option.0.default=\\s*KC\\s*\\((.*)\\)\\s*
+
+option.1.type=Enum(AFM, AFM+S)
+option.1.name=model
+option.1.id=Model
+option.1.default=AFM+S
+
+option.2.type=Enum (student_step,transaction)
+option.2.name=ft
+option.2.id=File_Type
+option.2.default=student_step

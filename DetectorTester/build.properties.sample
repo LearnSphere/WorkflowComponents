@@ -1,0 +1,4 @@
+component.interpreter.path=/usr/bin/nodejs --max-old-space-size=1024
+component.program.path=program/CTAT-detector-plugins/Test_Rig/Test_Rig_WorkflowComponent.js
+authorizationProject=ApplyDetectorAccess
+detectorsDataset=Detectors

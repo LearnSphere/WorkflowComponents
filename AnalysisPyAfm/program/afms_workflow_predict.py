@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from __future__ import division
 import argparse
 import re
-
+import sys
 import numpy as np
 from scipy.sparse import hstack
 from sklearn.feature_extraction import DictVectorizer
@@ -72,9 +72,8 @@ if __name__ == "__main__":
 
     parser.add_argument('-workingDir', type=str,
                        help='the component instance working directory')
-
-    parser.add_argument('-file0', type=argparse.FileType('r'),
-                        help="the datashop file in student step format")
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
 
     parser.add_argument('-model', choices=["AFM", "AFM+S"],
                        help='the model to use (default="AFM+S")',
@@ -91,9 +90,12 @@ if __name__ == "__main__":
                        help='placeholder for WF', default='')
 
 
-    args = parser.parse_args()
+    args, option_file_index_args = parser.parse_known_args()
 
-    ssr_file = args.file0
+    for x in range(len(args.node)):
+        if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
+            ssr_file = open(args.fileIndex[x][1], 'r')
+    #print(ssr_file, file=sys.stderr)
     patternC = re.compile('\\s*KC\\s*\\(( .* )\\s*\\)', re.VERBOSE)
     kc_model = patternC.sub(r'\1', args.kc_model)
     #print("KC Model: " + kc_model)
@@ -136,6 +138,12 @@ if __name__ == "__main__":
     outfilePath = args.workingDir + "/output.txt"
     outfile = open(outfilePath, 'w')
     outfile.write("\t".join(headers) + "\n")
+    cntRowMissOpp = 0
     for i, row in enumerate(original_step_data):
-        d = row + ["%0.4f" % yHat[i]]
+        oppCell = row[len(row)-1]
+        if oppCell is None or oppCell == "":
+            cntRowMissOpp += 1;
+            d = row + [""]
+        else:
+            d = row + ["%0.4f" % yHat[i-cntRowMissOpp]]
         outfile.write("\t".join(d) + "\n")

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Anonymize</url>
+
+<date>2018-06-26</date>
+
+<abstract>This component will read an input CSV file and anonymize specified column(s). This component differs from the <b>AnonymizeStandalone</b> component in that it will keep a version of the input file on the server. As such, the output, with anonymized data, is then available for use in downstream components.</abstract>
+
+<description></description>
+
+<options>
+<b>Upload CSV File</b> - the CSV file containing column(s) to be anonymized<br/>
+<b>Column(s) to Hash</b> - the column(s) to be anonymized<br/>
+<b>(Optional) File Name</b> - the name of the output file.<br/>
+<b>Secret Word</b> - the salt value to use in the anonymization<br/>
+</options>
+
+</info>

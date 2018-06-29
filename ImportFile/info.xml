@@ -2,7 +2,7 @@
 
 <info>
 <author>Carnegie Mellon University</author>
-<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/master/ImportFile</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ImportFile</url>
 <date>2017-05-09</date>
 <abstract>Import a file.</abstract>
 <details>The <b>Import File</b> tool allows a file imported to a workflow component.</details>

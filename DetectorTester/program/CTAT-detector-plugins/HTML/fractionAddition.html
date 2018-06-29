@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Tue, 01 Sep 2015 15:55:08 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Fraction Addition</title>
+	<style type="text/css">
+		   .CTATTextArea { font-size: 20px; font-family: Arial; }
+		   textarea { text-align: center;}
+		   .misc-text { font-size: 20px; font-family: Arial}
+	</style>
+	<link rel="stylesheet" href="Assets/CTAT.css"></link>
+	<script src="Assets/jquery.min.js"></script>
+	<script src="Assets/ctat.min.js"></script>
+	<script src="Assets/ctatloader.js"></script>
+	<script src="Assets/html_qa.js"></script>
+	<script src="Assets/tutor_adaptivity/transaction_mailer_users.js"></script>
+  </head>
+  <body onload="displayQueryForQA();">
+  	  <audio id="audio"></audio>
+      <div id="container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 400;">
+  	   <canvas id="main-canvas" width="800" height="500">Your browser does not support CTAT. Please update or use another browser.</canvas>
+
+	   <div id="problemTitle" class="CTATTextField" style="position: absolute; left: 15px; top: 10px; width: 20px; height: 20px;"></div>
+
+	   <div id="firstNumGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 10px; width: 30px; height: 30px;"></div>
+	   <div id="firstDenGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 50px; width: 30px; height: 30px;"></div>
+	   <div id="secNumGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 110px; width: 30px; height: 30px;"></div>
+	   <div id="secDenGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 150px; width: 30px; height: 30px;"></div>
+	   <div id="givensPlus" class="misc-text" style="position: absolute; left: 20px; top: 85px; z-index: 18;">+</div>
+	   <div id="firstConvEq" class="misc-text" style="position: absolute; left: 90px; top: 35px; z-index: 18;">=</div>
+	   <div id="secConvEq" class="misc-text" style="position: absolute; left: 90px; top: 135px; z-index: 18;">=</div>
+	   <div id="finalEq" class="misc-text" style="position: absolute; left: 170px; top: 235px; z-index: 18;">=</div>
+	   
+	   <div id="firstNumConv" class="CTATTextArea" tabindex="4" style="position: absolute; left: 120px; top: 10px; width: 30px; height: 30px;"></div>
+	   <div id="firstDenConv" class="CTATTextArea" tabindex="1" style="position: absolute; left: 120px; top: 50px; width: 30px; height: 30px;"></div>
+	   <div id="secNumConv" class="CTATTextArea" tabindex="5" style="position: absolute; left: 120px; top: 110px; width: 30px; height: 30px;"></div>
+	   <div id="secDenConv" class="CTATTextArea" tabindex="2" style="position: absolute; left: 120px; top: 150px; width: 30px; height: 30px;"></div>
+	   
+	   <div id="ansNum1" class="CTATTextArea" tabindex="6" style="position: absolute; left: 120px; top: 210px; width: 30px; height: 30px;"></div>
+	   <div id="ansDen1" class="CTATTextArea" tabindex="3" style="position: absolute; left: 120px; top: 250px; width: 30px; height: 30px;"></div>
+
+	   <div id="ansNumFinal1" class="CTATTextArea" tabindex="8" style="position: absolute; left: 200px; top: 210px; width: 30px; height: 30px;"></div>	
+	   <div id="ansDenFinal1" class="CTATTextArea" tabindex="7" style="position: absolute; left: 200px; top: 250px; width: 30px; height: 30px;"></div>	   
+	   
+	   <div id="skills" class="CTATSkillWindow" style="position: absolute; left: 270px; top: 10px; width: 350px"></div>
+	   
+	   <div id="common">
+	   	<div id="hint" class="CTATHintButton" style="position: absolute; left: 40px; top: 350px; margin: 0 5px 5px 5px;"></div>
+		<div id="HintWindow" class="CTATHintWindow" style="position: absolute; left: 120px; top: 350px; width: 400px;"></div>
+	   	<div id="done" class="CTATDoneButton" tabindex="9" style="position: absolute; left: 550px; top: 350px;"></div>
+	   </div>
+      </div>
+  </body>
+</html>

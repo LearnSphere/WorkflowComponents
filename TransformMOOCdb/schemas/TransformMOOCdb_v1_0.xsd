@@ -1,7 +1,7 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
-  
+
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -25,6 +25,12 @@
     </xs:all>
   </xs:complexType>
 
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="MOOCdb" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -42,7 +48,7 @@
       <xs:element ref="MOOCdb" />
     </xs:choice>
   </xs:complexType>
-    
+
   <xs:complexType name="OutputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -59,18 +65,18 @@
        <xs:element ref="MOOCdb-features" />
     </xs:choice>
   </xs:complexType>
-  
-  
+
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
       <xs:element name="output1" type="OutputDefinition1" />
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="OptionsType" />
 
-  
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all>
@@ -83,6 +89,7 @@
         <xs:element type="xs:double" name="top" />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
         <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
 

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformMultiSkill</url>
+<date>2017-09-14</date>
+<abstract>
+<p>The <b>Transform Multiskill</b> component allows users to transform student-step export from muitl-skill KC into multi-row of single skills. For example: 
+    when these two rows of student-step rollup data are exported: 
+    <table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+            <td>KC (M2)</td>
+            <td>Opportunity (M2)</td>
+            <td>Predicted Error Rate (M2)</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+            <td>Type~~5</td>
+            <td>1~~1</td>
+            <td>0.2223~~0.9219</td>		
+            <td>Click~~Whole-num</td>
+            <td>1~~4</td>
+            <td>0.8626~~0.3732</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+            <td>Type~~9</td>		
+            <td>2~~1</td>
+            <td>0.0814~~0.9215</td>		
+            <td>Type~~Whole-num</td>
+            <td>1~~2</td>
+            <td>0.623~~0.742</td>
+        </tr>
+    </table>
+    
+    <br></br>
+        If KC (M1) is selected to be converted, the following rows are the results of conversion of this component:
+    <br></br>
+    <table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+            <td>KC (M2)</td>
+            <td>Opportunity (M2)</td>
+            <td>Predicted Error Rate (M2)</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+            <td>Type</td>
+            <td>1</td>
+            <td>0.2223</td>		
+            <td>Click~~Whole-num</td>
+            <td>1~~4</td>
+            <td>0.8626~~0.3732</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+            <td>5</td>
+            <td>1</td>
+            <td>0.9219</td>		
+            <td>Click~~Whole-num</td>
+            <td>1~~4</td>
+            <td>0.8626~~0.3732</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+            <td>Type</td>		
+            <td>2</td>
+            <td>0.0814</td>		
+            <td>Type~~Whole-num</td>
+            <td>1~~2</td>
+            <td>0.623~~0.742</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+            <td>9</td>		
+            <td>1</td>
+            <td>0.9215</td>		
+            <td>Type~~Whole-num</td>
+            <td>1~~2</td>
+            <td>0.623~~0.742</td>
+        </tr>
+    </table>
+    	
+  Notice the values are changed in columns: KC (M1), Opportunity (M1), Predicted Error Rate (M1). All the other columns remained the same.  
+	</p></abstract>
+<description></description>
+
+<inputs>
+<ul><li>A tab-delimited data file, particularly useful for Datashop student step rollup export </li></ul>
+</inputs>
+
+<outputs><ul>
+<li>A tab-delimited file with multi-skill column changed</li>
+</ul></outputs>
+
+<options>
+<ul>
+<li>Column to be converted</li>
+<li>Keep other KCs: yes/no. If no, all other KCs will be deleted.</li>
+<li>Include rows with no skill: yes/no. If no, rows that are not tagged with skill will be deleted.</li>
+</ul>
+</options>
+
+</info>

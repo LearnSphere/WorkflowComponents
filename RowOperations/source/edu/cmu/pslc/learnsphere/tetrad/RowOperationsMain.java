@@ -51,9 +51,10 @@ public class RowOperationsMain extends AbstractComponent {
    */
   public static void main(String[] args) {
     //Change the System.err for Tetrad Components because Tetrad code causes strange error
+    //System.out.println("AHHHH");
     PrintStream sysErr = System.err;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    System.setErr(new PrintStream(baos));
+    //System.setErr(new PrintStream(baos));
 
     RowOperationsMain tool = new RowOperationsMain();
 
@@ -73,8 +74,10 @@ public class RowOperationsMain extends AbstractComponent {
   }
   @Override
   protected void runComponent() {
+    //System.out.println("in runComponent");
+    logger.debug("in run component");
 
-    File outputDirectory = this.runExternalMultipleFileOuput();
+    File outputDirectory = this.runExternal();
 
     if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
       File file0 = new File(outputDirectory.getAbsolutePath() + "/ConvertedData.txt");
@@ -123,8 +126,13 @@ public class RowOperationsMain extends AbstractComponent {
   @Override
   protected void parseOptions() {
     logger.info("Parsing options.");
+  }
 
-
+  @Override
+  protected void processOptions() {
+   // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
+    Integer outNodeIndex0 = 0;
+    this.addMetaDataFromInput("tab-delimited", 0, outNodeIndex0, ".*");
   }
 
 
