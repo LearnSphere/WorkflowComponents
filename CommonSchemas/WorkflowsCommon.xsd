@@ -47,6 +47,10 @@
 	<xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="DiscourseDbSelector" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
 <xs:simpleType name="TetradGraphEditor" >
   <xs:restriction base="xs:string" />
 </xs:simpleType>

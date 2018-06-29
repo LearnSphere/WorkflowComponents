@@ -52,7 +52,7 @@
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
         
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
-        <xs:element name="options" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
       </xs:all>
     </xs:complexType>
   </xs:element>
