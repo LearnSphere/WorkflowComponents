@@ -38,7 +38,7 @@ import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisual
 public class VisualizationLearningCurvesMain extends AbstractComponent {
 
     LearningCurveVisualizationOptions visualizationOptions;
-    List<SecondaryModelObject> secondaryModels = null;
+    List<SecondaryModelObject> secondaryModels = new ArrayList<SecondaryModelObject>();
 
     /**
      * Main method.
@@ -98,7 +98,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         List<InputHeaderOption> secondaryModelOptions = this.getInputHeaderOption("secondaryModel", 0);
         List<String> secondaryModelNames = null;
         if (secondaryModelOptions.size() > 0) {
-            secondaryModels = new ArrayList<SecondaryModelObject>();
             secondaryModelNames = new ArrayList<String>();
         }
         for (InputHeaderOption iho : secondaryModelOptions) {
