@@ -30,7 +30,7 @@
 		<Generate_TKT_Features />
 		<Join />
 		<Missing_Values />
-		<MOOCdb />
+		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
 		<Pivot />
 		<Row_Operations />
