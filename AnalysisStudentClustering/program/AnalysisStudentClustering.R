@@ -80,20 +80,17 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 kClusters <- as.numeric(kClusters)
 # Creates output log file
-clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
-sink(clean,append=TRUE)
-sink(clean,append=TRUE,type="message") # get error reports also
-options(width=300)
-options(scipen=999)
+#clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
+#sink(clean,append=TRUE)
+#sink(clean,append=TRUE,type="message") # get error reports also
+#options(width=300)
+#options(scipen=999)
 
 header1 = gsub("[ ()-]", ".", student)
 header2 = gsub("[ ()-]", ".", model)
 header3 = gsub("[ ()-]", ".", duration)
 header4 = gsub("[ ()-]", ".", outcome)
-print(header1)
-print(header2)
-print(header3)
-print(header4)
+
 
 #This dataset has been cleaned beforehand
 #val<-read.table("data.txt",sep="\t", header=TRUE,quote="",comment.char = "")
@@ -104,9 +101,9 @@ val1<-val[,c(header1,header2,header3,header4)]
 
 val1[,header4] <- as.character(val1[,header4])
 val1<-val1[val1[,header4]=="CORRECT" | val1[,header4]=="INCORRECT",]
-val1[,header4][val1[,header4]=="CORRECT"] <-"1"
-val1[,header4][val1[,header4]=="INCORRECT"] <- "0"
-#val1$Outcome[val1$Outcome=="STUDY"] <- "0"
+val1[,header4][val1[,header4]=="CORRECT"] <-'1'
+val1[,header4][val1[,header4]=="INCORRECT"] <- '0'
+val1[,header4] <- as.numeric(val1[,header4])
 
 
 #dt<-read.csv('dataset1.csv')
@@ -154,5 +151,5 @@ outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
 write.table(student_theolevel,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
 # Stop logging
-sink()
-sink(type="message")
+#sink()
+#sink(type="message")
