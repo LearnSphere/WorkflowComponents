@@ -9,15 +9,16 @@
 
 <date>2018-06-26</date>
 
-<abstract>This component will read an input CSV file and anonymize specified column(s). This component differs from the <b>Anonymize</b> component in that it does not keep a version of the input file on the server. As such, the output is not available for use in downstream components.</abstract>
+<abstract>The <b>Anonymize Standalone</b> component will anonymize a column of identifiable data in a CSV file without saving it to the LearnSphere server.  All data operations are performed in your browser to fulfill IRB requirements.  <br/>
+It uses a hash function and a salt to maintain an irreversible anonymization scheme.  For example, "Jane Doe" in file1.csv would have the same anonymous identifier as "Jane Doe" in file2.csv given that the component used the same salt.</abstract>
 
-<description>This component will read an input CSV file and anonymize specified column(s). This component differs from the <b>Anonymize</b> component in that it does not keep a version of the input file on the server. As such, the output is not available for use in downstream components.</description>
+<description></description>
 
 <options>
 <b>Upload CSV File</b> - the CSV file containing column(s) to be anonymized<br/>
 <b>Column(s) to Hash</b> - the column(s) to be anonymized<br/>
 <b>(Optional) File Name</b> - the name of the output file.<br/>
-<b>Secret Word</b> - the salt value to use in the anonymization<br/>
+<b>Secret Word</b> - the salt value to use in the anonymization <a target="_blank" href="https://en.wikipedia.org/wiki/Salt_(cryptography)">Salt on Wikipedia</a><br/>
 </options>
 
 </info>
