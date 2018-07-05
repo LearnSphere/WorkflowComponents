@@ -25,6 +25,7 @@ class DatasetResourceFactory(object):
 
         """
         if metadata['resType'] not in DatasetResource.__resource_types__:
+            logger.warning("Invalid resource type encountered: %s" % str(metadata))
             raise Exception("Invalid resource type encountered: %s" % str(metadata))
         elif metadata['resType'] == 'table':
             return DSRTable(metadata)

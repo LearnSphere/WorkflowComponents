@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemGeneratorDefault</url>
-<date>June 20, 2018</date>
+<date>July 05, 2018</date>
 <abstract>The <b>ProblemGeneratorDefault</b> component is an example of a(n) Python component.</abstract>
 <description>Generate the default problem for each dataset</description>
 

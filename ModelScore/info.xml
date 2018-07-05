@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelScore</url>
-<date>June 26, 2018</date>
+<date>July 05, 2018</date>
 <abstract>The <b>ModelScore</b> component is an example of a(n) Python component.</abstract>
 <description>Evaluate a model with a given performance metric and dataset</description>
 

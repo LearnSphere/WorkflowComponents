@@ -1,6 +1,6 @@
 #!/bin/bash
 # Ensure this is pointing to where WorkflowComponents is cloned
-wcc="/datashop/workflow_components"
+wcc=$WCC 
 
 out_file="add_component.sql"
 comp_dir_name="ProblemGeneratorDefault"

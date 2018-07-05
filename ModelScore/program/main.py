@@ -27,7 +27,8 @@ from ls_problem_desc.ls_problem import ProblemDesc
 from ls_problem_desc.d3m_problem import DefaultProblemDesc
 from d3m_ta2.ta2_v3_client import TA2Client
 # from ls_workflow.workflow import Workflow as Solution
-from modeling.models import Model, ModelScores, Score
+from modeling.models import Model
+from modeling.component_out import *
 from modeling.scores import *
 
 
@@ -71,14 +72,7 @@ if __name__ == '__main__':
 
     # Decode the models from file
     logger.debug("Model file input: %s" % args.file1)
-    # Read in the the models from tsv
-    reader = csv.reader(args.file1, delimiter='\t')
-    rows = [row for row in reader]
-    # reader.close()
-    # Initialize the set of models by model id
-    solns = {mid: None for mid in rows[0]}
-    for i, mid in enumerate(rows[0]):
-        solns[mid] = Model.from_json(rows[1][i])
+    m_index, models = ModelSetIO.from_file(args.file1)
 
     # Init the server connection
     address = config.get_ta2_url()
@@ -91,14 +85,14 @@ if __name__ == '__main__':
     metric = Metric(args.metric)
 
     # Get Score for each solution
-    score_req_ids = {}
-    for soln_id in solns:
-        soln = solns[soln_id]
-        score_req_ids[soln.id] = serv.score_solution(soln, ds, metrics=[metric])
+    req_ids = {}
+    for mid in models:
+        model = models[mid]
+        req_ids[mid] = serv.score_solution(model, ds, metrics=[metric])
     scores = {}
-    for sid in score_req_ids:
-        results = serv.get_score_solution_results(score_req_ids[sid])
-        scores[sid] = ModelScores(solns[sid].id, [ds.get_schema_uri()], [Score.from_protobuf(result) for result in results])
+    for mid in req_ids:
+        results = serv.get_score_solution_results(req_ids[mid])
+        scores[mid] = ModelScores(models[mid].id, [ds.get_schema_uri()], [Score.from_protobuf(result) for result in results])
 
 
     # serv.end_search_solutions(search_id)
@@ -123,10 +117,11 @@ if __name__ == '__main__':
 
         
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))
-    with open(out_file_path, 'w') as out_file:
-        out = csv.writer(out_file, delimiter='\t')
-        out.writerow([sid for sid in scores])
-        out.writerow([scores[sid].to_dict() for sid in scores])
+    ModelScoreSetIO.to_file(out_file_path, scores, models, m_index)
+    # with open(out_file_path, 'w') as out_file:
+        # out = csv.writer(out_file, delimiter='\t')
+        # out.writerow([sid for sid in scores]):
+        # out.writerow([scores[sid].to_dict() for sid in scores])
         # # out.writerow([scores[sln].to_dict() for sln in solns])
 # 
     # # Write dataset info to output file

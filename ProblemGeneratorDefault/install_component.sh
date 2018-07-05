@@ -5,7 +5,7 @@
 # Assumed dependencies:
 # -- python pip
 # -- python virtualenv
-echo "Setting up ModelSearch Tigris Components for local system"
+echo "Setting up D3MDatasetSelector Tigris Components for local system"
 
 virtualenv env --python=python3.6
 source env/bin/activate

@@ -15,11 +15,14 @@ class ResourceColumn(object):
     """
 
     __col_types__ = ['boolean',
-                          'integer',
-                          'real',
-                          'string',
-                          'categorical',
-                          'dateTime'
+                      'integer',
+                      'real',
+                      'string',
+                      'categorical',
+                      'dateTime',
+                      'realVector',
+                      'json',
+                      'geojson',
                           ]
 
     __col_roles__ = ['index',
@@ -29,7 +32,8 @@ class ResourceColumn(object):
                      'timeIndicator',
                      'locationIndicator',
                      'boundaryIndicator',
-                     'instanceWeight'
+                     'instanceWeight',
+                     'boundingBox'
                      ]
 
 
@@ -52,13 +56,12 @@ class ResourceColumn(object):
             self.colType = metadata['colType']
         else:
             self.colType = metadata['colType']
-            logger.warning("ingesting unsupported dataset column type: %s" % str(metadata))
+            logger.warning("ingesting unsupported dataset column type: %s" % str(metadata['colType']))
         
         # Raise a flag if unsupported roles are ingested, but dont error out
         for role in metadata['role']:
             if role not in self.__col_roles__:
-                logger.warning("ingesting unsupported dataset column role: %s" % str(metadata))
-                logger.warning("ingesting unsupported dataset column role: %s" % str(metadata))
+                logger.warning("ingesting unsupported dataset column role: %s" % str(metadata['role']))
         self.role = metadata['role']
         
         if 'refersTo' in metadata:

@@ -87,11 +87,14 @@ if __name__ == '__main__':
         for f in files:
             if f == 'datasetDoc.json':
                 logger.debug("Found dataset in directory: %s" % root)
-                ds = D3MDataset.from_dataset_json(path.join(root, f))
-                if ds.name not in names:
-                    logger.info("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
-                    names.add(ds.name)
-                    datasets[ds.name] = ds
+                try: 
+                    ds = D3MDataset.from_dataset_json(path.join(root, f))
+                    if ds.name not in names:
+                        logger.info("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
+                        names.add(ds.name)
+                        datasets[ds.name] = ds
+                except:
+                    logger.warning("Error encountered whiel loading dataset json: %s" % path.join(root, f))
 
     ds = datasets[name]
 

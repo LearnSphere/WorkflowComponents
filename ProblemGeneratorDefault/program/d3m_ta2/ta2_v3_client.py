@@ -202,6 +202,12 @@ class TA2Client(object):
         if metrics is None:
             m = msg.performance_metrics.add()
             m.metric = problem_pb2.ACCURACY
+        else:
+            for met in metrics:
+                metric = met.to_protobuf()
+                m = msg.performance_metrics.add()
+                m.metric = metric.metric
+                
 
         logger.debug("Sending Score solution request: \n%s" % str(msg))
         reply = self.serv.ScoreSolution(msg)
@@ -304,7 +310,10 @@ class TA2Client(object):
         if outputs is None:
             msg.expose_outputs.extend([soln.get_default_output()])
             msg.expose_value_types.extend(self.__allowed_values__)
-
+        logger.info("****************************************")
+        msg_js = json_format.MessageToJson(msg)
+        logger.info("Sending produce solution with msg: %s" % msg_js)
+        logger.info("****************************************")
         reply = self.serv.ProduceSolution(msg)
 
         self.produce_solution_requests[reply.request_id] = msg

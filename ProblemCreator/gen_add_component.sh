@@ -3,7 +3,7 @@
 wcc=$WCC 
 
 out_file="add_component.sql"
-comp_dir_name="ProblemCreator"
+comp_dir_name="ProblemTargetSelector"
 
 # Remove add_component.sql if it exists
 if [ -f $out_file ]; then
@@ -25,7 +25,7 @@ echo -e "\t\`info\`" >> $out_file
 echo -e ")" >> $out_file
 echo "VALUES (" >> $out_file
 echo -e "\t'Analysis'," >> $out_file
-echo -e "\t'Problem_Creator'," >> $out_file
+echo -e "\t'Problem_Target_Selector'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/schemas/$comp_dir_name""_v1_0.xsd'," >> $out_file
 echo -e "\t'/usr/bin/java -jar'," >> $out_file

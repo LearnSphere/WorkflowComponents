@@ -17,6 +17,7 @@ from ls_utilities.cmd_parser import get_default_arg_parser
 from ls_utilities.ls_wf_settings import *
 from ls_dataset.d3m_dataset import D3MDataset
 from modeling.models import *
+from modeling.component_out import *
 
 __version__ = '0.1'
 
@@ -57,23 +58,12 @@ if __name__ == '__main__':
 
     # Decode the models from file
     logger.debug("Model file input: %s" % args.file0)
-    # Read in the the models from tsv
-    reader = csv.reader(args.file0, delimiter='\t')
-    rows = [row for row in reader]
-
-    # Initialize the set of models by model id
-    models = {mid: None for mid in rows[0]}
-    for i, mid in enumerate(rows[0]):
-        models[mid] = Model.from_json(rows[1][i])
-
-    model = None
-    for mid in models:
-        if mid == args.model_id:
-            model = models[mid]
-
-    if model is None:
-        logger.error("Could not find selected model in model list")
-        raise Exception("Could not find selected model in model list")
+    m_index, models = ModelSetIO.from_file(args.file0)
+    
+    selected_mid = m_index[int(args.model_id)]
+    model = models[selected_mid]
+    logger.debug("Seleted Model ID:\t %s" % selected_mid)
+    logger.debug("Seleted Model:\t%s" % str(model.to_dict()))
 
     # Write dataset info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))

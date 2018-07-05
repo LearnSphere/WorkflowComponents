@@ -26,8 +26,8 @@ class GRPCProblemDesc(ProblemDesc):
     def to_protobuf(self):
         prob = problem_pb2.Problem(
             id=self.id,
-            version=self.version
         )
+        prob.version = str(self.version)
         if self.name is not None:
             prob.name = self.name
         if self.description is not None:

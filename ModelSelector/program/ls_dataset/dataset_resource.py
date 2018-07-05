@@ -20,7 +20,8 @@ class DatasetResource(object):
                           'text',
                           'graph',
                           'table',
-                          'timeseries'
+                          'timeseries',
+                          'edgeList',
                           ]
 
     def __init__(self, metadata):
@@ -36,8 +37,8 @@ class DatasetResource(object):
         if metadata['resType'] in self.__resource_types__:
             self.resType = metadata['resType']
         else:
-            logger.error("Invalid resource type encountered: %s" % str(metadata))
-            raise Exception("Invalid resource type encountered: %s" % str(metadata))
+            logger.warning("Invalid resource type encountered: %s" % str(metadata['resType']))
+            self.resType = metadata['resType']
         self.resFormat = metadata['resFormat']
         self.isCollection = metadata['isCollection']
 

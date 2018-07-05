@@ -28,6 +28,7 @@ from ls_problem_desc.d3m_problem import DefaultProblemDesc
 from d3m_ta2.ta2_v3_client import TA2Client
 # from ls_workflow.workflow import Workflow as Solution
 from modeling.models import Model, ModelScores, Score
+from modeling.component_out import *
 
 
 __version__ = '0.1'
@@ -148,10 +149,11 @@ if __name__ == '__main__':
         # logger.debug("###########################################")
         
     out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
-    with open(out_file_path, 'w') as out_file:
-        out = csv.writer(out_file, delimiter='\t')
-        out.writerow([solns[sln].id for sln in solns])
-        out.writerow([solns[sln].to_dict() for sln in solns])
+    ModelSetIO.to_file(out_file_path, solns)
+    # with open(out_file_path, 'w') as out_file:
+        # out = csv.writer(out_file, delimiter='\t')
+        # out.writerow([solns[sln].id for sln in solns])
+        # out.writerow([solns[sln].to_dict() for sln in solns])
         # out.writerow([scores[sln].to_dict() for sln in solns])
 
     # Write dataset info to output file

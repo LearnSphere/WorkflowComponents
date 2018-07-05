@@ -24,6 +24,7 @@ from ls_dataset.d3m_dataset import D3MDataset
 from ls_dataset.d3m_prediction import D3MPrediction
 from d3m_ta2.ta2_v3_client import TA2Client
 from modeling.models import Model, ModelScores
+from modeling.component_out import *
 
 
 __version__ = '0.1'
@@ -64,14 +65,15 @@ if __name__ == '__main__':
 
     # Decode the models from file
     logger.debug("Model file input: %s" % args.file1)
+    m_index, models = ModelSetIO.from_file(args.file1)
     # Read in the the models from tsv
-    reader = csv.reader(args.file1, delimiter='\t')
-    rows = [row for row in reader]
+    # reader = csv.reader(args.file1, delimiter='\t')
+    # rows = [row for row in reader]
 
     # Initialize the set of models by model id
-    models = {mid: None for mid in rows[0]}
-    for i, mid in enumerate(rows[0]):
-        models[mid] = Model.from_json(rows[1][i])
+    # models = {mid: None for mid in rows[0]}
+    # for i, mid in enumerate(rows[0]):
+        # models[mid] = Model.from_json(rows[1][i])
 
     # Init the server connection
     address = config.get_ta2_url()
@@ -95,20 +97,22 @@ if __name__ == '__main__':
     
     # # Write model fit id info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))
-    row2 = [] # Model id
-    row3 = [] # Fitted Model id
-    row4 = [] # Model json
-    for mid in models:
-        # row1 = mids[mid]
-        row2.append(mid)
-        row3.append(fitted_models[mid])
-        row4.append(models[mid].to_dict())
 
-    with open(out_file_path, 'w') as out_file:
-        writer = csv.writer(out_file, delimiter='\t')
-        writer.writerow(row2)
-        writer.writerow(row3)
-        writer.writerow(row4)
+    FittedModelSetIO.to_file(out_file_path, fitted_models, models, m_index)
+    # row2 = [] # Model id
+    # row3 = [] # Fitted Model id
+    # row4 = [] # Model json
+    # for mid in models:
+        # row1 = mids[mid]
+        # row2.append(mid)
+        # row3.append(fitted_models[mid])
+        # row4.append(models[mid].to_dict())
+
+    # with open(out_file_path, 'w') as out_file:
+        # writer = csv.writer(out_file, delimiter='\t')
+        # writer.writerow(row2)
+        # writer.writerow(row3)
+        # writer.writerow(row4)
 
 
     out_file_path = path.join(args.workingDir, config.get('Output', 'data_out_file'))

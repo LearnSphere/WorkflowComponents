@@ -53,7 +53,7 @@ class ProblemDesc(object):
 
     __ignore_chars__=['-','_']
     
-    def __init__(self, name=None, desc=None, task_type=None, subtype=None, version=1, metrics=None, metadata=None):
+    def __init__(self, name=None, desc=None, task_type=None, subtype=None, version=1.0, metrics=None, metadata=None):
         """
         inputs: 
             metadata - dictionary representation of additional information
