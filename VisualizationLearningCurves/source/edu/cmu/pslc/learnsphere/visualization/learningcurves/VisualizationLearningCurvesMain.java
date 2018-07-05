@@ -95,6 +95,8 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         visualizationOptions = generateLearningCurveOptions();
 
         String primaryModelName = visualizationOptions.getPrimaryModelName();
+        Integer primaryFileIndex = this.getInputHeaderOption("model").get(0).getFileIndex();
+
         List<InputHeaderOption> secondaryModelOptions = this.getInputHeaderOption("secondaryModel", 0);
         List<String> secondaryModelNames = null;
         if (secondaryModelOptions.size() > 0) {
@@ -107,9 +109,13 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             smo.setModelName(value);
             smo.setFileIndex(iho.getFileIndex());
             secondaryModels.add(smo);
-            // Append fileIndex to secondaryModel names
-            String smName = value + "_" + iho.getFileIndex();
-            secondaryModelNames.add(smName);
+
+            // Append fileIndex to secondaryModel names... but only if read from a different file
+            StringBuffer smName = new StringBuffer(value);
+            if (iho.getFileIndex() != primaryFileIndex) {
+                smName.append("_").append(iho.getFileIndex());
+            }
+            secondaryModelNames.add(smName.toString());
         }
 
         String viewSecondaryStr = this.getOptionAsString("viewSecondary");
@@ -124,9 +130,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         }
 
         LearningCurveVisualization lcPrototype = new LearningCurveVisualization();
-
-        logger.debug("Processing student-step export for learning curves.");
-        Integer primaryFileIndex = this.getInputHeaderOption("model").get(0).getFileIndex();
 
         boolean singleInput = true;
         for (SecondaryModelObject smo : secondaryModels) {
