@@ -129,6 +129,7 @@ public class TetradSearch {
     String programDir = cmdParams.get("-programDir");
 
     File inputFile0 = inFiles.get(0);
+    File inputFile1 = inFiles.get(1);
 
     if (inputFile0.exists() && inputFile0.isFile() && inputFile0.canRead() ) {
 
@@ -155,7 +156,7 @@ public class TetradSearch {
           addToDebugMessages("In TetradSearch.java: about to create SearchAlgorithmWrapper");
 
           SearchAlgorithmWrapper alg = new SearchAlgorithmWrapper(
-            data, cmdParams, inputFile0 );
+            data, cmdParams, inputFile1 );
 
           GraphSearch gs = alg.getGraphSearch();
 
