@@ -26,6 +26,7 @@ from ls_dataset.d3m_dataset import D3MDataset
 # from ls_workflow.workflow import Workflow
 from d3m_ta2.ta2_v3_client import TA2Client
 from modeling.models import *
+from modeling.component_out import *
 
 
 __version__ = '0.1'
@@ -65,13 +66,8 @@ if __name__ == '__main__':
     logger.debug("Dataset: %s" % str(ds))
 
     # Import all the fitted models
-    reader = csv.reader(args.file1, delimiter='\t')
-    rows = [row for row in reader]
-    models = {mid: None for mid in rows[0]}
-    fitted_models = {}
-    for i, mid in enumerate(rows[0]):
-        models[mid] = Model.from_json(rows[2][i])
-        fitted_models[mid] = rows[1][i]
+    logger.debug("Fitted Model file input: %s" % args.file1)
+    m_index, fitted_models, models = FittedModelSetIO.from_file(args.file1)
 
     # Init the server connection
     address = config.get_ta2_url()

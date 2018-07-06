@@ -23,7 +23,7 @@ from ls_utilities.ls_wf_settings import SettingsFactory
 from ls_dataset.d3m_dataset import D3MDataset
 from ls_dataset.d3m_prediction import D3MPrediction
 from d3m_ta2.ta2_v3_client import TA2Client
-from modeling.models import Model, ModelScores
+from modeling.models import *
 from modeling.component_out import *
 
 

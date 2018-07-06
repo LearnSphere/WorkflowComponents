@@ -72,24 +72,26 @@ class FittedModelSetIO(object):
         """
     
         logger.info("Writing Fitted Model Set to file: %s" % fpath)
-        rows = []
+
         if model_index is not None:
             if len(model_index) != len(fitted_models):
                 logger.warning("Invalid model index given. index has %i entries, \
                         but %i models were given" % (len(model_index), len(fitted_models)))
-                rows.append(range(len(fitted_models)))
+                row0 = range(len(fitted_models))
                 model_index = [mid for mid in models]
             else:
-                rows.append(range(len(model_index)))
+                row0 = range(len(model_index))
 
-        rows.append(model_index)
-        rows.append([fitted_models[mid] for mid in model_index])
-        rows.append([models[mid].to_dict() for mid in model_index]) # Model json
+        row1 = model_index
+        row2 = [fitted_models[mid] for mid in model_index]
+        row3 = [models[mid] for mid in model_index] # Model json
 
         with open(fpath, 'w') as out_file:
             out = csv.writer(out_file, delimiter='\t')
-            for row in rows:
-                out.writerow(row)
+            out.writerow(row0)
+            out.writerow(row1)
+            out.writerow(row2)
+            out.writerow(row3)
 
 
     @staticmethod

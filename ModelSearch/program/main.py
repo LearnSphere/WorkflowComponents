@@ -27,7 +27,7 @@ from ls_problem_desc.ls_problem import ProblemDesc
 from ls_problem_desc.d3m_problem import DefaultProblemDesc
 from d3m_ta2.ta2_v3_client import TA2Client
 # from ls_workflow.workflow import Workflow as Solution
-from modeling.models import Model, ModelScores, Score
+from modeling.models import *
 from modeling.component_out import *
 
 
