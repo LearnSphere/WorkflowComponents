@@ -180,15 +180,15 @@ public class ImportXAPImain extends AbstractComponent {
                     }                    
                     
                     //Create the array for replacing taps
-                    String array[][]=new String[list.size()-10][];
-                    for (int ar=0;ar<list.size()-10;ar++){
+                    String array[][]=new String[list.size()-13][];
+                    for (int ar=0;ar<list.size()-13;ar++){
                         array[ar]=arrayConf[ar];
                     }
                     
                     //Create the array for analytics
-                    String arrayAnal[][]=new String[10][];
-                    for (int aa=0;aa<10;aa++){
-                        arrayAnal[aa]=arrayConf[list.size()-10+aa];                     
+                    String arrayAnal[][]=new String[13][];
+                    for (int aa=0;aa<13;aa++){
+                        arrayAnal[aa]=arrayConf[list.size()-13+aa];                     
                     }
 
                 //writer.writeAsTxt(flatJson, "sample.txt");
@@ -441,7 +441,7 @@ public class ImportXAPImain extends AbstractComponent {
                    }
                }
                
-               //Add new tag: "Problem Hierarchy"
+               //Add new tag with two combined parts: "Problem Hierarchy"
                ArrayList<String> column3=new ArrayList<String>();
                ArrayList<String> tagComb_1=new ArrayList<String>();
                ArrayList<String> tagComb_2=new ArrayList<String>();
@@ -490,6 +490,66 @@ public class ImportXAPImain extends AbstractComponent {
                    arrayAdd3[array.length]=columnTags31;
                    array=arrayAdd3;
                     
+               }
+               
+               //Add new tags:"Opportunity (Default)"
+               ArrayList<String> column4=new ArrayList<String>();
+               ArrayList<String> tagBase_1=new ArrayList<String>();
+               ArrayList<String> tagBase_2=new ArrayList<String>();
+               ArrayList<String> columnTags4=new ArrayList<String>();
+               String [][] selectContent4=new String[array.length+1][];
+               String [][] arrayAdd4=new String[array.length+1][];               
+               
+               if(!"null".equals(arrayAnal[10][1])){
+                   for(int kt=0;kt<tabNames.length;kt++){
+                           if(tabNames[kt].equals(arrayAnal[11][1])){
+                               for (int rsa=0;rsa<mainContent[kt].length;rsa++){
+                                   tagBase_1.add(mainContent[kt][rsa].toString());
+                                }
+                            }
+                    }
+
+                   for(int kt=0;kt<tabNames.length;kt++){
+                           if(tabNames[kt].equals(arrayAnal[12][1])){
+                               for (int rsa=0;rsa<mainContent[kt].length;rsa++){
+                                   tagBase_2.add(mainContent[kt][rsa].toString());
+                                }
+                            }
+                    }                   
+                   
+                   for(int mc=0;mc<mainContent[0].length;mc++){
+                       int count4=1;
+                       for (int mcb=0;mcb<mc;mcb++){
+                           if(tagBase_1.get(mc).equals(tagBase_1.get(mcb))){
+                               if(tagBase_2.get(mc).equals(tagBase_2.get(mcb))){
+                                    count4++;
+                               }
+                           }else{
+                               count4=count4;
+                           } 
+                       }
+                       column4.add(String.valueOf(count4));
+                   }
+                
+                   Object[] rowArray=column4.toArray();
+                   String rowAdd1[]=new String[rowArray.length];
+                   System.arraycopy(rowArray, 0, rowAdd1,0,rowArray.length);
+                   for (int sc1=0;sc1<array.length;sc1++){
+                        selectContent4[sc1]=selectContent[sc1];
+                   }
+                   selectContent4[array.length]=rowAdd1;
+                   selectContent=selectContent4;                  
+
+                   columnTags4.add(arrayAnal[10][1]);
+                   Object[] columnTagsArray=columnTags4.toArray();
+                   String columnTags41[]=new String[columnTagsArray.length];
+                   System.arraycopy(columnTagsArray, 0, columnTags41, 0, columnTagsArray.length);
+                   
+                   for (int columnNum=0;columnNum<array.length;columnNum++){
+                       arrayAdd4[columnNum]=array[columnNum];
+                   }
+                   arrayAdd4[array.length]=columnTags41;
+                   array=arrayAdd4;
                }
 
                //Transfer Duration Format

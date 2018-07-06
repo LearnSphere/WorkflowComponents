@@ -18,6 +18,7 @@ Selection=authority name
 Input=context contextActivities parent1 definition extensions https://umiis.github.io/ITSProfile/Extensions/parent ST
 Score=result score raw
 Step Name=context extensions http://autotutor.x-in-y.com/AT SKOTitle
+Problem Hierarchy=context extensions http://autotutor.x-in-y.com/AT SiteHome
 
 #If you specify the top numbers of statements, you may specify the actual number values or "null";
 
@@ -36,11 +37,18 @@ orderTag=Row
 #Created Tags "Outcome",or "null";
 #Outcome is based on "result score raw"; if the value>=Threshold, the Outcome is "correct", else "incorrect".
 
-addTag=Outcome
+addTag=First Attempt
 basedTag=Score
 Threshold=0.5
 
-#Add Tags:
-addTag_1=Problem Hierarchy
+#Add Tags: "Problem Hierarchy" 
+addTag_1=null
 tagComb_1=context extensions http://autotutor.x-in-y.com/AT SiteHome
 tagComb_2=context extensions http://autotutor.x-in-y.com/AT problem_id
+
+#Add Tags: "Opportunity (Default)"
+addTag_2=Opportunity (Default)
+tagBase_1=actor mbox
+tagBase_2=result response
+
+
