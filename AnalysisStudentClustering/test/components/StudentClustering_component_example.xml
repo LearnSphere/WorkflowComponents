@@ -16,7 +16,7 @@
         <model>KC (Default)</model>
         <duration>Duration (sec)</duration>
         <outcome>Outcome</outcome>
-        <numberOfClusters>3</numberOfClusters>
+        <numberOfClusters>4</numberOfClusters>
   </options>
     <inputs>
     <input0>

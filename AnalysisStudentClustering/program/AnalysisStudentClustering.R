@@ -111,6 +111,17 @@ val1[,header4] <- as.numeric(val1[,header4])
 #dt1<-dt[,c(1,4,2,3)]
 dt1<-val1[,c(1,2,3,4)]
 
+#Put between line 112 and 114; before aggregation
+# The following is about the "Duration" column, which I am not sure what it is called in line 112
+#IRQ rule is applied for removing outlier (this can be put in the introduction file)
+Q1 <- quantile(dt1[,header3], 0.25)
+Q3 <- quantile(dt1[,header3], 0.75)
+IQR <- Q3 - Q1 
+upper <- Q3 + 1.5*IQR
+lower <- Q1 -1.5*IQR
+dt1<-dt1[dt1[,header3] >= lower & dt1[,header3] <= upper, ]
+#After this the outliers are removed, and aggregation can be done on the basis of the clean data
+
 #aggregation
 dt1<-aggregate(dt1,by=list(dt1[,header1],dt1[,header2]),FUN=mean)
 #dt1<-aggregate(dt1,by=list(dt1$StudentId,dt1$KC..Theoretical.Levels.),FUN=mean)
