@@ -214,10 +214,13 @@ public class LearningCurveVisualization {
                 mapIndex = headingMap.get(kcModel);
                 String[] skillNamesSplit = new String[0];
                 String[] opportunitiesSplit = new String[0];
+                String[] perSplit = new String[0];
                 if (fields.length > mapIndex) {
                     skillNamesSplit = fields[mapIndex].split("~~", NO_PATTERN_LIMIT);
                     opportunitiesSplit =
                         fields[headingMap.get(opportunityName)].split("~~", NO_PATTERN_LIMIT);
+                    perSplit =
+                        fields[headingMap.get(predictedErrorRateName)].split("~~", NO_PATTERN_LIMIT);
                 }
 
                 String anonStudentId = fields[headingMap.get("Anon Student Id")];
@@ -340,11 +343,15 @@ public class LearningCurveVisualization {
 
                     // Parse double values, provided the value exists
                     if (!fields[headingMap.get(predictedErrorRateName)].isEmpty()) {
-                        predictedErrorRate = Double.parseDouble(fields[headingMap.get(predictedErrorRateName)]);
+                        predictedErrorRate = Double.parseDouble(perSplit[skillCounter]);
                     }
+
                     for (String s : secondaryPredictedErrorRateNames) {
                         if (!fields[headingMap.get(s)].isEmpty()) {
-                            secondaryPredictedErrorRate.put(s, Double.parseDouble(fields[headingMap.get(s)]));
+                            String[] secondaryPerSplit = 
+                                fields[headingMap.get(s)].split("~~", NO_PATTERN_LIMIT);
+                            secondaryPredictedErrorRate.put(s,
+                                                            Double.parseDouble(secondaryPerSplit[0]));
                         }
                     }
                     if (!fields[headingMap.get("Incorrects")].isEmpty()) {
