@@ -237,6 +237,13 @@ public class LearningCurveVisualization {
 
                 for (int skillCounter = 0; skillCounter < skillNamesSplit.length; skillCounter++) {
 
+                    // Allow for the case where the number of skills doesn't match the
+                    // number of opportunities and/or the number of predicted error rates.
+                    int oppIndex = (opportunitiesSplit.length - 1 < skillCounter)
+                        ? opportunitiesSplit.length - 1 : skillCounter;
+                    int perIndex = (perSplit.length - 1 < skillCounter)
+                        ? perSplit.length - 1 : skillCounter;
+
                     String hsCriteria = null;
                     criteria = null;
                     // Which criteria to use for aggregation, i.e. the "View By":
@@ -244,17 +251,17 @@ public class LearningCurveVisualization {
                     if (learningCurveType != null
                             && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
                         // For 'By Student', across all students
-                        criteria = sampleName + "_" + opportunitiesSplit[skillCounter];
+                        criteria = sampleName + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, lcOptions.getPrimaryModelName());
                         hsCriteria = lcOptions.getPrimaryModelName();
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES)) {
                         // For 'By KC'
-                        criteria = sampleName + "_" + skillNamesSplit[skillCounter] + "_" + opportunitiesSplit[skillCounter];
+                        criteria = sampleName + "_" + skillNamesSplit[skillCounter] + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, skillNamesSplit[skillCounter]);
                         hsCriteria = skillNamesSplit[skillCounter];
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENTS_OPPORTUNITIES)) {
                         // For individual student...
-                        criteria = sampleName + "_" + anonStudentId + "_" + opportunitiesSplit[skillCounter];
+                        criteria = sampleName + "_" + anonStudentId + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, anonStudentId);
                         hsCriteria = anonStudentId;
                     }
@@ -264,7 +271,7 @@ public class LearningCurveVisualization {
                     Map<String, Double> secondaryPredictedErrorRate = new Hashtable<String, Double>();
                     String skillName = skillNamesSplit[skillCounter];
                     skillNames.put(criteria, skillName);
-                    String opportunity = opportunitiesSplit[skillCounter];
+                    String opportunity = opportunitiesSplit[oppIndex];
                     opportunities.put(criteria, opportunity);
 
                     // Create new values for the criteria if they do not exist
@@ -343,7 +350,7 @@ public class LearningCurveVisualization {
 
                     // Parse double values, provided the value exists
                     if (!fields[headingMap.get(predictedErrorRateName)].isEmpty()) {
-                        predictedErrorRate = Double.parseDouble(perSplit[skillCounter]);
+                        predictedErrorRate = Double.parseDouble(perSplit[perIndex]);
                     }
 
                     for (String s : secondaryPredictedErrorRateNames) {
