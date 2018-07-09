@@ -20,13 +20,20 @@ class LSDataset(object):
 
     __default_schema__ = "datasetDoc.json"
 
-    def __init__(self, dpath):
+    def __init__(self, dpath, schema_path=None):
         # path to the root directory of the dataset
         self.dpath = dpath
         # Name of the dataset (assumes the datset name is the same as the directory name
         self.name = path.split(dpath)[-1]
         # Path to the dataset json
-        self.schema_path = path.join(self.dpath, self.name + "_dataset", self.__default_schema__)
+        if schema_path is None:
+            self.schema_path = path.join(self.dpath, self.__default_schema__)
+        else:
+            if path.isabs(schema_path):
+                self.schema_path = os.path.relpath(schema_path, self.dpath)
+            else:
+                self.schema_path = schema_path
+
     
     @staticmethod
     def from_json(fpath):

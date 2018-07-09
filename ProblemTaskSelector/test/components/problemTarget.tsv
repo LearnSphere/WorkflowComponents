@@ -1,2 +1,2 @@
-LINK_PREDICTION	GRAPH_CLUSTERING	GRAPH_MATCHING	CLUSTERING	REGRESSION	COMMUNITY_DETECTION	OBJECT_DETECTION 	TIME_SERIES_FORECASTING	VERTEX_NOMINATION	CLASSIFICATION	COLLABORATIVE_FILTERING 
-{'id': '7168480718650738609', 'version': 1.0, 'metrics': [], 'inputs': [{'dataset_id': '185_baseball_dataset', 'targets': [{'target_index': 0, 'column_index': 18, 'column_name': 'Hall_of_Fame', 'resource_id': '0'}]}], 'name': 'Test Problem', 'description': 'Default Problem Description'}
+COMMUNITY_DETECTION	LINK_PREDICTION	GRAPH_MATCHING	VERTEX_NOMINATION	CLUSTERING	TIME_SERIES_FORECASTING	GRAPH_CLUSTERING	REGRESSION	COLLABORATIVE_FILTERING 	OBJECT_DETECTION 	CLASSIFICATION
+{'id': '2273331580266065101', 'version': 1.0, 'metrics': [], 'inputs': [{'dataset_id': 'LL0_USER_EVAL_TASK1_1100_popularkids_dataset_TRAIN', 'targets': [{'target_index': 0, 'column_index': 8, 'column_name': 'Grades', 'resource_id': '0'}]}], 'name': 'Test Problem', 'description': 'Default Problem Description'}

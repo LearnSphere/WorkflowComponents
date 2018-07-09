@@ -80,7 +80,8 @@ class D3MDataset(LSDataset):
         if isinstance(fpath, str):
             if path.exists(fpath):
                 #Get dataset path from json path
-                dpath = path.split(path.split(fpath)[0])[0] # Assumses root
+                dpath = path.dirname(fpath)
+                # dpath = path.split(path.split(fpath)[0])[0] # Assumses root
                 try:
                     with open(fpath, 'r') as f:
                         ds_json = json.load(f)
@@ -95,7 +96,8 @@ class D3MDataset(LSDataset):
         elif isinstance(fpath, IOBase):
             logger.debug("Loading dataset json from open file")
             logger.debug("dataset path: %s" % str(fpath))
-            dpath = path.split(path.split(fpath)[0])[0]
+            dpath = path.dirname(fpath)
+            # dpath = path.split(path.split(fpath)[0])[0]
             # ds_json = json.load(fpath)
             ds_json = json.load(fpath, encoding='utf-16')
             return D3MDataset(dpath,

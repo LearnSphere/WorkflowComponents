@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelPredict</url>
-<date>July 06, 2018</date>
+<date>July 09, 2018</date>
 <abstract>The <b>ModelPredict</b> component is an example of a(n) Python component.</abstract>
 <description>Get Predictions for a fitted model using a specific dataset</description>
 
