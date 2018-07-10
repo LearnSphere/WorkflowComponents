@@ -235,7 +235,7 @@ public class ImportXAPImain extends AbstractComponent {
                     mainContent[k]=mainValueArrStr;
                }
                     
-                    File jsonFlatFile = this.createFile("xAPI_JsonFlattener_file", ".txt");
+                    File jsonFlatFile = this.createFile("xAPI_JsonFlattener_file_HeadNames", ".txt");
                     FileWriter fw_0 = new FileWriter(jsonFlatFile.getAbsoluteFile());
                     try (BufferedWriter bw_0 = new BufferedWriter(fw_0)) {
                         for (String names:tabNames){

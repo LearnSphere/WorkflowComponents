@@ -6,18 +6,25 @@
   <email>lzhang13@memphis.edu</email>
 </author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
-<date>2018-05-08</date>
+<date>2018-07-10</date>
 <abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
-<details>1.Require configuration file. The values on the left of the equals is the new header name that you prefer to use, while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly. Choose the headers' names from the xAPI-JsonFlattener-file.txt. 2.Two output files: xAPI-JsonFlattener-file.txt and xAPI-TabDelimited-file.txt.</details>
+<description>1.Require configuration file. The values on the left of the equals is the new header name that you prefer to use, while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly. Choose the headers' names from the xAPI-JsonFlattener-file.txt. 2.Output Two output files: xAPI_JsonFlattener_file_HeadNames.txt and xAPI_TabDelimited_file_HeadNames.txt.</description>
 
 <inputs>
 <b>Configuration file</b>
-<b>url,username,password,filter, filterValue and customFilter</b>
+<b>url,username,password,filter,filterValue and customFilter</b>
 </inputs>
 
 <outputs>
-<b>xAPI-JsonFlattener-file.txt</b>
-<b>xAPI-TabDelimited-file.txt</b>
+<b>xAPI_JsonFlattener_file_HeadNames.txt</b> - List the heads' names from the XAPI statements in tabular representation <br/>
+<b>xAPI_TabDelimited_file.txt</b>-Present all columns for statistical models <br/>
 </outputs>
-
+<Options>
+    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil,Custome<br/>
+    <b>Url</b>-the url of learning locker account<br/>
+    <b>Username</b>- the usernmae of learning locker account<br/>
+    <b>Password</b>- the password of learning locker account<br/>
+    <b>FilterValue</b>- the correspodning id following Filter criterion<br/>
+    <b>CustomerFilter</b>use "Null" by default<br/>
+</Options>
 </info>
