@@ -24,6 +24,7 @@ public class TransformMultiSkillMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
+        Boolean reqsMet = true;
         //get/set -f option
         File inputFile = getAttachment(0, 0);
         logger.info("TransformMultiSkill inputFile: " + inputFile.getAbsolutePath());
@@ -50,32 +51,43 @@ public class TransformMultiSkillMain extends AbstractComponent {
         String[] headers = fContent[0];
         String kcPtnString = "\\s*KC\\s*\\((.*)\\)\\s*";
         Pattern pattern = Pattern.compile(kcPtnString);
-        int colInd_KC = 0;
-        int colInd_opp = 0;
-        int colInd_errRate = 0;
+        int colInd_KC = -1;
+        int colInd_opp = -1;
+        int colInd_errRate = -1;
+        String kcName = null;
+        String oppColName = null;
+        String predColName = null;
         List<Integer> deleteColumns = new ArrayList<Integer>();
-        boolean found = false;
         List<String[]> return_l = new ArrayList<String[]>();
         for (int i = 0; i < headers.length; i++) {
             Matcher matcher = pattern.matcher(headers[i]);
             if (matcher.matches()) {
                 if (colName.equals(headers[i])) {
                     colInd_KC = i;
-                    found = true;
-                    if (i < headers.length - 1)
-                            colInd_opp = i+1;
-                    if (i < headers.length - 2)
-                            colInd_errRate = i+2;
-                    i += 2;
-                } else if (!keepOtherKcs){
-                    deleteColumns.add(i);
-                    if (i < headers.length - 1)
-                            deleteColumns.add(i+1);
-                    if (i < headers.length - 2)
-                            deleteColumns.add(i+2);
-                }
+                    kcName = matcher.group(1);
+                    //assuming this is a student-step roll-up, column name pattern is set but can be out of order
+                    oppColName = "Opportunity (" + kcName + ")";
+                    predColName = "Predicted Error Rate (" + kcName + ")";
+                    for (int j = 0; j < headers.length; j++) {
+                            if (oppColName.equals(headers[j])) {
+                                    colInd_opp = j;
+                            } else if (predColName.equals(headers[j])) {
+                                    colInd_errRate = j;
+                            }
+                    }
+                } 
             }
         }
+        //set deleteColumns
+        if (!keepOtherKcs){
+            for (int i = 0; i < headers.length; i++) {
+                    if ( i != colInd_KC && i != colInd_opp && i != colInd_errRate && isKCRelatedCol(headers[i])){
+                            deleteColumns.add(i);
+                    }
+                }
+                
+        }
+        
         int finalColCnt = headers.length - deleteColumns.size();
         //add headers
         List<String> headerRow = new ArrayList<String>();
@@ -87,91 +99,94 @@ public class TransformMultiSkillMain extends AbstractComponent {
         return_l.add(headerRow.toArray( new String[headerRow.size()]));
         //first line is header, so ignore
         for (int i = 1; i < fContent.length; i++) {
-			if (fContent[i].length <= colInd_KC) {
-				List<String> newRow = new ArrayList<String>();
-				for (int j = 0; j < fContent[i].length; j++) {
-					if (!deleteColumns.contains(j)) {
-						newRow.add(fContent[i][j]);
-					}
-				}
-				if (newRow.size() < finalColCnt) {
-					for (int x = 0; x < finalColCnt - newRow.size(); x++)
-						newRow.add("");
-				}
-				return_l.add(newRow.toArray(new String[newRow.size()]));
-			} else {
-				String[] kcs = null;
-				String[] opps = null;
-				String[] errRates = null;
-				String kcCol = fContent[i][colInd_KC];
-				if (kcCol != null && !kcCol.equals("")) {
-					kcs = kcCol.split("~~");
-				}
-				if (colInd_opp != 0) {
-					String oppCol = fContent[i][colInd_opp];
-					if (oppCol != null && !oppCol.equals("")) {
-						opps = oppCol.split("~~");
-					}
-				}
-				if (colInd_errRate != 0) {
-					String errRateCol = fContent[i][colInd_errRate];
-					if (errRateCol != null && !errRateCol.equals("")) {
-						errRates = errRateCol.split("~~");
-					}
-				}
-
-				if (kcs != null) {
-					boolean includePredictedError = false;
-					if (kcs.length == 1 || (errRates != null && errRates.length > 1))
-						includePredictedError = true;
-					for (int x = 0; x < kcs.length; x++) {
-						List<String> newRow = new ArrayList<String>();
-						for (int j = 0; j < fContent[i].length; j++) {
-							if (!deleteColumns.contains(j)) {
-								if (j == colInd_KC)
-									newRow.add(kcs[x]);
-								else if (j == colInd_opp && found) {
-									if (opps != null && x < opps.length)
-										newRow.add(opps[x]);
-									else
-										newRow.add("");
-								} else if (j == colInd_errRate && found) {
-									if (errRates != null && x < errRates.length && includePredictedError)
-										newRow.add(errRates[x]);
-									else
-										newRow.add("");
-								} else
-									newRow.add(fContent[i][j]);
-							}
-						}
-						if (newRow.size() < finalColCnt) {
-							for (int y = 0; y < finalColCnt - newRow.size(); y++)
-								newRow.add("");
-						}
-						return_l.add(newRow.toArray(new String[newRow.size()]));
-					}
-				} else if (includeEmptyValue) {
-					List<String> newRow = new ArrayList<String>();
-					for (int j = 0; j < fContent[i].length; j++) {
-						if (!deleteColumns.contains(j)) {
-							if (j == colInd_KC)
-								newRow.add("");
-							else if (j == colInd_opp && found)
-								newRow.add("");
-							else if (j == colInd_errRate && found)
-								newRow.add("");
-							else
-								newRow.add(fContent[i][j]);
-						}
-					}
-					if (newRow.size() < finalColCnt) {
-						for (int y = 0; y < finalColCnt - newRow.size(); y++)
-							newRow.add("");
-					}
-					return_l.add(newRow.toArray(new String[newRow.size()]));
-				}
-			}
-        }
+                String[] kcs = null;
+                String[] opps = null;
+                String[] errRates = null;
+                if (colInd_KC != -1 && colInd_KC < fContent[i].length) {
+                        String kcCol = fContent[i][colInd_KC];
+                        if (kcCol != null && !kcCol.equals("")) {
+                                kcs = kcCol.split("~~");
+                        }
+                }
+                if (colInd_opp != -1 && colInd_opp < fContent[i].length) {
+                        String oppCol = fContent[i][colInd_opp];
+                        if (oppCol != null && !oppCol.equals("")) {
+                                opps = oppCol.split("~~");
+                        }
+                }
+                if (colInd_errRate != -1 && colInd_errRate < fContent[i].length) {
+                        String errRateCol = fContent[i][colInd_errRate];
+                        if (errRateCol != null && !errRateCol.equals("")) {
+                                errRates = errRateCol.split("~~");
+                        }
+                }
+                //KC name column and opp column should have the same number of multi-skills
+                if ((kcs != null && opps == null) ||
+                       (kcs == null && opps != null) ||
+                       (kcs != null && opps != null && kcs.length != opps.length)){
+                        String exErr = "KC format doesn't match opportunity format.";
+                        addErrorMessage(exErr);
+                        reqsMet = false;
+                        break;
+                } 
+                if ((kcs == null && errRates != null) ||
+                        (kcs != null && errRates != null && errRates.length > 1 && errRates.length != kcs.length)) {
+                        String exErr = "Predicated error rates format doesn't match KC format.";
+                        addErrorMessage(exErr);
+                        reqsMet = false;
+                        break;
+                }
+                if (kcs == null || kcs.length == 0) {
+                        if (!includeEmptyValue)
+                                continue;
+                        List<String> newRow = new ArrayList<String>();
+                        for (int j = 0; j < fContent[i].length; j++) {
+                                if (!deleteColumns.contains(j)) {
+                                        newRow.add(fContent[i][j]);
+                                }
+                        }
+                        if (newRow.size() < finalColCnt) {
+                                for (int x = 0; x < finalColCnt - newRow.size(); x++)
+                                        newRow.add("");
+                        }
+                        return_l.add(newRow.toArray(new String[newRow.size()]));
+                } else {
+                        for (int x = 0; x < kcs.length; x++) {
+                                List<String> newRow = new ArrayList<String>();
+                                for (int j = 0; j < fContent[i].length; j++) {
+                                        if (!deleteColumns.contains(j)) {
+                                                if (j == colInd_KC)
+                                                        newRow.add(kcs[x]);
+                                                else if (j == colInd_opp) {
+                                                        if (x < opps.length)
+                                                                newRow.add(opps[x]);
+                                                        else
+                                                                newRow.add("");
+                                                } else if (j == colInd_errRate) {
+                                                        if (errRates == null || errRates.length == 0) {
+                                                                newRow.add("");
+                                                        }
+                                                        else if (errRates.length > 1) {
+                                                                if (x < errRates.length)
+                                                                        newRow.add(errRates[x]);
+                                                                else 
+                                                                        newRow.add("");
+                                                        } else 
+                                                                newRow.add(errRates[0]);
+                                                } else
+                                                        newRow.add(fContent[i][j]);
+                                        }
+                                }
+                                if (newRow.size() < finalColCnt) {
+                                        for (int y = 0; y < finalColCnt - newRow.size(); y++)
+                                                newRow.add("");
+                                }
+                                return_l.add(newRow.toArray(new String[newRow.size()]));
+                        }
+                }
+        }     
+        
+        if (reqsMet) {
 
 		if (return_l.size() > 0) {
 			IOUtil.writeString2DArray(ArrayUtils.listArraysOfStringToArray2D(return_l),
@@ -184,9 +199,24 @@ public class TransformMultiSkillMain extends AbstractComponent {
 			addErrorMessage(errMsg);
 			logger.info(errMsg);
 		}
+		
+        }
 
         System.out.println(this.getOutput());
+        
+        for (String err : this.errorMessages) {
+                // These will also be picked up by the workflows platform and relayed to the user.
+                System.err.println(err);
+        }    
 
+    }
+    
+    //return true if string has match KC, Opportunity or predicated errror rate
+    private boolean isKCRelatedCol (String colName) {
+            if (colName.indexOf("KC (") != -1 || colName.indexOf("Opportunity (") != -1 || colName.indexOf("Predicted Error Rate (") != -1)
+                    return true;
+            else
+                    return false;
     }
 
 }
