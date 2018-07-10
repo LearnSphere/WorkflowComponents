@@ -242,12 +242,12 @@ public class ImportXAPImain extends AbstractComponent {
                             bw_0.write(names+"\t");
                         }                     
                         
-                        for(int line=0;line<mainContent[0].length;line++){
-                            bw_0.newLine();
-                                for (int col=0;col<mainContent.length;col++) {
-                                    bw_0.write(mainContent[col][line].replace("\n","") + "\t");
-                                }
-                        }
+//                        for(int line=0;line<mainContent[0].length;line++){
+//                            bw_0.newLine();
+//                                for (int col=0;col<mainContent.length;col++) {
+//                                    bw_0.write(mainContent[col][line].replace("\n","") + "\t");
+//                                }
+//                        }
                     }
                       
             Integer nodeIndex1 = 1;
