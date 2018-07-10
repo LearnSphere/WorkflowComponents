@@ -492,6 +492,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
 
                 // Write header to export
                 String headerLine = bufferedReader.readLine();
+                String[] headers = headerLine.split(TAB_CHAR);
 
                 // Appending secondaryModel column to file.
                 secondaryModelName = secondaryModelName + "_" + secondaryFileIndex;
@@ -524,6 +525,13 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
                             bytes = (value + TAB_CHAR).getBytes("UTF-8");
                         }
 
+                        outputStream.write(bytes);
+                        colIndex++;
+                    }
+                    // Handle the case of empty columns. Can't really tell where, but
+                    // we can pad the end of the line before appending new PER column.
+                    while (colIndex < headers.length) {
+                        byte[] bytes = (TAB_CHAR + "").getBytes("UTF-8");
                         outputStream.write(bytes);
                         colIndex++;
                     }

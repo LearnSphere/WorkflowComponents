@@ -1,9 +1,11 @@
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" iAFM.R -programDir . -workingDir . -model "KC (NewModel)" -node 0 -fileIndex 0 ds2174_student_step_All_Data_3991_2017_1128_123902.txt
 args <- commandArgs(trailingOnly = TRUE)
 
 suppressMessages(library(lme4))
 
 preprocess <- function(origRollup, kcm) {
-  kcm_index <- grep(kcm,names(origRollup))
+  #kcm_index <- grep(kcm,names(origRollup))
+  kcm_index <- which(names(origRollup)==kcm)
   df <- origRollup[,c(3,5,7,15,kcm_index,kcm_index+1)]  # subset only the columns of interest
   df$First.Attempt <- gsub("incorrect", 0, df$First.Attempt)  # convert correctness coding to binary, numeric
   df$First.Attempt <- gsub("hint", 0, df$First.Attempt)
@@ -62,17 +64,14 @@ df <- preprocess(data.frame(read.table(file=stuStepFileName,na.string="NA",sep="
 ## fit iAFM - four params - student intercept, student slope, KC intercept, and KC slope
 iafm.model <- glmer(Success ~ Opportunity + (Opportunity|Anon.Student.Id) + (Opportunity|KC), data=df, family=binomial())
 
-
 outputFile1 <- paste(workingDir, "/model-values.txt", sep="")
 
 ## potential outputs
-
 write(paste("AIC",AIC(iafm.model),sep="\t"),file=outputFile1,sep="",append=FALSE)
 write(paste("BIC",BIC(iafm.model),sep="\t"),file=outputFile1,sep="",append=TRUE)
 write(paste("Log Likelihood",as.numeric(logLik(iafm.model)),sep="\t"),file=outputFile1,sep="",append=TRUE)
 write(paste("MAIN EFFECT intercept",fixef(iafm.model)[[1]],sep="\t"),file=outputFile1,sep="",append=TRUE)
 write(paste("MAIN EFFECT slope",fixef(iafm.model)[[2]],sep="\t"),file=outputFile1,sep="",append=TRUE)
-
 outputFile2 <- paste(workingDir, "/parameters.txt", sep="")
 
 # stud.params is a table where column 1 is the student ID, column 2 is the iAFM estimated student intercept, and column 3 is the iAFM estimated student slope
