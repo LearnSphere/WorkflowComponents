@@ -14,6 +14,7 @@ env
 ### Ant runComponent output folder ###
 ######################################
 test/output
+test/components/datasetDoc.tsv
 
 # Component Log folder
 logs

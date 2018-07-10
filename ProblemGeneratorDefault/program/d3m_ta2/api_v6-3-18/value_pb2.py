@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='value.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x0bvalue.proto\x1a google/protobuf/descriptor.proto\"\x1d\n\nValueError\x12\x0f\n\x07message\x18\x01 \x01(\t\"%\n\tValueList\x12\x18\n\x05items\x18\x01 \x03(\x0b\x32\t.ValueRaw\"j\n\tValueDict\x12$\n\x05items\x18\x01 \x03(\x0b\x32\x15.ValueDict.ItemsEntry\x1a\x37\n\nItemsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.ValueRaw:\x02\x38\x01\"\xbb\x01\n\x08ValueRaw\x12\x1a\n\x04null\x18\x01 \x01(\x0e\x32\n.NullValueH\x00\x12\x10\n\x06\x64ouble\x18\x02 \x01(\x01H\x00\x12\x0f\n\x05int64\x18\x03 \x01(\x03H\x00\x12\x0e\n\x04\x62ool\x18\x04 \x01(\x08H\x00\x12\x10\n\x06string\x18\x05 \x01(\tH\x00\x12\x0f\n\x05\x62ytes\x18\x06 \x01(\x0cH\x00\x12\x1a\n\x04list\x18\x07 \x01(\x0b\x32\n.ValueListH\x00\x12\x1a\n\x04\x64ict\x18\x08 \x01(\x0b\x32\n.ValueDictH\x00\x42\x05\n\x03raw\"\xb4\x01\n\x05Value\x12\x1c\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x0b.ValueErrorH\x00\x12\x18\n\x03raw\x18\x02 \x01(\x0b\x32\t.ValueRawH\x00\x12\x15\n\x0b\x64\x61taset_uri\x18\x03 \x01(\tH\x00\x12\x11\n\x07\x63sv_uri\x18\x04 \x01(\tH\x00\x12\x14\n\npickle_uri\x18\x05 \x01(\tH\x00\x12\x15\n\x0bpickle_blob\x18\x06 \x01(\x0cH\x00\x12\x13\n\tplasma_id\x18\x07 \x01(\x0cH\x00\x42\x07\n\x05value*|\n\tValueType\x12\x18\n\x14VALUE_TYPE_UNDEFINED\x10\x00\x12\x07\n\x03RAW\x10\x01\x12\x0f\n\x0b\x44\x41TASET_URI\x10\x02\x12\x0b\n\x07\x43SV_URI\x10\x03\x12\x0e\n\nPICKLE_URI\x10\x04\x12\x0f\n\x0bPICKLE_BLOB\x10\x05\x12\r\n\tPLASMA_ID\x10\x06*\x1b\n\tNullValue\x12\x0e\n\nNULL_VALUE\x10\x00\x42\nZ\x08pipelineb\x06proto3')
+  serialized_pb=_b('\n\x0bvalue.proto\x1a google/protobuf/descriptor.proto\"\x1d\n\nValueError\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x1a\n\nDoubleList\x12\x0c\n\x04list\x18\x01 \x03(\x01\"\x19\n\tInt64List\x12\x0c\n\x04list\x18\x01 \x03(\x03\"\x18\n\x08\x42oolList\x12\x0c\n\x04list\x18\x01 \x03(\x08\"\x1a\n\nStringList\x12\x0c\n\x04list\x18\x01 \x03(\t\"\x19\n\tBytesList\x12\x0c\n\x04list\x18\x01 \x03(\x0c\"\x9c\x03\n\x05Value\x12\x1c\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x0b.ValueErrorH\x00\x12\x10\n\x06\x64ouble\x18\x02 \x01(\x01H\x00\x12\x0f\n\x05int64\x18\x03 \x01(\x03H\x00\x12\x0e\n\x04\x62ool\x18\x04 \x01(\x08H\x00\x12\x10\n\x06string\x18\x05 \x01(\tH\x00\x12\x0f\n\x05\x62ytes\x18\x06 \x01(\x0cH\x00\x12\"\n\x0b\x64ouble_list\x18\x07 \x01(\x0b\x32\x0b.DoubleListH\x00\x12 \n\nint64_list\x18\x08 \x01(\x0b\x32\n.Int64ListH\x00\x12\x1e\n\tbool_list\x18\t \x01(\x0b\x32\t.BoolListH\x00\x12\"\n\x0bstring_list\x18\n \x01(\x0b\x32\x0b.StringListH\x00\x12 \n\nbytes_list\x18\x0b \x01(\x0b\x32\n.BytesListH\x00\x12\x15\n\x0b\x64\x61taset_uri\x18\x0c \x01(\tH\x00\x12\x11\n\x07\x63sv_uri\x18\r \x01(\tH\x00\x12\x14\n\npickle_uri\x18\x0e \x01(\tH\x00\x12\x15\n\x0bpickle_blob\x18\x0f \x01(\x0cH\x00\x12\x13\n\tplasma_id\x18\x10 \x01(\x0cH\x00\x42\x07\n\x05value*|\n\tValueType\x12\x18\n\x14VALUE_TYPE_UNDEFINED\x10\x00\x12\x07\n\x03RAW\x10\x01\x12\x0f\n\x0b\x44\x41TASET_URI\x10\x02\x12\x0b\n\x07\x43SV_URI\x10\x03\x12\x0e\n\nPICKLE_URI\x10\x04\x12\x0f\n\x0bPICKLE_BLOB\x10\x05\x12\r\n\tPLASMA_ID\x10\x06\x42\nZ\x08pipelineb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_descriptor__pb2.DESCRIPTOR,])
 
@@ -62,31 +62,12 @@ _VALUETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=600,
-  serialized_end=724,
+  serialized_start=631,
+  serialized_end=755,
 )
 _sym_db.RegisterEnumDescriptor(_VALUETYPE)
 
 ValueType = enum_type_wrapper.EnumTypeWrapper(_VALUETYPE)
-_NULLVALUE = _descriptor.EnumDescriptor(
-  name='NullValue',
-  full_name='NullValue',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NULL_VALUE', index=0, number=0,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=726,
-  serialized_end=753,
-)
-_sym_db.RegisterEnumDescriptor(_NULLVALUE)
-
-NullValue = enum_type_wrapper.EnumTypeWrapper(_NULLVALUE)
 VALUE_TYPE_UNDEFINED = 0
 RAW = 1
 DATASET_URI = 2
@@ -94,7 +75,6 @@ CSV_URI = 3
 PICKLE_URI = 4
 PICKLE_BLOB = 5
 PLASMA_ID = 6
-NULL_VALUE = 0
 
 
 
@@ -129,16 +109,16 @@ _VALUEERROR = _descriptor.Descriptor(
 )
 
 
-_VALUELIST = _descriptor.Descriptor(
-  name='ValueList',
-  full_name='ValueList',
+_DOUBLELIST = _descriptor.Descriptor(
+  name='DoubleList',
+  full_name='DoubleList',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='items', full_name='ValueList.items', index=0,
-      number=1, type=11, cpp_type=10, label=3,
+      name='list', full_name='DoubleList.list', index=0,
+      number=1, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -156,57 +136,20 @@ _VALUELIST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=80,
-  serialized_end=117,
+  serialized_end=106,
 )
 
 
-_VALUEDICT_ITEMSENTRY = _descriptor.Descriptor(
-  name='ItemsEntry',
-  full_name='ValueDict.ItemsEntry',
+_INT64LIST = _descriptor.Descriptor(
+  name='Int64List',
+  full_name='Int64List',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='ValueDict.ItemsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='ValueDict.ItemsEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=170,
-  serialized_end=225,
-)
-
-_VALUEDICT = _descriptor.Descriptor(
-  name='ValueDict',
-  full_name='ValueDict',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='items', full_name='ValueDict.items', index=0,
-      number=1, type=11, cpp_type=10, label=3,
+      name='list', full_name='Int64List.list', index=0,
+      number=1, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -214,7 +157,7 @@ _VALUEDICT = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_VALUEDICT_ITEMSENTRY, ],
+  nested_types=[],
   enum_types=[
   ],
   options=None,
@@ -223,71 +166,22 @@ _VALUEDICT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=119,
-  serialized_end=225,
+  serialized_start=108,
+  serialized_end=133,
 )
 
 
-_VALUERAW = _descriptor.Descriptor(
-  name='ValueRaw',
-  full_name='ValueRaw',
+_BOOLLIST = _descriptor.Descriptor(
+  name='BoolList',
+  full_name='BoolList',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='null', full_name='ValueRaw.null', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='double', full_name='ValueRaw.double', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='int64', full_name='ValueRaw.int64', index=2,
-      number=3, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='bool', full_name='ValueRaw.bool', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='string', full_name='ValueRaw.string', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='bytes', full_name='ValueRaw.bytes', index=5,
-      number=6, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='list', full_name='ValueRaw.list', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dict', full_name='ValueRaw.dict', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='list', full_name='BoolList.list', index=0,
+      number=1, type=8, cpp_type=7, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
@@ -302,12 +196,71 @@ _VALUERAW = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='raw', full_name='ValueRaw.raw',
-      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=228,
-  serialized_end=415,
+  serialized_start=135,
+  serialized_end=159,
+)
+
+
+_STRINGLIST = _descriptor.Descriptor(
+  name='StringList',
+  full_name='StringList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='list', full_name='StringList.list', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=161,
+  serialized_end=187,
+)
+
+
+_BYTESLIST = _descriptor.Descriptor(
+  name='BytesList',
+  full_name='BytesList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='list', full_name='BytesList.list', index=0,
+      number=1, type=12, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=189,
+  serialized_end=214,
 )
 
 
@@ -326,43 +279,106 @@ _VALUE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='raw', full_name='Value.raw', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='double', full_name='Value.double', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='dataset_uri', full_name='Value.dataset_uri', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='int64', full_name='Value.int64', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='csv_uri', full_name='Value.csv_uri', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='bool', full_name='Value.bool', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='pickle_uri', full_name='Value.pickle_uri', index=4,
+      name='string', full_name='Value.string', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='pickle_blob', full_name='Value.pickle_blob', index=5,
+      name='bytes', full_name='Value.bytes', index=5,
       number=6, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='plasma_id', full_name='Value.plasma_id', index=6,
-      number=7, type=12, cpp_type=9, label=1,
+      name='double_list', full_name='Value.double_list', index=6,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='int64_list', full_name='Value.int64_list', index=7,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bool_list', full_name='Value.bool_list', index=8,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='string_list', full_name='Value.string_list', index=9,
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bytes_list', full_name='Value.bytes_list', index=10,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='dataset_uri', full_name='Value.dataset_uri', index=11,
+      number=12, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='csv_uri', full_name='Value.csv_uri', index=12,
+      number=13, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='pickle_uri', full_name='Value.pickle_uri', index=13,
+      number=14, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='pickle_blob', full_name='Value.pickle_blob', index=14,
+      number=15, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='plasma_id', full_name='Value.plasma_id', index=15,
+      number=16, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -382,49 +398,49 @@ _VALUE = _descriptor.Descriptor(
       name='value', full_name='Value.value',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=418,
-  serialized_end=598,
+  serialized_start=217,
+  serialized_end=629,
 )
 
-_VALUELIST.fields_by_name['items'].message_type = _VALUERAW
-_VALUEDICT_ITEMSENTRY.fields_by_name['value'].message_type = _VALUERAW
-_VALUEDICT_ITEMSENTRY.containing_type = _VALUEDICT
-_VALUEDICT.fields_by_name['items'].message_type = _VALUEDICT_ITEMSENTRY
-_VALUERAW.fields_by_name['null'].enum_type = _NULLVALUE
-_VALUERAW.fields_by_name['list'].message_type = _VALUELIST
-_VALUERAW.fields_by_name['dict'].message_type = _VALUEDICT
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['null'])
-_VALUERAW.fields_by_name['null'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['double'])
-_VALUERAW.fields_by_name['double'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['int64'])
-_VALUERAW.fields_by_name['int64'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['bool'])
-_VALUERAW.fields_by_name['bool'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['string'])
-_VALUERAW.fields_by_name['string'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['bytes'])
-_VALUERAW.fields_by_name['bytes'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['list'])
-_VALUERAW.fields_by_name['list'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
-_VALUERAW.oneofs_by_name['raw'].fields.append(
-  _VALUERAW.fields_by_name['dict'])
-_VALUERAW.fields_by_name['dict'].containing_oneof = _VALUERAW.oneofs_by_name['raw']
 _VALUE.fields_by_name['error'].message_type = _VALUEERROR
-_VALUE.fields_by_name['raw'].message_type = _VALUERAW
+_VALUE.fields_by_name['double_list'].message_type = _DOUBLELIST
+_VALUE.fields_by_name['int64_list'].message_type = _INT64LIST
+_VALUE.fields_by_name['bool_list'].message_type = _BOOLLIST
+_VALUE.fields_by_name['string_list'].message_type = _STRINGLIST
+_VALUE.fields_by_name['bytes_list'].message_type = _BYTESLIST
 _VALUE.oneofs_by_name['value'].fields.append(
   _VALUE.fields_by_name['error'])
 _VALUE.fields_by_name['error'].containing_oneof = _VALUE.oneofs_by_name['value']
 _VALUE.oneofs_by_name['value'].fields.append(
-  _VALUE.fields_by_name['raw'])
-_VALUE.fields_by_name['raw'].containing_oneof = _VALUE.oneofs_by_name['value']
+  _VALUE.fields_by_name['double'])
+_VALUE.fields_by_name['double'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['int64'])
+_VALUE.fields_by_name['int64'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['bool'])
+_VALUE.fields_by_name['bool'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['string'])
+_VALUE.fields_by_name['string'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['bytes'])
+_VALUE.fields_by_name['bytes'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['double_list'])
+_VALUE.fields_by_name['double_list'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['int64_list'])
+_VALUE.fields_by_name['int64_list'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['bool_list'])
+_VALUE.fields_by_name['bool_list'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['string_list'])
+_VALUE.fields_by_name['string_list'].containing_oneof = _VALUE.oneofs_by_name['value']
+_VALUE.oneofs_by_name['value'].fields.append(
+  _VALUE.fields_by_name['bytes_list'])
+_VALUE.fields_by_name['bytes_list'].containing_oneof = _VALUE.oneofs_by_name['value']
 _VALUE.oneofs_by_name['value'].fields.append(
   _VALUE.fields_by_name['dataset_uri'])
 _VALUE.fields_by_name['dataset_uri'].containing_oneof = _VALUE.oneofs_by_name['value']
@@ -441,12 +457,13 @@ _VALUE.oneofs_by_name['value'].fields.append(
   _VALUE.fields_by_name['plasma_id'])
 _VALUE.fields_by_name['plasma_id'].containing_oneof = _VALUE.oneofs_by_name['value']
 DESCRIPTOR.message_types_by_name['ValueError'] = _VALUEERROR
-DESCRIPTOR.message_types_by_name['ValueList'] = _VALUELIST
-DESCRIPTOR.message_types_by_name['ValueDict'] = _VALUEDICT
-DESCRIPTOR.message_types_by_name['ValueRaw'] = _VALUERAW
+DESCRIPTOR.message_types_by_name['DoubleList'] = _DOUBLELIST
+DESCRIPTOR.message_types_by_name['Int64List'] = _INT64LIST
+DESCRIPTOR.message_types_by_name['BoolList'] = _BOOLLIST
+DESCRIPTOR.message_types_by_name['StringList'] = _STRINGLIST
+DESCRIPTOR.message_types_by_name['BytesList'] = _BYTESLIST
 DESCRIPTOR.message_types_by_name['Value'] = _VALUE
 DESCRIPTOR.enum_types_by_name['ValueType'] = _VALUETYPE
-DESCRIPTOR.enum_types_by_name['NullValue'] = _NULLVALUE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ValueError = _reflection.GeneratedProtocolMessageType('ValueError', (_message.Message,), dict(
@@ -456,34 +473,40 @@ ValueError = _reflection.GeneratedProtocolMessageType('ValueError', (_message.Me
   ))
 _sym_db.RegisterMessage(ValueError)
 
-ValueList = _reflection.GeneratedProtocolMessageType('ValueList', (_message.Message,), dict(
-  DESCRIPTOR = _VALUELIST,
+DoubleList = _reflection.GeneratedProtocolMessageType('DoubleList', (_message.Message,), dict(
+  DESCRIPTOR = _DOUBLELIST,
   __module__ = 'value_pb2'
-  # @@protoc_insertion_point(class_scope:ValueList)
+  # @@protoc_insertion_point(class_scope:DoubleList)
   ))
-_sym_db.RegisterMessage(ValueList)
+_sym_db.RegisterMessage(DoubleList)
 
-ValueDict = _reflection.GeneratedProtocolMessageType('ValueDict', (_message.Message,), dict(
-
-  ItemsEntry = _reflection.GeneratedProtocolMessageType('ItemsEntry', (_message.Message,), dict(
-    DESCRIPTOR = _VALUEDICT_ITEMSENTRY,
-    __module__ = 'value_pb2'
-    # @@protoc_insertion_point(class_scope:ValueDict.ItemsEntry)
-    ))
-  ,
-  DESCRIPTOR = _VALUEDICT,
+Int64List = _reflection.GeneratedProtocolMessageType('Int64List', (_message.Message,), dict(
+  DESCRIPTOR = _INT64LIST,
   __module__ = 'value_pb2'
-  # @@protoc_insertion_point(class_scope:ValueDict)
+  # @@protoc_insertion_point(class_scope:Int64List)
   ))
-_sym_db.RegisterMessage(ValueDict)
-_sym_db.RegisterMessage(ValueDict.ItemsEntry)
+_sym_db.RegisterMessage(Int64List)
 
-ValueRaw = _reflection.GeneratedProtocolMessageType('ValueRaw', (_message.Message,), dict(
-  DESCRIPTOR = _VALUERAW,
+BoolList = _reflection.GeneratedProtocolMessageType('BoolList', (_message.Message,), dict(
+  DESCRIPTOR = _BOOLLIST,
   __module__ = 'value_pb2'
-  # @@protoc_insertion_point(class_scope:ValueRaw)
+  # @@protoc_insertion_point(class_scope:BoolList)
   ))
-_sym_db.RegisterMessage(ValueRaw)
+_sym_db.RegisterMessage(BoolList)
+
+StringList = _reflection.GeneratedProtocolMessageType('StringList', (_message.Message,), dict(
+  DESCRIPTOR = _STRINGLIST,
+  __module__ = 'value_pb2'
+  # @@protoc_insertion_point(class_scope:StringList)
+  ))
+_sym_db.RegisterMessage(StringList)
+
+BytesList = _reflection.GeneratedProtocolMessageType('BytesList', (_message.Message,), dict(
+  DESCRIPTOR = _BYTESLIST,
+  __module__ = 'value_pb2'
+  # @@protoc_insertion_point(class_scope:BytesList)
+  ))
+_sym_db.RegisterMessage(BytesList)
 
 Value = _reflection.GeneratedProtocolMessageType('Value', (_message.Message,), dict(
   DESCRIPTOR = _VALUE,
@@ -495,6 +518,4 @@ _sym_db.RegisterMessage(Value)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('Z\010pipeline'))
-_VALUEDICT_ITEMSENTRY.has_options = True
-_VALUEDICT_ITEMSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 # @@protoc_insertion_point(module_scope)
