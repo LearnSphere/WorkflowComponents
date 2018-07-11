@@ -10,8 +10,8 @@
 <details>This compoment can pass the feature (Studentnumber) to the source datafile following each student' name autimatically. So the new output datafile is added with one more column that include the new feature. Email the author directly with bug reports for this component.</details>
 
 <inputs>
-<b>A tab-delimited file</b>
-<b>A file with specific Studentnumber and Name.</b>
+<b>A tab-delimited file</b>  <br/>
+<b>A file with specific Studentnumber and Name.</b> <br/>
 </inputs>
 
 <outputs>
@@ -19,10 +19,10 @@
 </outputs>
 
 <options>
-<b>Studentnumber</b>
-<b>CF..Cor.</b>
-<b>Anon.Student.Id</b>
-<b>Name</b>
+<b>Studentnumber</b> <br/>
+<b>CF..Cor.</b> <br/>
+<b>Anon.Student.Id</b> <br/>
+<b>Name</b> <br/>
 </options>
 </info>
 
