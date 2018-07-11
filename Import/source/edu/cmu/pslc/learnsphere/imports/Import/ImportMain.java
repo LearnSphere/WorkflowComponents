@@ -30,4 +30,20 @@ public class ImportMain extends AbstractComponent {
         super();
 
     }
+
+    @Override
+    protected Boolean test() {
+        logger.info("Testing.");
+        Boolean validImport = true;
+
+        File theFile = this.getAttachment(0, 0);
+
+        if (theFile == null || !theFile.exists()) {
+            errorMessages.add("Please select a file to import.");
+            validImport =  true; // Even though it's an error, still return true since the test completed
+        }
+
+        return validImport;
+    }
+
 }
