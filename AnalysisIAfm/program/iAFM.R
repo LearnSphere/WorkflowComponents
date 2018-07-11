@@ -56,7 +56,6 @@ if (length(args) == 2) {
       i = i+1
   }
 }
-
 ## preprocess data -- customize the file path & kc model with workflow inputs
 df <- preprocess(data.frame(read.table(file=stuStepFileName,na.string="NA",sep="\t",quote="",header=T)),
                  make.names(modelName))  ## make.names changes the inputted string to the same periods-based format that data.frame() does for column headers
@@ -92,19 +91,33 @@ outputFile3 <- paste(workingDir, "/student-step.txt", sep="")
 origFile <- read.table(file=stuStepFileName,na.string="NA",sep="\t",quote="",header=T,check.names=FALSE)
 origCols <- colnames(origFile)
 
-# Remove the existing PER for the specified model
-perToDelete <- sub("KC ", "Predicted Error Rate ", modelName)
-modifiedFile <- within(origFile, rm(list=perToDelete))
-
+#the existing PER for the specified model
+curPerCol <- sub("KC ", "Predicted Error Rate ", modelName)
+curOppCol <- sub("KC ", "Opportunity ", modelName)
+modifiedFile = origFile
 # Add PER for the specified model... gets added to the end
 modifiedFile$PredictedErrorRate <- predict(iafm.model,df,type="response",allow.new.levels=TRUE)
+colnames(modifiedFile)[colnames(modifiedFile)=="PredictedErrorRate"] <- curPerCol
 
-# Rename the column
-colnames(modifiedFile)[colnames(modifiedFile)=="PredictedErrorRate"] <- perToDelete
-# Sort columns to match original file
+
+
+if(curPerCol %in% colnames(origFile)) {
+  modifiedFile <- within(modifiedFile, rm(list=curPerCol))
+  # Rename the column
+  # Sort columns to match original file
+  
+} else {
+  colnames(modifiedFile)[colnames(modifiedFile)=="PredictedErrorRate"] <- curPerCol
+  insertInd = -1
+  if(curOppCol %in% colnames(origFile)) {
+    insertInd = which( colnames(origFile)==curOppCol ) 
+  } else {
+    insertInd = which( colnames(origFile)==modelName )
+  }
+  origCols <- c(origCols[c(1:insertInd)], curPerCol, origCols[c((insertInd+1):length(origCols))])
+}
 modifiedFile <- modifiedFile[, origCols]
 
 write.table(modifiedFile, file=outputFile3, sep="\t", quote=FALSE, na="", col.names=TRUE, append=FALSE, row.names=FALSE)
-
 
 
