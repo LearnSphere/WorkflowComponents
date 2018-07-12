@@ -25,13 +25,14 @@ def unzip(sourcePath, destDir):
 #example of running on command line
 #python main.py -MOOCdbName=moocdb_game_theory_gametheory003 -startDateWF 2013-10-14
 #-earliestSubmissionDate 2013-10-14 -numberWeeksWF 10 -runExtraction true -exportFormatWF tall
-#-featureExtractionId 1 -featuresToExtractWF "1,3,4" -file0 placeholder
+#-featureExtractionId 1 -featuresToExtractWF "1,3,4" -node m -fileIndex n <infile>
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='MOOCdb Features Generation')
     parser.add_argument('-programDir', type=str, help='the component program directory', default=".")
     parser.add_argument('-workingDir', type=str, help='the component instance working directory', default=".")
-    parser.add_argument('-file0', type=str, help='the compressed file containing the input data')
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
     parser.add_argument('-dummyStr', type=str, help='dummy string')
     parser.add_argument('-dummyBool', type=bool, help='dummy boolean')
 
@@ -40,23 +41,26 @@ if __name__ == "__main__":
     #parser.add_argument('-exportFormat', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
     #parser.add_argument('-exportFormatWF', type=str, choices=["wide", "tall"], help='feature export format', default='wide')
 
-    args = parser.parse_args()
+    inFile = None
+    args, option_file_index_args = parser.parse_known_args()
+    for x in range(len(args.node)):
+        if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
+            inFile = open(args.fileIndex[x][1], 'r')
 
     workingDir = args.workingDir
     if not workingDir:
         sys.exit("Missing required argument: workingDir")
 
     start_dt = datetime.now()
-    logFileName = "{0:04d}{1:02d}{2:02d}{3:02d}{4:02d}{5:02d}-{6}".format(start_dt.year, start_dt.month, start_dt.day, start_dt.hour, start_dt.minute, start_dt.second, args.file0)
+    logFileName = "{0:04d}{1:02d}{2:02d}{3:02d}{4:02d}{5:02d}-{6}".format(start_dt.year, start_dt.month, start_dt.day, start_dt.hour, start_dt.minute, start_dt.second, inFile)
     logFile = workingDir + "/" + logFileName + ".log"
 
     log = Logger(logToConsole=True, logFilePath=logFile)
 
-    file0 = args.file0
-    if not file0:
-        sys.exit("Argument file0 undefined.")
+    if not inFile:
+        sys.exit("Argument(s) -node m -fileIndex n <file> not specified.")
 
-    unzip(file0, workingDir)
+    unzip(inFile, workingDir)
 
     class_name = None
     valid = True

@@ -14,7 +14,10 @@
   <top>106</top>
   <options>
     <learningCurve>Knowledge Components</learningCurve>
-    <model>Predicted Error Rate (principles_of_computing_1_10)</model>
+    <model>Input 0 (0) - Predicted Error Rate (hLFASearchAICWholeModel3arith) (column 21)</model>
+    <secondaryModel>Input 0 (1) - Predicted Error Rate (Item Model) (column 50)</secondaryModel>
+    <secondaryModel>Input 0 (2) - Predicted Error Rate (DecomposeArith) (column 44)</secondaryModel>
+    <viewSecondary>true</viewSecondary>
     <stdDevCutOff>0</stdDevCutOff>
     <opportunityCutOffMax>INF</opportunityCutOffMax>
     <learningCurveMetric>Error Rate</learningCurveMetric>
@@ -31,152 +34,46 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/example_student_step/ds1806_student_step_with_CF.txt</file_path>
-          <file_name>ds1806_student_step_with_CF.txt</file_name>
+          <file_path>test/example_student_step/ds76_stu_step.txt</file_path>
+          <file_name>ds76_stu_step.txt</file_name>
           <index>0</index>
           <label>student-step</label>
-          <metadata>
-            <header>
-              <id>header0</id>
-              <index>17</index>
-              <name>Corrects</name>
-            </header>
-            <header>
-              <id>header1</id>
-              <index>18</index>
-              <name>Condition</name>
-            </header>
-            <header>
-              <id>header2</id>
-              <index>8</index>
-              <name>First Transaction Time</name>
-            </header>
-            <header>
-              <id>header3</id>
-              <index>7</index>
-              <name>Step Start Time</name>
-            </header>
-            <header>
-              <id>header4</id>
-              <index>3</index>
-              <name>Problem Hierarchy</name>
-            </header>
-            <header>
-              <id>header5</id>
-              <index>12</index>
-              <name>Correct Step Duration (sec)</name>
-            </header>
-            <header>
-              <id>header6</id>
-              <index>6</index>
-              <name>Step Name</name>
-            </header>
-            <header>
-              <id>header7</id>
-              <index>5</index>
-              <name>Problem View</name>
-            </header>
-            <header>
-              <id>header8</id>
-              <index>10</index>
-              <name>Step End Time</name>
-            </header>
-            <header>
-              <id>header9</id>
-              <index>9</index>
-              <name>Correct Transaction Time</name>
-            </header>
-            <header>
-              <id>header10</id>
-              <index>20</index>
-              <name>Opportunity (Default)</name>
-            </header>
-            <header>
-              <id>header11</id>
-              <index>22</index>
-              <name>KC (Single-KC)</name>
-            </header>
-            <header>
-              <id>header12</id>
-              <index>11</index>
-              <name>Step Duration (sec)</name>
-            </header>
-            <header>
-              <id>header13</id>
-              <index>26</index>
-              <name>Opportunity (Unique-step)</name>
-            </header>
-            <header>
-              <id>header14</id>
-              <index>13</index>
-              <name>Error Step Duration (sec)</name>
-            </header>
-            <header>
-              <id>header15</id>
-              <index>21</index>
-              <name>Predicted Error Rate (Default)</name>
-            </header>
-            <header>
-              <id>header16</id>
-              <index>4</index>
-              <name>Problem Name</name>
-            </header>
-            <label>
-              <id>label17</id>
-              <index>24</index>
-              <name>Predicted Error Rate (Single-KC)</name>
-            </label>
-            <header>
-              <id>header18</id>
-              <index>2</index>
-              <name>Anon Student Id</name>
-            </header>
-            <header>
-              <id>header19</id>
-              <index>16</index>
-              <name>Hints</name>
-            </header>
-            <header>
-              <id>header20</id>
-              <index>1</index>
-              <name>Sample</name>
-            </header>
-            <header>
-              <id>header21</id>
-              <index>27</index>
-              <name>Predicted Error Rate (Unique-step)</name>
-            </header>
-            <header>
-              <id>header22</id>
-              <index>23</index>
-              <name>Opportunity (Single-KC)</name>
-            </header>
-            <header>
-              <id>header23</id>
-              <index>25</index>
-              <name>KC (Unique-step)</name>
-            </header>
-            <header>
-              <id>header24</id>
-              <index>15</index>
-              <name>Incorrects</name>
-            </header>
-            <header>
-              <id>header25</id>
-              <index>0</index>
-              <name>Row</name>
-            </header>
-            <header>
-              <id>header26</id>
-              <index>14</index>
-              <name>First Attempt</name>
-            </header>
-            <header>
-              <id>header27</id>
-              <index>19</index>
-              <name>KC (Default)</name>
-            </header>
-          </metadata>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <file_path>test/example_student_step/ds76_stu_step.txt</file_path>
+          <file_name>ds76_stu_step.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <file_path>test/example_student_step/ds76_stu_step.txt</file_path>
+          <file_name>ds76_stu_step.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
         </student-step>
       </files>
       <inputmeta />

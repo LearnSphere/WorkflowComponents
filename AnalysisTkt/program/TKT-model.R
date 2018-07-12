@@ -12,15 +12,26 @@ suppressMessages(library(TTR))
 suppressMessages(library(plyr))
 suppressMessages(library(pROC))
 
+inputFile = NULL
+
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-  if (args[i] == "-file0") {
-    if (length(args) == i) {
-      stop("input file name must be specified")
-    }
-    inputFile = args[i+1]
-    i = i+1
+  if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
+       }
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       inputFile <- args[i + 4]
+       i = i + 4
   }  else if (args[i] == "-optimizedParameters") {
     if (length(args) == i) {
       stop("optimizedParameters must be specified")
@@ -69,7 +80,7 @@ while (i <= length(args)) {
 
 if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirectory)) {
   if (is.null(inputFile)) {
-    warning("Missing required input parameter: -file0")
+    warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
   }
   if (is.null(workingDirectory)) {
     warning("Missing required input parameter: -workingDir")
@@ -77,7 +88,7 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
   if (is.null(componentDirectory)) {
     warning("Missing required input parameter: -programDir")
   }
-  stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file  ")
+  stop("Usage: -programDir component_directory -workingDir output_directory -node 0 -fileIndex 0 input_file  ")
 }
 
 # This dir contains the R program or any R helper scripts

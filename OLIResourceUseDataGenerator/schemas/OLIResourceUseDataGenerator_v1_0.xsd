@@ -44,7 +44,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="oli-log" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="user-sess-map" minOccurs="0" />
     </xs:all>
   </xs:complexType>

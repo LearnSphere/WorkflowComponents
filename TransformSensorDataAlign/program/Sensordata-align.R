@@ -1,11 +1,13 @@
-# Component for Transforming Sensor Data and Alignment 
-# Developed by Dr. Morshed and Ms. Afroz, The University of Memphis 
+# Component for Transforming Sensor Data and Alignment
+# Developed by Dr. Morshed and Ms. Afroz, The University of Memphis
 # Contact: bmorshed@memphis.edu and safroz@memphis.edu
 echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
-print(args)
+#print(args)
+inputFile0 = NULL
+inputFile1 = NULL
 
 #initialize 
 inputFile0 = NULL
@@ -15,13 +17,26 @@ componentDirectory = NULL
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-    if (args[i] == "-file0") {
-       if (length(args) == i) {
-          stop("Input for Signal 1 file name must be specified.")
+    if (args[i] == "-node") {
+       # Syntax follows: -node m -fileIndex n <infile>
+       if (i > length(args) - 4) {
+          stop("node and fileIndex must be specified")
        }
-       inputFile0 = args[i+1]
-       i = i+1
-    }else if (args[i] == "-file1ColumnName") {
+
+       nodeIndex <- args[i+1]
+       fileIndex = NULL
+       fileIndexParam <- args[i+2]
+       if (fileIndexParam == "-fileIndex") {
+           fileIndex <- args[i+3]
+       }
+
+       if (nodeIndex == 0 && fileIndex == 0) {
+           inputFile0 <- args[i+4]
+       } else if (nodeIndex == 1 && fileIndex == 0) {
+           inputFile1 <- args[i+4]
+       }
+       i = i+4
+    } else if (args[i] == "-file1ColumnName") {
        if (length(args) == i) {
           stop("File 1 Column Name must be specified.")
        }
@@ -33,13 +48,8 @@ while (i <= length(args)) {
        }
        signal1samplingrate = args[i+1]
        i = i+1
-    }else if (args[i] == "-file1") {
-       if (length(args) == i) {
-          stop("Input for Signal 2 file name must be specified.")
-       }
-       inputFile1 = args[i+1]
-       i = i+1
-    } else if (args[i] == "-file2ColumnName") {
+    }
+else if (args[i] == "-file2ColumnName") {
        if (length(args) == i) {
           stop("File 2 Column Name must be specified.")
        }
@@ -95,25 +105,25 @@ while (i <= length(args)) {
 # This dir is the root dir of the component code.
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
 
 if (is.null(inputFile0) || is.null(inputFile1) || is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile0)) {
-      warning("Missing required input parameter: -file0")
+      warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
    }
    if (is.null(inputFile1)) {
-      warning("Missing required input parameter: -file1")
+      warning("Missing required input parameter(s): -node 1 -fileIndex 0 <infile>")
    }
- 
+
    if (is.null(workingDirectory)) {
       warning("Missing required input parameter: -workingDir")
    }
    if (is.null(componentDirectory)) {
       warning("Missing required input parameter: -programDir")
    }
-   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file0 -file1 input_file1")
+   stop("Usage: -programDir component_directory -workingDir output_directory -node 0 -fileIndex 0 input_file0 -node 1 -fileIndex 0 input_file1")
 }
 
 # This dir contains the R program or any R helper scripts
@@ -159,13 +169,11 @@ sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=130)
 
-print("work")
+#Get the column from input data file0 and file1 to resample it
 
-#Get the column from input data file0 and file1 to resample it 
-InputData1 <-as.numeric(FileInputData1[[file1ColumnName]])
-#Get the column from input data file1 to resample it 
-InputData2 <-as.numeric(FileInputData2[[file2ColumnName]])
-   
+InputData1<-as.numeric(FileInputData1[[file1ColumnName]])
+#Get the column from input data file1 to resample it
+InputData2<-as.numeric(FileInputData2[[file2ColumnName]])
 
 # Sensordata Align functions
 # original sampling rate of InputData1 and InputData2
@@ -192,7 +200,7 @@ FactorInput2 <- SampOut / SampIn2
 #choice of interpolation
 if(interpolationtype == "spline")
 {
-# using spline interpolation 
+# using spline interpolation
 Out1 <- spline(InputData1, n=(LenInput1*FactorInput1), method="fmm")
 Out2 <- spline(InputData2, n=(LenInput2*FactorInput2), method="fmm")
 }else if(interpolationtype == "linear")
@@ -204,7 +212,7 @@ Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="linear")
 {
 # using constant interpolation
 Out1 <- approx(InputData1, n=(LenInput1*FactorInput1), method="constant")
-Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="constant")  
+Out2 <- approx(InputData2, n=(LenInput2*FactorInput2), method="constant")
 }
 
 # Get Data after resampling with interpolation
@@ -217,8 +225,8 @@ OutputData2 <- Out2$y
 offsetSamp <- (offset*SampOut)
 
 if ((length(OutputData1)) > (length(OutputData2)+offsetSamp)) {
-  maxSamp <- length(OutputData1)
-   if (offsetSamp > 0) {    
+   maxSamp <- length(OutputData1)
+   if (offsetSamp > 0) {
       OutputData2off <- 1:offsetSamp
       OutputData2off[] <- 0
       if (maxSamp-(length(OutputData2)+offsetSamp) > 0) {
@@ -234,10 +242,10 @@ if ((length(OutputData1)) > (length(OutputData2)+offsetSamp)) {
      OutputData2 <- c(OutputData2, OutputData2na)
    }
 } else {
-   if (offsetSamp > 0) {   
+   if (offsetSamp > 0) {
       OutputData2off <- 1:offsetSamp
-     OutputData2off[] <- 0
-      OutputData2 <- c(OutputData2off, OutputData2) 
+      OutputData2off[] <- NA
+      OutputData2 <- c(OutputData2off, OutputData2)
    }
   maxSamp <- (length(OutputData2))
   if (maxSamp-length(OutputData1) > 0) {
@@ -252,17 +260,17 @@ if ((length(OutputData1)) > (length(OutputData2)+offsetSamp)) {
 # Generate time vector
 time <- seq(0, (maxSamp-1)/SampOut, by=1/SampOut)
 
-# create matrix for output data with or without time vector 
+# create matrix for output data with or without time vector
 if(generatetimevector)
 {
 # columns: Time, OutputData1, OutputData2
 OutputData <- cbind(time, OutputData1, OutputData2)
 
  if(inputHeader){
-    colnames(OutputData)[1] <-"Sampling Rate"
-    colnames(OutputData)[2] <- file1ColumnName
-    colnames(OutputData)[3] <- file2ColumnName
-  
+    colnames(OutputData)[1]<-"Sampling Rate"
+    colnames(OutputData)[2]<- file1ColumnName
+    colnames(OutputData)[3]<- file2ColumnName
+
   }else{
     colnames(OutputData)[1] <-"Sampling Rate"
     colnames(OutputData)[2] <- "Signal 1 Sensor data"
@@ -271,14 +279,14 @@ OutputData <- cbind(time, OutputData1, OutputData2)
 }else{
     # columns: OutputData1, OutputData2
     OutputData <- cbind(OutputData1, OutputData2)
-    if(inputHeader){  
-    colnames(OutputData)[1] <- file1ColumnName
-    colnames(OutputData)[2] <- file2ColumnName 
+    if(inputHeader){
+    colnames(OutputData)[1]<- file1ColumnName
+    colnames(OutputData)[2]<- file2ColumnName
   }else{
     colnames(OutputData)[1] <- "Signal 1 Sensor data"
     colnames(OutputData)[2] <- "Signal 2 Sensor data"
   }
-   
+
 }
 
 

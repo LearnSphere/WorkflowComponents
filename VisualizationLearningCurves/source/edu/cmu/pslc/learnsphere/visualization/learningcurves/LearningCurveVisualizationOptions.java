@@ -1,5 +1,6 @@
 package edu.cmu.pslc.learnsphere.visualization.learningcurves;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.cmu.pslc.datashop.item.SampleItem;
@@ -185,8 +186,8 @@ public class LearningCurveVisualizationOptions {
 
     /** Skill model being using to draw the primary curve. */
     private String primaryModel;
-    /** Skill model to draw a secondary predicted curve. */
-    private String secondaryModel;
+    /** Skill models to draw secondary predicted curves. */
+    private List<String> secondaryModelNames = new ArrayList<String>();
 
     /** Type of error bar being displayed. */
     private ErrorBarType errorBarType = ErrorBarType.ERROR_BAR_TYPE_STANDARD_ERROR;
@@ -256,21 +257,8 @@ public class LearningCurveVisualizationOptions {
         this.primaryModel = primaryModel;
     }
 
-    /**
-     * Returns secondaryModel.
-     * @return Returns the secondaryModel.
-     */
-    public String getSecondaryModelName() {
-        return secondaryModel;
-    }
-
-    /**
-     * Set secondaryModel.
-     * @param secondaryModel The secondaryModel to set.
-     */
-    public void setSecondaryModelName(String secondaryModel) {
-        this.secondaryModel = secondaryModel;
-    }
+    public List<String> getSecondaryModelNames() { return secondaryModelNames; }
+    public void setSecondaryModelNames(List<String> in) { secondaryModelNames = in; }
 
     /**
      * Returns skillList.

@@ -255,11 +255,11 @@ public class AFMMain extends AbstractComponent {
                     }
                     headerCount++;
                 }
-
+                
                 if (replaceHeaderIndex == headerArray.length) {
                     String newHeader = headerLine + TAB_CHAR
                             + "Predicted Error Rate (" + modelName
-                            + ")\n";
+                            + ")";
                     outputStream.write(newHeader.getBytes("UTF-8"));
                 } else {
                     outputStream.write(headerLine.getBytes("UTF-8"));
@@ -293,25 +293,29 @@ public class AFMMain extends AbstractComponent {
                     }
                     String[] valueArray = line.split(TAB_CHAR);
 
-
                     Integer colIndex = 0;
                     for (String value : valueArray) {
                         byte[] bytes = null;
 
                         if (replaceHeaderIndex < valueArray.length
                                 && replaceHeaderIndex == colIndex) {
-                            bytes = (predictedValueString + TAB_CHAR)
-                                    .getBytes("UTF-8");
+                                if (colIndex == valueArray.length -1)
+                                        bytes = (predictedValueString).getBytes("UTF-8");
+                                else
+                                        bytes = (predictedValueString + TAB_CHAR).getBytes("UTF-8");
                         } else {
-                            bytes = (value + TAB_CHAR).getBytes("UTF-8");
+                                if (colIndex == valueArray.length -1)
+                                        bytes = (value).getBytes("UTF-8");
+                                else    
+                                        bytes = (value + TAB_CHAR).getBytes("UTF-8");
                         }
 
                         outputStream.write(bytes);
                         colIndex++;
                     }
                     if (replaceHeaderIndex == headerArray.length) {
-                        outputStream.write(predictedValueString
-                                .getBytes("UTF-8"));
+                        byte[] bytes = (TAB_CHAR + predictedValueString).getBytes("UTF-8");
+                        outputStream.write(bytes);
                     }
 
                     outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));

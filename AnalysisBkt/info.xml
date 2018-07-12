@@ -16,17 +16,17 @@
 <b>Student-Step.</b>
 </inputs>
 <outputs>
-<b>Student-Step</b> – model predictions.<br/>
-<b>Model values</b> – fit statistics.<br/>
-<b>Parameters</b> – BKT parameter values.
+<b>Student-Step</b> - model predictions.<br/>
+<b>Model values</b> - fit statistics.<br/>
+<b>Parameters</b> - BKT parameter values.
 </outputs>
 <options>
-<b>Model</b> – the column containing the Knowledge Component Model (KCM) data.<br/>
-<b>Solver</b> – the algorithm used to fit the BKT model.<br/>
-<b>Max Iterations</b> – the maximum number of iterations the solver would run to fit the BKT model.<br/>
-<b>Initial Parameters</b> – starting values of BKT parameters.<br/>
-<b>Lower Boundaries</b> – lower boundaries for the BKT parameters (cannot be lower than 0).<br/>
-<b>Upper Boundaries</b> – upper boundaries for the BKT parameters (cannot be higher than 1).<br/>
-<b>Cross-validation Folds</b> – the parameter for K-folds cross-validation.
+<b>Model</b> - the column containing the Knowledge Component Model (KCM) data.<br/>
+<b>Solver</b> - the algorithm used to fit the BKT model.<br/>
+<b>Max Iterations</b> - the maximum number of iterations the solver would run to fit the BKT model.<br/>
+<b>Initial Parameters</b> - starting values of BKT parameters.<br/>
+<b>Lower Boundaries</b> - lower boundaries for the BKT parameters (cannot be lower than 0).<br/>
+<b>Upper Boundaries</b> - upper boundaries for the BKT parameters (cannot be higher than 1).<br/>
+<b>Cross-validation Folds</b> - the parameter for K-folds cross-validation.
 </options>
 </info>

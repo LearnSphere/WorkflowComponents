@@ -6,9 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
@@ -16,7 +20,9 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import edu.cmu.pslc.datashop.extractors.workflows.ComponentOption;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
+import edu.cmu.pslc.datashop.workflows.InputHeaderOption;
 
 public class OutputComparatorMain extends AbstractComponent {
 
@@ -33,101 +39,114 @@ public class OutputComparatorMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         Boolean reqsMet = true;
+        int nodeIndex = 0;
         String fileType  = this.getOptionAsString("fileType");
-        String file0 = this.getAttachment(0, 0).getAbsolutePath();
-        String file1 = this.getAttachment(1, 0).getAbsolutePath();
-        String file2 = null;
-        if (this.getAttachment(2, 0) != null) {
-            file2 = this.getAttachment(2, 0).getAbsolutePath();
-        }
-        String file3 = null;
-        if (this.getAttachment(3, 0) != null) {
-            file3 = this.getAttachment(3, 0).getAbsolutePath();
+        List<File> inputFiles = this.getAttachments(nodeIndex);
+        
+        if (fileType.equalsIgnoreCase("XML")) {
+                if (inputFiles != null) {
+                        int cnt = 0;
+                        for (File file : inputFiles) {
+                                File fileConverted = convertXML(file.getAbsolutePath(), cnt);
+                                this.setOption("xmlfile" + cnt, fileConverted.getAbsolutePath());
+                                cnt++;
+                        }
+                } else {
+                        String exErr = "No input files uploaded.";
+                        addErrorMessage(exErr);
+                        reqsMet = false;
+                }
+                //set compareColumn and matchColumn to ""; sometimes when compareColumn="<model_output>", "<" will cause problem
+                this.setOption("matchColumn", "");
+                this.setOption("compareColumn", "");
+        } else if (fileType.equalsIgnoreCase("Properties File")) {
+                this.setOption("matchColumn", "");
+                this.setOption("compareColumn", "");
+        } else if (fileType.equalsIgnoreCase("Properties File")) {
+                this.setOption("matchColumn", "");
+                this.setOption("compareColumn", "");
+        } else if (fileType.equalsIgnoreCase("Tabular")) {
+                //make sure each file has only one compareColumn
+                if (inputFiles != null) {
+                        int numOfFiles = inputFiles.size();
+                        List<InputHeaderOption> matchColumnList = this.getInputHeaderOption("matchColumn", nodeIndex);
+                        logger.info("matchColumnList:" + matchColumnList);
+                        if (matchColumnList == null || matchColumnList.size() != numOfFiles) {
+                                String exErr = "One and only one column should be selected for matching for each file.";
+                                addErrorMessage(exErr);
+                                reqsMet = false;
+                        } else {
+                                Set<Integer> matchColumnSet = new HashSet<Integer>();
+                                for (InputHeaderOption iho : matchColumnList) {
+                                        matchColumnSet.add(iho.getFileIndex());
+                                }
+                                List<Integer> matchColumnIntList = new ArrayList(matchColumnSet);
+                                Collections.sort(matchColumnIntList);
+                                if (matchColumnIntList.get(0) != 0 || matchColumnIntList.get(matchColumnIntList.size()-1) != numOfFiles -1 ||
+                                                matchColumnIntList.size() != numOfFiles) {
+                                        String exErr = "One and only one column should be selected for matching for each file.";
+                                        addErrorMessage(exErr);
+                                        reqsMet = false;
+                                }
+                        }
+                        List<InputHeaderOption> compareColumnList = this.getInputHeaderOption("compareColumn", nodeIndex);
+                        logger.info("compareColumnList:" + compareColumnList);
+                        if (compareColumnList == null || compareColumnList.size() < numOfFiles) {
+                                String exErr = "At least one column should be selected for comparison for each file.";
+                                addErrorMessage(exErr);
+                                reqsMet = false;
+                        } else {
+                                Set<Integer> compareColumnSet = new HashSet<Integer>();
+                                for (InputHeaderOption iho : compareColumnList) {
+                                        compareColumnSet.add(iho.getFileIndex());
+                                }
+                                List<Integer> compareColumnIntList = new ArrayList(compareColumnSet);
+                                Collections.sort(compareColumnIntList);
+                                if (compareColumnIntList.get(0) != 0 || compareColumnIntList.get(compareColumnIntList.size()-1) != numOfFiles -1 ||
+                                                compareColumnIntList.size() != numOfFiles) {
+                                        String exErr = "At least one column should be selected for comparison for each file.";
+                                        addErrorMessage(exErr);
+                                        reqsMet = false;
+                                }
+                        }
+                        
+                        
+                        
+                } else {
+                        String exErr = "No input files uploaded.";
+                        addErrorMessage(exErr);
+                        reqsMet = false;
+                }
         }
         
-        //don't allow file2 to be null but file3 is not null
-        if (file2 == null && file3 != null) {
-                String exErr = "Use file3 first";
-                addErrorMessage(exErr);
-                logger.info(exErr);
-                reqsMet = false; 
+        if (reqsMet) {
+                File outputDirectory = this.runExternal();
+                if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+                        logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+                        File outputFile = new File(outputDirectory.getAbsolutePath() + "/comparison_result.txt");
+                        if (outputFile != null && outputFile.exists()) {
+                                Integer nodeIndex0 = 0;
+                                Integer fileIndex0 = 0;
+                                String label0 = "tab-delimited";
+                                this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
+                        } else {
+                                String exErr = "An error has occurred. No output file is found. A common mistake is input files in wrong format.";
+                                addErrorMessage(exErr);
+                                logger.info(exErr);
+                        }
+                }
         }
 
-        if (fileType.equalsIgnoreCase("XML")) {
-            File file0Converted = convertXML(file0, 0);
-            File file1Converted = convertXML(file1, 1);
-            File file2Converted = null;
-            File file3Converted = null;
-            if (file2 != null)
-                file2Converted = convertXML(file2, 2);
-            if (file3 != null)
-                file3Converted = convertXML(file3, 3);
-            if (file0Converted == null || file1Converted == null ||
-                            (file2 != null && file2Converted == null) ||
-                            (file3 != null && file3Converted == null)) {
-                    String exErr = "Input XML files are mal-formed";
-                    addErrorMessage(exErr);
-                    logger.info(exErr);
-                    reqsMet = false;
-            } else {
-                //reset option for file
-                this.setOption("xmlfile0", file0Converted.getAbsolutePath());
-                this.setOption("xmlfile1", file1Converted.getAbsolutePath());
-                if (file2 != null) {
-                        this.setOption("xmlfile2", file2Converted.getAbsolutePath());
-                }
-                if (file3 != null) {
-                        this.setOption("xmlfile3", file3Converted.getAbsolutePath());
-                }
-                this.setOption("matchColumn0", "");
-                this.setOption("compareColumn0", "");
-                this.setOption("matchColumn1", "");
-                this.setOption("compareColumn1", "");
-                this.setOption("matchColumn2", "");
-                this.setOption("compareColumn2", "");
-                this.setOption("matchColumn3", "");
-                this.setOption("compareColumn3", "");
-            }
-        } else if (fileType.equalsIgnoreCase("Properties File")) {
-            this.setOption("matchColumn0", "");
-            this.setOption("compareColumn0", "");
-            this.setOption("matchColumn1", "");
-            this.setOption("compareColumn1", "");
-            this.setOption("matchColumn2", "");
-            this.setOption("compareColumn2", "");
-            this.setOption("matchColumn3", "");
-            this.setOption("compareColumn3", "");
-        } else if (fileType.equalsIgnoreCase("Tabular")) {
-            if (file2 == null) {
-                    this.setOption("matchColumn2", "");
-                    this.setOption("compareColumn2", "");
-            }
-            if (file3 == null) {
-                    this.setOption("matchColumn3", "");
-                    this.setOption("compareColumn3", "");
-            }
-        }
 
-		if (reqsMet) {
-			File outputDirectory = this.runExternal();
-			if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-				logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-				File outputFile = new File(outputDirectory.getAbsolutePath() + "/comparison_result.txt");
-				if (outputFile != null && outputFile.exists()) {
-					Integer nodeIndex0 = 0;
-					Integer fileIndex0 = 0;
-					String label0 = "tab-delimited";
-					this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
-				} else {
-					String exErr = "An error has occurred with the component. Check input file format to ensure you are comparing the right format.";
-					addErrorMessage(exErr);
-					logger.info(exErr);
-				}
-			}
-		}
-
+        
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
+        
+        for (String err : this.errorMessages) {
+                // These will also be picked up by the workflows platform and relayed to the user.
+                System.err.println(err);
+        }        
+        
     }
 
     /**
