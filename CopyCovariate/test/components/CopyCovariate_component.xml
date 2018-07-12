@@ -17,7 +17,8 @@
  <options>
       <oldcol>CF (Covariate)</oldcol>
       <newcol>CF (Posttest)</newcol>
-      <keycol>Anon.Student.Id</keycol>
+      <keycol>Anon Student Id</keycol>
+      <addcol>Name</addcol>
     </options>
     <inputs>
     <input0>
@@ -189,7 +190,7 @@
       <errors/>
       <files>
       <tab-delimited>
-        <file_path>test/testdata/created file.txt</file_path>
+        <file_path>test/testdata/created_file.txt</file_path>
         <label>tab-delimited</label>
         <file_name>created file.txt</file_name>
         <index>1</index>

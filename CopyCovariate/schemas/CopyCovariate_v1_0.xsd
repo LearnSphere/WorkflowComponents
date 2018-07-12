@@ -1,5 +1,5 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ls="http://learnsphere.org/ls" >
+	
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
 
@@ -78,10 +78,10 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    <xs:element type="xs:string" name="oldcol" id="OldCol" default="Studentnumber"/>
-    <xs:element type="xs:string" name="newcol" id="NewCol" default="CF..Cor."/>
-    <xs:element type="xs:string" name="keycol" id="KeyCol" default="Anon.Student.Id"/>
-    <xs:element type="xs:string" name="addcol" id="AddCol" default="Name"/>     
+    <xs:element type="FileInputHeader" name="oldcol" id="OldCol" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*" />
+    <xs:element type="xs:string" name="newcol" id="NewCol" default="CF (Posttest)" />
+    <xs:element type="FileInputHeader" name="keycol" id="KeyCol" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
+    <xs:element type="FileInputHeader" name="addcol" id="AddCol" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*" />     
     </xs:choice>
   </xs:complexType>
   

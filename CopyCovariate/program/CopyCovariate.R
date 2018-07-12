@@ -17,20 +17,32 @@ KCmodelsub = "KC..Default."
 # parse commandline args
 i = 1
 while (i <= length(args)) {
+if (args[i] == "-node") {
+       if (length(args) < i+4) {
+          stop("input file name must be specified")
+       }
+       if (args[i+1] == "0") { # the first input node
+	       	nodeIndex <- args[i+1]
+		    fileIndex = NULL
+		    fileIndexParam <- args[i+2]
+		    if (fileIndexParam == "fileIndex") {
+		    	fileIndex <- args[i+3]
+		    }
 
-if (args[i] == "-file0") {
-       if (length(args) == i) {
-          stop("input file name must be specified")
-       }
-       inputFile0 = args[i+1]
-       i = i+1
-    }  else 
-if (args[i] == "-file1") {
-       if (length(args) == i) {
-          stop("input file name must be specified")
-       }
-       inputFile1 = args[i+1]
-       i = i+1
+		    inputFile0 = args[i+4]
+		    i = i+4
+		} else if (args[i+1] == "1") { # The second input node
+	       	fileIndex = NULL
+		    fileIndexParam <- args[i+2]
+		    if (fileIndexParam == "fileIndex") {
+		    	fileIndex <- args[i+3]
+		    }
+
+		    inputFile1 = args[i+4]
+		    i = i+4
+		} else {
+			i = i+1
+		}
     } else 
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
@@ -42,28 +54,28 @@ if (args[i] == "-workingDir") {
     } else 
 if (args[i] == "-oldcol") {
        if (length(args) == i) {
-          stop("workingDir name must be specified")
+          stop("oldcol name must be specified")
        }
        oldcol = args[i+1]
        i = i+1
     } else 
 if (args[i] == "-newcol") {
        if (length(args) == i) {
-          stop("workingDir name must be specified")
+          stop("newcol name must be specified")
        }
        newcol = args[i+1]
        i = i+1
     } else 
 if (args[i] == "-keycol") {
        if (length(args) == i) {
-          stop("workingDir name must be specified")
+          stop("keycol name must be specified")
        }
        keycol = args[i+1]
        i = i+1
     } else 
 if (args[i] == "-addcol") {
        if (length(args) == i) {
-          stop("workingDir name must be specified")
+          stop("addcol name must be specified")
        }
        addcol = args[i+1]
        i = i+1
@@ -108,6 +120,11 @@ datalocation<- paste(componentDirectory, "/program/", sep="")
 dat1<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 dat2<-read.table(inputFile1,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 
+newcol = gsub("[ ()-]", ".",newcol)
+oldcol = gsub("[ ()-]", ".",oldcol)
+addcol = gsub("[ ()-]", ".",addcol)
+keycol = gsub("[ ()-]", ".",keycol)
+
 eval(parse(text=paste("dat1$",newcol,"<-0")))
 
 for (i in levels(eval(parse(text=paste("dat1$",keycol))))){
@@ -118,7 +135,6 @@ eval(parse(text=paste(
 }
 
 outputFilePath<- paste(workingDirectory, "tab-delimited_file with covariate.txt", sep="")
-
 headers<-gsub("Unique[.]step","Unique-step",colnames(dat1))
 headers<-gsub("[.]1","",headers)
 headers<-gsub("[.]2","",headers)
