@@ -100,6 +100,9 @@ class Settings(object):
     def get_ta2_url(self):
         return self.cfg.get('TA2', 'ta2_url')
 
+    def get_ta2_name(self):
+        return "TA2"
+
     def get(self, sect, key):
         """
         Manually retrieve specific configuration from settings. Basically a wrapper around
@@ -141,3 +144,7 @@ class D3MSettings(Settings):
 
     def get_ta2_url(self):
         return self.d3m_cfg.get('TA2', 'ta2_url')
+    
+    def get_ta2_name(self):
+        return self.d3m_cfg.get('TA2', 'ta2_name')
+

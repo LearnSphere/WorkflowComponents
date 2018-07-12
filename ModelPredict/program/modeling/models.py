@@ -87,13 +87,20 @@ class Model(object):
     def to_protobuf(self):
         return json_format.Parse(self.model, pipeline_pb2.PipelineDescription())
 
-    def get_default_output(self):
+    def get_default_output(self, format=None):
         """
         Just returns the first output
 
         """
         logger.debug("Model outputs: %s" % str(self.model['outputs']))
-        return self.model['outputs'][0]['name']
+        if format == 'name':
+            return self.model['outputs'][0]['name']
+        elif format == 'data':
+            return self.model['outputs'][0]['data']
+        elif format == 'declare':
+            return "outputs.0"
+        else:
+            return "outputs.0"
 
     @staticmethod
     def from_json(data):

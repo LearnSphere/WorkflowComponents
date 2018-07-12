@@ -76,10 +76,16 @@ if __name__ == '__main__':
 
     # Init the server connection
     address = config.get_ta2_url()
+    name = config.get_ta2_name()
     
     # Crete the metric(s) to use in the score request
     logger.info("using server at address %s" % address)
-    serv = TA2Client(address)
+    if is_test:
+        serv = TA2Client(address, debug=True, out_dir=args.workingDir, 
+                name=name)
+    else:
+        serv = TA2Client(address, 
+                name=name)
    
     # Create the metric(s) to use in the score request
     metric = Metric(args.metric)
