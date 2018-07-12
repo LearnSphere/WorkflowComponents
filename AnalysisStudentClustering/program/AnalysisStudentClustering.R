@@ -9,12 +9,19 @@ args <- commandArgs(trailingOnly = TRUE)
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-  if (args[i] == "-file0") {
-    if (length(args) == i) {
+  if (args[i] == "-node") {
+    if (length(args) < i+4) {
       stop("input file name must be specified")
     }
-    inputFile = args[i+1]
-    i = i+1
+    nodeIndex <- args[i+1]
+    fileIndex = NULL
+    fileIndexParam <- args[i+2]
+    if (fileIndexParam == "fileIndex") {
+    	fileIndex <- args[i+3]
+    }
+
+    inputFile = args[i+4]
+    i = i+4
   }   else if (args[i] == "-student") {
     if (length(args) == i) {
       stop("student must be specified")
@@ -95,7 +102,6 @@ header4 = gsub("[ ()-]", ".", outcome)
 #This dataset has been cleaned beforehand
 #val<-read.table("data.txt",sep="\t", header=TRUE,quote="",comment.char = "")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
-
 val1<-val[,c(header1,header2,header3,header4)]
 
 
@@ -110,6 +116,7 @@ val1[,header4] <- as.numeric(val1[,header4])
 #selected the 4 feature needed for aggregation
 #dt1<-dt[,c(1,4,2,3)]
 dt1<-val1[,c(1,2,3,4)]
+dt1 <- mapply(dt1, FUN=as.numeric)
 
 #Put between line 112 and 114; before aggregation
 # The following is about the "Duration" column, which I am not sure what it is called in line 112
