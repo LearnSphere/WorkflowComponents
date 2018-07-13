@@ -15,19 +15,39 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
   <xs:complexType name="InputType">
-    <xs:choice>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" maxOccurs="10" />
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" maxOccurs="5" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" maxOccurs="5" />
     </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="xml" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="text" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
   <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
