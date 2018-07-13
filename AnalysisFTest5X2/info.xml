@@ -6,10 +6,10 @@
 </author>
 
 <abstract>The <b>F-Test 5x2</b> component computes an F-test for model result files formatted the same way as the outputs from AnalysisTKT componenent.</abstract>
-<description>Using the methods described in these papers:
+<details>Using the methods described in these papers:
 E. Alpaydm, Combined 5 x 2 cv F Test for Comparing Supervised Classification Learning Algorithms, Neural Computation, vol. 11, pp. 1885-1892, 1999.
 T.G. Dietterich, Approximate Statistical Tests for Comparing Supervised Classification Learning Algorithms, Neural Computation, vol. 10, pp. 1895-1923, 1998.
- </description>
+</details>
 
 <inputs>
 <b>XML model result files from TKT or other components</b>
