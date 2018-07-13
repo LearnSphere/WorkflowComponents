@@ -21,6 +21,7 @@
 		<AppendCF />
 		<Column_Remover />
 		<Convert_Multiskill />
+		<Copy_Covariate />
 		<Coursera_MOOCdb_Translator />
 		<Data_Conversion />
 		<Datastage_Aggregator />
@@ -28,6 +29,7 @@
 		<Discretize />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
+		<Import_XAPI />
 		<Join />
 		<Missing_Values />
 		<MOOCdb_Verifier />
@@ -40,6 +42,8 @@
 	<Analysis>
 	    <Recently_Used />
 		<AFM />
+		<AnalysisFTest5X2 />
+		<AnalysisStudentClustering />
 		<Apply_Detector />
 		<BKT />
 		<Correlation />
