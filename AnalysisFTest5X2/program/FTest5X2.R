@@ -88,6 +88,9 @@ options(width=300)
 #}
 
 
+
+print(measure)
+
 testfoldvals<-numeric(0)
 
 models<-length(files)
@@ -130,9 +133,10 @@ results[x,y]<-sign(sum(p1)+sum(p2))
 rownames(result)<-modnames
 colnames(result)<-modnames
 
-#print(round(result,3))
-#print(round(resultp,5))
-#print(results)}
+print(round(result,3))
+print(round(resultp,5))
+print(results)
+}
 
 
 write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html",sep=""))
