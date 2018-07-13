@@ -2,6 +2,9 @@
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
+  <xs:simpleType name="DiscourseDbSelector" >
+  <xs:restriction base="xs:string" />
+  </xs:simpleType>
 
   <xs:complexType name="InFileList"/>
 
@@ -32,9 +35,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-
       <xs:element type="DiscourseDbSelector" name="DiscourseDbSelector" id="DiscourseDbSelector" default="0" />
- 
     </xs:choice>
   </xs:complexType>
     

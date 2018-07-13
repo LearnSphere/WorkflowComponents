@@ -12,7 +12,6 @@
         </connection>
     </connections>
     <options>
-    <discourse_part>1491</discourse_part>
-    <authorized_email>nobody@nowhere.com</authorized_email>
+    <DiscourseDbSelector>{"startTime":null,"endTime":null,"id":7,"propName":"Xyz","propType":"query","propValue":"{\"database\":\"openfl\",\"rows\":{\"discourse_part\":[{\"dpid\":\"2\",\"name\":\"openfl/box2d\"}]}}"}</DiscourseDbSelector>
     </options>
 </component>
