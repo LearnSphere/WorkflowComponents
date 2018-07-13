@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
@@ -77,7 +77,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    	<xs:element type="FileInputHeader" name="text" id="Text_to_classify" default="text" />
+    	<xs:element type="FileInputHeader" name="text" id="Text_to_classify" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0" />
     	<xs:element type="xs:string" name="classificationColumnName" id="Classification_column_name" default="classification" />
     </xs:choice>
 
