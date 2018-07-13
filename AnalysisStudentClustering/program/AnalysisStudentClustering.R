@@ -109,7 +109,6 @@ val1[,header4] <- as.character(val1[,header4])
 val1<-val1[val1[,header4]=="CORRECT" | val1[,header4]=="INCORRECT",]
 val1[,header4][val1[,header4]=="CORRECT"] <-'1'
 val1[,header4][val1[,header4]=="INCORRECT"] <- '0'
-val1[,header4] <- as.numeric(val1[,header4])
 
 
 #dt<-read.csv('dataset1.csv')
