@@ -15,16 +15,22 @@ files<-vector()
 Models<-vector()
 index=1
 while (i <= length(args)) {
-  if (args[i] == "-file0" || args[i] == "-file1" || args[i] == "-file2" || args[i] == "-file3" || args[i] == "-file4" || args[i] == "-file5" || args[i] == "-file6" || args[i] == "-file7" || args[i] == "-file8" || args[i] == "-file9" || args[i] == "-file10" || args[i] == "-file11") {
-    if (length(args) == i) {
+  if (args[i] == "-node") {
+    if (length(args) < i+4) {
       stop("input file name must be specified")
     }
+    nodeIndex <- args[i+1]
+    fileIndex = NULL
+    fileIndexParam <- args[i+2]
+    if (fileIndexParam == "fileIndex") {
+    	fileIndex <- args[i+3]
+    }
 
-    inputFile = args[i+1]
+    inputFile = args[i+4]
     files<-c(files,inputFile)
     Models<-c(Models,paste("Model ",index))
     index = index + 1
-    i = i+1
+    i = i+4
 
   } else if (args[i] == "-measure") {
     if (length(args) == i) {
@@ -59,7 +65,7 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
   if (is.null(componentDirectory)) {
     warning("Missing required input parameter: -programDir")
   }
-  stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file  ")
+  stop("Usage: -programDir component_directory -workingDir output_directory -node 0 -fileIndex 0 input_file  ")
 }
 
 
@@ -81,8 +87,6 @@ options(width=300)
 #}
 #}
 
-
-print(measure)
 
 testfoldvals<-numeric(0)
 
@@ -126,9 +130,9 @@ results[x,y]<-sign(sum(p1)+sum(p2))
 rownames(result)<-modnames
 colnames(result)<-modnames
 
-print(round(result,3))
-print(round(resultp,5))
-print(results)}
+#print(round(result,3))
+#print(round(resultp,5))
+#print(results)}
 
 
 write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html",sep=""))

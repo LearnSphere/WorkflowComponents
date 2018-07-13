@@ -42,7 +42,7 @@
       <optionmeta />
     </input0>
 
-     <input1>
+     <input0>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
       <component_type>import</component_type>
@@ -60,9 +60,9 @@
       </files>
       <inputmeta />
       <optionmeta />
-    </input1>
+    </input0>
 
-    <input2>
+    <input0>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
       <component_type>import</component_type>
@@ -80,9 +80,9 @@
       </files>
       <inputmeta />
       <optionmeta />
-    </input2>
+    </input0>
 
-    <input3>
+    <input0>
       <component_id>Import-1-x995490</component_id>
       <component_id_human>Import #1</component_id_human>
       <component_type>import</component_type>
@@ -100,7 +100,7 @@
       </files>
       <inputmeta />
       <optionmeta />
-    </input3>
+    </input0>
 
   </inputs>
 

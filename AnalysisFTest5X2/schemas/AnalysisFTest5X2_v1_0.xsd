@@ -26,149 +26,18 @@
     </xs:complexContent>
   </xs:complexType>
 
-   <xs:complexType name="InputDefinition2">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList2" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition3">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList3" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-
-
-  <xs:complexType name="InputDefinition4">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList4" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition5">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList5" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-   <xs:complexType name="InputDefinition6">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList6" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition7">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList7" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition8">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList8" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition9">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList9" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-   <xs:complexType name="InputDefinition10">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList10" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="InputDefinition11">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="InFileList11" name="files" />
-              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:all>
-      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-      <xs:element name="input2" type="InputDefinition2" minOccurs="0" />
-      <xs:element name="input3" type="InputDefinition3" minOccurs="0" />
-      <xs:element name="input4" type="InputDefinition5" minOccurs="0" />
-      <xs:element name="input5" type="InputDefinition5" minOccurs="0" />
-      <xs:element name="input6" type="InputDefinition6" minOccurs="0" />
-      <xs:element name="input7" type="InputDefinition7" minOccurs="0" />
-      <xs:element name="input8" type="InputDefinition8" minOccurs="0" />
-      <xs:element name="input9" type="InputDefinition9" minOccurs="0" />
-      <xs:element name="input10" type="InputDefinition10" minOccurs="0" />
-      <xs:element name="input11" type="InputDefinition11" minOccurs="0" />
-    </xs:all>
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" maxOccurs="5" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" maxOccurs="5" />
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input2" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input3" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input4" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input5" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input6" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input7" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input8" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input9" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input10" type="xs:string" default="text" minOccurs="0" />
-      <xs:element name="input11" type="xs:string" default="text" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -179,66 +48,6 @@
   </xs:complexType>
 
   <xs:complexType name="InFileList1">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-   <xs:complexType name="InFileList2">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList3">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
- <xs:complexType name="InFileList4">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList5">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-   <xs:complexType name="InFileList6">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList7">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-   <xs:complexType name="InFileList8">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList9">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-   <xs:complexType name="InFileList10">
-    <xs:choice>
-      <xs:element ref="file"  minOccurs="0" />
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="InFileList11">
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
