@@ -2,8 +2,6 @@ echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 
-
-
 suppressMessages(library(stats))
 suppressMessages(library(XML))
 suppressMessages(library(htmlTable))
@@ -18,12 +16,6 @@ while (i <= length(args)) {
   if (args[i] == "-node") {
     if (length(args) < i+4) {
       stop("input file name must be specified")
-    }
-    nodeIndex <- args[i+1]
-    fileIndex = NULL
-    fileIndexParam <- args[i+2]
-    if (fileIndexParam == "fileIndex") {
-    	fileIndex <- args[i+3]
     }
 
     inputFile = args[i+4]
@@ -68,31 +60,15 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
   stop("Usage: -programDir component_directory -workingDir output_directory -node 0 -fileIndex 0 input_file  ")
 }
 
-
 # Creates output log file
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=300)
 
-
-#files<-vector()
-#Models<-vector()
-#index=1
-#for (i in 8:length(args) ) {
-#if(i%%2==0){
-#files<-c(files,args[i])
-#Models<-c(Models,paste("Model ",index))
-#index = index + 1
-#}
-#}
-
-
-
 print(measure)
 
 testfoldvals<-numeric(0)
-
 models<-length(files)
 coln<-c(measure)
 for (v in coln){

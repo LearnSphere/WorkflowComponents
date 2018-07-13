@@ -72,7 +72,7 @@
       <files>
         <student-step>
           <index>2</index>
-          <file_path>test/test_data/model_result_values1.xml</file_path>
+          <file_path>test/test_data/model_result_values2.xml</file_path>
           <label>text</label>
           <file_name>model_result_values1.xml</file_name>
 
@@ -82,25 +82,7 @@
       <optionmeta />
     </input0>
 
-    <input0>
-      <component_id>Import-1-x995490</component_id>
-      <component_id_human>Import #1</component_id_human>
-      <component_type>import</component_type>
-      <component_name>Student Step</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
-      <errors />
-      <files>
-        <student-step>
-          <index>3</index>
-          <file_path>test/test_data/model_result_values1.xml</file_path>
-          <label>text</label>
-          <file_name>model_result_values1.xml</file_name>
 
-        </student-step>
-      </files>
-      <inputmeta />
-      <optionmeta />
-    </input0>
 
   </inputs>
 
