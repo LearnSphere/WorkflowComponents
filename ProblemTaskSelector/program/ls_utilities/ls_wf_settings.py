@@ -111,6 +111,9 @@ class Settings(object):
         """
         return self.cfg.get(sect, key)
 
+    def get_mode(self):
+        return "normal"
+
 
 class D3MSettings(Settings):
 
@@ -147,4 +150,6 @@ class D3MSettings(Settings):
     
     def get_ta2_name(self):
         return self.d3m_cfg.get('TA2', 'ta2_name')
-
+    
+    def get_mode(self):
+        return 'D3M'

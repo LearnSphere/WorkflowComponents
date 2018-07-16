@@ -11,7 +11,7 @@ import json
 import pprint
 # from datetime import datetime
 
-from google.protobuf import json_format
+from google.protobuf.json_format import MessageToJson
 
 from .ls_problem import ProblemDesc, Input, Target
 from .api_v3 import problem_pb2, problem_pb2_grpc
@@ -61,6 +61,20 @@ class GRPCProblemDesc(ProblemDesc):
         
         return msg
 
+    def to_file(self, fpath):
+        msg = self.to_protobuf()
+        out_data = MessageToJson(msg) 
+        if isinstance(fpath, str):
+            with open(fpath, 'w') as out_file:
+                out_file.write(out_data)
+        elif isinstance(fpath, IOBase):
+            fpath.write(out_data)
+        else:
+            raise Exception("Invalid file/path given to write to file. Given \
+                            input type: %s" % type(fpath))
+
+    
+    @staticmethod
     def from_problem_desc(prob):
         logger.info("Initializing Default problem desc from problem description class")
                               

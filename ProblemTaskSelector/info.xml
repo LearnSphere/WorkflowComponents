@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemTaskSelector</url>
-<date>July 12, 2018</date>
+<date>July 16, 2018</date>
 <abstract>The <b>ProblemTaskSelector</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to select a problem task for the model search to perform</description>
 

@@ -86,7 +86,8 @@ class TA2Client(object):
             self.write_msg_to_file(reply, 'hello_response.json')
         return reply
 
-    def search_solutions(self, prob, dataset, inputs=None, pipeline=None, max_time=0, priority=0):
+    def search_solutions(self, prob, dataset, inputs=None, pipeline=None, max_time=0, priority=0,
+            get_request=False):
         """
         Initiate a solution search request
 
@@ -135,6 +136,7 @@ class TA2Client(object):
 
         if self.debug:
             self.write_msg_to_file(msg, 'search_request.json')
+
         logger.debug("Sending Search Solution request: %s" % str(msg))
         reply = self.serv.SearchSolutions(msg)
         if self.debug:
@@ -142,7 +144,10 @@ class TA2Client(object):
 
         # Queue the msg for tracking
         self.search_solution_requests[reply.search_id] = msg
-        return reply.search_id
+        if get_request:
+            return reply.search_id, msg
+        else:
+            return reply.search_id
 
     def get_search_solutions_results(self, sid):
         logger.info("Geting Search Solution request results for search id: %s" % sid)
