@@ -22,7 +22,7 @@
   
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="XML-file" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="file" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -45,7 +45,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited" />
+      <xs:element ref="file" />
     </xs:choice>
   </xs:complexType>
   

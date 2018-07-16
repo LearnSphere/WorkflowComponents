@@ -87,4 +87,11 @@ public class RowRemoverMain extends AbstractComponent {
             System.out.println(this.getOutput());
     }
 
+    @Override
+    protected void processOptions() {
+        logger.info("Processing Options");
+
+        this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
+    }
+
 }

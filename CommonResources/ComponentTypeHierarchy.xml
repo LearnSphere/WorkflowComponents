@@ -1,0 +1,71 @@
+<component_menu>
+    <Import />
+	<Import>
+	    <Recently_Used />
+		<File />
+		<CSV />
+		<Tab-Delimited />
+		<Discourse_DB />
+		<DataLab>
+			<Gradebook />
+	    </DataLab>
+		<DataShop>
+			<Student-Step />
+			<Transaction />
+		</DataShop>
+	</Import>
+	<Transform>
+		<Recently_Used />
+		<Anonymize />
+		<Anonymize_Standalone />
+		<AppendCF />
+		<Column_Remover />
+		<Convert_Multiskill />
+		<Coursera_MOOCdb_Translator />
+		<Data_Conversion />
+		<Datastage_Aggregator />
+		<Deidentify />
+		<Discretize />
+		<Generate_PFA_Features />
+		<Generate_TKT_Features />
+		<Join />
+		<Missing_Values />
+		<MOOCdb_Verifier />
+		<MOOCdb_Feature_Extractor />
+		<Pivot />
+		<Row_Operations />
+		<Row_Remover />
+		<Text_Converter />
+	</Transform>
+	<Analysis>
+	    <Recently_Used />
+		<AFM />
+		<Apply_Detector />
+		<BKT />
+		<Correlation />
+		<Cronbachs_Alpha />
+		<iAFM />
+		<Linear_Modeling />
+		<LSA />
+		<OLI_Resource_Use />
+		<Output_Comparator />
+		<PFA />
+		<Python_AFM />
+		<RLM_Fitting />
+		<TKT />
+	</Analysis>
+	<Visualization>
+	    <Recently_Used />
+		<D3_Force_Layout />
+		<Learning_Curves />
+	</Visualization>
+	<Tetrad>
+	    <Recently_Used />
+		<Classifier />
+	    <Estimator />
+		<Knowledge />
+		<Regression />
+		<Search />
+		<Tetrad_Graph_Editor />
+	</Tetrad>
+</component_menu>

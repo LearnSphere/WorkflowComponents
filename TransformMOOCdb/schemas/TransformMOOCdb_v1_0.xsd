@@ -27,7 +27,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="file" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="MOOCdb" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 

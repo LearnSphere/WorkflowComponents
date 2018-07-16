@@ -1,0 +1,24 @@
+<component>
+  <component_id>Analysis-1-x647923</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <component_name>Import</component_name>
+  <component_type>analysis</component_type>
+  <workflow_id>146</workflow_id>
+  <left>66</left>
+  <connections />
+  <options>
+    <files>
+      <student-step>
+        <index>0</index>
+        <file_path>test/test_data/ds96_student_step_All_Data_203_2015_0729_185914.txt</file_path>
+        <label>student-step</label>
+        <file_name>ds96_student_step_All_Data_203_2015_0729_185914.txt</file_name>
+        <metadata>
+          <header />
+        </metadata>
+      </student-step>
+    </files>
+    <Import>{"fileName":"ds96_student_step_All_Data_203_2015_0729_185914.txt","importFileNameTitle":"File: ds96_student_step_All_Data_203_2015_0729_185914.txt","fileType":"student-step","datasetListSelection":"2673","uploadLocation":"importFile","showPotentialMatches":false,"searchDatasetsString":""}</Import>
+  </options>
+  <top>211</top>
+</component>

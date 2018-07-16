@@ -72,8 +72,8 @@ if __name__ == "__main__":
     parser.add_argument('-workingDir', type=str,
                        help='the component instance working directory')
 
-    parser.add_argument('-file0', type=argparse.FileType('r'),
-                        help="the student data file in datashop format")
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
 
     parser.add_argument('-ft', choices=["student_step", "transaction"],
                        help='the file type (default="student_step")',
@@ -95,13 +95,15 @@ if __name__ == "__main__":
     parser.add_argument('-report',choices=['all','cv','kcs','kcs+stu'],default='all',
                         help='model values to report after fitting (default=all).')
 
-    args = parser.parse_args()
-    print(args)
+    args, option_file_index_args = parser.parse_known_args()
+    # print(args)
+    for x in range(len(args.node)):
+        if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
+            ssr_file = open(args.fileIndex[x][1], 'r')
+
     if args.ft == "transaction":
-        ssr_file = transaction_to_student_step(args.file0)
+        ssr_file = transaction_to_student_step(ssr_file)
         ssr_file = open(ssr_file,'r')
-    else:
-        ssr_file = args.file0
 
     kcs, opps, y, stu, student_label, item_label = plot_datashop_student_step(ssr_file)
 

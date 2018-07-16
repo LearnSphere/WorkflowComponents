@@ -17,9 +17,9 @@ var studentId_index; var sessionId_index; var transactionId_index; var toolTime_
 var studentId; var sessionId; var dateTime; var transactionId;var actor;var toolTime;var tutorTime;var problemName; var stepName;var selection;var action;var input;var outcome;var tutorSelection; var tutorAction;var helpLevel;var totalNumHints;
 var currSkills;
 var t;
-var BKTparams = {p_transit: 0.2, 
-				p_slip: 0.1, 
-				p_guess: 0.2, 
+var BKTparams = {p_transit: 0.2,
+				p_slip: 0.1,
+				p_guess: 0.2,
 				p_know: 0.25};
 var BKThistory = {};
 var pastSteps = {};var pastStudentProblems = new Set();var pastStudents = new Set();
@@ -78,7 +78,7 @@ function simulateNewProblem(){
 function simulateNewStudent(){
 	for (k in activeDetectors){
 		activeDetectors[k].postMessage({ command: "offlineNewStudent", studentId: 	studentId});
-	}	
+	}
 	//also clear BKT pastSteps
 	pastSteps = {};
 	BKThistory = {};
@@ -90,8 +90,8 @@ function constructTransaction(e){
 	//construct JSON message and return JSON
 
 	var template = {
-		actor: actor, 
-		transaction_id: transactionId, 
+		actor: actor,
+		transaction_id: transactionId,
 		context: {
 			class_description: "",
 			class_instructor_name: "",
@@ -109,19 +109,19 @@ function constructTransaction(e){
 			problem_tutorFlag: "",
 			study_condition_name1: "",
 			study_condition_type1: ""
-	 	}, 
+	 	},
 		meta: {
 			date_time: dateTime,
 			session_id: sessionId,
 			user_guid: studentId
-		}, 
-		semantic_event: "", 
+		},
+		semantic_event: "",
 		tool_data: {
 			selection: selection,
 			action: action,
 			input: input,
 			tool_event_time: toolTime
-		}, 
+		},
 		tutor_data: {
 			selection: tutorSelection,
 			action: tutorAction,
@@ -133,13 +133,13 @@ function constructTransaction(e){
 			tutor_event_time: tutorTime
 		}
 	}
-	
+
 	return template
 }
 
 function getRowVariables(thisrow){
 	//initialize all relevant indices
-	
+
 	if(i==0){
 		currSkills_indices = getAllIndices(thisrow, KC_model);
 		studentId_index = thisrow.indexOf("Anon Student Id");
@@ -215,7 +215,7 @@ function update_BKT(t){
 			else{
 				var p_know_given_obs = (p_know_tminus1*p_slip)/( (p_know_tminus1*p_slip) + ((1-p_know_tminus1)*(1-p_guess)) );
 			}
-			
+
 			BKThistory[skill]["p_know"] = p_know_given_obs + (1 - p_know_given_obs)*p_transit;
 
 			//following TutorShop, round down to two decimal places
@@ -252,7 +252,7 @@ function simulateDataStream(e, parser){
 
 	if (i!=0){
 
-		//for this row, if student performed, 
+		//for this row, if student performed,
 		// construct a JSON transaction...
 		if (!(pastStudents.has(studentId))) {
 			simulateNewStudent();
@@ -284,7 +284,7 @@ function simulateDataStream(e, parser){
 			activeDetectors[k].postMessage({ command: "offlineMode", message: t });
 		}
 
-		//each time a response is received from a detector, 
+		//each time a response is received from a detector,
 	 	//write it to output file
 		//including the timestamp!
 		//
@@ -294,7 +294,7 @@ function simulateDataStream(e, parser){
 
 	i++
 
-	
+
 }
 
 
@@ -310,11 +310,27 @@ function simulateDataStream(e, parser){
 //Get command line arguments
 programDir = process.argv[process.argv.indexOf("-programDir") + 1];
 workingDir = process.argv[process.argv.indexOf("-workingDir") + 1];
-file0 = process.argv[process.argv.indexOf("-file0") + 1];
+
+'use strict';
+file0 = null;
 file1 = null;
-if (process.argv.indexOf("-file1") >= 0) {
-	file1 = process.argv[process.argv.indexOf("-file1") + 1];
+for (let j = 0; j < process.argv.length; j++) {
+	if (process.argv[j] == "-node" ) {
+		if (process.argv[j + 1] == "0") { 
+			file0 = process.argv[j + 4];
+		} else if (process.argv[j + 1] == "1") {
+			file1 = process.argv[j + 4];
+		}
+		j = j + 4;	
+	}
 }
+
+
+//file0 = process.argv[process.argv.indexOf("-file0") + 1];
+//file1 = null;
+//if (process.argv.indexOf("-file1") >= 0) {
+//	file1 = process.argv[process.argv.indexOf("-file1") + 1];
+//}
 
 //check if user wanted to use a detector that was in the list of pre-screened detectors
 useDetectorInputInd = process.argv.indexOf("-useDetectorInput");
@@ -386,7 +402,7 @@ for(var m = 0; m < detector_list.length; ++m)
 
 	activeDetectors.push(detector);
 
-	//console.log("created: active["+m+"]=", s, 
+	//console.log("created: active["+m+"]=", s,
 	//	activeDetectors[m]);
     }
 
@@ -407,7 +423,7 @@ function runSimulation(){
 	index = 0;
 	function slowGiveData() {
 		setTimeout(function() {
-			if (index == data.length) { 
+			if (index == data.length) {
 				console.log("No more messages to send");
 				sendTerminationCommand();return;
 			}
@@ -421,14 +437,17 @@ function runSimulation(){
 
 runSimulation();
 
-/* 
+/*
 	Tell the detectors that no more messages will be sent
 */
 function sendTerminationCommand() {
-	setTimeout(function(){ 
+	setTimeout(function(){
 		for (k in activeDetectors){
 			activeDetectors[k].postMessage({ command: "endOfOfflineMessages"});
-			//activeDetectors[k].terminate();
+			
+			setTimeout(function() {
+				activeDetectors[k].terminate();
+			},5000);
 		}
 		//activeDetectors = null;
 	},500);
@@ -445,7 +464,7 @@ function userScriptSecure(detectorPath) {
 //End new wf component stuff
 
 
-function downloadCSV(args) {  
+function downloadCSV(args) {
         // var data, filename, link;
         // var csv = outputStr;
         // if (csv == null) return;
@@ -474,8 +493,8 @@ function downloadCSV(args) {
 		    var link = document.createElement('a');
 		    link.href = window.URL.createObjectURL(csvData);
 		    link.setAttribute('download', exportFilename);
-		    document.body.appendChild(link);    
+		    document.body.appendChild(link);
 		    link.click();
-		    document.body.removeChild(link);    
+		    document.body.removeChild(link);
 		}
     }
