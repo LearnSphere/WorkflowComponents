@@ -115,7 +115,10 @@ print(results)
 }
 
 
-write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html",sep=""))
+write("<!DOCTYPE html>",file="test.html",append=FALSE)
+write("<html>",file="test.html",append=TRUE)
+write(htmlTable(cbind(Models,txtRound(result,1))),paste(workingDirectory , "test.html",sep=""), append=TRUE)
+write("</html>",file="test.html",append=TRUE)
 
 
 # Stop logging
