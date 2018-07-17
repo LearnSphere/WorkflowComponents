@@ -61,7 +61,7 @@ class GRPCProblemDesc(ProblemDesc):
         
         return msg
 
-    def to_file(self, fpath):
+    def grpc_to_file(self, fpath):
         msg = self.to_protobuf()
         out_data = MessageToJson(msg) 
         if isinstance(fpath, str):
@@ -77,6 +77,7 @@ class GRPCProblemDesc(ProblemDesc):
     @staticmethod
     def from_problem_desc(prob):
         logger.info("Initializing Default problem desc from problem description class")
+        logger.debug("Problem description to translate to GRPC Prob Desc: %s" % str(prob.to_dict()))
                               
         out = GRPCProblemDesc(
             name=prob.name,
@@ -88,6 +89,7 @@ class GRPCProblemDesc(ProblemDesc):
             metadata = prob.metadata
         )
         out.inputs = prob.inputs
+        logger.debug("GRPC Problem description: %s" % str(MessageToJson(out.to_protobuf())))
         return out
 
     @staticmethod
@@ -213,7 +215,6 @@ class DefaultProblemDesc(ProblemDesc):
             name=data['about']['problemName'],
             version=data['about']['problemVersion'],
             desc = data['about']['problemDescription'],
-            task_type = data['about']['taskType'],
             subtype = data['about']['taskSubType'],
             metrics = [metric['metric']
                        for metric in data['inputs']['performanceMetrics']],
@@ -224,6 +225,7 @@ class DefaultProblemDesc(ProblemDesc):
                             # 'original_json': data
                        }
         )
+        out.add_task_type(data['about']['taskType'])
         if 'problemSchemaVersion' in data['about'].keys():
             out.metadata['schema_version'] = data['about']['problemSchemaVersion']
         if 'dataSplits' in data['inputs'].keys():

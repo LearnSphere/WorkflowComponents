@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatasetImporter</url>
-<date>July 16, 2018</date>
+<date>July 17, 2018</date>
 <abstract>The <b>DatasetImporter</b> component is an example of a(n) Python component.</abstract>
 <description>Allow the selection of a dataset/database location to browse for available datasets</description>
 

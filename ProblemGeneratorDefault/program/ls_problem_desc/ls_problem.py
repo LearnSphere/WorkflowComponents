@@ -105,7 +105,9 @@ class ProblemDesc(object):
         for char in self.__ignore_chars__:
             t = t.replace(char, "")
         # Get index of matching type
+        logger.debug("Looking for match of tyoe: %s" % t)
         i = self.get_task_types().index(t)
+        logger.debug("got matching type: %s" % self.__task_types__[i])
         self.task_type = self.__task_types__[i]
 
     def add_metric(self, metric):
@@ -127,6 +129,7 @@ class ProblemDesc(object):
         for i,t in enumerate(tasks):
             for char in ProblemDesc.__ignore_chars__:
                 tasks[i] = t.replace(char, "")
+        logger.debug("Got problem task types: %s" % str(tasks))
         return tasks    
 
     def get_valid_tasks(self):
