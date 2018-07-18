@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationLearningCurves</url>
+<abstract>
+A learning curve visualizes changes in student performance over time. The line graph displays opportunities across the x-axis, and a measure of student performance along the y-axis. A good learning curve reveals improvement in student performance as opportunity count (i.e., practice with a given knowledge component) increases.
+</abstract>
+<description></description>
+
+<inputs>
+One or more <b>Student-Step</b> files.
+</inputs>
+
+<outputs>
+One or more image (.png) files, depicting the requested learning curve(s).
+</outputs>
+
+<options>
+<b>Model: </b>the Knowledge Component (KC) model to plot<br/>
+<b>Secondary model(s): </b>one or more secondary KCs to include on graph<br/>
+<b>View secondary: </b>flag indicating whether or not to display secondary model curves<br/>
+<b>Learning curve type: </b>
+  <ul>
+    <li>Knowledge Components,</li>
+    <li>Students, or</li>
+    <li>All Student KCs</li>
+  </ul>
+<b>Standard deviation cut-off: </b>The number of standard deviations above and below the mean for which to include data points.<br/>
+<b>Max opportunities: </b>A maximum number of opportunities a student must have had with a KC for the student-KC pair to be included in the data.<br/>
+<b>Error bar type: </b>
+  <ul>
+    <li>No Error Bars, </li>
+    <li>Standard Deviation, or</li>
+    <li>Standard Error</li>
+  </ul>
+<b>Learning curve metric: </b>
+  <ul>
+    <li>Error Rate,</li>
+    <li>Assistance Score,</li>
+    <li>Number of Incorrects,</li>
+    <li>Number of Hints,</li>
+    <li>Step Duration,</li>
+    <li>Correct Step Duration, or</li>
+    <li>Error Step Duration</li>
+  </ul>
+<b>High-stakes CF name: </b>this is the name of a custom field that indicates if a step is high-stakes.
+</options>
+
+</info>
