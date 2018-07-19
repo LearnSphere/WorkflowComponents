@@ -6,23 +6,23 @@
 </author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/CopyCovariate</url>
 <date>2018-01-31</date>
-<abstract>CopyCovariate performs a features addition process over a tab-delimited datafile. This component can effectively pass new produced features into the source datafile</abstract>
-<details>This compoment can pass the feature (Studentnumber) to the source datafile following each student' name autimatically. So the new output datafile is added with one more column that include the new feature. Email the author directly with bug reports for this component.</details>
+<abstract>CopyCovariate performs a features addition process over a tab-delimited datafile. This component can effectively add new produced features into the previous datafile</abstract>
+<details>This compoment can pass new feature (CF..Corvariate.) to the previous datafile following each Anon Student Id automatically. So the output datafile is added with one more column (new feature). Email the author directly with bug reports for this component.</details>
 
 <inputs>
 <b>A tab-delimited file</b>  <br/>
-<b>A file with specific Studentnumber and Name.</b> <br/>
+<b>A file with specific Name and CF..Corvariate..</b> <br/>
 </inputs>
 
 <outputs>
-<b>A Tab-delimited file with added features </b>
+<b>A Tab-delimited file with added new feature </b>
 </outputs>
 
 <options>
-<b>Studentnumber</b> <br/>
-<b>CF..Cor.</b> <br/>
-<b>Anon.Student.Id</b> <br/>
-<b>Name</b>
+<b>OldCol: CF..Corvariate.</b> <br/>
+<b>NewCol: CF (Posttest)</b> - You may name the added feature column as you want<br/>
+<b>KeyCol: Anon.Student.Id</b> <br/>
+<b>AddCol: Name</b> - Other name like Anon.Student.Id can also be used.
 </options>
 </info>
 
