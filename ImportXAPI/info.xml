@@ -19,8 +19,8 @@
 <b>xAPI_TabDelimited_file.txt</b>-Present all columns for statistical models <br/>
 </outputs>
 <Options>
-    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil,Custome<br/>
-    <b>Url</b>-the url of learning locker account<br/>
+    <b>Filter</b>- filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil,Custome<br/>
+    <b>Url</b>- the url of learning locker account<br/>
     <b>Username</b>- the usernmae of learning locker account<br/>
     <b>Password</b>- the password of learning locker account<br/>
     <b>FilterValue</b>- the correspodning id following Filter criterion<br/>
