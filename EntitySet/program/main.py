@@ -42,3 +42,5 @@ if __name__ == "__main__":
     shutil.make_archive('output', 'zip', dir_name)
     shutil.rmtree(dir_name)
 
+    # Close the file
+    inFile.close()
