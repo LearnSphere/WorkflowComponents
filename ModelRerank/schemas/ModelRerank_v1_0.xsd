@@ -47,6 +47,7 @@
   </xs:complexType>
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element default=".*" id="Model_ID" name="model_id" type="FileInputHeader"/>
       <xs:element default="1" id="New_rank" name="new_rank" type="xs:integer"/>
     </xs:choice>
   </xs:complexType>

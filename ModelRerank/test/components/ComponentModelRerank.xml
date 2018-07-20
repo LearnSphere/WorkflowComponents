@@ -33,6 +33,7 @@
 </inputs>
 
 <options>
+<model_id>.*</model_id>
 <new_rank>1</new_rank>
 </options>
 

@@ -9,6 +9,8 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
  */
 public class ModelRerankMain extends AbstractComponent {
 
+	/** Component option (model_id). */
+	String model_id = null;
 	/** Component option (new_rank). */
 	String new_rank = null;
 
@@ -48,6 +50,9 @@ public class ModelRerankMain extends AbstractComponent {
     @Override
     protected void parseOptions() {
 
+	if(this.getOptionAsString("model_id") != null) {
+		model_id = this.getOptionAsString("model_id");
+	}
 	if(this.getOptionAsString("new_rank") != null) {
 		new_rank = this.getOptionAsString("new_rank");
 	}

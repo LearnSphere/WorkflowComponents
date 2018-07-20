@@ -18,6 +18,7 @@
 </outputs>
 
 <options>
+<b>model_id -- type FileInputHeader</b>
 <b>new_rank -- type xs:integer</b>
 </options>
 
