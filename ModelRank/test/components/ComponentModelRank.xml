@@ -50,6 +50,7 @@
 </inputs>
 
 <options>
+<metric>ACCURACY</metric>
 <ordering>Higher_is_Better</ordering>
 </options>
 

@@ -9,6 +9,8 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
  */
 public class ModelRankMain extends AbstractComponent {
 
+	/** Component option (metric). */
+	String metric = null;
 	/** Component option (ordering). */
 	String ordering = null;
 
@@ -48,6 +50,9 @@ public class ModelRankMain extends AbstractComponent {
     @Override
     protected void parseOptions() {
 
+	if(this.getOptionAsString("metric") != null) {
+		metric = this.getOptionAsString("metric");
+	}
 	if(this.getOptionAsString("ordering") != null) {
 		ordering = this.getOptionAsString("ordering");
 	}
