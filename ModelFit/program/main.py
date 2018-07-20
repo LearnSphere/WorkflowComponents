@@ -89,23 +89,23 @@ if __name__ == '__main__':
     
     # Get fitted solution
     fit_req_ids = {}
-    fitted_models = {}
+    #fitted_models = {}
     fitted_results = {}
     for mid, model in models.items():
         logger.debug("Fitting model: %s" % str(model))
         fit_req_ids[mid] = serv.fit_solution(model, ds)
     for mid, rid in fit_req_ids.items():
         logger.debug("Model id: %s\tfit model request id: %s" % (mid, rid))
-        fitted_models[mid], fitted_results[mid] = serv.get_fit_solution_results(rid)
+        models[mid].fitted_id, fitted_results[mid] = serv.get_fit_solution_results(rid)
 
-    for mid in fitted_models:
+    for mid in models:
         logger.debug("Got fitted model with model id: %s" % mid)
-        logger.debug("Model:\t%s" % str(fitted_models[mid]))
+        logger.debug("Model: %s\tFitted Model: %s" % (mid, models[mid].fitted_id))
     
     # # Write model fit id info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'out_file'))
 
-    FittedModelSetIO.to_file(out_file_path, fitted_models, models, m_index)
+    FittedModelSetIO.to_file(out_file_path, models, m_index)
     # row2 = [] # Model id
     # row3 = [] # Fitted Model id
     # row4 = [] # Model json

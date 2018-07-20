@@ -13,7 +13,7 @@ from google.protobuf import json_format
 from protobuf_to_dict import protobuf_to_dict
 
 from d3m_ta2.api_v3 import core_pb2, pipeline_pb2, problem_pb2, value_pb2
-from .scores import Metric
+# from .scores import Metric
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +73,7 @@ class Model(object):
 
     def __init__(self, mid, name=None, desc=None, model=None):
         self.id = mid
+        self.fitted_id = None
         self.name = name
         self.desc = desc
         self.model = model
@@ -125,6 +126,11 @@ class Model(object):
         out.name = d['name']
         out.desc = d['description']
         out.add_description(d['model'])
+        if 'fitted_id' in d.keys():
+            logger.debug("Found fitted id in model json")
+            out.fitted_id = d['fitted_id']
+        else:
+            logger.debug("Did not find fitted id in model json")
         logger.debug("Got pipeline parsed: %s" % str(out))
         return out
 
@@ -139,15 +145,16 @@ class Model(object):
         return fpath
 
     def to_dict(self):
-        return {
+        out = {
             'id': self.id,
             'name': self.name,
             'description': self.desc,
             'model': self.model
         }
+        if self.fitted_id is not None:
+            out['fitted_id'] = self.fitted_id
+        return out
     
-    # def from_dict(self, data):
-        
 
     def __str__(self):
         return str(self.to_dict())

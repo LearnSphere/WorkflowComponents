@@ -93,10 +93,11 @@ if __name__ == '__main__':
         score_set = scores[sid]
         logger.debug("Adding score data for model with id: %s" % score_set.mid)
         for score in score_set.scores:
+            metric_val = list(score.value.value.values())[0]
             logger.debug("appending score for metric: %s\tvalue: %s" % 
-                    (score.metric.type, score.value.value))
-            logger.debug("Score value tyep: %s" % type(score.value.value))
-            score_data[score.metric.type].append(score.value.value)
+                    (score.metric.type, metric_val))
+            logger.debug("Score value tyep: %s" % type(metric_val))
+            score_data[score.metric.type].append(metric_val)
             
     data = pd.DataFrame(score_data)
     logger.debug("Converted Score data to dataframe: %s" % str(data.head(20)))

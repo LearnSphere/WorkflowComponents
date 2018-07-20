@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatasetSelector</url>
-<date>July 17, 2018</date>
+<date>July 20, 2018</date>
 <abstract>The <b>DatasetSelector</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to select a dataset from a dataset repository</description>
 
