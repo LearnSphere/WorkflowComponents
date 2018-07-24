@@ -126,9 +126,8 @@ public class AFMMain extends AbstractComponent {
     @Override
     protected void runComponent() {
 
-        if (modelName == null) {
+        if ((modelName == null) || (modelName.trim().equals(""))) {
             // Nothing we can do... failed to get/determine modelName;
-            this.addErrorMessage("Unable to determine the model name.");
             System.err.println("Unable to determine the model name.");
             return;
         }
