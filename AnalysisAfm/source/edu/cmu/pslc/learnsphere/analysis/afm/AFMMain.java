@@ -43,6 +43,9 @@ public class AFMMain extends AbstractComponent {
         see http://docs.oracle.com/javase/7/docs/api/java/lang/String.html. */
     private static final Integer PATTERN_NO_LIMIT = -1;
 
+    /** Default value for 'model' in schema. */
+    private static final String DEFAULT_MODEL = "\\s*KC\\s*\\((.*)\\)\\s*";
+
     /** Decimal format used for predicted error rates. */
     private DecimalFormat decimalFormat;
 
@@ -108,6 +111,11 @@ public class AFMMain extends AbstractComponent {
 
         if (this.getOptionAsString("model") != null) {
             modelName = this.getOptionAsString("model").replaceAll("(?i)\\s*KC\\s*\\((.*)\\)\\s*", "$1");
+            if (modelName.equals(DEFAULT_MODEL)) {
+                // This will happen when component has no input or we've failed to parse input headers.
+                logger.info("modelName not specified: " + DEFAULT_MODEL);
+                modelName = null;
+            }
         }
     }
 
@@ -117,6 +125,13 @@ public class AFMMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
+
+        if (modelName == null) {
+            // Nothing we can do... failed to get/determine modelName;
+            this.addErrorMessage("Unable to determine the model name.");
+            System.err.println("Unable to determine the model name.");
+            return;
+        }
 
         File predictedErrorRateFile = this.createFile("Step-values-with-predictions", ".txt");
         File modelValuesFile = this.createFile("KC-model-values", ".xml");
