@@ -61,11 +61,13 @@
     </xs:choice>
   </xs:complexType>
 
-
-
   <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    <xs:element type="xs:string" name="aggPrimitives" id="agg_primitives" default="Sum,Mean,Percent_True"/>
+    <xs:element type="xs:string" name="transPrimitives" id="trans_primitives" default="Hour"/>
+    <xs:element type="xs:integer" name="maxDepth" id="max_depth" default="2"/>
+    </xs:choice>
   </xs:complexType>
-
 
   <xs:element name="component">
     <xs:complexType>
