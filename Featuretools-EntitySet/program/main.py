@@ -1,6 +1,7 @@
 """
 This file executes Database Feature Generation
 """
+import os
 import argparse
 import sys
 import shutil
@@ -53,6 +54,9 @@ if __name__ == "__main__":
     if not maxDepth:
         sys.exit("Missing required argument: maxDepth")
     maxDepth = int(maxDepth)
+
+    # Assign WorkingDir to Feature Tools
+    os.environ['FEATURETOOLS_DIR'] = workingDir
 
     # Unzip and Unpickle Input
     dir_name = workingDir + "output.pkl"
