@@ -9,25 +9,40 @@ from collections import defaultdict
 
 parser = argparse.ArgumentParser(description='Count occurences of something in a tab-separated file')
 
-parser.add_argument('-programDir', default = ".")
-parser.add_argument('-workingDir', default = ".")
-parser.add_argument('-userId', default = "")
+parser.add_argument('-programDir', type=str,
+           help='the component program directory')
+
+parser.add_argument('-workingDir', type=str,
+           help='the component instance working directory')
+
+parser.add_argument("-node", nargs=1, action='append')
+parser.add_argument("-fileIndex", nargs=2, action='append')
+
+parser.add_argument('-userId', type=str,
+           help='the user executing the component', default='')
+
 parser.add_argument('-text')
 parser.add_argument('-classificationColumnName')
-parser.add_argument('-file0')
-parser.add_argument('-file1')
 
-args = parser.parse_args()
+args, option_file_index_args = parser.parse_known_args()
+
+for x in range(len(args.node)):
+    if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
+        inFile0 = args.fileIndex[x][1]
+    if (args.node[x][0] == "1" and args.fileIndex[x][0] == "0"):
+        inFile1 = args.fileIndex[x][1]
+
+		
 textcolumnName = args.text
 classificationColumnName = args.classificationColumnName
 
-temp_in_csv_name = args.file0+ ".csv"
+temp_in_csv_name = inFile0 + ".csv"
 temp_out_csv_name = args.workingDir + "tmpoutput.csv"
 out_tsv_name = args.workingDir + "output.txt"
-lightside_model = args.file1
+lightside_model = inFile1
 
 # Read the TSV file passed in and convert to CSV
-intsv = csv.DictReader(open(args.file0, "r"), delimiter="\t")
+intsv = csv.DictReader(open(inFile0, "r"), delimiter="\t")
 temp_in_f = open(temp_in_csv_name, "w")
 temp_in_csv = csv.writer(temp_in_f)
 cols = intsv.fieldnames
