@@ -1,6 +1,7 @@
 """
 This file executes Database Feature Generation
 """
+import os
 import argparse
 import sys
 import utils
@@ -31,6 +32,9 @@ if __name__ == "__main__":
     if not programDir:
         sys.exit("Missing required argument: programDir")
 
+    # Assign WorkingDir to Feature Tools
+    os.environ['FEATURETOOLS_DIR'] = workingDir
+
     # Generate Entity Set & Pickle It.
     entity_set = utils.datashop_to_entityset(inFile)
 
@@ -41,4 +45,6 @@ if __name__ == "__main__":
     # Zip Output.pkl and Remove Directory
     shutil.make_archive('output', 'zip', dir_name)
     shutil.rmtree(dir_name)
+
+    inFile.close()
 

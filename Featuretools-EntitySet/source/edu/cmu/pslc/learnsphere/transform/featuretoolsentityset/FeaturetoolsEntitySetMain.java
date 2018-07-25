@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.transform.entityset;
+package edu.cmu.pslc.learnsphere.transform.featuretoolsentityset;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
-public class EntitySetMain extends AbstractComponent {
+public class FeaturetoolsEntitySetMain extends AbstractComponent {
 
 
 
@@ -35,7 +35,7 @@ public class EntitySetMain extends AbstractComponent {
      */
     public static void main(String[] args) {
 
-        EntitySetMain tool = new EntitySetMain();
+        FeaturetoolsEntitySetMain tool = new FeaturetoolsEntitySetMain();
         tool.startComponent(args);
 
     }
@@ -43,10 +43,8 @@ public class EntitySetMain extends AbstractComponent {
     /**
      * This class runs Join on two files.
      */
-    public EntitySetMain() {
+    public FeaturetoolsEntitySetMain() {
         super();
-
-
     }
 
     @Override
@@ -54,19 +52,8 @@ public class EntitySetMain extends AbstractComponent {
         // Run the program and add the files it generates to the component output.
         File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
-        //#OFFICIAL
-        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/output.zip");
-            if (file0 != null && file0.exists()) {
-                Integer nodeIndex0 = 0;
-                Integer fileIndex0 = 0;
-                String label0 = "tab-deliminated";
-                this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
-                
-            } else {
-                this.addErrorMessage("An unknown error has occurred.");
-            }
-        }
+
+        //NO OUTPUT FILE SPECIFIED
         
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
