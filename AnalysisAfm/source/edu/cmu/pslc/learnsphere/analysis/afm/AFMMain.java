@@ -87,6 +87,12 @@ public class AFMMain extends AbstractComponent {
     protected Boolean test() {
         Boolean passing = true;
 
+        if ((modelName == null) || (modelName.trim().equals(""))) {
+            // Nothing we can do... failed to get/determine modelName;
+            System.err.println("Unable to determine the model name.");
+            passing = false;
+        }
+
         return passing;
     }
 
@@ -125,12 +131,6 @@ public class AFMMain extends AbstractComponent {
      */
     @Override
     protected void runComponent() {
-
-        if ((modelName == null) || (modelName.trim().equals(""))) {
-            // Nothing we can do... failed to get/determine modelName;
-            System.err.println("Unable to determine the model name.");
-            return;
-        }
 
         File predictedErrorRateFile = this.createFile("Step-values-with-predictions", ".txt");
         File modelValuesFile = this.createFile("KC-model-values", ".xml");
