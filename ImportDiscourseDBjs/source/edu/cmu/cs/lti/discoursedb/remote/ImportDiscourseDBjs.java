@@ -37,7 +37,6 @@ public class ImportDiscourseDBjs extends AbstractComponent {
 	        }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			errorMessages.add("Error querying discoursedb as " + this.getUserId() + ":  " + e.getMessage());
 		}
 
