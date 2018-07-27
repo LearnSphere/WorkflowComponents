@@ -30,14 +30,15 @@ public class ImportDiscourseDBjs extends AbstractComponent {
 			proxy = new QueryProxy(this.getUserId(), this.getToolDir() );
 	        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
 		        	String path = outputDirectory.getAbsolutePath();
-		        	this.addOutputFile(new File(path + "/output.txt"), 0, 0, "tab-delimited");
+				File outFile = new File(path + "/output.txt");
 		        	
 		        	SavedQuery selectorOutput = SavedQuery.parseString(this.getOptionAsString("DiscourseDbSelector"));
-	            proxy.queryToCsv(selectorOutput, new File(path + "/output.txt"));
+                                proxy.queryToCsv(selectorOutput, outFile);
+		        	this.addOutputFile(new File(path + "/output.txt"), 0, 0, "tab-delimited");
+
 	        }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			errorMessages.add("Error querying discoursedb as " + this.getUserId() + ":  " + e.getMessage());
 		}
 

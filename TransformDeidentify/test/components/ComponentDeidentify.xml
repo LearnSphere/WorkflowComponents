@@ -1,63 +1,144 @@
 <component>
-  <component_id>ComponentTestOutput</component_id>
-  <component_id_human>Component #1</component_id_human>
-  <workflow_id>1</workflow_id>
+  <component_id>Transform-1-x877998</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>7</workflow_id>
   <component_name>Deidentify</component_name>
   <component_type>transform</component_type>
-  <left>431</left>
+  <left>546.4375</left>
   <connections>
     <connection>
-      <from>Import1</from>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x146138</from>
     </connection>
     <connection>
-      <from>Import2</from>
-    </connection>
-    <connection>
-      <to>Export1</to>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Data-1-x124249</from>
     </connection>
   </connections>
-  <options>
-  <mapActualIdColumnName>MOOC-OLI file user_id</mapActualIdColumnName>
-  <mapAnonIdColumnName>DS_anon_student_id</mapAnonIdColumnName>
-  <fileActualIdColumnName>user_id</fileActualIdColumnName>
-  <caseSensitive>false</caseSensitive>
-  <delimiterPattern>\t</delimiterPattern>
-  </options>
-  <top>62</top>
+  <top>107</top>
   <inputs>
-      <input0>
-      <component_id>Import1</component_id>
-      <component_id_human>Import #1</component_id_human>
-      <component_type>import</component_type>
-      <component_name>User Map</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
-      <errors/>
-         <files>
-      <user-map>
-        <file_path>test/test_data/stuID mapping_with_ds_anon_stu_id.txt</file_path>
-        <label>user-map</label>
-        <file_name>stuID mapping_with_ds_anon_stu_id.txt</file_name>
-        <index>0</index>
-      </user-map>
-    </files>
+    <input0>
+      <component_id>Data-1-x146138</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <index>0</index>
+          <file_path>test/test_data/stuID mapping_with_ds_anon_stu_id.txt</file_path>
+          <label>text</label>
+          <file_name>stuID mapping_with_ds_anon_stu_id.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>MOOC-OLI file user_id</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>stu-rollup w video file id</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>coursera_id</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>session_user_id</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>DS_anon_student_id</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>forum_user_id</name>
+            </header>
+          </metadata>
+        </text>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"stuID mapping_with_ds_anon_stu_id.txt","importFileType":"text","importFileNameTitle":"File: stuID mapping_with_ds_anon_stu_id.txt","fileTypeSelection":"text","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"3142"}</Import>
+      </optionmeta>
     </input0>
     <input1>
-      <component_id>Import2</component_id>
-      <component_id_human>Import #2</component_id_human>
-      <component_type>import</component_type>
-      <component_name>Tab delimited</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
-      <errors/>
+      <component_id>Data-1-x124249</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
       <files>
-      <tab-delimited>
-        <file_path>test/test_data/MOOC-OLI Psy-subset_anon.txt</file_path>
-        <label>tab-delimited</label>
-        <file_name>MOOC-OLI Psy-subset_anon.txt</file_name>
-        <index>0</index>
-      </tab-delimited>
-    </files>
+        <text>
+          <index>0</index>
+          <file_path>test/test_data/student-rollup-ds863-with-video.txt</file_path>
+          <label>text</label>
+          <file_name>student-rollup-ds863-with-video.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>id</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>total_pageviews</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>Non_Activities_Reading</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Activities</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Video</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>Pretest</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>6</index>
+              <name>Total.Quiz</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>7</index>
+              <name>Final Exam</name>
+            </header>
+          </metadata>
+        </text>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"student-rollup-ds863-with-video.txt","importFileType":"text","importFileNameTitle":"File: student-rollup-ds863-with-video.txt","fileTypeSelection":"text","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"3143"}</Import>
+      </optionmeta>
     </input1>
-
   </inputs>
-
+  <options>
+    <mapActualIdColumnName>Input 0 (0) - stu-rollup w video file id (column 1)</mapActualIdColumnName>
+    <mapAnonIdColumnName>Input 0 (0) - DS_anon_student_id (column 4)</mapAnonIdColumnName>
+    <fileActualIdColumnName>Input 1 (0) - id (column 0)</fileActualIdColumnName>
+    <caseSensitive>false</caseSensitive>
+    <delimiterPattern>\t</delimiterPattern>
+  </options>
 </component>

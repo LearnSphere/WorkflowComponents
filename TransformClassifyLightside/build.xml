@@ -1,0 +1,123 @@
+<project name="TransformClassifyLightside" default="dist" basedir="." 
+         xmlns:if="ant:if"
+         xmlns:unless="ant:unless">
+    <description>
+        Java-based TransformClassifyLightside workflow component.
+    </description>
+
+    <!-- set global properties for this build -->
+    <property file="build.properties" />
+    <property name="source" location="${basedir}/source" />
+    <property name="build" location="${basedir}/build" />
+    <property name="dist" location="${basedir}/dist" />
+    <property name="lib" location="../CommonLibraries" />
+    <property name="javadoc" location="${basedir}/javadoc" />
+
+    <property name="version" value="1.0" />
+
+    <property name="component.id" value="TransformClassifyLightside" />
+    <property name="component.version" value="v${version} 2015" />
+
+    <property name="TransformClassifyLightside.jar" value="${dist}/${component.id}-${version}.jar" />
+
+    
+    <path id="run.lib.path">
+        <pathelement location="dist/TransformClassifyLightside-1.0.jar" />
+        <fileset dir="${lib}">
+            <include name="**/**.jar" />
+        </fileset>
+    </path>
+    <path id="lib.path">
+        <fileset dir="${lib}">
+            <include name="**/**.jar" />
+        </fileset>
+    </path>
+
+    <target name="install" description="Install lightside" >
+        <get src="http://ankara.lti.cs.cmu.edu/side/snapshots/LightSide_Latest.zip" 
+             dest="Lightside.zip"
+             skipexisting="true"/>
+        <available file="toolkits" type="dir" property="lightside.present"/>
+        <unzip src="Lightside.zip" dest="." unless:set="lightside.present" />
+        <move file="LightSide_2.3.2_20150815/toolkits" todir="." unless:set="lightside.present" />
+        <move file="LightSide_2.3.2_20150815/wekafiles" todir="." unless:set="lightside.present" />
+        <move file="LightSide_2.3.2_20150815/plugins" todir="." unless:set="lightside.present" />
+        <move file="LightSide_2.3.2_20150815/lib" todir="." unless:set="lightside.present" />
+        <move file="LightSide_2.3.2_20150815/bin" todir="." unless:set="lightside.present" />
+
+    </target>
+
+    <target name="dist" depends="install,compile" description="generate the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}" />
+
+        <path id="build-classpath">
+            <path refid="lib.path" />
+        </path>
+       
+        <manifestclasspath property="lib.list" jarfile="${TransformClassifyLightside.jar}">
+            <classpath refid="build-classpath" />
+        </manifestclasspath>
+        <jar jarfile="${TransformClassifyLightside.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/transform/classifylightside/**">
+            <manifest>
+                <attribute name="Main-Class" value="edu.cmu.pslc.learnsphere.transform.classifylightside.TransformClassifyLightsideMain" />
+                <attribute name="Class-Path" value="${lib.list}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <path id="run.classpath">
+        <pathelement path="${TransformClassifyLightside.jar}" />
+        <path refid="lib.path" />
+        <pathelement path="." />
+    </path>
+
+    <target name="init">
+        <!-- Create the time stamp in DSTAMP -->
+        <tstamp />
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}" />
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="compile" depends="init" description="compile the source ">
+        <!-- Compile the java code from ${source} into ${build} -->
+        <javac srcdir="${source}" destdir="${build}" debug="on" includeantruntime="false">
+            <classpath refid="lib.path"/>
+        </javac>
+    </target>
+
+    <!-- Delete the temporary directories. -->
+    <target name="clean" description="clean up">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+        <delete dir="${javadoc}" />
+    </target>
+
+    <target name="javadoc" depends="compile" description="Create javadoc documentation">
+        <mkdir dir="${javadoc}" />
+        <javadoc sourcepath="${source}" destdir="${javadoc}" packagenames="*.*" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.id} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.id} (Version ${component.version})">
+            <classpath refid="lib.path" />
+        </javadoc>
+    </target>
+
+    <target name="runComponent" depends="clean, compile, dist" description="executes TransformClassifyLightside">
+        <java classname="edu.cmu.pslc.learnsphere.transform.classifylightside.TransformClassifyLightsideMain" fork="true">
+            <classpath refid="run.lib.path" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/TransformClassifyLightside.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TransformClassifyLightside_v1_0.xsd" />
+            <arg value="-userId" />
+            <arg value="1" />
+            <jvmarg value="-Xmx1024M"/>
+            <jvmarg value="-XX:+UseConcMarkSweepGC" />
+            <jvmarg value="-XX:+CMSIncrementalMode" />
+            <jvmarg value="-Djava.awt.headless=true" />
+        </java>
+    </target>
+</project>

@@ -33,6 +33,7 @@
   <xs:element name="pdf" substitutionGroup="application" />
 
   <xs:element name="binary" substitutionGroup="file" />
+  <xs:element name="lightside-model" substitutionGroup="file" />
 
   <xs:element name="json" substitutionGroup="text" />
   	  <xs:element name="d3m-dataset" substitutionGroup="json" />
