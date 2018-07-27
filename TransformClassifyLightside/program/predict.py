@@ -42,7 +42,8 @@ out_tsv_name = args.workingDir + "output.txt"
 lightside_model = inFile1
 
 # Read the TSV file passed in and convert to CSV
-intsv = csv.DictReader(open(inFile0, "r"), delimiter="\t")
+intsv_f = open(inFile0, "r")
+intsv = csv.DictReader(intsv_f, delimiter="\t")
 temp_in_f = open(temp_in_csv_name, "w")
 temp_in_csv = csv.writer(temp_in_f)
 cols = intsv.fieldnames
@@ -50,6 +51,7 @@ temp_in_csv.writerow(["text" if c == textcolumnName else c for c in cols])
 for row in intsv:
     temp_in_csv.writerow([row[h] for h in cols])
 temp_in_f.close()
+intsv_f.close()
 
 # Execute lightside with temp_in_csv_name and lightside_model and utf-8
 cmd = "bash program/predict.sh " + lightside_model + " utf-8 " + temp_in_csv_name + " " + temp_out_csv_name
@@ -57,7 +59,8 @@ os.chdir(args.programDir)
 os.system(cmd)
 
 # Read the CSV file passed out from Lightside and convert to TSV
-outcsv = csv.DictReader(open(temp_out_csv_name, "r"))
+tmpout_f = open(temp_out_csv_name, "r")
+outcsv = csv.DictReader(tmpout_f)
 cols = outcsv.fieldnames
 
 outf = open(out_tsv_name, "w")
@@ -65,5 +68,6 @@ outtsv = csv.writer(outf, delimiter="\t")
 outtsv.writerow([classificationColumnName if c == "predicted" else textcolumnName if c == "text" else c for c in cols])
 for row in outcsv:
     outtsv.writerow([row[h] for h in cols])
+tmpout_f.close()
 outf.close()
 

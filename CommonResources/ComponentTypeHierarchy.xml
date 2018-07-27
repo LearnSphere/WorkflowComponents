@@ -14,11 +14,15 @@
 			<Transaction />
 		</DataShop>
 	</Import>
+	<Database>
+		<Import_DiscourseDB />
+	</Database>
 	<Transform>
 		<Recently_Used />
 		<Anonymize />
 		<Anonymize_Standalone />
 		<AppendCF />
+		<Classify_with_Lightside />
 		<Column_Remover />
 		<Convert_Multiskill />
 		<Coursera_MOOCdb_Translator />
