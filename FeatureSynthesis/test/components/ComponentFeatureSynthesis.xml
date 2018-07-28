@@ -2,7 +2,7 @@
   <component_id>ComponentTestOutput</component_id>
   <component_id_human>Transform #1</component_id_human>
   <workflow_id>16</workflow_id>
-  <component_name>Featuretools-EntitySet</component_name>
+  <component_name>FeatureSynthesis</component_name>
   <component_type>transform</component_type>
   <left>860</left>
   <connections>
@@ -14,7 +14,8 @@
   <options>
     <aggPrimitives>Sum,Mean,Percent_True</aggPrimitives>
     <transPrimitives>Hour</transPrimitives>
-    <maxDepth>2</maxDepth>
+    <maxDepth>1</maxDepth>
+    <encodeOutput>1</encodeOutput>
   </options>
   <inputs>
     <input0>

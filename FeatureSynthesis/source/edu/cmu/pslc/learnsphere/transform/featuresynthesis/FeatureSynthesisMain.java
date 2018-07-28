@@ -1,4 +1,4 @@
-package edu.cmu.pslc.learnsphere.transform.featuretoolsentityset;
+package edu.cmu.pslc.learnsphere.transform.featuresynthesis;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,16 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-
-
-
-
-
 import org.apache.commons.lang.StringUtils;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
-public class FeaturetoolsEntitySetMain extends AbstractComponent {
+public class FeatureSynthesisMain extends AbstractComponent {
 
 
 
@@ -35,7 +30,7 @@ public class FeaturetoolsEntitySetMain extends AbstractComponent {
      */
     public static void main(String[] args) {
 
-        FeaturetoolsEntitySetMain tool = new FeaturetoolsEntitySetMain();
+        FeatureSynthesisMain tool = new FeatureSynthesisMain();
         tool.startComponent(args);
 
     }
@@ -43,7 +38,7 @@ public class FeaturetoolsEntitySetMain extends AbstractComponent {
     /**
      * This class runs Join on two files.
      */
-    public FeaturetoolsEntitySetMain() {
+    public FeatureSynthesisMain() {
         super();
     }
 
@@ -53,7 +48,18 @@ public class FeaturetoolsEntitySetMain extends AbstractComponent {
         File outputDirectory = this.runExternal();
         // Attach the output files to the component output with addOutputFile(..>)
 
-        //NO OUTPUT FILE SPECIFIED
+        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/output.csv");
+            if (file0 != null && file0.exists()) {
+                Integer nodeIndex0 = 0;
+                Integer fileIndex0 = 0;
+                String label0 = "tab-deliminated";
+                this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
+                
+            } else {
+                this.addErrorMessage("An unknown error has occurred.");
+            }
+        }
         
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
