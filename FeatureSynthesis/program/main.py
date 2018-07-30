@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser.add_argument('-aggPrimitives', type=str, default=".")
     parser.add_argument('-transPrimitives', type=str, default=".")
     parser.add_argument('-maxDepth', type=str, default=".")
+    parser.add_argument('-encodeOutput', type=str, default="0")
 
     # Parse & Validate Arguments
     args, option_file_index_args = parser.parse_known_args()
@@ -55,6 +56,10 @@ if __name__ == "__main__":
         sys.exit("Missing required argument: maxDepth")
     maxDepth = int(maxDepth)
 
+    encodeOutput = args.encodeOutput
+    if not encodeOutput:
+        sys.exit("Missing required argument: encodeOutput")
+
     # Assign WorkingDir to Feature Tools
     os.environ['FEATURETOOLS_DIR'] = workingDir
 
@@ -80,15 +85,17 @@ if __name__ == "__main__":
                           cutoff_time=cutoff_times[1000:],
                           verbose=True)
 
-    # Encode the feature matrix using One-Hot encoding
-    fm_enc, f_enc = ft.encode_features(fm, features)
-    fm_enc = fm_enc.fillna(0)
-    fm_enc = remove_low_information_features(fm_enc)
+    if encodeOutput == "1":
+        # Encode the feature matrix using One-Hot encoding
+        fm_enc, f_enc = ft.encode_features(fm, features)
+        fm_enc = fm_enc.fillna(0)
+        fm_enc = remove_low_information_features(fm_enc)
 
-    # Pop the label
-    label = fm_enc.pop('Outcome')
-
-    fm.tail()
+        # Write Output to CSV
+        fm_enc.to_csv("output.csv")
+    else:
+        # Write Output to CSV
+        fm.to_csv("output.csv")
 
     # Remove Pickle Directory
     shutil.rmtree(dir_name)
