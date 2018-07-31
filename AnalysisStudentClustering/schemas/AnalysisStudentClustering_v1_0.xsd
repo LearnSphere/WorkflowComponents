@@ -88,8 +88,8 @@
         <xs:choice minOccurs="0" maxOccurs="unbounded">
              <xs:element type="FileInputHeader" name="student" id="student_ID" default=".*"  />
              <xs:element type="FileInputHeader" name="model" id="model" default=".*" />
-             <xs:element type="FileInputHeader" name="duration" id="duration" default=".*" />
-             <xs:element type="FileInputHeader" name="outcome" id="outcome" default=".*" />
+             <xs:element type="FileInputHeader" name="duration" id="duration" default="Duration (sec)" />
+             <xs:element type="FileInputHeader" name="outcome" id="outcome" default="Outcome" />
              <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
 
         </xs:choice>
