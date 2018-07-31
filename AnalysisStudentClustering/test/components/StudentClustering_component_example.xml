@@ -28,7 +28,7 @@
       <errors/>
       <files>
           <text>
-              <file_path>test/example_transactions/example_transaction.txt</file_path>
+              <file_path>test/example_transactions/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
               <file_name>data.txt</file_name>
               <index>0</index>
               <label>text</label>
