@@ -57,8 +57,7 @@ while (i <= length(args)) {
       stop("k (number of clusters) name must be specified")
     }
     kClusters = args[i+1]
-    i = i+1
-  } else if (args[i] == "-programDir") {
+    i = i+1  } else if (args[i] == "-programDir") {
     if (length(args) == i) {
       stop("programDir name must be specified")
     }
@@ -121,11 +120,12 @@ val<-val[val[,header3] >= lower & val[,header3] <= upper, ]
 #aggregation
 val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
 val<-val[,c(1,2,5,6)]
+
 colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
 aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
 #change data form and replace missing data with column means
 student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
-for(i in 1:ncol(student_means)){
+for(i in 3:ncol(student_means)){
   student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
 
 #clustering
