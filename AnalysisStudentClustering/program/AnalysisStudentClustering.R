@@ -85,9 +85,9 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 kClusters <- as.numeric(kClusters)
 
 # Creates output log file
-#clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
-#sink(clean,append=TRUE)
-#sink(clean,append=TRUE,type="message") # get error reports also
+clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
+sink(clean,append=TRUE)
+sink(clean,append=TRUE,type="message") # get error reports also
 
 header1 = gsub("[ ()-]", ".", student)
 header2 = gsub("[ ()-]", ".", model)
@@ -152,5 +152,5 @@ outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
 write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
 # Stop logging
-#sink()
-#sink(type="message")
+sink()
+sink(type="message")
