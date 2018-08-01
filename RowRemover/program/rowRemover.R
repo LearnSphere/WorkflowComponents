@@ -201,7 +201,20 @@ if (operation == "remove") {
 
 
 outputFile <- paste(workingDir, "/modified_file.txt", sep="")
-write.table(ds, file=outputFile, sep="\t", quote=FALSE, na="", col.names=TRUE, append=FALSE, row.names=FALSE)
+
+# Export modified data frame for reimport after header attachment
+headers<-gsub("Unique[.]step","Unique-step",colnames(ds))
+headers<-gsub("[.]1","",headers)
+headers<-gsub("[.]2","",headers)
+headers<-gsub("[.]3","",headers)
+headers<-gsub("Single[.]KC","Single-KC",headers)
+headers<-gsub("[.][.]"," (",headers)
+headers<-gsub("[.]$",")",headers)
+headers<-gsub("[.]"," ",headers)
+headers<-paste(headers,collapse="\t")
+write.table(headers,file=outputFile,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(ds,file=outputFile,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+
 
 
 
