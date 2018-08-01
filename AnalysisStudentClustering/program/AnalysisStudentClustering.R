@@ -152,5 +152,5 @@ outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
 write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
 # Stop logging
-sink()
-sink(type="message")
+#sink()
+#sink(type="message")
