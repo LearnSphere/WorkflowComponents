@@ -125,7 +125,7 @@ colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
 aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
 #change data form and replace missing data with column means
 student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
-for(i in 3:ncol(student_means)){
+for(i in 2:ncol(student_means)){
   student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
 
 #clustering
