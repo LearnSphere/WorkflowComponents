@@ -27,9 +27,15 @@ cmd.args.xmlinputfiles = data.frame(file.position=character(),
 cmd.args.columns.match = data.frame(match.column.position=character(),
                                match.column.name=character(),
                                stringsAsFactors=FALSE)
+cmd.args.columns.match.orig = data.frame(match.column.position=character(),
+                                    match.column.name=character(),
+                                    stringsAsFactors=FALSE)
 cmd.args.columns.compare = data.frame(compare.column.position=character(),
                                  compare.column.name=character(),
                                  stringsAsFactors=FALSE)
+cmd.args.columns.compare.orig = data.frame(compare.column.position=character(),
+                                      compare.column.name=character(),
+                                      stringsAsFactors=FALSE)
 
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -133,8 +139,10 @@ while (i <= length(args)) {
       thisArgVal = gsub("[ ()-]", ".", args[i+5])
       
       cmd.args.columns.compare = rbind(cmd.args.columns.compare, c(fileIndex, thisArgVal), stringsAsFactors=FALSE)
+      cmd.args.columns.compare.orig = rbind(cmd.args.columns.compare.orig, c(fileIndex, args[i+5]), stringsAsFactors=FALSE)
     }
     cmd.args.columns.compare = unique(cmd.args.columns.compare)
+    cmd.args.columns.compare.orig = unique(cmd.args.columns.compare.orig)
     i = i+5
   }
   
@@ -154,8 +162,10 @@ while (i <= length(args)) {
     if (args[i+4] == "-matchColumn") {
       thisArgVal = gsub("[ ()-]", ".", args[i+5])
       cmd.args.columns.match = rbind(cmd.args.columns.match, c(fileIndex, thisArgVal), stringsAsFactors=FALSE)
+      cmd.args.columns.match.orig = rbind(cmd.args.columns.match.orig, c(fileIndex, args[i+5]), stringsAsFactors=FALSE)
     }
     cmd.args.columns.match = unique(cmd.args.columns.match)
+    cmd.args.columns.match.orig = unique(cmd.args.columns.match.orig)
     i = i+5
   }
   
@@ -345,7 +355,27 @@ if (tolower(file.type) == "tabular") {
   }
  
 } 
-
+#replace the R-changed name with original cmd.args.columns.match.orig
+for(origRowName in cmd.args.columns.match.orig){
+  origRowNameTemp = gsub("[ ()-]", ".", origRowName)
+  for (i in 1:length(colnames(allData))) {
+    if (colnames(allData)[i] == origRowNameTemp) {
+      colnames(allData)[i] = origRowName
+      break
+    }
+  }
+}
+#replace the R-changed name with original cmd.args.columns.compare.orig
+for(origRowName in cmd.args.columns.compare.orig){
+  origRowNameTemp = gsub("[ ()-]", ".", origRowName)
+  for (i in 1:length(colnames(allData))) {
+    if (colnames(allData)[i] == origRowNameTemp) {
+      colnames(allData)[i] = origRowName
+      break
+    }
+  }
+}
+print(colnames(allData))
 outputFile <- paste(workingDir, "/comparison_result.txt", sep="")
 write.table(allData,file=outputFile,sep="\t",quote=FALSE,na="",col.names=TRUE,append=FALSE,row.names=FALSE)
 

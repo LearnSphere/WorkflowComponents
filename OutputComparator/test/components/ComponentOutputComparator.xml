@@ -25,9 +25,9 @@
   </connections>
     
     <options>
-      <fileType>XML</fileType>
+      <!--<fileType>XML</fileType>-->
       <!-- <fileType>Properties File</fileType>-->
-      <!-- <fileType>Tabular</fileType>-->
+      <fileType>Tabular</fileType>
       <caseSensitive>Yes</caseSensitive>
       <removeNull>Yes</removeNull>
       <matchColumn>Input 0 (0) - Anon Student Id (column 2)</matchColumn>
@@ -39,7 +39,7 @@
       <compareColumn>Input 0 (2) - Problem Hierarchy (column 3)</compareColumn>
   </options>
   <inputs>
-     <input0>
+     <!--<input0>
       <component_id>Import-1-x346027</component_id>
       <component_id_human>Import #3</component_id_human>
       <component_type>import</component_type>
@@ -86,7 +86,7 @@
         <index>0</index>
       </file>
       </files>
-    </input0>
+    </input0>-->
     
     <!--  
     <input0>
@@ -154,7 +154,7 @@
       </files>
     </input0>
     -->
-    <!-- 
+    
     <input0>
       <component_id>Import-1-x393351</component_id>
       <component_id_human>Import #1</component_id_human>
@@ -202,7 +202,7 @@
         <index>0</index>
       </file>
       </files>
-    </input0> -->
+    </input0> 
     
     </inputs>
 </component>
