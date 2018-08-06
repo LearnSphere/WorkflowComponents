@@ -30,6 +30,7 @@
 		<Datastage_Aggregator />
 		<Deidentify />
 		<Discretize />
+		<Feature_Synthesis />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
 		<Join />
@@ -48,6 +49,7 @@
 		<BKT />
 		<Correlation />
 		<Cronbachs_Alpha />
+		<Entity_Set />
 		<iAFM />
 		<Linear_Modeling />
 		<LSA />
