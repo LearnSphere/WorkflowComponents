@@ -9,8 +9,10 @@ import os
 from io import IOBase
 import json
 import csv
+import pandas as pd
 
 from ls_dataset.ls_dataset import LSDataset
+from ls_dataset.dsr_table import DSRTable
 from ls_dataset.dsr_factory import DatasetResourceFactory
 
 logger = logging.getLogger(__name__)
@@ -184,3 +186,27 @@ class D3MDataset(LSDataset):
 
     def __str__(self):
         return self.to_json()
+
+    def load_dataset(self):
+        """
+        Load the dataset table
+
+        """
+        data = None
+        for dr in [dr for dr in self.dataResources if type(dr) is DSRTable]:
+            logger.debug("Found data resource table with ID: %s\tpath: %s" % (dr.resID, dr.resPath))
+            if data is None:
+                dpath = path.join(self.dpath, dr.resPath)
+                data = pd.read_csv(dpath, ',')
+                return data
+
+
+
+    def get_data_columns(self):
+        for dr in [dr for dr in self.dataResources if type(dr) is DSRTable]:
+            logger.debug("Found data resource table with ID: %s\tpath: %s" % (dr.resID, dr.resPath))
+            return [col for col in dr.columns if col.colName != 'd3mIndex']
+
+
+
+

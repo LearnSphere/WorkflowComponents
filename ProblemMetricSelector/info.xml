@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemMetricSelector</url>
-<date>July 20, 2018</date>
+<date>August 09, 2018</date>
 <abstract>The <b>ProblemMetricSelector</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to select metrics for the model search to use in its optimization</description>
 

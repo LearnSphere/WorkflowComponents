@@ -214,7 +214,7 @@ class DefaultProblemDesc(ProblemDesc):
         out = DefaultProblemDesc(
             name=data['about']['problemName'],
             version=data['about']['problemVersion'],
-            desc = data['about']['problemDescription'],
+            desc=data['about']['problemDescription'] if 'problemDescription' in data['about'].keys() else '',
             subtype = data['about']['taskSubType'],
             metrics = [metric['metric']
                        for metric in data['inputs']['performanceMetrics']],
@@ -344,18 +344,29 @@ class DefaultProblemDesc(ProblemDesc):
         logger.debug("Getting problem from dataset: %s" % str(ds))
         dname = ds.name
         dpath = path.dirname(ds.dpath)
-        logger.debug("Looking for prolem in dataset path: %s" % dpath)
-        dir_name = path.split(dpath)[1]
+        logger.debug("Looking for problem in dataset path: %s" % dpath)
+        ds_dir_name = path.split(ds.dpath)[1]
+        if ds_dir_name.endswith('_dataset'):
+            dir_name = ds_dir_name[:-8]
+        else:
+            dir_name = ds_dir_name
         logger.debug("Getting problem for dataset with name, %s, and dataset_dir: %s" % (dname, dir_name))
         # for root, dirs, files in os.walk(ds.dpath):
+        result = None
         for root, dirs, files in os.walk(dpath):
             for f in files:
                 if f == DefaultProblemDesc.__default_schema__:
                     parent = path.split(root)[1]
+                    result = path.join(root, f)
+                    logger.debug("Found problem doc at path: %s" % result)
                     if parent == dir_name + '_problem':
-                        logger.debug("Getting problem schema at path: %s" % path.join(root, f))
-                        return path.join(root, f)
-        logger.warning("Found no default problem doc in dataset at: %s" % dpath)
+                        logger.debug("Getting problem schema at path: %s" % result)
+                        return result
+        if result is not None: 
+            logger.warning("Getting problem schema at unexpected path: %s" % result)
+            return result
+        else:
+            logger.warning("Found no default problem doc in dataset at: %s" % dpath)
     
     def __str__(self):  
         out = self.to_dict()

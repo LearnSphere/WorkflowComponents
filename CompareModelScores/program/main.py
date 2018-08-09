@@ -75,8 +75,8 @@ if __name__ == '__main__':
     logger = logging.getLogger('compare_model_scores')
 
     ### Begin Script ###
-    logger.info("Generating an interactive interface for getting single variable descriptive statistics")
-    logger.debug("Running Describe Data with arguments: %s" % str(args))
+    logger.info("Generating an interactive interface for comparing ranks of models using a given metric")
+    logger.debug("Running Compare Model Scores with arguments: %s" % str(args))
 
     # Read in model scores
     logger.debug("Model Score file: %s" % args.file0)
