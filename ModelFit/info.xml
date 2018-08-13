@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelFit</url>
-<date>August 09, 2018</date>
+<date>August 13, 2018</date>
 <abstract>The <b>ModelFit</b> component is an example of a(n) Python component.</abstract>
 <description>Fit a model to a given workflow using a specific dataset</description>
 

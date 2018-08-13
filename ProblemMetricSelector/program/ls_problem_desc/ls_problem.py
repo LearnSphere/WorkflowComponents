@@ -77,7 +77,7 @@ class ProblemDesc(object):
             metadata - dictionary representation of additional information
         
         """
-        self.id = str(abs(hash(datetime.now())))
+        self.id = "pid" + str(abs(hash(datetime.now())))
         self.name=name
         self.version=version
         self.description=desc

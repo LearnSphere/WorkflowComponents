@@ -1,2 +1,2 @@
-CLASSIFICATION	CLUSTERING	LINK_PREDICTION	REGRESSION	OBJECT_DETECTION 	GRAPH_MATCHING	COMMUNITY_DETECTION	GRAPH_CLUSTERING	TIME_SERIES_FORECASTING	COLLABORATIVE_FILTERING 	VERTEX_NOMINATION
-{'id': '6744322953845114377', 'version': 1.0, 'metrics': [], 'inputs': [{'dataset_id': '6_70_com_amazon_dataset', 'targets': [{'target_index': 0, 'column_index': 2, 'column_name': 'community', 'resource_id': '1'}]}], 'name': 'Test Problem', 'description': 'Default Problem Description'}
+COLLABORATIVE_FILTERING 	GRAPH_CLUSTERING	CLUSTERING	LINK_PREDICTION	GRAPH_MATCHING	OBJECT_DETECTION 	VERTEX_NOMINATION	CLASSIFICATION	TIME_SERIES_FORECASTING	REGRESSION	COMMUNITY_DETECTION
+{'id': 'pid5928931432054586075', 'version': 1.0, 'metrics': [], 'inputs': [{'dataset_id': '6_70_com_amazon_dataset', 'targets': [{'target_index': 0, 'column_index': 2, 'column_name': 'community', 'resource_id': '1'}]}], 'name': 'Test Problem', 'description': 'Default Problem Description'}

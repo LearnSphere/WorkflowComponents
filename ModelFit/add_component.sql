@@ -14,10 +14,10 @@ REPLACE INTO `workflow_component` (
 VALUES (
 	'Analysis',
 	'Model_Fit',
-	'/ModelFit/',
-	'/ModelFit/schemas/ModelFit_v1_0.xsd',
+	'/datashop/workflow_components/ModelFit/',
+	'/datashop/workflow_components/ModelFit/schemas/ModelFit_v1_0.xsd',
 	'/usr/bin/java -jar',
-	'/ModelFit/dist/ModelFit-1.0.jar', 
+	'/datashop/workflow_components/ModelFit/dist/ModelFit-1.0.jar', 
 	1,
 	'system',
 	'Steven_C_Dang',
