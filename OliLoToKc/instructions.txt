@@ -1,0 +1,17 @@
+Installation instructions for Oli_Lo_To_Kc
+
+download php
+	Peter used 7.2.8 to write this component and test it on his local, windows machine.
+	http://php.net/downloads.php
+
+download sqlite3
+	https://www.sqlite.org/download.html
+	
+Need that php.ini file probably to make sure sqlite is loaded before hand. 
+This might not be necessary depending on the system.
+Contents of php.ini:
+	extension_dir="C:\Program Files\PHP\php-7.2.8-Win32-VC15-x64\ext"
+	extension=sqlite3
+
+Run the php ini script to load sqlite3 
+	php.exe --ini "C:\Program Files\PHP\php-7.2.8-Win32-VC15-x64\php.ini"
