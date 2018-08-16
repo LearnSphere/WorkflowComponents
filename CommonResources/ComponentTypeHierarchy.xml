@@ -74,4 +74,8 @@
 		<Search />
 		<Tetrad_Graph_Editor />
 	</Tetrad>
+	<QA>
+	    <QA_All_Elements />
+	    <QA_Multi_Conn_Input />
+	</QA>
 </component_menu>
