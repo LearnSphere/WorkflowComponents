@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelSearch</url>
-<date>August 13, 2018</date>
+<date>August 17, 2018</date>
 <abstract>The <b>ModelSearch</b> component is an example of a(n) Python component.</abstract>
 <description>Perform a search for a model using D3M TA2 system</description>
 

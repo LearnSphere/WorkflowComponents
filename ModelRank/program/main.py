@@ -145,10 +145,10 @@ if __name__ == '__main__':
     logger.debug("###############################################")
 
     # Sort models by metric
-    if args.ordering.lower() is 'higher_is_better':
+    if args.ordering.lower() == 'higher_is_better':
         logger.info("Sorting models in descending order")
         sorted_data = data.sort_values(by=[metrics[0]], ascending=False)
-    elif args.ordering.lower() is "lower_is_better":
+    elif args.ordering.lower() == "lower_is_better":
         logger.info("Sorting models in ascending order")
         sorted_data = data.sort_values(by=[metrics[0]], ascending=True)
     else:

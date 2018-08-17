@@ -80,5 +80,5 @@ if __name__ == '__main__':
     model_writer.write_ranked_models(ranked_models)
 
     for mid, rmodel in ranked_models.items():
-        logger.info("Exporting model via TA2 with id: %s" % mid)
+        logger.info("Exporting model via TA2 with id: %s\t and rank: %s" % (mid, rmodel.rank))
         serv.export_solution(rmodel.mdl, rmodel.mdl.fitted_id, rmodel.rank)
