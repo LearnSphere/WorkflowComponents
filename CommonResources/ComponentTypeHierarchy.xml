@@ -41,7 +41,10 @@
 		<Pivot />
 		<Row_Operations />
 		<Row_Remover />
+		<Sensor_Data_Align />
 		<Text_Converter />
+		<transform_sensor_data_interpolation />
+		<transform_sensor_data_join />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
