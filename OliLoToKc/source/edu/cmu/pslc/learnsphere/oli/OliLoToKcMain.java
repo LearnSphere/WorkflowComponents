@@ -120,7 +120,7 @@ public class OliLoToKcMain extends AbstractComponent {
 				}
 			}
 		}
-
+		logger.error("Could not find the output file by name or it doesn't exist.");
 		return "";
 	}
 

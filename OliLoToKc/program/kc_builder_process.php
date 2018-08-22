@@ -36,6 +36,7 @@ function load_kc($filename,$model_name) {
 	$sqlite = $_SESSION['sqlite'];
 	$row = 0;
 	$original_kc_model_name="KC (Unknown)";
+	$max_num_skills = 0;
 	
 	if (($handle = fopen($filename, "r")) !== FALSE) {
 	    while (($data = fgetcsv($handle, 1000, "	")) !== FALSE && $data[0]) {
@@ -53,21 +54,21 @@ function load_kc($filename,$model_name) {
 				$last_id = $sqlite->lastInsertRowID();
 				
 				
-				//THis is the original way, but it doesn't get the multiple KC's ( separated by ~~) 
 				if(!load_skills_ds_qn($last_id, $data)){
-					#echo "not ds_qn\n";
-					if(!load_skills_ds_pool_qn($last_id, $data)){
-						#echo "not ds_pool_qn\n";
-						
+					if(!load_skills_ds_pool_qn($last_id, $data)){						
 						load_skills_ds_act($last_id, $data);
 					}
 				}
-				// This is the thorough way but it's slow
+				// This is the thorough way but it's slow - might add too many skills
 				/*load_skills_ds_qn($last_id, $data) ;
 				load_skills_ds_pool_qn($last_id, $data) ;
 				load_skills_ds_act($last_id, $data);*/
 
-				//after this should be done with saveout file function but I'm just hacking this to save time
+				$num_skills = num_skills_in_step($data, $last_id)."\n";
+				if ($num_skills > $max_num_skills) {
+					$max_num_skills = $num_skills;
+				}
+
 				$output .= echo_skills($data,$last_id);
 			} else if($data[16]!=NULL) {
 				// Save the model name of the exported KC model
@@ -76,12 +77,32 @@ function load_kc($filename,$model_name) {
 	    }	
 	    fclose($handle);
 	}
-	$num_kc_cols_q = "select count(*) AS c FROM ds_qn_skill GROUP BY id ORDER BY c DESC";
-	$result=$sqlite->query($num_kc_cols_q);
-	
+	#$num_kc_cols_q = "select count(*) AS c FROM ds_qn_skill GROUP BY id ORDER BY c DESC";
+	#$result=$sqlite->query($num_kc_cols_q);
+	#echo "num_kc_cols ".$result->fetchArray()[0]."\n";
+	echo "max num" . $max_num_skills;
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
 	$header_row_str .= "	" . $original_kc_model_name;
-	$header_row_str .= "	" . "KC ($model_name)";
+	for ($i = 0; $i < $max_num_skills; $i++) {
+		$header_row_str .= "	" . "KC ($model_name)";
+	}
+
+	// Ensure that the whole file has enough tabs to make a full rectangular tab delimited file
+	$correct_num_tabs = substr_count($header_row_str, "\t");
+	$lines = explode("\n", $output);
+	$output = "";
+	for ($i = 0; $i < count($lines); $i++) {
+		// calculate difference in number of tabs
+		$line = $lines[$i];
+		$diff_num_tabs = $correct_num_tabs - substr_count($line, "\t");
+		for ($j = 0; $j < $diff_num_tabs; $j++) {
+			$line .= "\t";
+		}
+		$output .= $line;
+		if ($i != count($lines) - 1) {
+			$output .= "\n";
+		}
+	}
 
 	/*for($j=0;$j<$num_kc_cols;$j++){
 		$header_row_str .= "	KC Model ($model_name)";
@@ -106,10 +127,12 @@ function echo_skills($data,$id) {
 		$col++;
     }
     $i = 0;
-    $skills_already_in = array();
+    $skills_already_in = array(); //don't duplicate skills
     while ($row=($result->fetchArray())) {
         // old way $out .= $row['skill_id'] . "	";
         $skill_id = $row['skill_id'];
+
+        //don't duplicate skills
         if (in_array($skill_id, $skills_already_in)) {
         	continue;
         } else {
@@ -117,7 +140,7 @@ function echo_skills($data,$id) {
         }
 
 		if ($i != 0) {
-			$out .= "~~";
+			$out .= "\t";
 		}
 		$out .= $skill_id;
         
@@ -125,6 +148,38 @@ function echo_skills($data,$id) {
     }
     $out .=  "\n";  
 	return $out;
+}
+/** 
+ * When outputting the skills, you need to know what the maximum skills per step are
+ * to properly add tabs to delimit
+ */
+function num_skills_in_step($data, $id) {
+	$sqlite = $_SESSION['sqlite'];
+	$skillz_q = "SELECT skill_id FROM ds_qn_skill WHERE id='$id'";
+    $result =  $sqlite->query($skillz_q) or die($sqlite->error . "<br> $skillz_q");
+    $last = count($data);
+	$col = 0;
+	foreach($data as $value) {
+		if($col < $last-1) { 
+        	$out .= trim($value,"	");
+			$out .= "	";
+		}
+		$col++;
+    }
+    $i = 0;
+    $max_count = 0;
+    $skills_already_in = array(); //don't duplicate skills
+    while ($row=($result->fetchArray())) {
+    	$skill_id = $row['skill_id'];
+    	if (in_array($skill_id, $skills_already_in)) {
+        	continue;
+        }  else {
+        	array_push($skills_already_in, $skill_id);
+        }
+    	$max_count = $max_count + 1;
+    }
+    return $max_count;
+
 }
 
 function save_out_file($filename,$content) {

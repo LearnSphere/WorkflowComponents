@@ -23,8 +23,8 @@
       <errors />
       <files>
         <tab-delimited>		  
-		  <file_path>test/resources/ELDP-1.1.ods</file_path>
-          <file_name>cheese.txt</file_name>
+		  <file_path>test/resources/eldp.ods</file_path>
+          <file_name>eldp.ods</file_name>
           <index>0</index>
           <label>tab-delimited</label>
           <metadata />
@@ -43,8 +43,8 @@
       <errors />
       <files>
         <tab-delimited>		  
-		  <file_path>test/resources/ds2254_kcm_2018_0803_135116.txt</file_path>
-          <file_name>cheese.txt</file_name>
+		  <file_path>test/resources/ds2254_kcm48684_2018_0821_155400.txt</file_path>
+          <file_name>ds2254_kcm48684_2018_0821_155400.txt</file_name>
           <index>0</index>
           <label>tab-delimited</label>
           <metadata />
