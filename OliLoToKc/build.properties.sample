@@ -1,2 +1,3 @@
-component.interpreter.path=php.exe
+component.interpreter.path=php
 component.program.path=program/kc_builder_process.php
+sqlite.path=/usr/local/bin/sqlite3

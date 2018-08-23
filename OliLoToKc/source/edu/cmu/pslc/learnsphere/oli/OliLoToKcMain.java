@@ -85,29 +85,38 @@ public class OliLoToKcMain extends AbstractComponent {
 
 		String outputPath = outputDirectory.getAbsolutePath() + "/";
 
-
-		for (String err : errorMessages) {
-			logger.error(err);
-		}
+		cleanUpOutputDir(outputDirectory);
 
 		System.out.println(this.getOutput());
 
 	}
 
 	/**
-	 * the output file name is just the ods file name with "-KCM.txt" instead of ".ods"
+	 * The component program creates a temporary database file and uses a few other temporary
+	 * files.  Ensure that these are deleted, but leave the output file (ends in -KCM.txt)
 	 */
-	/*private String getOutputFileName() {
-		File inputOdsFile = this.getAttachment(0, 0);
-		String outputFilename = "";
+	private void cleanUpOutputDir(File outputDir) {
+		File [] filesInOutputDir = outputDir.listFiles();
 
-		if (inputOdsFile != null && inputOdsFile.exists()) {
-			String odsFileName = inputOdsFile.getName();
-			outputFilename = odsFileName.replace(".ods", "-KCM.txt");
+		// Loop through files and dirs in output directory
+		for (File fileInOutputDir : filesInOutputDir) {
+			if (fileInOutputDir != null && fileInOutputDir.exists()) {
+				String fileName = fileInOutputDir.getName();
+				if (!fileName.contains("-KCM")) {
+					// The file or directory is not the output kc model, so delete it.
+					try {
+						if (!fileInOutputDir.delete()) {
+							logger.debug(
+							    "Unable to delete this temporary file in the output directory: " + fileName);
+						}
+					} catch (SecurityException e) {
+						logger.debug("Unable to delete " + fileName + 
+							". Security Exception: " + e.toString());
+					}
+				}
+			}
 		}
-
-		return outputFilename;
-	}*/
+	}
 
 	private String getOutputFileName(File outputDir) {
 		File [] filesInOutputDir = outputDir.listFiles();

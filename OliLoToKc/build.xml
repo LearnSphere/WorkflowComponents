@@ -80,7 +80,7 @@
     </target>
 
     <target name="runComponent" depends="clean, compile, dist" description="executes OliLoToKc">
-        <!--<java classname="edu.cmu.pslc.learnsphere.oli.OliLoToKcMain" fork="true">
+        <java classname="edu.cmu.pslc.learnsphere.oli.OliLoToKcMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
             <arg value="${basedir}/test/components/ComponentOliLoToKc.xml" />
@@ -91,7 +91,7 @@
             <arg value="-schemaFile" />
             <arg value="${basedir}/schemas/OliLoToKc_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
-        </java>-->
+        </java>
         <java classname="edu.cmu.pslc.learnsphere.oli.OliLoToKcMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
@@ -103,7 +103,6 @@
             <arg value="-schemaFile" />
             <arg value="${basedir}/schemas/OliLoToKc_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
-            <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
         </java>
     </target>
 </project>

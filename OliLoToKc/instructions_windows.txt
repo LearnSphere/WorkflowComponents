@@ -1,4 +1,5 @@
 Installation instructions for Oli_Lo_To_Kc
+Use this for Windows machines
 
 download php
 	Peter used 7.2.8 to write this component and test it on his local, windows machine.

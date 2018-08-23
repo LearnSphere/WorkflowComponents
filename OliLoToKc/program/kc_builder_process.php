@@ -19,6 +19,8 @@ $component_dir=str_replace("\\", DIRECTORY_SEPARATOR, $component_dir);
 
 $_SESSION["component_dir"] = $component_dir;
 
+$_SESSION['sqlitePath'] = get_build_property("sqlite.path");
+
 // This script will create the sqlite database
 include("includes/db_std.php");
 
@@ -77,10 +79,7 @@ function load_kc($filename,$model_name) {
 	    }	
 	    fclose($handle);
 	}
-	#$num_kc_cols_q = "select count(*) AS c FROM ds_qn_skill GROUP BY id ORDER BY c DESC";
-	#$result=$sqlite->query($num_kc_cols_q);
-	#echo "num_kc_cols ".$result->fetchArray()[0]."\n";
-	echo "max num" . $max_num_skills;
+	
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
 	$header_row_str .= "	" . $original_kc_model_name;
 	for ($i = 0; $i < $max_num_skills; $i++) {
@@ -96,7 +95,7 @@ function load_kc($filename,$model_name) {
 		$line = $lines[$i];
 		$diff_num_tabs = $correct_num_tabs - substr_count($line, "\t");
 		for ($j = 0; $j < $diff_num_tabs; $j++) {
-			$line .= "\t";
+			$line .= "\t ";
 		}
 		$output .= $line;
 		if ($i != count($lines) - 1) {
@@ -104,13 +103,8 @@ function load_kc($filename,$model_name) {
 		}
 	}
 
-	/*for($j=0;$j<$num_kc_cols;$j++){
-		$header_row_str .= "	KC Model ($model_name)";
-	}*/
-
 	$out = $header_row_str . "\n" . $output;
 	save_out_file($model_name . "-KCM.txt",$out);
-
 }
 
 function echo_skills($data,$id) {
@@ -302,7 +296,6 @@ function get_ds_poolQN_qkey($id) {
 			$ret = $result->fetchArray()[0];
 			
 			if (strlen($ret) > 0) {
-				echo "ret ".$ret . " ";
 				return $ret;
 			}
 		} ELSE {
