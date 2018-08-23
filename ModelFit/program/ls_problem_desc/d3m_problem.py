@@ -215,7 +215,7 @@ class DefaultProblemDesc(ProblemDesc):
             name=data['about']['problemName'],
             version=data['about']['problemVersion'],
             desc=data['about']['problemDescription'] if 'problemDescription' in data['about'].keys() else '',
-            subtype = data['about']['taskSubType'],
+            subtype = data['about']['taskSubType'] if 'taskSubType' in data['about'].keys() else '',
             metrics = [metric['metric']
                        for metric in data['inputs']['performanceMetrics']],
             metadata = {

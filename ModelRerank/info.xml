@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelRerank</url>
-<date>August 17, 2018</date>
+<date>August 23, 2018</date>
 <abstract>The <b>ModelRerank</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to specify a new rank for a model from a ranked list of models</description>
 

@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelSelector</url>
-<date>August 17, 2018</date>
+<date>August 23, 2018</date>
 <abstract>The <b>ModelSelector</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to select a model from a list of models</description>
 

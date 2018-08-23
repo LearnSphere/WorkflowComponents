@@ -1,2 +1,0 @@
-VERTEX_NOMINATION	OBJECT_DETECTION 	CLASSIFICATION	CLUSTERING	TIME_SERIES_FORECASTING	COLLABORATIVE_FILTERING 	GRAPH_MATCHING	LINK_PREDICTION	COMMUNITY_DETECTION	GRAPH_CLUSTERING	REGRESSION
-{'id': 'pid6931498382715430178', 'version': 1.0, 'metrics': [], 'inputs': [{'dataset_id': '185_baseball_dataset', 'targets': [{'target_index': 0, 'column_index': 18, 'column_name': 'Hall_of_Fame', 'resource_id': '0'}]}], 'name': 'Test Problem', 'description': 'Default Problem Description'}
