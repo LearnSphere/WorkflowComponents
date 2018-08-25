@@ -6,9 +6,6 @@ import argparse
 import sys
 import shutil
 
-
-import featuretools as ft
-from featuretools.selection import remove_low_information_features
 import pandas as pd
 
 if __name__ == "__main__":
@@ -62,6 +59,10 @@ if __name__ == "__main__":
 
     # Assign WorkingDir to Feature Tools
     os.environ['FEATURETOOLS_DIR'] = workingDir
+
+    # Import featuretools now that we've correctly set the env var.
+    import featuretools as ft
+    from featuretools.selection import remove_low_information_features
 
     # Unzip and Unpickle Input
     dir_name = workingDir + "output.pkl"

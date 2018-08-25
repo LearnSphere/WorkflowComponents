@@ -43,6 +43,12 @@ public class FeatureSynthesisMain extends AbstractComponent {
     }
 
     @Override
+    protected void processOptions() {
+
+        this.addMetaData("tab-delimited", 0, META_DATA_LABEL, "label0", 0, null);
+    }
+
+    @Override
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
         File outputDirectory = this.runExternal();
@@ -53,7 +59,7 @@ public class FeatureSynthesisMain extends AbstractComponent {
             if (file0 != null && file0.exists()) {
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
-                String label0 = "tab-deliminated";
+                String label0 = "tab-delimited";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
                 
             } else {
