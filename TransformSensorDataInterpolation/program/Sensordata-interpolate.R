@@ -11,11 +11,11 @@ args <- commandArgs(trailingOnly = TRUE)
 # parse commandline args
 i = 1
 while (i <= length(args)) {
-    if (args[i] == "-file0") {
+    if (args[i] == "-fileIndex") {
        if (length(args) == i) {
           stop("Input for Signal 1 file name must be specified.")
        }
-       inputFile0 = args[i+1]
+       inputFile0 = args[i+2]
        i = i+1
     }else if (args[i] == "-file1ColumnName") {
        if (length(args) == i) {
