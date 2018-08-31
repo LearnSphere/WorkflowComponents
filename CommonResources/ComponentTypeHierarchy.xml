@@ -32,7 +32,8 @@
 		<Deidentify />
 		<Discretize />
 		<Generate_PFA_Features />
-		<Generate_TKT_Features />
+		<Generate_TKT_Features />    
+    <Import_EDF />
 		<Import_XAPI />
 		<Join />
 		<Missing_Values />
@@ -42,9 +43,9 @@
 		<Row_Operations />
 		<Row_Remover />
 		<Sensor_Data_Align />
-		<Text_Converter />
 		<Sensor_Data_Interpolation />
 		<Sensor_Data_Join />
+    <Text_Converter />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />
