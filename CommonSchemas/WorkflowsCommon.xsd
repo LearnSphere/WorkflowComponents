@@ -88,4 +88,6 @@
 <xs:attribute name="inputNodeIndex" type="xs:string" />
 <xs:attribute name="inputFileIndex" type="xs:string" />
 
+<xs:attribute name="privateOption" type="xs:boolean" />
+
 </xs:schema>
