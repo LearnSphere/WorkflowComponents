@@ -107,6 +107,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
+    <xs:element type="xs:string" name="userid" id="userid" default="" ls:privateOption="true"/>
     <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="url" id="url" default="http://lrs.x-in-y.com/data/xAPI/" />
     <xs:element type="xs:string" name="username" id="username" default="user" />
