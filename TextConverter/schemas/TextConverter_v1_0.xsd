@@ -58,12 +58,15 @@
   <xs:simpleType name="inputFileType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="XML" />
+      <xs:enumeration value="tab-delimited" />
+      <xs:enumeration value="CSV" />
     </xs:restriction>
   </xs:simpleType>
   
   <xs:simpleType name="ouputFileType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="tab-delimited" />
+      <xs:enumeration value="CSV" />
     </xs:restriction>
   </xs:simpleType>
   
