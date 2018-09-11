@@ -6,7 +6,7 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/EntitySet</url>
 <date>2018-08-01</date>
-<abstract>The <b>EntitySet<</b> component generates an entity set from a data set and outputs it as a zip file.</abstract>
+<abstract>The <b>EntitySet</b> component generates an entity set from a data set and outputs it as a zip file.</abstract>
 <description>The EntitySet component leverages the Featuretools library to generate an entity set that is pickled and zipped in order to be easily transported.  This component is designed to be an input to subsequent components that require an EntitySet.
 </description>
 
