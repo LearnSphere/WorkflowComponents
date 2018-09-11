@@ -107,11 +107,10 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
-    <xs:element type="xs:string" name="userid" id="Userid"  default="" ls:privateOption="true"/>
     <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="url" id="url" default="http://lrs.x-in-y.com/data/xAPI/" />
-    <xs:element type="xs:string" name="username" id="username" default="user" />
-    <xs:element type="xs:string" name="password" id="password" default="password" />
+    <xs:element type="xs:string" name="username" id="username" default="user" ls:privateOption="true"/>
+    <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
     <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
     <xs:element type="xs:string" name="customFilter" id="customFilter" default="context.extensions.yourExtension" />
     </xs:choice>
