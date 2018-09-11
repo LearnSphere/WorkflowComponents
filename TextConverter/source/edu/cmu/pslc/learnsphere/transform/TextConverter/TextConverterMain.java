@@ -47,10 +47,10 @@ public class TextConverterMain extends AbstractComponent {
 
         //output file
         File generatedFile = null;
+        String csvOrTab = CSV_FILE_TYPE + "|" + TAB_DELIM_FILE_TYPE;
         if (ift.equals(XML_FILE_TYPE)) {
             generatedFile = convertXML(inputFilePath, oft);
-        } else if (ift.equals(CSV_FILE_TYPE) && oft.equals(TAB_DELIM_FILE_TYPE)
-                   || ift.equals(TAB_DELIM_FILE_TYPE) && oft.equals(CSV_FILE_TYPE)) {
+        } else if (ift.matches(csvOrTab) && oft.matches(csvOrTab)) {
             generatedFile = convertTabAndCsv(inputFile, ift, oft);
         }
 
@@ -76,7 +76,7 @@ public class TextConverterMain extends AbstractComponent {
         } else if (inFileType.equals(CSV_FILE_TYPE)) {
             fromSeparator = ",";
         } else {
-            logger.error("Unrecognized input file type: " + inFileType);
+            addErrorMessage("Unrecognized input file type: " + inFileType);
         }
 
         if (outFileType.equals(TAB_DELIM_FILE_TYPE)) {
@@ -84,7 +84,7 @@ public class TextConverterMain extends AbstractComponent {
         } else if (outFileType.equals(CSV_FILE_TYPE)) {
             toSeparator = ",";
         } else {
-            logger.error("Unrecognized output file type: " + outFileType);
+            addErrorMessage("Unrecognized output file type: " + outFileType);
         }
 
         try {
@@ -113,7 +113,7 @@ public class TextConverterMain extends AbstractComponent {
                     // If the number of values in this line is not equal to the number of headers
                     // AND it is not the last line in the file, return an error
                     if (lineTokens.length != numHeaders && br.ready()) {
-                        logger.error("Error in line number " + lineNumber
+                        addErrorMessage("Error in line number " + lineNumber
                                      + ".  Fewer values (" + lineTokens.length
                                      + ") in this row than the header (" + numHeaders + ").");
                         return null;
@@ -125,7 +125,7 @@ public class TextConverterMain extends AbstractComponent {
                     StringBuilder builder = new StringBuilder();
                     for (String s : lineTokens) {
                         if (s.contains(toSeparator)) {
-                            logger.error("Value \"" + s + "\" on line " + lineNumber + " contains the"
+                            addErrorMessage("Value \"" + s + "\" on line " + lineNumber + " contains the"
                                          + " desired separator of the output file.");
                             return null;
                         }
@@ -144,10 +144,10 @@ public class TextConverterMain extends AbstractComponent {
                 bw.flush();
                 bw.close();
             } else {
-                logger.error("Input file is null or does not exist.");
+                addErrorMessage("Input file is null or does not exist.");
             }
         } catch (IOException e) {
-            logger.error("Error reading or writing out to file: " + e.toString());
+            addErrorMessage("Error reading or writing out to file: " + e.toString());
         }
 
         return convertedFile;
@@ -163,7 +163,7 @@ public class TextConverterMain extends AbstractComponent {
         } else if (convertToFileType.equals(CSV_FILE_TYPE)) {
         	outputSeparator = ",";
         } else {
-        	logger.error("Output separator was not readable: " + convertToFileType);
+        	addErrorMessage("Output separator was not readable: " + convertToFileType);
         	return null;
         }
 
