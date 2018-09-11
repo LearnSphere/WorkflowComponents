@@ -7,22 +7,22 @@
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TextConverter</url>
 <date>2018-02-02</date>
 <abstract>The <b>Text Converter</b> component converts various types of text file to other text file types.</abstract>
-<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert a XML file to a tab-delimited text file.</description>
+<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert a XML, tab-delimited, or csv file into a tab-delimited or csv file.</description>
 
 <inputs><ul>
 <li>A text file to be converted.</li>
 </ul></inputs>
 
 <outputs>
-.<ul>
+<ul>
 <li>Text file converted to a new format.</li>
 </ul>
 </outputs>
 
 <options>
  <ul>
-<li>Input file type, currently only XML is accepted</li>
-<li>Output file type, currently tab-delimited is available</li>
+<li><b>Input file type</b> - XML, Tab-Delimitied, or CSV</li>
+<li><b>Output file type</b> - Tab-Delimited or CSV</li>
 </ul>
 </options>
 
