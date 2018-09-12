@@ -180,6 +180,9 @@
   </inputs>
   <options>
     <model>KC (Unique-step)</model>
+    <firstAttempt>First Attempt</firstAttempt>
+    <opportunity>Opportunity (Unique-step)</opportunity>
+    <student>Anon Student Id</student>
   </options>
 
 </component>
