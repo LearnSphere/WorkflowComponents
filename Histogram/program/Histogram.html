@@ -19,6 +19,7 @@
     }
 
     .d3-tip {
+        max-width: 40%;
         line-height: 1;
         font-weight: bold;
         padding: 12px;
@@ -48,10 +49,32 @@
     }
 
     .scatterTooltip {
+        border: 1px solid black;
+        background: rgb(144, 168, 200);
+        border-radius: 5px;
+        padding: 5px;
         position: absolute;
-        width: 200px;
-        height: 28px;
+        width: auto;
+        height: auto;
         pointer-events: none;
+    }
+
+    .messages {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border: 2px solid black;
+        padding: 5px;
+        max-height: 4em;
+        max-width: 30%;
+        overflow: auto;
+    }
+
+    .loadingDiv {
+    	position: absolute;
+	    top: 40%;
+	    left: 40%;
+	    font-size: 5em;
     }
     </style>
 </head>
@@ -69,8 +92,8 @@
             </select>
         </div>
         <div class="variableSelectDiv">
-	        Variable:
-	        <select class="variableSelect"></select>
+            Variable:
+            <select class="variableSelect"></select>
         </div>
         <div class="numBinsDiv">Number of Bins:
             <input type="number" name="numBins" value="20">
@@ -84,11 +107,12 @@
             </select>
         </div>
         <div class="scatterOptions">
-            X Variable: <select id="xVarSelect"></select>
-            <br />
-            Y Variable: <select id="yVarSelect"></select>
-            <br />
-            Color Categorize: <select id="catVarSelect">
+            X Variable:
+            <select id="xVarSelect"></select>
+            <br /> Y Variable:
+            <select id="yVarSelect"></select>
+            <br /> Color Categorize:
+            <select id="catVarSelect">
                 <option value="none">None</option>
             </select>
         </div>
@@ -97,11 +121,13 @@
     <div>
         <div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
     </div>
+    <div class="loadingDiv" style="display:none">Loading...</div>
     <script type="text/javascript">
     jQuery(document).ready(function() {
         populateHeaderSelect();
 
-        jQuery('.options, input, select').change(function() {
+        jQuery('.options').change(function() {
+            jQuery('.messages').html('');
             let graphType = jQuery('#graphType option:selected').val();
             if (graphType === 'histBar') {
                 createHistogramWrapper();
@@ -133,7 +159,9 @@
         }, 100);
     });
 
-    var MINIMUM_COLUMN_WIDTH = 60;
+
+
+    var MINIMUM_COLUMN_WIDTH = 20;
 
     // Global Vars
     var bins = null;
@@ -152,6 +180,9 @@
     var catVar = null;
     var jsonData = null;
     var isStringData = false;
+    var isDateData = false;
+    var isDateX = false;
+    var isDateY = false;
     var tip = null;
 
     function createHistogramWrapper() {
@@ -159,11 +190,12 @@
         jQuery('.sortByDiv').hide();
         jQuery('.scatterOptions').hide();
         jQuery('.variableSelectDiv').show();
-
+        loading(true);
         //change "${input0}" to data.txt to test locally
         d3.tsv("${input0}", function(error, data) {
             if (error) throw error;
             jQuery('input').hide();
+            loading(true);
 
             variable = jQuery('.variableSelect').val();
             xVar = jQuery('#xVarSelect').val();
@@ -186,6 +218,7 @@
                 jQuery('.sortByDiv').show();
             }
 
+            loading(false);
             jQuery('input').show();
         });
 
@@ -195,11 +228,13 @@
         jQuery('.messages').html('');
         jQuery('.sortByDiv, .numBinsDiv, .variableSelectDiv').hide();
         jQuery('.scatterOptions').show();
-
+        
+        loading(true);
         //change "LearnSphere?htmlPath=workflows/320//Visualization-1-x960916/output/data.txt" to data.txt to test locally
         d3.tsv("${input0}", function(error, data) {
             if (error) throw error;
             jQuery('input').hide();
+            loading(true);
 
             xVar = jQuery('#xVarSelect').val();
             yVar = jQuery('#yVarSelect').val();
@@ -211,6 +246,7 @@
             createScatterPlot();
 
             jQuery('input').show();
+            loading(false);
         });
 
     }
@@ -258,16 +294,48 @@
         setupGraph();
 
         let xDomain = getDomain();
-        x = d3.scaleLinear()
-            .range([0, width])
-            .domain(xDomain);
+        if (isDateData) {
+            x = d3.scaleTime()
+                .range([0, width])
+                .domain(xDomain);
+        } else {
+            x = d3.scaleLinear()
+                .range([0, width])
+                .domain(xDomain);
+        }
         y = d3.scaleLinear()
             .range([height, 0]);
 
         // set the parameters for the histogram
-        histogram = d3.histogram()
-            .domain(x.domain())
-            .thresholds(x.ticks(numBins));
+        if (isDateData) {
+            // Get the difference between the first and last date in days.
+            let timeDiff = (xDomain[1] - xDomain[0]);
+
+            let timeScale = d3.timeMillisecond;
+            if (timeDiff / (1000 * 60 * 60 * 24 * 365) > 1) {
+                timeScale = d3.timeYear;
+            } else if (timeDiff / (1000 * 60 * 60 * 24) > 10) {
+                timeScale = d3.timeDay;
+            } else if (timeDiff / (1000 * 60 * 60) > 10) {
+                timeScale = d3.timeHour;
+            } else if (timeDiff / (1000 * 60 * 60 * 24) > 10) {
+                timeScale = d3.timeDay;
+            } else if (timeDiff / (1000 * 60 * 60) > 10) {
+                timeScale = d3.timeHour;
+            } else if (timeDiff / (1000 * 60) > 10) {
+                timeScale = d3.timeMinute;
+            } else if (timeDiff / (1000) > 10) {
+                timeScale = d3.timeSecond;
+            }
+
+            histogram = d3.histogram()
+                .domain(x.domain())
+                .thresholds(x.ticks(d3.timeScale));
+        } else {
+            histogram = d3.histogram()
+                .domain(x.domain())
+                .thresholds(x.ticks(numBins));
+        }
     }
 
     function createBarChart() {
@@ -338,25 +406,40 @@
         setupGraph();
 
         // setup x 
-        var xValue = function(d) { return d[xVar]; }, // data -> value
-            xScale = d3.scaleLinear().range([0, width]), // value -> display
-            xMap = function(d) { return xScale(xValue(d)); }; // data -> display
+        var xValue = function(d) { return d[xVar]; }; // data -> value
+        var xScale = null;
+        if (isDateX) {
+            xScale = d3.scaleTime().range([0, width]);
+        } else {
+            xScale = d3.scaleLinear().range([0, width]); // value -> display
+        }
+        var xMap = function(d) { return xScale(xValue(d)); }; // data -> display
 
         // setup y
-        var yValue = function(d) { return d[yVar]; }, // data -> value
-            yScale = d3.scaleLinear().range([height, 0]), // value -> display
-            yMap = function(d) { return yScale(yValue(d)); }; // data -> display
+        var yValue = function(d) { return d[yVar]; }; // data -> value
+        var yScale = null;
+        if (isDateY) {
+            yScale = d3.scaleTime().range([height, 0]);
+        } else {
+            yScale = d3.scaleLinear().range([height, 0]); // value -> display
+        }
+        var yMap = function(d) { return yScale(yValue(d)); }; // data -> display
+
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        /*var color = d3.scaleOrdinal(['#FF0000', '#FF7F00', '#FFFF00', 
+        	'#7FFF00', '#00FF00', '#00AF8F', '#0000FF',
+            '#4B0082', '#9400D3', '#000000'
+        ]);*/
 
         // setup fill color
         var cValue = null;
         if (catVar !== "none") {
             cValue = function(d) { return d[catVar]; }
         } else {
+            color = d3.scaleOrdinal(['#9D6DDF']);
             cValue = function(d) { return "uncategorized"; }
         }
-        //var color = d3.scaleOrdinal(d3.schemeCategory10);
-        var color = d3.scaleOrdinal(['#FF0000','#FF7F00','#FFFF00', '#7FFF00', '#00FF00', '#00AF8F', '#0000FF',
-        	'#4B0082', '#9400D3', '#000000']);
 
         // add the tooltip area to the webpage
         var tooltip = d3.select("body").append("div")
@@ -366,6 +449,16 @@
         // don't want dots overlapping axis, so add in buffer to data domain
         xScale.domain([d3.min(jsonData, xValue) - 1, d3.max(jsonData, xValue) + 1]);
         yScale.domain([d3.min(jsonData, yValue) - 1, d3.max(jsonData, yValue) + 1]);
+        if (isDateX) {
+            xScale.domain([Date.parse(d3.min(jsonData, xValue)) - 1,
+                Date.parse(d3.max(jsonData, xValue)) + 1
+            ]);
+        }
+        if (isDateY) {
+            yScale.domain([Date.parse(d3.min(jsonData, yValue)) - 1,
+                Date.parse(d3.max(jsonData, yValue)) + 1
+            ]);
+        }
 
         // add the x Axis
         svg.append("g")
@@ -404,8 +497,16 @@
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html("(" + parseFloat(xValue(d)) +
-                        ", " + parseFloat(yValue(d)) + ")")
+                let xVal = parseFloat(xValue(d));
+                let yVal = parseFloat(yValue(d));
+                if (isDateX) {
+                    xVal = xValue(d).toLocaleDateString() + " " + xValue(d).toLocaleTimeString();
+                }
+                if (isDateY) {
+                    yVal = yValue(d).toLocaleDateString() + " " + yValue(d).toLocaleTimeString();
+                }
+                tooltip.html(catVarTooltipHtml(d, cValue) + "(" + xVal +
+                        ", " + yVal + ")")
                     .style("left", (d3.event.pageX + 5) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })
@@ -445,12 +546,17 @@
     function formatDataInJson(data) {
         jsonData = [];
         let numNonNumeric = 0;
+        let numDate = 0;
         isStringData = false;
+        isDateData = false;
         for (let i = 0; i < data.length; i++) {
             let val = data[i][variable];
             if (val != undefined) {
                 if (isNaN(val)) {
                     numNonNumeric++;
+                }
+                if (!isNaN(Date.parse(val)) && isNaN(val)) {
+                    numDate++;
                 }
                 jsonData.push(val);
             }
@@ -458,6 +564,7 @@
 
         let graphType = jQuery('#graphType option:selected').val();
         let ratioNonNumeric = numNonNumeric / data.length;
+        let ratioDate = numDate / data.length;
         if (ratioNonNumeric <= 0.5 && numNonNumeric > 0 && graphType === 'histBar') {
             jQuery(".messages").html("This variable has " +
                 String(ratioNonNumeric * 100).substring(0, 4) +
@@ -470,6 +577,16 @@
                 }
             }
             jsonData = justNumbers;
+        } else if (ratioDate > 0.5 && graphType === 'histBar') {
+            isDateData = true;
+            let justDates = [];
+            for (let i = 0; i < jsonData.length; i++) {
+                if (!isNaN(Date.parse(jsonData[i]))) {
+                    justDates.push(new Date(jsonData[i]));
+                }
+            }
+            jsonData = justDates;
+
         } else if (ratioNonNumeric > 0.5 && graphType === 'histBar') {
             // This is string data
             isStringData = true;
@@ -512,28 +629,70 @@
             jsonData = stringData;
         } else if (graphType === "scatter") {
             jsonData = data;
+            let totalX = jsonData.length,
+                totalY = jsonData.length,
+                nonNumX = 0,
+                nonNumY = 0,
+                numDateX = 0,
+                numDateY = 0;
+            isDateX = false;
+            isDateY = false;
             for (let i = 0; i < jsonData.length; i++) {
-	            let valX = jsonData[i][xVar],
-	            	valY = jsonData[i][yVar];
-	            if (valX != undefined) {
-	                if (!isNaN(valX)) {
-	                    jsonData[i][xVar] = parseFloat(jsonData[i][xVar]);
-	                } else {
-	                	jsonData.splice(i--, 1);
-	                	continue;
-	                }
-	            }
-	            if (valY != undefined) {
-	                if (!isNaN(valY)) {
-	                    jsonData[i][yVar] = parseFloat(jsonData[i][yVar]);
-	                } else {
-	                	jsonData.splice(i--, 1);
-	                }
-	            }
-	        }
+                let valX = jsonData[i][xVar],
+                    valY = jsonData[i][yVar];
+                if (valX != undefined) {
+                    if (!isNaN(valX)) {
+                        jsonData[i][xVar] = parseFloat(jsonData[i][xVar]);
+                    } else if (!isNaN(Date.parse(valX))) {
+                        jsonData[i][xVar] = new Date(valX);
+                        numDateX++;
+                    } else {
+                        jsonData.splice(i--, 1);
+                        nonNumX++;
+                        if (!isNaN(valY)) {
+                            nonNumY++;
+                        }
+                        continue;
+                    }
+                }
+                if (valY != undefined) {
+                    if (!isNaN(valY)) {
+                        jsonData[i][yVar] = parseFloat(jsonData[i][yVar]);
+                    } else if (!isNaN(Date.parse(valY))) {
+                        jsonData[i][yVar] = new Date(valY);
+                        numDateY++;
+                    } else {
+                        jsonData.splice(i--, 1);
+                        nonNumY++;
+                    }
+                }
+
+            }
+            if (nonNumX > 0) {
+                jQuery('.messages').append('<div class="message">' + nonNumX +
+                    ' out of ' + totalX + ' values of ' + xVar + ' are non-numeric</div>');
+            }
+            if (nonNumY > 0) {
+                jQuery('.messages').append('<div class="message">' + nonNumY +
+                    ' out of ' + totalY + ' values of ' + yVar + ' are non-numeric</div>');
+            }
+
+            if (numDateX / totalX > 0.5) {
+                isDateX = true;
+            }
+            if (numDateY / totalY > 0.5) {
+                isDateY = true;
+            }
         }
     }
 
+    function catVarTooltipHtml(d, cValue) {
+        let catTooltipHtml = '';
+        if (catVar != "none") {
+            catTooltipHtml = cValue(d) + '<br />';
+        }
+        return catTooltipHtml;
+    }
     /**
      * Add the data to the histogram
      */
@@ -543,7 +702,13 @@
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Interval:</strong> <span style='color:red'>" + d.x0 + "-" + d.x1 + "</span><br/>" +
+                let start = d.x0,
+                    end = d.x1;
+                if (isDateData) {
+                    start = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+                    end = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+                }
+                return "<strong>Interval:</strong> <span style='color:red'>" + start + " - " + end + "</span><br/>" +
                     "<strong>Count:&nbsp;&nbsp;&nbsp;</strong> <span style='color:red'>" + d.length + "</span>";
             })
         svg.call(tip);
@@ -589,6 +754,8 @@
     function getDomain() {
         if (!isStringData) {
             return [Math.min(...jsonData), Math.max(...jsonData)];
+        } else if (isDateData) {
+
         } else {
             // probably unnecessary
             let max = -1,
@@ -613,10 +780,10 @@
             keys.forEach(function(key, ind) {
                 jQuery('.variableSelect').append(jQuery('<option />').val(key).text(key));
                 jQuery('#xVarSelect').append(jQuery('<option />').val(key).text(key));
-                if (ind ==1) {
-                	jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
+                if (ind == 1) {
+                    jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
                 } else {
-                	jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
+                    jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
                 }
                 jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
             })
@@ -684,6 +851,31 @@
         d3.select("#svgContainer g").attr("transform",
             "translate(" + margin.left + "," + margin.top + ")" +
             "scale(" + d3.event.transform.k + ",1)");
+    }
+
+    var loadingInterval = null;
+    function loading(isLoading) {
+    	if (isLoading) {
+    		jQuery('.loadingDiv').show();
+    		/*loadingInterval = setInterval(function() {
+    			jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
+    				jQuery('.loadingDiv').animate({'opacity':1}, 400);
+    			});
+    		}, 800);*/
+    	} else {
+    		jQuery('.loadingDiv').hide();
+    		//clearInterval(loadingInterval);
+
+    	}
+    }
+
+    function allowSaveableSvg() {
+        //$('#svgContainer').attr('id', 'canvas');
+        $('body').append('<button id="downloadGraphButton"><a id="downloadGraphImage" download="histogram.png">Download Chart as an Image.</a></button>');
+        document.getElementById('downloadGraphImage').addEventListener('click', function() {
+            var dataUrl = cy.png();
+            this.href = dataUrl;
+        }, false);
     }
 
     d3.functor = function functor(v) {
