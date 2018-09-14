@@ -78,7 +78,7 @@ if (length(args) == 2) {
   }
 }
 
-df <- preprocess(fread(file=stuStepFileName,verbose = F),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 
 ## fit iAFM - four params - individual intercept, individual slope, KC intercept, and KC slope
 iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
@@ -130,7 +130,7 @@ write("</parameters>",file=outputFile2,sep="",append=TRUE)
 outputFile3 <- paste(workingDir, "/student-step.txt", sep="")
 
 # Make note of original header, including column ordering
-origFile <- fread(file=stuStepFileName,verbose = F)
+origFile <- suppressWarnings(fread(file=stuStepFileName,verbose = F))
 origCols <- colnames(origFile)
 
 # Add PER for the specified model. if it exists replaces, if it doesn't exist gets added to the end
@@ -146,4 +146,5 @@ if(PERname%in%origCols){
   names(origFile)[ncol(origFile)] <- PERname # Rename the column
 }
 
-fwrite(origFile, file=outputFile3,sep="\t")
+suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t"))
+
