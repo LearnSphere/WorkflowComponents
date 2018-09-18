@@ -3,6 +3,11 @@
 
 <head>
     <title>Histogram</title>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script type="application/json" id="mis"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.4/rgbcolor.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>
     <style>
     .link {
         stroke: #ccc;
@@ -63,31 +68,45 @@
         position: absolute;
         top: 5px;
         right: 5px;
-        border: 2px solid black;
         padding: 5px;
         max-height: 4em;
         max-width: 30%;
         overflow: auto;
+        color: red;
+        cursor: pointer;
     }
 
     .loadingDiv {
-    	position: absolute;
-	    top: 40%;
-	    left: 40%;
-	    font-size: 5em;
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        font-size: 5em;
+    }
+
+    #downloadGraphImage {
+        padding: 1px 6px;
+        margin: 5px;
+        -webkit-appearance: button;
+        /* WebKit */
+        -moz-appearance: button;
+        /* Mozilla */
+        -o-appearance: button;
+        /* Opera */
+        -ms-appearance: button;
+        /* Internet Explorer */
+        appearance: button;
+        /* CSS3 */
     }
     </style>
 </head>
 
 <body>
-    <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script type="application/json" id="mis"></script>
     <div class="options">
         <div class="graphTypeDiv">
             Graph Type:
             <select id="graphType">
-                <option value="histBar">Histogram/Bar Chart</option>
+                <option value="histBar">Histogram</option>
+                <option value="barChart">Bar Chart</option>
                 <option value="scatter" selected>Scatter Plot</option>
             </select>
         </div>
@@ -116,6 +135,10 @@
                 <option value="none">None</option>
             </select>
         </div>
+        <div class="downloadGraphButton">
+            <a id="downloadGraphImage" download="histogram.png">Download graph</a>
+            <canvas id="canvasConversion" style="display:none"></canvas>
+        </div>
     </div>
     <div class="messages"></div>
     <div>
@@ -123,32 +146,11 @@
     </div>
     <div class="loadingDiv" style="display:none">Loading...</div>
     <script type="text/javascript">
-    jQuery(document).ready(function() {
-        populateHeaderSelect();
-
-        jQuery('.options').change(function() {
-            jQuery('.messages').html('');
-            let graphType = jQuery('#graphType option:selected').val();
-            if (graphType === 'histBar') {
-                createHistogramWrapper();
-            } else if (graphType === 'scatter') {
-                createScatterPlotWrapper();
-            }
-        });
-
-        let graphType = jQuery('#graphType option:selected').val();
-        if (graphType === 'histBar') {
-            createHistogramWrapper();
-        } else if (graphType === 'scatter') {
-            createScatterPlotWrapper();
-        }
-    });
-
     // Initiate the changing color background
     var backgroundColor = 214;
     var rectInd = 0;
     jQuery(document).ready(function() {
-        setInterval(function() {
+        /*setInterval(function() {
             rectInd = 0;
             jQuery('rect.bar').each(function() {
                 jQuery(this).css('fill',
@@ -156,7 +158,7 @@
             });
             backgroundColor = backgroundColor + 1;
 
-        }, 100);
+        }, 100);*/
     });
 
 
@@ -164,102 +166,131 @@
     var MINIMUM_COLUMN_WIDTH = 20;
 
     // Global Vars
-    var bins = null;
+    var d3TsvData = null;
     var margin = null;
     var width = null;
     var height = null;
     var x = null;
     var y = null;
-    var height = null;
-    var histogram = null;
     var svg = null;
-    var histogram = null;
     var variable = null;
     var xVar = null;
     var yVar = null;
     var catVar = null;
     var jsonData = null;
-    var isStringData = false;
-    var isDateData = false;
+    var histogramDataIsDate = false;
     var isDateX = false;
     var isDateY = false;
     var tip = null;
 
-    function createHistogramWrapper() {
-        jQuery('.messages').html('');
-        jQuery('.sortByDiv').hide();
-        jQuery('.scatterOptions').hide();
-        jQuery('.variableSelectDiv').show();
-        loading(true);
-        //change "${input0}" to data.txt to test locally
+    jQuery(document).ready(function() {
+        initiateInterface();
+
         d3.tsv("${input0}", function(error, data) {
             if (error) throw error;
-            jQuery('input').hide();
-            loading(true);
 
-            variable = jQuery('.variableSelect').val();
-            xVar = jQuery('#xVarSelect').val();
-            yVar = jQuery('#yVarSelect').val();
-            catVar = jQuery('#catVarSelect').val();
+            d3TsvData = data;
+            populateHeaderSelect(data);
 
-            // Get the data in a json format based on the selected variable
-            formatDataInJson(data);
-
-            if (!isStringData) {
-                //Numeric data, make a normal histogram
-                jQuery('.numBinsDiv').show();
-                createHistogram();
-                bins = histogram(jsonData);
-                drawHistogram();
-            } else {
-                // Make a bar chart since the data is string
-                createBarChart();
-                jQuery('.numBinsDiv').hide();
-                jQuery('.sortByDiv').show();
+            // With the default values, create a graph
+            let graphType = jQuery('#graphType option:selected').val();
+            if (graphType === 'histBar') {
+                createHistogramWrapper();
+            } else if (graphType === 'scatter') {
+                createScatterPlotWrapper();
+            } else if (graphType === 'barChart') {
+                createBarChartWrapper();
             }
-
-            loading(false);
-            jQuery('input').show();
         });
+    });
+
+    function initiateInterface() {
+        allowSaveableImage();
+
+        // Set functionality for changing an option
+        jQuery('.options select, .options input').change(function() {
+            clearMessageBox();
+            let graphType = jQuery('#graphType option:selected').val();
+            if (graphType === 'histBar') {
+                createHistogramWrapper();
+            } else if (graphType === 'scatter') {
+                createScatterPlotWrapper();
+            } else if (graphType === 'barChart') {
+                createBarChartWrapper();
+            }
+        });
+    }
+
+    function createHistogramWrapper() {
+        clearMessageBox();
+
+        // Only show the options necessary for histograms
+        jQuery('.sortByDiv, .scatterOptions').hide();
+        jQuery('.variableSelectDiv, .numBinsDiv').show();
+
+        loading(true);
+
+        variable = jQuery('.variableSelect').val();
+
+        // Get the data in a json format based on the selected variable
+        let data = formatDataHistogram(d3TsvData);
+        createHistogram(data);
+
+        loading(false);
+
+    }
+
+    function createBarChartWrapper() {
+        clearMessageBox();
+
+        // Only show the options necessary for Bar charts
+        jQuery('.scatterOptions, .numBinsDiv').hide();
+        jQuery('.variableSelectDiv, .sortByDiv').show();
+
+        loading(true);
+
+        variable = jQuery('.variableSelect').val();
+
+        // Get the data in a json format based on the selected variable
+        let data = formatDataBarChart(d3TsvData);
+
+        createBarChart(data);
+
+        loading(false);
 
     }
 
     function createScatterPlotWrapper() {
-        jQuery('.messages').html('');
+        clearMessageBox();
         jQuery('.sortByDiv, .numBinsDiv, .variableSelectDiv').hide();
         jQuery('.scatterOptions').show();
-        
+
         loading(true);
-        //change "LearnSphere?htmlPath=workflows/320//Visualization-1-x960916/output/data.txt" to data.txt to test locally
-        d3.tsv("${input0}", function(error, data) {
-            if (error) throw error;
-            jQuery('input').hide();
-            loading(true);
 
-            xVar = jQuery('#xVarSelect').val();
-            yVar = jQuery('#yVarSelect').val();
-            catVar = jQuery('#catVarSelect').val();
+        xVar = jQuery('#xVarSelect').val();
+        yVar = jQuery('#yVarSelect').val();
+        catVar = jQuery('#catVarSelect').val();
 
-            // Get the data in a json format based on the selected variable
-            formatDataInJson(data);
+        // Get the data in a json format based on the selected variable
+        let data = formatDataScatterPlot(d3TsvData);
 
-            createScatterPlot();
+        createScatterPlot(data);
 
-            jQuery('input').show();
-            loading(false);
-        });
-
+        loading(false);
     }
 
-    function setupGraph() {
+    /**
+     * Prepare the SVG area for a graph to be put into it
+     */
+    function setupGraph(data) {
         // set the dimensions and margins of the graph
-        margin = { top: 10, right: 60, bottom: 60, left: 60 };
+        margin = { top: 10, right: 90, bottom: 60, left: 70 };
 
         let windowWidth = Math.max(jQuery(window).width(), 600);
         let maxWidth = Math.max(windowWidth, jQuery('input[name="numBins"]').val() * MINIMUM_COLUMN_WIDTH);
-        if (isStringData) {
-            MINIMUM_COLUMN_WIDTH = widthOfLongestString();
-            maxWidth = Math.max(windowWidth, 1.1 * jsonData.length * MINIMUM_COLUMN_WIDTH);
+        if (jQuery('#graphType option:selected').val() === "barChart") {
+            MINIMUM_COLUMN_WIDTH = widthOfLongestString(data);
+            maxWidth = Math.max(windowWidth, 1.1 * data.length * MINIMUM_COLUMN_WIDTH);
         }
         width = maxWidth - margin.left - margin.right;
 
@@ -285,16 +316,20 @@
             .call(d3.zoom().on("zoom", zoomed));
     }
 
+    //////////////////////////////////////////////////////////////
+    //////////    Use D3 to create the svg graph    //////////////
+    //////////////////////////////////////////////////////////////
+
     /**
      * Set up histogram functionality
      */
-    function createHistogram() {
+    function createHistogram(data) {
         let numBins = jQuery('input[name="numBins"]').val();
 
-        setupGraph();
+        setupGraph(data);
 
-        let xDomain = getDomain();
-        if (isDateData) {
+        let xDomain = getDomain(data);
+        if (histogramDataIsDate) {
             x = d3.scaleTime()
                 .range([0, width])
                 .domain(xDomain);
@@ -306,8 +341,9 @@
         y = d3.scaleLinear()
             .range([height, 0]);
 
+        let histogram = null;
         // set the parameters for the histogram
-        if (isDateData) {
+        if (histogramDataIsDate) {
             // Get the difference between the first and last date in days.
             let timeDiff = (xDomain[1] - xDomain[0]);
 
@@ -336,10 +372,65 @@
                 .domain(x.domain())
                 .thresholds(x.ticks(numBins));
         }
+
+        let bins = histogram(data);
+
+        // Tooltips
+        tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                let start = d.x0,
+                    end = d.x1;
+                if (histogramDataIsDate) {
+                    start = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+                    end = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+                }
+                return "<strong>Interval:</strong> <span style='color:red'>" + start + " - " + end + "</span><br/>" +
+                    "<strong>Count:&nbsp;&nbsp;&nbsp;</strong> <span style='color:red'>" + d.length + "</span>";
+            })
+        svg.call(tip);
+
+        // Scale the range of the data in the y domain
+        y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+
+        // append the bar rectangles to the svg element
+        svg.selectAll("rect")
+            .data(bins)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+            .attr("x", 1)
+            .attr("transform", function(d) {
+                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+            })
+            .attr("width", function(d) {
+                return x(d.x1) - x(d.x0) - 1;
+            })
+            .attr("height", function(d) {
+                return height - y(d.length);
+            });
+
+        // add the x Axis
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        // add a label for x Axis
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width / 2) + " ," +
+                (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text(variable);
+
+        // add the y Axis
+        svg.append("g")
+            .call(d3.axisLeft(y));
     }
 
-    function createBarChart() {
-        setupGraph();
+    function createBarChart(data) {
+        setupGraph(data);
 
         // Tooltips
         tip = d3.tip()
@@ -360,18 +451,18 @@
 
 
         // Scale the range of the data in the domains
-        x.domain(jsonData.map(function(d) { return d.string; }));
-        y.domain([0, d3.max(jsonData, function(d) { return d.count; })]);
+        x.domain(data.map(function(d) { return d.string; }));
+        y.domain([0, d3.max(data, function(d) { return d.count; })]);
 
         // append the rectangles for the bar chart
         svg.selectAll("rect")
-            .data(jsonData)
+            .data(data)
             .enter().append("rect")
             .attr("class", "bar")
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
             .attr("x", function(d) { return x(d.string); })
-            .attr("width", widthOfLongestString()) //x.bandwidth())
+            .attr("width", x.bandwidth())
             .attr("y", function(d) { return y(d.count); })
             .attr("height", function(d) { return height - y(d.count); });
 
@@ -387,7 +478,7 @@
             .style("text-anchor", "middle")
             .text(variable);
         svg.selectAll(".tick text")
-            .call(wrap, widthOfLongestString());
+            .call(wrap, x.bandwidth());
 
         // add the y Axis
         svg.append("g")
@@ -402,8 +493,8 @@
             .text("Count");
     }
 
-    function createScatterPlot() {
-        setupGraph();
+    function createScatterPlot(data) {
+        setupGraph(data);
 
         // setup x 
         var xValue = function(d) { return d[xVar]; }; // data -> value
@@ -447,16 +538,16 @@
             .style("opacity", 0);
 
         // don't want dots overlapping axis, so add in buffer to data domain
-        xScale.domain([d3.min(jsonData, xValue) - 1, d3.max(jsonData, xValue) + 1]);
-        yScale.domain([d3.min(jsonData, yValue) - 1, d3.max(jsonData, yValue) + 1]);
+        xScale.domain([d3.min(data, xValue) - 1, d3.max(data, xValue) + 1]);
+        yScale.domain([d3.min(data, yValue) - 1, d3.max(data, yValue) + 1]);
         if (isDateX) {
-            xScale.domain([Date.parse(d3.min(jsonData, xValue)) - 1,
-                Date.parse(d3.max(jsonData, xValue)) + 1
+            xScale.domain([Date.parse(d3.min(data, xValue)) - 1,
+                Date.parse(d3.max(data, xValue)) + 1
             ]);
         }
         if (isDateY) {
-            yScale.domain([Date.parse(d3.min(jsonData, yValue)) - 1,
-                Date.parse(d3.max(jsonData, yValue)) + 1
+            yScale.domain([Date.parse(d3.min(data, yValue)) - 1,
+                Date.parse(d3.max(data, yValue)) + 1
             ]);
         }
 
@@ -486,7 +577,7 @@
 
         // draw dots
         svg.selectAll(".dot")
-            .data(jsonData)
+            .data(data)
             .enter().append("circle")
             .attr("class", "dot")
             .attr("r", 3.5)
@@ -537,18 +628,20 @@
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; })
-
     }
 
-    /**
-     * function to transform data in json
-     */
-    function formatDataInJson(data) {
-        jsonData = [];
+    //////////////////////////////////////////////////////////////
+    //////////    Format data for d3    //////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    function formatDataHistogram(originalData) {
+        let data = JSON.parse(JSON.stringify(originalData));
+        let jsonData = [];
         let numNonNumeric = 0;
         let numDate = 0;
-        isStringData = false;
-        isDateData = false;
+        histogramDataIsDate = false;
+
+        //Determine if the variable for the histogram is a number or date
         for (let i = 0; i < data.length; i++) {
             let val = data[i][variable];
             if (val != undefined) {
@@ -562,14 +655,15 @@
             }
         }
 
-        let graphType = jQuery('#graphType option:selected').val();
         let ratioNonNumeric = numNonNumeric / data.length;
         let ratioDate = numDate / data.length;
-        if (ratioNonNumeric <= 0.5 && numNonNumeric > 0 && graphType === 'histBar') {
-            jQuery(".messages").html("This variable has " +
+        if ((data.length - numNonNumeric) > 0 && numNonNumeric > 0) {
+            // Mostly numeric but with some non numeric
+            addMessage("This variable(" + variable + ") has " +
                 String(ratioNonNumeric * 100).substring(0, 4) +
                 "% non-numeric data." +
                 " This histogram will ignore the non-numeric values.");
+            // Remove the non numeric data
             let justNumbers = [];
             for (let i = 0; i < jsonData.length; i++) {
                 if (!isNaN(jsonData[i])) {
@@ -577,8 +671,15 @@
                 }
             }
             jsonData = justNumbers;
-        } else if (ratioDate > 0.5 && graphType === 'histBar') {
-            isDateData = true;
+        } else if (ratioDate > 0.5) {
+            // This is date data
+            if (data.length - numDate > 0) {
+                addMessage("This variable(" + variable + ") has " +
+                    String(ratioDate * 100).substring(0, 4) +
+                    "% date data." +
+                    " This histogram will ignore the non-date values.");
+            }
+            histogramDataIsDate = true;
             let justDates = [];
             for (let i = 0; i < jsonData.length; i++) {
                 if (!isNaN(Date.parse(jsonData[i]))) {
@@ -587,104 +688,124 @@
             }
             jsonData = justDates;
 
-        } else if (ratioNonNumeric > 0.5 && graphType === 'histBar') {
-            // This is string data
-            isStringData = true;
-            let stringData = [];
-            for (let i = 0; i < jsonData.length; i++) {
-                let val = {};
-                val.string = jsonData[i];
-                val.count = countInArray(jsonData, jsonData[i]);
-                stringData.push(val);
+        } else if (ratioNonNumeric > 0.9) {
+            addMessage("This variable(" + variable + ") has " +
+                String(ratioNonNumeric * 100).substring(0, 4) +
+                "% non-numeric data." +
+                " Histograms can only be created on numeric or date data");
+        }
+        return jsonData;
+    }
 
-                for (var j = jsonData.length - 1; j--;) {
-                    if (jsonData[j] === jsonData[i]) {
-                        jsonData.splice(j, 1);
-                    }
-                }
-            }
-            let sortBy = jQuery('#sortBy option:selected').val();
-            if (sortBy === "alphabetical") {
-                stringData.sort(
-                    function(a, b) {
-                        let a1 = a.string,
-                            b1 = b.string;
-                        if (!isNaN(a.string) && !isNaN(b.string)) {
-                            a1 = parseFloat(a.string);
-                            b1 = parseFloat(b.string);
-                        }
-                        return (a1 > b1) ? 1 : ((b1 > a1) ? -1 : 0);
-                    });
-            } else if (sortBy === "countAsc") {
-                stringData.sort(
-                    function(a, b) {
-                        return (a.count > b.count) ? 1 : ((b.count > a.count) ? -1 : 0);
-                    });
-            } else if (sortBy === "countDesc") {
-                stringData.sort(
-                    function(a, b) {
-                        return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
-                    });
-            }
-            jsonData = stringData;
-        } else if (graphType === "scatter") {
-            jsonData = data;
-            let totalX = jsonData.length,
-                totalY = jsonData.length,
-                nonNumX = 0,
-                nonNumY = 0,
-                numDateX = 0,
-                numDateY = 0;
-            isDateX = false;
-            isDateY = false;
-            for (let i = 0; i < jsonData.length; i++) {
-                let valX = jsonData[i][xVar],
-                    valY = jsonData[i][yVar];
-                if (valX != undefined) {
-                    if (!isNaN(valX)) {
-                        jsonData[i][xVar] = parseFloat(jsonData[i][xVar]);
-                    } else if (!isNaN(Date.parse(valX))) {
-                        jsonData[i][xVar] = new Date(valX);
-                        numDateX++;
-                    } else {
-                        jsonData.splice(i--, 1);
-                        nonNumX++;
-                        if (!isNaN(valY)) {
-                            nonNumY++;
-                        }
-                        continue;
-                    }
-                }
-                if (valY != undefined) {
-                    if (!isNaN(valY)) {
-                        jsonData[i][yVar] = parseFloat(jsonData[i][yVar]);
-                    } else if (!isNaN(Date.parse(valY))) {
-                        jsonData[i][yVar] = new Date(valY);
-                        numDateY++;
-                    } else {
-                        jsonData.splice(i--, 1);
-                        nonNumY++;
-                    }
-                }
+    function formatDataBarChart(originalData) {
+        let data = JSON.parse(JSON.stringify(originalData));
+        let jsonData = [];
 
-            }
-            if (nonNumX > 0) {
-                jQuery('.messages').append('<div class="message">' + nonNumX +
-                    ' out of ' + totalX + ' values of ' + xVar + ' are non-numeric</div>');
-            }
-            if (nonNumY > 0) {
-                jQuery('.messages').append('<div class="message">' + nonNumY +
-                    ' out of ' + totalY + ' values of ' + yVar + ' are non-numeric</div>');
-            }
+        // Get each unique string and it's count in the data
+        let stringData = [];
+        for (let i = 0; i < data.length; i++) {
+            let val = {};
+            val.string = data[i][variable];
+            val.count = countInArray(data, data[i][variable]);
+            stringData.push(val);
 
-            if (numDateX / totalX > 0.5) {
-                isDateX = true;
-            }
-            if (numDateY / totalY > 0.5) {
-                isDateY = true;
+            for (var j = data.length - 1; j--;) {
+                if (data[j][variable] === val.string) {
+                    data.splice(j, 1);
+
+                }
             }
         }
+
+        // Sort this data
+        let sortBy = jQuery('#sortBy option:selected').val();
+        if (sortBy === "alphabetical") {
+            stringData.sort(
+                function(a, b) {
+                    let a1 = a.string,
+                        b1 = b.string;
+                    if (!isNaN(a.string) && !isNaN(b.string)) {
+                        a1 = parseFloat(a.string);
+                        b1 = parseFloat(b.string);
+                    }
+                    return (a1 > b1) ? 1 : ((b1 > a1) ? -1 : 0);
+                });
+        } else if (sortBy === "countAsc") {
+            stringData.sort(
+                function(a, b) {
+                    return (a.count > b.count) ? 1 : ((b.count > a.count) ? -1 : 0);
+                });
+        } else if (sortBy === "countDesc") {
+            stringData.sort(
+                function(a, b) {
+                    return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
+                });
+        }
+
+        jsonData = stringData;
+        return jsonData;
     }
+
+    function formatDataScatterPlot(data) {
+        let jsonData = JSON.parse(JSON.stringify(data)); //so you don't modify the original data
+
+        // Determine what type the x and y data are
+        let totalX = jsonData.length,
+            totalY = jsonData.length,
+            nonNumX = 0,
+            nonNumY = 0,
+            numDateX = 0,
+            numDateY = 0;
+        isDateX = false;
+        isDateY = false;
+        for (let i = 0; i < jsonData.length; i++) {
+            let valX = jsonData[i][xVar],
+                valY = jsonData[i][yVar];
+            if (valX != undefined) {
+                if (!isNaN(valX)) {
+                    jsonData[i][xVar] = parseFloat(jsonData[i][xVar]);
+                } else if (!isNaN(Date.parse(valX))) {
+                    jsonData[i][xVar] = new Date(valX);
+                    numDateX++;
+                } else {
+                    jsonData.splice(i--, 1);
+                    nonNumX++;
+                    if (!isNaN(valY)) {
+                        nonNumY++;
+                    }
+                    continue;
+                }
+            }
+            if (valY != undefined) {
+                if (!isNaN(valY)) {
+                    jsonData[i][yVar] = parseFloat(jsonData[i][yVar]);
+                } else if (!isNaN(Date.parse(valY))) {
+                    jsonData[i][yVar] = new Date(valY);
+                    numDateY++;
+                } else {
+                    jsonData.splice(i--, 1);
+                    nonNumY++;
+                }
+            }
+
+        }
+        if (nonNumX > 0) {
+            addMessage(nonNumX + ' out of ' + totalX + ' values of ' + xVar + ' are non-numeric');
+        }
+        if (nonNumY > 0) {
+            addMessage(nonNumY + ' out of ' + totalY + ' values of ' + yVar + ' are non-numeric');
+        }
+
+        if (numDateX / totalX > 0.5) {
+            isDateX = true;
+        }
+        if (numDateY / totalY > 0.5) {
+            isDateY = true;
+        }
+        return jsonData;
+    }
+
+
 
     function catVarTooltipHtml(d, cValue) {
         let catTooltipHtml = '';
@@ -693,75 +814,18 @@
         }
         return catTooltipHtml;
     }
-    /**
-     * Add the data to the histogram
-     */
-    function drawHistogram() {
-        // Tooltips
-        tip = d3.tip()
-            .attr('class', 'd3-tip')
-            .offset([-10, 0])
-            .html(function(d) {
-                let start = d.x0,
-                    end = d.x1;
-                if (isDateData) {
-                    start = start.toLocaleDateString() + " " + start.toLocaleTimeString();
-                    end = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-                }
-                return "<strong>Interval:</strong> <span style='color:red'>" + start + " - " + end + "</span><br/>" +
-                    "<strong>Count:&nbsp;&nbsp;&nbsp;</strong> <span style='color:red'>" + d.length + "</span>";
-            })
-        svg.call(tip);
 
-        // Scale the range of the data in the y domain
-        y.domain([0, d3.max(bins, function(d) { return d.length; })]);
-
-        // append the bar rectangles to the svg element
-        svg.selectAll("rect")
-            .data(bins)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
-            .attr("x", 1)
-            .attr("transform", function(d) {
-                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
-            })
-            .attr("width", function(d) {
-                return x(d.x1) - x(d.x0) - 1;
-            })
-            .attr("height", function(d) {
-                return height - y(d.length);
-            });
-
-        // add the x Axis
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
-        // add a label for x Axis
-        svg.append("text")
-            .attr("transform",
-                "translate(" + (width / 2) + " ," +
-                (height + margin.top + 20) + ")")
-            .style("text-anchor", "middle")
-            .text(variable);
-
-        // add the y Axis
-        svg.append("g")
-            .call(d3.axisLeft(y));
-    }
-
-    function getDomain() {
-        if (!isStringData) {
-            return [Math.min(...jsonData), Math.max(...jsonData)];
-        } else if (isDateData) {
+    function getDomain(data) {
+        if (jQuery('#graphType option:selected').val() !== "barChart") {
+            return [Math.min(...data), Math.max(...data)];
+        } else if (histogramDataIsDate) {
 
         } else {
             // probably unnecessary
             let max = -1,
                 min = Number.MAX_SAFE_INTEGER;
-            for (let i = 0; i < jsonData; i++) {
-                let v = jsonData[i].count;
+            for (let i = 0; i < data; i++) {
+                let v = data[i].count;
                 if (v > max) { max = v; }
                 if (v < min) { min = v; }
             }
@@ -769,31 +833,31 @@
         }
     }
 
-    function populateHeaderSelect() {
-        d3.tsv("${input0}", function(error, data) {
-            if (error) throw error;
-            //gets all column header
-            var keys = $.map(data[0], function(item, key) {
-                return key;
-            });
-
-            keys.forEach(function(key, ind) {
-                jQuery('.variableSelect').append(jQuery('<option />').val(key).text(key));
-                jQuery('#xVarSelect').append(jQuery('<option />').val(key).text(key));
-                if (ind == 1) {
-                    jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
-                } else {
-                    jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
-                }
-                jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
-            })
+    function populateHeaderSelect(data) {
+        //d3.tsv("LearnSphere?htmlPath=workflows/320//Visualization-1-x670172/output/data.txt", function(error, data) {
+        //if (error) throw error;
+        //gets all column header
+        var keys = $.map(data[0], function(item, key) {
+            return key;
         });
+
+        keys.forEach(function(key, ind) {
+            jQuery('.variableSelect').append(jQuery('<option />').val(key).text(key));
+            jQuery('#xVarSelect').append(jQuery('<option />').val(key).text(key));
+            if (ind == 1) {
+                jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
+            } else {
+                jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
+            }
+            jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
+        })
+        //});
     }
 
     function countInArray(array, what) {
         var count = 0;
         for (var i = 0; i < array.length; i++) {
-            if (array[i] === what) {
+            if (array[i][variable] === what) {
                 count++;
             }
         }
@@ -826,16 +890,15 @@
         });
     }
 
-    function widthOfLongestString() {
-        let maxLength = longestString();
+    function widthOfLongestString(data) {
+        let maxLength = longestString(data);
         return 6 * maxLength;
-
     }
 
-    function longestString() {
+    function longestString(data) {
         let maxLength = -1;
-        for (let i = 0; i < jsonData.length; i++) {
-            let s = jsonData[i].string;
+        for (let i = 0; i < data.length; i++) {
+            let s = data[i].string;
             let tokens = s.split("\\s+");
             for (let j = 0; j < tokens.length; j++) {
                 let t = tokens[j];
@@ -853,29 +916,39 @@
             "scale(" + d3.event.transform.k + ",1)");
     }
 
-    var loadingInterval = null;
-    function loading(isLoading) {
-    	if (isLoading) {
-    		jQuery('.loadingDiv').show();
-    		/*loadingInterval = setInterval(function() {
-    			jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
-    				jQuery('.loadingDiv').animate({'opacity':1}, 400);
-    			});
-    		}, 800);*/
-    	} else {
-    		jQuery('.loadingDiv').hide();
-    		//clearInterval(loadingInterval);
-
-    	}
+    function addMessage(message) {
+        jQuery('.messages').append('<div class="message">' + message + '</div>')
+            .css('border', '2px solid black');
     }
 
-    function allowSaveableSvg() {
-        //$('#svgContainer').attr('id', 'canvas');
-        $('body').append('<button id="downloadGraphButton"><a id="downloadGraphImage" download="histogram.png">Download Chart as an Image.</a></button>');
+    function clearMessageBox() {
+        jQuery('.messages').html('').css('border', 'none');
+    }
+
+    function allowSaveableImage() {
         document.getElementById('downloadGraphImage').addEventListener('click', function() {
-            var dataUrl = cy.png();
-            this.href = dataUrl;
+            jQuery('#canvasConversion').html('');
+            canvg('canvasConversion', jQuery('#svgContainer').html());
+
+            var canvas = document.getElementById("canvasConversion");
+            var img = canvas.toDataURL("image/png");
+            this.href = img;
         }, false);
+    }
+
+    function loading(isLoading) {
+        if (isLoading) {
+            jQuery('.loadingDiv').show();
+            /*loadingInterval = setInterval(function() {
+            	jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
+            		jQuery('.loadingDiv').animate({'opacity':1}, 400);
+            	});
+            }, 800);*/
+        } else {
+            jQuery('.loadingDiv').hide();
+            //clearInterval(loadingInterval);
+
+        }
     }
 
     d3.functor = function functor(v) {
