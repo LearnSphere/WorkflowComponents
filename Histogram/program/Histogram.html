@@ -97,15 +97,31 @@
         appearance: button;
         /* CSS3 */
     }
+
+    .advOptTable {
+    	border-spacing: 0px;
+    	border: 1px black solid;
+    	padding: 5px;
+    }
+    .allOptions td {
+    	display: inline-block;
+    }
+    .advancedOptions, .advancedOptions input  {
+    	font-size: 0.8em;
+    }
+    .allOptions {
+    	min-height: 
+    }
     </style>
 </head>
 
 <body>
+	<table class="allOptions"><tr><td>
     <div class="options">
         <div class="graphTypeDiv">
             Graph Type:
             <select id="graphType">
-                <option value="histBar">Histogram</option>
+                <option value="histogram">Histogram</option>
                 <option value="barChart">Bar Chart</option>
                 <option value="scatter" selected>Scatter Plot</option>
             </select>
@@ -140,11 +156,20 @@
             <canvas id="canvasConversion" style="display:none"></canvas>
         </div>
     </div>
+	</td><td>
+	<a id="toggleAdvOpt" href="#">Show Advanced Options</a>
+    <div class="advancedOptions" style="display:none"></div>
+	</div>
+	</td></tr></table>
+    
     <div class="messages"></div>
+    
     <div>
         <div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
     </div>
-    <div class="loadingDiv" style="display:none">Loading...</div>
+    
+    <div class="loadingDiv" style="">Loading...</div>
+    
     <script type="text/javascript">
     // Initiate the changing color background
     var backgroundColor = 214;
@@ -182,6 +207,7 @@
     var isDateX = false;
     var isDateY = false;
     var tip = null;
+    var FONT_SIZE = '1.2em';
 
     jQuery(document).ready(function() {
         initiateInterface();
@@ -191,10 +217,11 @@
 
             d3TsvData = data;
             populateHeaderSelect(data);
+            createAdvancedOptions();
 
             // With the default values, create a graph
             let graphType = jQuery('#graphType option:selected').val();
-            if (graphType === 'histBar') {
+            if (graphType === 'histogram') {
                 createHistogramWrapper();
             } else if (graphType === 'scatter') {
                 createScatterPlotWrapper();
@@ -207,11 +234,16 @@
     function initiateInterface() {
         allowSaveableImage();
 
+        jQuery('#toggleAdvOpt').click(function() {
+        	jQuery('.advancedOptions').toggle();
+        })
+
         // Set functionality for changing an option
         jQuery('.options select, .options input').change(function() {
             clearMessageBox();
+            displayAdvancedOptions();
             let graphType = jQuery('#graphType option:selected').val();
-            if (graphType === 'histBar') {
+            if (graphType === 'histogram') {
                 createHistogramWrapper();
             } else if (graphType === 'scatter') {
                 createScatterPlotWrapper();
@@ -283,10 +315,12 @@
      * Prepare the SVG area for a graph to be put into it
      */
     function setupGraph(data) {
-        // set the dimensions and margins of the graph
-        margin = { top: 10, right: 90, bottom: 60, left: 70 };
+    	advancedOptionsToObject();
 
-        let windowWidth = Math.max(jQuery(window).width(), 600);
+        // set the dimensions and margins of the graph
+        margin = { top: 10, right: 120, bottom: 60, left: 70 };
+
+        let windowWidth = Math.max(jQuery(window).width(), 1000);
         let maxWidth = Math.max(windowWidth, jQuery('input[name="numBins"]').val() * MINIMUM_COLUMN_WIDTH);
         if (jQuery('#graphType option:selected').val() === "barChart") {
             MINIMUM_COLUMN_WIDTH = widthOfLongestString(data);
@@ -412,21 +446,44 @@
                 return height - y(d.length);
             });
 
+        var xFontSize = advOpt.xLabelSize;
+        if (histogramDataIsDate && xFontSize == "1.2em") {
+        	//Date data and the default font size, make font smaller because date labels are large
+        	xFontSize = '0.85em';
+        }
+
         // add the x Axis
         svg.append("g")
+        	.style("font-size", advOpt.xTickSize)
+        	.attr('class', 'xTicks')
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x));
         // add a label for x Axis
         svg.append("text")
             .attr("transform",
                 "translate(" + (width / 2) + " ," +
-                (height + margin.top + 20) + ")")
+                (height + margin.top + 40) + ")")
             .style("text-anchor", "middle")
-            .text(variable);
+            .style("font-size", xFontSize)
+            .attr('id', 'xLabel')
+            .text(advOpt.xLabel);
 
         // add the y Axis
         svg.append("g")
-            .call(d3.axisLeft(y));
+        	.attr('class', 'yTicks')
+            .call(d3.axisLeft(y))
+            .style("font-size", advOpt.yTickSize);
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .attr('id', 'yLabel')
+            .style("text-anchor", "middle")
+            .style("font-size", advOpt.yLabelSize)
+            .text(advOpt.yLabel);
     }
 
     function createBarChart(data) {
@@ -474,23 +531,31 @@
         svg.append("text")
             .attr("transform",
                 "translate(" + (width / 2) + " ," +
-                (height + margin.top + 20) + ")")
+                (height + margin.top + 40) + ")")
+            .attr('id', 'xLabel')
             .style("text-anchor", "middle")
-            .text(variable);
+            .style('font-size', advOpt.xLabelSize)
+            .text(advOpt.xLabel);
         svg.selectAll(".tick text")
+        	.style('font-size', advOpt.xTickSize)
+        	.attr('class', 'xTicks')
             .call(wrap, x.bandwidth());
 
         // add the y Axis
         svg.append("g")
+        	.attr('class', 'yTicks')
+        	.style('font-size', advOpt.yTickSize)
             .call(d3.axisLeft(y));
         // text label for the y axis
         svg.append("text")
+        	.attr('id', 'yLabel')
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text("Count");
+            .style('font-size', advOpt.yLabelSize)
+            .text(advOpt.yLabel);
     }
 
     function createScatterPlot(data) {
@@ -528,7 +593,7 @@
         if (catVar !== "none") {
             cValue = function(d) { return d[catVar]; }
         } else {
-            color = d3.scaleOrdinal(['#9D6DDF']);
+            color = d3.scaleOrdinal([advOpt.pointColor]);
             cValue = function(d) { return "uncategorized"; }
         }
 
@@ -551,34 +616,45 @@
             ]);
         }
 
+        let xFontSize = (isDateX && advOpt.xTickSize=="1.2em") ? "0.85em" : advOpt.xTickSize;
+        let yFontSize = (isDateY && advOpt.yTickSize=="1.2em") ? "0.85em" : advOpt.yTickSize;
+
         // add the x Axis
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
+            .style("font-size", xFontSize)
+            .attr('class', 'xTicks')
             .call(d3.axisBottom(xScale));
         // add a label for x Axis
         svg.append("text")
+        	.attr('id', 'xLabel')
             .attr("transform",
                 "translate(" + (width / 2) + " ," +
-                (height + margin.top + 20) + ")")
+                (height + margin.top + 40) + ")")
             .style("text-anchor", "middle")
-            .text(xVar);
+            .style("font-size", advOpt.xLabelSize)
+            .text(advOpt.xLabel);
 
         // add the y Axis
         svg.append("g")
+        	.attr('class', 'yTicks')
+        	.style("font-size", advOpt.yFontSize)
             .call(d3.axisLeft(yScale));
         // text label for the y axis
         svg.append("text")
+        	.attr('id', 'yLabel')
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text(yVar);
+            .style("font-size", advOpt.yLabelSize)
+            .text(advOpt.yLabel);
 
         // draw dots
         svg.selectAll(".dot")
             .data(data)
-            .enter().append("circle")
+            .enter().append(advOpt.pointShape)
             .attr("class", "dot")
             .attr("r", 3.5)
             .attr("cx", xMap)
@@ -607,27 +683,29 @@
                     .style("opacity", 0);
             });
 
-        // draw legend
-        var legend = svg.selectAll(".legend")
-            .data(color.domain())
-            .enter().append("g")
-            .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(60," + i * 20 + ")"; });
+        if (catVar !== "none") {
+	        // draw legend
+	        var legend = svg.selectAll(".legend")
+	            .data(color.domain())
+	            .enter().append("g")
+	            .attr("class", "legend")
+	            .attr("transform", function(d, i) { return "translate(100," + i * 20 + ")"; });
 
-        // draw legend colored rectangles
-        legend.append("rect")
-            .attr("x", width - 18)
-            .attr("width", 18)
-            .attr("height", 18)
-            .style("fill", color);
+	        // draw legend colored rectangles
+	        legend.append("rect")
+	            .attr("x", width - 18)
+	            .attr("width", 18)
+	            .attr("height", 18)
+	            .style("fill", color);
 
-        // draw legend text
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .style("text-anchor", "end")
-            .text(function(d) { return d; })
+	        // draw legend text
+	        legend.append("text")
+	            .attr("x", width - 24)
+	            .attr("y", 9)
+	            .attr("dy", ".35em")
+	            .style("text-anchor", "end")
+	            .text(function(d) { return d; });
+	        }
     }
 
     //////////////////////////////////////////////////////////////
@@ -805,7 +883,167 @@
         return jsonData;
     }
 
+    /**
+     * Allow users to set particular variables for interface customization
+     */
+    function createAdvancedOptions() {
+    	// Clear previous options
+    	jQuery('.advancedOptions').html('');
 
+    	let graphType = jQuery('#graphType option:selected').val();
+
+    	let advOptHtml = '<table class="advOptTable">';
+
+    	let xy = ['x','y'];
+    	for (let i = 0; i < xy.length; i++) {
+    		let v = xy[i];
+
+    		// Tick options
+    		advOptHtml += '<tr id="'+v+'TickSize">';
+    		advOptHtml += '<td>' + v + ' Tick Font Size:</td><td><input type="text" name="' + v + 'TickSize" value="1.2em"></td></tr>';
+    		// Label Size
+    		advOptHtml += '<tr id="' + v + 'LabelSize">';
+    		advOptHtml += '<td>' + v + ' Label Font Size:</td><td><input type="text" name="' 
+    				+ v + 'LabelSize" value="1.2em"></td></tr>';
+    		
+    		// Label Value
+    		advOptHtml += '<tr id="' + v + 'Label">';
+    		if (graphType === 'scatter') {
+				advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' 
+					+ v + 'Label" value="'+ jQuery('#'+v+'VarSelect').val() + '"></td></tr>';
+			} else if (graphType === 'histogram' || graphType === 'barChart') {
+				let defaultLabel = jQuery('.variableSelect').val();
+				if (v == 'y') {
+					defaultLabel = 'Count';
+				}
+				advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' 
+					+ v + 'Label" value="'+ jQuery('#'+v+'VarSelect').val() + '"></td></tr>';
+			}
+
+
+    		// Range
+    		advOptHtml += '<tr id="' + v + 'Range">';
+    		advOptHtml += '<td>' + v + ' Value Range:</td><td><input type="number" name="' + v + 'RangeMin" value=""> to ' 
+    			+ '<input type="number" name="' + v + 'RangeMax" value=""> </td></tr>';
+    	}
+
+    	// Color & Bar Width
+		advOptHtml += '<tr id="barColor">';
+		advOptHtml += '<td>Bar Color:</td><td><input type="color" name="barColor" value="#524db2"></td></tr>';
+		advOptHtml += '<tr id="barWidth">';
+		advOptHtml += '<td>Bar Width:</td><td><input type="number" name="barWidth" value="">px</td></tr>';
+
+		advOptHtml += '<tr id="pointColor">';
+		advOptHtml += '<td>None Category Color:</td><td><input type="color" name="pointColor" value="#524db2"></td></tr>';
+
+		advOptHtml += '<tr id="pointShapeRow">';
+		advOptHtml += '<td>Point Shape:</td><td><select id="pointShape">'
+			+ '<option value="circle">Circle</option>'
+			+ '<option value="square">Square</option>'
+			+ '<option value="cross">Cross</option>'
+			+ '<option value="diamond">Diamond</option>'
+			+ '<option value="triangleDown">Triangle-down</option>'
+			+ '<option value="triangleup">Triangle-up</option>'
+			+ '</select></td></tr>';
+
+		advOptHtml += '</table>';
+
+    	jQuery('.advancedOptions').append(advOptHtml);
+    	displayAdvancedOptions();
+
+    	advancedOptionFunctionality();
+    }
+
+    function displayAdvancedOptions() {
+    	let graphType = jQuery('#graphType option:selected').val();
+
+    	// Hide all to begin with, then display them per graph type
+    	jQuery('.advOptTable tr').hide();
+
+    	// Always displayed regardless of graph type
+    	jQuery('#xTickSize, '
+    			+ '#xLabelSize, '
+    			+ '#xLabel, '
+    			+ '#yTickSize, '
+    			+ '#yLabelSize, '
+    			+ '#yLabel').show();
+
+    	// Show some options that depend on the graph type
+    	if (graphType === 'scatter') {
+    		jQuery('#pointColor, #pointShapeRow').show();
+    	} else if (graphType === 'barChart' || graphType === 'histogram') {
+    		jQuery('#barColor, #barWidth').show();
+    	}
+    }
+
+    var advOpt = {};
+    function advancedOptionsToObject() {
+    	advOpt.xTickSize = jQuery('input[name="xTickSize"]').val();
+    	advOpt.xLabelSize = jQuery('input[name="xLabelSize"]').val();
+    	advOpt.xLabel = jQuery('input[name="xLabel"]').val();
+    	advOpt.yTickSize = jQuery('input[name="yTickSize"]').val();
+    	advOpt.yLabelSize = jQuery('input[name="yLabelSize"]').val();
+    	advOpt.yLabel = jQuery('input[name="yLabel"]').val();
+    	advOpt.barColor = jQuery('input[name="barColor"]').val();
+    	advOpt.barWidth = jQuery('input[name="barWidth"]').val();
+    	advOpt.pointColor = jQuery('input[name="pointColor"]').val();
+    	advOpt.pointShape = jQuery('#pointShape option:selected').val();
+
+    }
+
+    function advancedOptionFunctionality() {
+    	// Labels size
+    	jQuery('input[name="xLabelSize"]').change(function() {
+    		svg.selectAll('#xLabel').style('font-size', jQuery('input[name="xLabelSize"]').val());
+    	});
+    	jQuery('input[name="yLabelSize"]').change(function() {
+    		svg.selectAll('#yLabel').style('font-size', jQuery('input[name="yLabelSize"]').val());
+    	});
+
+    	// Ticks size
+    	jQuery('input[name="xTickSize"]').change(function() {
+    		svg.selectAll('.xTicks').style('font-size', jQuery('input[name="xTickSize"]').val());
+    	});
+    	jQuery('input[name="yTickSize"]').change(function() {
+    		svg.selectAll('.yTicks').style('font-size', jQuery('input[name="yTickSize"]').val());
+    	});
+
+    	// Label text
+    	jQuery('input[name="xLabel"]').change(function() {
+    		svg.selectAll('#xLabel').text(jQuery('input[name="xLabel"]').val());
+    	});
+    	jQuery('input[name="yLabel"]').change(function() {
+    		svg.selectAll('#yLabel').text(jQuery('input[name="yLabel"]').val());
+    	});
+
+    	//Color of dots
+    	jQuery('input[name="pointColor"]').change(function() {
+    		svg.selectAll('.dot').style('fill', jQuery('input[name="pointColor"]').val());
+    	});
+
+    	//Shape of dots
+    	jQuery('#pointShape').change(function() {
+    		// Need to redraw graph after this big of a change
+    		let graphType = jQuery('#graphType option:selected').val();
+            if (graphType === 'histogram') {
+                createHistogramWrapper();
+            } else if (graphType === 'scatter') {
+                createScatterPlotWrapper();
+            } else if (graphType === 'barChart') {
+                createBarChartWrapper();
+            }
+    	});
+
+    	//Color of bars
+    	jQuery('input[name="barColor"]').change(function() {
+    		jQuery('rect.bar').css('fill', jQuery('input[name="barColor"]').val());
+    	});
+
+
+    	jQuery('input[name="pointColor"]').change(function() {
+
+    	});
+    }
 
     function catVarTooltipHtml(d, cValue) {
         let catTooltipHtml = '';
