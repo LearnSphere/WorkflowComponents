@@ -63,9 +63,11 @@
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
+		<Bar_Chart />
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
+		<Scatter_Plot />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />
