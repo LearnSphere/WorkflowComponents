@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Histogram</title>
+    <title>Bar Chart</title>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script type="application/json" id="mis"></script>
@@ -51,17 +51,6 @@
         margin: -1px 0 0 0;
         top: 100%;
         left: 0;
-    }
-
-    .scatterTooltip {
-        border: 1px solid black;
-        background: rgb(144, 168, 200);
-        border-radius: 5px;
-        padding: 5px;
-        position: absolute;
-        width: auto;
-        height: auto;
-        pointer-events: none;
     }
 
     .messages {
@@ -126,11 +115,16 @@
                         Variable:
                         <select class="variableSelect"></select>
                     </div>
-                    <div class="numBinsDiv">Number of Bins:
-                        <input type="number" name="numBins" value="20">
+                    <div class="sortByDiv">
+                        Sort by:
+                        <select id="sortBy">
+                            <option value="alphabetical">Alphabetical</option>
+                            <option value="countDesc" selected>Count (descending)</option>
+                            <option value="countAsc">Count (ascending)</option>
+                        </select>
                     </div>
                     <div class="downloadGraphButton">
-                        <a id="downloadGraphImage" download="histogram.png">Download graph</a>
+                        <a id="downloadGraphImage" download="bar_chart.png">Download graph</a>
                         <canvas id="canvasConversion" style="display:none"></canvas>
                     </div>
                 </div>
@@ -143,9 +137,7 @@
         </tr>
     </table>
     <div class="messages"></div>
-    <div>
-        <div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
-    </div>
+    <div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
     // Initiate the changing color background
@@ -176,7 +168,6 @@
     var y = null;
     var svg = null;
     var variable = null;
-    var histogramDataIsDate = false;
     var tip = null;
 
     jQuery(document).ready(function() {
@@ -189,7 +180,8 @@
             populateHeaderSelect(data);
             createAdvancedOptions();
 
-            createHistogramWrapper();
+            // With the default values, create a graph
+            createBarChartWrapper();
         });
     });
 
@@ -204,7 +196,6 @@
         jQuery('.options select, .options input').change(function() {
             clearMessageBox();
 
-
             // Update advanced options
             if (jQuery(this).attr('id') === 'xVarSelect') {
                 jQuery('input[name="xLabel"]').val(jQuery('#xVarSelect').val());
@@ -218,11 +209,11 @@
 
             displayAdvancedOptions();
 
-            createHistogramWrapper();
+            createBarChartWrapper();
         });
     }
 
-    function createHistogramWrapper() {
+    function createBarChartWrapper() {
         clearMessageBox();
 
         loading(true);
@@ -230,8 +221,9 @@
         variable = jQuery('.variableSelect').val();
 
         // Get the data in a json format based on the selected variable
-        let data = formatDataHistogram(d3TsvData);
-        createHistogram(data);
+        let data = formatDataBarChart(d3TsvData);
+
+        createBarChart(data);
 
         loading(false);
 
@@ -249,7 +241,8 @@
         MINIMUM_COLUMN_WIDTH = parseInt(advOpt.barWidth);
         let windowWidth = Math.max(jQuery(window).width(), 1000);
         let maxWidth = Math.max(windowWidth, jQuery('input[name="numBins"]').val() * MINIMUM_COLUMN_WIDTH);
-
+        MINIMUM_COLUMN_WIDTH = widthOfLongestString(data);
+        maxWidth = Math.max(windowWidth, 1.1 * data.length * MINIMUM_COLUMN_WIDTH);
         width = maxWidth - margin.left - margin.right;
 
         height = jQuery(window).height() * 0.8 - margin.top - margin.bottom;
@@ -278,108 +271,46 @@
     //////////    Use D3 to create the svg graph    //////////////
     //////////////////////////////////////////////////////////////
 
-    /**
-     * Set up histogram functionality
-     */
-    function createHistogram(data) {
-        let numBins = jQuery('input[name="numBins"]').val();
 
+    function createBarChart(data) {
         setupGraph(data);
-
-        let xDomain = getDomain(data);
-        if (histogramDataIsDate) {
-            x = d3.scaleTime()
-                .range([0, width])
-                .domain(xDomain);
-        } else {
-            x = d3.scaleLinear()
-                .range([0, width])
-                .domain(xDomain);
-        }
-        y = d3.scaleLinear()
-            .range([height, 0]);
-
-        let histogram = null;
-        // set the parameters for the histogram
-        if (histogramDataIsDate) {
-            // Get the difference between the first and last date in days.
-            let timeDiff = (xDomain[1] - xDomain[0]);
-
-            let timeScale = d3.timeMillisecond;
-            if (timeDiff / (1000 * 60 * 60 * 24 * 365) > 1) {
-                timeScale = d3.timeYear;
-            } else if (timeDiff / (1000 * 60 * 60 * 24) > 10) {
-                timeScale = d3.timeDay;
-            } else if (timeDiff / (1000 * 60 * 60) > 10) {
-                timeScale = d3.timeHour;
-            } else if (timeDiff / (1000 * 60 * 60 * 24) > 10) {
-                timeScale = d3.timeDay;
-            } else if (timeDiff / (1000 * 60 * 60) > 10) {
-                timeScale = d3.timeHour;
-            } else if (timeDiff / (1000 * 60) > 10) {
-                timeScale = d3.timeMinute;
-            } else if (timeDiff / (1000) > 10) {
-                timeScale = d3.timeSecond;
-            }
-
-            histogram = d3.histogram()
-                .domain(x.domain())
-                .thresholds(x.ticks(d3.timeScale));
-        } else {
-            histogram = d3.histogram()
-                .domain(x.domain())
-                .thresholds(x.ticks(numBins));
-        }
-
-        let bins = histogram(data);
 
         // Tooltips
         tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                let start = d.x0,
-                    end = d.x1;
-                if (histogramDataIsDate) {
-                    start = start.toLocaleDateString() + " " + start.toLocaleTimeString();
-                    end = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-                }
-                return "<strong>Interval:</strong> <span style='color:red'>" + start + " - " + end + "</span><br/>" +
-                    "<strong>Count:&nbsp;&nbsp;&nbsp;</strong> <span style='color:red'>" + d.length + "</span>";
+                return "<strong>Value:</strong> <span style='color:red'>" + d.string + "</span><br/>" +
+                    "<strong>Count:</strong> <span style='color:red'>" + d.count + "</span>";
             })
         svg.call(tip);
 
-        // Scale the range of the data in the y domain
-        y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+        // set the ranges
+        var x = d3.scaleBand()
+            .range([0, width])
+            .padding(0.1);
+        var y = d3.scaleLinear()
+            .range([height, 0]);
 
-        // append the bar rectangles to the svg element
+
+        // Scale the range of the data in the domains
+        x.domain(data.map(function(d) { return d.string; }));
+        y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+        // append the rectangles for the bar chart
         svg.selectAll("rect")
-            .data(bins)
+            .data(data)
             .enter().append("rect")
             .attr("class", "bar")
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
-            .attr("x", 1)
-            .attr("transform", function(d) {
-                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
-            })
-            .attr("width", function(d) {
-                return x(d.x1) - x(d.x0) - 1;
-            })
-            .attr("height", function(d) {
-                return height - y(d.length);
-            });
-
-        var xFontSize = advOpt.xLabelSize;
-        if (histogramDataIsDate && xFontSize == "1.2em") {
-            //Date data and the default font size, make font smaller because date labels are large
-            xFontSize = '0.85em';
-        }
+            .attr("x", function(d) { return x(d.string); })
+            .attr("width", x.bandwidth())
+            .attr("y", function(d) { return y(d.count); })
+            .attr("height", function(d) { return height - y(d.count); });
 
         // add the x Axis
         svg.append("g")
-            .style("font-size", advOpt.xTickSize)
-            .attr('class', 'xTicks')
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x));
         // add a label for x Axis
@@ -387,26 +318,29 @@
             .attr("transform",
                 "translate(" + (width / 2) + " ," +
                 (height + margin.top + 40) + ")")
-            .style("text-anchor", "middle")
-            .style("font-size", xFontSize)
             .attr('id', 'xLabel')
+            .style("text-anchor", "middle")
+            .style('font-size', advOpt.xLabelSize)
             .text(advOpt.xLabel);
+        svg.selectAll(".tick text")
+            .style('font-size', advOpt.xTickSize)
+            .attr('class', 'xTicks')
+            .call(wrap, x.bandwidth());
 
         // add the y Axis
         svg.append("g")
             .attr('class', 'yTicks')
-            .call(d3.axisLeft(y))
-            .style("font-size", advOpt.yTickSize);
-
+            .style('font-size', advOpt.yTickSize)
+            .call(d3.axisLeft(y));
         // text label for the y axis
         svg.append("text")
+            .attr('id', 'yLabel')
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
-            .attr('id', 'yLabel')
             .style("text-anchor", "middle")
-            .style("font-size", advOpt.yLabelSize)
+            .style('font-size', advOpt.yLabelSize)
             .text(advOpt.yLabel);
 
         // Set the color of the bars from the advanced options
@@ -418,66 +352,54 @@
     //////////    Format data for d3    //////////////////////////
     //////////////////////////////////////////////////////////////
 
-    function formatDataHistogram(originalData) {
+
+
+    function formatDataBarChart(originalData) {
         let data = JSON.parse(JSON.stringify(originalData));
         let jsonData = [];
-        let numNonNumeric = 0;
-        let numDate = 0;
-        histogramDataIsDate = false;
 
-        //Determine if the variable for the histogram is a number or date
+        // Get each unique string and it's count in the data
+        let stringData = [];
         for (let i = 0; i < data.length; i++) {
-            let val = data[i][variable];
-            if (val != undefined) {
-                if (isNaN(val)) {
-                    numNonNumeric++;
+            let val = {};
+            val.string = data[i][variable];
+            val.count = countInArray(data, data[i][variable]);
+            stringData.push(val);
+
+            for (var j = data.length - 1; j--;) {
+                if (data[j][variable] === val.string) {
+                    data.splice(j, 1);
+
                 }
-                if (!isNaN(Date.parse(val)) && isNaN(val)) {
-                    numDate++;
-                }
-                jsonData.push(val);
             }
         }
 
-        let ratioNonNumeric = numNonNumeric / data.length;
-        let ratioDate = numDate / data.length;
-        if ((data.length - numNonNumeric) > 0 && numNonNumeric > 0) {
-            // Mostly numeric but with some non numeric
-            addMessage("This variable(" + variable + ") has " +
-                String(ratioNonNumeric * 100).substring(0, 4) +
-                "% non-numeric data." +
-                " This histogram will ignore the non-numeric values.");
-            // Remove the non numeric data
-            let justNumbers = [];
-            for (let i = 0; i < jsonData.length; i++) {
-                if (!isNaN(jsonData[i])) {
-                    justNumbers.push(jsonData[i]);
-                }
-            }
-            jsonData = justNumbers;
-        } else if (ratioDate > 0.5) {
-            // This is date data
-            if (data.length - numDate > 0) {
-                addMessage("This variable(" + variable + ") has " +
-                    String(ratioDate * 100).substring(0, 4) +
-                    "% date data." +
-                    " This histogram will ignore the non-date values.");
-            }
-            histogramDataIsDate = true;
-            let justDates = [];
-            for (let i = 0; i < jsonData.length; i++) {
-                if (!isNaN(Date.parse(jsonData[i]))) {
-                    justDates.push(new Date(jsonData[i]));
-                }
-            }
-            jsonData = justDates;
-
-        } else if (ratioNonNumeric > 0.9) {
-            addMessage("This variable(" + variable + ") has " +
-                String(ratioNonNumeric * 100).substring(0, 4) +
-                "% non-numeric data." +
-                " Histograms can only be created on numeric or date data");
+        // Sort this data
+        let sortBy = jQuery('#sortBy option:selected').val();
+        if (sortBy === "alphabetical") {
+            stringData.sort(
+                function(a, b) {
+                    let a1 = a.string,
+                        b1 = b.string;
+                    if (!isNaN(a.string) && !isNaN(b.string)) {
+                        a1 = parseFloat(a.string);
+                        b1 = parseFloat(b.string);
+                    }
+                    return (a1 > b1) ? 1 : ((b1 > a1) ? -1 : 0);
+                });
+        } else if (sortBy === "countAsc") {
+            stringData.sort(
+                function(a, b) {
+                    return (a.count > b.count) ? 1 : ((b.count > a.count) ? -1 : 0);
+                });
+        } else if (sortBy === "countDesc") {
+            stringData.sort(
+                function(a, b) {
+                    return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
+                });
         }
+
+        jsonData = stringData;
         return jsonData;
     }
 
@@ -525,6 +447,19 @@
         advOptHtml += '<tr id="barWidth">';
         advOptHtml += '<td>Bar Width:</td><td><input type="number" name="barWidth" value="20">px</td></tr>';
 
+        advOptHtml += '<tr id="pointColor">';
+        advOptHtml += '<td>None Category Color:</td><td><input type="color" name="pointColor" value="#524db2"></td></tr>';
+
+        advOptHtml += '<tr id="pointShapeRow">';
+        advOptHtml += '<td>Point Shape:</td><td><select id="pointShape">' +
+            '<option value="circle">Circle</option>' +
+            '<option value="square">Square</option>' +
+            '<option value="cross">Cross</option>' +
+            '<option value="diamond">Diamond</option>' +
+            '<option value="triangleDown">Triangle-down</option>' +
+            '<option value="triangleup">Triangle-up</option>' +
+            '</select></td></tr>';
+
         advOptHtml += '</table>';
 
         jQuery('.advancedOptions').append(advOptHtml);
@@ -545,6 +480,7 @@
             '#yLabelSize, ' +
             '#yLabel').show();
 
+        // Show some options that depend on the graph type
         //jQuery('#barColor, #barWidth').show();
         jQuery('#barColor').show();
     }
@@ -593,24 +529,6 @@
         });
     }
 
-    function getDomain(data) {
-        if (jQuery('#graphType option:selected').val() !== "barChart") {
-            return [Math.min(...data), Math.max(...data)];
-        } else if (histogramDataIsDate) {
-
-        } else {
-            // probably unnecessary
-            let max = -1,
-                min = Number.MAX_SAFE_INTEGER;
-            for (let i = 0; i < data; i++) {
-                let v = data[i].count;
-                if (v > max) { max = v; }
-                if (v < min) { min = v; }
-            }
-            return [min, max];
-        }
-    }
-
     function populateHeaderSelect(data) {
         //gets all column header
         var keys = $.map(data[0], function(item, key) {
@@ -619,20 +537,69 @@
 
         keys.forEach(function(key, ind) {
             jQuery('.variableSelect').append(jQuery('<option />').val(key).text(key));
-            jQuery('#xVarSelect').append(jQuery('<option />').val(key).text(key));
-            if (ind == 1) {
-                jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
-            } else {
-                jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
-            }
-            jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
         })
+    }
+
+    function countInArray(array, what) {
+        var count = 0;
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][variable] === what) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    function wrap(text, width) {
+        text.each(function() {
+
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, // ems
+                y = text.attr("y"),
+                dy = parseFloat(text.attr("dy")),
+                tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+            let c = 0;
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width && c++ != 0) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                }
+            }
+        });
+    }
+
+    function widthOfLongestString(data) {
+        let maxLength = longestString(data);
+        return 6 * maxLength;
+    }
+
+    function longestString(data) {
+        let maxLength = -1;
+        for (let i = 0; i < data.length; i++) {
+            let s = data[i].string;
+            let tokens = s.split("\\s+");
+            for (let j = 0; j < tokens.length; j++) {
+                let t = tokens[j];
+                if (t.length > maxLength) {
+                    maxLength = t.length;
+                }
+            }
+        }
+        return maxLength;
     }
 
     function zoomed() {
         d3.select("#svgContainer g").attr("transform",
             "translate(" + margin.left + "," + margin.top + ")" +
-            "scale(" + d3.event.transform.k + ",1)");
+            "scale(" + d3.event.transform.k + "," + d3.event.transform.k + ")");
     }
 
     function addMessage(message) {
