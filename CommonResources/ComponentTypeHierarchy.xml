@@ -67,6 +67,7 @@
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
+		<Line_Graph />
 		<Scatter_Plot />
 	</Visualization>
 	<Tetrad>
