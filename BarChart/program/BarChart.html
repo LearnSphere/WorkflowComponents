@@ -93,15 +93,14 @@
         padding: 5px;
     }
 
-    .allOptions td {}
+    .advancedOptions {
+        position: absolute;
+        background: white;
+    }
 
     .advancedOptions,
     .advancedOptions input {
         font-size: 0.8em;
-    }
-
-    .allOptions {
-        min-height:
     }
     </style>
 </head>
@@ -129,7 +128,7 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td style="display:inline">
                 <a id="toggleAdvOpt" href="#">Show Advanced Options</a>
                 <div class="advancedOptions" style="display:none"></div>
                 </div>
@@ -280,7 +279,7 @@
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Value:</strong> <span style='color:red'>" + d.string + "</span><br/>" +
+                return "<strong>" + variable + ": </strong> <span style='color:red'>" + d.string + "</span><br/>" +
                     "<strong>Count:</strong> <span style='color:red'>" + d.count + "</span>";
             })
         svg.call(tip);
@@ -551,6 +550,7 @@
     }
 
     function wrap(text, width) {
+    	width = parseInt(width*0.2);
         text.each(function() {
 
             var text = d3.select(this),

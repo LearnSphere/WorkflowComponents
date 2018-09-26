@@ -104,15 +104,15 @@
         padding: 5px;
     }
 
-    .allOptions td {}
 
     .advancedOptions,
     .advancedOptions input {
         font-size: 0.8em;
     }
 
-    .allOptions {
-        min-height:
+    .advancedOptions {
+        position: absolute;
+        background: white;
     }
     </style>
 </head>
@@ -135,7 +135,7 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td style="display:inline">
                 <a id="toggleAdvOpt" href="#">Show Advanced Options</a>
                 <div class="advancedOptions" style="display:none"></div>
                 </div>
@@ -630,9 +630,10 @@
     }
 
     function zoomed() {
+    	console.log(d3.event);
         d3.select("#svgContainer g").attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")" +
-            "scale(" + d3.event.transform.k + ",1)");
+            "translate(" + (margin.left + d3.event.transform.x) + "," + (margin.top + d3.event.transform.y) + ")" +
+            "scale(" + d3.event.transform.k + "," + d3.event.transform.k + ")");
     }
 
     function addMessage(message) {
