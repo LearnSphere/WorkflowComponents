@@ -2,11 +2,11 @@
 
 <info>
 <author>DataShop@CMU
-  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+  <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAAllElements</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAMultiConnInput</url>
 <date>2018-08-14</date>
-<abstract>The <b>QA All Elements</b> component can be used to test the unordered inputs (many incoming connections per node).</abstract>
+<abstract>The <b>QA Multi Connection Input</b> component can be used to test the unordered inputs (many incoming connections per node).</abstract>
 <description>This component allows developers to test the unordered inputs (many incoming connections per node). The output file prints out all user selections.</description>
 
 <inputs><ul>
