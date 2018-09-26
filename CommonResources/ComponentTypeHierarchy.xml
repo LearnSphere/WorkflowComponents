@@ -37,6 +37,7 @@
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
+		<OLI_LO_to_KC />
 		<Pivot />
 		<Row_Operations />
 		<Row_Remover />
@@ -62,8 +63,12 @@
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
+		<Bar_Chart />
 		<D3_Force_Layout />
+		<Histogram />
 		<Learning_Curves />
+		<Line_Graph />
+		<Scatter_Plot />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />

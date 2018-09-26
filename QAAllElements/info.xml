@@ -2,11 +2,11 @@
 
 <info>
 <author>DataShop@CMU
-  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+  <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAMultiConnInput</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAAllElements</url>
 <date>2018-08-14</date>
-<abstract>The <b>QA Multi Conn Input</b> component can be used to test all basic inputs and options of workflow components.</abstract>
+<abstract>The <b>QA All Elements</b> component can be used to test all basic inputs and options of workflow components.</abstract>
 <description>This component allows developers to test most of the basic inputs and options (including database connection) of workflow components to ensure that workflow core functions work.</description>
 
 <inputs><ul>
