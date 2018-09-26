@@ -25,6 +25,7 @@ import edu.cmu.pslc.datashop.item.UserItem;
 import edu.cmu.pslc.datashop.servlet.HelperFactory;
 */
 
+import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.workflows.InputHeaderOption;
@@ -150,6 +151,9 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             stuStepFile = getSingleStudentStepFile(primaryFileIndex);
         }
 
+        // Parameters file, on node 1, is optional.
+        File parametersFile = this.getAttachment(1, 0);
+
         Hashtable<String, Vector<LearningCurvePoint>> lcPrototypeData = lcPrototype
             .processStudentStepExportForLearningCurves(stuStepFile,
                                                        visualizationOptions);
@@ -157,13 +161,43 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         GraphOptions lcGraphOptions = GraphOptions.getDefaultGraphOptions();
 
         logger.debug("Initializing Learning Curves.");
-        List<File> imageFiles = lcPrototype.init(
-                lcPrototypeData, visualizationOptions,
-                lcGraphOptions, this.getComponentOutputDir());
+        Map<String, List<File>> imageFiles = lcPrototype.init(
+                                                              lcPrototypeData,
+                                                              visualizationOptions,
+                                                              lcGraphOptions,
+                                                              this.getComponentOutputDir(),
+                                                              stuStepFile,
+                                                              parametersFile);
 
         Integer counter = 0;
 
-        for (File imageFile : imageFiles) {
+        List<File> fileList = imageFiles.get(LearningCurveImage.NOT_CLASSIFIED);
+        if ((fileList != null) && (fileList.size() > 0)) {
+            counter = addOutputFiles(fileList, counter);
+        } else {
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_LOW_AND_FLAT);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_NO_LEARNING);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_STILL_HIGH);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_OTHER);
+            counter = addOutputFiles(fileList, counter);
+        }
+
+        System.out.println(this.getOutput());
+        System.exit(0);
+    }
+
+    private Integer addOutputFiles(List<File> fileList, Integer counter) {
+
+        if (fileList == null) {
+            return counter;
+        }
+
+        for (File imageFile : fileList) {
 
             Integer nodeIndex = 0;
             String fileLabel = "image";
@@ -171,9 +205,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             this.addOutputFile(imageFile, nodeIndex, counter, fileLabel);
             counter++;
         }
-
-        System.out.println(this.getOutput());
-        System.exit(0);
+        return counter;
     }
 
     /**
@@ -209,6 +241,13 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             result.setPrimaryModelName(modelName);
         }
 
+        result.setClassifyCurves(this.getOptionAsBoolean("classifyCurves"));
+        result.setStudentThreshold(this.getOptionAsInteger("studentThreshold"));
+        result.setOpportunityThreshold(this.getOptionAsInteger("opportunityThreshold"));
+        result.setLowErrorThreshold(this.getOptionAsDouble("lowErrorThreshold"));
+        result.setHighErrorThreshold(this.getOptionAsDouble("highErrorThreshold"));
+        result.setAfmSlopeThreshold(this.getOptionAsDouble("afmSlopeThreshold"));
+
         // Though we want integer values for min/max opportunities,
         // only the "xs:double" data type supports "INF" (infinity).
         // Since we want to be able to use INF for max cutoff, then we
@@ -230,6 +269,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
                 .equalsIgnoreCase(
                         LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES.toString())) {
             result.setLearningCurveType(LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES);
+            result.setIsViewBySkill(true);
         } else if (learningCurveTypeAttribute
                 .equalsIgnoreCase(
                         LearningCurveType.CRITERIA_STUDENTS_OPPORTUNITIES.toString())) {
