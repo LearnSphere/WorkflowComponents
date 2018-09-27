@@ -1,0 +1,42 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>GLRKT</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+<input0>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<student-step>
+<index>0</index>
+<file_path>test/testdata/transaction file output.txt</file_path>
+<label>text</label>
+<file_name>transaction file output.txt</file_name>
+</student-step>
+</files>
+<inputmeta />
+</input0>
+</inputs>
+
+<options>
+    <plancomponents>KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id</plancomponents>
+    <fixedpars>.3,.3,.3,.3,.97</fixedpars>
+    <seedpars>.3,.3,.3,.3,.025</seedpars>
+    <prespecfeatures>basesuc,basefail,basesuc,basefail,propdec</prespecfeatures>
+</options>
+
+</component>
