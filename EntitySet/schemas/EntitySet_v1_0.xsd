@@ -64,9 +64,6 @@
 
 
   <xs:complexType name="OptionsType">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element type="xs:string" name="fileName" id="file_name" default="input.txt"/>
-    </xs:choice>
   </xs:complexType>
 
 

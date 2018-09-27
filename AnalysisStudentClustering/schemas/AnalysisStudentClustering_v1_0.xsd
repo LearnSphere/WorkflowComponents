@@ -69,7 +69,7 @@
     </xs:complexType>
 
 
-    
+
 
 
 
@@ -83,15 +83,15 @@
 
 
 
-    
+
     <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-             <xs:element type="FileInputHeader" name="student" id="student_ID" default="(?i).*Id.*"  />
-             <xs:element type="FileInputHeader" name="model" id="model" default="\s*KC\s*(.*)\s*" />
-             <xs:element type="FileInputHeader" name="duration" id="duration" default="(?i).*duration..sec.*" />
-             <xs:element type="FileInputHeader" name="outcome" id="outcome" default="(?i).*outcome.*" />
+             <xs:element type="FileInputHeader" name="student" id="student_ID" default=".*"  />
+             <xs:element type="FileInputHeader" name="model" id="model" default=".*" />
+             <xs:element type="FileInputHeader" name="duration" id="duration" default=".*" />
+             <xs:element type="FileInputHeader" name="outcome" id="outcome" default=".*" />
              <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
-           
+
         </xs:choice>
     </xs:complexType>
 

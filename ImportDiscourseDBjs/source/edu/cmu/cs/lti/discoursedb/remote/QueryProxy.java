@@ -81,7 +81,6 @@ public class QueryProxy {
             keyStore.load(keyStoreStream, password.toCharArray());
             return keyStore;
         } catch (Exception e) {
-			e.printStackTrace();
 			throw(new IOException("Must have the " + path + " file in the classpath"));
 		}
     }
@@ -111,7 +110,6 @@ public class QueryProxy {
 		    		
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 				IOException oops = new IOException(help,e);
 				throw(oops);
 			}

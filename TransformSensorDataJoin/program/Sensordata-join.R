@@ -11,23 +11,25 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # parse commandline args
 i = 1
+f=1
 while (i <= length(args)) {
-    if (args[i] == "-file0") {
+    if (args[i] == "-fileIndex" & f > 0 ) {
        if (length(args) == i) {
           stop("Input for Signal 1 file name must be specified.")
        }
-       inputFile0 = args[i+1]
+       inputFile0 = args[i+2]
+       f=0
        i = i+1
     }
  
 
-else if (args[i] == "-file1") {
-       if (length(args) == i) {
+else if (args[i] == "-fileIndex" ) {
+      if (length(args) == i) {
           stop("Input for Signal 2 file name must be specified.")
        }
-       inputFile1=args[i+1]
+       inputFile1=args[i+2]
        i = i+1
-    } 
+   } 
 else if (args[i] == "-file2ColumnName") {
        if (length(args) == i) {
           stop("File 2 Column Name must be specified.")
@@ -98,7 +100,8 @@ else if (args[i] == "-inputHeader") {
     } 
     i = i+1
 }
-
+print(inputFile0)
+print(inputFile1)
 if (is.null(inputFile0) || is.null(inputFile1) || is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile0)) {
       warning("Missing required input parameter: -file0")

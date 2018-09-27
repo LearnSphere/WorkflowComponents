@@ -56,7 +56,7 @@ public class EntitySetMain extends AbstractComponent {
         // Attach the output files to the component output with addOutputFile(..>)
         //#OFFICIAL
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsolutePath() + "/output.pkl");
+            File file0 = new File(outputDirectory.getAbsolutePath() + "/output.zip");
             if (file0 != null && file0.exists()) {
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;

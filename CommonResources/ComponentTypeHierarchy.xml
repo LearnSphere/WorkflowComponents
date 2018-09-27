@@ -14,11 +14,15 @@
 			<Transaction />
 		</DataShop>
 	</Import>
+	<Database>
+		<Import_DiscourseDB />
+	</Database>
 	<Transform>
 		<Recently_Used />
 		<Anonymize />
 		<Anonymize_Standalone />
 		<AppendCF />
+		<Classify_with_Lightside />
 		<Column_Remover />
 		<Convert_Multiskill />
 		<Copy_Covariate />
@@ -28,7 +32,8 @@
 		<Deidentify />
 		<Discretize />
 		<Generate_PFA_Features />
-		<Generate_TKT_Features />
+		<Generate_TKT_Features />    
+    <Import_EDF />
 		<Import_XAPI />
 		<Join />
 		<Missing_Values />
@@ -37,7 +42,10 @@
 		<Pivot />
 		<Row_Operations />
 		<Row_Remover />
-		<Text_Converter />
+		<Sensor_Data_Align />
+		<Sensor_Data_Interpolation />
+		<Sensor_Data_Join />
+    <Text_Converter />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />

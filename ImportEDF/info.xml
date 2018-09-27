@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+
+<abstract>The <b>F-Test 5x2</b> component computes an F-test for model result files formatted the same way as the outputs from AnalysisTKT component.</abstract>
+<details>Using the methods described in these papers:
+E. Alpaydm, Combined 5 x 2 cv F Test for Comparing Supervised Classification Learning Algorithms, Neural Computation, vol. 11, pp. 1885-1892, 1999.
+T.G. Dietterich, Approximate Statistical Tests for Comparing Supervised Classification Learning Algorithms, Neural Computation, vol. 10, pp. 1895-1923, 1998.
+</details>
+
+<inputs>
+<b>XML model result files from TKT or other components</b>
+</inputs>
+
+<outputs>
+<b>text version of the output</b>
+<b>html  version of the output</b>
+</outputs>
+
+<options>
+Select which of the test fit stats to use from the XML, either AUC, Accuracy, or RMSE.
+</options>
+
+</info>

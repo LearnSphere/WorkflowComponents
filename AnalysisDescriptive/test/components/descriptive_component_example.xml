@@ -12,7 +12,8 @@
         </connection>
     </connections>
     <options>  
-      <groupingCategory>Level (Unitname)</groupingCategory>
+      <superordinateGroupingCategory>KC (Default)</superordinateGroupingCategory>
+      <subordinateGroupingCategory>Level (Unitname)</subordinateGroupingCategory>
       <unitCategory>Anon Student Id</unitCategory>
       <latency>CF (Start Latency)</latency>
       <dependent>Correctness</dependent>
