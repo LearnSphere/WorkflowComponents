@@ -1,7 +1,9 @@
 #usage
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" C:\WPIDevelopment\dev06_dev\WorkflowComponents\AnalysisRglm/program/R_GLM.R -programDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\AnalysisRglm/ -workingDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\AnalysisRglm/test/RglmTest/output/ -family "binomial (link = logit)" -fixedEffects "Video,Pretest,Activities" -formula "Pass.or.not ~ Video + Pretest + Activities" -modelingFunc glm -response "Pass or not" -responseCol Pass.or.not -node 0 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\AnalysisRglm\test\test_data\data.txt
-#local folder test
+#local folder test glmer.lmer
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~ KC..Circle.Collapse. + Opportunity..Circle.Collapse. + (1|Anon.Student.Id) + (Opportunity..Circle.Collapse.|KC..Circle.Collapse./KC..Item.)" -modelingFunc glmer -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#local folder test glm.lm
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~ KC..Circle.Collapse. + Opportunity..Circle.Collapse. + KC..Circle.Collapse.:Opportunity..Circle.Collapse." -modelingFunc lm -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 
 
 options(echo=FALSE)
@@ -12,6 +14,7 @@ args <- commandArgs(trailingOnly = TRUE)
 suppressMessages(library(lme4))
 suppressMessages(library(data.table))
 suppressMessages(library(optimx))
+suppressMessages(library(speedglm))
 
 
 # initialize variables
@@ -329,13 +332,18 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	
 } else if (modelingFunc == "glm" || modelingFunc == "lm") {
   modelingString = ""
+  #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
   if (modelingFunc == "glm") {
-	  modelingString = paste("fittedModel <-glm(", formula, ", data=ds, family=", family, ")", sep="")
+    #modelingString = paste("fittedModel <-glm(", formula, ", data=ds, family=", family, ")", sep="")
+	  modelingString = paste("fittedModel <-speedglm(", formula, ", data=ds, family=", family, ")", sep="")
   } else {
+    #modelingString = paste("fittedModel <-lm(", formula, ", data=ds, family=", family, ")", sep="")
     #modelingString = paste("fittedModel <-lm(", formula, ", data=ds)", sep="")
-    modelingString = paste("fittedModel <-lm(", formula, ", data=ds, family=", family, ")", sep="")
+    modelingString = paste("fittedModel <-speedlm(", formula, ", data=ds)", sep="")
   }
-	eval(parse(text=modelingString))
+  eval(parse(text=modelingString))
+  #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
+  
 	modelSum <- summary(fittedModel)
 	#print(modelSum)
 	capture.output(modelSum, file = summary.file, append = FALSE)
@@ -403,23 +411,26 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	  
 	}
 	
+	
 	#residuals
-	write(paste("<residual.min>", min(modelSum$residuals), "</residual.min>", sep=""),file=model.values.file,sep="",append=TRUE)
-	write(paste("<residual.1st.Qu>", quantile(modelSum$residuals,0.25)[[1]], "</residual.1st.Qu>", sep=""),file=model.values.file,sep="",append=TRUE)
-	write(paste("<residual.median>", median(modelSum$residuals), "</residual.median>", sep=""),file=model.values.file,sep="",append=TRUE)
-	write(paste("<residual.mean>", mean(modelSum$residuals), "</residual.mean>", sep=""),file=model.values.file,sep="",append=TRUE)
-	write(paste("<residual.3rd.Qu>", quantile(modelSum$residuals,0.75)[[1]], "</residual.3rd.Qu>", sep=""),file=model.values.file,sep="",append=TRUE)
-	write(paste("<residual.max>", max(modelSum$residuals), "</residual.max>", sep=""),file=model.values.file,sep="",append=TRUE)
-	residual.stderr <- sqrt(deviance(fittedModel)/df.residual(fittedModel))
-	write(paste("<residual.Std.Error>", residual.stderr, "</residual.Std.Error>", sep=""),file=model.values.file,sep="",append=TRUE)
+	if (length(modelSum$residuals) > 0 ){
+  	write(paste("<residual.min>", min(modelSum$residuals), "</residual.min>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	write(paste("<residual.1st.Qu>", quantile(modelSum$residuals,0.25)[[1]], "</residual.1st.Qu>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	write(paste("<residual.median>", median(modelSum$residuals), "</residual.median>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	write(paste("<residual.mean>", mean(modelSum$residuals), "</residual.mean>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	write(paste("<residual.3rd.Qu>", quantile(modelSum$residuals,0.75)[[1]], "</residual.3rd.Qu>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	write(paste("<residual.max>", max(modelSum$residuals), "</residual.max>", sep=""),file=model.values.file,sep="",append=TRUE)
+  	residual.stderr <- sqrt(deviance(fittedModel)/df.residual(fittedModel))
+  	write(paste("<residual.Std.Error>", residual.stderr, "</residual.Std.Error>", sep=""),file=model.values.file,sep="",append=TRUE)
+  }
 	#other
 	write(paste("<multiple.r.squared>", modelSum$r.squared, "</multiple.r.squared>", sep=""),file=model.values.file,sep="",append=TRUE)
 	write(paste("<adjusted.r.squared>", modelSum$adj.r.squared, "</adjusted.r.squared>", sep=""),file=model.values.file,sep="",append=TRUE)
 	write(paste("<f.Statistic.value>", modelSum$fstatistic["value"][[1]], "</f.Statistic.value>", sep=""),file=model.values.file,sep="",append=TRUE)
 	write(paste("<f.Statistic.numdf>", modelSum$fstatistic["numdf"][[1]], "</f.Statistic.numdf>", sep=""),file=model.values.file,sep="",append=TRUE)
 	write(paste("<f.Statistic.dendf>", modelSum$fstatistic["dendf"][[1]], "</f.Statistic.dendf>", sep=""),file=model.values.file,sep="",append=TRUE)
-	
-	
+
+
 	write("</model>",file=model.values.file,sep="",append=TRUE)
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
