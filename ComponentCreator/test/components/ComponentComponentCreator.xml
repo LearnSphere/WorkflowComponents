@@ -1,0 +1,73 @@
+<component>
+  <component_id>ComponentTest</component_id>
+  <component_id_human>Transform #2</component_id_human>
+  <workflow_id>336</workflow_id>
+  <component_name>Component Creator</component_name>
+  <component_type>transform</component_type>
+  <left>343</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x928208</from>
+    </connection>
+  </connections>
+  <top>301</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x928208</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\ComponentCreator\test\test_data\program.zip</file_path>
+          <label>zip</label>
+          <file_name>program.zip</file_name>
+          <metadata />
+        </file>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import />
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <component_name>TestComponentCreator</component_name>
+    <component_type>transform</component_type>
+    <component_lang>R</component_lang>
+    <component_author>Peter</component_author>
+    <component_author_email>Petergmail.com</component_author_email>
+    <component_description>This is an auspicious component</component_description>
+    <component_program_file>ThisHasAMainFunction.py</component_program_file>
+    <component_num_input_nodes>1</component_num_input_nodes>
+    <component_num_outputs>1</component_num_outputs>
+    <component_num_options>1</component_num_options>
+    <input_0_type>tab-delimited</input_0_type>
+    <input_0_min_num_files>1</input_0_min_num_files>
+    <input_0_max_num_files>1</input_0_max_num_files>
+    <input_1_type>tab-delimited</input_1_type>
+    <input_1_min_num_files>1</input_1_min_num_files>
+    <input_1_max_num_files>1</input_1_max_num_files>
+    <input_2_type>tab-delimited</input_2_type>
+    <input_2_min_num_files>1</input_2_min_num_files>
+    <input_2_max_num_files>1</input_2_max_num_files>
+    <input_3_type>tab-delimited</input_3_type>
+    <input_3_min_num_files>1</input_3_min_num_files>
+    <input_3_max_num_files>1</input_3_max_num_files>
+    <output_0_type>tab-delimited</output_0_type>
+    <output_1_type>tab-delimited</output_1_type>
+    <output_2_type>tab-delimited</output_2_type>
+    <output_3_type>tab-delimited</output_3_type>
+    <option_0_type>String</option_0_type>
+    <option_0_name>option0Name</option_0_name>
+    <option_0_id>Option0Id</option_0_id>
+    <option_0_default>default0</option_0_default>
+    <option_0_node_index>0</option_0_node_index>
+    <option_0_file_index>0</option_0_file_index>
+  </options>
+</component>
