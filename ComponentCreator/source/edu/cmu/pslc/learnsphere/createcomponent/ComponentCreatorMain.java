@@ -88,6 +88,8 @@ public class ComponentCreatorMain extends AbstractComponent {
         if (newComponentDir != null && newComponentDir.exists()) {
             // Turn the new Component directory into a zip file
             String zipFileName = this.getComponentOutputDir() + File.separator + newComponentDir.getName() + ".zip";
+            zipFileName = WorkflowHelper.getStrictDirFormat(zipFileName);
+
             logger.debug("Zip file name: " + zipFileName);
             try {
                 zipFolder(newComponentDir.getPath(), zipFileName);
@@ -115,9 +117,9 @@ public class ComponentCreatorMain extends AbstractComponent {
      */
     private void handleInputPrograms() {
         File inputFile = this.getAttachment(0, 0);
-
-        unzip(inputFile, this.getComponentOutputDir());
-        String inputFileName = inputFile.getName();
+        logger.debug("input file name: " + inputFile.getPath());
+        File unzippedDir = unzip(inputFile, this.getComponentOutputDir());
+        String inputFileName = unzippedDir.getName();
 
         this.compProgramsDirName = this.getComponentOutputDir()
                                    + inputFileName.replace(".zip", "");
@@ -142,6 +144,10 @@ public class ComponentCreatorMain extends AbstractComponent {
             componentProgramsDir = WorkflowHelper.getStrictDirFormat(this.compProgramsDirName);
         }
 
+        // Need to escape dots in the package name
+        String pkg = "edu.cmu.learnsphere." + this.getOptionAsString("component_type");
+        pkg = pkg.replaceAll("\\.", "\\\\\\.");
+
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -158,7 +164,7 @@ public class ComponentCreatorMain extends AbstractComponent {
             .append("\n\n")
 
             .append("component.pkg=")
-            .append("edu.cmu.learnsphere." + this.getOptionAsString("component_type"))
+            .append(pkg)
             .append("\n\n")
 
             .append("component.author=")
@@ -228,27 +234,38 @@ public class ComponentCreatorMain extends AbstractComponent {
             sb.append("\n");
 
             // Add the output properties
-            for (int i = 0; i < numInputs; i++) {
+            for (int i = 0; i < numOutputs; i++) {
                 sb.append("output." + i + ".type=")
                 .append(this.getOptionAsString("output_" + i + "_type"))
+                .append("\n\n")
+                .append("output." + i + ".name=")
+                .append(this.getOptionAsString("output_" + i + "_name"))
                 .append("\n\n");
             }
             sb.append("\n");
 
             // Add the option properties
-            for (int i = 0; i < numInputs; i++) {
+            for (int i = 0; i < numOptions; i++) {
                 String optionType = this.getOptionAsString("option_" + i + "_type");
+                String convertedType = convertOptionType(optionType);
+
+                String enumAppendage = "";
+                if (optionType.equalsIgnoreCase("enumeration")) {
+                    enumAppendage = "("
+                                    + this.getOptionAsString("option_" + i + "_enum_list") + ")";
+                }
+
                 sb.append("option." + i + ".type=")
-                .append(this.getOptionAsString("option_" + i + "_type"))
+                .append(convertedType + enumAppendage)
                 .append("\n\n")
                 .append("option." + i + ".name=")
                 .append(this.getOptionAsString("option_" + i + "_name"))
                 .append("\n\n")
                 .append("option." + i + ".id=")
-                .append(this.getOptionAsString("option_" + i + "_ID"))
+                .append(this.getOptionAsString("option_" + i + "_id"))
                 .append("\n\n")
                 .append("option." + i + ".default=")
-                .append(this.getOptionAsString("option_" + i + "_default_value"))
+                .append(this.getOptionAsString("option_" + i + "_default"))
                 .append("\n\n");
 
                 if (optionType.endsWith("FileInputHeader")) {
@@ -259,6 +276,7 @@ public class ComponentCreatorMain extends AbstractComponent {
                     .append(this.getOptionAsString("option_" + i + "_file_index"))
                     .append("\n\n");
                 }
+                sb.append("\n");
             }
 
 
@@ -290,6 +308,27 @@ public class ComponentCreatorMain extends AbstractComponent {
         }
 
         return outFile;
+    }
+
+    /**
+     * Converts the string from the options panel into a string for the WCC
+     */
+    private String convertOptionType(String optType) {
+        String convertedType = "";
+        if (optType.equalsIgnoreCase("string")) {
+            convertedType = "xs:string";
+        } else if (optType.equalsIgnoreCase("integer")) {
+            convertedType = "xs:integer";
+        } else if (optType.equalsIgnoreCase("FileInputHeader")) {
+            convertedType = "FileInputHeader";
+        } else if (optType.equalsIgnoreCase("MultiFileInputHeader")) {
+            convertedType = "MultiFileInputHeader";
+        } else if (optType.equalsIgnoreCase("Enumeration")) {
+            convertedType = "Enum";
+        } else if (optType.equalsIgnoreCase("Double")) {
+            convertedType = "xs:double";
+        }
+        return convertedType;
     }
 
 
@@ -356,7 +395,7 @@ public class ComponentCreatorMain extends AbstractComponent {
                 logger.debug(entry.getName());
                 File file = new File(out, entry.getName());
                 if (firstTimeThrough) {
-                    unzippedFile = file;
+                    unzippedFile = file.getParentFile();
                     firstTimeThrough = false;
                 }
 

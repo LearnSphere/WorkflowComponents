@@ -81,6 +81,11 @@
     	<xs:element type="conjunctive" name="outputTypeDependency1" ls:dependentOption="output_1_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(2)" />
     	<xs:element type="conjunctive" name="outputTypeDependency2" ls:dependentOption="output_2_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(3)" />
     	<xs:element type="conjunctive" name="outputTypeDependency3" ls:dependentOption="output_3_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(4)" />
+    	<!-- OUTPUT NAME -->
+    	<xs:element type="conjunctive" name="outputNameDependency0" ls:dependentOption="output_0_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="outputNameDependency1" ls:dependentOption="output_1_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="outputNameDependency2" ls:dependentOption="output_2_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="outputNameDependency3" ls:dependentOption="output_3_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(4)" />
 
     	<!-- OPTION TYPE -->
     	<xs:element type="conjunctive" name="optionTypeDependency0" ls:dependentOption="option_0_type" ls:dependsOn="component_num_options" ls:constraint="gte(1)" />
@@ -166,6 +171,27 @@
 	    	<!-- Option File Index 4-->
 	    	<xs:element type="disjunctive" name="optionFileIndexDisplayDependency4" ls:dependentOption="option_4_file_index" ls:dependsOn="optionIsHeaderAndIndexShouldDisplay4" ls:constraint="true" />
 
+	    	<!-- Option enumeration -->
+	    	<xs:element type="conjunctive" name="optionEnumDependency0" ls:dependentOption="optionEnumDependency0" ls:dependsOn="option_0_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency0numOpt" ls:dependentOption="optionEnumDependency0" ls:dependsOn="optionTypeDependency0" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency0" ls:dependentOption="option_0_enum_list" ls:dependsOn="optionEnumDependency0" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency1" ls:dependentOption="optionEnumDependency1" ls:dependsOn="option_1_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency1numOpt" ls:dependentOption="optionEnumDependency1" ls:dependsOn="optionTypeDependency1" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency1" ls:dependentOption="option_1_enum_list" ls:dependsOn="optionEnumDependency1" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency2" ls:dependentOption="optionEnumDependency2" ls:dependsOn="option_2_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency2numOpt" ls:dependentOption="optionEnumDependency2" ls:dependsOn="optionTypeDependency2" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency2" ls:dependentOption="option_2_enum_list" ls:dependsOn="optionEnumDependency2" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency3" ls:dependentOption="optionEnumDependency3" ls:dependsOn="option_3_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency3numOpt" ls:dependentOption="optionEnumDependency3" ls:dependsOn="optionTypeDependency3" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency3" ls:dependentOption="option_3_enum_list" ls:dependsOn="optionEnumDependency3" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency4" ls:dependentOption="optionEnumDependency4" ls:dependsOn="option_4_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency4numOpt" ls:dependentOption="optionEnumDependency4" ls:dependsOn="optionTypeDependency4" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency4" ls:dependentOption="option_4_enum_list" ls:dependsOn="optionEnumDependency4" ls:constraint="true" />
+
       </xs:choice>
   </xs:complexType>
 
@@ -194,7 +220,7 @@
       <xs:enumeration value="Integer" />
       <xs:enumeration value="FileInputHeader" />
       <xs:enumeration value="MultiFileInputHeader" />
-      <xs:enumeration value="Enumeration__comma separated list as default value below" />
+      <xs:enumeration value="Enumeration" />
       <xs:enumeration value="Double" />
     </xs:restriction>
   </xs:simpleType>
@@ -235,9 +261,13 @@
 	
       <!-- Output Properties -->
 	  <xs:element type="xs:string" name="output_0_type" id="Output_0_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_0_name" id="Output_0_File_Name" default="output0name.txt" />
 	  <xs:element type="xs:string" name="output_1_type" id="Output_1_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_1_name" id="Output_1_File_Name" default="output1name.txt" />
 	  <xs:element type="xs:string" name="output_2_type" id="Output_2_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_2_name" id="Output_2_File_Name" default="output2name.txt" />
 	  <xs:element type="xs:string" name="output_3_type" id="Output_3_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_3_name" id="Output_3_File_Name" default="output3name.txt" />
 
 	  <!-- Option Properties -->
 	  <xs:element type="OptionTypesType" name="option_0_type" id="Option_0_type" default="String" />
@@ -246,6 +276,7 @@
 	  <xs:element type="xs:string" name="option_0_default" id="Option_0_default_value" default="" />
 	  <xs:element type="xs:string" name="option_0_node_index" id="Which_node_to_get_column_headers_from__enter_asterisk_for_all_nodes_" default="*" />
 	  <xs:element type="xs:string" name="option_0_file_index" id="Which_files_to_get_column_headers_from_given_a_node__enter_asterisk_for_all_files_" default="*" />
+	  <xs:element type="xs:string" name="option_0_enum_list" id="List_of_values_in_enumeration_separated_by_commas" default="val1,val2,..." />
 
 	  <xs:element type="OptionTypesType" name="option_1_type" id="Option_1_type" default="String" />
 	  <xs:element type="xs:string" name="option_1_name" id="Option_1_name" default="option1" />
@@ -253,6 +284,7 @@
 	  <xs:element type="xs:string" name="option_1_default" id="Option_1_default_value" default="" />
 	  <xs:element type="xs:string" name="option_1_node_index" id="Which_node_to_get_column_headers_from__enter_asterisk_for_all_nodes_1" default="*" />
 	  <xs:element type="xs:string" name="option_1_file_index" id="Which_files_to_get_column_headers_from_given_a_node__enter_asterisk_for_all_files_1" default="*" />
+	  <xs:element type="xs:string" name="option_1_enum_list" id="List_of_values_in_enumeration_separated_by_commas1" default="val1,val2,..." />
 
 	  <xs:element type="OptionTypesType" name="option_2_type" id="Option_2_type" default="String" />
 	  <xs:element type="xs:string" name="option_2_name" id="Option_2_name" default="option2" />
@@ -260,6 +292,7 @@
 	  <xs:element type="xs:string" name="option_2_default" id="Option_2_default_value" default="" />
 	  <xs:element type="xs:string" name="option_2_node_index" id="Which_node_to_get_column_headers_from__enter_asterisk_for_all_nodes_2" default="*" />
 	  <xs:element type="xs:string" name="option_2_file_index" id="Which_files_to_get_column_headers_from_given_a_node__enter_asterisk_for_all_files_2" default="*" />
+	  <xs:element type="xs:string" name="option_2_enum_list" id="List_of_values_in_enumeration_separated_by_commas2" default="val1,val2,..." />
 
 	  <xs:element type="OptionTypesType" name="option_3_type" id="Option_3_type" default="String" />
 	  <xs:element type="xs:string" name="option_3_name" id="Option_3_name" default="option3" />
@@ -267,6 +300,7 @@
 	  <xs:element type="xs:string" name="option_3_default" id="Option_3_default_value" default="" />
 	  <xs:element type="xs:string" name="option_3_node_index" id="Which_node_to_get_column_headers_from__enter_asterisk_for_all_nodes_3" default="*" />
 	  <xs:element type="xs:string" name="option_3_file_index" id="Which_files_to_get_column_headers_from_given_a_node__enter_asterisk_for_all_files_3" default="*" />
+	  <xs:element type="xs:string" name="option_3_enum_list" id="List_of_values_in_enumeration_separated_by_commas3" default="val1,val2,..." />
 
 	  <xs:element type="OptionTypesType" name="option_4_type" id="Option_4_type" default="String" />
 	  <xs:element type="xs:string" name="option_4_name" id="Option_4_name" default="option4" />
@@ -274,6 +308,7 @@
 	  <xs:element type="xs:string" name="option_4_default" id="Option_4_default_value" default="" />
 	  <xs:element type="xs:string" name="option_4_node_index" id="Which_node_to_get_column_headers_from__enter_asterisk_for_all_nodes_4" default="*" />
 	  <xs:element type="xs:string" name="option_4_file_index" id="Which_files_to_get_column_headers_from_given_a_node__enter_asterisk_for_all_files_4" default="*" />
+	  <xs:element type="xs:string" name="option_4_enum_list" id="List_of_values_in_enumeration_separated_by_commas4" default="val1,val2,..." />
     
     </xs:choice>
   </xs:complexType>

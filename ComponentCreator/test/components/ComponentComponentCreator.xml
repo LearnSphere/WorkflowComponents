@@ -1,10 +1,10 @@
 <component>
-  <component_id>ComponentTest</component_id>
-  <component_id_human>Transform #2</component_id_human>
+  <component_id>Transform-1-x633141</component_id>
+  <component_id_human>Transform #3</component_id_human>
   <workflow_id>336</workflow_id>
   <component_name>Component Creator</component_name>
   <component_type>transform</component_type>
-  <left>343</left>
+  <left>311</left>
   <connections>
     <connection>
       <index>0</index>
@@ -12,41 +12,43 @@
       <from>Data-1-x928208</from>
     </connection>
   </connections>
-  <top>301</top>
+  <top>359</top>
   <inputs>
     <input0>
       <component_id>Data-1-x928208</component_id>
       <component_id_human>Data #1</component_id_human>
       <component_type>data</component_type>
       <component_name>Import</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
+      <elapsed_seconds>1</elapsed_seconds>
       <errors />
       <files>
         <file>
           <index>0</index>
-          <file_path>C:\Users\Peter\WorkflowsAndTetrad\WorkflowComponents\ComponentCreator\test\test_data\program.zip</file_path>
-          <label>zip</label>
-          <file_name>program.zip</file_name>
+          <file_path>test/test_data/rowRemoverProgram.zip</file_path>
+          <label>file</label>
+          <file_name>rowRemoverProgram.zip</file_name>
           <metadata />
         </file>
       </files>
       <inputmeta />
       <optionmeta>
-        <Import />
+        <Import>{"fileName":"rowRemoverProgram.zip","importFileType":"file","importFileNameTitle":"File: rowRemoverProgram.zip","fileTypeSelection":"file","datasetListSelection":"2673","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"5644"}</Import>
+        <left>101</left>
+        <top>91</top>
       </optionmeta>
     </input0>
   </inputs>
   <options>
-    <component_name>TestComponentCreator</component_name>
+    <component_name>RowRemoverCreated</component_name>
     <component_type>transform</component_type>
     <component_lang>R</component_lang>
-    <component_author>Peter</component_author>
-    <component_author_email>Petergmail.com</component_author_email>
+    <component_author>Pete</component_author>
+    <component_author_email>petegmail</component_author_email>
     <component_description>This is an auspicious component</component_description>
-    <component_program_file>ThisHasAMainFunction.py</component_program_file>
+    <component_program_file>rowRemover.R</component_program_file>
     <component_num_input_nodes>1</component_num_input_nodes>
     <component_num_outputs>1</component_num_outputs>
-    <component_num_options>1</component_num_options>
+    <component_num_options>5</component_num_options>
     <input_0_type>tab-delimited</input_0_type>
     <input_0_min_num_files>1</input_0_min_num_files>
     <input_0_max_num_files>1</input_0_max_num_files>
@@ -63,11 +65,44 @@
     <output_1_type>tab-delimited</output_1_type>
     <output_2_type>tab-delimited</output_2_type>
     <output_3_type>tab-delimited</output_3_type>
-    <option_0_type>String</option_0_type>
-    <option_0_name>option0Name</option_0_name>
-    <option_0_id>Option0Id</option_0_id>
-    <option_0_default>default0</option_0_default>
-    <option_0_node_index>0</option_0_node_index>
-    <option_0_file_index>0</option_0_file_index>
+    <output_0_name>modified_file.txt</output_0_name>
+    <output_1_name>tab-delimited</output_1_name>
+    <output_2_name>tab-delimited</output_2_name>
+    <output_3_name>tab-delimited</output_3_name>
+    <option_0_type>Enumeration</option_0_type>
+    <option_0_name>i_operation</option_0_name>
+    <option_0_id>What_to_Do_with_Rows</option_0_id>
+    <option_0_default>Remove_selected_rows</option_0_default>
+    <option_0_node_index>*</option_0_node_index>
+    <option_0_file_index>*</option_0_file_index>
+    <option_0_enum_list>Remove_selected_rows, Keep_selected rows_and_remove_the_rest</option_0_enum_list>
+    <option_1_type>String</option_1_type>
+    <option_1_name>valueColumn</option_1_name>
+    <option_1_id>Column_to_Match</option_1_id>
+    <option_1_default>.*</option_1_default>
+    <option_1_node_index>*</option_1_node_index>
+    <option_1_file_index>*</option_1_file_index>
+    <option_1_enum_list>val1,val2,...</option_1_enum_list>
+    <option_2_type>Enumeration</option_2_type>
+    <option_2_name>caseSensitive</option_2_name>
+    <option_2_id>Case_Sensitive</option_2_id>
+    <option_2_default>No</option_2_default>
+    <option_2_node_index>*</option_2_node_index>
+    <option_2_file_index>*</option_2_file_index>
+    <option_2_enum_list>Yes, No</option_2_enum_list>
+    <option_3_type>Enumeration</option_3_type>
+    <option_3_name>removeNull</option_3_name>
+    <option_3_id>Remove_Empty_Values</option_3_id>
+    <option_3_default>Yes</option_3_default>
+    <option_3_node_index>*</option_3_node_index>
+    <option_3_file_index>*</option_3_file_index>
+    <option_3_enum_list>Yes, No</option_3_enum_list>
+    <option_4_type>String</option_4_type>
+    <option_4_name>removeValues</option_4_name>
+    <option_4_id>Values_to_Remove_or_Keep</option_4_id>
+    <option_4_default>ex: aWord, 0</option_4_default>
+    <option_4_node_index>*</option_4_node_index>
+    <option_4_file_index>*</option_4_file_index>
+    <option_4_enum_list>val1,val2,...</option_4_enum_list>
   </options>
 </component>
