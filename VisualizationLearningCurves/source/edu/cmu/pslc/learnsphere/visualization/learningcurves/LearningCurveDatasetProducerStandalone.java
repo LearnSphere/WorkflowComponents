@@ -290,7 +290,6 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         // Classify curve as part of generating dataset.
         List<LearningCurvePoint> validPoints = new ArrayList<LearningCurvePoint>(lcPointList);
-        Collections.sort(validPoints, new LearningCurvePoint.SortByOpportunity());
 
         boolean lowAndFlat = true;
 

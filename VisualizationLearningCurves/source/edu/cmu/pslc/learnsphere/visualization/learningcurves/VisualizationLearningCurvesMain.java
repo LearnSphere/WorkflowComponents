@@ -17,6 +17,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMSource;
+
+import static javax.xml.transform.OutputKeys.INDENT;
+import static javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 /* if we want access to dao and helpers, simply enable the hibernate/spring class paths in the build.xml */
 /*
 import edu.cmu.pslc.datashop.dao.DaoFactory;
@@ -157,7 +170,6 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         Hashtable<String, Vector<LearningCurvePoint>> lcPrototypeData = lcPrototype
             .processStudentStepExportForLearningCurves(stuStepFile,
                                                        visualizationOptions);
-
         GraphOptions lcGraphOptions = GraphOptions.getDefaultGraphOptions();
 
         logger.debug("Initializing Learning Curves.");
@@ -187,8 +199,113 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             counter = addOutputFiles(fileList, counter);
         }
 
+        // For each skill, write the LC point data out to a file.
+        Transformer transformer = initializeTransformer();
+        
+        counter = 0;
+        for (String s : lcPrototypeData.keySet()) {
+            addPointsOutputFile(s, lcPrototypeData.get(s), counter, transformer);
+            counter++;
+        }
+
         System.out.println(this.getOutput());
         System.exit(0);
+    }
+
+    private Transformer initializeTransformer() {
+        Transformer transformer = null;
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(INDENT, "yes");
+            transformer.setOutputProperty(OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        } catch (Exception e) {
+            transformer = null;
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
+
+        return transformer;
+    }
+
+    /** Constant to convert error rates to percentages. */
+    private static final Integer ONE_HUNDRED = 100;
+
+    private void addPointsOutputFile(String skillName, List<LearningCurvePoint> lcPoints,
+                                     Integer counter, Transformer transformer) {
+
+        File lcpFile = this.createFile("lc_points_" + skillName, ".xml");
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            doc.appendChild(doc.createElement("learning_curve"));
+
+            for (LearningCurvePoint lcp : lcPoints) {
+                Node lcpNode = doc.createElement("learning_curve_point");
+
+                addElement(doc, lcpNode, "error_rates", lcp.getErrorRates() * ONE_HUNDRED);
+                addElement(doc, lcpNode, "assistance_score", lcp.getAssistanceScore());
+                addElement(doc, lcpNode, "predicted_error_rate", lcp.getPredictedErrorRate() * ONE_HUNDRED);
+                addElement(doc, lcpNode, "avg_incorrects", lcp.getAvgIncorrects());
+                addElement(doc, lcpNode, "avg_hints", lcp.getAvgHints());
+                addElement(doc, lcpNode, "step_duration", lcp.getStepDuration());
+                addElement(doc, lcpNode, "correct_step_duration", lcp.getCorrectStepDuration());
+                addElement(doc, lcpNode, "error_step_duration", lcp.getErrorStepDuration());
+                addElement(doc, lcpNode, "opportunity_number", lcp.getOpportunityNumber());
+                addElement(doc, lcpNode, "observations", lcp.getObservations());
+                addElement(doc, lcpNode, "step_duration_observations", lcp.getStepDurationObservations());
+                addElement(doc, lcpNode, "correct_step_duration_observations", lcp.getCorrectStepDurationObservations());
+                addElement(doc, lcpNode, "error_step_duration_observations", lcp.getErrorStepDurationObservations());
+                addElement(doc, lcpNode, "students_count", lcp.getStudentsCount());
+                addElement(doc, lcpNode, "problems_count", lcp.getProblemsCount());
+                addElement(doc, lcpNode, "skills_count", lcp.getSkillsCount());
+                addElement(doc, lcpNode, "steps_count", lcp.getStepsCount());
+                if (lcp.getHighStakesErrorRate() != null) {
+                    addElement(doc, lcpNode, "high_stakes_error_rate", lcp.getHighStakesErrorRate() * ONE_HUNDRED);
+                }
+
+                doc.getDocumentElement().appendChild(lcpNode);
+            }
+
+            transformer.transform(new DOMSource(doc.getDocumentElement()), new StreamResult(lcpFile));
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
+
+        printFileInfo(lcpFile);
+
+        Integer nodeIndex = 1;
+        String fileLabel = "text";
+        this.addOutputFile(lcpFile, nodeIndex, counter, fileLabel);
+    }
+
+    private void printFileInfo(File lcpFile) {
+        BufferedReader br = null;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(lcpFile);
+            br = new BufferedReader(new InputStreamReader(inputStream, "UTF8"), 8192);
+
+            String line = null;
+            if ((line = br.readLine()) != null) {
+            }
+        } catch (Exception e) {
+            logger.error("Failed to read lcp data: " + lcpFile.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Helper method to create and append an element to specified doc and node.
+     * @param doc the XML Document
+     * @param parent the Node
+     * @param tag the name of the element to create
+     * @param value the value of the new text node
+     */
+    private void addElement(Document doc, Node parent, String tag, Object value) {
+        Element ele = doc.createElement(tag);
+        String valueStr = (value == null) ? "NULL" : value.toString();
+        ele.appendChild(doc.createTextNode(valueStr));
+        parent.appendChild(ele);
     }
 
     private Integer addOutputFiles(List<File> fileList, Integer counter) {
