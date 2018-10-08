@@ -204,7 +204,8 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         
         counter = 0;
         for (String s : lcPrototypeData.keySet()) {
-            addPointsOutputFile(s, lcPrototypeData.get(s), counter, transformer);
+            String category = lcPrototype.getSkillCategory(s);
+            addPointsOutputFile(s, category, lcPrototypeData.get(s), counter, transformer);
             counter++;
         }
 
@@ -231,13 +232,27 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
     /** Constant to convert error rates to percentages. */
     private static final Integer ONE_HUNDRED = 100;
 
-    private void addPointsOutputFile(String skillName, List<LearningCurvePoint> lcPoints,
+    /**
+     * Helper method to generate XML file describing learning curve: points and, if
+     * applicable, the categorization of the curve.
+     * @param skillName the skill
+     * @param category the category
+     * @param lcPoints the data points for the curve
+     * @param counter the file index
+     * @param transformer the transformer to convert xml doc to file
+     */
+    private void addPointsOutputFile(String skillName, String category,
+                                     List<LearningCurvePoint> lcPoints,
                                      Integer counter, Transformer transformer) {
 
         File lcpFile = this.createFile("lc_points_" + skillName, ".xml");
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            doc.appendChild(doc.createElement("learning_curve"));
+            Node lcNode = doc.createElement("learning_curve");
+            doc.appendChild(lcNode);
+            if (category != null) {
+                addElement(doc, lcNode, "error_rate_category", category);
+            }
 
             for (LearningCurvePoint lcp : lcPoints) {
                 Node lcpNode = doc.createElement("learning_curve_point");

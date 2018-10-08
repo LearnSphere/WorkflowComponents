@@ -729,9 +729,32 @@ public class LearningCurveVisualization {
         return lcData;
     }
 
+    /**
+     * Map of skill name to learning curve category. Computed as part of init() but
+     * cached for access when generating output.
+     */
+    private Map<String, String> skillCategoryMap = new HashMap<String, String>();
 
-    /** the LearningCurveImage, includes filename/URL, created by the producer */
-    private LearningCurveImage lcImage;
+    /**
+     * Get the learning curve category for the named skill.
+     * Return null if the curves have not be categorized or skill isn't present.
+     * @param skillName
+     * @return category
+     */
+    public String getSkillCategory(String skillName) {
+        String category = null;
+
+        if ((skillCategoryMap != null) && (skillName != null)) {
+            category = skillCategoryMap.get(skillName);
+
+            if ((category != null) &&
+                (category.equals(LearningCurveImage.CLASSIFIED_OTHER))) {
+                category = LearningCurveImage.CLASSIFIED_OTHER_LABEL;
+            }
+        }
+
+        return category;
+    }
 
     /** Call this immediately after calling checkEmpty(), and before calling anything else. */
     public Map<String, List<File>> init(Hashtable<String, Vector<LearningCurvePoint>> lcData,
@@ -755,7 +778,7 @@ public class LearningCurveVisualization {
 
             Collections.sort(lcData.get(key), new LearningCurvePoint.SortByOpportunity());
 
-            lcImage = null;
+            LearningCurveImage lcImage = null;
             String filePrefix = key.replaceAll("[^a-zA-Z0-9\\-]", "_");
 
             String fileSuffix = ".png";
@@ -789,6 +812,9 @@ public class LearningCurveVisualization {
                 producer.generateXYChart(lcGraphOptions, fullFilePath, showErrorBars);
 
                 addImageToMap(imageFile, lcImage.getClassification(), imageFiles);
+
+                // Update skill-to-category map.
+                skillCategoryMap.put(key, lcImage.getClassification());
 
             } catch (IOException e) {
                 logger.error("Could not create file for key, " + key);
