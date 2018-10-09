@@ -1,5 +1,6 @@
 
 
+
 # Component Creator
 
 This is a component that will create the shell of your program to be put into LearnSphere's Tigris Workflow tool.  In other words, this will set up a directory structure with some files that make it easy to test your code and insert it into LearnSphere to share with other users.
@@ -10,11 +11,11 @@ In the ComponentCreator's options panel, you can specify inputs, outputs, option
 
 ## Table of Contents
 - [ComponentCreator Options Panel](#Options-panel)
-	- [New Component Background Information](#New-Component-Background-Information)
-	- [New Component **Inputs**](#Inputs)
-	- [New Component **Outputs**](#Outputs)
-	- [New Component **Options**](#Options)
-- [Next steps](#Next-Steps)
+	- [New Component Background Information](#new-component-background-information)
+	- [New Component **Inputs**](#inputs)
+	- [New Component **Outputs**](#outputs)
+	- [New Component **Options**](#options)
+- [Next steps](#next-steps)
 
 # ComponentCreator Input
 The input to the component creator is a zip file containing the scripts for your new component.  If you plan on writing your component in Java, then this input is not necessary.  The zip file may contain sub directories and multiple files.  Be sure to include all of the files necessary to run your script.
@@ -58,7 +59,7 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
   -- This is the maximum number of files that are allowed to be attached to the X'th input node.  You can write "unbounded" if you would like there to be no maximum number of inputs.  The ComponentCreator has a maximum of 1 input file as an example.
 ## Outputs
 - ### Output Y type
-  -- This is the type of the Y'th file that your component generates.  For example, this would be "tab-delimited" in the case of the **Row Remover** component.  See [Input Type](#Input-X-type) for examples of file types.
+  -- This is the type of the Y'th file that your component generates.  For example, this would be "tab-delimited" in the case of the **Row Remover** component.  See [Input Type](#input-x-type) for examples of file types.
 - ### Output Y File Name
   -- This is the name of the Y'th file that your component generates.  This is necessary so that the LearnSphere interface knows which file in the output directory to allow users to view and download.
 ## Options
@@ -68,9 +69,9 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
   - **Integer** - This also spawns an input box, but the user must enter an integer value.
   - **Double** - This also spawns an input box, but the user must enter a number value.
   - **FileInputHeader** - This creates a drop down with the column headers from the input files.  For example, this could be the values of the top line of a tab-delimited file.  The user can select just one of them.  
-   See the [**section on inputIndex**](#Which-node-to-get-column-headers-from-enter-asterisk-for-all-nodes-Z) for information on which files to get headers from.
+   See the [**section on inputIndex**](#which-node-to-get-column-headers-from-enter-asterisk-for-all-nodes-z) for information on which files to get headers from.
   - **MultiFileInputHeader** - This is the same as **FileInputHeader** with the exception that the user can select zero or multiple headers from the input files.
-  - **Enumeration** - This creates a drop down with values that you can specify.  An example of this is the component language option in the ComponentCreator.  You specify the options that should populate the drop down in a comma separated list in [a latter option](#List-of-values-in-enumeration-separated-by-commas-Z).
+  - **Enumeration** - This creates a drop down with values that you can specify.  An example of this is the component language option in the ComponentCreator.  You specify the options that should populate the drop down in a comma separated list in [a latter option](#list-of-values-in-enumeration-separated-by-commas-z).
 - ### Option Z Name
   -- Create a name for this option.  Option names must be unique and **contain only numbers and letters**.  This is the way that you'll get the option's value in your scripts.  It will be passed to your component via the command line like so:
 	  ```python yourPythonScript.py -optionName "Option value"```
