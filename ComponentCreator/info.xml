@@ -10,19 +10,25 @@
 <date>2018-10-05</date>
 
 <abstract>
+	Visit this url for more information on the input, options, and output of this component:
+	<a>https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md</a>
+	(Drag this component to the workflow, open the options, and scroll down to copy the url.)
 </abstract>
 
-<description></description>
+<description>
+	
+</description>
 
 <inputs>
-<b>zip</b>
+<b>zip</b> - Zipped directory of the scripts for the new component.
 </inputs>
 
 <outputs>
-<b>zip</b>
+<b>zip</b> - Zipped directory containing files necessary for a new component.
 </outputs>
 
 <options>
+	Visit: https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md
 </options>
 
 </info>
