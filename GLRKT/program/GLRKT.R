@@ -107,6 +107,12 @@ sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
+#Model options
+print(plancomponents)
+print(fixedpars)
+print(seedpars)
+print(prespecfeatures)
+
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
@@ -114,6 +120,22 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 datalocation<- paste(componentDirectory, "/program/", sep="")
 setwd(workingDirectory)
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+
+practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))
+for (i in unique(df$Anon.Student.Id)){
+  temp[df$Anon.Student.Id==i]<-
+    c(0,cumsum(df$Duration..sec.[df$Anon.Student.Id==i])
+      [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
+return(temp)}
+
+val<-val[order(val$Anon.Student.Id, val$Time),]
+val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
+val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
+val$CF..Time.<-as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%S"))
+equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0
+val$CF..reltime. <- practiceTime(val)
+options(scipen = 999)
+options(max.print=1000000)
 
 #Transfer of the Parameters' Format 
 plancomponents<-as.character(unlist(strsplit(plancomponents,",")))
@@ -222,6 +244,9 @@ computefeatures <- function(df,feat,par1,par2,index,index2){
   if(feat=="prop"){ifelse(is.nan(df$cor/(df$cor+df$icor)),.5,df$cor/(df$cor+df$icor))}
 }
 
+#Load Libraries
+suppressMessages(library(MuMIn))
+
 #Create function "modeloptim"
 modeloptim <- function(comps,feats,df)   
   {
@@ -281,7 +306,7 @@ modeloptim <- function(comps,feats,df)
         
       }      }}
    test<<-df
-    df$CF..ansbin.<-as.factor(df$CF..ansbin.)
+    print(as.formula(paste(equation,eq,sep="")))
     temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
 
     fitstat<-r.squaredLR(temp)
@@ -322,49 +347,22 @@ seeds[is.na(seeds)]<-.5
 modeloptim(plancomponents,prespecfeatures,val)
 summary(temp)
 
-curfixedpars<-numeric(0)
-curseedpars<- numeric(0)
+pred<-predict(temp,type="response")
+val$CF..modbin.<-pred
 
-plancomponents<-c("Anon.Student.Id","knowledge_component_id")
-performanceplan<-
-  list(c("propdec"),
-       c("base2","base"))
-fixedpars<-numeric(0)
-seedpars<-numeric(0)
-#fixed overrides seed unless fixed == NA
-fixedparlist<-list(list(.95),
-                   list(list(NA,NA),list(NA)))
-seedparlist<-list(list(NA),
-                  list(list(.5,.04),list(NA)))
-curfixedpars<-numeric(0)
-curseedpars<-numeric(0)
+suppressMessages(library(XML))
 
-for(stepi in plancomponents){
-  i<-i+1;  j<-0;   termfeatures<-NULL;  fitmodelsstats<-c()
-  performancefeatures<-performanceplan[[i]]
-  
-  for(feature in performancefeatures){
-    cat(paste(sep="","  Test addition of ",feature," for the ",stepi," component as term ",i,".\n"))
-    j<-j+1
-    fixedpars<- c(curfixedpars,Reduce(c,fixedparlist[[i]][[j]]))
-    seedpars<- c(curseedpars,Reduce(c,seedparlist[[i]][[j]]))
-    cat("    Fixedpars=")
-    cat(fixedpars,sep=",")
-    cat("    Seedpars=")
-    cat( seedpars,sep=",")
-    cat("\n")
-    termfeatures<-c(termfeatures,feature)
-    foundmodel <-modeloptim(plancomponents,c(planfeatures,feature),val)
-    fitmodelsstats <-   c(fitmodelsstats,foundmodel)  }
-  bestfeature<-which(max(fitmodelsstats)==fitmodelsstats)
-  planfeatures[i]<-termfeatures[bestfeature]
-  curfixedpars<-c(curfixedpars,Reduce(c,fixedparlist[[i]][[bestfeature]]))
-  curseedpars<- c(curseedpars,Reduce(c,seedparlist[[i]][[bestfeature]]))
-  cat(paste("\nFeatures in the optimal plan:"),paste(sep=",", planfeatures,""),paste("\n\n"))}
+#Output text summary
+outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
+             top <- newXMLNode("model_output")
+             newXMLNode("P", plancomponents, parent = top)
+             newXMLNode("F", fixedpars, parent = top)
+             newXMLNode("S",seedpars, parent = top)
+             newXMLNode("P", prespecfeatures, parent = top)
+             saveXML(top, file=outputFilePath2)
 
-outputFilePath<- paste(workingDirectory, "tab-delimited_file with covariate.txt", sep="")
-
-headers<-gsub("Unique[.]step","Unique-step",colnames(dat1))
+# Export modified data frame for reimport after header attachment
+headers<-gsub("Unique[.]step","Unique-step",colnames(val))
 headers<-gsub("[.]1","",headers)
 headers<-gsub("[.]2","",headers)
 headers<-gsub("[.]3","",headers)
@@ -373,8 +371,9 @@ headers<-gsub("[.][.]"," (",headers)
 headers<-gsub("[.]$",")",headers)
 headers<-gsub("[.]"," ",headers)
 headers<-paste(headers,collapse="\t")
-
-write.table(output,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+outputFilePath<- paste(workingDirectory, "transaction file output.txt", sep="")
+write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(val,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 
 # Stop logging
 sink()

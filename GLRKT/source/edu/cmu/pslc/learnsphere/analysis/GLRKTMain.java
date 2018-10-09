@@ -56,7 +56,7 @@ public class GLRKTMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
         
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/output.txt");
+            File outputFile = new File(outputDirectory.getAbsoluteFile() + "/transaction file output.txt");
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "tab-delimited";

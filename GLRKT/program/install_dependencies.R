@@ -3,16 +3,15 @@
 
 options(repos=structure(c(CRAN="http://cran.cnr.berkeley.edu/")))
 
-install.packages("lme4", lib="C:/R-3.4.2/library")
-install.packages("plyr", lib="C:/R-3.4.2/library")
-install.packages("caTools", lib="C:/R-3.4.2/library")
-install.packages("pROC", lib="C:/R-3.4.2/library")
-install.packages("minqa", lib="C:/R-3.4.2/library")
-install.packages("Rcpp", lib="C:/R-3.4.2/library")
-install.packages("nloptr", lib="C:/R-3.4.2/library")
-install.packages("MuMIn", lib="C:/R-3.4.2/library")
-
-
+install.packages("lme4", lib="C:/R-3.4.4/library")
+install.packages("plyr", lib="C:/R-3.4.4/library")
+install.packages("caTools", lib="C:/R-3.4.4/library")
+install.packages("pROC", lib="C:/R-3.4.4/library")
+install.packages("minqa", lib="C:/R-3.4.4/library")
+install.packages("Rcpp", lib="C:/R-3.4.4/library")
+install.packages("nloptr", lib="C:/R-3.4.4/library")
+install.packages("MuMIn", lib="C:/R-3.4.4/library")
+install.packages("XML", lib="C:/R-3.4.4/library")
 
 # EpiCalc is No longer in CRAN!
 # This does not work: install.packages("epicalc", lib="C:/R-3.4.2/library/epicalc")
