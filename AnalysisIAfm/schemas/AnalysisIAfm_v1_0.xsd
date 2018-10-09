@@ -93,9 +93,9 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="FileInputHeader" name="firstAttempt" id="First_Attempt" default=".*" />
-      <xs:element type="FileInputHeader" name="opportunity" id="Opportunity" default=".*" />
-      <xs:element type="FileInputHeader" name="student" id="Student" default=".*" />
+      <xs:element type="FileInputHeader" name="firstAttempt" id="First_Attempt" default="First Attempt" />
+      <xs:element type="FileInputHeader" name="opportunity" id="Opportunity" default="\s*Opportunity\s*\((.*)\)\s*" />
+      <xs:element type="FileInputHeader" name="student" id="Student" default="Anon Student Id" />
     </xs:choice>
   </xs:complexType>
 
