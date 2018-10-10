@@ -102,7 +102,7 @@ if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirecto
 }
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
-clean <- file(paste(workingDirectory, "GLRKT-log.wfl", sep=""))
+clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
@@ -244,7 +244,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2){
   if(feat=="prop"){ifelse(is.nan(df$cor/(df$cor+df$icor)),.5,df$cor/(df$cor+df$icor))}
 }
 
-#Load Libraries
+#Load R Libraries-MuMIn
 suppressMessages(library(MuMIn))
 
 #Create function "modeloptim"
@@ -342,24 +342,43 @@ seeds[is.na(seeds)]<-.5
   cat(paste("      optimal parameter(s) ="),paste(pars[1],sep=","),paste("\n",sep=""))}
   else {tempfun(numeric(0))  }
 
-  r.squaredLR(temp)}
+  r.squaredLR(temp)
+  #R2<-r.squaredGLMM(temp)
+
+#Output text summary
+    names(temp$coefficients)<-substr(names(temp$coefficients),1,75)
+    Nres<-length(val$Outcome)
+    pred<-predict(temp,type="response")
+    val$CF..modbin.<-pred
+
+    #foldlevels<-vector(mode='list',length=2)
+    #testfold <<- val[ as.factor(val$Anon.Student.Id) %in% foldlevels[[fold]], ]
+    #trainfold <<- val[!(as.factor(val$Anon.Student.Id) %in% foldlevels[[fold]]), ]
+
+    #Nrestest<-length(testfold$Outcome)
+
+    suppressMessages(library(XML))
+    suppressMessages(library(AUC))
+    outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
+    top <- newXMLNode("model_output")
+        newXMLNode("N", Nres, parent = top)
+        newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
+        #newXMLNode("Parameters",pr+attr(logLik(temp), "df") , parent = top)
+        newXMLNode("RMSE", round(sqrt(mean((pred-val$CF..ansbin.)^2)),5), parent = top)
+        newXMLNode("Accuracy", round(sum(val$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
+        #newXMLNode("AUC", round(auc(val$CF..ansbin.,pred),5), parent = top)
+        #newXMLNode("glmmR2fixed", round(r.squaredGLMM(temp)[1],5) , parent = top)
+        #newXMLNode("glmmR2random", round(R2[2]-R2[1],5), parent = top)
+        newXMLNode("r2LR", round(r.squaredLR(temp)[1],5) , parent = top)
+        newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5) , parent = top) 
+        #newXMLNode("tN", Nrestest, parent = bot)
+        #newXMLNode("tRMSE", round(sqrt(mean((predtest-testfold$CF..ansbin.)^2)),5), parent = bot)
+        #newXMLNode("tAccuracy", round(sum(testfold$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = bot)    
+        saveXML(top, file=outputFilePath2)
+}
 
 modeloptim(plancomponents,prespecfeatures,val)
 summary(temp)
-
-pred<-predict(temp,type="response")
-val$CF..modbin.<-pred
-
-suppressMessages(library(XML))
-
-#Output text summary
-outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
-             top <- newXMLNode("model_output")
-             newXMLNode("P", plancomponents, parent = top)
-             newXMLNode("F", fixedpars, parent = top)
-             newXMLNode("S",seedpars, parent = top)
-             newXMLNode("P", prespecfeatures, parent = top)
-             saveXML(top, file=outputFilePath2)
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
