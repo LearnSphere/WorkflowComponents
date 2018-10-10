@@ -25,6 +25,9 @@ For example, if you were making the [Row Remover](https://github.com/LearnSphere
 
 The options panel of the ComponentCreator contains multiple inputs to help create your new component.  
 ## New Component Background Information
+
+![alt text](https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/images/labelsForBackground.png "How the ComponentCreator options affect your new component")
+
 - ### Component Name
   -- Use this input to name your component.  This name must contain **No Spaces** and consist of **only letters and numbers** as it will be used to name a few java programs and directories.  A common convention to use is upper camel case.  For example, "My new component" would become "MyNewComponent".
 - ### Component Type
@@ -63,6 +66,9 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
 - ### Output Y File Name
   -- This is the name of the Y'th file that your component generates.  This is necessary so that the LearnSphere interface knows which file in the output directory to allow users to view and download.
 ## Options
+
+![alt text](https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/images/OptionsFigure.png "What the options look like")
+
 - ### Option Z Type
   -- These are the available option types for components.  They appear in the component options panel just like the options for the ComponentCreator.
   - **String** - This prompts the user to enter text into an input box.
@@ -125,3 +131,4 @@ You have just run the ComponentCreator and you have a zip file that you don't kn
 		- ```cd C:/Users/.../WorkflowComponents/YourComponent/```
 	- Run `ant runComponent` in this directory to build and test your component.
 	- More information on ant and testing your component can be found in [the workflow components doc in GitHub](https://github.com/LearnSphere/WorkflowComponents/blob/dev/Workflow%20Components.docx).
+- When you are finished testing your component, contact datashop-help@lists.andrew.cmu.edu to put your component into LearnSphere.
