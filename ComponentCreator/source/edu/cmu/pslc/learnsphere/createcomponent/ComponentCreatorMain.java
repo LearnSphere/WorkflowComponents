@@ -45,6 +45,7 @@ public class ComponentCreatorMain extends AbstractComponent {
     /** Path to the programs directory.  The unzipped input to this component. */
     private String compProgramsDirName = "INSERT_PATH_TO_WORKFLOW_COMPONENTS_DIRECTORY/program";
 
+
     /**
      * Main method.
      * @param args the arguments
@@ -73,7 +74,7 @@ public class ComponentCreatorMain extends AbstractComponent {
         //boolean requiredOptionsArePresent = ensureRequiredOptionsAreThere();
 
         // Create the properties file for the wcc script to use
-        String newComponentName = this.getOptionAsString("component_name");
+        String newComponentName = getOption("component_name");
 
         String propertiesFileName = newComponentName + "ComponentCreator.properties";
         File propertiesFile = createWccProperties(propertiesFileName);
@@ -94,7 +95,7 @@ public class ComponentCreatorMain extends AbstractComponent {
             try {
                 zipFolder(newComponentDir.getPath(), zipFileName);
             } catch (Exception e) {
-                logger.error("Could not compress new component directory: " + e.toString());
+                addErrorMessage("Could not compress new component directory: " + e.toString());
             }
 
             File outputZipFile = new File(zipFileName);
@@ -105,7 +106,7 @@ public class ComponentCreatorMain extends AbstractComponent {
             this.addOutputFile(outputZipFile, nodeIndex, 0, fileLabel);
 
         } else {
-            logger.error("New component was not created.");
+            addErrorMessage("New component was not created.");
         }
 
         System.out.println(this.getOutput());
@@ -133,30 +134,30 @@ public class ComponentCreatorMain extends AbstractComponent {
         File outFile = this.createFile(propertiesFileName);
 
         if (outFile == null || !outFile.canWrite()) {
-            logger.error("Could not create output file: " + propertiesFileName);
+            addErrorMessage("Could not create output file: " + propertiesFileName);
             return null;
         }
 
         // If it it isn't a java component.  Put the path to the unzipped input in component.program.dir
-        String component_lang = this.getOptionAsString("component_lang").replaceAll("_", ".");
+        String component_lang = getOption("component_lang").replaceAll("_", ".");
         String componentProgramsDir = "";
         if (!component_lang.equalsIgnoreCase("java")) {
             componentProgramsDir = WorkflowHelper.getStrictDirFormat(this.compProgramsDirName);
         }
 
         // Need to escape dots in the package name
-        String pkg = "edu.cmu.learnsphere." + this.getOptionAsString("component_type");
+        String pkg = "edu.cmu.learnsphere." + getOption("component_type");
         pkg = pkg.replaceAll("\\.", "\\\\\\.");
 
         StringBuilder sb = new StringBuilder();
 
         try {
             sb.append("component.name=")
-            .append(this.getOptionAsString("component_name"))
+            .append(getOption("component_name"))
             .append("\n\n")
 
             .append("component.type=")
-            .append(this.getOptionAsString("component_type"))
+            .append(getOption("component_type"))
             .append("\n\n")
 
             .append("component.lang=")
@@ -168,11 +169,11 @@ public class ComponentCreatorMain extends AbstractComponent {
             .append("\n\n")
 
             .append("component.author=")
-            .append(this.getOptionAsString("component_author"))
+            .append(getOption("component_author"))
             .append("\n\n")
 
             .append("component.author.email=")
-            .append(this.getOptionAsString("component_author_email"))
+            .append(getOption("component_author_email"))
             .append("\n\n")
 
             .append("component.program.dir=")
@@ -180,7 +181,7 @@ public class ComponentCreatorMain extends AbstractComponent {
             .append("\n\n")
 
             .append("component.program.file=")
-            .append(this.getOptionAsString("component_program_file"))
+            .append(getOption("component_program_file"))
             .append("\n\n")
 
             .append("component.version=")
@@ -188,26 +189,26 @@ public class ComponentCreatorMain extends AbstractComponent {
             .append("\n\n")
 
             .append("component.description=")
-            .append(this.getOptionAsString("component_description"))
+            .append(getOption("component_description"))
             .append("\n\n")
 
             .append("component.num_input_nodes=")
-            .append(this.getOptionAsString("component_num_input_nodes"))
+            .append(getOption("component_num_input_nodes"))
             .append("\n\n")
 
             .append("component.num_outputs=")
-            .append(this.getOptionAsString("component_num_outputs"))
+            .append(getOption("component_num_outputs"))
             .append("\n\n")
 
             .append("component.num_options=")
-            .append(this.getOptionAsString("component_num_options"))
+            .append(getOption("component_num_options"))
             .append("\n\n\n");
 
 
             // Determine how many inputs/outputs/options there are
-            String numInputsStr = this.getOptionAsString("component_num_input_nodes");
-            String numOutputsStr = this.getOptionAsString("component_num_outputs");
-            String numOptionsStr = this.getOptionAsString("component_num_options");
+            String numInputsStr = getOption("component_num_input_nodes");
+            String numOutputsStr = getOption("component_num_outputs");
+            String numOptionsStr = getOption("component_num_options");
             int numInputs = 0;
             int numOutputs = 0;
             int numOptions = 0;
@@ -216,19 +217,19 @@ public class ComponentCreatorMain extends AbstractComponent {
                 numOutputs = Integer.parseInt(numOutputsStr);
                 numOptions = Integer.parseInt(numOptionsStr);
             } catch (Exception e) {
-                logger.error("Could not parse number: " + e.toString());
+                addErrorMessage("Could not parse number: " + e.toString());
             }
 
             // Add the input properties to the string buffer
             for (int i = 0; i < numInputs; i++) {
                 sb.append("input." + i + ".type=")
-                .append(this.getOptionAsString("input_" + i + "_type"))
+                .append(getOption("input_" + i + "_type"))
                 .append("\n\n")
                 .append("input." + i + ".min_num_files=")
-                .append(this.getOptionAsString("input_" + i + "_min_num_files"))
+                .append(getOption("input_" + i + "_min_num_files"))
                 .append("\n\n")
                 .append("input." + i + ".max_num_files=")
-                .append(this.getOptionAsString("input_" + i + "_max_num_files"))
+                .append(getOption("input_" + i + "_max_num_files"))
                 .append("\n\n");
             }
             sb.append("\n");
@@ -236,44 +237,44 @@ public class ComponentCreatorMain extends AbstractComponent {
             // Add the output properties
             for (int i = 0; i < numOutputs; i++) {
                 sb.append("output." + i + ".type=")
-                .append(this.getOptionAsString("output_" + i + "_type"))
+                .append(getOption("output_" + i + "_type"))
                 .append("\n\n")
                 .append("output." + i + ".name=")
-                .append(this.getOptionAsString("output_" + i + "_name"))
+                .append(getOption("output_" + i + "_name"))
                 .append("\n\n");
             }
             sb.append("\n");
 
             // Add the option properties
             for (int i = 0; i < numOptions; i++) {
-                String optionType = this.getOptionAsString("option_" + i + "_type");
+                String optionType = getOption("option_" + i + "_type");
                 String convertedType = convertOptionType(optionType);
 
                 String enumAppendage = "";
                 if (optionType.equalsIgnoreCase("enumeration")) {
                     enumAppendage = "("
-                                    + this.getOptionAsString("option_" + i + "_enum_list") + ")";
+                                    + getOption("option_" + i + "_enum_list") + ")";
                 }
 
                 sb.append("option." + i + ".type=")
                 .append(convertedType + enumAppendage)
                 .append("\n\n")
                 .append("option." + i + ".name=")
-                .append(this.getOptionAsString("option_" + i + "_name"))
+                .append(getOption("option_" + i + "_name"))
                 .append("\n\n")
                 .append("option." + i + ".id=")
-                .append(this.getOptionAsString("option_" + i + "_id"))
+                .append(getOption("option_" + i + "_id"))
                 .append("\n\n")
                 .append("option." + i + ".default=")
-                .append(this.getOptionAsString("option_" + i + "_default"))
+                .append(getOption("option_" + i + "_default"))
                 .append("\n\n");
 
                 if (optionType.endsWith("FileInputHeader")) {
                     sb.append("option." + i + ".node_index=")
-                    .append(this.getOptionAsString("option_" + i + "_node_index"))
+                    .append(getOption("option_" + i + "_node_index"))
                     .append("\n\n")
                     .append("option." + i + ".file_index=")
-                    .append(this.getOptionAsString("option_" + i + "_file_index"))
+                    .append(getOption("option_" + i + "_file_index"))
                     .append("\n\n");
                 }
                 sb.append("\n");
@@ -281,7 +282,7 @@ public class ComponentCreatorMain extends AbstractComponent {
 
 
         } catch (NullPointerException e) {
-            logger.error("Exception getting the options as properties: " + e.toString());
+            addErrorMessage("Exception getting the options as properties: " + e.toString());
         }
 
         //logger.debug("Properties String:\n" + sb.toString());
@@ -296,18 +297,59 @@ public class ComponentCreatorMain extends AbstractComponent {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("Exception writing options to properties file: " + e.toString());
+            addErrorMessage("Exception writing options to properties file: " + e.toString());
         } finally {
             if (bw != null) {
                 try {
                     bw.close();
                 } catch (IOException e) {
-                    logger.error("Could not close output file: " + e.toString());
+                    addErrorMessage("Could not close output file: " + e.toString());
                 }
             }
         }
 
         return outFile;
+    }
+
+    /**
+     * Wrapper for getOptionAsString.  This will help handle formats of the options
+     */
+    private String getOption(String optName) {
+        String val = this.getOptionAsString(optName);
+
+        // Determine if the string needs to be formatted
+        if (optName.matches("component_name")) {
+            if (!val.matches("[a-zA-Z0-9]*")) {
+            	logger.debug("AHHHHHHH");
+                addErrorMessage("Component Name must be alpha numeric without spaces. You entered: " + val);
+            }
+        } else if (optName.matches("option_[0-9]*_name")) {
+            if (!ensureAlphaNumeric(val)) {
+                addErrorMessage("Option Names must be alpha numeric without spaces." 
+                			 + "They may include underscores. You entered: " + val
+                             + " for " + optName);
+            }
+        } else if (optName.matches("option_[0-9]*_id")) {
+            if (!val.matches("[a-zA-Z0-9 _]*")) {
+                addErrorMessage("Option Ids must be alpha numeric and can include spaces and underscores. You entered: " + val
+                             + " for " + optName);
+            }
+            // Convert spaces to underscores for the xsd
+            val = val.replaceAll(" ", "_");
+        }
+
+        return val;
+    }
+
+    /**
+     * Return true iff all characters in s are alpha numeric or Underscore
+     */
+    private boolean ensureAlphaNumeric(String s) {
+        boolean isAllAlphaNumeric = true;
+        if (!s.matches("[a-zA-Z0-9_]*")) {
+            isAllAlphaNumeric = false;
+        }
+        return isAllAlphaNumeric;
     }
 
     /**
@@ -422,7 +464,7 @@ public class ComponentCreatorMain extends AbstractComponent {
                 entry = zis.getNextEntry();
             }
         } catch (IOException e) {
-            logger.error("Error unzipping file: " + e.toString());
+            addErrorMessage("Error unzipping file: " + e.toString());
         }
         return unzippedFile;
     }
@@ -453,11 +495,11 @@ public class ComponentCreatorMain extends AbstractComponent {
     private boolean ensureRequiredOptionsAreThere() {
         boolean allHere = true;
         if (this.getOptionAsString("component_author") == null) {
-            logger.error("No component author specified.");
+            addErrorMessage("No component author specified.");
             allHere = false;
         }
         if (this.getOptionAsString("component_name") == null) {
-            logger.error("No component name specified.");
+            addErrorMessage("No component name specified.");
             allHere = false;
         }
         return allHere;
