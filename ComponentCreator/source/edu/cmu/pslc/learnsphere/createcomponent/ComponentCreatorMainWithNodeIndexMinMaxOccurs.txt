@@ -82,7 +82,7 @@ public class ComponentCreatorMain extends AbstractComponent {
         // Create the component using WorkflowComponentCreator
         String wfCompDir = this.getWorkflowComponentsDir();
         WorkflowComponentCreator wcc = new WorkflowComponentCreator();
-        File newComponentDir = wcc.createNewComponent(propertiesFile.getAbsolutePath(),
+        File newComponentDir = wcc.createNewComponent(propertiesFile.getPath(),
                                this.getComponentOutputDir(), wfCompDir);
 
 
@@ -93,7 +93,7 @@ public class ComponentCreatorMain extends AbstractComponent {
 
             logger.debug("Zip file name: " + zipFileName);
             try {
-                zipFolder(newComponentDir.getAbsolutePath(), zipFileName);
+                zipFolder(newComponentDir.getPath(), zipFileName);
             } catch (Exception e) {
                 addErrorMessage("Could not compress new component directory: " + e.toString());
             }
@@ -118,16 +118,12 @@ public class ComponentCreatorMain extends AbstractComponent {
      */
     private void handleInputPrograms() {
         File inputFile = this.getAttachment(0, 0);
-        logger.debug("input file path: " + inputFile.getAbsolutePath());
-
+        logger.debug("input file name: " + inputFile.getPath());
         File unzippedDir = unzip(inputFile, this.getComponentOutputDir());
+        String inputFileName = unzippedDir.getName();
 
-        String inputFileName = inputFile.getName();
-
-        this.compProgramsDirName =  WorkflowHelper.getStrictDirFormat(
-                                        this.getComponentOutputDir()
-                                        + inputFileName.replace(".zip", ""));
-
+        this.compProgramsDirName = this.getComponentOutputDir()
+                                   + inputFileName.replace(".zip", "");
         logger.debug("compProgramsDirName: " + compProgramsDirName);
     }
 
@@ -230,10 +226,10 @@ public class ComponentCreatorMain extends AbstractComponent {
                 .append(getOption("input_" + i + "_type"))
                 .append("\n\n")
                 .append("input." + i + ".min_num_files=")
-                .append("1")
+                .append(getOption("input_" + i + "_min_num_files"))
                 .append("\n\n")
                 .append("input." + i + ".max_num_files=")
-                .append("1")
+                .append(getOption("input_" + i + "_max_num_files"))
                 .append("\n\n");
             }
             sb.append("\n");
@@ -275,10 +271,10 @@ public class ComponentCreatorMain extends AbstractComponent {
 
                 if (optionType.endsWith("FileInputHeader")) {
                     sb.append("option." + i + ".node_index=")
-                    .append("*")
+                    .append(getOption("option_" + i + "_node_index"))
                     .append("\n\n")
                     .append("option." + i + ".file_index=")
-                    .append("*")
+                    .append(getOption("option_" + i + "_file_index"))
                     .append("\n\n");
                 }
                 sb.append("\n");
@@ -324,19 +320,19 @@ public class ComponentCreatorMain extends AbstractComponent {
         // Determine if the string needs to be formatted
         if (optName.matches("component_name")) {
             if (!val.matches("[a-zA-Z0-9]*")) {
-                logger.debug("AHHHHHHH");
+            	logger.debug("AHHHHHHH");
                 addErrorMessage("Component Name must be alpha numeric without spaces. You entered: " + val);
             }
         } else if (optName.matches("option_[0-9]*_name")) {
             if (!ensureAlphaNumeric(val)) {
-                addErrorMessage("Option Names must be alpha numeric without spaces."
-                                + "They may include underscores. You entered: " + val
-                                + " for " + optName);
+                addErrorMessage("Option Names must be alpha numeric without spaces." 
+                			 + "They may include underscores. You entered: " + val
+                             + " for " + optName);
             }
         } else if (optName.matches("option_[0-9]*_id")) {
             if (!val.matches("[a-zA-Z0-9 _]*")) {
                 addErrorMessage("Option Ids must be alpha numeric and can include spaces and underscores. You entered: " + val
-                                + " for " + optName);
+                             + " for " + optName);
             }
             // Convert spaces to underscores for the xsd
             val = val.replaceAll(" ", "_");
@@ -435,15 +431,10 @@ public class ComponentCreatorMain extends AbstractComponent {
         File unzippedFile = null;
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(source))) {
 
-            ZipEntry entry = null;
-            try {
-                entry = zis.getNextEntry();
-            } catch (Exception e) {
-                addErrorMessage("Error unzipping file2: " + e.toString());
-            }
+            ZipEntry entry = zis.getNextEntry();
             boolean firstTimeThrough = true;
             while (entry != null) {
-                logger.debug("file in zip file: " + entry.getName());
+                logger.debug(entry.getName());
                 File file = new File(out, entry.getName());
                 if (firstTimeThrough) {
                     unzippedFile = file.getParentFile();
@@ -461,28 +452,18 @@ public class ComponentCreatorMain extends AbstractComponent {
 
                     try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
 
-                        byte[] buffer = new byte[Math.max(Integer.parseInt(entry.getSize() + ""), 1)];
+                        byte[] buffer = new byte[Integer.parseInt(entry.getSize() + "")];
 
                         int location;
 
-                        try {
-                            while ((location = zis.read(buffer)) != -1) {
-                                bos.write(buffer, 0, location);
-                            }
-                        } catch (Exception e) {
-                            addErrorMessage("Error unzipping file1: " + e.toString());
+                        while ((location = zis.read(buffer)) != -1) {
+                            bos.write(buffer, 0, location);
                         }
                     }
                 }
-                try {
-                    entry = zis.getNextEntry();
-                } catch (Exception e) {
-                    addErrorMessage("Error unzipping file3: " + e.toString());
-                }
+                entry = zis.getNextEntry();
             }
         } catch (IOException e) {
-            addErrorMessage("Error unzipping file: " + e.toString());
-        } catch (Exception e) {
             addErrorMessage("Error unzipping file: " + e.toString());
         }
         return unzippedFile;

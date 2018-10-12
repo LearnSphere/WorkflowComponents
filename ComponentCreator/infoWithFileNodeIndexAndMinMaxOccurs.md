@@ -1,7 +1,6 @@
 
 
 
-
 # Component Creator
 
 This is a component that will create the shell of your program to be put into LearnSphere's Tigris Workflow tool.  In other words, this will set up a directory structure with some files that make it easy to test your code and insert it into LearnSphere to share with other users.
@@ -57,7 +56,10 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
 	- transaction
 	- file
 	- text
-
+- ### Input X minimum number of input files
+  -- This is the minimum number of files that should be connected to the X'th input node.  The ComponentCreator takes 0 or 1 inputs, so this would be 0 in it's case.  0 means that the input is **optional**.  In other words, the user of your new component does not need to attach a file to this input node.
+- ### Input X maximum number of input files
+  -- This is the maximum number of files that are allowed to be attached to the X'th input node.  You can write "unbounded" if you would like there to be no maximum number of inputs.  The ComponentCreator has a maximum of 1 input file as an example.
 ## Outputs
 - ### Output Y type
   -- This is the type of the Y'th file that your component generates.  For example, this would be "tab-delimited" in the case of the **Row Remover** component.  See [Input Type](#input-x-type) for examples of file types.
@@ -73,6 +75,7 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
   - **Integer** - This also spawns an input box, but the user must enter an integer value.
   - **Double** - This also spawns an input box, but the user must enter a number value.
   - **FileInputHeader** - This creates a drop down with the column headers from the input files.  For example, this could be the values of the top line of a tab-delimited file.  The user can select just one of them.  
+   See the [**section on inputIndex**](#which-node-to-get-column-headers-from-enter-asterisk-for-all-nodes-z) for information on which files to get headers from.
   - **MultiFileInputHeader** - This is the same as **FileInputHeader** with the exception that the user can select zero or multiple headers from the input files.
   - **Enumeration** - This creates a drop down with values that you can specify.  An example of this is the component language option in the ComponentCreator.  You specify the options that should populate the drop down in a comma separated list in [a latter option](#list-of-values-in-enumeration-separated-by-commas-z).
 - ### Option Z Name
@@ -87,6 +90,12 @@ Note: **X, Y, and Z** are indexes used to differentiate the different Inputs, Ou
   For FileInputHeader and MultiFileInputHeader, this value is a regular expression and can be used to filter the column headers.  For example, in Row Remover, you want all columns to appear in the drop down and so this value is ".\*".  However in AFM, you want only the columns that match the form "KC (anyTextHere)" and so you use the regular expression "\s\*KC\s\*\\((.*)\\)\s\*"  to filter out column headers that don't match that form.
 - ### List of values in enumeration separated by commas Z
   -- This option is only available if option Z is of type "Enumeration".  This is where you'll list the values you want in the drop down.  For example, in ComponentCreator's option for option type, you'd enter "String, Integer, FileInputHeader, MultiFileInputHeader, Enumeration, Double"
+- ### Which node to get column headers from (enter asterisk for all nodes) Z
+  -- This option is only available if option Z is of type "FileInputHeader" or "MultiFileInputHeader".  This is where you specify which **node** the headers in option Z should come from.  For example, in the component Join, the first option would have this equal to "0" and the second would have this equal to "2".  To get headers from all files, use the value "*".
+- ### Which files to get column headers from, given a node (enter asterisk for all files) Z
+  -- This is very similar to the above point.  This option is only available if option Z is of type "FileInputHeader" or "MultiFileInputHeader".  This is where you specify which **file** the headers in option Z should come from.  
+  
+  Multiple files can be attached to each input node depending on how you configured your new component.  Perhaps you only want the headers from the first attached file.  In this case, you would set this option equal to "0".  If you want headers from all of the files attached to an input node, set this to "*".
 
 # Next Steps
 You have just run the ComponentCreator and you have a zip file that you don't know what to do with.  Try this:

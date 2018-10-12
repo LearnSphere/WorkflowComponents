@@ -50,17 +50,9 @@
     <component_num_outputs>1</component_num_outputs>
     <component_num_options>5</component_num_options>
     <input_0_type>tab-delimited</input_0_type>
-    <input_0_min_num_files>1</input_0_min_num_files>
-    <input_0_max_num_files>1</input_0_max_num_files>
     <input_1_type>tab-delimited</input_1_type>
-    <input_1_min_num_files>1</input_1_min_num_files>
-    <input_1_max_num_files>1</input_1_max_num_files>
     <input_2_type>tab-delimited</input_2_type>
-    <input_2_min_num_files>1</input_2_min_num_files>
-    <input_2_max_num_files>1</input_2_max_num_files>
     <input_3_type>tab-delimited</input_3_type>
-    <input_3_min_num_files>1</input_3_min_num_files>
-    <input_3_max_num_files>1</input_3_max_num_files>
     <output_0_type>tab-delimited</output_0_type>
     <output_1_type>tab-delimited</output_1_type>
     <output_2_type>tab-delimited</output_2_type>
@@ -73,36 +65,26 @@
     <option_0_name>i_operation</option_0_name>
     <option_0_id>What_to_Do_with_Rows</option_0_id>
     <option_0_default>Remove_selected_rows</option_0_default>
-    <option_0_node_index>*</option_0_node_index>
-    <option_0_file_index>*</option_0_file_index>
     <option_0_enum_list>Remove_selected_rows, Keep_selected rows_and_remove_the_rest</option_0_enum_list>
     <option_1_type>String</option_1_type>
     <option_1_name>valueColumn</option_1_name>
     <option_1_id>Column_to_Match</option_1_id>
     <option_1_default>.*</option_1_default>
-    <option_1_node_index>*</option_1_node_index>
-    <option_1_file_index>*</option_1_file_index>
     <option_1_enum_list>val1,val2,...</option_1_enum_list>
     <option_2_type>Enumeration</option_2_type>
     <option_2_name>caseSensitive</option_2_name>
     <option_2_id>Case_Sensitive</option_2_id>
     <option_2_default>No</option_2_default>
-    <option_2_node_index>*</option_2_node_index>
-    <option_2_file_index>*</option_2_file_index>
     <option_2_enum_list>Yes, No</option_2_enum_list>
     <option_3_type>Enumeration</option_3_type>
     <option_3_name>removeNull</option_3_name>
     <option_3_id>Remove_Empty_Values</option_3_id>
     <option_3_default>Yes</option_3_default>
-    <option_3_node_index>*</option_3_node_index>
-    <option_3_file_index>*</option_3_file_index>
     <option_3_enum_list>Yes, No</option_3_enum_list>
     <option_4_type>String</option_4_type>
     <option_4_name>removeValues</option_4_name>
     <option_4_id>Values_to_Remove_or_Keep</option_4_id>
     <option_4_default>ex: aWord, 0</option_4_default>
-    <option_4_node_index>*</option_4_node_index>
-    <option_4_file_index>*</option_4_file_index>
     <option_4_enum_list>val1,val2,...</option_4_enum_list>
   </options>
 </component>
