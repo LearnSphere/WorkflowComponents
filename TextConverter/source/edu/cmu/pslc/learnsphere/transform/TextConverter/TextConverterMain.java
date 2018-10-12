@@ -2,32 +2,37 @@ package edu.cmu.pslc.learnsphere.transform.TextConverter;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
+import edu.cmu.pslc.datashop.workflows.ThreadedStreamReader;
 
 public class TextConverterMain extends AbstractComponent {
-    static private String OUTPUT_FILR_NAME = "convertedData";
+    static private String OUTPUT_FILE_NAME = "convertedData";
     static private String XML_FILE_TYPE = "XML";
     static private String TAB_DELIM_FILE_TYPE = "tab-delimited";
     static private String CSV_FILE_TYPE = "CSV";
+    static private String JS_FILE_TYPE = "JSON";
     public static void main(String[] args) {
 
         TextConverterMain tool = new TextConverterMain();
@@ -47,17 +52,47 @@ public class TextConverterMain extends AbstractComponent {
 
         //output file
         File generatedFile = null;
-        String csvOrTab = CSV_FILE_TYPE + "|" + TAB_DELIM_FILE_TYPE;
-        if (ift.equals(XML_FILE_TYPE)) {
-            generatedFile = convertXML(inputFilePath, oft);
-        } else if (ift.matches(csvOrTab) && oft.matches(csvOrTab)) {
-            generatedFile = convertTabAndCsv(inputFile, ift, oft);
+
+        if (ift.equals(JS_FILE_TYPE)) {
+        	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
+
+        		generatedFile = convertXmlToDelimited(
+    				jsonToXmlFile(inputFilePath).getAbsolutePath(), oft);
+
+        	} else if (oft.equals(XML_FILE_TYPE)) {
+
+        		generatedFile = jsonToXmlFile(inputFilePath);
+
+        	}
+        } else if (ift.equals(XML_FILE_TYPE)) {
+        	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
+
+        		generatedFile = convertXmlToDelimited(inputFilePath, oft);
+
+        	} else if (oft.equals(JS_FILE_TYPE)) {
+
+        		generatedFile = xmlToJsonFile(inputFilePath);
+
+        	}
+        } else if (ift.equals(CSV_FILE_TYPE) || ift.equals(TAB_DELIM_FILE_TYPE)) {
+        	if (oft.equals(XML_FILE_TYPE)) { // -k \"State Abbreviate\"
+
+        		File jsonFile = csvToJsonFile(inputFilePath, ift);
+        		generatedFile = jsonToXmlFile(jsonFile.getAbsolutePath());
+
+        	} else if (oft.equals(JS_FILE_TYPE)) {
+
+        		generatedFile = csvToJsonFile(inputFilePath, ift);
+
+        	} else if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
+        		generatedFile = convertTabAndCsv(inputFile, ift, oft);
+        	}
         }
 
         if (generatedFile != null && generatedFile.exists()) {
             Integer nodeIndex = 0;
             Integer fileIndex = 0;
-            String fileLabel = "tab-delimited";
+            String fileLabel = oft;
             this.addOutputFile(generatedFile, nodeIndex, fileIndex, fileLabel);
         }
 
@@ -65,7 +100,192 @@ public class TextConverterMain extends AbstractComponent {
         return;
     }
 
-    private File convertTabAndCsv(File inputFile, String inFileType, String outFileType) {
+	private File csvToJsonFile(String inputFilePath, String ift) {
+		this.loadBuildProperties("build.properties");
+
+		String csvToJsonExecutable =
+			System.getProperty("component.program.path");
+		String intermediateFile = "convertedJson";
+		File convertedFile = this.createFile(intermediateFile, ".js");
+
+		ArrayList<String> processParams = new ArrayList<String>();
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        Process process = null;
+
+        processParams.add(csvToJsonExecutable);
+        processParams.add("-d");
+        if (ift.equals(TAB_DELIM_FILE_TYPE)) {
+        	processParams.add("\"\t\"");
+        } else if (ift.equals(CSV_FILE_TYPE)) {
+        	processParams.add("\",\"");
+        }
+        processParams.add("-i");
+        processParams.add("2");
+        processParams.add(inputFilePath);
+
+        processBuilder.directory(new File(this.getComponentOutputDir()));
+
+        processBuilder.command(processParams);
+        try {
+
+			process = processBuilder.start();
+
+			List<String> inputLines = null;
+	        List<String> errorLines = null;
+			ThreadedStreamReader inputReader =
+				new ThreadedStreamReader(process.getInputStream());
+			ThreadedStreamReader errorReader =
+				new ThreadedStreamReader(process.getErrorStream());
+
+            Thread inputReaderThread = new Thread(inputReader);
+            Thread errorReaderThread = new Thread(errorReader);
+
+            inputReaderThread.start();
+            errorReaderThread.start();
+
+            inputReaderThread.join();
+            errorReaderThread.join();
+
+            inputLines = inputReader.getStringBuffer();
+            errorLines = errorReader.getStringBuffer();
+            if (!errorLines.isEmpty()) {
+                errorMessages.addAll(errorLines);
+            } else {
+            	FileWriter fw = new FileWriter(convertedFile);
+            	BufferedWriter bw = new BufferedWriter(fw);
+
+            	for (String inputLine : inputLines) {
+					bw.write(inputLine);
+            	}
+
+				bw.flush();
+				bw.close();
+            }
+		} catch (IOException e) {
+			this.addErrorMessage("Could not execute csvjson: "
+				+ e.toString());
+		} catch (InterruptedException e) {
+			this.addErrorMessage("Could not read output stream: "
+					+ e.toString());
+		}
+        return convertedFile;
+	}
+
+	private File xmlToJsonFile(String inputFilePath) {
+
+		File inputFile = new File(inputFilePath);
+		File convertedFile = null;
+		try {
+
+			BufferedReader br = null;
+			BufferedWriter bw = null;
+			String intermediateFile = "convertedJson";
+			convertedFile = this.createFile(intermediateFile, ".js");
+			convertedFile.createNewFile();
+
+			if (inputFile != null && inputFile.exists()) {
+				br = new BufferedReader(new FileReader(inputFile));
+				bw = new BufferedWriter(new FileWriter(convertedFile));
+
+				StringBuffer sBuffer = new StringBuffer();
+				while (br.ready()) {
+					sBuffer.append(br.readLine());
+				}
+
+				JSONObject tmp = null;;
+				try {
+					tmp = org.json.XML.toJSONObject(sBuffer.toString());
+				} catch (JSONException e) {
+					this.addErrorMessage("Could not convert XML to json: "
+						+ e.toString());
+				}
+
+				if (tmp != null) {
+					bw.write(tmp.toString());
+				}
+
+				br.close();
+				bw.flush();
+				bw.close();
+			} else {
+				addErrorMessage("Input file is null or does not exist.");
+			}
+		} catch (IOException e) {
+			addErrorMessage("Error reading or writing out to file: " + e.toString());
+		}
+
+		return convertedFile;
+	}
+
+	private File jsonToXmlFile(String inputFilePath) {
+
+		File inputFile = new File(inputFilePath);
+		File convertedFile = null;
+		try {
+
+			BufferedReader br = null;
+			BufferedWriter bw = null;
+
+			String intermediateFile = "convertedXml";
+			convertedFile = this.createFile(intermediateFile, ".xml");
+			convertedFile.createNewFile();
+
+			if (inputFile != null && inputFile.exists()) {
+				br = new BufferedReader(new FileReader(inputFile));
+				bw = new BufferedWriter(new FileWriter(convertedFile));
+
+				StringBuffer sBuffer = new StringBuffer();
+				while (br.ready()) {
+					sBuffer.append(br.readLine());
+				}
+
+				JSONArray jsonArray = null;;
+
+				try {
+					jsonArray = new JSONArray(sBuffer.toString());
+				} catch (JSONException e) {
+					this.addErrorMessage("Could not convert XML to json: "
+						+ e.toString());
+				}
+
+				if (jsonArray != null) {
+					for (int i = 0; i < jsonArray.length(); i++) {
+					    try {
+					    	JSONObject jsonObj = jsonArray.getJSONObject(i);
+		                	String xmlOutput = org.json.XML.toString(jsonObj);
+		                	if (xmlOutput != null) {
+		                		bw.write(xmlOutput);
+		    					if (br.ready()) {
+		    						bw.write("\n");
+		    					}
+		    				}
+
+		                } catch (JSONException e) {
+		                    this.addErrorMessage("Error converting workflow to XML.");
+		                } catch (UnsupportedEncodingException e) {
+		                    this.addErrorMessage("Unsupported encoding.");
+		                } catch (IOException e) {
+		                    this.addErrorMessage("Error opening workflow.");
+		                }
+
+					}
+
+				}
+
+
+				br.close();
+				bw.flush();
+				bw.close();
+			} else {
+				addErrorMessage("Input file is null or does not exist.");
+			}
+		} catch (IOException e) {
+			addErrorMessage("Error reading or writing out to file: " + e.toString());
+		}
+
+		return convertedFile;
+	}
+	private File convertTabAndCsv(File inputFile, String inFileType, String outFileType) {
         File convertedFile = null;
 
         String fromSeparator = null;
@@ -93,8 +313,8 @@ public class TextConverterMain extends AbstractComponent {
 
             BufferedReader br = null;
             BufferedWriter bw = null;
-
-            convertedFile = this.createFile(OUTPUT_FILR_NAME, ".txt");
+            String intermediateFile = "convertedDelimited";
+            convertedFile = this.createFile(intermediateFile, ".txt");
             convertedFile.createNewFile();
 
             if (inputFile != null && inputFile.exists()) {
@@ -153,7 +373,7 @@ public class TextConverterMain extends AbstractComponent {
         return convertedFile;
     }
 
-    private File convertXML(String inputFilePathName, String convertToFileType) {
+    private File convertXmlToDelimited(String inputFilePathName, String convertToFileType) {
         logger.info("Converting xml file: " + inputFilePathName);
         File generatedFile = null;
 
@@ -203,7 +423,8 @@ public class TextConverterMain extends AbstractComponent {
             }
 
             //output
-            generatedFile = this.createFile(OUTPUT_FILR_NAME, ".txt");
+            String intermediateFile = "convertedCsv";
+            generatedFile = this.createFile(intermediateFile, ".txt");
             BufferedWriter bw = null;
             try {
                 FileWriter fstream = new FileWriter(generatedFile);
@@ -260,4 +481,28 @@ public class TextConverterMain extends AbstractComponent {
         return generatedFile;
     }
 
+    /**
+     * Look for a file named build.properties in the current directory, if
+     * it exists, and load properties from it.
+     * @param propsFileName the properties file name
+     */
+    private void loadBuildProperties(String propsFileName) {
+        String filename = this.getToolDir() + propsFileName;
+        File propsFile = new File(filename);
+
+        if (propsFile.exists()) {
+            try {
+                System.getProperties().load(new FileInputStream(filename));
+                logger.trace("System properties: ");
+
+                for (Object propertyKey : System.getProperties().keySet()) {
+                    logger.trace("\t" + propertyKey + " = " + System.getProperty((String) propertyKey));
+                }
+
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
 }
