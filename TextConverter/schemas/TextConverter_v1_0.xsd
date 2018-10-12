@@ -12,14 +12,14 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
-  
+
+
   <xs:complexType name="InputType">
     <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="file" minOccurs="0" />
@@ -48,33 +48,36 @@
       <xs:element ref="file" />
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:simpleType name="inputFileType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="XML" />
       <xs:enumeration value="tab-delimited" />
       <xs:enumeration value="CSV" />
+      <xs:enumeration value="JSON" />
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:simpleType name="ouputFileType" final="restriction">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="XML" />
       <xs:enumeration value="tab-delimited" />
       <xs:enumeration value="CSV" />
+      <xs:enumeration value="JSON" />
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="inputFileType" name="ift" id="Input_File_Type" default="XML" />
         <xs:element type="ouputFileType" name="oft" id="Output_File_Type" default="tab-delimited" />
-  	
+
     </xs:choice>
   </xs:complexType>
 
