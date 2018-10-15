@@ -21,7 +21,7 @@
 	<li>No blank rows in your spreadsheet</li>
 	<li>This only tests what's in the spreadsheet, it does not take into account what exists in your course tree.</li>
 </ul>
-<b>Template kc model</b> - Export a kc model from DataShop.  Please do NOT use the "(new only)" option.  Unique-step export is recommended.  If the last column in the export is "new KC model name", this component will not work properly.<br/>
+<b>Template kc model</b> - Export a kc model from DataShop.  Please do NOT use the "(new only)" option when exporting.  Unique-step export is recommended.  The last two column headers in this KC export should be of the form "KC ([some model name])" and "KC (new KC model name)".<br/>
 </inputs>
 
 <outputs>
