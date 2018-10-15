@@ -19,11 +19,11 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.workflows.ThreadedStreamReader;
 
@@ -56,8 +56,7 @@ public class TextConverterMain extends AbstractComponent {
         if (ift.equals(JS_FILE_TYPE)) {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
 
-        		generatedFile = convertXmlToDelimited(
-    				jsonToXmlFile(inputFilePath).getAbsolutePath(), oft);
+        		generatedFile = convertJsonToDelimited(inputFilePath, ift, oft);
 
         	} else if (oft.equals(XML_FILE_TYPE)) {
 
@@ -67,7 +66,8 @@ public class TextConverterMain extends AbstractComponent {
         } else if (ift.equals(XML_FILE_TYPE)) {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
 
-        		generatedFile = convertXmlToDelimited(inputFilePath, oft);
+        		File jsonFile = xmlToJsonFile(inputFilePath);
+        		generatedFile= convertJsonToDelimited(jsonFile.getAbsolutePath(), ift, oft);
 
         	} else if (oft.equals(JS_FILE_TYPE)) {
 
@@ -75,7 +75,7 @@ public class TextConverterMain extends AbstractComponent {
 
         	}
         } else if (ift.equals(CSV_FILE_TYPE) || ift.equals(TAB_DELIM_FILE_TYPE)) {
-        	if (oft.equals(XML_FILE_TYPE)) { // -k \"State Abbreviate\"
+        	if (oft.equals(XML_FILE_TYPE)) { // -k \"Some Column Key\"
 
         		File jsonFile = csvToJsonFile(inputFilePath, ift);
         		generatedFile = jsonToXmlFile(jsonFile.getAbsolutePath());
@@ -101,6 +101,9 @@ public class TextConverterMain extends AbstractComponent {
     }
 
 	private File csvToJsonFile(String inputFilePath, String ift) {
+
+		String osName = System.getProperty("os.name").toLowerCase();
+
 		this.loadBuildProperties("build.properties");
 
 		String csvToJsonExecutable =
@@ -114,11 +117,21 @@ public class TextConverterMain extends AbstractComponent {
 
         processParams.add(csvToJsonExecutable);
         processParams.add("-d");
-        if (ift.equals(TAB_DELIM_FILE_TYPE)) {
-        	processParams.add("\"\t\"");
-        } else if (ift.equals(CSV_FILE_TYPE)) {
-        	processParams.add("\",\"");
+
+        if (osName.indexOf("win") >= 0) {
+        	if (ift.equals(TAB_DELIM_FILE_TYPE)) {
+	        	processParams.add("\"\t\"");
+	        } else if (ift.equals(CSV_FILE_TYPE)) {
+	        	processParams.add("\",\"");
+	        }
+        } else {
+	        if (ift.equals(TAB_DELIM_FILE_TYPE)) {
+	        	processParams.add("\t");
+	        } else if (ift.equals(CSV_FILE_TYPE)) {
+	        	processParams.add(",");
+	        }
         }
+
         processParams.add("-i");
         processParams.add("2");
         processParams.add(inputFilePath);
@@ -308,8 +321,6 @@ public class TextConverterMain extends AbstractComponent {
         }
 
         try {
-            FileReader fr = null;
-            FileWriter fw = null;
 
             BufferedReader br = null;
             BufferedWriter bw = null;
@@ -373,112 +384,77 @@ public class TextConverterMain extends AbstractComponent {
         return convertedFile;
     }
 
-    private File convertXmlToDelimited(String inputFilePathName, String convertToFileType) {
+    private File convertJsonToDelimited(String inputFilePathName, String ift, String oft) {
         logger.info("Converting xml file: " + inputFilePathName);
-        File generatedFile = null;
+        String intermediateFile = "convertedJsonToCsv";
 
-        String outputSeparator = null;
-        if (convertToFileType.equals(TAB_DELIM_FILE_TYPE)) {
-        	outputSeparator = "\t";
-        } else if (convertToFileType.equals(CSV_FILE_TYPE)) {
-        	outputSeparator = ",";
+        File tempFile = this.createFile(intermediateFile + "_csv", ".txt");
+        File filePointer = null;
+
+        if (!oft.equals(TAB_DELIM_FILE_TYPE) && !oft.equals(CSV_FILE_TYPE)) {
+        	addErrorMessage("Output separator was not readable: " + oft);
         } else {
-        	addErrorMessage("Output separator was not readable: " + convertToFileType);
-        	return null;
+
+	        BufferedReader br = null;
+	        BufferedWriter bw = null;
+
+	        File inputFile = new File(inputFilePathName);
+	        if (inputFile != null && inputFile.exists()) {
+				try {
+					br = new BufferedReader(new FileReader(inputFile));
+					bw = new BufferedWriter(new FileWriter(tempFile));
+
+					StringBuffer sBuffer = new StringBuffer();
+					while (br.ready()) {
+						sBuffer.append(br.readLine());
+					}
+
+					JSONArray jsonArray = null;;
+
+					try {
+						if (!sBuffer.toString().matches("\\s*\\[.*\\]\\s*")) {
+							if (!sBuffer.toString().matches("\\s*\\{.*\\}\\s*")) {
+								this.addErrorMessage("Not a valid JSON Array or JSON Object."
+									+ sBuffer.toString());
+							} else {
+								jsonArray = new JSONArray("[ " + sBuffer.toString() + " ]");
+							}
+						} else {
+							jsonArray = new JSONArray(sBuffer.toString());
+						}
+
+					} catch (JSONException e) {
+						this.addErrorMessage("Could not convert XML to delimited: "
+							+ e.toString());
+					}
+
+					if (jsonArray != null) {
+				        String csv = CDL.toString(jsonArray);
+				        bw.write(csv);
+					}
+
+					bw.flush();
+
+					bw.close();
+				} catch (IOException e) {
+					this.addErrorMessage("Could not read/write XML to delimited: "
+							+ e.toString());
+				} catch (JSONException e) {
+					this.addErrorMessage("JSONException converting XML to delimited: "
+							+ e.toString());
+				}
+
+
+				if (tempFile.exists()) {
+					if (oft.equals(TAB_DELIM_FILE_TYPE)) {
+						filePointer = convertTabAndCsv(tempFile, ift, oft);
+					} else if (oft.equals(CSV_FILE_TYPE)) {
+						filePointer = tempFile;
+					}
+				}
+	    	}
         }
-
-        SAXBuilder builder = new SAXBuilder();
-        // Setting reuse parser to false is a workaround
-        // for a JDK 1.7u45 bug described in
-        // https://community.oracle.com/thread/2594170
-        builder.setReuseParser(false);
-        try {
-            String xmlStr = FileUtils.readFileToString(new File(inputFilePathName), null);
-            StringReader reader = new StringReader(xmlStr.replaceAll("[\r\n]+", ""));
-            Document doc = builder.build(reader);
-            logger.info("Input XML file is well-formed.");
-            List<Element> cList = doc.getRootElement().getChildren();
-            logger.info("Found root: " + doc.getRootElement().getName() + " with " + cList.size() + " children.");
-            Iterator<Element> iter = cList.iterator();
-            List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
-            List<String> colNames = new ArrayList<String>();
-            List<String> rowNames = new ArrayList<String>();
-            while (iter.hasNext()) {
-                Element e = (Element) iter.next();
-                String rowName = e.getName();
-                rowNames.add(rowName);
-                HashMap<String, String> dataRow = new HashMap<String, String>();
-                data.add(dataRow);
-                List<Element> e_cList = e.getChildren();
-                Iterator<Element> e_iter = e_cList.iterator();
-                while (e_iter.hasNext()) {
-                    Element sub_e = (Element) e_iter.next();
-                    String entryKey = sub_e.getName();
-                    String entryVal = sub_e.getValue();
-                    if (!dataRow.containsKey(entryKey))
-                        dataRow.put(entryKey, entryVal);
-                    if (!colNames.contains(entryKey))
-                        colNames.add(entryKey);
-                }
-            }
-
-            //output
-            String intermediateFile = "convertedCsv";
-            generatedFile = this.createFile(intermediateFile, ".txt");
-            BufferedWriter bw = null;
-            try {
-                FileWriter fstream = new FileWriter(generatedFile);
-                bw = new BufferedWriter(fstream);
-                generatedFile.createNewFile();
-                //write out header
-                String headers = "name";
-                for (String colName : colNames) {
-                    headers += outputSeparator + colName;
-                }
-                bw.append(headers + "\n");
-                for (int i = 0; i < rowNames.size(); i++) {
-                    String row = rowNames.get(i);
-                    HashMap<String, String> rowData = data.get(i);
-                    for (String colName : colNames) {
-                        if (rowData.containsKey(colName)) {
-                            row += outputSeparator + rowData.get(colName);
-                        } else {
-                            row += outputSeparator;
-                        }
-                    }
-                    bw.append(row + "\n");
-                }
-
-            } catch (Exception e) {
-                String exErr = "Found error while writing output file: " + e.getMessage();
-                addErrorMessage(exErr);
-                logger.info(exErr);
-                return null;
-            } finally {
-                try {
-                    if (bw != null) {
-                        bw.flush();
-                        bw.close();
-                    }
-                } catch (IOException e) {
-                    String exErr = "Error found while closing output file: " + e.getMessage();
-                    addErrorMessage(exErr);
-                    logger.info(exErr);
-                    return null;
-                }
-            }
-        } catch (IOException ioe) {
-            String exErr = "XML file not found. Error: " + ioe.getMessage();
-            addErrorMessage(exErr);
-            logger.info(exErr);
-            return null;
-        } catch (JDOMException je) {
-            String exErr = "XML file in wrong format. Error: " + je.getMessage();
-            addErrorMessage(exErr);
-            logger.info(exErr);
-            return null;
-        }
-        return generatedFile;
+        return filePointer;
     }
 
     /**

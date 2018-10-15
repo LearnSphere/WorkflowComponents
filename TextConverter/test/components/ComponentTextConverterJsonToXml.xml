@@ -1,5 +1,5 @@
 <component>
-    <component_id>ComponentTextOutputJsonToXml</component_id>
+    <component_id>ComponentTestOutputJsonToXml</component_id>
     <component_id_human>Transform #4</component_id_human>
     <workflow_id>1</workflow_id>
     <component_name>XMLParser</component_name>

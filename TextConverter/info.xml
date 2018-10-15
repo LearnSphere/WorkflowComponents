@@ -35,8 +35,8 @@ Here is an example of an XML file that can be converted with this component:
 
 <options>
  <ul>
-<li><b>Input file type</b> - XML, Tab-Delimitied, or CSV</li>
-<li><b>Output file type</b> - Tab-Delimited or CSV</li>
+<li><b>Input file type</b> - Tab-Delimitied, CSV, XML, or JSON</li>
+<li><b>Output file type</b> - Tab-Delimited, CSV, XML, or JSON</li>
 </ul>
 </options>
 

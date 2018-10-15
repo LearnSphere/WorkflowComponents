@@ -117,6 +117,18 @@
             <jvmarg value="-Xmx1048m"/>
         </java>
     	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+	            <classpath refid="run.classpath" />
+	            <arg value="-componentXmlFile" />
+	            <arg value="${basedir}/test/components/ComponentTextConverterTabToJson.xml" />
+	            <arg value="-workflowDir" />
+	            <arg value="${basedir}/test/" />
+	            <arg value="-toolDir" />
+	            <arg value="${basedir}/" />
+	            <arg value="-schemaFile" />
+	            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+	            <jvmarg value="-Xmx1048m"/>
+	        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
             <arg value="${basedir}/test/components/ComponentTextConverterCsvToJson.xml" />
