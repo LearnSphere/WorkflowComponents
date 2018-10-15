@@ -15,13 +15,13 @@
 <description></description>
 
 <inputs>
-<b>Skills ODS File</b> - Download a skills model in open document format (ods).  Assumptions about this file:<br/>
+<b>Skills ODS File</b> - Download a skills model in open document format (ods).  This file should correspond to the same tutor as the KC model export.  Assumptions about this file:<br/>
 <ul>
 	<li>The tabs in your spreadsheet are ordered: Skills, Problems, LOs.</li>
 	<li>No blank rows in your spreadsheet</li>
 	<li>This only tests what's in the spreadsheet, it does not take into account what exists in your course tree.</li>
 </ul>
-<b>Template kc model</b> - Export a kc model from DataShop.  Please do NOT use the "(new only)" option.  Unique-step export is recommended.<br/>
+<b>Template kc model</b> - Export a kc model from DataShop.  Please do NOT use the "(new only)" option.  Unique-step export is recommended.  If the last column in the export is "new KC model name", this component will not work properly.<br/>
 </inputs>
 
 <outputs>
