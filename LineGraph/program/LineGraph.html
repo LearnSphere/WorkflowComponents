@@ -3,11 +3,9 @@
 
 <head>
     <title>Line Graph</title>
-
     <script src="javascript/lib/d3.v4.min.js"></script>
     <script src="javascript/lib/jquery-1.7.1.min.js"></script>
     <script src="javascript/lib/canvg.min.js"></script>
-    
     <style>
     .messages {
         position: absolute;
@@ -120,7 +118,7 @@
 
         jQuery('#toggleAdvOpt').click(function() {
             jQuery('.advancedOptions').toggle();
-        })
+        });
 
         // Set functionality for changing an option
         jQuery('.options select, .options input').change(function() {
@@ -229,13 +227,10 @@
             ]);
         }
 
-        let xFontSize = (isDateX && advOpt.xTickSize == "1.2em") ? "0.85em" : advOpt.xTickSize;
-        let yFontSize = (isDateY && advOpt.yTickSize == "1.2em") ? "0.85em" : advOpt.yTickSize;
-
         // add the x Axis
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .style("font-size", xFontSize)
+            .style("font-size", advOpt.xTickSize)
             .attr('class', 'xTicks')
             .call(d3.axisBottom(xScale));
         // add a label for x Axis
@@ -251,7 +246,7 @@
         // add the y Axis
         svg.append("g")
             .attr('class', 'yTicks')
-            .style("font-size", advOpt.yFontSize)
+            .style("font-size", advOpt.yTickSize)
             .call(d3.axisLeft(yScale));
         // text label for the y axis
         svg.append("text")
@@ -357,11 +352,12 @@
 
             // Tick options
             advOptHtml += '<tr id="' + v + 'TickSize">';
-            advOptHtml += '<td>' + v + ' Tick Font Size:</td><td><input type="text" name="' + v + 'TickSize" value="1.2em"></td></tr>';
+            advOptHtml += '<td>' + v + ' Tick Font Size:</td><td><button name="' + v +
+                'TickSizePlus">+</button> <button name="' + v + 'TickSizeMinus">-</button></td></tr>';
             // Label Size
             advOptHtml += '<tr id="' + v + 'LabelSize">';
-            advOptHtml += '<td>' + v + ' Label Font Size:</td><td><input type="text" name="' +
-                v + 'LabelSize" value="1.2em"></td></tr>';
+            advOptHtml += '<td>' + v + ' Label Font Size:</td><td><button name="' + v +
+                'LabelSizePlus">+</button> <button name="' + v + 'LabelSizeMinus">-</button></td></tr>';
 
             // Label Value
             advOptHtml += '<tr id="' + v + 'Label">';
@@ -378,7 +374,8 @@
         advOptHtml += '<tr id="lineColor">';
         advOptHtml += '<td>Line Color:</td><td><input type="color" name="lineColor" value="#524db2"></td></tr>';
         advOptHtml += '<tr id="lineWidth">';
-        advOptHtml += '<td>Line Width:</td><td><input type="number" name="lineWidth" value="1.5">px</td></tr>';
+        advOptHtml += '<td>Line Width:</td><td><button name="' +
+            'LineWidthPlus">+</button> <button name="LineWidthMinus">-</button></td></tr>';
 
         advOptHtml += '</table>';
 
@@ -407,31 +404,72 @@
     var advOpt = {};
 
     function advancedOptionsToObject() {
-        advOpt.xTickSize = jQuery('input[name="xTickSize"]').val();
-        advOpt.xLabelSize = jQuery('input[name="xLabelSize"]').val();
         advOpt.xLabel = jQuery('input[name="xLabel"]').val();
-        advOpt.yTickSize = jQuery('input[name="yTickSize"]').val();
-        advOpt.yLabelSize = jQuery('input[name="yLabelSize"]').val();
         advOpt.yLabel = jQuery('input[name="yLabel"]').val();
         advOpt.lineColor = jQuery('input[name="lineColor"]').val();
-        advOpt.lineWidth = jQuery('input[name="lineWidth"').val();
+
+        if (svg != null) {
+            advOpt.xTickSize = svg.selectAll('.xTicks').style('font-size');
+            advOpt.xLabelSize = svg.selectAll('#xLabel').style('font-size');
+            advOpt.yTickSize = svg.selectAll('.yTicks').style('font-size');
+            advOpt.yLabelSize = svg.selectAll('#yLabel').style('font-size');
+            advOpt.lineWidth = svg.selectAll('#line').style('stroke-width');
+        } else {
+            // SVG has not been defined yet, use defaults for sizes
+            let defaultSize = '12px';
+            advOpt.xTickSize = defaultSize;
+            advOpt.xLabelSize = defaultSize;
+            advOpt.yTickSize = defaultSize;
+            advOpt.yLabelSize = defaultSize;
+            advOpt.lineWidth = '1.5px';
+        }
     }
 
     function advancedOptionFunctionality() {
+        let sizeFactor = 1.1;
+
         // Labels size
-        jQuery('input[name="xLabelSize"]').change(function() {
-            svg.selectAll('#xLabel').style('font-size', jQuery('input[name="xLabelSize"]').val());
+        jQuery('button[name="xLabelSizePlus"').click(function() {
+            let originalSize = svg.selectAll('#xLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('#xLabel').style('font-size', newSize);
         });
-        jQuery('input[name="yLabelSize"]').change(function() {
-            svg.selectAll('#yLabel').style('font-size', jQuery('input[name="yLabelSize"]').val());
+        jQuery('button[name="yLabelSizePlus"').click(function() {
+            let originalSize = svg.selectAll('#yLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('#yLabel').style('font-size', newSize);
+        });
+        jQuery('button[name="xLabelSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('#xLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('#xLabel').style('font-size', newSize);
+        });
+        jQuery('button[name="yLabelSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('#yLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('#yLabel').style('font-size', newSize);
         });
 
         // Ticks size
-        jQuery('input[name="xTickSize"]').change(function() {
-            svg.selectAll('.xTicks').style('font-size', jQuery('input[name="xTickSize"]').val());
+        jQuery('button[name="xTickSizePlus"').click(function() {
+            let originalSize = svg.selectAll('.xTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('.xTicks').style('font-size', newSize);
         });
-        jQuery('input[name="yTickSize"]').change(function() {
-            svg.selectAll('.yTicks').style('font-size', jQuery('input[name="yTickSize"]').val());
+        jQuery('button[name="yTickSizePlus"').click(function() {
+            let originalSize = svg.selectAll('.yTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('.yTicks').style('font-size', newSize);
+        });
+        jQuery('button[name="xTickSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('.xTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('.xTicks').style('font-size', newSize);
+        });
+        jQuery('button[name="yTickSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('.yTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('.yTicks').style('font-size', newSize);
         });
 
         // Label text
@@ -449,14 +487,21 @@
         });
 
         //Width of line
-        jQuery('input[name="lineWidth"]').change(function() {
-            svg.selectAll('#line').attr('stroke-width', jQuery('input[name="lineWidth"]').val())
+        jQuery('button[name="LineWidthPlus"').click(function() {
+            let originalSize = svg.selectAll('#line').style('stroke-width');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('#line').style('stroke-width', newSize);
+        });
+        jQuery('button[name="LineWidthMinus"').click(function() {
+            let originalSize = svg.selectAll('#line').style('stroke-width');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('#line').style('stroke-width', newSize);
         });
 
         // When any adv opts are changed, update the object
         jQuery('.advancedOptions input').change(function() {
             advancedOptionsToObject();
-        })
+        });
     }
 
     function populateHeaderSelect(data) {
