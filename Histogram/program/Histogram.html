@@ -194,8 +194,19 @@
     function initiateInterface() {
         allowSaveableImage();
 
+        // Open Advanced Options when clicking "show advanced options"
         jQuery('#toggleAdvOpt').click(function() {
             jQuery('.advancedOptions').toggle();
+        });
+
+        // Close Adv. Opt. when clickint outside of the advanced options
+        $(document).mouseup(function(e) {
+            var advOptDiv = $(".advancedOptions");
+
+            // if the target of the click isn't the advOptDiv nor a descendant of the advOptDiv
+            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0) {
+                advOptDiv.hide();
+            }
         });
 
         // Set functionality for changing an option
