@@ -192,16 +192,18 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
   modelingString = ""
 	if (modelingFunc == "glmer") {
     #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ")", sep="")
-	  modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-	} else {
+	  #optimx doesn't work when formula has 1|....
+	  #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	  modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"nloptwrap\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	  
+	 } else {
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds, family=", family, ")", sep="")
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
 	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 	  
 	}
   
-  
-	eval(parse(text=modelingString))
+  eval(parse(text=modelingString))
 	modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
 	capture.output(modelSum, file = summary.file, append = FALSE)
