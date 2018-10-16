@@ -53,7 +53,9 @@ public class TextConverterMain extends AbstractComponent {
         //output file
         File generatedFile = null;
 
-        if (ift.equals(JS_FILE_TYPE)) {
+        if (ift.equalsIgnoreCase(oft)) {
+        	generatedFile = new File(inputFilePath);
+        } else if (ift.equals(JS_FILE_TYPE)) {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
 
         		generatedFile = convertJsonToDelimited(inputFilePath, ift, oft);
@@ -67,7 +69,8 @@ public class TextConverterMain extends AbstractComponent {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
 
         		File jsonFile = xmlToJsonFile(inputFilePath);
-        		generatedFile= convertJsonToDelimited(jsonFile.getAbsolutePath(), ift, oft);
+        		generatedFile= convertJsonToDelimited(
+    				jsonFile.getAbsolutePath(), JS_FILE_TYPE, oft);
 
         	} else if (oft.equals(JS_FILE_TYPE)) {
 
@@ -252,13 +255,18 @@ public class TextConverterMain extends AbstractComponent {
 					sBuffer.append(br.readLine());
 				}
 
-				JSONArray jsonArray = null;;
+				JSONArray jsonArray = null;
+				JSONObject jsonObject = null;
 
 				try {
 					jsonArray = new JSONArray(sBuffer.toString());
 				} catch (JSONException e) {
-					this.addErrorMessage("Could not convert XML to json: "
-						+ e.toString());
+					try {
+						jsonObject = new JSONObject(sBuffer.toString());
+					} catch (JSONException e2) {
+						this.addErrorMessage("Could not convert XML to json: "
+								+ e.toString());
+					}
 				}
 
 				if (jsonArray != null) {
@@ -280,9 +288,24 @@ public class TextConverterMain extends AbstractComponent {
 		                } catch (IOException e) {
 		                    this.addErrorMessage("Error opening workflow.");
 		                }
-
 					}
+				} else if (jsonObject != null) {
+					    try {
+		                	String xmlOutput = org.json.XML.toString(jsonObject);
+		                	if (xmlOutput != null) {
+		                		bw.write(xmlOutput);
+		    					if (br.ready()) {
+		    						bw.write("\n");
+		    					}
+		    				}
 
+		                } catch (JSONException e) {
+		                    this.addErrorMessage("Error converting workflow to XML.");
+		                } catch (UnsupportedEncodingException e) {
+		                    this.addErrorMessage("Unsupported encoding.");
+		                } catch (IOException e) {
+		                    this.addErrorMessage("Error opening workflow.");
+		                }
 				}
 
 
@@ -335,41 +358,49 @@ public class TextConverterMain extends AbstractComponent {
                 int numHeaders = -1; int lineNumber = 1;
                 while (br.ready()) {
                     String line = br.readLine();
-                    String [] lineTokens = line.split(fromSeparator);
+                    if (line.contains(fromSeparator)) {
+	                    String [] lineTokens = line.split(fromSeparator);
 
-                    if (numHeaders < 0) {
-                        numHeaders = lineTokens.length;
+	                    if (numHeaders < 0) {
+	                        numHeaders = lineTokens.length;
+	                    }
+
+	                    // If the number of values in this line is not equal to the number of headers
+	                    // AND it is not the last line in the file, return an error
+	                    if (lineTokens.length != numHeaders && br.ready()) {
+	                        addErrorMessage("Error in line number " + lineNumber
+	                                     + ".  Fewer values (" + lineTokens.length
+	                                     + ") in this row than the header (" + numHeaders + ").");
+	                        return null;
+	                    } else if (lineTokens.length != numHeaders && !br.ready()) {
+	                    	// This is the last line
+	                    	lineTokens = new String [0];
+	                    }
+
+	                    StringBuilder builder = new StringBuilder();
+	                    Integer currentHeaderIndex = 0;
+	                    for (String s : lineTokens) {
+	                        if (s.contains(toSeparator)) {
+	                            addErrorMessage("Value \"" + s + "\" on line " + lineNumber + " contains the"
+	                                         + " desired separator of the output file.");
+	                            return null;
+	                        }
+	                        if (currentHeaderIndex < numHeaders - 1) {
+	                        	builder.append(s + toSeparator);
+	                        } else {
+	                        	builder.append(s);
+	                        }
+	                        currentHeaderIndex++;
+	                    }
+	                    String newLine = builder.toString();
+
+	                    bw.write(newLine);
+	                    if (br.ready()) {
+	                        bw.write("\n");
+	                    }
+
+	                    lineNumber++;
                     }
-
-                    // If the number of values in this line is not equal to the number of headers
-                    // AND it is not the last line in the file, return an error
-                    if (lineTokens.length != numHeaders && br.ready()) {
-                        addErrorMessage("Error in line number " + lineNumber
-                                     + ".  Fewer values (" + lineTokens.length
-                                     + ") in this row than the header (" + numHeaders + ").");
-                        return null;
-                    } else if (lineTokens.length != numHeaders && !br.ready()) {
-                    	// This is the last line
-                    	lineTokens = new String [0];
-                    }
-
-                    StringBuilder builder = new StringBuilder();
-                    for (String s : lineTokens) {
-                        if (s.contains(toSeparator)) {
-                            addErrorMessage("Value \"" + s + "\" on line " + lineNumber + " contains the"
-                                         + " desired separator of the output file.");
-                            return null;
-                        }
-                        builder.append(s + toSeparator);
-                    }
-                    String newLine = builder.toString();
-
-                    bw.write(newLine);
-                    if (br.ready()) {
-                        bw.write("\n");
-                    }
-
-                    lineNumber++;
                 }
                 br.close();
                 bw.flush();
@@ -386,15 +417,14 @@ public class TextConverterMain extends AbstractComponent {
 
     private File convertJsonToDelimited(String inputFilePathName, String ift, String oft) {
         logger.info("Converting xml file: " + inputFilePathName);
-        String intermediateFile = "convertedJsonToCsv";
+        String intermediateFile = "convertedJsonToDelimited";
 
-        File tempFile = this.createFile(intermediateFile + "_csv", ".txt");
         File filePointer = null;
 
         if (!oft.equals(TAB_DELIM_FILE_TYPE) && !oft.equals(CSV_FILE_TYPE)) {
         	addErrorMessage("Output separator was not readable: " + oft);
         } else {
-
+        	File tempFile = this.createFile(intermediateFile, ".txt");
 	        BufferedReader br = null;
 	        BufferedWriter bw = null;
 
@@ -447,7 +477,7 @@ public class TextConverterMain extends AbstractComponent {
 
 				if (tempFile.exists()) {
 					if (oft.equals(TAB_DELIM_FILE_TYPE)) {
-						filePointer = convertTabAndCsv(tempFile, ift, oft);
+						filePointer = convertTabAndCsv(tempFile, CSV_FILE_TYPE, oft);
 					} else if (oft.equals(CSV_FILE_TYPE)) {
 						filePointer = tempFile;
 					}
