@@ -21,7 +21,7 @@ Here is an example of an XML file that can be converted with this component:
 <p>&lt;/model_output&gt;</p>
 </p>
 </abstract>
-<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert between XML, tab-delimited, CSV, and JSON.</description>
+<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert between XML, tab-delimited, CSV, and JSON. Blank lines are removed from Tab-delimited and CSV files prior to converting to JSON.</description>
 
 <inputs><ul>
 <li>A text file to be converted.</li>

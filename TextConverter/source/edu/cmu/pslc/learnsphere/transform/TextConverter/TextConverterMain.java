@@ -7,18 +7,10 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +20,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.workflows.ThreadedStreamReader;
 
 public class TextConverterMain extends AbstractComponent {
-    static private String OUTPUT_FILE_NAME = "convertedData";
     static private String XML_FILE_TYPE = "XML";
     static private String TAB_DELIM_FILE_TYPE = "tab-delimited";
     static private String CSV_FILE_TYPE = "CSV";
@@ -119,25 +110,23 @@ public class TextConverterMain extends AbstractComponent {
         Process process = null;
 
         processParams.add(csvToJsonExecutable);
-        processParams.add("-d");
+
 
         if (osName.indexOf("win") >= 0) {
-        	if (ift.equals(TAB_DELIM_FILE_TYPE)) {
-	        	processParams.add("\"\t\"");
-	        } else if (ift.equals(CSV_FILE_TYPE)) {
+        	if (ift.equals(CSV_FILE_TYPE)) {
+	        	processParams.add("-d");
 	        	processParams.add("\",\"");
 	        }
         } else {
-	        if (ift.equals(TAB_DELIM_FILE_TYPE)) {
-	        	processParams.add("\t");
-	        } else if (ift.equals(CSV_FILE_TYPE)) {
+	        if (ift.equals(CSV_FILE_TYPE)) {
+	        	processParams.add("-d");
 	        	processParams.add(",");
 	        }
         }
 
         processParams.add("-i");
         processParams.add("2");
-        processParams.add(inputFilePath);
+        processParams.add(removeEmptyRows(inputFilePath));
 
         processBuilder.directory(new File(this.getComponentOutputDir()));
 
@@ -343,10 +332,10 @@ public class TextConverterMain extends AbstractComponent {
             addErrorMessage("Unrecognized output file type: " + outFileType);
         }
 
+        BufferedReader br = null;
+        BufferedWriter bw = null;
         try {
 
-            BufferedReader br = null;
-            BufferedWriter bw = null;
             String intermediateFile = "convertedDelimited";
             convertedFile = this.createFile(intermediateFile, ".txt");
             convertedFile.createNewFile();
@@ -511,4 +500,62 @@ public class TextConverterMain extends AbstractComponent {
             }
         }
     }
+
+    /**
+     * Returns a file path to the new file, removing empty  rows.
+     * @param inputFilePathName the input file path
+     * @return the path to the new file without empty  rows
+     */
+    private String removeEmptyRows(String inputFilePathName) {
+        logger.info("Removing  empty rows from file: " + inputFilePathName);
+        String intermediateFile = "emptyRowsRemoved";
+
+        File filePointer = null;
+
+        if (inputFilePathName == null) {
+        	addErrorMessage("No input file specified: " + inputFilePathName);
+        } else {
+        	File tempFile = this.createFile(intermediateFile, ".txt");
+	        BufferedReader br = null;
+	        BufferedWriter bw = null;
+
+	        File inputFile = new File(inputFilePathName);
+	        if (inputFile != null && inputFile.exists()) {
+				try {
+					br = new BufferedReader(new FileReader(inputFile));
+					bw = new BufferedWriter(new FileWriter(tempFile));
+
+					Boolean firstLine = true;
+					while (br.ready()) {
+						String line = br.readLine();
+
+						// Since csvjson doesn't ignore blank lines,
+						// remove them.
+						if (!line.isEmpty() && !firstLine) {
+							bw.write("\n");
+						}
+						firstLine = false;
+
+						if (!line.isEmpty()) {
+							bw.write(line);
+						}
+					}
+
+					bw.flush();
+					bw.close();
+
+				} catch (IOException e) {
+					this.addErrorMessage("Exception in read/write: "
+							+ e.toString());
+				}
+
+				filePointer = tempFile;
+
+	    	} else {
+	    		this.addErrorMessage("Input file not found: " + inputFilePathName);
+	    	}
+        }
+        return filePointer.getAbsolutePath();
+    }
+
 }
