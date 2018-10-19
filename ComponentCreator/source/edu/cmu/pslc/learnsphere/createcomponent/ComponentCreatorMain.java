@@ -122,11 +122,11 @@ public class ComponentCreatorMain extends AbstractComponent {
 
         File unzippedDir = unzip(inputFile, this.getComponentOutputDir());
 
-        String inputFileName = inputFile.getName();
+        logger.debug("unzippedDir  " + unzippedDir.getName());
 
         this.compProgramsDirName =  WorkflowHelper.getStrictDirFormat(
                                         this.getComponentOutputDir()
-                                        + inputFileName.replace(".zip", ""));
+                                        + unzippedDir.getName());
 
         logger.debug("compProgramsDirName: " + compProgramsDirName);
     }
@@ -143,10 +143,11 @@ public class ComponentCreatorMain extends AbstractComponent {
         }
 
         // If it it isn't a java component.  Put the path to the unzipped input in component.program.dir
-        String component_lang = getOption("component_lang").replaceAll("_", ".");
+        String component_lang = getOption("component_lang");
         String componentProgramsDir = "";
         if (!component_lang.equalsIgnoreCase("java")) {
             componentProgramsDir = WorkflowHelper.getStrictDirFormat(this.compProgramsDirName);
+            logger.debug("componentProgramsDir " + componentProgramsDir);
         }
 
         // Need to escape dots in the package name
@@ -256,8 +257,11 @@ public class ComponentCreatorMain extends AbstractComponent {
 
                 String enumAppendage = "";
                 if (optionType.equalsIgnoreCase("enumeration")) {
-                    enumAppendage = "("
-                                    + getOption("option_" + i + "_enum_list") + ")";
+                    String enumList = getOption("option_" + i + "_enum_list");
+                    // The values cannot have white space. Replace with underscores
+                    enumList = enumList.replaceAll("\\s+", "_");
+                    enumList = enumList.replaceAll(",_", ", ");
+                    enumAppendage = "(" + enumList + ")";
                 }
 
                 sb.append("option." + i + ".type=")
@@ -280,7 +284,27 @@ public class ComponentCreatorMain extends AbstractComponent {
                     .append("option." + i + ".file_index=")
                     .append("*")
                     .append("\n\n");
+                } else if (optionType.equalsIgnoreCase("enumeration")) {
+                    // Ensure that the default that the user entered is in the enumeration list
+                    boolean defaultIsInEnum = false;
+                    String defaultVal = getOption("option_" + i + "_default");
+                    String [] enumList = getOption("option_" + i + "_enum_list")
+                            .replaceAll("\\s+", "_")
+                            .replaceAll(",_", ", ")
+                            .split(",");
+                    for (int j = 0; j < enumList.length; j++) {
+                        String enumVal = enumList[j].trim();
+                        if (defaultVal.equals(enumVal)) {
+                            defaultIsInEnum = true;
+                        }
+                    }
+                    if (!defaultIsInEnum) {
+                        addErrorMessage("The default value you entered for option_" + i + "_default ("
+                            + defaultVal + ")"
+                            + " is not in the enumerated list: " + getOption("option_" + i + "_enum_list"));
+                    }
                 }
+
                 sb.append("\n");
             }
 
@@ -333,6 +357,8 @@ public class ComponentCreatorMain extends AbstractComponent {
                                 + "They may include underscores. You entered: " + val
                                 + " for " + optName);
             }
+        } else if (optName.matches("option_[0-9]*_default")) {
+            val = val.replaceAll(" ", "_");
         } else if (optName.matches("option_[0-9]*_id")) {
             if (!val.matches("[a-zA-Z0-9 _]*")) {
                 addErrorMessage("Option Ids must be alpha numeric and can include spaces and underscores. You entered: " + val
@@ -487,6 +513,7 @@ public class ComponentCreatorMain extends AbstractComponent {
         }
         return unzippedFile;
     }
+
 
     /**
      * The test() method is used to test the known inputs prior to running.

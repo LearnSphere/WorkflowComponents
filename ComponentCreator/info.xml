@@ -11,7 +11,7 @@
 
 <abstract>
 	Visit this url for more information on the input, options, and output of this component:
-	<a>https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md</a>
+	<a target="_blank" href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md">https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md</a>
 	(Drag this component to the workflow, open the options, and scroll down to copy the url.)
 </abstract>
 
@@ -28,7 +28,7 @@
 </outputs>
 
 <options>
-	Visit: https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md
+	<a target="_blank" href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md">Info on the Component Creator options</a>
 </options>
 
 </info>

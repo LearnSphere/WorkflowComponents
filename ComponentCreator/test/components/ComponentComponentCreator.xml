@@ -1,5 +1,5 @@
 <component>
-  <component_id>Transform-1-x633141</component_id>
+  <component_id>TestOutput</component_id>
   <component_id_human>Transform #3</component_id_human>
   <workflow_id>336</workflow_id>
   <component_name>Component Creator</component_name>
@@ -24,9 +24,9 @@
       <files>
         <file>
           <index>0</index>
-          <file_path>test/test_data/rowRemoverProgram.zip</file_path>
+          <file_path>test/test_data/testZip.zip</file_path>
           <label>file</label>
-          <file_name>rowRemoverProgram.zip</file_name>
+          <file_name>testZip.zip</file_name>
           <metadata />
         </file>
       </files>
@@ -74,8 +74,8 @@
     <option_2_type>Enumeration</option_2_type>
     <option_2_name>caseSensitive</option_2_name>
     <option_2_id>Case_Sensitive</option_2_id>
-    <option_2_default>No</option_2_default>
-    <option_2_enum_list>Yes, No</option_2_enum_list>
+    <option_2_default>No thank you</option_2_default>
+    <option_2_enum_list>Yes, No thank you</option_2_enum_list>
     <option_3_type>Enumeration</option_3_type>
     <option_3_name>removeNull</option_3_name>
     <option_3_id>Remove_Empty_Values</option_3_id>

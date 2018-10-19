@@ -2,6 +2,7 @@
 
 
 
+
 # Component Creator
 
 This is a component that will create the shell of your program to be put into LearnSphere's Tigris Workflow tool.  In other words, this will set up a directory structure with some files that make it easy to test your code and insert it into LearnSphere to share with other users.
@@ -11,7 +12,8 @@ In the ComponentCreator's options panel, you can specify inputs, outputs, option
 [The workflow components document in GitHub](https://github.com/LearnSphere/WorkflowComponents/blob/dev/Workflow%20Components.docx) is where you will find the most comprehensive information on creating new components, however, this document will help you understand how to use the ComponentCreator.
 
 ## Table of Contents
-- [ComponentCreator Options Panel](#Options-panel)
+- [ComponentCreator Input Zip](#componentcreator-input)
+- [ComponentCreator Options Panel](#componentcreator-options-panel)
 	- [New Component Background Information](#new-component-background-information)
 	- [New Component **Inputs**](#inputs)
 	- [New Component **Outputs**](#outputs)
@@ -22,7 +24,22 @@ In the ComponentCreator's options panel, you can specify inputs, outputs, option
 The input to the component creator is a zip file containing the scripts for your new component.  If you plan on writing your component in Java, then this input is not necessary.  The zip file may contain sub directories and multiple files.  Be sure to include all of the files necessary to run your script.
 
 For example, if you were making the [Row Remover](https://github.com/LearnSphere/WorkflowComponents/tree/dev/RowRemover/program) component, then you would input a zip file containing the rowRemover.R script.
-# Options panel
+
+All of your scripts should be contained within a single directory.  Then zip this directory to use as input.  For example, your code might be in a structure such as this:
+- **myCodeDir/**
+	- myMainScript<span></span>.py
+	- subDirWithHelperScripts/
+		- scriptHelper<span></span>.py
+
+Then you compress myCodeDir into a zip file so it looks like:
+- myCodeZipFile.zip
+	- **myCodeDir/**
+		- myMainScript<span></span>.py
+		- subDirWithHelperScripts/
+			- scriptHelper<span></span>.py
+
+Please notice that myCodeDir/ is the only directory or file at its level in the zip file.
+# ComponentCreator Options panel
 
 The options panel of the ComponentCreator contains multiple inputs to help create your new component.  
 ## New Component Background Information
