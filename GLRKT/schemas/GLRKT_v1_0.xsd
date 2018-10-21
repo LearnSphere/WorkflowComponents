@@ -17,12 +17,12 @@
   </xs:complexType>
   <xs:complexType name="InputType">
     <xs:all>
-      <xs:element minOccurs="1" name="input0" type="InputDefinition0"/>
+      <xs:element minOccurs="0" name="input0" type="InputDefinition0"/>
     </xs:all>
   </xs:complexType>
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element default="tab-delimited" minOccurs="0" name="input0" type="xs:string"/>
+      <xs:element default="transaction" minOccurs="0" name="input0" type="xs:string"/>
     </xs:all>
   </xs:complexType>
   <xs:complexType name="OutputDefinition0">
@@ -83,12 +83,22 @@
       <xs:element name="output2" type="OutputDefinition2"/>
     </xs:all>
   </xs:complexType>
+  
+  <xs:simpleType name="modeType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="best fit model"/>
+            <xs:enumeration value="five times 2 fold crossvalidated create folds"/>
+            <xs:enumeration value="five times 2 fold crossvalidated read folds"/>
+        </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
       <xs:element type="xs:string" name="plancomponents" id="Plancomponents" default=""/>
       <xs:element type="xs:string" name="fixedpars" id="Fixedpars" default="" />
       <xs:element type="xs:string" name="seedpars" id="Seedpars" default="" />
-      <xs:element type="xs:string" name="prespecfeatures" id="prespecfeatures" default=""/> 
+      <xs:element type="xs:string" name="prespecfeatures" id="Prespecfeatures" default=""/> 
     </xs:choice>
   </xs:complexType>
   <xs:element name="component">
