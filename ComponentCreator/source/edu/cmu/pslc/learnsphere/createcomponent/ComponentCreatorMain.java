@@ -348,14 +348,17 @@ public class ComponentCreatorMain extends AbstractComponent {
         // Determine if the string needs to be formatted
         if (optName.matches("component_name")) {
             if (!val.matches("[a-zA-Z0-9]*")) {
-                logger.debug("AHHHHHHH");
                 addErrorMessage("Component Name must be alpha numeric without spaces. You entered: " + val);
+            } else if (val == null || val.equals("")) {
+            	addErrorMessage("Component name cannot be empty");
             }
         } else if (optName.matches("option_[0-9]*_name")) {
             if (!ensureAlphaNumeric(val)) {
                 addErrorMessage("Option Names must be alpha numeric without spaces."
                                 + "They may include underscores. You entered: " + val
                                 + " for " + optName);
+            } else if (val == null || val.equals("")) {
+            	addErrorMessage(optName + " cannot be empty");
             }
         } else if (optName.matches("option_[0-9]*_default")) {
             val = val.replaceAll(" ", "_");
@@ -363,6 +366,8 @@ public class ComponentCreatorMain extends AbstractComponent {
             if (!val.matches("[a-zA-Z0-9 _]*")) {
                 addErrorMessage("Option Ids must be alpha numeric and can include spaces and underscores. You entered: " + val
                                 + " for " + optName);
+            } else if (val == null || val.equals("")) {
+            	addErrorMessage(optName + " cannot be empty");
             }
             // Convert spaces to underscores for the xsd
             val = val.replaceAll(" ", "_");
