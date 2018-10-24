@@ -370,7 +370,7 @@ baselevel <-  function(x, d) {
         Nrestest<-length(datTe$Outcome)
         val$CF..modbin.<- dat$CF..run
 
-        d<-newXMLNode("Index", attrs = c(i = i, j = j), parent = top)         
+        d<-newXMLNode("Index", attrs = c(ReplicationIndex = i, FoldIndex = j), parent = top)         
         newXMLNode("N",Nresfit,parent = d)
         newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = d)         
         newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = d)
