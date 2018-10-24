@@ -289,6 +289,7 @@ baselevel <-  function(x, d) {
              foldIDX[train,therep] = 1
              foldIDX[test,therep] = 2
             }
+        
        }else{
   #Getting folds from val$CF..runxfoldy, only using 5 of 10 columns because they are inverses of each other
   foldIDX[,1] = ifelse(val$CF..run1fold1.=="train",1,2)
@@ -301,7 +302,7 @@ baselevel <-  function(x, d) {
 
   foldIDX[1:10,]
 
- results=matrix(nrow=nrReps*nrFolds,ncol=4)
+ results=matrix(nrow=nrReps*nrFolds,ncol=6)
  #Total reps*fold
  dat<<-val
 
@@ -326,11 +327,13 @@ baselevel <-  function(x, d) {
     t=t+1 
   predfit <- predict(glmT,datTr, type = "response")
   predtest <- predict(glmT,newdata = datTe, re.form = NULL, type="response", allow.new.levels = TRUE)
-  
+
   results[t,1] = lrm(glmT)$stats[10]#####round(r.squaredGLMM(glmT)[1],5)
   results[t,2] = round(auc(trainfoldTr$CF..ansbin.,predfit),5)
   results[t,3] = round(auc(trainfoldTe$CF..ansbin.,predtest),5)
   results[t,4] = round(sqrt(mean((predtest-trainfoldTe$CF..ansbin.)^2)),5)
+  results[t,5] = i #replication index
+  results[t,6] = j #fold index
   if(makeFolds==1){#only adding to dat if didn't have folds on val already
   if(j==1){
   eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,".","<-ifelse(foldIDX[,i]==1,\"train\",\"test\")")))
@@ -340,11 +343,49 @@ baselevel <-  function(x, d) {
   eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.","<-999*rep(1,length(foldIDX[,i]))")))
   eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Ftr]","<-predfit")))
   eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Fte]","<-predtest")))
-  
 }
-  
+ 
+  #Output text summary
+  if(makeFolds==1){
+        
+        Nresfit<-length(datTr$Outcome)
+        Nrestest<-length(datTe$Outcome)
+        val$CF..modbin.<- dat$CF..run        
+
+        newXMLNode("ReplicationIndex",i,parent=top)
+        newXMLNode("FoldIndex",j,parent=top)        
+        newXMLNode("N",Nresfit,parent = top)
+        newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = top)         
+        newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = top)
+        newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = top)
+        newXMLNode("AUC", results[t,2], parent = top)         
+        newXMLNode("LRM", results[t,1], parent = top)
+        newXMLNode("tN", Nrestest, parent = top)
+        newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = top)
+        newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = top)
+        newXMLNode("tAUC", results[t,3], parent = top)               
+        saveXML(top, file=outputFilePath2)
+
+}else {
+        Nresfit<-length(datTr$Outcome)
+        Nrestest<-length(datTe$Outcome)
+        val$CF..modbin.<- dat$CF..run
+
+        newXMLNode("ReplicationIndex",i,parent=top)
+        newXMLNode("FoldIndex",j,parent=top)        
+        newXMLNode("N",Nresfit,parent = top)
+        newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = top)         
+        newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = top)
+        newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = top)
+        newXMLNode("AUC", results[t,2], parent = top)         
+        newXMLNode("LRM", results[t,1], parent = top)
+        newXMLNode("tN", Nrestest, parent = top)
+        newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = top)
+        newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = top)
+        newXMLNode("tAUC", results[t,3], parent = top)               
+        saveXML(top, file=outputFilePath2)              
+}
   }
-  
   print(results)
 #  print(dat[1,])
 }
@@ -361,9 +402,7 @@ modeloptim <- function(comps,feats,df,cvSwitch,makeFolds){
     GLRKT.cv(comps,feats,fixedpars,seedpars,df,makeFolds)
     ##GLKRT.cv() doesn't explicitly return anything, but makes dataframe dat globally available
     ##dat has the fold columns
-    
   }else{
-  
   tempfun <- function(pars){
     k<-0
     optimparcount<-1
@@ -499,7 +538,7 @@ switch(mode,
          cvSwitch=0 #if 1, do cross validation, otherwise no cross validation to be on val
          makeFolds=0 # if 1, making folds, otherwise using existing ones assumed to be on val
          modeloptim(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
-         val$cf..modbin.= predict(temp,type="response")
+         val$CF..modbin.= predict(temp,type="response")
 
          #Output text summary
          Nres<-length(val$Outcome)
@@ -519,37 +558,12 @@ switch(mode,
          cvSwitch=1
          makeFolds=1
          modeloptim(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
-        
-         #Output text summary
-         Nres<-length(val$Outcome)
-         #R2<-r.squaredGLMM(temp)
-         #pred<-predict(temp,type="response")
 
-         newXMLNode("N", Nres, parent = top)
-         newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
-         #newXMLNode("Parameters",pr+attr(logLik(temp), "df") , parent = top)
-         #newXMLNode("RMSE", round(sqrt(mean((pred-val$CF..ansbin.)^2)),5), parent = top)
-         #newXMLNode("Accuracy", round(sum(val$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
-         #newXMLNode("AUC", round(auc(val$CF..ansbin.,pred),5), parent = top)                 
-         saveXML(top, file=outputFilePath2)
        },
        "five times 2 fold crossvalidated read folds"={
          cvSwitch=1
          makeFolds=0
          modeloptim(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
-         
-         #Output text summary
-         Nres<-length(val$Outcome)
-         #R2<-r.squaredGLMM(temp)
-         #pred<-predict(temp,type="response")
-
-         newXMLNode("N", Nres, parent = top)
-         newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
-         #newXMLNode("Parameters",pr+attr(logLik(temp), "df") , parent = top)
-         #newXMLNode("RMSE", round(sqrt(mean((pred-val$CF..ansbin.)^2)),5), parent = top)
-         #newXMLNode("Accuracy", round(sum(val$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
-         #newXMLNode("AUC", round(auc(val$CF..ansbin.,pred),5), parent = top)                 
-         saveXML(top, file=outputFilePath2)
 
        })
 
