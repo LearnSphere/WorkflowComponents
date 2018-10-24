@@ -365,7 +365,6 @@ public class ImportXAPImain extends AbstractComponent {
                }else{
                    ns=selectContent[0].length; //numStatements
                }
-
                //Add new tag: Row
                ArrayList<String> row=new ArrayList<String>();
                ArrayList<String> addTags=new ArrayList<String>();
