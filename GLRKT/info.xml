@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Liang Zhang
-  <email>lzhang13@memphis.edu</email>
-</author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GLRKT</url>
-<date>September 10, 2018</date>
-<abstract>The <b>GLRKT</b> component is an example of a(n) R component.</abstract>
-<description>This Stepwise is the component that used for searching features stepwisely by specifying the curfixedpars and seedpars based on planed plancomponents. </description>
-
-<inputs>
-<b>student-step</b>
-</inputs>
-
-<outputs>
-<b>file</b>
-</outputs>
-
-<options>
-<b>model -- type String</b>
-</options>
+    <author>EXPERIMENTAL</author>
 
 </info>
