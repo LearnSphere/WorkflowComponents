@@ -303,6 +303,20 @@ public class ComponentCreatorMain extends AbstractComponent {
                             + defaultVal + ")"
                             + " is not in the enumerated list: " + getOption("option_" + i + "_enum_list"));
                     }
+                } else if (optionType.equalsIgnoreCase("integer") ) {
+                    try {
+                        Integer.parseInt(getOption("option_" + i + "_default"));
+                    } catch (Exception e) {
+                        addErrorMessage("Default value for an integer option, must be an integer: " +
+                            "option " + i + "  " + e.toString());
+                    }
+                }  else if (optionType.equalsIgnoreCase("double")) {
+                    try {
+                        Double.parseDouble(getOption("option_" + i + "_default"));
+                    } catch (Exception e) {
+                        addErrorMessage("Default value for a double option, must be a double: " +
+                            "option " + i + "  " + e.toString());
+                    }
                 }
 
                 sb.append("\n");
@@ -350,7 +364,7 @@ public class ComponentCreatorMain extends AbstractComponent {
             if (!val.matches("[a-zA-Z0-9]*")) {
                 addErrorMessage("Component Name must be alpha numeric without spaces. You entered: " + val);
             } else if (val == null || val.equals("")) {
-            	addErrorMessage("Component name cannot be empty");
+                addErrorMessage("Component name cannot be empty");
             }
         } else if (optName.matches("option_[0-9]*_name")) {
             if (!ensureAlphaNumeric(val)) {
@@ -358,16 +372,19 @@ public class ComponentCreatorMain extends AbstractComponent {
                                 + "They may include underscores. You entered: " + val
                                 + " for " + optName);
             } else if (val == null || val.equals("")) {
-            	addErrorMessage(optName + " cannot be empty");
+                addErrorMessage(optName + " cannot be empty");
             }
         } else if (optName.matches("option_[0-9]*_default")) {
+            if (val == null || val.equals("")) {
+                addErrorMessage("Option defaults cannot be empty: " + optName);
+            }
             val = val.replaceAll(" ", "_");
         } else if (optName.matches("option_[0-9]*_id")) {
             if (!val.matches("[a-zA-Z0-9 _]*")) {
                 addErrorMessage("Option Ids must be alpha numeric and can include spaces and underscores. You entered: " + val
                                 + " for " + optName);
             } else if (val == null || val.equals("")) {
-            	addErrorMessage(optName + " cannot be empty");
+                addErrorMessage(optName + " cannot be empty");
             }
             // Convert spaces to underscores for the xsd
             val = val.replaceAll(" ", "_");
