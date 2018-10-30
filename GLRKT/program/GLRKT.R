@@ -135,11 +135,14 @@ fixedpars<-as.numeric(as.character(unlist(strsplit(fixedpars,","))))
 seedpars<-as.numeric(as.character(unlist(strsplit(seedpars,","))))
 
 #Model options
-print(mode)
-print(plancomponents)
-print(fixedpars)
-print(seedpars)
-print(prespecfeatures)
+cat("Component Options");cat("\n")
+cat("mode:",mode);cat("\n")
+cat("plancomponents:",plancomponents);cat("\n")
+cat("fixedpars:",fixedpars);cat("\n")
+cat("seedpars:",seedpars);cat("\n")
+cat("prespecfeatures:",prespecfeatures);cat("\n");cat("\n")
+
+#plancomponents,fixedpars,seedpars,prespecfeatures,fill=2)
 
 #Set Data Directory
 datalocation<- paste(componentDirectory, "/program/", sep="")
@@ -334,6 +337,7 @@ baselevel <-  function(x, d) {
   results[t,4] = round(sqrt(mean((predtest-trainfoldTe$CF..ansbin.)^2)),5)
   results[t,5] = i #replication index
   results[t,6] = j #fold index
+  colnames(results)<-c("LRM", "AUC", "tAUC", "SQRT", "i", "j")
   if(makeFolds==1){#only adding to dat if didn't have folds on val already
   if(j==1){
   eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,".","<-ifelse(foldIDX[,i]==1,\"train\",\"test\")")))
@@ -549,7 +553,7 @@ switch(mode,
          newXMLNode("RMSE", round(sqrt(mean((pred-val$CF..ansbin.)^2)),5), parent = top)
          newXMLNode("Accuracy", round(sum(val$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
          newXMLNode("AUC", round(auc(val$CF..ansbin.,pred),5), parent = top)                 
-         saveXML(top, file=outputFilePath2)
+         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
        },
 
        "five times 2 fold crossvalidated create folds"={
