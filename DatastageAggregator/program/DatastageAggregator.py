@@ -377,6 +377,7 @@ if __name__ == "__main__":
         homeworkStudentIdColInd = 12
         homeworkModuleTypeColInd = 11
         homeworkModuleIdColInd = 14
+        homeworkNumAttemptsColInd = 8
         with open(homeworkFile,'r') as dest_f:
             data_iter = csv.reader(dest_f, 
                                    delimiter = ",", 
@@ -393,6 +394,8 @@ if __name__ == "__main__":
                 homeworkModuleTypeColInd = i
             elif data[0][i].strip('\'') == "module_id":
                 homeworkModuleIdColInd = i
+            elif data[0][i].strip('\'') == "num_attempts":
+                homeworkNumAttemptsColInd = i
 
         if debug:
             cells = data[0]
@@ -409,7 +412,8 @@ if __name__ == "__main__":
                 continue
             moduleType = data[i][homeworkModuleTypeColInd]
             moduleId = data[i][homeworkModuleIdColInd]
-            if moduleType == "problem":
+            numAttempts = data[i][homeworkNumAttemptsColInd]
+            if moduleType == "problem" and numAttempts != "-1":
                 aggAction = addToAction(studentId, moduleId)
 
             if debug:

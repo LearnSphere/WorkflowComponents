@@ -4,7 +4,6 @@ This file executes Database Feature Generation
 import os
 import argparse
 import sys
-import utils
 import shutil
 
 if __name__ == "__main__":
@@ -34,6 +33,9 @@ if __name__ == "__main__":
 
     # Assign WorkingDir to Feature Tools
     os.environ['FEATURETOOLS_DIR'] = workingDir
+
+    # Import featuretools now that we've correctly set the env var.
+    import utils
 
     # Generate Entity Set & Pickle It.
     entity_set = utils.datashop_to_entityset(inFile)

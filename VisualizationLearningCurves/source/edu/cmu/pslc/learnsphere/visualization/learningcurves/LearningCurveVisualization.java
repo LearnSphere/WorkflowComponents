@@ -7,10 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -19,8 +23,14 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
@@ -247,7 +257,7 @@ public class LearningCurveVisualization {
                     String hsCriteria = null;
                     criteria = null;
                     // Which criteria to use for aggregation, i.e. the "View By":
-                    // 2) by Opportunity, 2) by Step, or 3) by Student
+                    // 1) by Opportunity, 2) by Step, or 3) by Student
                     if (learningCurveType != null
                             && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
                         // For 'By Student', across all students
@@ -719,18 +729,44 @@ public class LearningCurveVisualization {
         return lcData;
     }
 
+    /**
+     * Map of skill name to learning curve category. Computed as part of init() but
+     * cached for access when generating output.
+     */
+    private Map<String, String> skillCategoryMap = new HashMap<String, String>();
 
-    /** the LearningCurveImage, includes filename/URL, created by the producer */
-    private LearningCurveImage lcImage;
+    /**
+     * Get the learning curve category for the named skill.
+     * Return null if the curves have not be categorized or skill isn't present.
+     * @param skillName
+     * @return category
+     */
+    public String getSkillCategory(String skillName) {
+        String category = null;
+
+        if ((skillCategoryMap != null) && (skillName != null)) {
+            category = skillCategoryMap.get(skillName);
+
+            if ((category != null) &&
+                (category.equals(LearningCurveImage.CLASSIFIED_OTHER))) {
+                category = LearningCurveImage.CLASSIFIED_OTHER_LABEL;
+            }
+        }
+
+        return category;
+    }
 
     /** Call this immediately after calling checkEmpty(), and before calling anything else. */
-    public List<File> init(Hashtable<String, Vector<LearningCurvePoint>> lcData,
-            LearningCurveVisualizationOptions lcOptions,
-                GraphOptions lcGraphOptions,
-                    String componentWorkingDir) {
+    public Map<String, List<File>> init(Hashtable<String, Vector<LearningCurvePoint>> lcData,
+                                        LearningCurveVisualizationOptions lcOptions,
+                                        GraphOptions lcGraphOptions,
+                                        String componentWorkingDir,
+                                        File stepRollupFile,
+                                        File parametersFile) {
 
-        List<File> imageFiles = new ArrayList<File>();
-        LearningCurveDatasetProducerStandalone producer = new LearningCurveDatasetProducerStandalone(lcOptions);
+        Map<String, List<File>> imageFiles = new HashMap<String, List<File>>();
+        LearningCurveDatasetProducerStandalone producer =
+            new LearningCurveDatasetProducerStandalone(lcOptions, stepRollupFile);
 
         Boolean showErrorBars = true;
         if (lcOptions.getErrorBarType() == null) {
@@ -739,7 +775,10 @@ public class LearningCurveVisualization {
 
         StringBuffer sBuffer = new StringBuffer();
         for (String key : lcData.keySet()) {
-            lcImage = null;
+
+            Collections.sort(lcData.get(key), new LearningCurvePoint.SortByOpportunity());
+
+            LearningCurveImage lcImage = null;
             String filePrefix = key.replaceAll("[^a-zA-Z0-9\\-]", "_");
 
             String fileSuffix = ".png";
@@ -752,11 +791,30 @@ public class LearningCurveVisualization {
 
                 logger.debug("LC Graph Image filePath: " + fullFilePath);
 
-                lcGraphOptions.setTitle(key);
-                producer.produceDataset(lcOptions, lcGraphOptions, lcData.get(key));
+                // Determine AFM slope (gamma) using parameters file, if present. Null otherwise.
+                Double gamma = getGamma(key, parametersFile);
+
+                lcImage = producer.produceDataset(key, gamma, lcOptions, lcGraphOptions, lcData.get(key));
+
+                String classification = lcImage.getClassification();
+                if (classification == null) { classification = LearningCurveImage.NOT_CLASSIFIED; }
+                if (classification.equals(LearningCurveImage.CLASSIFIED_OTHER)) {
+                    classification = LearningCurveImage.CLASSIFIED_OTHER_LABEL;
+                }
+
+                String titleText = key;
+                // If curve has been classified, update titleText for non-thumb graphs.
+                if (!classification.equals(LearningCurveImage.NOT_CLASSIFIED)) {
+                    titleText += " (Category: " + classification + ")";
+                }
+                lcGraphOptions.setTitle(titleText);
+
                 producer.generateXYChart(lcGraphOptions, fullFilePath, showErrorBars);
 
-                imageFiles.add(imageFile);
+                addImageToMap(imageFile, lcImage.getClassification(), imageFiles);
+
+                // Update skill-to-category map.
+                skillCategoryMap.put(key, lcImage.getClassification());
 
             } catch (IOException e) {
                 logger.error("Could not create file for key, " + key);
@@ -764,5 +822,61 @@ public class LearningCurveVisualization {
         }
 
         return imageFiles;
+    }
+
+    /**
+     * Helper method to read AFM gamma (slope) value from parameters file, if present.
+     *
+     * @param skillName the skill of interest
+     * @param parametersFile the file with AFM output parameters
+     * @return Double the gamma value
+     */
+    private Double getGamma(String skillName, File parametersFile) {
+        if (parametersFile == null) { return null; }
+
+        // Parse XML parameters file for gamma of named skill.
+        SAXBuilder builder = new SAXBuilder();
+        builder.setReuseParser(false);
+        try {
+            String xmlStr = FileUtils.readFileToString(parametersFile, null);
+            StringReader reader = new StringReader(xmlStr.replaceAll("[\r\n]+", ""));
+            Document doc = builder.build(reader);
+            List<Element> cList = doc.getRootElement().getChildren();
+            logger.debug("Found root: " + doc.getRootElement().getName() + " with " + cList.size() + " children.");
+            Iterator<Element> iter = cList.iterator();
+            while (iter.hasNext()) {
+                Element e = (Element) iter.next();
+                if (e.getName().equals("parameter")) {
+                    List<Element> children = e.getChildren();
+                    String pType = e.getChildText("type");
+                    String pName = e.getChildText("name");
+                    if (pType.equalsIgnoreCase("skill") && pName.equalsIgnoreCase(skillName)) {
+                        String pSlope = e.getChildText("slope");
+                        return new Double(pSlope);
+                    }
+                }
+            }
+        } catch (IOException ioe) {
+            String exErr = "XML file not found. Error: " + ioe.getMessage();
+            logger.info(exErr);
+            return null;
+        } catch (JDOMException je) {
+            String exErr = "XML file in wrong format. Error: " + je.getMessage();
+            logger.info(exErr);
+            return null;
+        }
+
+        return null;
+    }
+
+    private void addImageToMap(File theFile, String classification,
+                               Map<String, List<File>> map) {
+
+        List<File> imageList = map.get(classification);
+        if (imageList == null) {
+            imageList = new ArrayList<File>();
+            map.put(classification, imageList);
+        }
+        imageList.add(theFile);
     }
 }

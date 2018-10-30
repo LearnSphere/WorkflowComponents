@@ -18,9 +18,15 @@
     <secondaryModel>Input 0 (1) - Predicted Error Rate (Item Model) (column 50)</secondaryModel>
     <secondaryModel>Input 0 (2) - Predicted Error Rate (DecomposeArith) (column 44)</secondaryModel>
     <viewSecondary>true</viewSecondary>
+    <learningCurveMetric>Error Rate</learningCurveMetric>
+    <classifyCurves>true</classifyCurves>
+    <studentThreshold>10</studentThreshold>
+    <opportunityThreshold>2</opportunityThreshold>
+    <lowErrorThreshold>20.0</lowErrorThreshold>
+    <highErrorThreshold>40.0</highErrorThreshold>
+    <afmSlopeThreshold>0.001</afmSlopeThreshold>
     <stdDevCutOff>0</stdDevCutOff>
     <opportunityCutOffMax>INF</opportunityCutOffMax>
-    <learningCurveMetric>Error Rate</learningCurveMetric>
     <errorBar>No Error Bars</errorBar>
     <highStakesCF>oli:highStakes</highStakesCF>
   </options>
@@ -79,5 +85,23 @@
       <inputmeta />
       <optionmeta />
     </input0>
+    <input1>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <index>0</index>
+          <file_path>test/example_parameters/Parameter-estimate-values.xml</file_path>
+          <label>parameters</label>
+          <file_name>Parameter-estimate-values.xml</file_name>
+        </text>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
   </inputs>
 </component>

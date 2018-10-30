@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAAllElements</url>
+<date>2018-08-14</date>
+<abstract>The <b>QA All Elements</b> component can be used to test all basic inputs and options of workflow components.</abstract>
+<description>This component allows developers to test most of the basic inputs and options (including database connection) of workflow components to ensure that workflow core functions work.</description>
+
+<inputs><ul>
+<li>One input node that allows one file input and is required</li>
+<li>One input node that allows one file input and is not required</li>
+</ul></inputs>
+
+<outputs>
+Text file that displays all user selections for developers to verify. It also displays if database connection is established.
+</outputs>
+
+<options>
+ <ul>
+<li>String Type: simple text field</li>
+<li>Selection List Type: can be long or short. This is to test dynamic options. This decided the next option: Long or Short Selection List to show</li>
+<li>Long Selection List: only shows when "Selection List Type" selects "Long". This is to test the selection popup window.</li>
+<li>Short Selection List: only shows when "Selection List Type" selects "Short". This is to test the short selection list that doesn't need a popup window.</li>
+<li>Single File Selection List: this is to test single file input node. It also tests the selection list that should include headers from a particular node and a particular file. </li>
+<li>Optional File Selection List: this is to test optional file input. It also tests the selection list that should include headers from all input files of all nodes. </li>
+</ul>
+</options>
+
+</info>

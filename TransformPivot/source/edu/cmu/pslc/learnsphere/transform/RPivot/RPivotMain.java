@@ -93,15 +93,19 @@ public class RPivotMain extends AbstractComponent {
 	                    reqsMet = false;
 		            } else {
 	                    String rowNames = "";
+	                    String origRowNames = "";
 	                    for (int i = 0; i < pivotRowNames.size(); i++) {
 	                        if (i < pivotRowNames.size()-1) {
+	                            origRowNames += pivotRowNames.get(i)  + ",";
 	                            rowNames += removeSpace(pivotRowNames.get(i)) + ",";
 	                        } else {
+	                                origRowNames += pivotRowNames.get(i);
 	                            rowNames += removeSpace(pivotRowNames.get(i));
 	                        }
 	                    }
 
 	                    this.componentOptions.addContent(0, new Element("r").setText(rowNames));
+	                    this.componentOptions.addContent(0, new Element("origr").setText(origRowNames));
 		            }
 
 		            if (reqsMet) {

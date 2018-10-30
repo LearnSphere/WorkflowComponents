@@ -5,6 +5,7 @@ from __future__ import division
 from numbers import Number
 
 import numpy as np
+import math
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.utils.validation import check_X_y
@@ -69,12 +70,24 @@ class CustomLogistic(BaseEstimator, ClassifierMixin):
         if self.fit_intercept:
             self.l2_[0] = 0.0
 
+        #start of modification and addition 
         w = minimize(_ll, w0, args=(X, y, self.l2_),
                                jac=_ll_grad, 
                                method=self.method, bounds=self.bounds_,
                                options={'maxiter': self.max_iter, 
                                         #'disp': True
-                               })['x']
+                               })
+        negOfLl = w.fun
+        w = w['x']
+        self.ll = (-1)*negOfLl
+        self.nDataPoints = len(y)
+        self.nPars = len(w0)
+        #formula for AIC: -2 * loglikelihood + 2 * nPars;
+        #formula for BIC: -2 * loglikelihood + nPars * log(nDataPoints);
+        
+        self.aic = (-2)*self.ll + 2*self.nPars
+        self.bic = (-2)*self.ll + self.nPars*math.log(self.nDataPoints)
+        #end of modification and addition 
 
         if self.fit_intercept:
             self.intercept_ = w[0:1]
@@ -82,6 +95,7 @@ class CustomLogistic(BaseEstimator, ClassifierMixin):
         else:
             self.intercept_ = np.array([])
             self.coef_ = w
+        
         return self
 
     def predict(self, X):

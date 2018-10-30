@@ -31,6 +31,7 @@
 		<Datastage_Aggregator />
 		<Deidentify />
 		<Discretize />
+		<Feature_Synthesis />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
     <Import_EDF />
@@ -39,6 +40,7 @@
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
+		<OLI_LO_to_KC />
 		<Pivot />
 		<Row_Operations />
 		<Row_Remover />
@@ -56,7 +58,8 @@
 		<BKT />
 		<Correlation />
 		<Cronbachs_Alpha />
-    <GLRKT/>
+                <GLRKT/>
+		<Entity_Set />
 		<iAFM />
 		<Linear_Modeling />
 		<LSA />
@@ -69,8 +72,12 @@
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
+		<Bar_Chart />
 		<D3_Force_Layout />
+		<Histogram />
 		<Learning_Curves />
+		<Line_Graph />
+		<Scatter_Plot />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />
@@ -81,4 +88,11 @@
 		<Search />
 		<Tetrad_Graph_Editor />
 	</Tetrad>
+	<Contribute>
+		<Component_Creator />
+	</Contribute>
+	<QA>
+	    <QA_All_Elements />
+	    <QA_Multi_Conn_Input />
+	</QA>
 </component_menu>

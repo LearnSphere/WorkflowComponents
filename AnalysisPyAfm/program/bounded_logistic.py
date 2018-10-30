@@ -5,6 +5,7 @@ from __future__ import division
 from numbers import Number
 
 import numpy as np
+import math
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_X_y
 from sklearn.utils.validation import check_array
@@ -98,13 +99,25 @@ class BoundedLogistic(BaseEstimator):
         if len(self.l2_) != len(w0):
             raise ValueError("L2 penalty must be the same length as coef, be sure the intercept is accounted for.")
 
+        #start of modification and addition
         w = minimize(_ll, w0, args=(X, X2, y, self.l2_),
                                jac=_ll_grad, 
                                method=self.method, bounds=self.bounds_,
                                options={'maxiter': self.max_iter, 
                                         #'disp': True
-                               })['x']
-
+                               })
+        negOfLl = w.fun
+        w = w['x']
+        self.ll = (-1)*negOfLl
+        self.nDataPoints = len(y)
+        self.nPars = len(w0)
+        #formula for AIC: -2 * loglikelihood + 2 * nPars;
+        #formula for BIC: -2 * loglikelihood + nPars * log(nDataPoints);
+        
+        self.aic = (-2)*self.ll + 2*self.nPars
+        self.bic = (-2)*self.ll + self.nPars*math.log(self.nDataPoints)
+        #end of modification and addition
+        
         w1 = w[:X.shape[1]]
         w2 = w[X.shape[1]:]
 
@@ -206,4 +219,5 @@ def _ll_grad(w, X, X2, y, l2):
     
     g = np.concatenate((g1, g2))
     g -= np.multiply(l2, w)
-    return -1 * g 
+    return -1 * g
+

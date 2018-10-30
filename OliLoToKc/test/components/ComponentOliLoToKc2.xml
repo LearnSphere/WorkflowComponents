@@ -1,0 +1,57 @@
+<component>
+  <component_id>ComponentTestOutput2</component_id>
+  <component_id_human>TetradSearch #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>TetradSearch2</component_name>
+  <component_type>tetrad2</component_type>
+  <left>695</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Analysis-1-x641889-2</from>
+    </connection>
+  </connections>
+  <top>106</top>
+  <options />
+  <inputs>
+    <input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>		  
+		  <file_path>test/resources/eldp.ods</file_path>
+          <file_name>eldp.ods</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata />
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+
+    <input1>
+      <component_id>Analysis-1-x64189</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>		  
+		  <file_path>test/resources/ds2254_kcm48684_2018_0821_155400.txt</file_path>
+          <file_name>ds2254_kcm48684_2018_0821_155400.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+          <metadata />
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>

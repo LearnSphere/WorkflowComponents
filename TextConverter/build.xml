@@ -83,7 +83,7 @@
         <java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/ComponentTextConverter.xml" />
+            <arg value="${basedir}/test/components/ComponentTextConverterXmlToTab.xml" />
             <arg value="-workflowDir" />
             <arg value="${basedir}/test/" />
             <arg value="-toolDir" />
@@ -91,7 +91,102 @@
             <arg value="-schemaFile" />
             <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
-            <!-- <arg value="-preprocess" />   Use this to test preprocessing. -->
+        </java>
+        <java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterXmlToCsv.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+        </java>
+        <java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterTabToCsv.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+	            <classpath refid="run.classpath" />
+	            <arg value="-componentXmlFile" />
+	            <arg value="${basedir}/test/components/ComponentTextConverterTabToJson.xml" />
+	            <arg value="-workflowDir" />
+	            <arg value="${basedir}/test/" />
+	            <arg value="-toolDir" />
+	            <arg value="${basedir}/" />
+	            <arg value="-schemaFile" />
+	            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+	            <jvmarg value="-Xmx1048m"/>
+	        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterCsvToJson.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+        </java>
+        <java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterCsvToTab.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+	            <classpath refid="run.classpath" />
+	            <arg value="-componentXmlFile" />
+	            <arg value="${basedir}/test/components/ComponentTextConverterCsvToXml.xml" />
+	            <arg value="-workflowDir" />
+	            <arg value="${basedir}/test/" />
+	            <arg value="-toolDir" />
+	            <arg value="${basedir}/" />
+	            <arg value="-schemaFile" />
+	            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+	            <jvmarg value="-Xmx1048m"/>
+	        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterJsonToXml.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+        </java>
+    	<java classname="edu.cmu.pslc.learnsphere.transform.TextConverter.TextConverterMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentTextConverterXmlToJson.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/TextConverter_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
         </java>
     </target>
 </project>

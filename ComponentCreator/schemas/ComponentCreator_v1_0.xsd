@@ -1,0 +1,320 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="zip" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="zip" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+    	<!-- Display Input options based on how many inputs are selected -->
+    	<!-- INPUT TYPES -->
+    	<xs:element type="conjunctive" name="inputTypeDependency0" ls:dependentOption="input_0_type" ls:dependsOn="component_num_input_nodes" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="inputTypeDependency1" ls:dependentOption="input_1_type" ls:dependsOn="component_num_input_nodes" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="inputTypeDependency2" ls:dependentOption="input_2_type" ls:dependsOn="component_num_input_nodes" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="inputTypeDependency3" ls:dependentOption="input_3_type" ls:dependsOn="component_num_input_nodes" ls:constraint="gte(4)" />
+    	
+
+    	<!-- OUTPUT TYPE -->
+    	<xs:element type="conjunctive" name="outputTypeDependency0" ls:dependentOption="output_0_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="outputTypeDependency1" ls:dependentOption="output_1_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="outputTypeDependency2" ls:dependentOption="output_2_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="outputTypeDependency3" ls:dependentOption="output_3_type" ls:dependsOn="component_num_outputs" ls:constraint="gte(4)" />
+    	<!-- OUTPUT NAME -->
+    	<xs:element type="conjunctive" name="outputNameDependency0" ls:dependentOption="output_0_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="outputNameDependency1" ls:dependentOption="output_1_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="outputNameDependency2" ls:dependentOption="output_2_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="outputNameDependency3" ls:dependentOption="output_3_name" ls:dependsOn="component_num_outputs" ls:constraint="gte(4)" />
+
+    	<!-- OPTION TYPE -->
+    	<xs:element type="conjunctive" name="optionTypeDependency0" ls:dependentOption="option_0_type" ls:dependsOn="component_num_options" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency1" ls:dependentOption="option_1_type" ls:dependsOn="component_num_options" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency2" ls:dependentOption="option_2_type" ls:dependsOn="component_num_options" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency3" ls:dependentOption="option_3_type" ls:dependsOn="component_num_options" ls:constraint="gte(4)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency4" ls:dependentOption="option_4_type" ls:dependsOn="component_num_options" ls:constraint="gte(5)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency5" ls:dependentOption="option_5_type" ls:dependsOn="component_num_options" ls:constraint="gte(6)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency6" ls:dependentOption="option_6_type" ls:dependsOn="component_num_options" ls:constraint="gte(7)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency7" ls:dependentOption="option_7_type" ls:dependsOn="component_num_options" ls:constraint="gte(8)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency8" ls:dependentOption="option_8_type" ls:dependsOn="component_num_options" ls:constraint="gte(9)" />
+    	<xs:element type="conjunctive" name="optionTypeDependency9" ls:dependentOption="option_9_type" ls:dependsOn="component_num_options" ls:constraint="gte(10)" />
+
+    	<!-- OPTION NAME -->
+    	<xs:element type="conjunctive" name="optionNameDependency0" ls:dependentOption="option_0_name" ls:dependsOn="component_num_options" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="optionNameDependency1" ls:dependentOption="option_1_name" ls:dependsOn="component_num_options" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="optionNameDependency2" ls:dependentOption="option_2_name" ls:dependsOn="component_num_options" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="optionNameDependency3" ls:dependentOption="option_3_name" ls:dependsOn="component_num_options" ls:constraint="gte(4)" />
+    	<xs:element type="conjunctive" name="optionNameDependency4" ls:dependentOption="option_4_name" ls:dependsOn="component_num_options" ls:constraint="gte(5)" />
+    	<xs:element type="conjunctive" name="optionNameDependency5" ls:dependentOption="option_5_name" ls:dependsOn="component_num_options" ls:constraint="gte(6)" />
+    	<xs:element type="conjunctive" name="optionNameDependency6" ls:dependentOption="option_6_name" ls:dependsOn="component_num_options" ls:constraint="gte(7)" />
+    	<xs:element type="conjunctive" name="optionNameDependency7" ls:dependentOption="option_7_name" ls:dependsOn="component_num_options" ls:constraint="gte(8)" />
+    	<xs:element type="conjunctive" name="optionNameDependency8" ls:dependentOption="option_8_name" ls:dependsOn="component_num_options" ls:constraint="gte(9)" />
+    	<xs:element type="conjunctive" name="optionNameDependency9" ls:dependentOption="option_9_name" ls:dependsOn="component_num_options" ls:constraint="gte(10)" />
+
+    	<!-- OPTION ID -->
+    	<xs:element type="conjunctive" name="optionIdDependency0" ls:dependentOption="option_0_id" ls:dependsOn="component_num_options" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="optionIdDependency1" ls:dependentOption="option_1_id" ls:dependsOn="component_num_options" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="optionIdDependency2" ls:dependentOption="option_2_id" ls:dependsOn="component_num_options" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="optionIdDependency3" ls:dependentOption="option_3_id" ls:dependsOn="component_num_options" ls:constraint="gte(4)" />
+    	<xs:element type="conjunctive" name="optionIdDependency4" ls:dependentOption="option_4_id" ls:dependsOn="component_num_options" ls:constraint="gte(5)" />
+    	<xs:element type="conjunctive" name="optionIdDependency5" ls:dependentOption="option_5_id" ls:dependsOn="component_num_options" ls:constraint="gte(6)" />
+    	<xs:element type="conjunctive" name="optionIdDependency6" ls:dependentOption="option_6_id" ls:dependsOn="component_num_options" ls:constraint="gte(7)" />
+    	<xs:element type="conjunctive" name="optionIdDependency7" ls:dependentOption="option_7_id" ls:dependsOn="component_num_options" ls:constraint="gte(8)" />
+    	<xs:element type="conjunctive" name="optionIdDependency8" ls:dependentOption="option_8_id" ls:dependsOn="component_num_options" ls:constraint="gte(9)" />
+    	<xs:element type="conjunctive" name="optionIdDependency9" ls:dependentOption="option_9_id" ls:dependsOn="component_num_options" ls:constraint="gte(10)" />
+
+    	<!-- OPTION DEFAULT -->
+    	<xs:element type="conjunctive" name="optionDefaultDependency0" ls:dependentOption="option_0_default" ls:dependsOn="component_num_options" ls:constraint="gte(1)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency1" ls:dependentOption="option_1_default" ls:dependsOn="component_num_options" ls:constraint="gte(2)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency2" ls:dependentOption="option_2_default" ls:dependsOn="component_num_options" ls:constraint="gte(3)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency3" ls:dependentOption="option_3_default" ls:dependsOn="component_num_options" ls:constraint="gte(4)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency4" ls:dependentOption="option_4_default" ls:dependsOn="component_num_options" ls:constraint="gte(5)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency5" ls:dependentOption="option_5_default" ls:dependsOn="component_num_options" ls:constraint="gte(6)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency6" ls:dependentOption="option_6_default" ls:dependsOn="component_num_options" ls:constraint="gte(7)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency7" ls:dependentOption="option_7_default" ls:dependsOn="component_num_options" ls:constraint="gte(8)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency8" ls:dependentOption="option_8_default" ls:dependsOn="component_num_options" ls:constraint="gte(9)" />
+    	<xs:element type="conjunctive" name="optionDefaultDependency9" ls:dependentOption="option_9_default" ls:dependsOn="component_num_options" ls:constraint="gte(10)" />
+    	
+
+	    	<!-- Option enumeration -->
+	    	<xs:element type="conjunctive" name="optionEnumDependency0" ls:dependentOption="optionEnumDependency0" ls:dependsOn="option_0_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency0numOpt" ls:dependentOption="optionEnumDependency0" ls:dependsOn="optionTypeDependency0" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency0" ls:dependentOption="option_0_enum_list" ls:dependsOn="optionEnumDependency0" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency1" ls:dependentOption="optionEnumDependency1" ls:dependsOn="option_1_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency1numOpt" ls:dependentOption="optionEnumDependency1" ls:dependsOn="optionTypeDependency1" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency1" ls:dependentOption="option_1_enum_list" ls:dependsOn="optionEnumDependency1" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency2" ls:dependentOption="optionEnumDependency2" ls:dependsOn="option_2_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency2numOpt" ls:dependentOption="optionEnumDependency2" ls:dependsOn="optionTypeDependency2" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency2" ls:dependentOption="option_2_enum_list" ls:dependsOn="optionEnumDependency2" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency3" ls:dependentOption="optionEnumDependency3" ls:dependsOn="option_3_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency3numOpt" ls:dependentOption="optionEnumDependency3" ls:dependsOn="optionTypeDependency3" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency3" ls:dependentOption="option_3_enum_list" ls:dependsOn="optionEnumDependency3" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency4" ls:dependentOption="optionEnumDependency4" ls:dependsOn="option_4_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency4numOpt" ls:dependentOption="optionEnumDependency4" ls:dependsOn="optionTypeDependency4" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency4" ls:dependentOption="option_4_enum_list" ls:dependsOn="optionEnumDependency4" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency5" ls:dependentOption="optionEnumDependency5" ls:dependsOn="option_5_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency5numOpt" ls:dependentOption="optionEnumDependency5" ls:dependsOn="optionTypeDependency5" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency5" ls:dependentOption="option_5_enum_list" ls:dependsOn="optionEnumDependency5" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency6" ls:dependentOption="optionEnumDependency6" ls:dependsOn="option_6_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency6numOpt" ls:dependentOption="optionEnumDependency6" ls:dependsOn="optionTypeDependency6" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency6" ls:dependentOption="option_6_enum_list" ls:dependsOn="optionEnumDependency6" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency7" ls:dependentOption="optionEnumDependency7" ls:dependsOn="option_7_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency7numOpt" ls:dependentOption="optionEnumDependency7" ls:dependsOn="optionTypeDependency7" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency7" ls:dependentOption="option_7_enum_list" ls:dependsOn="optionEnumDependency7" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency8" ls:dependentOption="optionEnumDependency8" ls:dependsOn="option_8_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency8numOpt" ls:dependentOption="optionEnumDependency8" ls:dependsOn="optionTypeDependency8" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency8" ls:dependentOption="option_8_enum_list" ls:dependsOn="optionEnumDependency8" ls:constraint="true" />
+
+	    	<xs:element type="conjunctive" name="optionEnumDependency9" ls:dependentOption="optionEnumDependency9" ls:dependsOn="option_9_type" ls:constraint="matches(Enumeration)" />
+	    	<xs:element type="conjunctive" name="optionEnumDependency9numOpt" ls:dependentOption="optionEnumDependency9" ls:dependsOn="optionTypeDependency9" ls:constraint="true" />
+	    	<xs:element type="conjunctive" name="optionEnumDisplayDependency9" ls:dependentOption="option_9_enum_list" ls:dependsOn="optionEnumDependency9" ls:constraint="true" />
+
+      </xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="componentTypeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="transform" />
+      <xs:enumeration value="analysis" />
+      <xs:enumeration value="visualization" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="componentLanguageType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="R" />
+      <xs:enumeration value="Python" />
+      <xs:enumeration value="Java" />
+      <xs:enumeration value="Jar" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OptionTypesType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="String" />
+      <xs:enumeration value="Integer" />
+      <xs:enumeration value="FileInputHeader" />
+      <xs:enumeration value="MultiFileInputHeader" />
+      <xs:enumeration value="Enumeration" />
+      <xs:enumeration value="Double" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="xs:string" name="component_name" id="Component_Name" default="" />
+      <xs:element type="componentTypeType" name="component_type" id="Component_Type" default="transform" />
+      <xs:element type="componentLanguageType" name="component_lang" id="Component_Language" default="R" />
+
+      <xs:element type="xs:string" name="component_author" id="Component_Author_Name" default="" />
+      <xs:element type="xs:string" name="component_author_email" id="Component_Author_Email" default="" />
+      <xs:element type="xs:string" name="component_description" id="Description_of_Component" default="This is an auspicious component" />
+
+      <xs:element type="xs:string" name="component_program_file" id="Program_in_input_to_run" default="mainScript.R" />
+
+      <xs:element type="xs:integer" name="component_num_input_nodes" id="Number_of_input_nodes" default="1" />
+      <xs:element type="xs:integer" name="component_num_outputs" id="Number_of_output_nodes" default="1" />
+      <xs:element type="xs:integer" name="component_num_options" id="Number_of_options" default="1" />
+
+
+      <!-- Input properties -->
+      <xs:element type="xs:string" name="input_0_type" id="Input_0_type" default="tab-delimited" />
+
+      <xs:element type="xs:string" name="input_1_type" id="Input_1_type" default="tab-delimited" />
+
+      <xs:element type="xs:string" name="input_2_type" id="Input_2_type" default="tab-delimited" />
+
+      <xs:element type="xs:string" name="input_3_type" id="Input_3_type" default="tab-delimited" />
+	
+      <!-- Output Properties -->
+	  <xs:element type="xs:string" name="output_0_type" id="Output_0_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_0_name" id="Output_0_File_Name" default="output0name.txt" />
+	  <xs:element type="xs:string" name="output_1_type" id="Output_1_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_1_name" id="Output_1_File_Name" default="output1name.txt" />
+	  <xs:element type="xs:string" name="output_2_type" id="Output_2_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_2_name" id="Output_2_File_Name" default="output2name.txt" />
+	  <xs:element type="xs:string" name="output_3_type" id="Output_3_type" default="tab-delimited" />
+	  <xs:element type="xs:string" name="output_3_name" id="Output_3_File_Name" default="output3name.txt" />
+
+	  <!-- Option Properties -->
+	  <xs:element type="OptionTypesType" name="option_0_type" id="Option_0_type" default="String" />
+	  <xs:element type="xs:string" name="option_0_name" id="Option_0_name" default="option0" />
+	  <xs:element type="xs:string" name="option_0_id" id="Option_0_ID" default="" />
+	  <xs:element type="xs:string" name="option_0_default" id="Option_0_default_value" default="" />
+	  <xs:element type="xs:string" name="option_0_enum_list" id="List_of_values_in_enumeration_separated_by_commas" default="val1,val2,..." />
+
+	  <xs:element type="OptionTypesType" name="option_1_type" id="Option_1_type" default="String" />
+	  <xs:element type="xs:string" name="option_1_name" id="Option_1_name" default="option1" />
+	  <xs:element type="xs:string" name="option_1_id" id="Option_1_ID" default="" />
+	  <xs:element type="xs:string" name="option_1_default" id="Option_1_default_value" default="" />
+	  <xs:element type="xs:string" name="option_1_enum_list" id="List_of_values_in_enumeration_separated_by_commas1" default="val1,val2,..." />
+
+	  <xs:element type="OptionTypesType" name="option_2_type" id="Option_2_type" default="String" />
+	  <xs:element type="xs:string" name="option_2_name" id="Option_2_name" default="option2" />
+	  <xs:element type="xs:string" name="option_2_id" id="Option_2_ID" default="" />
+	  <xs:element type="xs:string" name="option_2_default" id="Option_2_default_value" default="" />
+	  <xs:element type="xs:string" name="option_2_enum_list" id="List_of_values_in_enumeration_separated_by_commas2" default="val1,val2,..." />
+
+	  <xs:element type="OptionTypesType" name="option_3_type" id="Option_3_type" default="String" />
+	  <xs:element type="xs:string" name="option_3_name" id="Option_3_name" default="option3" />
+	  <xs:element type="xs:string" name="option_3_id" id="Option_3_ID" default="" />
+	  <xs:element type="xs:string" name="option_3_default" id="Option_3_default_value" default="" />
+	  <xs:element type="xs:string" name="option_3_enum_list" id="List_of_values_in_enumeration_separated_by_commas3" default="val1,val2,..." />
+
+	  <xs:element type="OptionTypesType" name="option_4_type" id="Option_4_type" default="String" />
+	  <xs:element type="xs:string" name="option_4_name" id="Option_4_name" default="option4" />
+	  <xs:element type="xs:string" name="option_4_id" id="Option_4_ID" default="" />
+	  <xs:element type="xs:string" name="option_4_default" id="Option_4_default_value" default="" />
+	  <xs:element type="xs:string" name="option_4_enum_list" id="List_of_values_in_enumeration_separated_by_commas4" default="val1,val2,..." />
+
+	   <xs:element type="OptionTypesType" name="option_5_type" id="Option_5_type" default="String" />
+	  <xs:element type="xs:string" name="option_5_name" id="Option_5_name" default="option5" />
+	  <xs:element type="xs:string" name="option_5_id" id="Option_5_ID" default="" />
+	  <xs:element type="xs:string" name="option_5_default" id="Option_5_default_value" default="" />
+	  <xs:element type="xs:string" name="option_5_enum_list" id="List_of_values_in_enumeration_separated_by_commas5" default="val1,val2,..." />
+
+	   <xs:element type="OptionTypesType" name="option_6_type" id="Option_6_type" default="String" />
+	  <xs:element type="xs:string" name="option_6_name" id="Option_6_name" default="option6" />
+	  <xs:element type="xs:string" name="option_6_id" id="Option_6_ID" default="" />
+	  <xs:element type="xs:string" name="option_6_default" id="Option_6_default_value" default="" />
+	  <xs:element type="xs:string" name="option_6_enum_list" id="List_of_values_in_enumeration_separated_by_commas6" default="val1,val2,..." />
+
+	   <xs:element type="OptionTypesType" name="option_7_type" id="Option_7_type" default="String" />
+	  <xs:element type="xs:string" name="option_7_name" id="Option_7_name" default="option7" />
+	  <xs:element type="xs:string" name="option_7_id" id="Option_7_ID" default="" />
+	  <xs:element type="xs:string" name="option_7_default" id="Option_7_default_value" default="" />
+	  <xs:element type="xs:string" name="option_7_enum_list" id="List_of_values_in_enumeration_separated_by_commas7" default="val1,val2,..." />
+
+	   <xs:element type="OptionTypesType" name="option_8_type" id="Option_8_type" default="String" />
+	  <xs:element type="xs:string" name="option_8_name" id="Option_8_name" default="option8" />
+	  <xs:element type="xs:string" name="option_8_id" id="Option_8_ID" default="" />
+	  <xs:element type="xs:string" name="option_8_default" id="Option_8_default_value" default="" />
+	  <xs:element type="xs:string" name="option_8_enum_list" id="List_of_values_in_enumeration_separated_by_commas8" default="val1,val2,..." />
+
+	   <xs:element type="OptionTypesType" name="option_9_type" id="Option_9_type" default="String" />
+	  <xs:element type="xs:string" name="option_9_name" id="Option_9_name" default="option9" />
+	  <xs:element type="xs:string" name="option_9_id" id="Option_9_ID" default="" />
+	  <xs:element type="xs:string" name="option_9_default" id="Option_9_default_value" default="" />
+	  <xs:element type="xs:string" name="option_9_enum_list" id="List_of_values_in_enumeration_separated_by_commas9" default="val1,val2,..." />
+    
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
