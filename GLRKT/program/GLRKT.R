@@ -135,19 +135,17 @@ fixedpars<-as.numeric(as.character(unlist(strsplit(fixedpars,","))))
 seedpars<-as.numeric(as.character(unlist(strsplit(seedpars,","))))
 
 #Model options
-cat("Component Options");cat("\n")
-cat("mode:",mode);cat("\n")
-cat("plancomponents:",plancomponents);cat("\n")
-cat("fixedpars:",fixedpars);cat("\n")
-cat("seedpars:",seedpars);cat("\n")
-cat("prespecfeatures:",prespecfeatures);cat("\n");cat("\n")
+print(plancomponents)
+print(prespecfeatures)
+print(fixedpars)
+print(seedpars)
 
 #plancomponents,fixedpars,seedpars,prespecfeatures,fill=2)
 
 #Set Data Directory
 datalocation<- paste(componentDirectory, "/program/", sep="")
 setwd(workingDirectory)
-outputFilePath<- paste(workingDirectory, "transaction file output.txt", sep="")
+outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
 outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
 
 #Get data
