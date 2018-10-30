@@ -56,10 +56,9 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="xs:string" name="salt" id="Salt"  default="" />
+      <xs:element type="xs:string" name="salt" id="Salt"  default="" ls:privateOption="true"/>
 
       <xs:element type="MultiFileInputHeader" name="columnsToHash" id="Column_To_Hash" default=".*" />
-      
     </xs:choice>
   </xs:complexType>
 

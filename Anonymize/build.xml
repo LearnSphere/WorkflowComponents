@@ -13,8 +13,6 @@
 
     <property name="program" location="${basedir}/program" />
 
-    <property name="javac8" location="C:/Program Files/Java/jdk1.8.0_144/bin/javac" />
-
     <property name="version" value="1.0" />
 
     <property name="component.id" value="Anonymize" />

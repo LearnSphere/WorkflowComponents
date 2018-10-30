@@ -29,7 +29,7 @@ while (i <= length(args)) {
            fileIndex <- args[i+3]
        }
 
-       fileName <- args[i + 4]
+       inputFile <- args[i + 4]
        i = i + 4
 
     } else if (args[i] == "-dummyOption") {

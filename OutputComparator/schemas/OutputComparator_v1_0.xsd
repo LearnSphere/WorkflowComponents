@@ -69,8 +69,8 @@
   
   <xs:simpleType name="trueFalseType" final="restriction">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Yes" />
       <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
     </xs:restriction>
   </xs:simpleType>
   
@@ -79,8 +79,29 @@
 	<xs:choice>
 	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="caseSensitive" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
 	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="removeNull" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
-	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="matchColumn" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
 	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="compareColumn" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="numColumnsToMatch" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency1" ls:dependentOption="matchColumns1" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(1)" />
+	<xs:element type="conjunctive" name="dependency6" ls:dependentOption="matchColumns1" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency2" ls:dependentOption="matchColumns2" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(2)" />
+	<xs:element type="conjunctive" name="dependency7" ls:dependentOption="matchColumns2" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency3" ls:dependentOption="matchColumns3" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(3)" />
+	<xs:element type="conjunctive" name="dependency8" ls:dependentOption="matchColumns3" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency4" ls:dependentOption="matchColumns4" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(4)" />
+	<xs:element type="conjunctive" name="dependency9" ls:dependentOption="matchColumns4" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency5" ls:dependentOption="matchColumns5" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(5)" />
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="matchColumns5" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency6" ls:dependentOption="matchColumns6" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(6)" />
+	<xs:element type="conjunctive" name="dependency11" ls:dependentOption="matchColumns6" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency7" ls:dependentOption="matchColumns7" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(7)" />
+	<xs:element type="conjunctive" name="dependency12" ls:dependentOption="matchColumns7" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency8" ls:dependentOption="matchColumns8" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(8)" />
+	<xs:element type="conjunctive" name="dependency13" ls:dependentOption="matchColumns8" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency9" ls:dependentOption="matchColumns9" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(9)" />
+	<xs:element type="conjunctive" name="dependency14" ls:dependentOption="matchColumns9" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	<xs:element type="conjunctive" name="matchColumnDependency10" ls:dependentOption="matchColumns10" ls:dependsOn="numColumnsToMatch" ls:constraint="gte(10)" />
+	<xs:element type="conjunctive" name="dependency15" ls:dependentOption="matchColumns10" ls:dependsOn="fileType" ls:constraint="matches(Tabular)" />
+	
 	</xs:choice>
 </xs:complexType>
 
@@ -90,11 +111,20 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="comparableFileType" name="fileType" id="File_type" default="XML" />
-        <xs:element type="trueFalseType" name="caseSensitive" id="Case_sensitive" default="Yes" />
-        <xs:element type="trueFalseType" name="removeNull" id="Remove_empty_values" default="Yes" />
-        
-        <xs:element type="MultiFileInputHeader" name="matchColumn" id="File_column_to_match" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
-        <xs:element type="MultiFileInputHeader" name="compareColumn" id="File_column_to_compare" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+    	<xs:element type="trueFalseType" name="caseSensitive" id="Case_sensitive" default="No" />
+        <xs:element type="trueFalseType" name="removeNull" id="Remove_empty_values" default="No" />
+        <xs:element type="xs:integer" name="numColumnsToMatch" id="Number_of_Matching_Conditions" default="1" />
+        <xs:element type="MultiFileInputHeader" name="matchColumns1" id="Columns_To_Match_First" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns2" id="Columns_To_Match_Second" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns3" id="Columns_To_Match_Third" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns4" id="Columns_To_Match_Fourth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns5" id="Columns_To_Match_Fifth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns6" id="Columns_To_Match_Sixth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns7" id="Columns_To_Match_Seventh" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns8" id="Columns_To_Match_Eighth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns9" id="Columns_To_Match_Ninth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="matchColumns10" id="Columns_To_Match_Tenth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+        <xs:element type="MultiFileInputHeader" name="compareColumn" id="Columns_to_Compare" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
     </xs:choice>
   </xs:complexType>
   

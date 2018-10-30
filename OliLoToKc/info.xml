@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Norman Bier and DataShop
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliLoToKc</url>
+
+<date>2018-08-19</date>
+
+<abstract>This component will build a DataShop KC import from an OLI Skill Model.
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>Skills ODS File</b> - Download a skills model in open document format (ods).  This file should correspond to the same tutor as the KC model export.  Assumptions about this file:<br/>
+<ul>
+	<li>The tabs in your spreadsheet are ordered: Skills, Problems, LOs.</li>
+	<li>No blank rows in your spreadsheet</li>
+	<li>This only tests what's in the spreadsheet, it does not take into account what exists in your course tree.</li>
+</ul>
+<b>Template kc model</b> - Export a kc model from DataShop.  Please do NOT use the "(new only)" option when exporting.  Unique-step export is recommended.  The last two column headers in this KC export should be of the form "KC ([some model name])" and "KC (new KC model name)".<br/>
+</inputs>
+
+<outputs>
+<b>DataShop KC model</b> - You can import this into the dataset that you got the KC model export from.
+</outputs>
+
+<options>
+
+</options>
+
+</info>

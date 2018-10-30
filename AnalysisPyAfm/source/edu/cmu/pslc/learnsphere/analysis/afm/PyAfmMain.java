@@ -49,23 +49,38 @@ public class PyAfmMain extends AbstractComponent {
     protected void runComponent() {
         // Run the program and return its stdout to a file.
         File outputDirectory = this.runExternal();
-
-        Integer nodeIndex = 0;
-        Integer fileIndex = 0;
-        String fileLabel = "student-step";
-
         File stuStepFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
+        File moelValuesFile = new File(outputDirectory.getAbsolutePath() + "/model_values.xml");
+        File parametersFile = new File(outputDirectory.getAbsolutePath() + "/Parameter-estimate-values.xml");
 
-        this.addOutputFile(stuStepFile, nodeIndex, fileIndex, fileLabel);
+        if (stuStepFile != null && stuStepFile.exists() && moelValuesFile != null && moelValuesFile.exists()
+                       && parametersFile != null && parametersFile.exists()) {
+                Integer nodeIndex = 0;
+                Integer fileIndex = 0;
+                String fileLabel = "student-step";
+                this.addOutputFile(stuStepFile, nodeIndex, fileIndex, fileLabel);
+                
+                nodeIndex = 1;
+                fileIndex = 0;
+                fileLabel = "model-values";
+                this.addOutputFile(moelValuesFile, nodeIndex, fileIndex, fileLabel);
+                
+                nodeIndex = 2;
+                fileIndex = 0;
+                fileLabel = "parameters";
+                this.addOutputFile(parametersFile, nodeIndex, fileIndex, fileLabel);
+                
+        } else {
+            this.addErrorMessage("An unknown error has occurred with the Python AFM component.");
+        }
 
-
-        nodeIndex = 1;
+        /*nodeIndex = 1;
         fileIndex = 0;
         fileLabel = "tab-delimited";
 
         File fitStatsFile = new File(outputDirectory.getAbsolutePath() + "/output.txt");
 
-        this.addOutputFile(fitStatsFile, nodeIndex, fileIndex, fileLabel);
+        this.addOutputFile(fitStatsFile, nodeIndex, fileIndex, fileLabel);*/
 
         // Send the component output bakc to the workflow.
         System.out.println(this.getOutput());

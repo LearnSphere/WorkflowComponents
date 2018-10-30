@@ -17,6 +17,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMSource;
+
+import static javax.xml.transform.OutputKeys.INDENT;
+import static javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 /* if we want access to dao and helpers, simply enable the hibernate/spring class paths in the build.xml */
 /*
 import edu.cmu.pslc.datashop.dao.DaoFactory;
@@ -25,6 +38,7 @@ import edu.cmu.pslc.datashop.item.UserItem;
 import edu.cmu.pslc.datashop.servlet.HelperFactory;
 */
 
+import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.workflows.InputHeaderOption;
@@ -150,20 +164,172 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             stuStepFile = getSingleStudentStepFile(primaryFileIndex);
         }
 
+        // Parameters file, on node 1, is optional.
+        File parametersFile = this.getAttachment(1, 0);
+
         Hashtable<String, Vector<LearningCurvePoint>> lcPrototypeData = lcPrototype
             .processStudentStepExportForLearningCurves(stuStepFile,
                                                        visualizationOptions);
-
         GraphOptions lcGraphOptions = GraphOptions.getDefaultGraphOptions();
 
         logger.debug("Initializing Learning Curves.");
-        List<File> imageFiles = lcPrototype.init(
-                lcPrototypeData, visualizationOptions,
-                lcGraphOptions, this.getComponentOutputDir());
+        Map<String, List<File>> imageFiles = lcPrototype.init(
+                                                              lcPrototypeData,
+                                                              visualizationOptions,
+                                                              lcGraphOptions,
+                                                              this.getComponentOutputDir(),
+                                                              stuStepFile,
+                                                              parametersFile);
 
         Integer counter = 0;
 
-        for (File imageFile : imageFiles) {
+        List<File> fileList = imageFiles.get(LearningCurveImage.NOT_CLASSIFIED);
+        if ((fileList != null) && (fileList.size() > 0)) {
+            counter = addOutputFiles(fileList, counter);
+        } else {
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_LOW_AND_FLAT);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_NO_LEARNING);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_STILL_HIGH);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA);
+            counter = addOutputFiles(fileList, counter);
+            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_OTHER);
+            counter = addOutputFiles(fileList, counter);
+        }
+
+        // For each skill, write the LC point data out to a file.
+        Transformer transformer = initializeTransformer();
+        
+        counter = 0;
+        for (String s : lcPrototypeData.keySet()) {
+            String category = lcPrototype.getSkillCategory(s);
+            addPointsOutputFile(s, category, lcPrototypeData.get(s), counter, transformer);
+            counter++;
+        }
+
+        System.out.println(this.getOutput());
+        System.exit(0);
+    }
+
+    private Transformer initializeTransformer() {
+        Transformer transformer = null;
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(INDENT, "yes");
+            transformer.setOutputProperty(OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        } catch (Exception e) {
+            transformer = null;
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
+
+        return transformer;
+    }
+
+    /** Constant to convert error rates to percentages. */
+    private static final Integer ONE_HUNDRED = 100;
+
+    /**
+     * Helper method to generate XML file describing learning curve: points and, if
+     * applicable, the categorization of the curve.
+     * @param skillName the skill
+     * @param category the category
+     * @param lcPoints the data points for the curve
+     * @param counter the file index
+     * @param transformer the transformer to convert xml doc to file
+     */
+    private void addPointsOutputFile(String skillName, String category,
+                                     List<LearningCurvePoint> lcPoints,
+                                     Integer counter, Transformer transformer) {
+
+        File lcpFile = this.createFile("lc_points_" + skillName, ".xml");
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Node lcNode = doc.createElement("learning_curve");
+            doc.appendChild(lcNode);
+            if (category != null) {
+                addElement(doc, lcNode, "error_rate_category", category);
+            }
+
+            for (LearningCurvePoint lcp : lcPoints) {
+                Node lcpNode = doc.createElement("learning_curve_point");
+
+                addElement(doc, lcpNode, "error_rates", lcp.getErrorRates() * ONE_HUNDRED);
+                addElement(doc, lcpNode, "assistance_score", lcp.getAssistanceScore());
+                addElement(doc, lcpNode, "predicted_error_rate", lcp.getPredictedErrorRate() * ONE_HUNDRED);
+                addElement(doc, lcpNode, "avg_incorrects", lcp.getAvgIncorrects());
+                addElement(doc, lcpNode, "avg_hints", lcp.getAvgHints());
+                addElement(doc, lcpNode, "step_duration", lcp.getStepDuration());
+                addElement(doc, lcpNode, "correct_step_duration", lcp.getCorrectStepDuration());
+                addElement(doc, lcpNode, "error_step_duration", lcp.getErrorStepDuration());
+                addElement(doc, lcpNode, "opportunity_number", lcp.getOpportunityNumber());
+                addElement(doc, lcpNode, "observations", lcp.getObservations());
+                addElement(doc, lcpNode, "step_duration_observations", lcp.getStepDurationObservations());
+                addElement(doc, lcpNode, "correct_step_duration_observations", lcp.getCorrectStepDurationObservations());
+                addElement(doc, lcpNode, "error_step_duration_observations", lcp.getErrorStepDurationObservations());
+                addElement(doc, lcpNode, "students_count", lcp.getStudentsCount());
+                addElement(doc, lcpNode, "problems_count", lcp.getProblemsCount());
+                addElement(doc, lcpNode, "skills_count", lcp.getSkillsCount());
+                addElement(doc, lcpNode, "steps_count", lcp.getStepsCount());
+                if (lcp.getHighStakesErrorRate() != null) {
+                    addElement(doc, lcpNode, "high_stakes_error_rate", lcp.getHighStakesErrorRate() * ONE_HUNDRED);
+                }
+
+                doc.getDocumentElement().appendChild(lcpNode);
+            }
+
+            transformer.transform(new DOMSource(doc.getDocumentElement()), new StreamResult(lcpFile));
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
+
+        printFileInfo(lcpFile);
+
+        Integer nodeIndex = 1;
+        String fileLabel = "text";
+        this.addOutputFile(lcpFile, nodeIndex, counter, fileLabel);
+    }
+
+    private void printFileInfo(File lcpFile) {
+        BufferedReader br = null;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(lcpFile);
+            br = new BufferedReader(new InputStreamReader(inputStream, "UTF8"), 8192);
+
+            String line = null;
+            if ((line = br.readLine()) != null) {
+            }
+        } catch (Exception e) {
+            logger.error("Failed to read lcp data: " + lcpFile.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Helper method to create and append an element to specified doc and node.
+     * @param doc the XML Document
+     * @param parent the Node
+     * @param tag the name of the element to create
+     * @param value the value of the new text node
+     */
+    private void addElement(Document doc, Node parent, String tag, Object value) {
+        Element ele = doc.createElement(tag);
+        String valueStr = (value == null) ? "NULL" : value.toString();
+        ele.appendChild(doc.createTextNode(valueStr));
+        parent.appendChild(ele);
+    }
+
+    private Integer addOutputFiles(List<File> fileList, Integer counter) {
+
+        if (fileList == null) {
+            return counter;
+        }
+
+        for (File imageFile : fileList) {
 
             Integer nodeIndex = 0;
             String fileLabel = "image";
@@ -171,9 +337,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             this.addOutputFile(imageFile, nodeIndex, counter, fileLabel);
             counter++;
         }
-
-        System.out.println(this.getOutput());
-        System.exit(0);
+        return counter;
     }
 
     /**
@@ -209,6 +373,13 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             result.setPrimaryModelName(modelName);
         }
 
+        result.setClassifyCurves(this.getOptionAsBoolean("classifyCurves"));
+        result.setStudentThreshold(this.getOptionAsInteger("studentThreshold"));
+        result.setOpportunityThreshold(this.getOptionAsInteger("opportunityThreshold"));
+        result.setLowErrorThreshold(this.getOptionAsDouble("lowErrorThreshold"));
+        result.setHighErrorThreshold(this.getOptionAsDouble("highErrorThreshold"));
+        result.setAfmSlopeThreshold(this.getOptionAsDouble("afmSlopeThreshold"));
+
         // Though we want integer values for min/max opportunities,
         // only the "xs:double" data type supports "INF" (infinity).
         // Since we want to be able to use INF for max cutoff, then we
@@ -230,6 +401,7 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
                 .equalsIgnoreCase(
                         LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES.toString())) {
             result.setLearningCurveType(LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES);
+            result.setIsViewBySkill(true);
         } else if (learningCurveTypeAttribute
                 .equalsIgnoreCase(
                         LearningCurveType.CRITERIA_STUDENTS_OPPORTUNITIES.toString())) {

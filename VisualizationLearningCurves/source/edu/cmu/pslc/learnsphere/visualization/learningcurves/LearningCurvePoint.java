@@ -5,6 +5,7 @@
  */
 package edu.cmu.pslc.learnsphere.visualization.learningcurves;
 
+import java.util.Comparator;
 import java.util.Map;
 
 import static edu.cmu.pslc.datashop.dto.LearningCurveOptions.ASSISTANCE_SCORE_TYPE;
@@ -789,6 +790,12 @@ public class LearningCurvePoint {
             return value;
         } else {
             return Double.parseDouble(LC_DECIMAL_FORMAT.format(value));
+        }
+    }
+
+    public static class SortByOpportunity implements Comparator<LearningCurvePoint> {
+        public int compare(LearningCurvePoint lcp1, LearningCurvePoint lcp2) {
+            return lcp1.getOpportunityNumber().compareTo(lcp2.getOpportunityNumber());
         }
     }
 

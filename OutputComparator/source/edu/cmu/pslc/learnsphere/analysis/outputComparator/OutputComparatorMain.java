@@ -57,42 +57,43 @@ public class OutputComparatorMain extends AbstractComponent {
                         reqsMet = false;
                 }
                 //set compareColumn and matchColumn to ""; sometimes when compareColumn="<model_output>", "<" will cause problem
-                this.setOption("matchColumn", "");
                 this.setOption("compareColumn", "");
         } else if (fileType.equalsIgnoreCase("Properties File")) {
-                this.setOption("matchColumn", "");
-                this.setOption("compareColumn", "");
-        } else if (fileType.equalsIgnoreCase("Properties File")) {
-                this.setOption("matchColumn", "");
                 this.setOption("compareColumn", "");
         } else if (fileType.equalsIgnoreCase("Tabular")) {
-                //make sure each file has only one compareColumn
+                //process match columns
                 if (inputFiles != null) {
+                        int numColumnsToMatch = this.getOptionAsInteger("numColumnsToMatch");
                         int numOfFiles = inputFiles.size();
-                        List<InputHeaderOption> matchColumnList = this.getInputHeaderOption("matchColumn", nodeIndex);
-                        logger.info("matchColumnList:" + matchColumnList);
-                        if (matchColumnList == null || matchColumnList.size() != numOfFiles) {
-                                String exErr = "One and only one column should be selected for matching for each file.";
-                                addErrorMessage(exErr);
-                                reqsMet = false;
-                        } else {
-                                Set<Integer> matchColumnSet = new HashSet<Integer>();
-                                for (InputHeaderOption iho : matchColumnList) {
-                                        matchColumnSet.add(iho.getFileIndex());
-                                }
-                                List<Integer> matchColumnIntList = new ArrayList(matchColumnSet);
-                                Collections.sort(matchColumnIntList);
-                                if (matchColumnIntList.get(0) != 0 || matchColumnIntList.get(matchColumnIntList.size()-1) != numOfFiles -1 ||
-                                                matchColumnIntList.size() != numOfFiles) {
-                                        String exErr = "One and only one column should be selected for matching for each file.";
+                        for (int colOrder = 1; colOrder <= numColumnsToMatch; colOrder++) {
+                                String inputHeaderOptionName = "matchColumns" + colOrder;
+                                List<InputHeaderOption> matchColumnsList = this.getInputHeaderOption(inputHeaderOptionName, nodeIndex);
+                                logger.info(inputHeaderOptionName + ": " + matchColumnsList);
+                                if (matchColumnsList == null || matchColumnsList.size() != numOfFiles) {
+                                        String matchingColOrder = getMatchingCode(colOrder);
+                                        String exErr = "Error found in \"Columns to Match " + matchingColOrder + "\": one and only one column should be selected for matching from each file.";
                                         addErrorMessage(exErr);
                                         reqsMet = false;
+                                } else {
+                                        Set<Integer> matchColumnsSet = new HashSet<Integer>();
+                                        for (InputHeaderOption iho : matchColumnsList) {
+                                                matchColumnsSet.add(iho.getFileIndex());
+                                        }
+                                        List<Integer> matchColumnsIntList = new ArrayList(matchColumnsSet);
+                                        Collections.sort(matchColumnsIntList);
+                                        if (matchColumnsIntList.get(0) != 0 || matchColumnsIntList.get(matchColumnsIntList.size()-1) != numOfFiles -1 ||
+                                                        matchColumnsIntList.size() != numOfFiles) {
+                                                String matchingColOrder = getMatchingCode(colOrder);
+                                                String exErr = "Error found in \"Columns to Match " + matchingColOrder + "\": one and only one column should be selected for matching from each file.";
+                                                addErrorMessage(exErr);
+                                                reqsMet = false;
+                                        }
                                 }
                         }
                         List<InputHeaderOption> compareColumnList = this.getInputHeaderOption("compareColumn", nodeIndex);
                         logger.info("compareColumnList:" + compareColumnList);
                         if (compareColumnList == null || compareColumnList.size() < numOfFiles) {
-                                String exErr = "At least one column should be selected for comparison for each file.";
+                                String exErr = "Error found in \"Columns to Compare\": at least one column should be selected for comparison from each file.";
                                 addErrorMessage(exErr);
                                 reqsMet = false;
                         } else {
@@ -104,7 +105,7 @@ public class OutputComparatorMain extends AbstractComponent {
                                 Collections.sort(compareColumnIntList);
                                 if (compareColumnIntList.get(0) != 0 || compareColumnIntList.get(compareColumnIntList.size()-1) != numOfFiles -1 ||
                                                 compareColumnIntList.size() != numOfFiles) {
-                                        String exErr = "At least one column should be selected for comparison for each file.";
+                                        String exErr = "Error found in \"Columns to Compare\": at least one column should be selected for comparison from each file.";
                                         addErrorMessage(exErr);
                                         reqsMet = false;
                                 }
@@ -142,10 +143,11 @@ public class OutputComparatorMain extends AbstractComponent {
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
         
+        /*Causing error messages displayed twice
         for (String err : this.errorMessages) {
                 // These will also be picked up by the workflows platform and relayed to the user.
                 System.err.println(err);
-        }        
+        } */       
         
     }
 
@@ -280,5 +282,31 @@ public class OutputComparatorMain extends AbstractComponent {
             }
             return generatedFile;
     }
+    
+    private String getMatchingCode(int matchingNumber) {
+            switch (matchingNumber) {
+                    case 1:
+                            return "First";
+                    case 2:
+                            return "Second";
+                    case 3:
+                            return "Third";
+                    case 4:
+                            return "Fourth";
+                    case 5:
+                            return "Fifth";
+                    case 6:
+                            return "Sixth";
+                    case 7:
+                            return "Seventh";
+                    case 8:
+                            return "Eighth";
+                    case 9:
+                            return "Ninth";
+                    case 10:
+                            return "Tenth";
+            }
+            return null;
+        }
 
 }

@@ -119,6 +119,11 @@ while (i <= length(args)) {
 # Load raw data
 ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
+#keep original column names
+origFile <- read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE,check.names=FALSE)
+origCols <- colnames(origFile)
+
+
 #make the column.var.name into character
 #ex: ds$Problem.Name <- as.character(ds$Problem.Name)
 for (column.var.name in columns.var.name) {
@@ -199,6 +204,8 @@ if (operation == "remove") {
   }
 }
 
+#change ds column names back to original names
+colnames(ds) <- origCols
 
 outputFile <- paste(workingDir, "/modified_file.txt", sep="")
 

@@ -1,3 +1,5 @@
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" pivot.R -programDir . -workingDir . -userId 1 -a length -aWF length -c Feature.Name -cWF_nodeIndex 0 -cWF "Feature Name" -f moocdb_features.txt -m Longitudinal.Feature.Value -mWF_nodeIndex 0 -mWF "Longitudinal Feature Value" -r User.ID -rWF_nodeIndex 0 -rWF "User ID" -node 0 -fileIndex 0 moocdb_features.txt
+
 options(scipen=999)
 
 #oldw <- getOption("warn")
@@ -51,6 +53,14 @@ while (i <= length(args)) {
     pivotRowName = args[i+1]
     i = i+1
   }
+  #-rWF for rows of pivot result, separated by +
+  else if (args[i] == "-origr") {
+    if (length(args) == i) {
+      stop("original row names of pivot result must be specified")
+    }
+    pivotOrigRowName = args[i+1]
+    i = i+1
+  }
   #-c for columns of pivot results, separated by +
   else if (args[i] == "-c") {
     if (length(args) == i) {
@@ -89,8 +99,20 @@ if (aggMethod  %in% c("length", "min", "max")) {
 } else {
   comd = paste("agg_data<-dcast(myData,", pivotRowName, "~", pivotColName, ", value.var=", "\"", meaColName, "\"", ", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
 }
-print(comd)
+
 eval(parse(text=comd))
+#replace the R-changed name with original names
+pivotOrigRowName = as.list(strsplit(pivotOrigRowName, ",")[[1]])
+for(origRowName in pivotOrigRowName){
+  origRowNameTemp = gsub("[ ()-]", ".", origRowName)
+  for (i in 1:length(colnames(agg_data))) {
+    if (colnames(agg_data)[i] == origRowNameTemp) {
+      colnames(agg_data)[i] = origRowName
+      break
+    }
+  }
+}
+
 my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote = F)
 
 #dcast(myData, User.ID+Longitudinal.Feature.Week ~ Feature.Name, value.var="values", fun.aggregate = sum)
