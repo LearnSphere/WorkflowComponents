@@ -1,6 +1,7 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+  
 
   <xs:complexType name="InputDefinition0">
     <xs:complexContent>
@@ -66,16 +67,29 @@
       <xs:enumeration value="min" />
     </xs:restriction>
   </xs:simpleType>
-
-
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="cWF" ls:dependsOn="moreFactors" ls:constraint="matches(Yes)" />
+	</xs:choice>
+</xs:complexType>
 
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="analysisType" name="aWF" id="Aggregation_Method" default="sum" />
     	<xs:element type="MultiFileInputHeader" name="rWF" id="Rows_in_Pivot_Table" default=".*" />
+    	<xs:element type="MultiFileInputHeader" name="mWF" id="Measurement" default=".*" />
+    	<xs:element type="trueFalseType" name="moreFactors" id="More_Factors" default="No" />
       	<xs:element type="MultiFileInputHeader" name="cWF" id="Columns_in_Pivot_Table" default=".*" />
-      	<xs:element type="FileInputHeader" name="mWF" id="Measurement" default=".*" />
+      	
     </xs:choice>
   </xs:complexType>
 
