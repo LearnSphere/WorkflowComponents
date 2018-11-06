@@ -90,7 +90,9 @@
     <div id="correlationTableDiv"></div>
 </body>
 <script>
-const containsSummary = parseInt("${summaryColPresent}");
+
+/* At this point there is always a summary column in the data */
+const containsSummary = 1;
 const MAX_FLOAT_LENGTH = 5;
 
 /**

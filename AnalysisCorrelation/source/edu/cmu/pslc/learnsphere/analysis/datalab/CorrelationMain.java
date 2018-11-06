@@ -74,6 +74,18 @@ public class CorrelationMain extends AbstractComponent {
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
 
+            if (!summaryColPresent) {
+                // Add summary column
+                String [] newHeaders = new String [headers.length + 1];
+                for (int i = 0; i < headers.length; i++) {
+                    newHeaders[i] = headers[i];
+                }
+                newHeaders[headers.length] = "Total Score";
+                headers = newHeaders;
+                data = addSummaryColumn(data);
+                numItems += 1;
+            }
+
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute correlation. " + e;
             logger.info(msg);
@@ -113,6 +125,28 @@ public class CorrelationMain extends AbstractComponent {
             // These will also be picked up by the workflows platform and relayed to the user.
             System.err.println(err);
         }
+    }
+
+    /**
+     * If the user specified that there was not already a summary column, add
+     * one for them.  It is a column called "Total Score" which is a sum of all
+     * column values per row(student)
+     */
+    private Array2DRowRealMatrix addSummaryColumn(Array2DRowRealMatrix data) {
+        Array2DRowRealMatrix dataWithSummary = new Array2DRowRealMatrix(
+            data.getRowDimension(), data.getColumnDimension() + 1);
+
+        for (int i = 0; i < data.getRowDimension(); i++) {
+            double rowSum = 0.0;
+            for (int j = 0; j < data.getColumnDimension(); j++) {
+                double cellVal = data.getEntry(i, j);
+                rowSum += cellVal;
+                dataWithSummary.setEntry(i, j, cellVal);
+            }
+            dataWithSummary.setEntry(i, data.getColumnDimension(), rowSum);
+        }
+
+        return dataWithSummary;
     }
 
     // Constant
