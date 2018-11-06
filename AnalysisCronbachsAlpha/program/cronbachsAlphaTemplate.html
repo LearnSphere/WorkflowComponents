@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reliability</title>
+    <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+    <script src="javascript/lib/papaparse.min.js"></script>
+    <style>
+    .reliabilityTitle {
+        color: rgb(51, 51, 51);
+        font-family: sans-serif;
+        font-size: 24px;
+        margin: 5px 5px;
+    }
+
+    #reliabilityTableDiv table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    #dataTable {
+        overflow-y: scroll;
+        max-height: calc(100vh - 150px);
+        display: inline-block;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table tr th:first-of-type,
+    table tr td:first-of-type {
+        width: 250px;
+        border-left: 1px solid #ddd;
+    }
+
+    table tr th:not(:first-of-type),
+    table tr td:not(:first-of-type) {
+        width: 100px;
+    }
+
+    table {
+        text-align: left;
+    }
+
+    table td,
+    table th {
+        font-family: sans-serif;
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        padding: 0px 5px;
+        font-size: 12px;
+        min-width: 40px;
+        height: 35px;
+    }
+
+    table th {
+        font-weight: bold;
+        font-size: 13px;
+        color: #636363;
+        background: #f0f0f0;
+        text-align: left;
+        border-bottom: 1px black solid;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="reliabilityTitle">Reliability
+        <img title="Reliability is based on Cronbach's Alpha. Cells are highlighted for an improved alpha. An improved alpha suggests a problem with this item." alt="Reliability" src="images/info.gif">
+    </div>
+        <div id="reliabilityTableDiv"></div>
+</body>
+<script>
+const containsSummary = parseInt("${summaryColPresent}");
+const MAX_FLOAT_LENGTH = 6;
+
+jQuery(document).ready(function() {
+
+    Papa.parse("${input0}", {
+        download: true,
+        delimiter: "\t",
+        skipEmptyLines: true,
+        complete: function(results) {
+            buildReliablilityTable(results.data);
+        }
+    });
+});
+
+/**
+ * Create the reliability table
+ */
+function buildReliablilityTable(data) {
+    let headerTable = jQuery('<table id="headerTable"></table>');
+
+    // Add Headers
+    headerTable.append(jQuery('<tr><th>Items</th><th>Alpha</th></tr>'));
+    headerTable.append(jQuery('<tr><th>' + data[0][0] +
+        '</th><th>' + formatNum(data[0][1]) + '</th></tr>'));
+
+    jQuery('#reliabilityTableDiv').append(headerTable);
+
+    // Add the rest of the data
+    let dataTable = jQuery('<table id="dataTable"></table>');
+    for (let i = 1; i < data.length; i++) {
+        let rowData = data[i];
+        if (rowData.length != 2) { continue; }
+
+        dataTable.append(jQuery('<tr><td>' + rowData[0] + '</td><td>' + formatNum(rowData[1]) + '</tdh></tr>'))
+    }
+    jQuery('#reliabilityTableDiv').append(dataTable);
+
+    colorTable(parseFloat(data[0][1]));
+}
+
+function formatNum(num) {
+    return num.substring(0, MAX_FLOAT_LENGTH);
+}
+
+/**
+ * Color a cell red if it's alpha value is greater than the all items alpha value
+ */
+function colorTable(allItemAlpha) {
+    // Loop through cells with alpha values
+    jQuery('#dataTable td:not(:first-of-type)').each(function() {
+        let text = jQuery(this).text();
+        if (text != null && text != "") {
+            try {
+                let val = parseFloat(text);
+
+                // If the alpha value of this cell is more extreme, color it red
+                if (val > allItemAlpha) {
+                    jQuery(this).css('background', '#FBE3E4');
+                }
+            } catch {}
+        }
+    });
+}
+</script>
+
+</html>
