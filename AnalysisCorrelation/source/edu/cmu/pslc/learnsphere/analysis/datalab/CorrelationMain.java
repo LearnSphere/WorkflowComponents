@@ -3,7 +3,13 @@ package edu.cmu.pslc.learnsphere.analysis.datalab;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
@@ -25,6 +31,7 @@ public class CorrelationMain extends AbstractComponent {
     private String[] students;
     private int numItems = 0;
     private int numStudents = 0;
+    private static String htmlTemplateName = "correlation.html";
 
     public static void main(String[] args) {
 
@@ -55,6 +62,9 @@ public class CorrelationMain extends AbstractComponent {
 
         Array2DRowRealMatrix data = null;
 
+        Boolean summaryColPresent =
+                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+
         try {
             Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
 
@@ -63,9 +73,6 @@ public class CorrelationMain extends AbstractComponent {
             students = gradebook.getStudents();
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
-
-            Boolean summaryColPresent =
-                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
 
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute correlation. " + e;
@@ -81,10 +88,22 @@ public class CorrelationMain extends AbstractComponent {
             if (correlationFile == null) {
                 this.addErrorMessage("Failed to create output correlation file.");
             } else {
-                Integer nodeIndex = 0;
-                Integer fileIndex = 0;
-                String fileType = "correlation";
-                this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+            	// Add the correlation file to the HTML visualization of it
+            	File htmlFile = addDataReferenceToHtmlFile(correlationFile, summaryColPresent);
+
+            	if (htmlFile != null) {
+            		Integer nodeIndex = 0;
+	                Integer fileIndex = 0;
+	                String fileType = "inline-html";
+	                this.addOutputFile(htmlFile, nodeIndex, fileIndex, fileType);
+
+	                nodeIndex = 1;
+	                fileIndex = 0;
+	                fileType = "correlation";
+	                this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+	            } else {
+	            	this.addErrorMessage("Could not create correlation html file");
+	            }
             }
         }
 
@@ -167,5 +186,66 @@ public class CorrelationMain extends AbstractComponent {
             logger.error("Correlation error: not enough data for items.");
         }
         return correlationVal;
+    }
+
+    private File addDataReferenceToHtmlFile(File correlationFile, boolean summaryColPresent) {
+        File htmlTemplateFile = new File(this.getToolDir() + "/program/" + htmlTemplateName);
+        File outputFile = null;
+		if (htmlTemplateFile.exists() && htmlTemplateFile.isFile() && htmlTemplateFile.canRead()) {
+			outputFile = this.createFile("CorrelationVisualization.html");
+
+			String outputSubpath = this.componentOutputDir
+                                   .replaceAll("\\\\", "/")
+                                   .replaceAll("^.*/workflows/", "workflows/");
+            String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + correlationFile.getName();
+
+            BufferedReader bReader = null;
+            FileReader fReader = null;
+
+            BufferedWriter bWriter = null;
+            FileWriter fWriter = null;
+
+            try {
+
+                fReader = new FileReader(htmlTemplateFile);
+                bReader = new BufferedReader(fReader);
+
+                fWriter = new FileWriter(outputFile);
+                bWriter = new BufferedWriter(fWriter);
+
+                String line = null;
+                while ((line = bReader.readLine()) != null) {
+                    if (line.contains("${input0}")) {
+                        line = line.replaceAll(Pattern.quote("${input0}"),
+                                               dataFilePath); // name is data.txt
+                    }
+                    if (line.contains("${summaryColPresent}")) {
+                        if (summaryColPresent) {
+                        	line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                               "1"); // 1 summary column
+                        } else {
+                        	line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                               "0"); // No summary column
+                        }
+                    }
+
+                    bWriter.append(line + "\n");
+                }
+            } catch (IOException e) {
+                this.addErrorMessage(e.toString());
+            } finally {
+                try {
+                    if (bReader != null) {
+                        bReader.close();
+                    }
+                    if (bWriter != null) {
+                        bWriter.close();
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+		}
+		return outputFile;
     }
 }

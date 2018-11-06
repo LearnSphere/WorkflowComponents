@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Correlation Matrix</title>
+    <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+    <script src="javascript/lib/papaparse.min.js"></script>
+    <style>
+        #correlationTableDiv {
+        width: 80%;
+        overflow-x: scroll;
+        margin-left: 102px;
+        padding: 0;
+    }
+
+    #correlationTable {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .bound {
+    }
+    .bound td {
+    	padding: 3px 5px;
+    }
+    #lower {
+		background: #FBE3E4;    }
+    #upper {
+    	background: rgb(230, 239, 194);
+    }
+    .correlationTitle {
+    	color: rgb(51, 51, 51);
+    	font-family: sans-serif;
+    	font-size: 24px;
+    	margin: 5px 5px;
+    }
+
+    #correlationTable td {
+    	font-family: sans-serif;
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        padding: 4px 5px;
+        font-size: 12px;
+        min-width: 40px;
+        height: 35px;
+    }
+
+    #correlationTable tr:first-of-type,
+    #correlationTable tr td:first-of-type {
+        font-weight: bold;
+        font-size: 13px;
+        color: #636363;
+        background: #f0f0f0;
+        text-align: left;
+        width: 100px;
+    }
+
+    #correlationTable tr:first-of-type td:first-of-type {
+        background: none;
+        border: none;
+    }
+
+    #correlationTable tr:first-of-type td {
+        border-bottom: solid black 1px;
+    }
+
+    #correlationTable tr td:first-of-type {
+        border-right-color: black;
+        position: absolute;
+        left: 0;
+        top: auto;
+    }
+
+    .summaryCell {
+    	background: #f0f0f0;
+    	border-top: solid black 1px !important;
+    }
+    </style>
+</head>
+
+<body>
+	<table>
+	    <tr class="bound"><td>High correlation is greater than</td>
+	        <td><input id="upper" type="number" max="1" min="0" step="0.1" value="0.7"></td>
+	    </tr> 
+	    <tr class="bound"><td>Low correlation is less than</td>
+	        <td><input id="lower" type="number" max="1" min="0" step="0.1" value="0.2"></td>
+	    </tr>
+	</table>
+	<div class="correlationTitle">Correlation Matrix</div>
+    <div id="correlationTableDiv"></div>
+</body>
+<script>
+const containsSummary = parseInt("${summaryColPresent}");
+const MAX_FLOAT_LENGTH = 5;
+
+function buildCorrelationTable(data) {
+    let table = jQuery('<table id="correlationTable"></table>');
+
+    // Add Header Row
+    let headerRow = jQuery('<tr class="headerRow"></tr>');
+    let headers = data[0];
+    for (let i = 0; i < headers.length - containsSummary; i++) {
+        let headerCell = jQuery('<td class="header">' + headers[i] + '</td>');
+        headerCell.attr('title', headers[i]);
+        headerRow.append(headerCell);
+    }
+    table.append(headerRow);
+
+    // Add the rest of the data.  Left column is also headers
+    for (let rowInd = 1; rowInd < data.length - containsSummary; rowInd++) {
+        let row = jQuery('<tr></tr>');
+        let rowData = data[rowInd];
+        for (let colInd = 0; colInd < headers.length - containsSummary; colInd++) {
+            let cell = jQuery('<td></td>');
+            if (colInd == 0) {
+                cell.addClass('header');
+            }
+            if (colInd <= rowData.length) {
+                let val = rowData[colInd];
+                if (val != undefined && colInd != 0) {
+                    cell.text(val.substring(0, MAX_FLOAT_LENGTH));
+                } else {
+                    cell.text(val);
+                }
+                cell.attr('title', val);
+            }
+            row.append(cell);
+        }
+        table.append(row);
+    }
+
+    if (containsSummary) {
+        let summaryRow = jQuery("<tr></tr>");
+        let infoIcon = '<img title="These values are a measure of the correlation between each item and Points at Midterm" '
+        		+ 'alt="Total Score" src="images/info.gif">';
+        summaryRow.append(jQuery('<td class="summaryCell">' + headers[headers.length - 1] + infoIcon + '</td>'));
+
+        let lastDataRow = data[data.length - 1];
+        for (let i = 1; i < headers.length - 1; i++) {
+            let val = lastDataRow[i];
+            let cell = jQuery('<td class="summaryCell"></td>');
+            cell.attr('title', val);
+            if (i != null) {
+                cell.text(val.substring(0, MAX_FLOAT_LENGTH));
+            }
+            summaryRow.append(cell);
+        }
+        table.append(summaryRow);
+    }
+
+    jQuery('#correlationTableDiv').append(table);
+    colorTable();
+}
+
+jQuery(document).ready(function() {
+    Papa.parse("${input0}", {
+        download: true,
+        delimiter: "\t",
+        skipEmptyLines: true,
+        complete: function(results) {
+            console.log(results);
+            buildCorrelationTable(results.data);
+        }
+    });
+});
+
+function colorTable() {
+    // Loop through cells
+    jQuery('#correlationTable td:not(:first-of-type):not(.header)').each(function() {
+        let text = jQuery(this).text();
+        //console.log(jQuery(this));
+        if (text != null && text != "") {
+            try {
+                let val = 100 - parseFloat(text) * 100;
+                let R = (255 * val) / 100;
+                let G = (255 * (100 - val)) / 100;
+                let B = 0;
+                //jQuery(this).css('background', 'rgba('+R+','+G+','+B+', 0.3)');
+
+                let x = parseFloat(text);
+                let hue = parseInt(130 * x);
+                let s = 80;
+                let l = 50;
+                let a = Math.abs(x - 0.5) ** 2 * 2;
+                a = (a + Math.abs(x - 0.3)) / 2;
+                //let a = Math.abs(x**1.5-0.5**1.5)**2*2 ;
+                //jQuery(this).css('background', 'hsla(' + hue + ',' + s + '%,' + l + '%,' + a + ')');
+                let color = getColor(parseFloat(text));
+                if (jQuery(this).hasClass('summaryCell') && color == 'none') {
+                	color = '#f0f0f0';
+                }
+                jQuery(this).css('background', color);
+            } catch {
+
+            }
+        }
+    });
+}
+
+function getColor(correlation) {
+    if (correlation >= parseFloat(jQuery('#upper').val())) {
+        return 'rgb(230, 239, 194)';
+    } else if (correlation <= parseFloat(jQuery('#lower').val())) {
+        return '#FBE3E4';
+    } else {
+        return 'none';
+    }
+}
+
+jQuery('.bound').click(function() {
+    colorTable();
+});
+</script>
+
+</html>
