@@ -20,6 +20,7 @@
 
     #dataTable {
         overflow-y: scroll;
+        overflow: auto;
         max-height: calc(100vh - 150px);
         display: inline-block;
         border-bottom: 1px solid #ddd;
@@ -28,7 +29,9 @@
     table tr th:first-of-type,
     table tr td:first-of-type {
         width: 250px;
+        max-width: 250px;
         border-left: 1px solid #ddd;
+        overflow-wrap: break-word;
     }
 
     table tr th:not(:first-of-type),

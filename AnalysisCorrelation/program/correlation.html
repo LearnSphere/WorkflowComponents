@@ -9,6 +9,7 @@
         #correlationTableDiv {
         width: 80%;
         overflow-x: scroll;
+        overflow: auto;
         margin-left: 102px;
         padding: 0;
     }
@@ -39,7 +40,7 @@
         padding: 4px 5px;
         font-size: 12px;
         min-width: 40px;
-        height: 35px;
+        max-width: 150px;
     }
 
     #correlationTable tr:first-of-type,
@@ -50,6 +51,7 @@
         background: #f0f0f0;
         text-align: left;
         width: 100px;
+        overflow-wrap: break-word;
     }
 
     #correlationTable tr:first-of-type td:first-of-type {
@@ -90,10 +92,9 @@
     <div id="correlationTableDiv"></div>
 </body>
 <script>
-
 /* At this point there is always a summary column in the data */
 const containsSummary = 1;
-const MAX_FLOAT_LENGTH = 5;
+const MAX_FLOAT_LENGTH = 6;
 
 /**
  * Build a correlation table using the papa parsed data.
@@ -106,7 +107,7 @@ function buildCorrelationTable(data) {
     let headers = data[0];
     for (let i = 0; i < headers.length - containsSummary; i++) {
         let headerCell = jQuery('<td class="header">' + headers[i] + '</td>');
-        headerCell.attr('title', headers[i]);
+        headerCell.attr('title', headers[i].trim());
         headerRow.append(headerCell);
     }
     table.append(headerRow);
@@ -119,6 +120,9 @@ function buildCorrelationTable(data) {
             let cell = jQuery('<td></td>');
             if (colInd == 0) {
                 cell.addClass('header');
+                cell.attr('title', headers[rowInd].trim());
+            } else {
+                cell.attr('title', headers[rowInd].trim() + ' & ' + headers[colInd].trim());
             }
             if (colInd <= rowData.length) {
                 let val = rowData[colInd];
@@ -127,7 +131,6 @@ function buildCorrelationTable(data) {
                 } else {
                     cell.text(val);
                 }
-                cell.attr('title', val);
             }
             row.append(cell);
         }
@@ -145,7 +148,7 @@ function buildCorrelationTable(data) {
         for (let i = 1; i < headers.length - 1; i++) {
             let val = lastDataRow[i];
             let cell = jQuery('<td class="summaryCell"></td>');
-            cell.attr('title', val);
+            cell.attr('title', headers[headers.length - 1].trim() + ' & ' + headers[i].trim());
             if (i != null) {
                 cell.text(val.substring(0, MAX_FLOAT_LENGTH));
             }
@@ -156,6 +159,8 @@ function buildCorrelationTable(data) {
 
     jQuery('#correlationTableDiv').append(table);
     colorTable();
+    fixTopRowWidth();
+    fixRowHeight();
 }
 
 jQuery(document).ready(function() {
@@ -172,6 +177,27 @@ jQuery(document).ready(function() {
         }
     });
 });
+
+jQuery(window).resize(function() {
+    fixTopRowWidth();
+});
+
+function fixRowHeight() {
+    jQuery('#correlationTable tr:not(:first-of-type)').each(function() {
+        let height = jQuery(jQuery(this)[0].cells[0]).outerHeight();
+        jQuery(this).children('td').height(height);
+    });
+}
+
+function fixTopRowWidth() {
+    jQuery('#correlationTable tr:first-of-type td:not(:first-of-type)').each(function() {
+        let text = jQuery(jQuery(this)[0]).text();
+        let currentWidth = jQuery(jQuery(this)[0]).outerWidth();
+        if (text.length * 2 > currentWidth) {
+            jQuery(jQuery(this)[0]).css('min-width', text.length * 2 + 'px');
+        }
+    });
+}
 
 /**
  * Add color to the table based on the user specified values in the inputs
