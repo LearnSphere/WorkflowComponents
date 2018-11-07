@@ -72,6 +72,21 @@ public class CronbachsAlphaMain extends AbstractComponent {
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
 
+            if (summaryColPresent) {
+                // Remove summary column, this is calculated in the algorithm
+                String [] newHeaders = new String [headers.length - 1];
+                for (int i = 0; i < headers.length - 1; i++) {
+                    newHeaders[i] = headers[i];
+                }
+                headers = newHeaders;
+                data = removeSummaryColumn(data);
+            } else {
+                // Not entirely sure why this is incremented, but this makes the results match
+                // DataLab
+                numItems += 1;
+            }
+
+
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e;
             logger.info(msg);
@@ -113,6 +128,24 @@ public class CronbachsAlphaMain extends AbstractComponent {
             System.err.println(err);
         }
 
+    }
+
+    /**
+     * Removes the last column of the matrix. This is designated as the summary column
+     * and does not need to be included with the input file.
+     */
+    private Array2DRowRealMatrix removeSummaryColumn(Array2DRowRealMatrix data) {
+        Array2DRowRealMatrix dataWithoutSummary = new Array2DRowRealMatrix(
+            data.getRowDimension(), data.getColumnDimension() - 1);
+
+        for (int i = 0; i < data.getRowDimension(); i++) {
+            for (int j = 0; j < data.getColumnDimension() - 1; j++) {
+                double cellVal = data.getEntry(i, j);
+                dataWithoutSummary.setEntry(i, j, cellVal);
+            }
+        }
+
+        return dataWithoutSummary;
     }
 
     // Constant
