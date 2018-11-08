@@ -124,9 +124,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     private static final Integer LINE_WIDTH_THUMB = new Integer(2);
 
     /** The font for the title of the chart */
-    private static final Font TITLE_FONT = new Font("Ariel", Font.PLAIN, 18);
+    private static final Font TITLE_FONT = new Font("Arial Unicode MS", Font.PLAIN, 18);
     /** The font for the title of the thumbnail chart */
-    private static final Font TITLE_FONT_THUMB = new Font("Ariel", Font.PLAIN, 10);
+    private static final Font TITLE_FONT_THUMB = new Font("Arial Unicode MS", Font.PLAIN, 10);
 
     /** The number of decimal places to display. */
     private static final int NUM_DECIMAL_PLACES = 3;
@@ -305,7 +305,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             }
 
             if (isClassifying(lcOptions)) {
-                if (graphPoint.getStudentsCount() < lcOptions.getStudentThreshold()) {
+                if (graphPoint.getErrorRates() == null) {
+                    validPoints.remove(graphPoint);
+                } else if (graphPoint.getStudentsCount() < lcOptions.getStudentThreshold()) {
                     validPoints.remove(graphPoint);
                 } else {
                     // Look at errorRate for 'low and flat'

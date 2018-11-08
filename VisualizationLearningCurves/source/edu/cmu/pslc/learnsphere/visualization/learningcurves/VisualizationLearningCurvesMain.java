@@ -205,8 +205,11 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         counter = 0;
         for (String s : lcPrototypeData.keySet()) {
             String category = lcPrototype.getSkillCategory(s);
-            addPointsOutputFile(s, category, lcPrototypeData.get(s), counter, transformer);
-            counter++;
+            List<LearningCurvePoint> lcPoints = lcPrototypeData.get(s);
+            if (lcPoints.size() > 0) {
+                addPointsOutputFile(s, category, lcPrototypeData.get(s), counter, transformer);
+                counter++;
+            }
         }
 
         System.out.println(this.getOutput());
@@ -257,23 +260,57 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
             for (LearningCurvePoint lcp : lcPoints) {
                 Node lcpNode = doc.createElement("learning_curve_point");
 
-                addElement(doc, lcpNode, "error_rates", lcp.getErrorRates() * ONE_HUNDRED);
-                addElement(doc, lcpNode, "assistance_score", lcp.getAssistanceScore());
-                addElement(doc, lcpNode, "predicted_error_rate", lcp.getPredictedErrorRate() * ONE_HUNDRED);
-                addElement(doc, lcpNode, "avg_incorrects", lcp.getAvgIncorrects());
-                addElement(doc, lcpNode, "avg_hints", lcp.getAvgHints());
-                addElement(doc, lcpNode, "step_duration", lcp.getStepDuration());
-                addElement(doc, lcpNode, "correct_step_duration", lcp.getCorrectStepDuration());
-                addElement(doc, lcpNode, "error_step_duration", lcp.getErrorStepDuration());
-                addElement(doc, lcpNode, "opportunity_number", lcp.getOpportunityNumber());
-                addElement(doc, lcpNode, "observations", lcp.getObservations());
-                addElement(doc, lcpNode, "step_duration_observations", lcp.getStepDurationObservations());
-                addElement(doc, lcpNode, "correct_step_duration_observations", lcp.getCorrectStepDurationObservations());
-                addElement(doc, lcpNode, "error_step_duration_observations", lcp.getErrorStepDurationObservations());
-                addElement(doc, lcpNode, "students_count", lcp.getStudentsCount());
-                addElement(doc, lcpNode, "problems_count", lcp.getProblemsCount());
-                addElement(doc, lcpNode, "skills_count", lcp.getSkillsCount());
-                addElement(doc, lcpNode, "steps_count", lcp.getStepsCount());
+                if (lcp.getErrorRates() != null) {
+                    addElement(doc, lcpNode, "error_rates", lcp.getErrorRates() * ONE_HUNDRED);
+                }
+                if (lcp.getAssistanceScore() != null) {
+                    addElement(doc, lcpNode, "assistance_score", lcp.getAssistanceScore());
+                }
+                if (lcp.getPredictedErrorRate() != null) {
+                    addElement(doc, lcpNode, "predicted_error_rate", lcp.getPredictedErrorRate() * ONE_HUNDRED);
+                }
+                if (lcp.getAvgIncorrects() != null) {
+                    addElement(doc, lcpNode, "avg_incorrects", lcp.getAvgIncorrects());
+                }
+                if (lcp.getAvgHints() != null) {
+                    addElement(doc, lcpNode, "avg_hints", lcp.getAvgHints());
+                }
+                if (lcp.getStepDuration() != null) {
+                    addElement(doc, lcpNode, "step_duration", lcp.getStepDuration());
+                }
+                if (lcp.getCorrectStepDuration() != null) {
+                    addElement(doc, lcpNode, "correct_step_duration", lcp.getCorrectStepDuration());
+                }
+                if (lcp.getErrorStepDuration() != null) {
+                    addElement(doc, lcpNode, "error_step_duration", lcp.getErrorStepDuration());
+                }
+                if (lcp.getOpportunityNumber() != null) {
+                    addElement(doc, lcpNode, "opportunity_number", lcp.getOpportunityNumber());
+                }
+                if (lcp.getObservations() != null) {
+                    addElement(doc, lcpNode, "observations", lcp.getObservations());
+                }
+                if (lcp.getStepDurationObservations() != null) {
+                    addElement(doc, lcpNode, "step_duration_observations", lcp.getStepDurationObservations());
+                }
+                if (lcp.getCorrectStepDurationObservations() != null) {
+                    addElement(doc, lcpNode, "correct_step_duration_observations", lcp.getCorrectStepDurationObservations());
+                }
+                if (lcp.getErrorStepDurationObservations() != null) {
+                    addElement(doc, lcpNode, "error_step_duration_observations", lcp.getErrorStepDurationObservations());
+                }
+                if (lcp.getStudentsCount() != null) {
+                    addElement(doc, lcpNode, "students_count", lcp.getStudentsCount());
+                }
+                if (lcp.getProblemsCount() != null) {
+                    addElement(doc, lcpNode, "problems_count", lcp.getProblemsCount());
+                }
+                if (lcp.getSkillsCount() != null) {
+                    addElement(doc, lcpNode, "skills_count", lcp.getSkillsCount());
+                }
+                if (lcp.getStepsCount() != null) {
+                    addElement(doc, lcpNode, "steps_count", lcp.getStepsCount());
+                }
                 if (lcp.getHighStakesErrorRate() != null) {
                     addElement(doc, lcpNode, "high_stakes_error_rate", lcp.getHighStakesErrorRate() * ONE_HUNDRED);
                 }

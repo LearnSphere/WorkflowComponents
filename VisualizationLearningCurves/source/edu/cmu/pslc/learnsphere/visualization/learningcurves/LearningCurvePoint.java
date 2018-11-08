@@ -93,13 +93,13 @@ public class LearningCurvePoint {
     private Integer errorStepDurationObservations = null;
 
     /** The number of students for this point. */
-    private int studentsCount;
+    private Integer studentsCount;
     /** The number of problems for this point. */
-    private int problemsCount;
+    private Integer problemsCount;
     /** The number of skills for this point. */
-    private int skillsCount;
+    private Integer skillsCount;
     /** The number of steps for this point. */
-    private int stepsCount;
+    private Integer stepsCount;
 
     /** The standard deviation for the Error Rate. */
     private Double stdDevErrorRate;
@@ -366,46 +366,46 @@ public class LearningCurvePoint {
 
     /** The number of students for this point.
      * @return the number of students for this point */
-    public int getStudentsCount() {
+    public Integer getStudentsCount() {
         return studentsCount;
     }
     /** Set the number of students for this point.
      * @param studentsCount the number of students for this point */
-    public void setStudentsCount(int studentsCount) {
+    public void setStudentsCount(Integer studentsCount) {
         this.studentsCount = studentsCount;
     }
 
     /** The number of problems for this point.
      * @return the number of problems for this point */
-    public int getProblemsCount() {
+    public Integer getProblemsCount() {
         return problemsCount;
     }
     /** Set the number of problems for this point.
      * @param problemsCount the number of problems for this point */
-    public void setProblemsCount(int problemsCount) {
+    public void setProblemsCount(Integer problemsCount) {
         this.problemsCount = problemsCount;
     }
 
     /** The number of skills for this point.
      * @return the number of skills for this point */
-    public int getSkillsCount() {
+    public Integer getSkillsCount() {
         return skillsCount;
     }
     /** Set the number of skills for this point.
      * @param skillsCount the number of skills for this point */
-    public void setSkillsCount(int skillsCount) {
+    public void setSkillsCount(Integer skillsCount) {
         this.skillsCount = skillsCount;
     }
 
     /** The number of steps for this point.
      * @return the number of steps for this point */
-    public int getStepsCount() {
+    public Integer getStepsCount() {
         return stepsCount;
     }
 
     /** Set the number of steps for this point.
      * @param stepsCount the number of steps for this point */
-    public void setStepsCount(int stepsCount) {
+    public void setStepsCount(Integer stepsCount) {
         this.stepsCount = stepsCount;
     }
 
@@ -776,6 +776,7 @@ public class LearningCurvePoint {
 	sb.append(", opportunityNumber = ").append(getOpportunityNumber());
 	sb.append(", observations = ").append(getObservations());
 	sb.append(", highStakesErrorRate = ").append(getHighStakesErrorRate());
+        sb.append(", studentsCount = ").append(getStudentsCount());
 	sb.append("]");
 	return sb.toString();
     }
