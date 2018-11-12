@@ -28,7 +28,7 @@ echo Using properties file: $prop_file
 
 cd $dir
 
-classpath=$dir/CommonLibraries/datashop.jar:$dir/CommonLibraries/commons-io-1.2.jar:$dir/CommonLibraries/commons-lang-2.2.jar:$dir/CommonLibraries/log4j-1.2.13.jar
+classpath=$dir/CommonLibraries/datashop.jar:$dir/CommonLibraries/commons-io-1.2.jar:$dir/CommonLibraries/commons-lang-2.2.jar:$dir/CommonLibraries/log4j-1.2.13.jar:$dir/CommonLibraries/xercesImpl.jar
 templates_dir=$dir/Templates
 classname=edu.cmu.pslc.datashop.extractors.workflows.WorkflowComponentCreator
 
