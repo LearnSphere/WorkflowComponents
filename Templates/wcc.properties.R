@@ -37,7 +37,7 @@ component.version=1.0
 component.description=AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.
 
 # The number of inputs for the new component. 
-component.num_inputs=1
+component.num_input_nodes=1
 
 # The number of outputs for the new component. 
 component.num_outputs=3
