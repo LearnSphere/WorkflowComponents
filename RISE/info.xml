@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>David Wiley
+  <email>david@lumenlearning.com</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RISE</url>
+<date>November 12, 2018</date>
+<abstract>This R component helps you conduct <b>RISE</b> analyses as described in the paper *Bodily, R., Nyland, R., and Wiley, D. (2017). The RISE Framework: Using Learning Analytics to Automatically Identify Open Educational Resources for Continuous Improvement. International Review of Research on Distance and Open Learning, 18(2).* DOI: http://dx.doi.org/10.19173/irrodl.v18i2.2952.
+<br/>
+<br/>
+The purpose of a RISE analysis is to help an instructional designer / learning scientist / course developer / instructor quickly identify portions of a course that aren't supporting learning as effectively as they would like. When course materials are licensed as "open educational resources" (http://opencontent.org/definition/), materials identified through RISE analysis can be iteratively enhanced through a process of continuous improvement. Special attention should be given to outcomes classified in quadrant four (at the bottom right), where students are spending more time than average using resources but performing below average on associated assessments. For more detail, please refer to the article.
+<br/>
+<br/>
+Before a RISE analysis can be performed, a course must have:
+<ul>
+  <li>clearly defined learning outcomes,</li>
+  <li>each piece of content (text, video, interactive, etc.) aligned to an outcome,</li>
+  <li>each individual assessment item aligned to an outcome, and</li>
+  <li>data about content use and assessment performance by outcome.</li>  
+</ul>
+</abstract>
+<description></description>
+
+<inputs>
+<b>tab-delimited</b> input data with the following three columns:
+<ul>
+<li>outcome name</li>
+<li>average score on all assessments for the specified outcome</li>
+<li>average views of each learning resource for the specified outcome</li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li><b>tab-delimited</b> The original input data with RISE analysis columns appended.</li>
+<li><b>image</b> A PDF of the generated RISE plot.</li>
+</ul>
+</outputs>
+
+<options>
+<b>generatePlot</b> Boolean indicating if plot should be generated.
+</options>
+
+</info>

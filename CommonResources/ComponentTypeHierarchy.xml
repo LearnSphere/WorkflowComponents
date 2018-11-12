@@ -58,6 +58,7 @@
 		<Output_Comparator />
 		<PFA />
 		<Python_AFM />
+		<RISE />
 		<RLM_Fitting />
 		<TKT />
 	</Analysis>
