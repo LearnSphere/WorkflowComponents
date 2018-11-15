@@ -219,7 +219,7 @@ for (i in 1:length(dependendVariableColInds)) {
   }
 }
 
-summary.file <- paste(workingDir, "/R-summary.wfl", sep="")
+summary.file <- paste(workingDir, "/R-summary.txt", sep="")
 model.values.file <- paste(workingDir, "/model-values.xml", sep="")
 parameters.values.file <- paste(workingDir, "/Parameter-estimate-values.xml", sep="")
 write("<model_values>",file=model.values.file,sep="",append=FALSE)
