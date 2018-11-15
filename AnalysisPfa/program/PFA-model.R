@@ -96,7 +96,7 @@ outputFilePath3<- paste(workingDirectory, "model_result_values.xml", sep="")
 val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank.lines.skip=TRUE)
 
 # Creates output log file
-clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
+clean <- file(paste(workingDirectory, "R_output_model_summary.wfl", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
