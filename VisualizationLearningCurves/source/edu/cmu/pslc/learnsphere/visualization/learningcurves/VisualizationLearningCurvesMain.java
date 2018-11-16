@@ -248,7 +248,10 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
                                      List<LearningCurvePoint> lcPoints,
                                      Integer counter, Transformer transformer) {
 
-        File lcpFile = this.createFile("lc_points_" + skillName, ".xml");
+        // Guard against slashes and spaces in the skill name, otherwise, allow whatever 
+        // characters are there... too much cleaning is an issue with Chinese characters.
+        skillName = skillName.replaceAll("\\\\", "_").replaceAll("/", "_").replaceAll(" ", "_");
+        File lcpFile = this.createFile("lc_points_" + skillName + ".xml");
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Node lcNode = doc.createElement("learning_curve");
