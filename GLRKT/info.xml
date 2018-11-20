@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-    <author>EXPERIMENTAL</author>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GLRKT</url>
+<date>Nov.20, 2018</date>
+<abstract>The <b>GLRKT</b> component is an example of a(n) R component.</abstract>
+<description>
+    
+ </description>
+
+<inputs>
+<b>plancomponents,fixedpars,seedpars,prespecfeatures,mode</b>
+
+</inputs>
+
+<outputs>
+<b>R_output_model_summary.txt,transaction_file_output.txt,model_result_values.xml</b>
+</outputs>
+
+<options>
+<b>model -- type String</b>
+</options>
 
 </info>

@@ -12,8 +12,6 @@ install.packages("Rcpp", lib="C:/R-3.4.4/library")
 install.packages("nloptr", lib="C:/R-3.4.4/library")
 install.packages("MuMIn", lib="C:/R-3.4.4/library")
 install.packages("XML", lib="C:/R-3.4.4/library")
-install.packages("caret",lib="C:/R-3.4.4/library")
-install.packages("rms",lib="C:/R-3.4.4/library")
 
 # EpiCalc is No longer in CRAN!
 # This does not work: install.packages("epicalc", lib="C:/R-3.4.2/library/epicalc")
