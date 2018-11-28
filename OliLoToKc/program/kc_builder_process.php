@@ -94,7 +94,7 @@ function load_kc($filename,$model_name) {
 	    }	
 	    fclose($handle);
 	}
-	
+
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
 	$header_row_str .= "	" . $original_kc_model_name;
 	for ($i = 0; $i < $max_num_skills; $i++) {
@@ -370,20 +370,22 @@ function create_skill_to_title_map() {
 					array_push($duplicate_title_ids, $title_id);
 				}
 
+			} else {
+				array_push($title_ids, $title_id);
+				$skill_to_title_map[$skill_id] = $title_id;
 			}
-			$skill_to_title_map[$skill_id] = $title_id;
 		}
 	}
 
 	// If there were non unique title id's, output an error
 	$num_duplicates=count($duplicate_title_ids);
 	if ($num_duplicates > 0) {
-		$error_message = "You selected to use the titles instead of skill id's, ";
-		$error_message += "but there are duplicate titles.  Please make the titles unique. ";
-		$error_message += "Duplicate titles inlcude: ";
-		for($i=1;$i<$num_duplicates;$i++){
-			$error_message += "\n";
-			$error_message += $duplicate_title_ids[$i];
+		$error_message = "You selected to use the titles instead of skill id's, "
+			. "but there are duplicate titles.  Please make the titles unique. "
+			. "Duplicate titles inlcude: ";
+		for($i=0;$i<$num_duplicates;$i++){
+			$error_message = $error_message . "\n"
+				. $duplicate_title_ids[$i];
 		}
 		error_log($error_message);
 	}
@@ -467,8 +469,16 @@ $model_name=get_model_name($problems_file_path);
 
 $model_name=ensure_model_name_is_valid($model_name);
 
-load_DB($path);
-load_kc($kc_file, $model_name);
+try {
+	load_DB($path);
+} catch (Exception $e) {
+	error_log("Exception loading temp db: " . $e);
+}
+try {
+	load_kc($kc_file, $model_name);
+} catch (Exception $e) {
+	error_log("Exception loading kc's: " . $e);
+}
 
 // Close and delete the database
 $sqlite->close();
