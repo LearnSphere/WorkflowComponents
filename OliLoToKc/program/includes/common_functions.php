@@ -1,7 +1,5 @@
 <?php 
 session_start();
-//include("db_stats33.php");
-include("easyODS.php");
 include("cli_compat.php");
 
 function get_file($param_name) {
@@ -15,6 +13,33 @@ else
   }
 }
 
+function get_data_from_tsv($tsv_path) {
+	$tab = "\t";
+
+	$fp = fopen($tsv_path, 'r');
+
+	$data = array();
+
+	while ( !feof($fp) )
+	{
+	    $line = fgets($fp, 2048);
+
+	    $data_txt = str_getcsv($line, $tab);
+
+	    if (count($data_txt) == 1) {
+	    	if (is_null($data_txt[0])) {
+	    		continue;
+	    	}
+	    } else if (count($data_txt) == 0) {
+	    	continue;
+	    }
+
+	    array_push($data, $data_txt);
+	}                              
+	fclose($fp);
+	return $data;
+}
+
 /* * Remember that spreadsheets for the skill model are:
  * 0 = Skill Definition
  * 1 = Problems
@@ -22,8 +47,7 @@ else
  **/
 
 function get_model_name($path) {
-	$problems_sheet = new easy_ods_read(1,$path);
-	$problem_array = $problems_sheet->getCleanData();
+	$problem_array = get_data_from_tsv($path);
 	$problem_count = count($problem_array);
 	$prob_row=array_values($problem_array[0]);
 	$course=$prob_row[0];
@@ -34,8 +58,7 @@ function get_model_name($path) {
 function load_skills($path) {
 	//first we populate skill def's
 	$sqlite = $_SESSION['sqlite'];
-	$skill_def_sheet = new easy_ods_read(0,$path);
-	$skills_arr = $skill_def_sheet->getCleanData();
+	$skills_arr = get_data_from_tsv($path);
 	$count=count($skills_arr);
 
 	$sqlite = $_SESSION['sqlite'];
@@ -57,8 +80,7 @@ function load_questions($path) {
 	//dealing with the questions (problems)
 	$sqlite = $_SESSION['sqlite'];
 
-	$problems_sheet = new easy_ods_read(1,$path);
-	$problem_array = $problems_sheet->getCleanData();
+	$problem_array = get_data_from_tsv($path);
 	$problem_count = count($problem_array);
 	$prob_row=array_values($problem_array[0]);
 	$course=$prob_row[0];
@@ -88,8 +110,7 @@ function load_questions($path) {
 function load_los($path) {
 	$sqlite = $_SESSION['sqlite'];
 	//and now lets load the lo's
-	$lo_sheet = new easy_ods_read(2,$path);
-	$lo_array = $lo_sheet->getCleanData();
+	$lo_array = get_data_from_tsv($path);
 	$lo_count = count($lo_array);
 	for($i=2;$i<$lo_count;$i++) {
 		$lo_row= array_values($lo_array[$i]);
@@ -114,11 +135,9 @@ return $lo_sheet;
 }
 
 function load_DB($path) {
-	load_skills($path);
-	load_questions($path);
-	$lo_sheet = load_los($path);
-	//finished with the ods files, delete the temporary directory.
-	$lo_sheet->delete_temporary_directory($lo_sheet->store_dir);
+	load_skills($_SESSION['skills_file_path']);
+	load_questions($_SESSION['problems_file_path']);
+	load_los($_SESSION['los_file_path']);
 }
 
 function test_skills_in_los(){

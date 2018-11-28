@@ -21,6 +21,22 @@ $_SESSION["component_dir"] = $component_dir;
 
 $_SESSION['sqlitePath'] = get_build_property("sqlite.path");
 
+
+$los_file_path=get_from_command_line($argv, "-losFile");
+$los_file_path=str_replace("/", DIRECTORY_SEPARATOR, $los_file_path);
+$los_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $los_file_path);
+$_SESSION["los_file_path"] = $los_file_path;
+
+$problems_file_path=get_from_command_line($argv, "-problemsFile");
+$problems_file_path=str_replace("/", DIRECTORY_SEPARATOR, $problems_file_path);
+$problems_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $problems_file_path);
+$_SESSION["problems_file_path"] = $problems_file_path;
+
+$skills_file_path=get_from_command_line($argv, "-skillsFile");
+$skills_file_path=str_replace("/", DIRECTORY_SEPARATOR, $skills_file_path);
+$skills_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $skills_file_path);
+$_SESSION["skills_file_path"] = $skills_file_path;
+
 // This script will create the sqlite database
 include("includes/db_std.php");
 
@@ -379,11 +395,9 @@ function get_build_property($property) {
 
 $sqlite = $_SESSION['sqlite'];
 
-$skill_file=get_file_from_command_line($argv, "0");
 $kc_file=get_file_from_command_line($argv, "1");
 
-$path = easy_ods_read::extract_content_xml($skill_file, $working_dir . "/temp");
-$model_name=get_model_name($path);
+$model_name=get_model_name($problems_file_path);
 
 load_DB($path);
 load_kc($kc_file, $model_name);
