@@ -71,7 +71,6 @@ function load_kc($filename,$model_name) {
 				$sqlite->query($insert) or die($sqlite->error . "<br> $insert");
 				$last_id = $sqlite->lastInsertRowID();
 				
-				
 				if(!load_skills_ds_qn($last_id, $data)){
 					if(!load_skills_ds_pool_qn($last_id, $data)){						
 						load_skills_ds_act($last_id, $data);
@@ -90,7 +89,7 @@ function load_kc($filename,$model_name) {
 				$output .= echo_skills($data,$last_id);
 			} else if($data[16]!=NULL) {
 				// Save the model name of the exported KC model
-				$original_kc_model_name=$data[16];
+				$original_kc_model_name=ensure_model_name_is_valid($data[16]);
 			}
 	    }	
 	    fclose($handle);
@@ -125,6 +124,7 @@ function load_kc($filename,$model_name) {
 
 function echo_skills($data,$id) {
 	$sqlite = $_SESSION['sqlite'];
+	$skill_to_title_map = $_SESSION["skill_to_title_map"];
 	$skillz_q = "SELECT skill_id FROM ds_qn_skill WHERE id='$id'";
     $result =  $sqlite->query($skillz_q) or die($sqlite->error . "<br> $skillz_q");
     $last = count($data);
@@ -141,6 +141,11 @@ function echo_skills($data,$id) {
     while ($row=($result->fetchArray())) {
         // old way $out .= $row['skill_id'] . "	";
         $skill_id = $row['skill_id'];
+
+        if (strcmp($_SESSION['useTitleAsSkillId'], "true") == 0) {
+            // Use title instead of the skill id
+            $skill_id = $skill_to_title_map[$skill_id];
+        }
 
         //don't duplicate skills
         if (in_array($skill_id, $skills_already_in)) {
@@ -338,6 +343,61 @@ function mysqli_result($result, $iRow, $field = 0)
     return $row[$field];
 }
 
+function create_skill_to_title_map() {
+	$skill_table=get_data_from_tsv($_SESSION["skills_file_path"]);
+	$count=count($skill_table);
+
+	$title_ids=array();
+	$duplicate_title_ids=array();
+
+	$skill_to_title_map=array();
+	for($i=1;$i<$count;$i++){
+		$row = $skill_table[$i];
+
+		if (count($row) < 2) {continue;}
+
+		$skill_id=$row[0];
+		$title=$row[1];
+
+		if ($skill_id != null && strlen($skill_id) > 0
+				&& $title != null && strlen($title) > 0) {
+			$title_id=title_to_valid_id($title);
+
+			// Check to see if this title id has already been used
+			if (in_array($title_id, $title_ids)) {
+				// ID is already used, put it in duplicates array
+				if (!in_array($title_id, $duplicate_title_ids)) {
+					array_push($duplicate_title_ids, $title_id);
+				}
+
+			}
+			$skill_to_title_map[$skill_id] = $title_id;
+		}
+	}
+
+	// If there were non unique title id's, output an error
+	$num_duplicates=count($duplicate_title_ids);
+	if ($num_duplicates > 0) {
+		$error_message = "You selected to use the titles instead of skill id's, ";
+		$error_message += "but there are duplicate titles.  Please make the titles unique. ";
+		$error_message += "Duplicate titles inlcude: ";
+		for($i=1;$i<$num_duplicates;$i++){
+			$error_message += "\n";
+			$error_message += $duplicate_title_ids[$i];
+		}
+		error_log($error_message);
+	}
+	$_SESSION["skill_to_title_map"] = $skill_to_title_map;
+}
+
+function title_to_valid_id($title) {
+	$CHARS_NOT_ALLOWED_SKILL_ID = "/[^A-Za-z0-9_]/";
+	$title = preg_replace($CHARS_NOT_ALLOWED_SKILL_ID, "_", $title);
+	//$MAX_SKILL_ID_LENGTH=30;
+	return $title;
+}
+
+
 function get_file_from_command_line($args, $node_index) {
 	for ($i = 0; $i <= count($args); $i++) {
 		$arg = $args[$i];
@@ -397,7 +457,15 @@ $sqlite = $_SESSION['sqlite'];
 
 $kc_file=get_file_from_command_line($argv, "1");
 
+$_SESSION['useTitleAsSkillId']=get_from_command_line($argv, "-useTitleAsSkillId");
+if (strcmp($_SESSION['useTitleAsSkillId'], "true") == 0) {
+	// Use title instead of the skill id
+	create_skill_to_title_map();
+}
+
 $model_name=get_model_name($problems_file_path);
+
+$model_name=ensure_model_name_is_valid($model_name);
 
 load_DB($path);
 load_kc($kc_file, $model_name);

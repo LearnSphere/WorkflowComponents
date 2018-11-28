@@ -12,7 +12,9 @@
     </connection>
   </connections>
   <top>106</top>
-  <options />
+  <options>
+    <useTitleAsSkillId>true</useTitleAsSkillId>
+  </options>
   <inputs>
     <input0>
       <component_id>Analysis-1-x641889</component_id>

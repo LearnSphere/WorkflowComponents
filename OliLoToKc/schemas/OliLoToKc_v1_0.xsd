@@ -78,6 +78,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element type="xs:boolean" name="useTitleAsSkillId" id="Use_Title_as_Skill_Id" default="false" />
     </xs:choice>
   </xs:complexType>
 

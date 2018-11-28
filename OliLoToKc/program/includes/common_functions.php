@@ -40,6 +40,15 @@ function get_data_from_tsv($tsv_path) {
 	return $data;
 }
 
+/**
+ * Replace characters that are not valid for KC model names with underscores
+ */
+function ensure_model_name_is_valid($name) {
+	$CHARS_NOT_ALLOWED_KC_MODEL_NAME = "/[^\\sA-Za-z0-9_-]/";
+	$replacement = "_";
+	return preg_replace($CHARS_NOT_ALLOWED_KC_MODEL_NAME, "_", $name);
+}
+
 /* * Remember that spreadsheets for the skill model are:
  * 0 = Skill Definition
  * 1 = Problems
