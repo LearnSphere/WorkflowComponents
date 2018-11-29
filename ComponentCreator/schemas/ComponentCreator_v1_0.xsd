@@ -194,6 +194,7 @@
       <xs:enumeration value="MultiFileInputHeader" />
       <xs:enumeration value="Enumeration" />
       <xs:enumeration value="Double" />
+      <xs:enumeration value="Boolean" />
     </xs:restriction>
   </xs:simpleType>
 

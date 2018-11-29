@@ -26,6 +26,12 @@
                 <processing_class>edu.cmu.pslc.learnsphere.imports.Import.TabDelimited</processing_class>
                 <filter_regex>ds[0-9]+_student_problem_(.*)_[0-9]+_[0-9]+_[0-9]+_[0-9]+\.[a-z]+</filter_regex>
             </data_type>
+            <data_type>
+                <id>gradebook</id>
+                <display_name>Gradebook</display_name>
+                <processing_class>edu.cmu.pslc.learnsphere.imports.Import.TabDelimited</processing_class>
+                <filter_regex>.*</filter_regex>
+            </data_type>
         </data_type>
         <data_type>
             <id>xml</id>

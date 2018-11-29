@@ -317,6 +317,13 @@ public class ComponentCreatorMain extends AbstractComponent {
                         addErrorMessage("Default value for a double option, must be a double: " +
                             "option " + i + "  " + e.toString());
                     }
+                } else if (optionType.equalsIgnoreCase("boolean")) {
+                    String optionVal = getOption("option_" + i + "_default");
+                    if (!optionVal.equals("true") && !optionVal.equals("false")) {
+                        addErrorMessage("Default value for a boolean option, must be " + 
+                            "either \"true\" or \"false\".  They must be lowercase: " +
+                            "option " + i + "  " + optionVal);
+                    }
                 }
 
                 sb.append("\n");
@@ -421,6 +428,8 @@ public class ComponentCreatorMain extends AbstractComponent {
             convertedType = "Enum";
         } else if (optType.equalsIgnoreCase("Double")) {
             convertedType = "xs:double";
+        } else if (optType.equalsIgnoreCase("boolean")) {
+            convertedType = "xs:boolean";
         }
         return convertedType;
     }
