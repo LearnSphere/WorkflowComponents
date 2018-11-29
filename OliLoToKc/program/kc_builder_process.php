@@ -53,7 +53,8 @@ ini_set('memory_limit', '2048M');
 function load_kc($filename,$model_name) {
 	$sqlite = $_SESSION['sqlite'];
 	$row = 0;
-	$original_kc_model_name="KC (Unknown)";
+	// Save the KC model in the original export.  There could be many or none.
+	$original_kc_model_names=Array();
 	$max_num_skills = 0;
 	
 	if (($handle = fopen($filename, "r")) !== FALSE) {
@@ -89,14 +90,24 @@ function load_kc($filename,$model_name) {
 				$output .= echo_skills($data,$last_id);
 			} else if($data[16]!=NULL) {
 				// Save the model name of the exported KC model
-				$original_kc_model_name=ensure_model_name_is_valid($data[16]);
+				// There might already be a KC model in this file.  It could be multiple columns.
+				// It has to start at index 16 if there is one, and stops when it hits "KC (new KC model name)"
+				for ($i=16; $i<$num_cols; $i++) {
+					if ($data[$i]!=NULL) {
+						if (strcmp($data[$i], "KC (new KC model name)") != 0) {
+							array_push($original_kc_model_names, $data[$i]);
+						}
+					}
+				}
 			}
 	    }	
 	    fclose($handle);
 	}
 
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
-	$header_row_str .= "	" . $original_kc_model_name;
+	for ($i = 0; $i < count($original_kc_model_names); $i++) {
+		$header_row_str .= "\t" . $original_kc_model_names[$i];
+	}
 	for ($i = 0; $i < $max_num_skills; $i++) {
 		$header_row_str .= "	" . "KC ($model_name)";
 	}
