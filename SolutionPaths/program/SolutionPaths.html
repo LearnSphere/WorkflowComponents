@@ -8,22 +8,18 @@
     <script src="javascript/lib/canvg.min.js"></script>
     <script src="javascript/lib/papaparse.min.js"></script>
     <style>
-        .node ellipse, .node circle {
-	  fill: rgba(255,255,255,1);
-	  stroke: steelblue;
-	  stroke-width: 3px;
-	}
-
-	.node--internal text {
-		text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
-	}
+        .node--internal text {
+        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    }
 
     .node text {
         pointer-events: none;
-        text-color: blue;
-        font: 11px sans-serif; 
-		white-space: normal;
-		word-wrap: break-word;
+    }
+
+    .options select {
+        height: 150px;
+        max-width: 350px;
+        margin-left: 10px;
     }
 
     .messages {
@@ -44,10 +40,14 @@
         left: 40%;
         font-size: 5em;
     }
+    input {
+        cursor: pointer;
+    }
 
     #downloadGraphImage {
         padding: 1px 6px;
         margin: 5px;
+        cursor: pointer;
         -webkit-appearance: button;
         /* WebKit */
         -moz-appearance: button;
@@ -61,8 +61,9 @@
     }
 
     #toggleAdvOpt {
-    	text-decoration: underline;
-    	color: blue;
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
     }
     .advancedOptions {
         position: absolute;
@@ -78,32 +79,32 @@
     }
     
     .infoPopup {
-    	visibility: hidden;
-    	width: auto;
-    	min-width: 120px;
-    	max-width: 600px;
-    	height: auto;
-    	max-height: 400px;
-    	overflow-y: auto;
-    	color: black;
-    	text-align: center;
-    	padding: 5px;
-    	border-radius: 6px;
-    	border-color: rgba(0,0,0,.5);
-    	border-width: 3px;
-    	border-style: solid;
-    	position: absolute;
-    	pointer-events: none;
+        visibility: hidden;
+        width: auto;
+        min-width: 120px;
+        max-width: 600px;
+        height: auto;
+        max-height: 400px;
+        overflow-y: auto;
+        color: black;
+        text-align: center;
+        padding: 5px;
+        border-radius: 6px;
+        border-color: rgba(0,0,0,.5);
+        border-width: 3px;
+        border-style: solid;
+        position: absolute;
+        pointer-events: none;
     }
     #linkInfo {
-    	background-color: rgba(110,160,220,.7);
+        background-color: rgba(110,160,220,.7);
     }
     .link {
-	 	fill: none;
-		stroke: #ccc;
-	}
+        fill: none;
+        stroke: #ccc;
+    }
     #nodeInfo {
-    	background-color: rgba(220,160,200,.7);
+        background-color: rgba(220,160,200,.7);
 
     }
     </style>
@@ -113,45 +114,67 @@
     <table class="allOptions">
         <tr>
             <td>
-                <div class="options">
-                    <div id="problemSelectDiv">
-                        Select problems to display:<br />
-                        <select name="problems" multiple></select>
-                    </div>
-                    <div id="studentSelectDiv">
-                        Select which students to get data from:<br />
-                        <select name="students" multiple></select>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="firstViewOnly"> First problem view only
-                    </div>
-                    <div class="downloadGraphButton">
-                        <a id="downloadGraphImage" download="histogram.png">Download graph</a>
-                        <canvas id="canvasConversion" style="display:none"></canvas>
-                    </div>
-                </div>
+                <table class="options">
+                    <tr>
+                        <td id="problemSelectDiv">
+                            Select problems to display:<br />
+                            <select name="problems" multiple></select>
+                        </td>
+                        <td id="studentSelectDiv">
+                            Select which students to get data from:<br />
+                            <select name="students" multiple></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="checkbox" name="firstViewOnly"> First problem view only
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="downloadGraphButton" colspan="2">
+                            <a id="downloadGraphImage" download="histogram.png">Download graph</a>
+                            <canvas id="canvasConversion" style="display: none"></canvas>
+                        </td>
+                    </tr>
+                </table>
             </td>
             <td style="display:inline">
                 <span id="toggleAdvOpt">Show Advanced Options</span>
                 <div class="advancedOptions" style="display:none">
-                    <div class="scatterOptions columnSelectors">
-                        Student ID Column:
-                        <select id="studentColumnSelect"></select>
-                        <br /> Problem Name Column:
-                        <select id="probColumnSelect"></select>
-                        <br /> Step Name Column:
-                        <select id="stepColumnSelect"></select>
-                        <br /> Time Column:
-                        <select id="timeColumnSelect"></select>
-                        <br /> Outcome Column:
-                        <select id="outcomeColumnSelect"></select>
-                        <br /> Input Column:
-                        <select id="inputColumnSelect"></select>
-                        <br /> Selection Column:
-                        <select id="selectionColumnSelect"></select>
-                        <br /> Problem View Column:
-                        <select id="probViewColumnSelect"></select>
-                    </div>
+                    <table class="scatterOptions columnSelectors">
+                        <tr>
+                            <td>Student ID Column:</td>
+                            <td><select id="studentColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Problem Name Column:</td>
+                            <td><select id="probColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Step Name Column:</td>
+                            <td><select id="stepColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Time Column:</td>
+                            <td><select id="timeColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Outcome Column:</td>
+                            <td><select id="outcomeColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Input Column:</td>
+                            <td><select id="inputColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Selection Column:</td>
+                            <td><select id="selectionColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Problem View Column:</td>
+                            <td><select id="probViewColumnSelect"></select></td>
+                        </tr>
+                    </table>
                 </div>
             </td>
         </tr>
@@ -160,13 +183,12 @@
     <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
-
     // Global Vars
     /** Data from the input0 parsed */
     var input0data = null;
 
     /** Factor to make the trees shorter */
-    var squish = .7;
+    var DEFAULT_SQUISH = .8;
 
     /** Names of the headers of important columns */
     var studentHeader = "Anon Student Id";
@@ -226,7 +248,7 @@
 
         // Set functionality for changing an option
         jQuery('.options select, .options input').change(function() {
-        	// An option has changed, re make the trees
+            // An option has changed, re make the trees
             clearMessageBox();
 
             getValuesFromAdvancedOptions();
@@ -275,8 +297,8 @@
     }
 
     /**
-	 * Takes a JSON object representing a problem tree. Displays it.
-	*/
+     * Takes a JSON object representing a problem tree. Displays it.
+     */
     function displayTree(treeData) {
         if (treeData == undefined) {
             return;
@@ -289,7 +311,7 @@
         if (maxWidth > 5) {
             squish = 0.8;
         } else {
-            squish = 0.7;
+            squish = DEFAULT_SQUISH;
         }
 
         var margin = { top: 40, right: 40, bottom: 50, left: 40 },
@@ -325,6 +347,8 @@
             .data(nodes.descendants().slice(1))
             .enter().append("path")
             .attr("class", "link")
+            .style("fill", "none")
+            .style("stroke", "#ccc")
             .attr("d", function(d) {
                 return "M" + d.x + "," + d.y * squish +
                     "C" + d.x + "," + (d.y * squish + d.parent.y * squish) / 2 +
@@ -349,21 +373,24 @@
 
         // Add the node ellipses
         node.append("ellipse")
-        	//ensure that the radii of the ellipse is larger than the text inside of it
+            //ensure that the radii of the ellipse is larger than the text inside of it
             .attr("rx", function(d) {
                 try {
-                    return Math.min(55, d.data.name.length * 2.5 + 15);
+                    return Math.min(60, d.data.name.length * 2.5 + 20);
                 } catch (e) {
-                	addMessage("Error setting rx: " + e);
+                    addMessage("Error setting rx: " + e);
                 }
             })
             .attr("ry", function(d) {
                 try {
                     return Math.min(35, d.data.name.length * 2 + 10);
                 } catch (e) {
-                	addMessage("Error setting ry: " + e);
+                    addMessage("Error setting ry: " + e);
                 }
-            });
+            })
+            .style("fill", "white")
+            .style("stroke", "steelblue")
+            .style("stroke-width", "2px");
 
         // Add the text of the step/problem name to the node ellipse
         for (let i = 0; i < 5; i++) {
@@ -371,6 +398,8 @@
                 .attr("dy", ".35em")
                 .attr("y", function(d) { return (i - 2) * 10; }) //return d.children })//? -20 : 20; })
                 .style("text-anchor", "middle")
+                .style("font-size", "11px")
+                .style("font-family", "sans-serif")
                 .text(function(d) { return wrapNodeName(d.data.name, i); });
         }
 
@@ -393,7 +422,7 @@
                     maxNumStudents = l[i].__data__.data.numStudents;
                 }
             } catch (e) {
-            	addMessage("Error getting maximum number of students: " + e);
+                addMessage("Error getting maximum number of students: " + e);
             }
         }
 
@@ -421,11 +450,11 @@
                 l[i].style.strokeWidth = l[i].__data__.data.numStudents / maxNumStudents * 25 + 2;
                 var percent = corr / total;
 
-                var color = "rgb(" + (Math.floor((1 - percent) * 255 * 2)).toString() 
-                	+ ", " + (Math.floor(percent * 255 * 2)).toString() + ", 0)";
+                var color = "rgb(" + (Math.floor((1 - percent) * 255 * 2)).toString() +
+                    ", " + (Math.floor(percent * 255 * 2)).toString() + ", 0)";
                 l[i].style.stroke = color;
             } catch (e) {
-            	addMessage("Error setting link thickness: " + e);
+                addMessage("Error setting link thickness: " + e);
             }
         }
     }
@@ -460,6 +489,8 @@
         let inputInd = data[0].indexOf(inputHeader);
         let probViewInd = data[0].indexOf(problemViewHeader);
 
+        let onlyFirstProblemView = jQuery('input[name="firstViewOnly"]').is(':checked');
+
         let currProb = "";
         let currStu = "";
         let currStep = "";
@@ -482,6 +513,10 @@
             // Must have step and selection
             if (step == null || step == "" || selection == null || selection == "") {
                 continue;
+            }
+
+            if (onlyFirstProblemView && probView != '1') {
+                continue; // User only wants to see first attempt at problem
             }
 
             // If new problem/student, move onto a new tree
@@ -554,7 +589,7 @@
             newResponseObj.input = input;
             newResponseObj.correctness = correctness;
             newResponseObj.student = student;
-            responses[responses.length] = newResponseObj;//[input, correctness, student];
+            responses[responses.length] = newResponseObj; //[input, correctness, student];
         }
         return tree;
     }
@@ -631,13 +666,13 @@
         let rowsCopy = JSON.parse(JSON.stringify(rows)); // Copy of the data
 
         let sortedRows = rowsCopy.sort(function(a, b) {
-        	try {
-            	return Date.parse(a[timeIndex]) > Date.parse(b[timeIndex]) ? 1 : -1;
-        	} catch (e) {
-        		addMessage("Error parsing date while sorting rows.  Please ensure that "
-        			+ "the time column in the Advanced Options is correct:" + e);
-        		return -1;
-        	}
+            try {
+                return Date.parse(a[timeIndex]) > Date.parse(b[timeIndex]) ? 1 : -1;
+            } catch (e) {
+                addMessage("Error parsing date while sorting rows.  Please ensure that " +
+                    "the time column in the Advanced Options is correct:" + e);
+                return -1;
+            }
         });
 
         return sortedRows;
@@ -662,9 +697,9 @@
         }
         return max;
     }
-    
+
     function maximumDepthRecursive(tree, level) {
-    	var descendants = tree.children;
+        var descendants = tree.children;
         if (descendants == undefined) { return level; }
         var depths = [];
         for (var i = 0; i < descendants.length; i++) {
@@ -908,11 +943,15 @@
             }
         }
 
-        // Add problems and students to select.  Default all selected.
+        // Add problems to select.
         problems.forEach(function(probName) {
             jQuery('select[name="problems"]').append(jQuery('<option />')
-                .val(probName).text(probName).attr('selected', 'selected'));
+                .val(probName).text(probName));
         });
+        // Select the first problem
+        jQuery('select[name="problems"] option:first-child').attr('selected', 'selected');
+
+        // Add students to select.  Default all selected
         students.forEach(function(stuId) {
             jQuery('select[name="students"]').append(jQuery('<option />')
                 .val(stuId).text(stuId).attr('selected', 'selected'));
@@ -941,8 +980,10 @@
 
     function loading(isLoading) {
         if (isLoading) {
+            jQuery('body').css('cursor', 'wait');
             jQuery('.loadingDiv').show();
         } else {
+            jQuery('body').css('cursor', 'default');
             jQuery('.loadingDiv').hide();
         }
     }
@@ -969,7 +1010,7 @@
      * Initiate the JS functionality of the advanced options
      */
     function initAdvancedOptionFunctionality() {
-    	// If a value of the column selectors changes, re-make the trees
+        // If a value of the column selectors changes, re-make the trees
         jQuery('.columnSelectors select').change(function() {
             getValuesFromAdvancedOptions();
 
