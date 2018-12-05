@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/SolutionPaths</url>
+<date>2018-9-20</date>
+<abstract>The <b>Solution Paths</b> component creates a visualization of the process students went through in order to solve a problem.  The nodes in the graph are the steps that they got to throughout the problem. The links show how many students took a particular path and the color of the link corresponds to the correctness of their responses from one step to the next.</abstract>
+
+<inputs>
+<b>transaction</b> - Must have columns for these variables: Student id, time, problem name, step name, outcome, selection.  Names of these columns can vary and can be adjusted in the Advanced Options of the html file. 
+</inputs>
+
+<outputs>
+<b>Solution Paths html file</b><br/>
+<b>Original Input Data File</b> - unmodified<br/>
+</outputs>
+
+<options>
+<b>Options are in the output html file</b><br/>
+</options>
+
+</info>
