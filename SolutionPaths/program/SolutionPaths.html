@@ -8,6 +8,10 @@
     <script src="javascript/lib/canvg.min.js"></script>
     <script src="javascript/lib/papaparse.min.js"></script>
     <style>
+        body {
+        font-family: 'Open Sans', sans-serif;
+        background-image: url(css/images/tiny_grid.png);
+    }
         .node--internal text {
         text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
     }
@@ -40,12 +44,13 @@
         left: 40%;
         font-size: 5em;
     }
+
     input {
         cursor: pointer;
     }
 
-    #downloadGraphImage {
-        padding: 1px 6px;
+    #downloadTreeImage {
+        padding: 4px 6px;
         margin: 5px;
         cursor: pointer;
         -webkit-appearance: button;
@@ -105,7 +110,40 @@
     }
     #nodeInfo {
         background-color: rgba(220,160,200,.7);
+    }
 
+    .responseTable {
+        display: inline;
+        position: absolute;
+        background-color: #ebebeb;
+        top: 25%;
+        left: 10%;
+        max-width: 80%;
+        max-height: 50%;
+        overflow: auto;
+        border: 5px solid steelblue;
+        border-radius: 16px;
+        text-align: center;
+        z-index: 41;
+    }
+    .responseTable td, .responseTable th {
+        border-top: 1px solid #797979;
+        border-right: 1px solid #797979;
+        padding: 3px 4px;
+        font-family: sans-serif;
+    }
+    .responseTable td {
+        font-size: 12px;
+    }
+
+    #greyOut {
+        background-color: #8a618f9e;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 40;
     }
     </style>
 </head>
@@ -131,8 +169,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="downloadGraphButton" colspan="2">
-                            <a id="downloadGraphImage" download="histogram.png">Download graph</a>
+                        <td class="downloadTreeButton" colspan="2">
+                            <a id="downloadTreeImage" download="histogram.png">Download Tree</a>
                             <canvas id="canvasConversion" style="display: none"></canvas>
                         </td>
                     </tr>
@@ -219,7 +257,7 @@
 
                 initAdvancedOptionFunctionality();
 
-                // With the default values, create a graph
+                // With the default values, create a tree
                 createSolutionPathsWrapper();
             }
         });
@@ -588,7 +626,13 @@
             let newResponseObj = {};
             newResponseObj.input = input;
             newResponseObj.correctness = correctness;
+            newResponseObj.outcome = outcome;
             newResponseObj.student = student;
+            newResponseObj.time = time;
+            newResponseObj.selection = selection;
+            newResponseObj.probView = probView;
+            newResponseObj.problemName = problemName;
+            newResponseObj.step = step;
             responses[responses.length] = newResponseObj; //[input, correctness, student];
         }
         return tree;
@@ -968,7 +1012,7 @@
     }
 
     function allowSaveableImage() {
-        document.getElementById('downloadGraphImage').addEventListener('click', function() {
+        document.getElementById('downloadTreeImage').addEventListener('click', function() {
             jQuery('#canvasConversion').html('');
             canvg('canvasConversion', jQuery('#svgContainer').html());
 
@@ -980,10 +1024,8 @@
 
     function loading(isLoading) {
         if (isLoading) {
-            jQuery('body').css('cursor', 'wait');
             jQuery('.loadingDiv').show();
         } else {
-            jQuery('body').css('cursor', 'default');
             jQuery('.loadingDiv').hide();
         }
     }
@@ -1067,21 +1109,70 @@
             jQuery("#nodeInfo").css("visibility", "hidden");
         });
 
+        // Display the responses when you click on a node
         jQuery(".node").on("click", function(e) {
-            var resps = e.target.__data__.data.responses;
-            var str1 = "Student Response Data:\n";
-            var str2 = "";
-            for (var i = 0; i < resps.length; i++) {
-                var correct = "incorrect";
-                if (resps[i].correctness) { correct = "correct"; }
-                str2 += "Student:  " + resps[i].student + "   " + resps[i].input + "   " + correct + "\n";
-            }
-            alert(str1 + str2);
+            displayResponseTable(e.target.__data__.data.responses);
         });
 
         jQuery('#linkInfo, #nodeInfo').remove();
         jQuery("body").append('<div class="infoPopup" id="linkInfo"></div>');
         jQuery("body").append('<div class="infoPopup" id="nodeInfo"></div>');
+    }
+
+    /**
+     * Given the reponses students gave while moving from one node to the other,
+     * display these responses in a modal table
+     * @param responses array of response objects
+     */
+    function displayResponseTable(responses) {
+        // Remove previous table
+        jQuery('#responseTableDiv').remove();
+
+        if (responses == undefined) {
+            responses = [];
+        }
+
+        let respTable = jQuery('<table />').addClass('responseTable');
+
+        // Add table headers to the table
+        let headers = ['Student ID', 'Transaction Time', 'Problem Name',
+            'Problem View', 'Step Name', 'Input',
+            'Outcome', 'Selection'
+        ];
+        let headerRow = jQuery('<tr />');
+        headers.forEach(function(header) {
+            headerRow.append(jQuery('<th />').text(header));
+        });
+        respTable.append(headerRow);
+
+        // Add the rest of the data to the table
+        responses.forEach(function(response) {
+            let row = jQuery('<tr />');
+
+            row.append(jQuery('<td />').text(response.student));
+            row.append(jQuery('<td />').text(response.time));
+            row.append(jQuery('<td />').text(response.problemName));
+            row.append(jQuery('<td />').text(response.probView));
+            row.append(jQuery('<td />').text(response.step));
+            row.append(jQuery('<td />').text(response.input));
+            row.append(jQuery('<td />').text(response.outcome));
+            row.append(jQuery('<td />').text(response.selection));
+
+            respTable.append(row);
+        });
+
+
+        jQuery('body').append(jQuery('<div />').attr('id', 'responseTableDiv').html(respTable));
+
+        // Grey out the rest of the screen
+        jQuery('body').append(jQuery('<div />')
+            .attr('id', 'greyOut')
+            .attr('title', 'Click to exit table'));
+
+        // If you click the grey, the table dissapears
+        jQuery('#greyOut').click(function() {
+            jQuery('#greyOut, #responseTableDiv').remove();
+        });
     }
     </script>
 </body>
