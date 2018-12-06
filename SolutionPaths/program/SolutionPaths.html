@@ -10,20 +10,31 @@
     <style>
         body {
         font-family: 'Open Sans', sans-serif;
-        background-image: url(css/images/tiny_grid.png);
+        //background-image: url(css/images/tiny_grid.png);
+        background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
+        background-size: cover;
     }
-        .node--internal text {
+    .node {
+        cursor: pointer;
+    }
+    .node--internal text {
         text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
     }
 
     .node text {
         pointer-events: none;
     }
-
+    .options {
+        font-size: large;
+    }
     .options select {
         height: 150px;
         max-width: 350px;
-        margin-left: 10px;
+        margin-top: 10px;
+        font-size: medium;
+    }
+    .options td {
+        padding-left: 15px;
     }
 
     .messages {
@@ -114,7 +125,7 @@
 
     .responseTable {
         display: inline;
-        position: absolute;
+        position: fixed;
         background-color: #ebebeb;
         top: 25%;
         left: 10%;
@@ -138,7 +149,7 @@
 
     #greyOut {
         background-color: #8a618f9e;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -485,7 +496,7 @@
                     corr = corr + resps[j].correctness;
                     total += 1;
                 }
-                l[i].style.strokeWidth = l[i].__data__.data.numStudents / maxNumStudents * 25 + 2;
+                l[i].style.strokeWidth = l[i].__data__.data.numStudents / maxNumStudents * 20 + 2;
                 var percent = corr / total;
 
                 var color = "rgb(" + (Math.floor((1 - percent) * 255 * 2)).toString() +
@@ -549,7 +560,8 @@
             let probView = row[probViewInd];
 
             // Must have step and selection
-            if (step == null || step == "" || selection == null || selection == "") {
+            //if (step == null || step == "" || selection == null || selection == "") {
+            if (step == null || step == "") {
                 continue;
             }
 
@@ -688,6 +700,7 @@
                     if (problemAttempts != null) {
                         // Loop through problem views of the student
                         problemAttempts.forEach(function(rows) {
+
                             if (rows != undefined) {
                                 rows = sortRowsByTime(rows, timeInd);
 
@@ -1165,7 +1178,7 @@
         jQuery('body').append(jQuery('<div />').attr('id', 'responseTableDiv').html(respTable));
 
         // Grey out the rest of the screen
-        jQuery('body').append(jQuery('<div />')
+        jQuery('html').append(jQuery('<div />')
             .attr('id', 'greyOut')
             .attr('title', 'Click to exit table'));
 
