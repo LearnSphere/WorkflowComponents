@@ -40,7 +40,7 @@ import edu.cmu.pslc.datashop.util.FileUtils;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
 public class OliLoToKcMain extends AbstractComponent {
-
+	private final String FILES_TO_NOT_DELETE_REGEX = "(.*).log(.*)|(.*)-KCM(.*)|(.*).wfl(.*)";
 
 	/**
 	 * Main method.
@@ -154,7 +154,7 @@ public class OliLoToKcMain extends AbstractComponent {
 		for (File fileInOutputDir : filesInOutputDir) {
 			if (fileInOutputDir != null && fileInOutputDir.exists()) {
 				String fileName = fileInOutputDir.getName();
-				if (!fileName.contains("-KCM")) {
+				if (!fileName.matches(FILES_TO_NOT_DELETE_REGEX)) {
 					// The file or directory is not the output kc model, so delete it.
 					try {
 						if (fileInOutputDir.isDirectory()) {
