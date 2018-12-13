@@ -53,7 +53,7 @@
   </xs:complexType>
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="pdf"/>
+      <xs:element ref="inline-html"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="OutputType">
