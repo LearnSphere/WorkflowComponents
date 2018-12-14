@@ -10,9 +10,7 @@
     <style>
         body {
         font-family: 'Open Sans', sans-serif;
-        //background-image: url(css/images/tiny_grid.png);
-        background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
-        background-size: cover;
+        background-image: url(css/images/tiny_grid.png);
     }
     .node {
         cursor: pointer;
@@ -29,7 +27,7 @@
     }
     .options select {
         height: 150px;
-        max-width: 350px;
+        max-width: 45vw;
         margin-top: 10px;
         font-size: medium;
     }
@@ -142,9 +140,11 @@
         border-right: 1px solid #797979;
         padding: 3px 4px;
         font-family: sans-serif;
+    	min-width: 50px;
     }
     .responseTable td {
         font-size: 12px;
+        word-break: break-word;
     }
 
     #greyOut {
@@ -155,6 +155,17 @@
         width: 100%;
         height: 100%;
         z-index: 40;
+    }
+    #background {
+    	background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
     }
     </style>
 </head>
@@ -181,7 +192,7 @@
                     </tr>
                     <tr>
                         <td class="downloadTreeButton" colspan="2">
-                            <a id="downloadTreeImage" download="histogram.png">Download Tree</a>
+                            <a id="downloadTreeImage" download="SolutionPaths.png">Download Tree</a>
                             <canvas id="canvasConversion" style="display: none"></canvas>
                         </td>
                     </tr>
@@ -229,12 +240,15 @@
         </tr>
     </table>
     <div class="messages"></div>
+    <div id="background"></div>
     <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
     // Global Vars
     /** Data from the input0 parsed */
     var input0data = null;
+
+    var trees = null;
 
     /** Factor to make the trees shorter */
     var DEFAULT_SQUISH = .8;
@@ -269,7 +283,11 @@
                 initAdvancedOptionFunctionality();
 
                 // With the default values, create a tree
-                createSolutionPathsWrapper();
+                setTimeout(function() {
+                    loading(true);
+                    trees = dataToTrees(input0data);
+                    createSolutionPathsWrapper();
+                }, 1);
             }
         });
     });
@@ -280,29 +298,34 @@
     function initiateInterface() {
         allowSaveableImage();
 
-        // Open Advanced Options when clicking "show advanced options"
-        jQuery('#toggleAdvOpt').click(function() {
-            jQuery('.advancedOptions').toggle();
-        });
-
-        // Close Adv. Opt. when clicking outside of the advanced options
-        jQuery(document).mouseup(function(e) {
+        // Close Adv. Opt. when clickint outside of the advanced options
+        $(document).mouseup(function(e) {
             var advOptDiv = jQuery(".advancedOptions");
+            let toggleButton = jQuery('#toggleAdvOpt');
 
             // if the target of the click isn't the advOptDiv nor a descendant of the advOptDiv
-            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0) {
+            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0 &&
+                !toggleButton.is(e.target)) {
                 advOptDiv.hide();
+            } else if (toggleButton.is(e.target)) {
+                advOptDiv.toggle();
             }
         });
 
         // Set functionality for changing an option
         jQuery('.options select, .options input').change(function() {
-            // An option has changed, re make the trees
-            clearMessageBox();
+            loading(true);
+            setTimeout(function(changedOption) {
+                // An option has changed, if it's students, remake the trees
+                clearMessageBox();
+                if (changedOption == 'students') {
+                    trees = dataToTrees(input0data);
+                }
 
-            getValuesFromAdvancedOptions();
+                getValuesFromAdvancedOptions();
 
-            createSolutionPathsWrapper();
+                createSolutionPathsWrapper();
+            }, 1, jQuery(this).attr('name'));
         });
     }
 
@@ -317,14 +340,17 @@
         // Remove previous trees
         jQuery('#svgContainer').html('');
 
+        //The tiny delay allows the loading to appear
+        //setTimeout(function() {
         // Get the data in a json format based on the selected options
-        let trees = dataToTrees(input0data);
+        //let trees = dataToTrees(input0data);
 
         createSolutionPaths(trees);
 
         initiateTooltips();
 
         loading(false);
+        //}, 1);
     }
 
 
@@ -527,7 +553,6 @@
         getValuesFromAdvancedOptions();
 
         let onlyTheseStudents = jQuery('select[name="students"]').val();
-        let onlyTheseProblems = jQuery('select[name="problems"]').val();
 
         let stuInd = data[0].indexOf(studentHeader);
         let timeInd = data[0].indexOf(timeHeader);
@@ -545,13 +570,21 @@
         let currStep = "";
         let currProbView = "";
 
+        let start = performance.now();
+
         for (let i = 1; i < data.length; i++) {
+            // Check for extra long running execution
+            if (i % 4000 == 0) {
+                if ((performance.now() - start) > 50000) {
+                    alert("too long");
+                    break;
+                }
+            }
             let row = data[i];
 
             let step = row[stepNameInd];
             let input = row[inputInd];
             let problemName = row[probNameInd];
-            if (!onlyTheseProblems.includes(problemName)) { continue; }
             let student = row[stuInd];
             if (!onlyTheseStudents.includes(student)) { continue; }
             let time = row[timeInd];
@@ -1038,6 +1071,7 @@
     function loading(isLoading) {
         if (isLoading) {
             jQuery('.loadingDiv').show();
+            //jQuery('#svgContainer').html('<div class="loadingDiv" style="">Loading...</div>');
         } else {
             jQuery('.loadingDiv').hide();
         }
@@ -1073,8 +1107,16 @@
                 jQuery(this).attr('id') == 'probColumnSelect') {
                 populateProblemsAndStudents(input0data);
             }
+            loading(true);
 
-            createSolutionPathsWrapper();
+            // Remove previous trees
+            jQuery('#svgContainer').html('');
+
+            // Re make the trees then draw them
+            setTimeout(function() {
+                trees = dataToTrees(input0data);
+                createSolutionPathsWrapper();
+            }, 1);
         });
     }
 
