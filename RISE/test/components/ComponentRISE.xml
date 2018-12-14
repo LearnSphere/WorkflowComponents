@@ -178,8 +178,6 @@
       <optionmeta />
     </input0>
   </inputs>
-  <options>
-    <generatePlot>true</generatePlot>
-  </options>
+  <options/>
 
 </component>

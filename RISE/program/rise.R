@@ -16,7 +16,6 @@ if (length(args) == 1) {
    inputFile = args[1]
 } else if (length(args) == 2) {
    inputFile = args[1]
-   generatePlot = args[2]
 } else {
   i = 1
   while (i <= length(args)) {
@@ -35,12 +34,6 @@ if (length(args) == 1) {
       
       inputFile <- args[i + 4]
       i = i + 4
-    } else if (args[i] == "-generatePlot") {
-      if (length(args) == i) {
-        stop("generatePlot arg must be specified")
-      }
-      generatePlot = args[i+1]
-      i = i+1
     } else if (args[i] == "-workingDir") {
       if (length(args) == i) {
         stop("workingDir name must be specified")
@@ -50,10 +43,6 @@ if (length(args) == 1) {
     }
     i = i+1
   }    
-}
-
-if ((tolower(generatePlot) == "true") || (tolower(generatePlot) == "yes") || (tolower(generatePlot) == "1")) {
-   generatePlot = TRUE;
 }
 
 # Generate data frame from input file

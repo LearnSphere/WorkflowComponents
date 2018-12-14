@@ -39,7 +39,6 @@ Before a RISE analysis can be performed, a course must have:
 </outputs>
 
 <options>
-<b>generatePlot</b> Boolean indicating if plot should be generated.
 </options>
 
 </info>

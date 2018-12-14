@@ -64,7 +64,6 @@
   </xs:complexType>
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:element default="true" id="Generate_Plot" name="generatePlot" type="xs:boolean"/>
     </xs:choice>
   </xs:complexType>
   <xs:element name="component">

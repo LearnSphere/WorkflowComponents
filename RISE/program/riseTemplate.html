@@ -8,7 +8,7 @@
     <script src="javascript/lib/canvg.min.js"></script>
     <style>
         body {
-    	font-family: 'Open Sans', sans-serif;
+        font-family: 'Open Sans', sans-serif;
     }
         .link {
         stroke: #ccc;
@@ -51,8 +51,10 @@
     }
 
     #downloadGraphImage {
-        padding: 1px 6px;
-        margin: 5px;
+        padding: 5px 10px;
+        margin: 2px 5px;
+        cursor: pointer;
+        white-space: nowrap;
         -webkit-appearance: button;
         /* WebKit */
         -moz-appearance: button;
@@ -64,7 +66,14 @@
         appearance: button;
         /* CSS3 */
     }
-
+    svg {
+        overflow: visible;
+    }
+    #toggleAdvOpt {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
     .advOptTable {
         border-spacing: 0px;
         border: 1px black solid;
@@ -81,7 +90,7 @@
         font-size: 0.8em;
     }
     .zScoreLine {
-    	stroke: black;
+        stroke: black;
     }
     </style>
 </head>
@@ -90,26 +99,29 @@
     <table class="allOptions">
         <tr>
             <td>
-                <div class="options">
-                    <div class="scatterOptions">
-                        Page View Variable:
-                        <select id="xVarSelect"></select>
-                        <br /> Score Variable:
-                        <select id="yVarSelect"></select>
-                        <br /> Color Categorize:
-                        <select id="catVarSelect">
-                            <option value="none">None</option>
-                        </select>
-                    </div>
-                    <div class="downloadGraphButton">
-                        <a id="downloadGraphImage" download="histogram.png">Download graph</a>
-                        <canvas id="canvasConversion" style="display:none"></canvas>
-                    </div>
+                <div class="downloadGraphButton">
+                    <a id="downloadGraphImage" download="rise.png">Save As PNG</a>
+                    <canvas id="canvasConversion" style="display:none"></canvas>
                 </div>
             </td>
             <td style="display:inline">
-                <a id="toggleAdvOpt" href="#">Show Advanced Options</a>
-                <div class="advancedOptions" style="display:none"></div>
+                <span id="toggleAdvOpt" href="#">Show Advanced Options</span>
+                <div class="advancedOptions" style="display:none">
+                    <table class="advOptTable">
+                        <tr class="options scatterOptions">
+                            <td>Page View Variable:</td>
+                            <td><select id="xVarSelect"></select></td>
+                        </tr>
+                        <tr class="options scatterOptions">
+                            <td>Score Variable:</td>
+                            <td><select id="yVarSelect"></select></td>
+                        </tr>
+                        <!--Color Categorize:-->
+                        <select id="catVarSelect" style="display:none">
+                            <option value="none">None</option>
+                        </select>
+                    </table>
+                </div>
             </td>
         </tr>
     </table>
@@ -153,18 +165,17 @@
     function initiateInterface() {
         allowSaveableImage();
 
-        // Open Advanced Options when clicking "show advanced options"
-        jQuery('#toggleAdvOpt').click(function() {
-            jQuery('.advancedOptions').toggle();
-        });
-
         // Close Adv. Opt. when clickint outside of the advanced options
         $(document).mouseup(function(e) {
-            var advOptDiv = $(".advancedOptions");
+            var advOptDiv = jQuery(".advancedOptions");
+            let toggleButton = jQuery('#toggleAdvOpt');
 
             // if the target of the click isn't the advOptDiv nor a descendant of the advOptDiv
-            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0) {
+            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0 &&
+                !toggleButton.is(e.target)) {
                 advOptDiv.hide();
+            } else if (toggleButton.is(e.target)) {
+                advOptDiv.toggle();
             }
         });
 
@@ -174,9 +185,11 @@
 
             // Update advanced options
             if (jQuery(this).attr('id') === 'xVarSelect') {
-                jQuery('input[name="xLabel"]').val(jQuery('#xVarSelect').val());
+                //jQuery('input[name="xLabel"]').val(jQuery('#xVarSelect').val());
+                jQuery('input[name="xLabel"]').val('Average Page Views');
             } else if (jQuery(this).attr('id') === 'yVarSelect') {
-                jQuery('input[name="yLabel"]').val(jQuery('#yVarSelect').val());
+                //jQuery('input[name="yLabel"]').val(jQuery('#yVarSelect').val());
+                jQuery('input[name="yLabel"]').val('Average Score');
             }
 
             advancedOptionsToObject();
@@ -211,21 +224,34 @@
         advancedOptionsToObject();
 
         // set the dimensions and margins of the graph
-        margin = { top: 10, right: 120, bottom: 60, left: 70 };
+        let winWidth = jQuery(window).width();
+        let winHeight = jQuery(window).height();
+        margin = {
+            top: 10,
+            right: Math.min(120, winWidth * .05),
+            bottom: Math.min(60, winHeight * .05),
+            left: Math.min(70, winWidth * .15)
+        };
 
         MINIMUM_COLUMN_WIDTH = parseInt(advOpt.barWidth);
-        let maxWidth = Math.max(jQuery(window).width(), 1000);
+        let maxWidth = Math.min(jQuery(window).width() - 20, 2000);
 
         width = maxWidth - margin.left - margin.right;
-
         height = jQuery(window).height() * 0.8 - margin.top - margin.bottom;
+
+        // ensure that the height and width ratios aren't too crazy
+        if ((width > height) && (width / height) > 1.5) {
+            width = height * 1.5;
+        } else if ((height > width) && (height / width) > 1.5) {
+            height = width * 1.5;
+        }
 
         if (tip != null) {
             tip.destroy();
             tip = null;
         }
 
-        // Remove previous histogram
+        // Remove previous graph
         jQuery('#svgContainer').html('');
 
         // append the svg object to the body of the page
@@ -276,7 +302,7 @@
 
         var color = d3.scaleOrdinal(d3.schemeCategory10);
         /*var color = d3.scaleOrdinal(['#FF0000', '#FF7F00', '#FFFF00', 
-        	'#7FFF00', '#00FF00', '#00AF8F', '#0000FF',
+            '#7FFF00', '#00FF00', '#00AF8F', '#0000FF',
             '#4B0082', '#9400D3', '#000000'
         ]);*/
 
@@ -511,6 +537,7 @@
 
         svg.selectAll('.zScoreLine')
             .style('stroke', 'blue')
+            .style('stroke-width', '2px')
             .attr('stroke-dasharray', '1,5');
     }
 
@@ -556,16 +583,10 @@
     }
 
     function toolTipHtml(d) {
-        console.log(d);
         let html = '';
-        //html += 'Quadrant: ' + d[catVar] + '<br/>';
-        //html += '(' + d[xVar].toString().substring(0,4) + ', ' 
-        //	+ d[yVar].toString().substring(0,4) + ')';
 
         Object.keys(d).forEach(function(key) {
-            //if (key != xVar && key != yVar && key != catVar) {
             html += '<b>' + key + '</b>: ' + d[key] + '<br/>';
-            //}
         });
 
         return html;
@@ -639,9 +660,9 @@
      */
     function createAdvancedOptions() {
         // Clear previous options
-        jQuery('.advancedOptions').html('');
+        //jQuery('.advancedOptions').html('');
 
-        let advOptHtml = '<table class="advOptTable">';
+        let advOptHtml = '';
 
         let xy = ['x', 'y'];
         for (let i = 0; i < xy.length; i++) {
@@ -658,8 +679,13 @@
 
             // Label Value
             advOptHtml += '<tr id="' + v + 'Label">';
-            advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
-                v + 'Label" value="' + jQuery('#' + v + 'VarSelect').val() + '"></td></tr>';
+            if (v == 'x') {
+                advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
+                    v + 'Label" value="Average Pages Viewed"></td></tr>';
+            } else {
+                advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
+                    v + 'Label" value="Average Score"></td></tr>';
+            }
 
             // Range
             advOptHtml += '<tr id="' + v + 'Range">';
@@ -674,7 +700,7 @@
         advOptHtml += '<td>Bar Width:</td><td><input type="number" name="barWidth" value="20">px</td></tr>';
 
         advOptHtml += '<tr id="pointColor">';
-        advOptHtml += '<td>None Category Color:</td><td><input type="color" name="pointColor" value="#524db2"></td></tr>';
+        advOptHtml += '<td>None Category Color:</td><td><input type="color" name="pointColor" value="#000"></td></tr>';
 
         advOptHtml += '<tr id="pointShapeRow">';
         advOptHtml += '<td>Point Shape:</td><td><select id="pointShape">' +
@@ -692,9 +718,7 @@
         advOptHtml += '<td>Point Size:</td><td><button name="' +
             'PointSizePlus">+</button> <button name="PointSizeMinus">-</button></td></tr>';
 
-        advOptHtml += '</table>';
-
-        jQuery('.advancedOptions').append(advOptHtml);
+        jQuery('.advOptTable').append(advOptHtml);
         displayAdvancedOptions();
 
         advancedOptionFunctionality();
@@ -711,6 +735,7 @@
             '#yTickSize, ' +
             '#yLabelSize, ' +
             '#pointSize, ' +
+            '.options, ' +
             '#yLabel').show();
 
         // Show some options that depend on the graph type
@@ -823,7 +848,7 @@
 
     function populateHeaderSelect(data) {
         //gets all column header
-        var keys = $.map(data[0], function(item, key) {
+        var keys = jQuery.map(data[0], function(item, key) {
             return key;
         });
 
@@ -837,9 +862,9 @@
             jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
         });
 
-        jQuery('#xVarSelect option[value="avg_views"]').prop('selected', true);
-        jQuery('#yVarSelect option[value="avg_scores"]').prop('selected', true);
-        jQuery('#catVarSelect option[value="rise_quadrant"]').prop('selected', true);
+        jQuery('#xVarSelect option:nth-child(3)').prop('selected', true);
+        jQuery('#yVarSelect option:nth-child(2)').prop('selected', true);
+        //jQuery('#catVarSelect option[value="rise_quadrant"]').prop('selected', true);
     }
 
     function getAverageOfVariable(data, variable) {
@@ -906,9 +931,9 @@
         if (isLoading) {
             jQuery('.loadingDiv').show();
             /*loadingInterval = setInterval(function() {
-            	jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
-            		jQuery('.loadingDiv').animate({'opacity':1}, 400);
-            	});
+                jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
+                    jQuery('.loadingDiv').animate({'opacity':1}, 400);
+                });
             }, 800);*/
         } else {
             jQuery('.loadingDiv').hide();

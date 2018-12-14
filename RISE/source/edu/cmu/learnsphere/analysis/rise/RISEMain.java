@@ -18,8 +18,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
  */
 public class RISEMain extends AbstractComponent {
 
-    /** Component option (generatePlot). */
-    String generatePlot = null;
     private static String htmlTemplateName = "riseTemplate.html";
 
     /**
@@ -51,10 +49,6 @@ public class RISEMain extends AbstractComponent {
 
     @Override
     protected void parseOptions() {
-
-	if(this.getOptionAsString("generatePlot") != null) {
-		generatePlot = this.getOptionAsString("generatePlot");
-	}
 
     }
 
