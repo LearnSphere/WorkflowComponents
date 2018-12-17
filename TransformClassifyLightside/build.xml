@@ -38,11 +38,11 @@
              dest="Lightside.zip"/>
         <available file="toolkits" type="dir" property="lightside.present"/>
         <unzip src="Lightside.zip" dest="." unless:set="lightside.present" />
-        <move file="LightSide_2.3.2_20150815/toolkits" todir="." unless:set="lightside.present" />
-        <move file="LightSide_2.3.2_20150815/wekafiles" todir="." unless:set="lightside.present" />
-        <move file="LightSide_2.3.2_20150815/plugins" todir="." unless:set="lightside.present" />
-        <move file="LightSide_2.3.2_20150815/lib" todir="." unless:set="lightside.present" />
-        <move file="LightSide_2.3.2_20150815/bin" todir="." unless:set="lightside.present" />
+        <move file="lightside/toolkits" todir="." unless:set="lightside.present" />
+        <move file="lightside/wekafiles" todir="." unless:set="lightside.present" />
+        <move file="lightside/plugins" todir="." unless:set="lightside.present" />
+        <move file="lightside/lib" todir="." unless:set="lightside.present" />
+        <move file="lightside/bin" todir="." unless:set="lightside.present" />
 
     </target>
 
