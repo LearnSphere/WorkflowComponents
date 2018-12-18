@@ -364,7 +364,7 @@
             setTimeout(function(changedOption) {
                 // An option has changed, if it's students, remake the trees
                 clearMessageBox();
-                if (changedOption == 'students') {
+                if (changedOption == 'students' || changedOption == 'firstViewOnly') {
                     trees = dataToTrees(input0data);
                 }
 
