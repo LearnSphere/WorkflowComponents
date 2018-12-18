@@ -19,6 +19,16 @@
         text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
     }
 
+    .allOptions {
+        background: #ffffffe3;
+        border: solid black 2px;
+        border-radius: 9px;
+        padding: 5px;
+        padding-top: 20px;
+        min-width: 50px;
+        min-height: 35px;
+    }
+
     .node text {
         pointer-events: none;
     }
@@ -29,7 +39,6 @@
         height: 150px;
         max-width: 45vw;
         margin-top: 10px;
-        font-size: medium;
     }
     .options td {
         padding-left: 15px;
@@ -91,6 +100,21 @@
     .advancedOptions input {
         font-size: 0.8em;
     }
+    .minimizeOpts {
+        position: absolute;
+        color: black;
+        cursor: pointer;
+        left: 20px;
+        top: 12px;
+        border: solid #000000 1.5px;
+        border-radius: 6px;
+        padding: 0px 3px 11px 3px;
+        font-weight: bold;
+        line-height: .1;
+    }
+    .minimizeOpts:hover {
+        background: #00000021;
+    }
     
     .infoPopup {
         visibility: hidden;
@@ -131,7 +155,7 @@
         max-height: 50%;
         overflow: auto;
         border: 5px solid steelblue;
-        border-radius: 16px;
+        border-radius: 4px;
         text-align: center;
         z-index: 41;
     }
@@ -140,11 +164,14 @@
         border-right: 1px solid #797979;
         padding: 3px 4px;
         font-family: sans-serif;
-    	min-width: 50px;
+        min-width: 50px;
     }
     .responseTable td {
         font-size: 12px;
         word-break: break-word;
+    }
+    .responseTable tr:nth-child(even) {
+        background: #d1d1d1;
     }
 
     #greyOut {
@@ -157,7 +184,18 @@
         z-index: 40;
     }
     #background {
-    	background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
+        background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+    }
+    #backgroundMuter {
+        background-color: #00000052;
         background-size: cover;
         position: fixed;
         top: 0;
@@ -181,17 +219,15 @@
                             <select name="problems" multiple></select>
                         </td>
                         <td id="studentSelectDiv">
-                            Select which students to get data from:<br />
+                            Select students to get data from:<br />
                             <select name="students" multiple></select>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <input type="checkbox" name="firstViewOnly"> First problem view only
                         </td>
-                    </tr>
-                    <tr>
-                        <td class="downloadTreeButton" colspan="2">
+                        <td class="downloadTreeButton">
                             <a id="downloadTreeImage" download="SolutionPaths.png">Download Tree</a>
                             <canvas id="canvasConversion" style="display: none"></canvas>
                         </td>
@@ -238,9 +274,13 @@
                 </div>
             </td>
         </tr>
+        <tr class="minimizeOpts" title="minimize">
+            <td colspan="2">_</td>
+        </tr>
     </table>
     <div class="messages"></div>
     <div id="background"></div>
+    <div id="backgroundMuter"></div>
     <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
@@ -251,7 +291,7 @@
     var trees = null;
 
     /** Factor to make the trees shorter */
-    var DEFAULT_SQUISH = .8;
+    var DEFAULT_SQUISH = .7;
 
     /** Names of the headers of important columns */
     var studentHeader = "Anon Student Id";
@@ -299,7 +339,7 @@
         allowSaveableImage();
 
         // Close Adv. Opt. when clickint outside of the advanced options
-        $(document).mouseup(function(e) {
+        jQuery(document).mouseup(function(e) {
             var advOptDiv = jQuery(".advancedOptions");
             let toggleButton = jQuery('#toggleAdvOpt');
 
@@ -311,6 +351,12 @@
                 advOptDiv.toggle();
             }
         });
+
+        // Minimize the options when clicking minimize button
+        jQuery('.minimizeOpts').click(function() {
+            jQuery('.allOptions>tbody>tr:nth-child(1)').toggle();
+        });
+
 
         // Set functionality for changing an option
         jQuery('.options select, .options input').change(function() {
@@ -383,11 +429,9 @@
         var maxWidth = maximumWidth(treeData);
 
         // Squish large trees less
-        if (maxWidth > 5) {
-            squish = 0.8;
-        } else {
-            squish = DEFAULT_SQUISH;
-        }
+        let max = Math.max(maxDepth, maxWidth);
+        max = Math.min(5, max);
+        squish = 0.5 + 0.2 * (max / 5);
 
         var margin = { top: 40, right: 40, bottom: 50, left: 40 },
             width = 400 - margin.left - margin.right,
