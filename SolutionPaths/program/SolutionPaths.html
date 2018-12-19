@@ -1181,7 +1181,11 @@
                 .css("left", x)
                 .css("top", y);
 
-            jQuery("#linkInfo").text(e.target.__data__.data.numStudents + " Students");
+            let numStudents = e.target.__data__.data.numStudents;
+            let stuStr = ' Students';
+            if (numStudents == 1) { stuStr = ' Student'; }
+
+            jQuery("#linkInfo").text(numStudents + stuStr);
 
         });
         jQuery(".link").on("mouseleave", function(e) {
