@@ -71,18 +71,11 @@ if (args[i] == "-seedpars") {
        seedpars = args[i+1]
        i = i+1
     } else 
-if (args[i] == "-prespecfeatures1") {
+if (args[i] == "-prespecfeatures") {
        if (length(args) == i) {
           stop("Parameters' names of prespecfeatures1 must be specified")
        }
-       prespecfeatures1 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-prespecfeatures2") {
-       if (length(args) == i) {
-          stop("Parameters' names of prespecfeatures2 must be specified")
-       }
-       prespecfeatures2 = args[i+1]
+       prespecfeatures = args[i+1]
        i = i+1
     } else
 if (args[i] == "-mode") {
@@ -143,9 +136,6 @@ suppressMessages(library(RColorBrewer))
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 #Transfer of the Parameters' Format
-if(prespecfeatures2=="null"){
-   prespecfeatures=prespecfeatures1
-}else{prespecfeatures=prespecfeatures2}
 
 plancomponents<-as.character(unlist(strsplit(plancomponents,",")))
 plancomponents<-gsub("[ ()-]", ".",plancomponents)
@@ -394,7 +384,7 @@ switch(mode,
                 df$indexcomp<-paste(eval(parse(text=paste("df$",comps[k],sep=""))),sep="")
                 df$cor<-countOutcome(df,df$index,"CORRECT")
                 df$icor<-countOutcome(df,df$index,"INCORRECT")}
-              df$tcor<-as.numeric(df$cor)+as.numeric(df$icor)
+                df$tcor<-as.numeric(df$cor)+as.numeric(df$icor)
 
 
               # track parameters used
@@ -606,6 +596,8 @@ switch(mode,
                 cat(paste(cat(prespecfeatures)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
                 print(summary(temp))
 
+                r2LR<<-results[t,1]
+
                 d<-newXMLNode("Index", attrs = c(ReplicationIndex = i, FoldIndex = j), parent = top)      
                 newXMLNode("N",Nresfit,parent = d)
                 newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = d)         
@@ -613,7 +605,6 @@ switch(mode,
                 newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = d)
                 newXMLNode("AUC", results[t,2], parent = d)         
                 newXMLNode("r2LR", r2LR , parent = d)
-                newXMLNode("r2NG", r2NG , parent = d)
                 newXMLNode("tN", Nrestest, parent = d)
                 newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = d)
                 newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = d)
@@ -779,9 +770,7 @@ switch(mode,
 
           # report
           #cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
-
-          r2LR<<-round(r.squaredLR(temp)[1],5)
-          r2NG<<-round(attr(r.squaredLR(temp),"adj.r.squared"),5)        
+        
         } #end modeloptim
 
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
@@ -845,6 +834,8 @@ switch(mode,
                 results[t,2] = round(auc(trainfoldTr$CF..ansbin.,predfit),5)
                 results[t,3] = round(auc(trainfoldTe$CF..ansbin.,predtest),5)
                 results[t,4] = round(sqrt(mean((predtest-trainfoldTe$CF..ansbin.)^2)),5)
+
+
                 if(makeFolds==1){#only adding to dat if didn't have folds on val already
                   if(j==1){
                     eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,".","<-ifelse(foldIDX[,i]==1,\"train\",\"test\")")))
@@ -857,8 +848,9 @@ switch(mode,
                 }
                 Nresfit<-length(datTr$Outcome)
                 Nrestest<-length(datTe$Outcome)
-                #R2fit<-r.squaredGLMM(fitmodel)
+                
 
+                r2LR<<-results[t,1]
                 print(paste("run",i))
                 print(paste("fold",j))
                 cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
@@ -872,7 +864,6 @@ switch(mode,
                 newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = d)
                 newXMLNode("AUC", results[t,2], parent = d)         
                 newXMLNode("r2LR", r2LR , parent = d)
-                newXMLNode("r2NG", r2NG , parent = d)
                 newXMLNode("tN", Nrestest, parent = d)
                 newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = d)
                 newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = d)
@@ -1039,9 +1030,7 @@ switch(mode,
 
           # report
           #cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
-
-          r2LR<<-round(r.squaredLR(temp)[1],5)
-          r2NG<<-round(attr(r.squaredLR(temp),"adj.r.squared"),5)          
+         
         } #end modeloptim
 
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)

@@ -33,12 +33,11 @@
 </inputs>
 
 <options>
-    <mode>five times 2 fold crossvalidated read folds</mode>
+    <mode>five times 2 fold crossvalidated create folds</mode>
     <plancomponents>KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id</plancomponents>
     <fixedpars>.3,.3,.3,.3,.97</fixedpars>
     <seedpars>.3,.3,.3,.3,.025</seedpars>
-    <prespecfeatures1>basesuc,basefail,basesuc,basefail,propdec</prespecfeatures1>
-    <prespecfeatures2>basesuc,basefail,basesuc,basefail</prespecfeatures2>
+    <prespecfeatures>basesuc,basefail,basesuc,basefail,propdec</prespecfeatures>
 </options>
 
 </component>
