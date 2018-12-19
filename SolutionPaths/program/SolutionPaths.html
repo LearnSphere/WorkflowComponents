@@ -10,7 +10,7 @@
     <style>
         body {
         font-family: 'Open Sans', sans-serif;
-        background-image: url(css/images/tiny_grid.png);
+        /*background-image: url(css/images/tiny_grid.png);*/
     }
     .node {
         cursor: pointer;
@@ -195,7 +195,7 @@
         z-index: -1;
     }
     #backgroundMuter {
-        background-color: #00000052;
+        background-color: #0000003b;
         background-size: cover;
         position: fixed;
         top: 0;
@@ -228,7 +228,7 @@
                             <input type="checkbox" name="firstViewOnly"> First problem view only
                         </td>
                         <td class="downloadTreeButton">
-                            <a id="downloadTreeImage" download="SolutionPaths.png">Download Tree</a>
+                            <a id="downloadTreeImage" download="SolutionPaths.png" title="Saves First Tree as PNG">Download Tree</a>
                             <canvas id="canvasConversion" style="display: none"></canvas>
                         </td>
                     </tr>
@@ -279,8 +279,8 @@
         </tr>
     </table>
     <div class="messages"></div>
-    <div id="background"></div>
-    <div id="backgroundMuter"></div>
+    <div id="background" style="display:none"></div>
+    <div id="backgroundMuter" style="display:none"></div>
     <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
@@ -349,6 +349,10 @@
                 advOptDiv.hide();
             } else if (toggleButton.is(e.target)) {
                 advOptDiv.toggle();
+            }
+
+            if (e.which == 3) {
+                jQuery('#background, #backgroundMuter').toggle();
             }
         });
 
@@ -660,7 +664,9 @@
                     node = tree[problemName];
                 }
                 node.numStudents++;
-                node.students.push(student);
+                if (!node.students.includes(student)) {
+                    node.students.push(student);
+                }
                 currProb = problemName;
                 currStu = student;
                 currProbView = probView;
@@ -697,7 +703,9 @@
                 if (node.numStudents == undefined) { node.numStudents = 0; }
                 node.numStudents++;
                 if (node.students == undefined) { node.students = []; }
-                node.students[node.students.length] = student;
+                if (!node.students.includes(student)) {
+                    node.students[node.students.length] = student;
+                }
             }
 
             // Whether it's a new step/prob/student, record the response of the student to this step
@@ -1182,8 +1190,8 @@
                 .css("top", y);
 
             let numStudents = e.target.__data__.data.numStudents;
-            let stuStr = ' Students';
-            if (numStudents == 1) { stuStr = ' Student'; }
+            let stuStr = ' Student Attempts';
+            if (numStudents == 1) { stuStr = ' Student Attempt'; }
 
             jQuery("#linkInfo").text(numStudents + stuStr);
 
