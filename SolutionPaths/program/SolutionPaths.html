@@ -63,6 +63,23 @@
         font-size: 5em;
     }
 
+    #legendDiv {
+        display: block;
+        max-width: 231px;
+        border: solid 1px;
+        background: white;
+        margin-top: 10px;
+        padding: 4px;
+    }
+    #spectrum {
+        display: inline-block;
+        width: 100px;
+        height: 12px;
+        background-image: linear-gradient(to right, red, yellow,  green);
+        margin: 1px 4px;
+        border-radius: 7px;
+    }
+
     input {
         cursor: pointer;
     }
@@ -281,6 +298,10 @@
     <div class="messages"></div>
     <div id="background" style="display:none"></div>
     <div id="backgroundMuter" style="display:none"></div>
+    <div id="legendDiv">
+        <span>Correct First Attempt (Average)</span><br />
+        <span>0%</span><span id="spectrum"></span><span>100%</span>
+    </div>
     <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
     <div class="loadingDiv" style="">Loading...</div>
     <script type="text/javascript">
@@ -567,8 +588,11 @@
                 var total = 0;
                 for (var j = 0; j < resps.length; j++) {
                     if (students.includes(resps[j].student) == false) { continue; }
-                    corr = corr + resps[j].correctness;
-                    total += 1;
+                    if (resps[j].firstAttempt) {
+                        // Only calculate the correctness of the link by the first attempts
+                        corr = corr + resps[j].correctness;
+                        total += 1;
+                    }
                 }
                 l[i].style.strokeWidth = l[i].__data__.data.numStudents / maxNumStudents * 20 + 2;
                 var percent = corr / total;
@@ -639,6 +663,7 @@
             let selection = row[selectionInd];
             let outcome = row[outcomeInd];
             let probView = row[probViewInd];
+            let firstAttempt = false;
 
             // Must have step and selection
             //if (step == null || step == "" || selection == null || selection == "") {
@@ -706,6 +731,9 @@
                 if (!node.students.includes(student)) {
                     node.students[node.students.length] = student;
                 }
+
+                // New Step, so this is their first attempt
+                firstAttempt = true;
             }
 
             // Whether it's a new step/prob/student, record the response of the student to this step
@@ -730,6 +758,7 @@
             newResponseObj.probView = probView;
             newResponseObj.problemName = problemName;
             newResponseObj.step = step;
+            newResponseObj.firstAttempt = firstAttempt;
             responses[responses.length] = newResponseObj; //[input, correctness, student];
         }
         return tree;
