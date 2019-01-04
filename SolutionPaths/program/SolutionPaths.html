@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Solution Paths</title>
+    <script src="javascript/lib/d3.v4.min.js"></script>
+    <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+    <script src="javascript/lib/canvg.min.js"></script>
+    <script src="javascript/lib/papaparse.min.js"></script>
+    <style>
+        body {
+        font-family: 'Open Sans', sans-serif;
+        /*background-image: url(css/images/tiny_grid.png);*/
+    }
+    .node {
+        cursor: pointer;
+    }
+    .node--internal text {
+        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    }
+
+    .allOptions {
+        background: #ffffffe3;
+        border: solid black 2px;
+        border-radius: 9px;
+        padding: 5px;
+        padding-top: 20px;
+        min-width: 50px;
+        min-height: 35px;
+    }
+
+    .node text {
+        pointer-events: none;
+    }
+    .options {
+        font-size: large;
+    }
+    .options select {
+        height: 150px;
+        max-width: 45vw;
+        margin-top: 10px;
+    }
+    .options td {
+        padding-left: 15px;
+    }
+
+    .messages {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 5px;
+        max-height: 4em;
+        max-width: 30%;
+        overflow: auto;
+        color: red;
+        cursor: pointer;
+    }
+
+    .loadingDiv {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        font-size: 5em;
+    }
+
+    #legendDiv {
+        display: block;
+        max-width: 231px;
+        border: solid 1px;
+        background: white;
+        margin-top: 10px;
+        padding: 4px;
+    }
+    #spectrum {
+        display: inline-block;
+        width: 100px;
+        height: 12px;
+        background-image: linear-gradient(to right, red, yellow,  green);
+        margin: 1px 4px;
+        border-radius: 7px;
+    }
+
+    input {
+        cursor: pointer;
+    }
+
+    #downloadTreeImage {
+        padding: 4px 6px;
+        margin: 5px;
+        cursor: pointer;
+        -webkit-appearance: button;
+        /* WebKit */
+        -moz-appearance: button;
+        /* Mozilla */
+        -o-appearance: button;
+        /* Opera */
+        -ms-appearance: button;
+        /* Internet Explorer */
+        appearance: button;
+        /* CSS3 */
+    }
+
+    #toggleAdvOpt {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+    .advancedOptions {
+        position: absolute;
+        background: white;
+        border-spacing: 0px;
+        border: 1px black solid;
+        padding: 5px;
+    }
+
+    .advancedOptions,
+    .advancedOptions input {
+        font-size: 0.8em;
+    }
+    .minimizeOpts {
+        position: absolute;
+        color: black;
+        cursor: pointer;
+        left: 20px;
+        top: 12px;
+        border: solid #000000 1.5px;
+        border-radius: 6px;
+        padding: 0px 3px 11px 3px;
+        font-weight: bold;
+        line-height: .1;
+    }
+    .minimizeOpts:hover {
+        background: #00000021;
+    }
+    
+    .infoPopup {
+        visibility: hidden;
+        width: auto;
+        min-width: 120px;
+        max-width: 600px;
+        height: auto;
+        max-height: 400px;
+        overflow-y: auto;
+        color: black;
+        text-align: center;
+        padding: 5px;
+        border-radius: 6px;
+        border-color: rgba(0,0,0,.5);
+        border-width: 3px;
+        border-style: solid;
+        position: absolute;
+        pointer-events: none;
+    }
+    #linkInfo {
+        background-color: rgba(110,160,220,.7);
+    }
+    .link {
+        fill: none;
+        stroke: #ccc;
+    }
+    #nodeInfo {
+        background-color: rgba(220,160,200,.7);
+    }
+
+    .responseTable {
+        display: inline;
+        position: fixed;
+        background-color: #ebebeb;
+        top: 25%;
+        left: 10%;
+        max-width: 80%;
+        max-height: 50%;
+        overflow: auto;
+        border: 5px solid steelblue;
+        border-radius: 4px;
+        text-align: center;
+        z-index: 41;
+    }
+    .responseTable td, .responseTable th {
+        border-top: 1px solid #797979;
+        border-right: 1px solid #797979;
+        padding: 3px 4px;
+        font-family: sans-serif;
+        min-width: 50px;
+    }
+    .responseTable td {
+        font-size: 12px;
+        word-break: break-word;
+    }
+    .responseTable tr:nth-child(even) {
+        background: #d1d1d1;
+    }
+
+    #greyOut {
+        background-color: #8a618f9e;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 40;
+    }
+    #background {
+        background-image: url('https://natgeo.imgix.net/factsheets/thumbnails/10ThingsYouCanDotoSavetheOcean_abovebelowocean.jpg?auto=compress,format&w=1024&h=560&fit=crop');
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+    }
+    #backgroundMuter {
+        background-color: #0000003b;
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+    }
+    </style>
+</head>
+
+<body>
+    <table class="allOptions">
+        <tr>
+            <td>
+                <table class="options">
+                    <tr>
+                        <td id="problemSelectDiv">
+                            Select problems to display:<br />
+                            <select name="problems" multiple></select>
+                        </td>
+                        <td id="studentSelectDiv">
+                            Select students to get data from:<br />
+                            <select name="students" multiple></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="firstViewOnly"> First problem view only
+                        </td>
+                        <td class="downloadTreeButton">
+                            <a id="downloadTreeImage" download="SolutionPaths.png" title="Saves First Tree as PNG">Save 1st Tree as PNG</a>
+                            <canvas id="canvasConversion" style="display: none"></canvas>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="display:inline">
+                <span id="toggleAdvOpt">Show Advanced Options</span>
+                <div class="advancedOptions" style="display:none">
+                    <table class="scatterOptions columnSelectors">
+                        <tr>
+                            <td>Student ID Column:</td>
+                            <td><select id="studentColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Problem Name Column:</td>
+                            <td><select id="probColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Step Name Column:</td>
+                            <td><select id="stepColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Time Column:</td>
+                            <td><select id="timeColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Outcome Column:</td>
+                            <td><select id="outcomeColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Input Column:</td>
+                            <td><select id="inputColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Selection Column:</td>
+                            <td><select id="selectionColumnSelect"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Problem View Column:</td>
+                            <td><select id="probViewColumnSelect"></select></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr class="minimizeOpts" title="minimize">
+            <td colspan="2">_</td>
+        </tr>
+    </table>
+    <div class="messages"></div>
+    <div id="background" style="display:none"></div>
+    <div id="backgroundMuter" style="display:none"></div>
+    <div id="legendDiv">
+        <span>Correct First Attempt (Average)</span><br />
+        <span>0%</span><span id="spectrum"></span><span>100%</span>
+    </div>
+    <div id="svgContainer" style="width:85%;height:100%;float:left;"></div>
+    <div class="loadingDiv" style="">Loading...</div>
+    <script type="text/javascript">
+    // Global Vars
+    /** Data from the input0 parsed */
+    var input0data = null;
+
+    var trees = null;
+
+    /** Factor to make the trees shorter */
+    var DEFAULT_SQUISH = .7;
+
+    /** Names of the headers of important columns */
+    var studentHeader = "Anon Student Id";
+    var timeHeader = "Time";
+    var probNameHeader = "Problem Name";
+    var stepNameHeader = "Step Name";
+    var outcomeHeader = "Outcome";
+    var selectionHeader = "Selection";
+    var inputHeader = "Input";
+    var problemViewHeader = "Problem View";
+
+    jQuery(document).ready(function() {
+        initiateInterface();
+        Papa.parse("${input0}", {
+            download: true,
+            delimiter: "\t",
+            skipEmptyLines: true,
+            complete: function(results) {
+                input0data = results.data;
+                // Fill header selects and select correct ones if posible
+                populateHeaderSelect(results.data);
+                tryToSelectCorrectHeaders(results.data[0]);
+
+                getValuesFromAdvancedOptions();
+
+                // Fill in multi select of students and problems
+                populateProblemsAndStudents(results.data);
+
+                initAdvancedOptionFunctionality();
+
+                // With the default values, create a tree
+                setTimeout(function() {
+                    loading(true);
+                    trees = dataToTrees(input0data);
+                    createSolutionPathsWrapper();
+                }, 1);
+            }
+        });
+    });
+
+    /**
+     * Set up the JS for the page
+     */
+    function initiateInterface() {
+        allowSaveableImage();
+
+        // Close Adv. Opt. when clickint outside of the advanced options
+        jQuery(document).mouseup(function(e) {
+            var advOptDiv = jQuery(".advancedOptions");
+            let toggleButton = jQuery('#toggleAdvOpt');
+
+            // if the target of the click isn't the advOptDiv nor a descendant of the advOptDiv
+            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0 &&
+                !toggleButton.is(e.target)) {
+                advOptDiv.hide();
+            } else if (toggleButton.is(e.target)) {
+                advOptDiv.toggle();
+            }
+
+            if (e.which == 3) {
+                jQuery('#background, #backgroundMuter').toggle();
+            }
+        });
+
+        // Minimize the options when clicking minimize button
+        jQuery('.minimizeOpts').click(function() {
+            jQuery('.allOptions>tbody>tr:nth-child(1)').toggle();
+        });
+
+
+        // Set functionality for changing an option
+        jQuery('.options select, .options input').change(function() {
+            loading(true);
+            setTimeout(function(changedOption) {
+                // An option has changed, if it's students, remake the trees
+                clearMessageBox();
+                if (changedOption == 'students' || changedOption == 'firstViewOnly') {
+                    trees = dataToTrees(input0data);
+                }
+
+                getValuesFromAdvancedOptions();
+
+                createSolutionPathsWrapper();
+            }, 1, jQuery(this).attr('name'));
+        });
+    }
+
+    /**
+     * Create and display the solution trees using the user's selected options
+     */
+    function createSolutionPathsWrapper() {
+        clearMessageBox();
+
+        loading(true);
+
+        // Remove previous trees
+        jQuery('#svgContainer').html('');
+
+        //The tiny delay allows the loading to appear
+        //setTimeout(function() {
+        // Get the data in a json format based on the selected options
+        //let trees = dataToTrees(input0data);
+
+        createSolutionPaths(trees);
+
+        initiateTooltips();
+
+        loading(false);
+        //}, 1);
+    }
+
+
+    //////////////////////////////////////////////////////////////
+    //////////    Use D3 to create the svg trees    //////////////
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * Given the trees data, call display tree to display the trees the user wants to see
+     */
+    function createSolutionPaths(trees) {
+        // Get the selected problems to display
+        let problemsToDisplay = jQuery('select[name="problems"]').val();
+
+        // Display the selected problems
+        problemsToDisplay.forEach(function(problem) {
+            displayTree(trees[problem]);
+        });
+    }
+
+    /**
+     * Takes a JSON object representing a problem tree. Displays it.
+     */
+    function displayTree(treeData) {
+        if (treeData == undefined) {
+            return;
+        }
+        // set the dimensions and margins of the diagram
+        var maxDepth = maximumDepth(treeData);
+        var maxWidth = maximumWidth(treeData);
+
+        // Squish large trees less
+        let max = Math.max(maxDepth, maxWidth);
+        max = Math.min(5, max);
+        squish = 0.5 + 0.2 * (max / 5);
+
+        var margin = { top: 40, right: 40, bottom: 50, left: 40 },
+            width = 400 - margin.left - margin.right,
+            height = maxDepth * 150 + 300 - margin.top - margin.bottom;
+        // Some trees are very wide, account for this in the width
+        width = Math.max(width, maxWidth * 120);
+
+        // declares a tree layout and assigns the size
+        var treemap = d3.tree()
+            .size([width, height * squish]);
+
+        // assigns the data to a hierarchy using parent-child relationships
+        var nodes = d3.hierarchy(treeData);
+
+        // maps the node data to the tree layout
+        nodes = treemap(nodes);
+
+
+        // append the svg obgect to the body of the page
+        // appends a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        var svg = d3.select("#svgContainer").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height * squish + margin.top + margin.bottom),
+            g = svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        // adds the links between the nodes
+        var link = g.selectAll(".link")
+            .style("stroke-width", "50px")
+            .data(nodes.descendants().slice(1))
+            .enter().append("path")
+            .attr("class", "link")
+            .style("fill", "none")
+            .style("stroke", "#ccc")
+            .attr("d", function(d) {
+                return "M" + d.x + "," + d.y * squish +
+                    "C" + d.x + "," + (d.y * squish + d.parent.y * squish) / 2 +
+                    " " + d.parent.x + "," + (d.y * squish + d.parent.y * squish) / 2 +
+                    " " + d.parent.x + "," + d.parent.y * squish;
+            });
+
+        // adds each node as a group
+        var node = g.selectAll(".node")
+            .data(nodes.descendants())
+            .enter().append("g")
+            .attr("class", function(d) {
+                return "node" +
+                    (d.children ? " node--internal" : " node--leaf");
+            })
+            .attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y * squish + ")";
+            });
+
+
+        adjustLinkThickness(link);
+
+        // Add the node ellipses
+        node.append("ellipse")
+            //ensure that the radii of the ellipse is larger than the text inside of it
+            .attr("rx", function(d) {
+                try {
+                    return Math.min(60, d.data.name.length * 2.5 + 20);
+                } catch (e) {
+                    addMessage("Error setting rx: " + e);
+                }
+            })
+            .attr("ry", function(d) {
+                try {
+                    return Math.min(35, d.data.name.length * 2 + 10);
+                } catch (e) {
+                    addMessage("Error setting ry: " + e);
+                }
+            })
+            .style("fill", "white")
+            .style("stroke", "steelblue")
+            .style("stroke-width", "2px");
+
+        // Add the text of the step/problem name to the node ellipse
+        for (let i = 0; i < 5; i++) {
+            node.append("text")
+                .attr("dy", ".35em")
+                .attr("y", function(d) { return (i - 2) * 10; }) //return d.children })//? -20 : 20; })
+                .style("text-anchor", "middle")
+                .style("font-size", "11px")
+                .style("font-family", "sans-serif")
+                .text(function(d) { return wrapNodeName(d.data.name, i); });
+        }
+
+        return nodes;
+    }
+
+    /** 
+     * change the thickness of a link to be proportional to the number of 
+     * students who took that path. change the color to represent how 
+     * correct the students who took that path were
+     */
+    function adjustLinkThickness(link) {
+        l = link._groups[0];
+
+        // Find the maximum number of students per link on this tree
+        let maxNumStudents = 0;
+        for (var i = 0; i < l.length; i++) {
+            try {
+                if (l[i].__data__.data.numStudents > maxNumStudents) {
+                    maxNumStudents = l[i].__data__.data.numStudents;
+                }
+            } catch (e) {
+                addMessage("Error getting maximum number of students: " + e);
+            }
+        }
+
+        // Loop through the links.  Adjust the thickness and color
+        for (var i = 0; i < l.length; i++) {
+            try {
+                var corr = 0;
+                var resps = l[i].__data__.parent.data.responses;
+                var r = l[i].__data__.data.responses;
+
+                // Get a list of the students that went through this link
+                var students = [];
+                for (var j = 0; j < r.length; j++) {
+                    if (students.includes(r[j].student) == false) {
+                        students[students.length] = r[j].student;
+                    }
+                }
+
+                var total = 0;
+                for (var j = 0; j < resps.length; j++) {
+                    if (students.includes(resps[j].student) == false) { continue; }
+                    if (resps[j].firstAttempt) {
+                        // Only calculate the correctness of the link by the first attempts
+                        corr = corr + resps[j].correctness;
+                        total += 1;
+                    }
+                }
+                l[i].style.strokeWidth = l[i].__data__.data.numStudents / maxNumStudents * 20 + 2;
+                var percent = corr / total;
+
+                var color = "rgb(" + (Math.floor((1 - percent) * 255 * 2)).toString() +
+                    ", " + (Math.floor(percent * 255 * 2)).toString() + ", 0)";
+                l[i].style.stroke = color;
+            } catch (e) {
+                addMessage("Error setting link thickness: " + e);
+            }
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////
+    //////////    Format data for d3 & Tree Helpers   ////////////
+    //////////////////////////////////////////////////////////////
+
+
+    /**
+     * Convert the original, tab-delimited data into tree format
+     */
+    function dataToTrees(origData) {
+        let data = JSON.parse(JSON.stringify(origData)); //so you don't modify the original data
+        data = sortData(data);
+
+        let tree = {};
+        let node = {};
+
+        getValuesFromAdvancedOptions();
+
+        let onlyTheseStudents = jQuery('select[name="students"]').val();
+
+        let stuInd = data[0].indexOf(studentHeader);
+        let timeInd = data[0].indexOf(timeHeader);
+        let probNameInd = data[0].indexOf(probNameHeader);
+        let stepNameInd = data[0].indexOf(stepNameHeader);
+        let outcomeInd = data[0].indexOf(outcomeHeader);
+        let selectionInd = data[0].indexOf(selectionHeader);
+        let inputInd = data[0].indexOf(inputHeader);
+        let probViewInd = data[0].indexOf(problemViewHeader);
+
+        let onlyFirstProblemView = jQuery('input[name="firstViewOnly"]').is(':checked');
+
+        let currProb = "";
+        let currStu = "";
+        let currStep = "";
+        let currProbView = "";
+
+        let start = performance.now();
+
+        for (let i = 1; i < data.length; i++) {
+            // Check for extra long running execution
+            if (i % 4000 == 0) {
+                if ((performance.now() - start) > 50000) {
+                    alert("too long");
+                    break;
+                }
+            }
+            let row = data[i];
+
+            let step = row[stepNameInd];
+            let input = row[inputInd];
+            let problemName = row[probNameInd];
+            let student = row[stuInd];
+            if (!onlyTheseStudents.includes(student)) { continue; }
+            let time = row[timeInd];
+            let selection = row[selectionInd];
+            let outcome = row[outcomeInd];
+            let probView = row[probViewInd];
+            let firstAttempt = false;
+
+            // Must have step and selection
+            //if (step == null || step == "" || selection == null || selection == "") {
+            if (step == null || step == "") {
+                continue;
+            }
+
+            if (onlyFirstProblemView && probView != '1') {
+                continue; // User only wants to see first attempt at problem
+            }
+
+            // If new problem/student, move onto a new tree
+            if (problemName != currProb || currStu != student ||
+                currProbView != probView) {
+                node = tree[problemName];
+                if (node == null) {
+                    newNode = { "name": problemName, "problemName": problemName };
+                    newNode.responses = [];
+                    newNode.numStudents = 0;
+                    newNode.students = [];
+                    newNode.children = [];
+                    tree[problemName] = newNode;
+                    node = tree[problemName];
+                }
+                node.numStudents++;
+                if (!node.students.includes(student)) {
+                    node.students.push(student);
+                }
+                currProb = problemName;
+                currStu = student;
+                currProbView = probView;
+                currStep = "";
+            }
+
+            // If a new step, move down lower in the tree
+            if (step != currStep) {
+                currStep = step;
+
+                // Get the descendants of this next node, or add them if it's a new node
+                let descendants = node.children;
+                if (descendants == undefined) {
+                    node.children = [];
+                    descendants = node.children;
+                }
+                var alreadyIn = false;
+                for (let j = 0; j < descendants.length; j++) {
+                    if (descendants[j].name == step) {
+                        node = descendants[j];
+                        alreadyIn = true;
+                        break;
+                    }
+                }
+                if (!alreadyIn) {
+                    descendants[descendants.length] = {
+                        "name": step,
+                        "problemName": problemName
+                    };
+                    node = descendants[descendants.length - 1];
+                }
+
+                // Add this student to the node
+                if (node.numStudents == undefined) { node.numStudents = 0; }
+                node.numStudents++;
+                if (node.students == undefined) { node.students = []; }
+                if (!node.students.includes(student)) {
+                    node.students[node.students.length] = student;
+                }
+
+                // New Step, so this is their first attempt
+                firstAttempt = true;
+            }
+
+            // Whether it's a new step/prob/student, record the response of the student to this step
+            var responses = node.responses;
+
+            if (responses == undefined) {
+                node.responses = [];
+                responses = node.responses;
+            }
+            var correctness = 0;
+            if (outcome == undefined) { outcome = ""; }
+            if (outcome.toLowerCase() == 'correct') {
+                correctness = 1;
+            }
+            let newResponseObj = {};
+            newResponseObj.input = input;
+            newResponseObj.correctness = correctness;
+            newResponseObj.outcome = outcome;
+            newResponseObj.student = student;
+            newResponseObj.time = time;
+            newResponseObj.selection = selection;
+            newResponseObj.probView = probView;
+            newResponseObj.problemName = problemName;
+            newResponseObj.step = step;
+            newResponseObj.firstAttempt = firstAttempt;
+            responses[responses.length] = newResponseObj; //[input, correctness, student];
+        }
+        return tree;
+    }
+
+    /**
+     * Data coming into dataToTrees is required to be sorted.
+     * Group by Student, Problem name, Problem view, then sort by time
+     */
+    function sortData(data) {
+        let headers = data[0];
+
+        let stuInd = data[0].indexOf(studentHeader);
+        let timeInd = data[0].indexOf(timeHeader);
+        let probNameInd = data[0].indexOf(probNameHeader);
+        let probViewInd = data[0].indexOf(problemViewHeader);
+
+        // Break down into student -> problem -> problem view
+        let stuProbView = {};
+
+        for (let i = 0; i < data.length; i++) {
+            let row = data[i];
+
+            let stu = row[stuInd];
+            let probName = row[probNameInd];
+            let probView = row[probViewInd];
+
+            if (stuProbView[stu] == undefined) {
+                stuProbView[stu] = {};
+            }
+            if (stuProbView[stu][probName] == undefined) {
+                stuProbView[stu][probName] = [];
+            }
+
+            try { probView = parseInt(probView); } catch (e) { console.log(e); continue; }
+
+            if (stuProbView[stu][probName][probView] == undefined) {
+                stuProbView[stu][probName][probView] = [];
+            }
+
+            stuProbView[stu][probName][probView].push(row);
+        }
+
+        // Sort each bundle of rows within the stu -> prob -> problem view
+        let sortedData = [headers];
+        // Loop through students' rows
+        Object.keys(stuProbView).forEach(function(student) {
+            let problems = stuProbView[student];
+            if (problems != null) {
+                // Loop through the problems a student has attempted
+                Object.keys(problems).forEach(function(problem) {
+                    let problemAttempts = problems[problem];
+                    if (problemAttempts != null) {
+                        // Loop through problem views of the student
+                        problemAttempts.forEach(function(rows) {
+
+                            if (rows != undefined) {
+                                rows = sortRowsByTime(rows, timeInd);
+
+                                // Add the sorted rows to the sorted data structure
+                                rows.forEach(function(row) { sortedData.push(row); });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        return sortedData;
+    }
+
+    /**
+     * Given an array of rows (array), sort by time in the given index of the rows
+     */
+    function sortRowsByTime(rows, timeIndex) {
+        let rowsCopy = JSON.parse(JSON.stringify(rows)); // Copy of the data
+
+        let sortedRows = rowsCopy.sort(function(a, b) {
+            try {
+                return Date.parse(a[timeIndex]) > Date.parse(b[timeIndex]) ? 1 : -1;
+            } catch (e) {
+                addMessage("Error parsing date while sorting rows.  Please ensure that " +
+                    "the time column in the Advanced Options is correct:" + e);
+                return -1;
+            }
+        });
+
+        return sortedRows;
+    }
+
+    /**
+     * Determine the maximum dempth of the tree
+     */
+    function maximumDepth(tree) {
+        if (tree == undefined) {
+            return 0;
+        }
+        var descendants = tree.children;
+        if (descendants == undefined) { return 1; }
+        var depths = [];
+        for (var i = 0; i < descendants.length; i++) {
+            depths[i] = maximumDepthRecursive(descendants[i], 2);
+        }
+        var max = 0;
+        for (var i = 0; i < depths.length; i++) {
+            if (depths[i] > max) { max = depths[i]; }
+        }
+        return max;
+    }
+
+    function maximumDepthRecursive(tree, level) {
+        var descendants = tree.children;
+        if (descendants == undefined) { return level; }
+        var depths = [];
+        for (var i = 0; i < descendants.length; i++) {
+            depths[i] = maximumDepthRecursive(descendants[i], level + 1);
+        }
+        var max = 0;
+        for (var i = 0; i < depths.length; i++) {
+            if (depths[i] > max) { max = depths[i]; }
+        }
+        return max;
+    }
+
+    var widths = {};
+    /**
+     * Determine how wide the tree is
+     */
+    function maximumWidth(tree) {
+        widths = {};
+        maximumWidthRecursive(tree, 0);
+
+        maxWidth = 0;
+
+        Object.keys(widths).forEach(function(level) {
+            if (widths[level] > maxWidth) {
+                maxWidth = widths[level];
+            }
+        });
+        return maxWidth;
+    }
+
+    function maximumWidthRecursive(tree, level) {
+        if (tree == undefined) {
+            return;
+        }
+        var descendants = tree.children;
+        if (widths[level + 1] == undefined) {
+            widths[level + 1] = 0;
+        }
+
+        if (descendants != undefined) {
+            // Add the amount of descendants to this level's child
+            widths[level + 1] += descendants.length;
+
+            // Do the same with its children
+            for (let i = 0; i < descendants.length; i++) {
+                maximumWidthRecursive(descendants[i], level + 1);
+            }
+        }
+    }
+
+    /**
+     * If there is  along step name, the name will need to wrap to fit in the node ellipse.
+     * Given the full name and the index of which line within the node, give the substring
+     * to print on this line
+     */
+    function wrapNodeName(name, index) {
+        let maxCharsInLine = 15;
+        let len = name.length;
+        let boxDiff = 2;
+
+        // There are five boxes with varying numbers of character that can fit in each
+        let boxLens = [maxCharsInLine - boxDiff ** 3,
+            maxCharsInLine - boxDiff ** 1,
+            maxCharsInLine,
+            maxCharsInLine - boxDiff ** 1,
+            maxCharsInLine - boxDiff ** 3
+        ];
+
+        let thisBoxLen = boxLens[index];
+
+        if (len > maxCharsInLine + (maxCharsInLine - boxDiff ** 1) * 2) {
+            // use all 5 boxes
+            let start = 0;
+            for (let i = 0; i < index; i++) {
+                start += boxLens[i];
+            }
+            return name.substring(start, start + thisBoxLen);
+        } else if (len > maxCharsInLine * 1.5) {
+            if (index == 0 || index == 4) { return ""; }
+            // use 3 boxes
+            let start = 0;
+            for (let i = 1; i < index; i++) {
+                start += boxLens[i];
+            }
+            return name.substring(start, start + thisBoxLen);
+        } else if (len > maxCharsInLine + 3) {
+            if (index == 0 || index == 1 || index == 4) { return ""; }
+            // use 2 boxes
+            let start = 0;
+            for (let i = 2; i < index; i++) {
+                start += boxLens[i];
+            }
+            return name.substring(start, start + thisBoxLen);
+        } else {
+            if (index == 0 || index == 1 || index == 3 || index == 4) { return ""; }
+            // use 1 box
+            return name;
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////
+    //////////    Interface Helpers    ///////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    function populateHeaderSelect(data) {
+        // Add all column headers to the selects
+        data[0].forEach(function(key, ind) {
+            jQuery('.columnSelectors select').append(jQuery('<option />').val(key).text(key));
+        });
+    }
+
+    /**
+     * Try to select the correct headers in the advance options dialog.
+     */
+    function tryToSelectCorrectHeaders(headers) {
+        if (headers.includes('Problem Name')) {
+            // Direct match, select it
+            jQuery('#probColumnSelect').val('Problem Name');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Problem.*Name.*)|(.*Name.*Problem.*)/ig)) {
+                    jQuery('#probColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Step Name')) {
+            // Direct match, select it
+            jQuery('#stepColumnSelect').val('Step Name');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Step.*Name.*)|(.*Name.*Step.*)/ig)) {
+                    jQuery('#stepColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Anon Student Id')) {
+            // Direct match, select it
+            jQuery('#studentColumnSelect').val('Anon Student Id');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Student.*Id.*)|(.*Id.*Student.*)/ig)) {
+                    jQuery('#studentColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Time')) {
+            // Direct match, select it
+            jQuery('#timeColumnSelect').val('Time');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Time.*)/ig)) {
+                    jQuery('#timeColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Outcome')) {
+            // Direct match, select it
+            jQuery('#outcomeColumnSelect').val('Outcome');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Outcome.*)/ig)) {
+                    jQuery('#outcomeColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Input')) {
+            // Direct match, select it
+            jQuery('#inputColumnSelect').val('Input');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Input.*)/ig)) {
+                    jQuery('#inputColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Selection')) {
+            // Direct match, select it
+            jQuery('#selectionColumnSelect').val('Selection');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Selection.*)/ig)) {
+                    jQuery('#selectionColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+
+        if (headers.includes('Problem View')) {
+            // Direct match, select it
+            jQuery('#probViewColumnSelect').val('Problem View');
+        } else {
+            // If no direct match, try to find the closest header to select
+            headers.forEach(function(header) {
+                if (header.match(/(.*Problem.*View.*)|(.*View.*Problem.*)/ig)) {
+                    jQuery('#probViewColumnSelect').val(header);
+                    return;
+                }
+            });
+        }
+    }
+
+    function populateProblemsAndStudents(data) {
+        // Clear previous data
+        jQuery('select[name="problems"], select[name="students"]').html('');
+
+        // Get all problem names and student Id's
+        let stuInd = data[0].indexOf(studentHeader);
+        let probNameInd = data[0].indexOf(probNameHeader);
+
+        let problems = [];
+        let students = [];
+        for (let i = 1; i < data.length; i++) {
+            let stu = data[i][stuInd];
+            let probName = data[i][probNameInd];
+
+            if (!students.includes(stu)) {
+                students.push(stu);
+            }
+            if (!problems.includes(probName)) {
+                problems.push(probName);
+            }
+        }
+
+        // Add problems to select.
+        problems.forEach(function(probName) {
+            jQuery('select[name="problems"]').append(jQuery('<option />')
+                .val(probName).text(probName));
+        });
+        // Select the first problem
+        jQuery('select[name="problems"] option:first-child').attr('selected', 'selected');
+
+        // Add students to select.  Default all selected
+        students.forEach(function(stuId) {
+            jQuery('select[name="students"]').append(jQuery('<option />')
+                .val(stuId).text(stuId).attr('selected', 'selected'));
+        });
+    }
+
+    function addMessage(message) {
+        jQuery('.messages').append('<div class="message">' + message + '</div>')
+            .css('border', '2px solid black');
+    }
+
+    function clearMessageBox() {
+        jQuery('.messages').html('').css('border', 'none');
+    }
+
+    function allowSaveableImage() {
+        document.getElementById('downloadTreeImage').addEventListener('click', function() {
+            jQuery('#canvasConversion').html('');
+            canvg('canvasConversion', jQuery('#svgContainer').html());
+
+            var canvas = document.getElementById("canvasConversion");
+            var img = canvas.toDataURL("image/png");
+            this.href = img;
+        }, false);
+    }
+
+    function loading(isLoading) {
+        if (isLoading) {
+            jQuery('.loadingDiv').show();
+            //jQuery('#svgContainer').html('<div class="loadingDiv" style="">Loading...</div>');
+        } else {
+            jQuery('.loadingDiv').hide();
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
+    //////////    Advanced Options    ////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * Refresh the values of the global objects that have values from the advanced options
+     */
+    function getValuesFromAdvancedOptions() {
+        studentHeader = jQuery('#studentColumnSelect').val();
+        timeHeader = jQuery('#timeColumnSelect').val();
+        probNameHeader = jQuery('#probColumnSelect').val();
+        stepNameHeader = jQuery('#stepColumnSelect').val();
+        outcomeHeader = jQuery('#outcomeColumnSelect').val();
+        selectionHeader = jQuery('#selectionColumnSelect').val();
+        inputHeader = jQuery('#inputColumnSelect').val();
+        problemViewHeader = jQuery('#probViewColumnSelect').val();
+    }
+
+    /**
+     * Initiate the JS functionality of the advanced options
+     */
+    function initAdvancedOptionFunctionality() {
+        // If a value of the column selectors changes, re-make the trees
+        jQuery('.columnSelectors select').change(function() {
+            getValuesFromAdvancedOptions();
+
+            if (jQuery(this).attr('id') == 'studentColumnSelect' ||
+                jQuery(this).attr('id') == 'probColumnSelect') {
+                populateProblemsAndStudents(input0data);
+            }
+            loading(true);
+
+            // Remove previous trees
+            jQuery('#svgContainer').html('');
+
+            // Re make the trees then draw them
+            setTimeout(function() {
+                trees = dataToTrees(input0data);
+                createSolutionPathsWrapper();
+            }, 1);
+        });
+    }
+
+    //////////////////////////////////////////////////////////////
+    //////////    Link ToolTips and Overlays    //////////////////
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * create the tooltips/popups that appear when hovering over links and nodes
+     */
+    function initiateTooltips() {
+        // Display how many students took a path when mousing over a link
+        jQuery(".link").on("mouseover", function(e) {
+            var x = e.pageX,
+                y = e.pageY;
+
+            jQuery("#linkInfo").css("visibility", "visible")
+                .css("left", x)
+                .css("top", y);
+
+            let numStudents = e.target.__data__.data.numStudents;
+            let stuStr = ' Student Attempts';
+            if (numStudents == 1) { stuStr = ' Student Attempt'; }
+
+            jQuery("#linkInfo").text(numStudents + stuStr);
+
+        });
+        jQuery(".link").on("mouseleave", function(e) {
+            jQuery("#linkInfo").css("visibility", "hidden");
+        });
+
+        // Display which students got to each node when mousing over it
+        jQuery(".node").on("mouseover", function(e) {
+            var x = e.pageX,
+                y = e.pageY;
+
+            jQuery("#nodeInfo").css("visibility", "visible")
+                .css("left", x)
+                .css("top", y);
+
+            var students = e.target.__data__.data.students;
+            var name = e.target.__data__.data.name;
+            var stuStr = '<b>' + name + "</b><br />Students: ";
+            for (var i = 0; i < students.length - 1; i++) { stuStr += students[i] + ", "; }
+            stuStr += students[students.length - 1];
+            jQuery("#nodeInfo").html(stuStr);
+        });
+        jQuery(".node").on("mouseleave", function(e) {
+            jQuery("#nodeInfo").css("visibility", "hidden");
+        });
+
+        // Display the responses when you click on a node
+        jQuery(".node").on("click", function(e) {
+            displayResponseTable(e.target.__data__.data.responses);
+        });
+
+        jQuery('#linkInfo, #nodeInfo').remove();
+        jQuery("body").append('<div class="infoPopup" id="linkInfo"></div>');
+        jQuery("body").append('<div class="infoPopup" id="nodeInfo"></div>');
+    }
+
+    /**
+     * Given the reponses students gave while moving from one node to the other,
+     * display these responses in a modal table
+     * @param responses array of response objects
+     */
+    function displayResponseTable(responses) {
+        // Remove previous table
+        jQuery('#responseTableDiv').remove();
+
+        if (responses == undefined) {
+            responses = [];
+        }
+
+        let respTable = jQuery('<table />').addClass('responseTable');
+
+        // Add table headers to the table
+        let headers = ['Student ID', 'Transaction Time', 'Problem Name',
+            'Problem View', 'Step Name', 'Input',
+            'Outcome', 'Selection'
+        ];
+        let headerRow = jQuery('<tr />');
+        headers.forEach(function(header) {
+            headerRow.append(jQuery('<th />').text(header));
+        });
+        respTable.append(headerRow);
+
+        // Add the rest of the data to the table
+        responses.forEach(function(response) {
+            let row = jQuery('<tr />');
+
+            row.append(jQuery('<td />').text(response.student));
+            row.append(jQuery('<td />').text(response.time));
+            row.append(jQuery('<td />').text(response.problemName));
+            row.append(jQuery('<td />').text(response.probView));
+            row.append(jQuery('<td />').text(response.step));
+            row.append(jQuery('<td />').text(response.input));
+            row.append(jQuery('<td />').text(response.outcome));
+            row.append(jQuery('<td />').text(response.selection));
+
+            respTable.append(row);
+        });
+
+
+        jQuery('body').append(jQuery('<div />').attr('id', 'responseTableDiv').html(respTable));
+
+        // Grey out the rest of the screen
+        jQuery('html').append(jQuery('<div />')
+            .attr('id', 'greyOut')
+            .attr('title', 'Click to exit table'));
+
+        // If you click the grey, the table dissapears
+        jQuery('#greyOut').click(function() {
+            jQuery('#greyOut, #responseTableDiv').remove();
+        });
+    }
+    </script>
+</body>
+
+</html>

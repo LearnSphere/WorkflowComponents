@@ -1,57 +1,52 @@
 <component>
-  <component_id>Transform-1-x869321</component_id>
+  <component_id>Transform-1-x754254</component_id>
   <component_id_human>Transform #1</component_id_human>
-  <workflow_id>37</workflow_id>
+  <workflow_id>8</workflow_id>
   <component_name>Pivot</component_name>
   <component_type>transform</component_type>
-  <left>427.99998474121094</left>
+  <left>454.421875</left>
   <connections>
     <connection>
       <index>0</index>
-      <from>Import-1-x649925</from>
+      <tindex>0</tindex>
+      <from>Data-1-x939743</from>
     </connection>
   </connections>
-  <options>
-    <rWF>Input 0 - User ID (column 2)</rWF>
-    <cWF>Input 0 - Feature Name (column 1)</cWF>
-    <aWF>length</aWF>
-    <mWF>Input 0 - Longitudinal Feature Value (column 4)</mWF>
-  </options>
-  <top>44</top>
+  <top>147</top>
   <inputs>
     <input0>
-      <component_id>Import-1-x649925</component_id>
-      <component_id_human>Import #1</component_id_human>
-      <component_type>import</component_type>
-      <component_name>Tab Delimited</component_name>
+      <component_id>Data-1-x939743</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
-        <tab-delimited>
+        <transaction>
           <index>0</index>
-          <file_path>test/test_data/moocdb_features.txt</file_path>
-          <label>tab-delimited</label>
-          <file_name>moocdb_features.txt</file_name>
+          <file_path>test/test_data/moocdb_features_subset.txt</file_path>
+          <label>transaction</label>
+          <file_name>moocdb_features_subset.txt</file_name>
           <metadata>
             <header>
               <id>header0</id>
-              <index>3</index>
-              <name>Longitudinal Feature Week</name>
+              <index>0</index>
+              <name>Feature ID</name>
             </header>
             <header>
               <id>header1</id>
-              <index>5</index>
-              <name>Date Of Extraction</name>
-            </header>
-            <header>
-              <id>header2</id>
               <index>1</index>
               <name>Feature Name</name>
             </header>
             <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>User ID</name>
+            </header>
+            <header>
               <id>header3</id>
-              <index>0</index>
-              <name>Feature ID</name>
+              <index>3</index>
+              <name>Longitudinal Feature Week</name>
             </header>
             <header>
               <id>header4</id>
@@ -60,14 +55,34 @@
             </header>
             <header>
               <id>header5</id>
-              <index>2</index>
-              <name>User ID</name>
+              <index>5</index>
+              <name>Date Of Extraction</name>
             </header>
           </metadata>
-        </tab-delimited>
+        </transaction>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <Import>{"fileName":"moocdb_features_subset.txt","importFileType":"transaction","importFileNameTitle":"File: moocdb_features_subset.txt","fileTypeSelection":"transaction","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"68"}</Import>
+      </optionmeta>
     </input0>
   </inputs>
+  <options>
+    <aWF>sum</aWF>
+    <rWF>Input 0 (0) - User ID (column 2)</rWF>
+    <moreFactors>No</moreFactors>
+    <cWF>Input 0 (0) - Feature Name (column 1)</cWF>
+    <cWF>Input 0 (0) - Date Of Extraction (column 5)</cWF>
+    <mWF>Input 0 (0) - Longitudinal Feature Week (column 3)</mWF>
+    <mWF>Input 0 (0) - Longitudinal Feature Value (column 4)</mWF>
+	<!--
+	<aWF>sum</aWF>
+    <rWF>Input 0 (0) - User ID (column 2)</rWF>
+    <aggrMeasureOnly>No</aggrMeasureOnly>
+    <cWF>Input 0 (0) - Feature Name (column 1)</cWF>
+    <cWF>Input 0 (0) - Date Of Extraction (column 5)</cWF>
+    <mWF>Input 0 (0) - Longitudinal Feature Week (column 3)</mWF>
+    <mWF>Input 0 (0) - Longitudinal Feature Value (column 4)</mWF>
+	-->
+  </options>
 </component>

@@ -67,6 +67,7 @@
 		<Output_Comparator />
 		<PFA />
 		<Python_AFM />
+		<RISE />
 		<RLM_Fitting />
 		<TKT />
 	</Analysis>
@@ -78,6 +79,7 @@
 		<Learning_Curves />
 		<Line_Graph />
 		<Scatter_Plot />
+		<Solution_Paths />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />

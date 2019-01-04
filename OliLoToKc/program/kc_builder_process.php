@@ -21,6 +21,22 @@ $_SESSION["component_dir"] = $component_dir;
 
 $_SESSION['sqlitePath'] = get_build_property("sqlite.path");
 
+
+$los_file_path=get_from_command_line($argv, "-losFile");
+$los_file_path=str_replace("/", DIRECTORY_SEPARATOR, $los_file_path);
+$los_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $los_file_path);
+$_SESSION["los_file_path"] = $los_file_path;
+
+$problems_file_path=get_from_command_line($argv, "-problemsFile");
+$problems_file_path=str_replace("/", DIRECTORY_SEPARATOR, $problems_file_path);
+$problems_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $problems_file_path);
+$_SESSION["problems_file_path"] = $problems_file_path;
+
+$skills_file_path=get_from_command_line($argv, "-skillsFile");
+$skills_file_path=str_replace("/", DIRECTORY_SEPARATOR, $skills_file_path);
+$skills_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $skills_file_path);
+$_SESSION["skills_file_path"] = $skills_file_path;
+
 // This script will create the sqlite database
 include("includes/db_std.php");
 
@@ -37,7 +53,8 @@ ini_set('memory_limit', '2048M');
 function load_kc($filename,$model_name) {
 	$sqlite = $_SESSION['sqlite'];
 	$row = 0;
-	$original_kc_model_name="KC (Unknown)";
+	// Save the KC model in the original export.  There could be many or none.
+	$original_kc_model_names=Array();
 	$max_num_skills = 0;
 	
 	if (($handle = fopen($filename, "r")) !== FALSE) {
@@ -54,7 +71,6 @@ function load_kc($filename,$model_name) {
 				$insert.="VALUES('$data[0]','$data[1]','$data[2]',$data[3],'$data[4]',$data[5],$data[6],$data[7],$data[8],$data[9],$data[10],$data[11],$data[12],$data[13],$data[14],$data[15]);";
 				$sqlite->query($insert) or die($sqlite->error . "<br> $insert");
 				$last_id = $sqlite->lastInsertRowID();
-				
 				
 				if(!load_skills_ds_qn($last_id, $data)){
 					if(!load_skills_ds_pool_qn($last_id, $data)){						
@@ -74,14 +90,24 @@ function load_kc($filename,$model_name) {
 				$output .= echo_skills($data,$last_id);
 			} else if($data[16]!=NULL) {
 				// Save the model name of the exported KC model
-				$original_kc_model_name=$data[16];
+				// There might already be a KC model in this file.  It could be multiple columns.
+				// It has to start at index 16 if there is one, and stops when it hits "KC (new KC model name)"
+				for ($i=16; $i<$num_cols; $i++) {
+					if ($data[$i]!=NULL) {
+						if (strcmp($data[$i], "KC (new KC model name)") != 0) {
+							array_push($original_kc_model_names, $data[$i]);
+						}
+					}
+				}
 			}
 	    }	
 	    fclose($handle);
 	}
-	
+
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
-	$header_row_str .= "	" . $original_kc_model_name;
+	for ($i = 0; $i < count($original_kc_model_names); $i++) {
+		$header_row_str .= "\t" . $original_kc_model_names[$i];
+	}
 	for ($i = 0; $i < $max_num_skills; $i++) {
 		$header_row_str .= "	" . "KC ($model_name)";
 	}
@@ -109,6 +135,7 @@ function load_kc($filename,$model_name) {
 
 function echo_skills($data,$id) {
 	$sqlite = $_SESSION['sqlite'];
+	$skill_to_title_map = $_SESSION["skill_to_title_map"];
 	$skillz_q = "SELECT skill_id FROM ds_qn_skill WHERE id='$id'";
     $result =  $sqlite->query($skillz_q) or die($sqlite->error . "<br> $skillz_q");
     $last = count($data);
@@ -125,6 +152,11 @@ function echo_skills($data,$id) {
     while ($row=($result->fetchArray())) {
         // old way $out .= $row['skill_id'] . "	";
         $skill_id = $row['skill_id'];
+
+        if (strcmp($_SESSION['useTitleAsSkillId'], "true") == 0) {
+            // Use title instead of the skill id
+            $skill_id = $skill_to_title_map[$skill_id];
+        }
 
         //don't duplicate skills
         if (in_array($skill_id, $skills_already_in)) {
@@ -322,6 +354,63 @@ function mysqli_result($result, $iRow, $field = 0)
     return $row[$field];
 }
 
+function create_skill_to_title_map() {
+	$skill_table=get_data_from_tsv($_SESSION["skills_file_path"]);
+	$count=count($skill_table);
+
+	$title_ids=array();
+	$duplicate_title_ids=array();
+
+	$skill_to_title_map=array();
+	for($i=1;$i<$count;$i++){
+		$row = $skill_table[$i];
+
+		if (count($row) < 2) {continue;}
+
+		$skill_id=$row[0];
+		$title=$row[1];
+
+		if ($skill_id != null && strlen($skill_id) > 0
+				&& $title != null && strlen($title) > 0) {
+			$title_id=title_to_valid_id($title);
+
+			// Check to see if this title id has already been used
+			if (in_array($title_id, $title_ids)) {
+				// ID is already used, put it in duplicates array
+				if (!in_array($title_id, $duplicate_title_ids)) {
+					array_push($duplicate_title_ids, $title_id);
+				}
+
+			} else {
+				array_push($title_ids, $title_id);
+				$skill_to_title_map[$skill_id] = $title_id;
+			}
+		}
+	}
+
+	// If there were non unique title id's, output an error
+	$num_duplicates=count($duplicate_title_ids);
+	if ($num_duplicates > 0) {
+		$error_message = "You selected to use the titles instead of skill id's, "
+			. "but there are duplicate titles.  Please make the titles unique. "
+			. "Duplicate titles inlcude: ";
+		for($i=0;$i<$num_duplicates;$i++){
+			$error_message = $error_message . "\n"
+				. $duplicate_title_ids[$i];
+		}
+		error_log($error_message);
+	}
+	$_SESSION["skill_to_title_map"] = $skill_to_title_map;
+}
+
+function title_to_valid_id($title) {
+	$CHARS_NOT_ALLOWED_SKILL_ID = "/[^A-Za-z0-9_]/";
+	$title = preg_replace($CHARS_NOT_ALLOWED_SKILL_ID, "_", $title);
+	//$MAX_SKILL_ID_LENGTH=30;
+	return $title;
+}
+
+
 function get_file_from_command_line($args, $node_index) {
 	for ($i = 0; $i <= count($args); $i++) {
 		$arg = $args[$i];
@@ -379,14 +468,28 @@ function get_build_property($property) {
 
 $sqlite = $_SESSION['sqlite'];
 
-$skill_file=get_file_from_command_line($argv, "0");
 $kc_file=get_file_from_command_line($argv, "1");
 
-$path = easy_ods_read::extract_content_xml($skill_file, $working_dir . "/temp");
-$model_name=get_model_name($path);
+$_SESSION['useTitleAsSkillId']=get_from_command_line($argv, "-useTitleAsSkillId");
+if (strcmp($_SESSION['useTitleAsSkillId'], "true") == 0) {
+	// Use title instead of the skill id
+	create_skill_to_title_map();
+}
 
-load_DB($path);
-load_kc($kc_file, $model_name);
+$model_name=get_model_name($problems_file_path);
+
+$model_name=ensure_model_name_is_valid($model_name);
+
+try {
+	load_DB($path);
+} catch (Exception $e) {
+	error_log("Exception loading temp db: " . $e);
+}
+try {
+	load_kc($kc_file, $model_name);
+} catch (Exception $e) {
+	error_log("Exception loading kc's: " . $e);
+}
 
 // Close and delete the database
 $sqlite->close();

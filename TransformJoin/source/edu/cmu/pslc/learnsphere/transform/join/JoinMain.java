@@ -212,6 +212,8 @@ public class JoinMain extends AbstractComponent {
 
            BufferedWriter bw = null;
 
+           int numLinesLeftFile = getNumLines(leftFile);
+
            try {
                FileWriter fstream = new FileWriter(outputFile);
                bw = new BufferedWriter(fstream);
@@ -256,6 +258,8 @@ public class JoinMain extends AbstractComponent {
                    }
                }
 
+               int lineNum = 0;
+               int prevProgPercent = -1;
                Boolean writeHeaders = true;
                if (leftColumnIndex != null && rightColumnIndex != null) {
                    try (BufferedReader bReader1 = new BufferedReader(new FileReader(leftFile));
@@ -272,7 +276,13 @@ public class JoinMain extends AbstractComponent {
                            String leftRow[] = line.split(delimiter, -1);
                            try (BufferedReader bReader2 = new BufferedReader(new FileReader(rightFile));
                                    ) {
-
+                                if (lineNum++ % 100 == 0) {
+                                    int progPercent = (lineNum*100/numLinesLeftFile);
+                                    if (progPercent != prevProgPercent) {
+                                        this.addComponentProgressMessage(progPercent + "%");
+                                        prevProgPercent = progPercent;
+                                    }
+                                }
                                String line2 = bReader2.readLine();
                                String rightHeaders = null;
                                if (line2 != null && hasHeaders && writeHeaders) {
@@ -383,6 +393,7 @@ public class JoinMain extends AbstractComponent {
                FileWriter fstream = new FileWriter(outputFile);
                bw = new BufferedWriter(fstream);
 
+               int numLinesLeftFile = getNumLines(leftFile);
 
                outputFile.createNewFile();
 
@@ -420,6 +431,8 @@ public class JoinMain extends AbstractComponent {
                        rightColumnIndex = Integer.parseInt(rightJoinColumn);
                    }
                }
+               int lineNum = 0;
+               int prevProgPercent = -1;
 
                Integer numRightColumns = 0;
                Boolean writeHeaders = true;
@@ -438,6 +451,14 @@ public class JoinMain extends AbstractComponent {
                            String leftRow[] = line.split(delimiter, -1);
                            try (BufferedReader bReader2 = new BufferedReader(new FileReader(rightFile));
                                    ) {
+
+                                if (lineNum++ % 100 == 0) {
+                                    int progPercent = (lineNum*100/numLinesLeftFile);
+                                    if (progPercent != prevProgPercent) {
+                                        this.addComponentProgressMessage(progPercent + "%");
+                                        prevProgPercent = progPercent;
+                                    }
+                                }
 
                                String line2 = bReader2.readLine();
                                String rightHeaders = null;
@@ -458,6 +479,7 @@ public class JoinMain extends AbstractComponent {
 
                                Integer matches = 0;
                                while (line2 != null) {
+
                                    String rightRow[] = line2.split(delimiter, -1);
                                    numRightColumns = rightRow.length;
                                    Boolean match = false;
@@ -519,6 +541,23 @@ public class JoinMain extends AbstractComponent {
            }
 
            return outputFile;
+    }
+
+    /**
+     * Get the totla number of lines in a file
+     * @param File file - file to count lines of
+     */
+    private int getNumLines(File file) {
+        int totalNumLines = 0;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while (br.readLine() != null) totalNumLines++;
+            br.close();
+        } catch (IOException e) {
+            logger.debug("Could not count lines in file: " + e.toString());
+            return Integer.MAX_VALUE;
+        }
+        return totalNumLines;
     }
 
 

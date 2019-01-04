@@ -13,9 +13,9 @@
     </connections>
     <options>
       <ift>CSV</ift>
-      <oft>tab-delimited</oft>
+      <oft>Tab-delimited</oft>
   </options>
-    
+
   <inputs>
     <input0>
       <component_id>Import2</component_id>

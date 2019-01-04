@@ -45,7 +45,7 @@ while (i <= length(args)) {
        	}
 
        	inputFile <- args[i + 4]
-       	i = i + 4    
+       	i = i + 4
 	} else if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -102,7 +102,7 @@ while (i <= length(args)) {
 
 # output datas
 #??? what to output
-#modelSummaryOutputFilePath<- paste(workingDir, "/R_output_model_summary.txt", sep="")
+#modelSummaryOutputFilePath<- paste(workingDir, "/R_output_model_summary.wfl", sep="")
 #ds<-read.table(inputFile,sep="\t", header=TRUE,quote="\"",comment.char = "",blank.lines.skip=TRUE)
 ds <- fread(file=inputFile,verbose = F)
 names(ds) <- make.names(names(ds))
@@ -131,12 +131,12 @@ if (isBinomial == TRUE) {
 # 	#ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
 # 	cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
 # 	eval(parse(text=cleanString))
-	
+
 	#ds$First.Attempt <- ifelse(ds$First.Attempt=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
 	cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
 	eval(parse(text=cleanString))
-	
-	
+
+
 } else {
   testNumeric <- sapply(ds,is.numeric)
   # testNumeric <- testNumeric[["First.Attempt"]]
@@ -164,11 +164,11 @@ if (isBinomial == TRUE) {
     # #ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
     # cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
     # eval(parse(text=cleanString))
-    
+
     #ds$First.Attempt <- ifelse(ds$First.Attempt=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
     cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
     eval(parse(text=cleanString))
-    
+
   }
 }
 
@@ -195,14 +195,14 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	  #optimx doesn't work when formula has 1|....
 	  #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 	  modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"nloptwrap\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-	  
+
 	 } else {
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds, family=", family, ")", sep="")
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
 	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-	  
+
 	}
-  
+
   eval(parse(text=modelingString))
 	modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
@@ -229,7 +229,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write(paste("<residual.max>", max(modelSum$residuals), "</residual.max>", sep=""),file=model.values.file,sep="",append=TRUE)
 	residual.stderr <- sqrt(deviance(fittedModel)/df.residual(fittedModel))
 	write(paste("<residual.Std.Error>", residual.stderr, "</residual.Std.Error>", sep=""),file=model.values.file,sep="",append=TRUE)
-	
+
 	#fixed effects
 	for (x in 1:length(rownames(modelSum$coefficients))) {
 	  #write to parameters file
@@ -238,7 +238,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    intercept.sd = modelSum$coefficients[x,2]
 	    intercept.tval = modelSum$coefficients[x,3]
 	  } else {
-	    
+
 	    #write to parameters and model_values files
 	    write("<parameter>",file=parameters.values.file,sep="",append=TRUE)
 	    name = rownames(modelSum$coefficients)[x]
@@ -249,33 +249,33 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write(paste("<name>", name, "</name>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    name <- gsub("[()-?|: ]", ".", name)
 	    #name <- gsub("[| ]", ".", name)
-	    
+
 	    write(paste("<intercept>", intercept.val, "</intercept>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.",name,".","intercept",sep="")
 	    write(paste("<", tag.name, ">", intercept.val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<intercept_Std.Error>", intercept.sd, "</intercept_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.", name,".","intercept_Std.Error",sep="")
 	    write(paste("<", tag.name, ">", intercept.sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<intercept_t.value>", intercept.tval, "</intercept_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.", name,".","intercept_t.value",sep="")
 	    write(paste("<", tag.name, ">", intercept.tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope>", val, "</slope>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.", name,".","slope",sep="")
 	    write(paste("<", tag.name, ">", val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope_Std.Error>", sd, "</slope_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.", name,".","slope_Std.Error",sep="")
 	    write(paste("<", tag.name, ">", sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope_t.value>", tval, "</slope_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste("Fixed.effects.", name,".","slope_t.value",sep="")
 	    write(paste("<", tag.name, ">", tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
 	    write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
 	  }
-	  
+
 	}
 	#write model_values for random effect
 	ranef.vars=as.data.frame(VarCorr(fittedModel))
@@ -296,7 +296,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    tag.name.sd <- paste(tag.name, ".Std.Dev.", sep="")
 	    tag.value = ranef.vars[x,"sdcor"]
 	    write(paste("<", tag.name.sd, ">", tag.value, "</", tag.name.sd, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	  } else {
 	    tag.name = paste("Random.effects.", name, ".slope", sep="")
 	    tag.name <- paste(tag.name, ".Corr", sep="")
@@ -304,7 +304,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write(paste("<", tag.name, ">", tag.value, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
 	  }
 	}
-	
+
 	#write parameters for random effect
 	for (x in 1:length(ranef(fittedModel))){
 	  par.type = names(ranef(fittedModel)[x])
@@ -325,13 +325,13 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
 	  }
 	}
-	
+
 	write("</model>",file=model.values.file,sep="",append=TRUE)
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
-	
-	
-	
+
+
+
 } else if (modelingFunc == "glm" || modelingFunc == "lm") {
   modelingString = ""
   #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
@@ -345,7 +345,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
   }
   eval(parse(text=modelingString))
   #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
-  
+
 	modelSum <- summary(fittedModel)
 	#print(modelSum)
 	capture.output(modelSum, file = summary.file, append = FALSE)
@@ -361,19 +361,19 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write(paste("<BIC>", bic.value, "</BIC>", sep=""),file=model.values.file,sep="",append=TRUE)
 	eval(parse(text=paste0("llk.value <- as.numeric(logLik(fittedModel))" , sep="")))
 	write(paste("<log_likelihood>", llk.value, "</log_likelihood>", sep=""),file=model.values.file,sep="",append=TRUE)
-	
+
 	#coefficients
 	intercept.val = NULL
 	intercept.sd = NULL
 	intercept.tval = NULL
 	for (x in 1:length(rownames(modelSum$coefficients))) {
-	  
+
 	  if (x==1) {
 	    intercept.val = modelSum$coefficients[x,1]
 	    intercept.sd = modelSum$coefficients[x,2]
 	    intercept.tval = modelSum$coefficients[x,3]
 	  } else {
-	    
+
 	    #write to parameters and model_values files
 	    write("<parameter>",file=parameters.values.file,sep="",append=TRUE)
 	    name = rownames(modelSum$coefficients)[x]
@@ -387,33 +387,33 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write(paste("<intercept>", intercept.val, "</intercept>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","intercept",sep="")
 	    write(paste("<", tag.name, ">", intercept.val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<intercept_Std.Error>", intercept.sd, "</intercept_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","intercept_Std.Error",sep="")
 	    write(paste("<", tag.name, ">", intercept.sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<intercept_t.value>", intercept.tval, "</intercept_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","intercept_t.value",sep="")
 	    write(paste("<", tag.name, ">", intercept.tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope>", val, "</slope>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","slope",sep="")
 	    write(paste("<", tag.name, ">", val, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope_Std.Error>", sd, "</slope_Std.Error>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","slope_Std.Error",sep="")
 	    write(paste("<", tag.name, ">", sd, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
-	    
+
 	    write(paste("<slope_t.value>", tval, "</slope_t.value>", sep=""),file=parameters.values.file,sep="",append=TRUE)
 	    tag.name = paste(name,".","slope_t.value",sep="")
 	    write(paste("<", tag.name, ">", tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
 	    write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
-	    
+
 	  }
-	  
+
 	}
-	
-	
+
+
 	#residuals
 	if (length(modelSum$residuals) > 0 ){
   	write(paste("<residual.min>", min(modelSum$residuals), "</residual.min>", sep=""),file=model.values.file,sep="",append=TRUE)
@@ -436,6 +436,6 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write("</model>",file=model.values.file,sep="",append=TRUE)
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
-} 
+}
 
 

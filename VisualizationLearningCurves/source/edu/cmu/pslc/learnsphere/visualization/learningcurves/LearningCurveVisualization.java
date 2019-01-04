@@ -779,7 +779,9 @@ public class LearningCurveVisualization {
             Collections.sort(lcData.get(key), new LearningCurvePoint.SortByOpportunity());
 
             LearningCurveImage lcImage = null;
-            String filePrefix = key.replaceAll("[^a-zA-Z0-9\\-]", "_");
+            // Guard against slashes and spaces in the skill name, otherwise, allow whatever 
+            // characters are there... too much cleaning is an issue with Chinese characters.
+            String filePrefix = key.replaceAll("\\\\", "_").replaceAll("/", "_").replaceAll(" ", "_");
 
             String fileSuffix = ".png";
 
