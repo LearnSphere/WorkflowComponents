@@ -42,6 +42,7 @@
 		<Row_Operations />
 		<Row_Remover />
 		<Text_Converter />
+		<Transaction_Aggregator />
 	</Transform>
 	<Analysis>
 	    <Recently_Used />

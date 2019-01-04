@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransactionAggregator</url>
+<date>2019-01-02</date>
+<abstract><p>The <b>Tranasaction Aggregator</b> component can transform transaction data into Datashop formatted transaction or student-step rollup data.</p>
+<p>The required fields for input data are: 'Anon Student Id', 'Time', 'Problem Name', and 'Step Name'. 
+And either "Problem Start Time" or "Problem View" field is also required to be present. Any other field that is not present in Datashop transaction data will not be included in final output.
+ For Example, KC model should appear in column with header such as "KC (model name)".
+</p>
+<p>There are currently two types of output: transaction and student-step rollup. For transaction output, four columns are computed or re-computed: 'Duration (sec)', 'Is Last Attempt', 'Attempt At Step' and 'Outcome'.
+ For student-step rollup, output fields are as same as those in Datashop student-step rollup. Field such as "Opportunity (model name)" is particularly useful for analysis components such as Linear Modeling, AFM, and etc. 
+</p>
+</abstract>
+<description>This component allows you to transform transaction data into Datashop formatted transaction or student-step rollup data.</description>
+
+<inputs><ul>
+<li>Tab-delimited transaction file. See Abstract section for required fields.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file containing data formatted as Datashop transaction or student-step rollup.
+</outputs>
+
+<options>
+ <ul>
+<li>Aggregate to File Type. Two options: transaction or student-step rollup</li>
+<li>If student-step rollup is selected, users can choose KC models for computing opportunity counts</li>
+</ul>
+</options>
+
+</info>
