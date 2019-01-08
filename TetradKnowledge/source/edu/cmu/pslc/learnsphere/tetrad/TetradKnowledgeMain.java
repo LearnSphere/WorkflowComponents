@@ -65,7 +65,8 @@ public class TetradKnowledgeMain extends AbstractComponent {
     String knowledgeJsonStr = this.getOptionAsString("TetradKnowledge");
     logger.debug("knowledgeJsonStr: " + knowledgeJsonStr);
     try {
-      BufferedWriter knowledgeWriter = new BufferedWriter(new FileWriter("knowledgeJsonStr.txt"));
+      String knowFilePath = this.getComponentOutputDir() + File.separator + "knowledgeJsonStr.txt";
+      BufferedWriter knowledgeWriter = new BufferedWriter(new FileWriter(knowFilePath));
       knowledgeWriter.append(knowledgeJsonStr);
       knowledgeWriter.flush();
       knowledgeWriter.close();
@@ -83,7 +84,7 @@ public class TetradKnowledgeMain extends AbstractComponent {
 
         Integer nodeIndex0 = 0;
         Integer fileIndex0 = 0;
-        String label0 = "text";
+        String label0 = "tetrad-knowledge";
         this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
 
       } else {

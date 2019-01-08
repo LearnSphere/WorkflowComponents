@@ -37,7 +37,6 @@ import java.io.ByteArrayOutputStream;
 import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.data.DataReader;
 import edu.cmu.tetrad.regression.*;
 import edu.cmu.tetrad.graph.*;
 import edu.cmu.tetrad.util.*;
@@ -353,7 +352,7 @@ public class TetradClassifier {
             String auc = area + "";
 
             String rocData = "[";
-            int useOnly100Points = Math.max(1,(int)points.length/200);
+            int useOnly100Points = Math.max(1,points.length/200);
             for (int i = 0; i < points.length; i = i + useOnly100Points) {
               /*for (int j = 0; j < points[i].length; j++) {
                 rocData += points[i][j] ;
@@ -703,13 +702,16 @@ public class TetradClassifier {
         for (String t : tokens) {
           switch (t) {
             case "nl":
-              newEdge.setDashed(true);
+              newEdge.setBold(true);
               newEdge.addProperty(Edge.Property.nl);
+              break;
             case "y":
               newEdge.setLineColor(Color.YELLOW);
+              break;
             case "dd":
               newEdge.setLineColor(Color.GREEN);
               newEdge.addProperty(Edge.Property.dd);
+              break;
           }
         }
 

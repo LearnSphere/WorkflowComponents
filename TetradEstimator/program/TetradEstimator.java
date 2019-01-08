@@ -285,8 +285,30 @@ public class TetradEstimator {
                 bayesInstantiatedModel.randomizeIncompleteRows( i );
               }
             }
-            //bWriterTable.append( bayesInstantiatedModel.toString() );
-            bWriterGraph.append( graph.toString() );
+            outputModelInformationBayes(graph, data);
+
+            // Write graph out to html file
+            String buf = "";
+            buf += "Graph Nodes:\n";
+            List<Node> nodes = graph.getNodes();
+            int c = 1;
+            for (Node n : nodes) {
+              buf += n.getName();
+              if (c++ < nodes.size()) {
+                buf += ",";
+              }
+            }
+            buf += "\n\nGraph Edges:\n";
+            int i = 1;
+            for (Edge edge : graph.getEdges()) {
+              buf += (i++) + ". " + edge.toString();
+              if (newEdges.contains(edge)) {
+                buf += " y";
+              }
+              buf += "\n";
+            }
+            writeGraphToHtml(buf, programDir, bWriterGraph);
+
             break;
 
           case "SEM_Parametric_Model":
@@ -320,9 +342,9 @@ public class TetradEstimator {
             }
             semEst.setNumRestarts(randomRestarts);
             if (score.equals("Fgls")) {
-              semEst.setScoreType(SemIm.ScoreType.Fgls);
+              semEst.setScoreType(ScoreType.Fgls);
             } else {
-              semEst.setScoreType(SemIm.ScoreType.Fml);
+              semEst.setScoreType(ScoreType.Fml);
             }
 
             addToDebugMessages("made estimator wrapper");
@@ -331,10 +353,10 @@ public class TetradEstimator {
 
             Graph g = semInstantiatedModel.getSemPm().getGraph();
 
-            String buf = "";
+            buf = "";
             buf += "Graph Nodes SEM:\n";
-            List<Node> nodes = graph.getNodes();
-            int c = 1;
+            nodes = graph.getNodes();
+            c = 1;
             for (Node n : nodes) {
               buf += n.getName() + " " +
                      semInstantiatedModel.getMean(n);
@@ -343,7 +365,7 @@ public class TetradEstimator {
               }
             }
             buf += "\n\nGraph Edges SEM:\n";
-            int i = 1;
+            i = 1;
             for (Edge edge : graph.getEdges()) {
               buf += (i++) + ". " + edge.toString() + " " +
                      semInstantiatedModel.getEdgeCoef(edge);
@@ -370,8 +392,8 @@ public class TetradEstimator {
           try {
             FileWriter fw = new FileWriter(correlationMatrixFileName);
             BufferedWriter bw = new BufferedWriter( fw );
-
-            TetradMatrix corrMat = data.getCorrelationMatrix();
+            DataSet continuousData = DataUtils.convertNumericalDiscreteToContinuous( data );
+            CorrelationMatrix corrMat = new CorrelationMatrix(continuousData);
             bw.write(corrMat.toString());
             bw.close();
           } catch (IOException e) {
@@ -537,7 +559,7 @@ public class TetradEstimator {
         for (String t : tokens) {
           switch (t) {
             case "nl":
-              newEdge.setDashed(true);
+              newEdge.setBold(true);
               newEdge.addProperty(Edge.Property.nl);
             case "y":
               newEdge.setLineColor(Color.YELLOW);
@@ -554,6 +576,54 @@ public class TetradEstimator {
     } catch ( Exception e ) {
       addToDebugMessages("Error getting graph: " + e.toString() );
       return new EdgeListGraph();
+    }
+  }
+
+  private static void outputModelInformationBayes(Graph graph, DataSet data) {
+    String modelStatisticsFileName = outputDir + "ModelStatistics.txt";
+    String estimatorTableFileName = outputDir + "EstimatorTable.txt";
+    String correlationMatrixFileName = outputDir + "CorrelationMatrix.txt";
+
+    BayesProperties bayesProps = new BayesProperties(data);
+
+    FileWriter fw = null;
+    BufferedWriter bw = null;
+
+    // Output Model Statistics
+    try {
+      fw = new FileWriter(modelStatisticsFileName);
+      bw = new BufferedWriter( fw );
+
+      double modelPValue = bayesProps.getLikelihoodRatioP(graph);
+      double modelChiSquare = bayesProps.getChisq();
+      double modelDof = bayesProps.getDof();
+      double modelBicScore = bayesProps.getBic();
+
+      NumberFormat nf = NumberFormat.getInstance();
+      nf.setMaximumFractionDigits(2);
+      bw.write("Degrees of Freedom = " + formatDouble(modelDof, nf) + "\n");
+      bw.write("Chi Square = " + formatDouble(modelChiSquare, nf) + "\n");
+      bw.write("P Value = " + formatDouble(modelPValue, nf) + "\n");
+      bw.write("BIC Score = " + formatDouble(modelBicScore, nf) + "\n");
+      addToDebugMessages("dof"+modelDof);
+      addToDebugMessages("Chi"+modelChiSquare);
+      addToDebugMessages("P"+modelPValue);
+      addToDebugMessages("BIC"+modelBicScore);
+
+      bw.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write model statistics to output: " + e.toString());
+    }
+
+    // Output Tabular editor table
+    try {
+      fw = new FileWriter(estimatorTableFileName);
+      bw = new BufferedWriter( fw );
+
+      bw.write("No Table for Bayes Estimator (only for SEM).\t\n\t\n");
+      bw.close();
+    } catch (IOException e) {
+      addToErrorMessages("Could not write tabular model data to output: " + e.toString());
     }
   }
 
@@ -645,9 +715,6 @@ public class TetradEstimator {
     } catch (IOException e) {
       addToErrorMessages("Could not write tabular model data to output: " + e.toString());
     }
-
-    // Output correlation matrix
-
   }
 
   /**

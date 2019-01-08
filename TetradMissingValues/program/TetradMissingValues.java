@@ -36,7 +36,6 @@ import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 
 import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.data.DataReader;
 import edu.cmu.tetrad.regression.*;
 import edu.cmu.tetrad.graph.*;
 import edu.cmu.tetrad.util.*;
@@ -137,8 +136,7 @@ public class TetradMissingValues {
     }*/
 
     String operation = cmdParams.get("-operation");
-    //String marker = cmdParams.get("-missingValueMarker");
-    String marker = "*";
+    String marker = cmdParams.get("-missingValueMarker");
 
     addToDebugMessages("missing value marker: " + marker + ".");
 

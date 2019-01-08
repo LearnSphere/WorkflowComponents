@@ -25,10 +25,10 @@
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:all>
+    <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
       <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-    </xs:all>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
@@ -215,7 +215,7 @@
       <xs:element type="conjunctive" name="penaltyDiscountDependency7" ls:dependentOption="penaltyDiscountDependency7" ls:dependsOn="penaltyDiscountDependency29" ls:constraint="true" />
       
 
-      <xs:element type="disjunctive" name="penaltyDiscountDependency30" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency1" ls:constraint="true" />
+      <!--<xs:element type="disjunctive" name="penaltyDiscountDependency30" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency1" ls:constraint="true" />-->
       <xs:element type="disjunctive" name="penaltyDiscountDependency31" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency2" ls:constraint="true" />
       <xs:element type="disjunctive" name="penaltyDiscountDependency32" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency3" ls:constraint="true" />
       <xs:element type="disjunctive" name="penaltyDiscountDependency33" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency4" ls:constraint="true" />

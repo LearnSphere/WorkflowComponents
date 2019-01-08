@@ -90,7 +90,7 @@ public class TetradEstimatorMain extends AbstractComponent {
 
         Integer nodeIndex3 = 3;
         Integer fileIndex3 = 0;
-        String label3 = "text";
+        String label3 = "tab-delimited";
         this.addOutputFile(file3, nodeIndex3, fileIndex3, label3);
       } else {
         errorMessages.add("cannot add output files");

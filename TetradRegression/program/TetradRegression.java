@@ -37,7 +37,6 @@ import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 
 import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.data.DataReader;
 import edu.cmu.tetrad.regression.*;
 import edu.cmu.tetrad.graph.*;
 import edu.cmu.tetrad.util.*;
@@ -254,7 +253,8 @@ public class TetradRegression {
             }
 
             graph = new Dag();
-
+            Node noGraphForLR = new GraphNode("Log. Regr. Does Not Output a Graph");
+            graph.addNode(noGraphForLR);
           }
 
           bWriterTable.append( table );

@@ -34,12 +34,9 @@ import java.io.ByteArrayOutputStream;
 import java.lang.*;
 
 import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.data.DataReader;
 import edu.cmu.tetrad.util.*;
 import edu.cmu.tetradapp.model.*;
-import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.graph.*;
-import edu.cmu.tetrad.util.*;
 import edu.cmu.tetrad.search.*;
 import edu.cmu.tetrad.algcomparison.score.ConditionalGaussianBicScore;
 import edu.cmu.tetrad.algcomparison.score.DiscreteBicScore;
@@ -134,7 +131,7 @@ public class SearchAlgorithmWrapper {
 				}
 				break;
 
-			case "CPC":
+			/*case "CPC":
 				try {
 					getIndTest();
 					Cpc cpc = new Cpc( this.indTest );
@@ -183,7 +180,7 @@ public class SearchAlgorithmWrapper {
 					addToErrorMessages("Exception setting up PcMax algorithm: "+e);
 				}
 				break;
-
+			*/
 			case "FGES":
 				try {
 					getScore();
@@ -278,9 +275,9 @@ public class SearchAlgorithmWrapper {
 			case "Conditional_Gaussian_LRT":
 				try {
 					IndTestConditionalGaussianLRT test =
-							new IndTestConditionalGaussianLRT (this.data, this.alpha);
+							new IndTestConditionalGaussianLRT (this.data, this.alpha, this.discretizeContinuousVars);
 					test.setNumCategoriesToDiscretize( this.numCatForDiscretize );
-					test.setPenaltyDiscount( this.penaltyDiscount );
+					//test.setPenaltyDiscount( this.penaltyDiscount );
 					this.indTest = test;
 					return true;
 				} catch (Exception e) {

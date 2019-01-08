@@ -39,13 +39,10 @@ import java.io.ByteArrayOutputStream;
 import java.awt.Color;
 
 import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.data.DataReader;
-import edu.cmu.tetrad.regression.*;
 import edu.cmu.tetrad.graph.*;
 import edu.cmu.tetrad.util.*;
 import edu.cmu.tetradapp.model.*;
 import edu.cmu.tetradapp.model.datamanip.*;
-import edu.cmu.tetrad.regression.LogisticRegression.Result;
 
 
 public class GraphEditor {
@@ -165,7 +162,7 @@ public class GraphEditor {
         // No edits were made, write out the original graph
         BufferedReader inputReader = new BufferedReader(
             new FileReader(inFile));
-        addToDebugMessages("1");
+        addToDebugMessages("Reading in original graph");
         StringBuilder origGraphBuf = new StringBuilder();
         while (inputReader.ready()) {
           origGraphBuf.append(inputReader.readLine());
@@ -178,7 +175,7 @@ public class GraphEditor {
         bw.flush();
         bw.close();
       } else {
-        addToDebugMessages("3");
+        addToDebugMessages("Graph has edits, apply them.");
         StringBuilder buf = new StringBuilder();
         while(bReader.ready()) {
           String line = bReader.readLine();
@@ -187,7 +184,7 @@ public class GraphEditor {
             buf.append("\n");
           }
         }
-        addToDebugMessages("4");
+        addToDebugMessages("Read graph in");
 
         //bw.append(graphStr);
         bw.append(buf.toString());
@@ -501,13 +498,16 @@ public class GraphEditor {
         for (String t : tokens) {
           switch (t) {
             case "nl":
-              newEdge.setDashed(true);
+              newEdge.setBold(true);
               newEdge.addProperty(Edge.Property.nl);
+              break;
             case "y":
               newEdge.setLineColor(Color.YELLOW);
+              break;
             case "dd":
               newEdge.setLineColor(Color.GREEN);
               newEdge.addProperty(Edge.Property.dd);
+              break;
           }
         }
 

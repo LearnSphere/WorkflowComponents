@@ -39,13 +39,6 @@ import edu.cmu.pslc.datashop.servlet.HelperFactory;
 */
 /* import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper; */
 
-import edu.cmu.tetrad.data.*;
-import edu.cmu.tetrad.regression.*;
-import edu.cmu.tetrad.graph.*;
-import edu.cmu.tetrad.util.*;
-import edu.cmu.tetradapp.model.*;
-import edu.cmu.tetradapp.model.datamanip.*;
-import edu.cmu.tetrad.regression.LogisticRegression.Result;
 
 import java.util.regex.Pattern;
 
