@@ -41,6 +41,8 @@ import edu.cmu.tetrad.search.*;
 import edu.cmu.tetrad.algcomparison.score.ConditionalGaussianBicScore;
 import edu.cmu.tetrad.algcomparison.score.DiscreteBicScore;
 import edu.cmu.tetrad.algcomparison.independence.*;
+import edu.cmu.tetrad.algcomparison.score.FisherZScore;
+import edu.cmu.tetrad.algcomparison.score.ScoreWrapper;
 
 
 /*
@@ -74,6 +76,18 @@ public class SearchAlgorithmWrapper {
 	private boolean completeRuleSetUsed = false;
 	private int maxLengthDiscriminatingPath = -1;
 	private double samplePrior = 1;
+	//FASK options
+	private String faskScore = null;
+	private double faskAlpha = 0.01;
+	private double faskPenaltyDiscount = 2;
+	private double faskStructurePrior = 1;
+	private boolean faskDiscretize = true;
+	private int faskMaxSizeConditioningSet = -1;
+	private double faskAlphaTwoCycle = 0.000001;
+	private double faskThreshEdge = 0.3;
+	private double faskThreshJudgeNeg = -0.2;
+	private boolean faskAdjFAS = true;
+	private boolean faskAfjCondCorr = true;
 
 	private static final String FILENAME = "TetradComponentOutput.txt";
   private static final String ERROR_PREPEND = "ERROR: ";
@@ -222,6 +236,37 @@ public class SearchAlgorithmWrapper {
 					addToErrorMessages("Exception setting up MBFS algorithm: "+e);
 				}
 				break;
+
+			case "FASK":
+				try {
+					getScore();
+					Fask fask = new Fask(this.data, this.score);
+					//fask.setCutoff(this.faskAlpha);
+					fask.setDepth(this.faskMaxSizeConditioningSet);
+					fask.setPenaltyDiscount(this.faskPenaltyDiscount);
+					fask.setAlpha(this.faskAlphaTwoCycle);
+					fask.setKnowledge(this.knowledge);
+					fask.setExtraEdgeThreshold(this.faskThreshEdge);
+					fask.setUseFasAdjacencies(this.faskAdjFAS);
+					fask.setUseSkewAdjacencies(this.faskAfjCondCorr);
+					fask.setDelta(this.faskThreshJudgeNeg);
+
+					/*edu.cmu.tetrad.algcomparison.algorithm.multi.Fask fask = 
+						new edu.cmu.tetrad.algcomparison.algorithm.multi.Fask(this.score);
+					Parameters p = new Parameters();
+					p.set("depth", this.faskMaxSizeConditioningSet);
+					p.set("penaltyDiscount", this.penaltyDiscount);
+					p.set("extraEdgeThreshold", this.faskThreshEdge);
+					p.set("useFasAdjacencies", this.faskAdjFAS);
+					p.set("useCorrDiffAdjacencies", this.faskAfjCondCorr);
+					p.set("twoCycleAlpha", this.faskAlphaTwoCycle);
+					p.set("faskDelta", this.faskThreshJudgeNeg);
+					p.set("numberResampling", 0);*/
+
+					this.searchAlgorithm = fask;
+				} catch (Exception e) {
+					addToErrorMessages("Exception setting up FASK algorithm: "+e);
+				}
 		}
 		addToDebugMessages("Done with SearchAlgorithmWrapper constructor");
 	}
@@ -490,67 +535,210 @@ public class SearchAlgorithmWrapper {
 		} catch (Exception e){
 			addToErrorMessages("Issue parsing samplePrior:"+ e );
 		}
+
+		// FASK Parameters
+		try {
+			this.faskScore = params.get("-faskScore");
+		} catch (Exception e) {
+			addToErrorMessages("Issue parsing faskScore:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskAlpha") );
+			this.faskAlpha = temp.doubleValue();
+			if (this.faskAlpha < 0) {
+				addToErrorMessages("Alpha Must be Positive");
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskAlpha:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskPenaltyDiscount") );
+			this.faskPenaltyDiscount = temp.doubleValue();
+			if (this.faskPenaltyDiscount < 0) {
+				addToErrorMessages("Penalty Discount Must be Positive");
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskPenaltyDiscount:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskStructurePrior") );
+			this.faskStructurePrior = temp.doubleValue();
+			if (this.faskStructurePrior < 1.0) {
+				addToErrorMessages("Structure Prior Must be Greater than or equal to 1.0");
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskStructurePrior:"+ e );
+		}
+
+		try {
+			String temp = params.get("-faskDiscretize");
+			if (temp.equals("yes")) {
+				this.faskDiscretize = true;
+			} else if (temp.equals("no")) {
+				this.faskDiscretize = false;
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskDiscretize:"+ e );
+		}
+
+		try {
+			Integer temp = Integer.parseInt( params.get("-faskMaxSizeConditioningSet") );
+			this.faskMaxSizeConditioningSet = temp.intValue();
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskMaxSizeConditioningSet:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskAlphaTwoCycle") );
+			this.faskAlphaTwoCycle = temp.doubleValue();
+			if (this.faskAlphaTwoCycle < 0) {
+				addToErrorMessages("Alpha Must be Positive");
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskAlphaTwoCycle:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskThreshEdge") );
+			this.faskThreshEdge = temp.doubleValue();
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskThreshEdge:"+ e );
+		}
+
+		try {
+			Double temp = Double.parseDouble( params.get("-faskThreshJudgeNeg") );
+			this.faskThreshJudgeNeg = temp.doubleValue();
+			if (this.faskThreshJudgeNeg < -1 || this.faskThreshJudgeNeg > 0) {
+				addToErrorMessages("Threshold for judging degative coefficient edges must be between -1 and 0");
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskThreshJudgeNeg:"+ e );
+		}
+
+		try {
+			String temp = params.get("-faskAdjFAS");
+			if (temp.equals("yes")) {
+				this.faskAdjFAS = true;
+			} else if (temp.equals("no")) {
+				this.faskAdjFAS = false;
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskAdjFAS:"+ e );
+		}
+
+		try {
+			String temp = params.get("-faskAfjCondCorr");
+			if (temp.equals("yes")) {
+				this.faskAfjCondCorr = true;
+			} else if (temp.equals("no")) {
+				this.faskAfjCondCorr = false;
+			}
+		} catch (Exception e){
+			addToErrorMessages("Issue parsing faskAfjCondCorr:"+ e );
+		}
 	}
 
   private boolean getScore() {
-  	addToDebugMessages("In getScore");
+		addToDebugMessages("In getScore");
 
-    if (this.scoreType == null) {
-    	addToErrorMessages("scoreType can't be null");
-      throw new IllegalArgumentException ("scoreType can't be null");
-    }
+		if (this.scoreType == null) {
+			addToErrorMessages("scoreType can't be null");
+		  throw new IllegalArgumentException ("scoreType can't be null");
+		}
 
-    if (this.scoreType.equals("SEM_BIC")) {
-    	try {
-	      ICovarianceMatrix cov = new CovarianceMatrixOnTheFly(this.data);
-	      /*this.score = new SemBicScore(cov);
-				this.score.setPenaltyDiscount(this.penaltyDiscount);*/
-				SemBicScore semBicSocre = new SemBicScore(cov);
-				semBicSocre.setPenaltyDiscount(this.penaltyDiscount);
-				this.score = semBicSocre;
-			} catch (Exception e) {
-				addToErrorMessages("Exception trying to create SemBicScore: "+e.toString());
-				return false;
+		if (!this.algorithmType.equals("FASK")) {
+			if (this.scoreType.equals("SEM_BIC")) {
+	    		try {
+			      ICovarianceMatrix cov = new CovarianceMatrixOnTheFly(this.data);
+			      /*this.score = new SemBicScore(cov);
+					this.score.setPenaltyDiscount(this.penaltyDiscount);*/
+					SemBicScore semBicSocre = new SemBicScore(cov);
+					semBicSocre.setPenaltyDiscount(this.penaltyDiscount);
+					this.score = semBicSocre;
+				} catch (Exception e) {
+					addToErrorMessages("Exception trying to create SemBicScore: "+e.toString());
+					return false;
+				}
+				return true;
 			}
-			return true;
-		}
-		else if (this.scoreType.equals("Conditional_Gaussian_BIC")){
-			try {
-				Parameters p = new Parameters();
-				p.set("structurePrior", this.structurePrior);
-				p.set("penaltyDiscount", this.penaltyDiscount);
-				p.set("numCategoriesToDiscretize", this.numCatForDiscretize);
-				ConditionalGaussianBicScore s = new ConditionalGaussianBicScore();
-				this.score = s.getScore(this.data, p);
-			} catch (Exception e) {
-				addToErrorMessages("Couldn't creat ConditionalGaussianBicScore: "+e.toString());
-				return false;
+			else if (this.scoreType.equals("Conditional_Gaussian_BIC")){
+				try {
+					Parameters p = new Parameters();
+					p.set("structurePrior", this.structurePrior);
+					p.set("penaltyDiscount", this.penaltyDiscount);
+					p.set("numCategoriesToDiscretize", this.numCatForDiscretize);
+					ConditionalGaussianBicScore s = new ConditionalGaussianBicScore();
+					this.score = s.getScore(this.data, p);
+				} catch (Exception e) {
+					addToErrorMessages("Couldn't creat ConditionalGaussianBicScore: "+e.toString());
+					return false;
+				}
+				return true;
 			}
-			return true;
-		}
-		else if (this.scoreType.equals("BDeu")) {
-			try {
-				BDeuScore bDeuScore = new BDeuScore(this.data);
-				bDeuScore.setStructurePrior(this.structurePrior);
-				bDeuScore.setSamplePrior(this.samplePrior);
-				this.score = bDeuScore;
-			} catch (Exception e) {
-				addToErrorMessages("Coundn't create BDeuScore: "+e.toString());
-				return false;
+			else if (this.scoreType.equals("BDeu")) {
+				try {
+					BDeuScore bDeuScore = new BDeuScore(this.data);
+					bDeuScore.setStructurePrior(this.structurePrior);
+					bDeuScore.setSamplePrior(this.samplePrior);
+					this.score = bDeuScore;
+				} catch (Exception e) {
+					addToErrorMessages("Coundn't create BDeuScore: "+e.toString());
+					return false;
+				}
+				return true;
 			}
-			return true;
-		}
-		else if (this.scoreType.equals("Discrete_BIC")) {
-			try {
-				Parameters p = new Parameters();
-				p.set("penaltyDiscount", this.penaltyDiscount);
-				DiscreteBicScore s = new DiscreteBicScore();
-				this.score = s.getScore(this.data, p);
-			} catch (Exception e) {
-				addToErrorMessages("Couldn't creat DiscreteBicScore: "+e.toString());
-				return false;
+			else if (this.scoreType.equals("Discrete_BIC")) {
+				try {
+					Parameters p = new Parameters();
+					p.set("penaltyDiscount", this.penaltyDiscount);
+					DiscreteBicScore s = new DiscreteBicScore();
+					this.score = s.getScore(this.data, p);
+				} catch (Exception e) {
+					addToErrorMessages("Couldn't creat DiscreteBicScore: "+e.toString());
+					return false;
+				}
+				return true;
 			}
-			return true;
+		} else if (this.algorithmType.equals("FASK")) {
+			if (this.faskScore.equals("Conditional_Gaussian_BIC")) {
+				try {
+					Parameters p = new Parameters();
+					p.set("structurePrior", this.faskStructurePrior);
+					p.set("penaltyDiscount", this.faskPenaltyDiscount);
+					p.set("numCategoriesToDiscretize", this.numCatForDiscretize);
+					ConditionalGaussianBicScore s = new ConditionalGaussianBicScore();
+					this.score = s.getScore(this.data, p);
+				} catch (Exception e) {
+					addToErrorMessages("Couldn't create ConditionalGaussianBicScore: "+e.toString());
+					return false;
+				}
+				return true;
+			} else if (this.faskScore.equals("Fisher_Z")) {
+				try {
+					ScoreWrapper scoreWrap = new FisherZScore();
+					Parameters p = new Parameters();
+					p.set("alpha", this.faskAlpha);
+					this.score = scoreWrap.getScore(this.data, p);
+					addToDebugMessages("Made fish z score");
+				} catch (Exception e) {
+					addToErrorMessages("Couldn't create FisherZScore: "+e.toString());
+					return false;
+				}
+			} else if (this.faskScore.equals("SEM_BIC")) {
+				try {
+					ICovarianceMatrix cov = new CovarianceMatrixOnTheFly(this.data);
+					SemBicScore semBicSocre = new SemBicScore(cov);
+					semBicSocre.setPenaltyDiscount(this.faskPenaltyDiscount);
+					this.score = semBicSocre;
+				} catch (Exception e) {
+					addToErrorMessages("Exception trying to create SemBicScore: "+e.toString());
+					return false;
+				}
+				return true;
+			}
 		}
 		return false;
 	}

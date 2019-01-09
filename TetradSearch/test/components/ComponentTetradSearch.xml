@@ -1,5 +1,5 @@
 <component>
-  <component_id>ComponentTestOutput</component_id>
+  <component_id>ComponentTestOutputFASK</component_id>
   <component_id_human>TetradSearch #1</component_id_human>
   <workflow_id>6</workflow_id>
   <component_name>TetradSearch</component_name>
@@ -13,28 +13,39 @@
   </connections>
   <top>106</top>
   <options>
-	  <completeRuleSetUsed>no</completeRuleSetUsed>
-    <faithfulnessAssumed>no</faithfulnessAssumed>
-    <useHeuristic>yes</useHeuristic>
-    <scoreTypeDiscrete>Conditional_Gaussian_BIC</scoreTypeDiscrete>
-    <testTypeMixed>Conditional_Gaussian_LRT</testTypeMixed>
-    <numCatForDiscretize>3</numCatForDiscretize>
-    <structurePrior>1</structurePrior>
-    <maxDegree>100</maxDegree>
-    <maxPathLength>3</maxPathLength>
-    <algorithm>PC</algorithm>
-    <symmetricFirstStep>no</symmetricFirstStep>
-    <maxSizeConditioningSet>-1</maxSizeConditioningSet>
-    <dataType>Mixed</dataType>
+	<algorithm>FASK</algorithm>
+    <dataType>Completely_Continuous</dataType>
     <testTypeDiscrete>GSquare</testTypeDiscrete>
-    <testTypeContinuous>Fisher_Z</testTypeContinuous>
-    <maxLengthDiscriminatingPath>-1</maxLengthDiscriminatingPath>
-    <alpha>0.6</alpha>
-    <samplePrior>3</samplePrior>
-    <penaltyDiscount>2</penaltyDiscount>
-    <scoreTypeMixed>Conditional_Gaussian_BIC</scoreTypeMixed>
+    <testTypeContinuous>Conditional_Gaussian_LRT</testTypeContinuous>
+    <testTypeMixed>Conditional_Gaussian_LRT</testTypeMixed>
     <scoreTypeContinuous>Conditional_Gaussian_BIC</scoreTypeContinuous>
+    <scoreTypeDiscrete>Conditional_Gaussian_BIC</scoreTypeDiscrete>
+    <scoreTypeMixed>Conditional_Gaussian_BIC</scoreTypeMixed>
+    <alpha>0.001</alpha>
+    <penaltyDiscount>2</penaltyDiscount>
+    <samplePrior>1</samplePrior>
+    <structurePrior>1</structurePrior>
     <discretizeContinuousVars>yes</discretizeContinuousVars>
+    <numCatForDiscretize>3</numCatForDiscretize>
+    <maxSizeConditioningSet>-1</maxSizeConditioningSet>
+    <useHeuristic>yes</useHeuristic>
+    <maxPathLength>3</maxPathLength>
+    <symmetricFirstStep>no</symmetricFirstStep>
+    <faithfulnessAssumed>no</faithfulnessAssumed>
+    <maxDegree>100</maxDegree>
+    <maxLengthDiscriminatingPath>-1</maxLengthDiscriminatingPath>
+    <completeRuleSetUsed>no</completeRuleSetUsed>
+    <faskScore>Fisher_Z</faskScore>
+    <faskAlpha>0.9</faskAlpha>
+    <faskPenaltyDiscount>2</faskPenaltyDiscount>
+    <faskStructurePrior>1</faskStructurePrior>
+    <faskDiscretize>yes</faskDiscretize>
+    <faskMaxSizeConditioningSet>-1</faskMaxSizeConditioningSet>
+    <faskAlphaTwoCycle>0.000001</faskAlphaTwoCycle>
+    <faskThreshEdge>0.3</faskThreshEdge>
+    <faskThreshJudgeNeg>-0.2</faskThreshJudgeNeg>
+    <faskAdjFAS>yes</faskAdjFAS>
+    <faskAfjCondCorr>yes</faskAfjCondCorr>
   </options>
   <inputs>
     <input0>
