@@ -13,6 +13,11 @@ And either "Problem Start Time" or "Problem View" field is also required to be p
 </p>
 <p>There are currently two types of output: transaction and student-step rollup. For transaction output, four columns are computed or re-computed: 'Duration (sec)', 'Is Last Attempt', 'Attempt At Step' and 'Outcome'.
  For student-step rollup, output fields are as same as those in Datashop student-step rollup. Field such as "Opportunity (model name)" is particularly useful for analysis components such as Linear Modeling, AFM, and etc. 
+ The student-step level aggregation is problem view based, meaning different problem views for the same problem and step will be aggregated into different student-step rows. 
+ If problem view is not present, aggregation algorithm will use problem start time to compute probelm view, 
+ meaning data with the same problem start time for the same problem and step are assigned with the same problem view, and thus are aggregated into one student-step row. 
+ If you are not sure what problem view to use, leave problem view column out and let the component compute probelm views for you.
+ <a href="https://pslcdatashop.web.cmu.edu/help?page=export#table-by-student-step" target="_blank">Datashop help</a>
 </p>
 </abstract>
 <description>This component allows you to transform transaction data into Datashop formatted transaction or student-step rollup data.</description>
