@@ -96,7 +96,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Knowledge Components" />
       <xs:enumeration value="Students" />
-      <xs:enumeration value="All Student KCs" />
+      <xs:enumeration value="All Students, All KCs" />
     </xs:restriction>
   </xs:simpleType>
 

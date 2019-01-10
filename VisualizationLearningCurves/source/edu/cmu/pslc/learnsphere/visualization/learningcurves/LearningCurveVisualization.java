@@ -260,7 +260,7 @@ public class LearningCurveVisualization {
                     // 1) by Opportunity, 2) by Step, or 3) by Student
                     if (learningCurveType != null
                             && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
-                        // For 'By Student', across all students
+                        // Composite: all students, all KCs
                         criteria = sampleName + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, lcOptions.getPrimaryModelName());
                         hsCriteria = lcOptions.getPrimaryModelName();

@@ -23,7 +23,7 @@ One or more image (.png) files, depicting the requested learning curve(s).
 <b>Model: </b>the Knowledge Component (KC) model to plot<br/>
 <b>View secondary: </b>flag indicating whether or not to display secondary model curves<br/>
 <b>Secondary model(s): </b>one or more secondary KCs to include on graph<br/>
-<b>Learning curve type: </b>Knowledge Components, Students, or All Student KCs<br/>
+<b>Learning curve type: </b>Knowledge Components, Students, or All Students, All KCs (a composite across all students and all KCs)<br/>
 <b>Learning curve metric: </b>Error Rate, Assistance Score, Number of Incorrects, Number of Hints, Step Duration, Correct Step Duration, or Error Step Duration<br/>
 <b>Categorize curves: </b>flag indicating whether or not to categorize the generated learning curves<br/>
 <b>Student threshold: </b>The categorization algorithm first discards points in each curve based on the <strong>student threshold</strong>. If a point has fewer than that number of students, it is ignored. (default: 10)<br/>

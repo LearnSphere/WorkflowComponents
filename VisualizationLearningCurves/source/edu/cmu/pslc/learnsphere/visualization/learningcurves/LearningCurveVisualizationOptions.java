@@ -17,7 +17,7 @@ public class LearningCurveVisualizationOptions {
         },
         CRITERIA_STUDENT_STEPS_ALL(1) {
             public String toString() {
-                return "All Student KCs";
+                return "All Students, All KCs";
             }
             public String getId() {
                 return "all_student_kcs";
