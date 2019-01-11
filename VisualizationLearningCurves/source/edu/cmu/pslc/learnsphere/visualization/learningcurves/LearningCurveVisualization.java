@@ -715,7 +715,6 @@ public class LearningCurveVisualization {
                     sb.append(", ");
                 }
                 sb.append("]");
-                logger.fatal("Result: " + Arrays.toString(result) + sb.toString());
             }
 
             if (br != null) {
@@ -794,7 +793,7 @@ public class LearningCurveVisualization {
                 logger.debug("LC Graph Image filePath: " + fullFilePath);
 
                 // Determine AFM slope (gamma) using parameters file, if present. Null otherwise.
-                Double gamma = getGamma(key, parametersFile);
+                Double gamma = getGamma(key, lcOptions.isViewBySkill(), parametersFile);
 
                 lcImage = producer.produceDataset(key, gamma, lcOptions, lcGraphOptions, lcData.get(key));
 
@@ -829,14 +828,18 @@ public class LearningCurveVisualization {
     /**
      * Helper method to read AFM gamma (slope) value from parameters file, if present.
      *
-     * @param skillName the skill of interest
+     * @param objName the object of interest, skill or student
+     * @param isSkill flag indicating object is skill or not (student)
      * @param parametersFile the file with AFM output parameters
      * @return Double the gamma value
      */
-    private Double getGamma(String skillName, File parametersFile) {
+    private Double getGamma(String objName, Boolean isSkill, File parametersFile) {
+
         if (parametersFile == null) { return null; }
 
-        // Parse XML parameters file for gamma of named skill.
+        String typeStr = isSkill ? "skill" : "student";
+
+        // Parse XML parameters file for gamma of named object and type.
         SAXBuilder builder = new SAXBuilder();
         builder.setReuseParser(false);
         try {
@@ -852,7 +855,7 @@ public class LearningCurveVisualization {
                     List<Element> children = e.getChildren();
                     String pType = e.getChildText("type");
                     String pName = e.getChildText("name");
-                    if (pType.equalsIgnoreCase("skill") && pName.equalsIgnoreCase(skillName)) {
+                    if (pType.equalsIgnoreCase(typeStr) && pName.equalsIgnoreCase(objName)) {
                         String pSlope = e.getChildText("slope");
                         return new Double(pSlope);
                     }

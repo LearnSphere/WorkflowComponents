@@ -53,6 +53,7 @@ import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.util.LogUtils;
 import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.ErrorBarType;
 import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.LearningCurveMetric;
+import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.LearningCurveType;
 
 
 
@@ -198,8 +199,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
     /**
      * Creates a dataset from the list of passed in parameters and this producers db results.
-     * @param skillName name of the particular skill
-     * @param skillGamma AFM slope (gamma) for specified skill; null if not present
+     * @param objName name of the particular object, e.g., skill, student or model
+     * @param objGamma AFM slope (gamma) for specified object; null if not present
      * @param params collection of parameters for creating the map.
      * @param lcOptions the learning curve options
      * @return LearningCurveImage object which includes, if appropriate, the classification.
@@ -217,8 +218,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
      * table. Default = false</li>
      * </ul>
      */
-    public LearningCurveImage produceDataset(String skillName,
-                                             Double skillGamma,
+    public LearningCurveImage produceDataset(String objName,
+                                             Double objGamma,
                                              LearningCurveVisualizationOptions lcOptions,
                                              GraphOptions lcGraphOptions,
                                              List<LearningCurvePoint> lcPointList) {
@@ -307,7 +308,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             if (isClassifying(lcOptions)) {
                 if (graphPoint.getErrorRates() == null) {
                     validPoints.remove(graphPoint);
-                } else if (graphPoint.getStudentsCount() < lcOptions.getStudentThreshold()) {
+                } else if ((graphPoint.getStudentsCount() < lcOptions.getStudentThreshold())
+                           && lcOptions.isViewBySkill()) {
+                    // Don't drop points if !isViewBySkill because studentCount is always 1
                     validPoints.remove(graphPoint);
                 } else {
                     // Look at errorRate for 'low and flat'
@@ -498,8 +501,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         // Classify curves when appropriate.
         if (isClassifying(lcOptions)) {
-            lcImage.setClassification(classifyLearningCurve(skillName,
-                                                            skillGamma,
+            lcImage.setClassification(classifyLearningCurve(objName,
+                                                            objGamma,
                                                             lcOptions,
                                                             validPoints,
                                                             lowAndFlat));
@@ -594,7 +597,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
      * @return flag
      */
     private Boolean isClassifying(LearningCurveVisualizationOptions lcOptions) {
-        return (lcOptions.getClassifyCurves() && lcOptions.isViewBySkill()
+        // We don't classify the composite curve: All Students, All KCs
+        return (lcOptions.getClassifyCurves()
+                && (!lcOptions.getLearningCurveType().equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL))
                 && (lcOptions.getSelectedMetric().equals(LearningCurveMetric.ERROR_RATE)));
     }
 
@@ -786,15 +791,6 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             ChartUtilities.saveChartAsPNG(file, chart, width.intValue(), height.intValue());
             return file;
 
-            // Write the image map to the PrintWriter.
-            // This is necessary to get the point info tool tips as well as
-            // the point select functionality.
-            ///if (!isThumb) {
-            ///    ChartUtilities.writeImageMap(pw, filename, info,
-            ///        new LearningCurveToolTipFragmentGenerator(),
-            ///        new StandardURLTagFragmentGenerator());
-            ///    pw.flush();
-            ///}
         } catch (Exception exception) {
             logger.error("Exception Creating PNG image" + exception.toString(), exception);
         }
@@ -911,37 +907,28 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     }
 
     /**
-     * Create cache of point info to display for given typeIndex and contentType.
-     * @param params contains typeIndex, contentType parameters
-     * @return cache of point info to display for given typeIndex and contentType
-     */
- ///   public LearningCurvePointContext pointInfoContext(Map<String, Object> params) {
- ///       return new LearningCurvePointContext(tableResults, (Long)params.get(TYPE_INDEX),
- ///               (String)params.get("lcMetric"));
- ///   }
-
-    /**
      * Consider this learning curve's dataset and classify it.
-     * @param skillName the name of the skill in this dataset
+     * @param objName name of the particular object, e.g., skill, student or model
+     * @param objGamma AFM slope (gamma) for specified object; null if not present
      * @param lcOptions the LearningCurveVisualizationOptions
      * @param validPoints  list of opportunities being classified
      * @param lowAndFlat indication if all opportunities have error below threshold
      * @return label for the classification
      */
-    public String classifyLearningCurve(String skillName,
-                                        Double skillGamma,
+    public String classifyLearningCurve(String objName,
+                                        Double objGamma,
                                         LearningCurveVisualizationOptions lcOptions,
                                         List<LearningCurvePoint> validPoints,
                                         Boolean lowAndFlat) {
 
         if (!lcOptions.getClassifyCurves()) {
-            logDebug("classifyLearningCurve: getClassifyThumbnails is false");
+            logDebug("classifyLearningCurve: getClassifyCurves is false");
             return LearningCurveImage.NOT_CLASSIFIED;
         }
 
-        // Only classify if 'view by skill'.
-        if (!lcOptions.isViewBySkill()) {
-            logDebug("classifyLearningCurve: isViewBySkill is false");
+        // Don't classify the composite curve: All Students, All KCs
+        if (lcOptions.getLearningCurveType().equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
+            logDebug("classifyLearningCurve: learningCurveType is 'All Students, All KCs'");
             return LearningCurveImage.NOT_CLASSIFIED;
         }
 
@@ -966,7 +953,14 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
         }
 
         // CLASSIFIED_NO_LEARNING
-        Double afmSlope = getAfmSlope(lcOptions.getPrimaryModelName(), skillName, skillGamma);
+        /*
+         * AFM does not compute slope for students so the following only makes
+         * sense for students if objGamma is supplied. This is possible if the 
+         * component is given the optional parameters file input; iAFM will
+         * compute slope values for students so that output could be used.
+         */
+        Double afmSlope = getAfmSlope(lcOptions.getPrimaryModelName(),
+                                      lcOptions.isViewBySkill(), objName, objGamma);
         if ((afmSlope != null) && (afmSlope <= lcOptions.getAfmSlopeThreshold())) {
             logDebug("classifyLearningCurve: no learning: afmSlopeThreshold = ",
                      lcOptions.getAfmSlopeThreshold());
@@ -988,17 +982,24 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     }
 
     /**
-     * Determine, if available, the AFM slope for the specified Skill.
+     * Determine, if available, the AFM slope for the specified object -- skill or student.
      * @param modelName the name of the model
-     * @param skillName the name of the skill, within the model
-     * @param skillGamma the AFM slope, if present
+     * @param isViewBySkill flag indicating if LC type is 'by KCs' or 'by Students'
+     * @param skillName the name of the skill
+     * @param objGamma the slope, if present
      * @return the AFM slope
      */
-    public Double getAfmSlope(String modelName, String skillName, Double skillGamma) {
+    public Double getAfmSlope(String modelName, Boolean isViewBySkill, String skillName, Double objGamma) {
 
-        if (skillGamma != null) { return skillGamma; }
+        //        logDebug("*** getAfmSlope: isViewBySkill = ", isViewBySkill, ", skillName = ", skillName, ", objGamma = ", objGamma);
+
+        if (objGamma != null) { return objGamma; }
 
         if (stepRollupFile == null) { return null; }
+
+        // AFM does not compute slope for students. If objGamma wasn't specified
+        // and this is not 'isViewBySkill' then we are done here.
+        if (!isViewBySkill) { return null; }
 
         PenalizedAFMTransferModel penalizedAFMTransferModel = new PenalizedAFMTransferModel();
 
