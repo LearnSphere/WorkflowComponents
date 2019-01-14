@@ -74,11 +74,19 @@
     </xs:sequence>
   </xs:complexType>
 
-  
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="datasetId" ls:dependsOn="useDatashopDataset" ls:constraint="matches(true)" />
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="importNewKCModel" ls:dependsOn="useDatashopDataset" ls:constraint="matches(true)" />
+    </xs:choice>
+</xs:complexType>
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="xs:boolean" name="useTitleAsSkillId" id="Use_Title_as_Skill_Id" default="false" />
+        <xs:element type="xs:boolean" name="useDatashopDataset" id="Use_Datashop_dataset" default="false" />
+        <xs:element type="xs:integer" name="datasetId" id="dataset_id" default="0" />
+        <xs:element type="xs:boolean" name="importNewKCModel" id="Import_new_KC_model" default="false" />
     </xs:choice>
   </xs:complexType>
 

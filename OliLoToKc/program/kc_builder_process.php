@@ -2,6 +2,9 @@
 session_start();
 include("includes/common_functions.php");
 
+
+$debugFileName = "debug.wfl";
+
 // Process command line arguments and get program/working directories
 $program_dir=get_from_command_line($argv, "-programDir") . "program/";
 $program_dir=str_replace("/", DIRECTORY_SEPARATOR, $program_dir);
@@ -71,7 +74,7 @@ function load_kc($filename,$model_name) {
 				$insert.="VALUES('$data[0]','$data[1]','$data[2]',$data[3],'$data[4]',$data[5],$data[6],$data[7],$data[8],$data[9],$data[10],$data[11],$data[12],$data[13],$data[14],$data[15]);";
 				$sqlite->query($insert) or die($sqlite->error . "<br> $insert");
 				$last_id = $sqlite->lastInsertRowID();
-				
+
 				if(!load_skills_ds_qn($last_id, $data)){
 					if(!load_skills_ds_pool_qn($last_id, $data)){						
 						load_skills_ds_act($last_id, $data);
@@ -103,6 +106,9 @@ function load_kc($filename,$model_name) {
 	    }	
 	    fclose($handle);
 	}
+
+        $debugStr = "finished processing the input file" . "\n";
+        save_out_file("debug.wfl", $debugStr);
 
 	$header_row_str="Step ID	Problem Hierarchy	Problem Name	Max Problem View	Step Name	Avg. Incorrects	Avg. Hints	Avg. Corrects	% First Attempt Incorrects	% First Attempt Hints	% First Attempt Corrects	Avg. Step Duration (sec)	Avg. Correct Step Duration (sec)	Avg. Error Step Duration (sec)	Total Students	Total Opportunities";
 	for ($i = 0; $i < count($original_kc_model_names); $i++) {
@@ -210,7 +216,7 @@ function num_skills_in_step($data, $id) {
 
 function save_out_file($filename,$content) {
 	$working_dir=$_SESSION['working_dir'];
-	$outFile = fopen($working_dir . $filename, "w");
+	$outFile = fopen($working_dir . $filename, "a+");
 	fwrite($outFile, $content);
 	fclose($outFile);
 }
@@ -415,6 +421,15 @@ function get_file_from_command_line($args, $node_index) {
 	for ($i = 0; $i <= count($args); $i++) {
 		$arg = $args[$i];
 
+                // Check first to see if the -kcmExportFile arg exists
+                if (strcmp($arg, "-kcmFileName") == 0) {
+
+                   $debugStr = "found kc_file using -kcmFileName arg " . "\n";
+                   save_out_file("debug.wfl", $debugStr);
+
+                   return $args[$i + 1];
+                }
+
 		// If the arg is -node, then a file is about to be defined
 		if (strcmp($arg, "-node") == 0) {
 
@@ -470,6 +485,9 @@ $sqlite = $_SESSION['sqlite'];
 
 $kc_file=get_file_from_command_line($argv, "1");
 
+$debugStr = "kc_file = " . $kc_file . "\n";
+save_out_file($debugFileName, $debugStr);
+
 $_SESSION['useTitleAsSkillId']=get_from_command_line($argv, "-useTitleAsSkillId");
 if (strcmp($_SESSION['useTitleAsSkillId'], "true") == 0) {
 	// Use title instead of the skill id
@@ -482,13 +500,20 @@ $model_name=ensure_model_name_is_valid($model_name);
 
 try {
 	load_DB($path);
+        $debugStr = "db loaded: " . $path . "\n";
+        save_out_file($debugFileName, $debugStr);
 } catch (Exception $e) {
-	error_log("Exception loading temp db: " . $e);
+	$errorStr = "Exception loading temp db: " . $e;
+        save_out_file($debugFileName, $errorStr);
 }
+
 try {
 	load_kc($kc_file, $model_name);
+        $debugStr = "kc loaded: " . $model_name . "\n";
+        save_out_file($debugFileName, $debugStr);
 } catch (Exception $e) {
-	error_log("Exception loading kc's: " . $e);
+	$errorStr = "Exception loading kc's: " . $e;
+        save_out_file($debugFileName, $errorStr);
 }
 
 // Close and delete the database

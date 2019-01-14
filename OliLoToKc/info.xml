@@ -29,7 +29,10 @@
 </outputs>
 
 <options>
-<b>Use Title as Skill Id</b> - Many of the skill id's are uninteligible. Using the title would make the KC model output more readable. If this is true, ensure that the titles are unique.
+<b>Use Title as Skill Id</b> - Many of the skill id's are uninteligible. Using the title would make the KC model output more readable. If this is true, ensure that the titles are unique.<br/>
+<b>Use DataShop Dataset</b> - Flag indicating whether or not to use a DataShop dataset to read the KC model. If true, the template KC model (second input) is ignored.<br/>
+<b>Dataset id</b> - An optional parameter that specifies the database id of the DataShop dataset the KC model should be pulled from and (optionally) imported to.<br/>
+<b>Import new KC model</b> - Optionally import the newly-generated KC model into the specified DataShop dataset.
 </options>
 
 </info>
