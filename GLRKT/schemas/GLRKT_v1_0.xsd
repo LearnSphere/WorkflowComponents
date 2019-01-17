@@ -127,10 +127,10 @@
     <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
-        <xs:element type="prespecfeaturesOption"  name="prespecfeatures"  id="Prespecfeatures" default="basesuc,basefail,basesuc,basefail,propdec"/>
-        <xs:element type="plancomponentsOption"  name="plancomponents"  id="Plancomponents" default="KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"/>
-        <xs:element type="fixedparsOption"  name="fixedpars"  id="Fixedpars" default=".3,.3,.3,.3,.97"/>
-        <xs:element type="seedparsOption"  name="seedpars"  id="Seedpars" default=".3,.3,.3,.3,.025"/>
+        <xs:element type="prespecfeaturesOption"  name="prespecfeatures" id="Prespecfeatures" default="basesuc,basefail,basesuc,basefail,propdec"/>
+        <xs:element type="plancomponentsOption"  name="plancomponents" id="Plancomponents" default="KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"/>
+        <xs:element type="fixedparsOption"  name="fixedpars" id="Fixedpars" default=".3,.3,.3,.3,.97"/>
+        <xs:element type="seedparsOption"  name="seedpars" id="Seedpars" default=".3,.3,.3,.3,.025"/>
       </xs:choice>
     </xs:complexType>
  
