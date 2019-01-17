@@ -12,7 +12,7 @@
         </connection>
     </connections>
     <options>
-      <ift>tab-delimited</ift>
+      <ift>Tab-delimited</ift>
       <oft>JSON</oft>
   </options>
 

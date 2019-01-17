@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RISE</title>
+    <script src="javascript/lib/d3.v4.min.js"></script>
+    <script src="javascript/lib/jquery-1.7.1.min.js"></script>
+    <script src="javascript/lib/canvg.min.js"></script>
+    <style>
+        body {
+        font-family: 'Open Sans', sans-serif;
+    }
+        .link {
+        stroke: #ccc;
+    }
+
+    .node text {
+        pointer-events: none;
+        font: 14px sans-serif;
+        text-color: blue;
+    }
+
+    .scatterTooltip {
+        border: 1px solid black;
+        background: rgb(144, 168, 200);
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        width: auto;
+        height: auto;
+        pointer-events: none;
+    }
+
+    .messages {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 5px;
+        max-height: 4em;
+        max-width: 30%;
+        overflow: auto;
+        color: red;
+        cursor: pointer;
+    }
+
+    .loadingDiv {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        font-size: 5em;
+    }
+
+    #downloadGraphImage {
+        padding: 5px 10px;
+        margin: 2px 5px;
+        cursor: pointer;
+        white-space: nowrap;
+        -webkit-appearance: button;
+        /* WebKit */
+        -moz-appearance: button;
+        /* Mozilla */
+        -o-appearance: button;
+        /* Opera */
+        -ms-appearance: button;
+        /* Internet Explorer */
+        appearance: button;
+        /* CSS3 */
+    }
+    svg {
+        overflow: visible;
+    }
+    #toggleAdvOpt {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+    .advOptTable {
+        border-spacing: 0px;
+        border: 1px black solid;
+        padding: 5px;
+    }
+
+    .advancedOptions {
+        position: absolute;
+        background: white;
+    }
+
+    .advancedOptions,
+    .advancedOptions input {
+        font-size: 0.8em;
+    }
+    .zScoreLine {
+        stroke: black;
+    }
+    </style>
+</head>
+
+<body>
+    <table class="allOptions">
+        <tr>
+            <td>
+                <div class="downloadGraphButton">
+                    <a id="downloadGraphImage" download="rise.png">Save As PNG</a>
+                    <canvas id="canvasConversion" style="display:none"></canvas>
+                </div>
+            </td>
+            <td style="display:inline">
+                <span id="toggleAdvOpt" href="#">Show Advanced Options</span>
+                <div class="advancedOptions" style="display:none">
+                    <table class="advOptTable">
+                        <tr class="options scatterOptions">
+                            <td>Page View Variable:</td>
+                            <td><select id="xVarSelect"></select></td>
+                        </tr>
+                        <tr class="options scatterOptions">
+                            <td>Score Variable:</td>
+                            <td><select id="yVarSelect"></select></td>
+                        </tr>
+                        <!--Color Categorize:-->
+                        <select id="catVarSelect" style="display:none">
+                            <option value="none">None</option>
+                        </select>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="messages"></div>
+    <div id="svgContainer" style="width:75%;height:100%;float:left;"></div>
+    <div class="loadingDiv" style="">Loading...</div>
+    <script type="text/javascript">
+    var MINIMUM_COLUMN_WIDTH = 20;
+
+    // Global Vars
+    var d3TsvData = null;
+    var margin = null;
+    var width = null;
+    var height = null;
+    var x = null;
+    var y = null;
+    var svg = null;
+    var xVar = null;
+    var yVar = null;
+    var catVar = null;
+    var isDateX = false;
+    var isDateY = false;
+    var tip = null;
+
+    jQuery(document).ready(function() {
+        initiateInterface();
+
+        d3.tsv("${input0}", function(error, data) {
+            if (error) throw error;
+
+            d3TsvData = data;
+            populateHeaderSelect(data);
+            createAdvancedOptions();
+
+            // With the default values, create a graph
+            createScatterPlotWrapper();
+
+        });
+    });
+
+    function initiateInterface() {
+        allowSaveableImage();
+
+        // Close Adv. Opt. when clickint outside of the advanced options
+        $(document).mouseup(function(e) {
+            var advOptDiv = jQuery(".advancedOptions");
+            let toggleButton = jQuery('#toggleAdvOpt');
+
+            // if the target of the click isn't the advOptDiv nor a descendant of the advOptDiv
+            if (!advOptDiv.is(e.target) && advOptDiv.has(e.target).length === 0 &&
+                !toggleButton.is(e.target)) {
+                advOptDiv.hide();
+            } else if (toggleButton.is(e.target)) {
+                advOptDiv.toggle();
+            }
+        });
+
+        // Set functionality for changing an option
+        jQuery('.options select, .options input').change(function() {
+            clearMessageBox();
+
+            // Update advanced options
+            if (jQuery(this).attr('id') === 'xVarSelect') {
+                //jQuery('input[name="xLabel"]').val(jQuery('#xVarSelect').val());
+                jQuery('input[name="xLabel"]').val('Average Page Views');
+            } else if (jQuery(this).attr('id') === 'yVarSelect') {
+                //jQuery('input[name="yLabel"]').val(jQuery('#yVarSelect').val());
+                jQuery('input[name="yLabel"]').val('Average Score');
+            }
+
+            advancedOptionsToObject();
+
+            displayAdvancedOptions();
+
+            createScatterPlotWrapper();
+        });
+    }
+
+    function createScatterPlotWrapper() {
+        clearMessageBox();
+
+        loading(true);
+
+        xVar = jQuery('#xVarSelect').val();
+        yVar = jQuery('#yVarSelect').val();
+        catVar = jQuery('#catVarSelect').val();
+
+        // Get the data in a json format based on the selected variable
+        let data = formatDataScatterPlot(d3TsvData);
+
+        createScatterPlot(data);
+
+        loading(false);
+    }
+
+    /**
+     * Prepare the SVG area for a graph to be put into it
+     */
+    function setupGraph(data) {
+        advancedOptionsToObject();
+
+        // set the dimensions and margins of the graph
+        let winWidth = jQuery(window).width();
+        let winHeight = jQuery(window).height();
+        margin = {
+            top: 10,
+            right: Math.min(120, winWidth * .05),
+            bottom: Math.min(60, winHeight * .05),
+            left: Math.min(70, winWidth * .15)
+        };
+
+        MINIMUM_COLUMN_WIDTH = parseInt(advOpt.barWidth);
+        let maxWidth = Math.min(jQuery(window).width() - 20, 2000);
+
+        width = maxWidth - margin.left - margin.right;
+        height = jQuery(window).height() * 0.8 - margin.top - margin.bottom;
+
+        // ensure that the height and width ratios aren't too crazy
+        if ((width > height) && (width / height) > 1.5) {
+            width = height * 1.5;
+        } else if ((height > width) && (height / width) > 1.5) {
+            height = width * 1.5;
+        }
+
+        if (tip != null) {
+            tip.destroy();
+            tip = null;
+        }
+
+        // Remove previous graph
+        jQuery('#svgContainer').html('');
+
+        // append the svg object to the body of the page
+        // append a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        svg = d3.select("#svgContainer").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")")
+            .call(d3.zoom().on("zoom", zoomed));
+
+        // Add a background to the svg
+        svg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#ebebeb");
+    }
+
+    //////////////////////////////////////////////////////////////
+    //////////    Use D3 to create the svg graph    //////////////
+    //////////////////////////////////////////////////////////////
+
+    function createScatterPlot(data) {
+        setupGraph(data);
+
+        // setup x 
+        var xValue = function(d) { return d[xVar]; }; // data -> value
+        var xScale = null;
+        if (isDateX) {
+            xScale = d3.scaleTime().range([0, width]);
+        } else {
+            xScale = d3.scaleLinear().range([0, width]); // value -> display
+        }
+        var xMap = function(d) { return xScale(xValue(d)); }; // data -> display
+
+        // setup y
+        var yValue = function(d) { return d[yVar]; }; // data -> value
+        var yScale = null;
+        if (isDateY) {
+            yScale = d3.scaleTime().range([height, 0]);
+        } else {
+            yScale = d3.scaleLinear().range([height, 0]); // value -> display
+        }
+        var yMap = function(d) { return yScale(yValue(d)); }; // data -> display
+
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        /*var color = d3.scaleOrdinal(['#FF0000', '#FF7F00', '#FFFF00', 
+            '#7FFF00', '#00FF00', '#00AF8F', '#0000FF',
+            '#4B0082', '#9400D3', '#000000'
+        ]);*/
+
+        // setup fill color
+        var cValue = null;
+        if (catVar !== "none") {
+            cValue = function(d) { return d[catVar]; }
+        } else {
+            color = d3.scaleOrdinal([advOpt.pointColor]);
+            cValue = function(d) { return "uncategorized"; }
+        }
+
+        // add the tooltip area to the webpage
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "scatterTooltip")
+            .style("opacity", 0);
+
+        // don't want dots overlapping axis, so add in buffer to data domain
+        let minXval = d3.min(data, xValue);
+        let maxXval = d3.max(data, xValue);
+        let minYval = d3.min(data, yValue);
+        let maxYval = d3.max(data, yValue);
+        // Need the Z values to determine the scale
+        let xStdDev = getStandardDeviationOfVariable(data, xVar);
+        let yStdDev = getStandardDeviationOfVariable(data, yVar);
+        let xMean = getAverageOfVariable(data, xVar);
+        let yMean = getAverageOfVariable(data, yVar);
+
+        let xPadding = (maxXval - minXval) * 0.1;
+        let yPadding = (maxYval - minYval) * 0.1;
+
+        let xScaleMin = xMean - 3 * xStdDev - xPadding;
+        let xScaleMax = xMean + 3 * xStdDev + xPadding;
+        let yScaleMin = yMean - 3 * yStdDev - yPadding;
+        let yScaleMax = yMean + 3 * yStdDev + yPadding;
+
+        xScale.domain([xScaleMin, xScaleMax]);
+        yScale.domain([yScaleMin, yScaleMax]);
+        if (isDateX) {
+            xScale.domain([Date.parse(d3.min(data, xValue)) - 1,
+                Date.parse(d3.max(data, xValue)) + 1
+            ]);
+        }
+        if (isDateY) {
+            yScale.domain([Date.parse(d3.min(data, yValue)) - 1,
+                Date.parse(d3.max(data, yValue)) + 1
+            ]);
+        }
+
+        // Draw the grid lines
+        drawGridlines(xScale, yScale);
+
+        // add the x Axis
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .style("font-size", advOpt.xTickSize)
+            .attr('class', 'xTicks')
+            .call(d3.axisBottom(xScale).ticks(5));
+        // add a label for x Axis
+        svg.append("text")
+            .attr('id', 'xLabel')
+            .attr("transform",
+                "translate(" + (width / 2) + " ," +
+                (height + margin.top + 40) + ")")
+            .style("text-anchor", "middle")
+            .style("font-size", advOpt.xLabelSize)
+            .text(advOpt.xLabel);
+
+        // add the y Axis
+        svg.append("g")
+            .attr('class', 'yTicks')
+            .style("font-size", advOpt.yTickSize)
+            .call(d3.axisLeft(yScale).ticks(5));
+        // text label for the y axis
+        svg.append("text")
+            .attr('id', 'yLabel')
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font-size", advOpt.yLabelSize)
+            .text(advOpt.yLabel);
+
+        var symbol = getPointSymbol(advOpt.pointShape);
+
+        // draw dots
+        svg.selectAll(".dot")
+            .data(data)
+            .enter().append("path") //advOpt.pointShape)
+            //.attr('d', symbol)
+            .attr("class", "dot")
+            .attr("r", 3.5)
+            //.attr("cx", xMap)
+            //.attr("cy", yMap)
+            .attr("d", symbol)
+            .attr("transform", function(d) { return "translate(" + xMap(d) + "," + yMap(d) + ")"; })
+            .style("fill", function(d) { return color(cValue(d)); })
+            .on("mouseover", function(d) {
+                tooltip.transition()
+                    .duration(400)
+                    .style("opacity", .9);
+                let xVal = parseFloat(xValue(d));
+                let yVal = parseFloat(yValue(d));
+                if (isDateX) {
+                    xVal = xValue(d).toLocaleDateString() + " " + xValue(d).toLocaleTimeString();
+                }
+                if (isDateY) {
+                    yVal = yValue(d).toLocaleDateString() + " " + yValue(d).toLocaleTimeString();
+                }
+                tooltip.html(toolTipHtml(d))
+                    .style("left", (d3.event.pageX + 5) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
+        if (catVar !== "none") {
+            // draw legend
+            var legend = svg.selectAll(".legend")
+                .data(color.domain())
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(100," + i * 20 + ")"; });
+
+            // draw legend colored rectangles
+            legend.append("rect")
+                .attr("x", width - 18)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", color);
+
+            // draw legend text
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function(d) { return d; });
+        }
+
+        // Draw lines of averages to make axes
+        let xAvg = getAverageOfVariable(data, xVar);
+
+        let bottomPoint = {};
+        bottomPoint[xVar] = xAvg;
+        bottomPoint[yVar] = yScaleMin;
+        let topPoint = {};
+        topPoint[xVar] = xAvg;
+        topPoint[yVar] = yScaleMax;
+
+        svg.append("line") // attach a line
+            .style("stroke", "black") // colour the line
+            .attr("x1", xMap(bottomPoint)) // x position of the first end of the line
+            .attr("y1", yMap(bottomPoint)) // y position of the first end of the line
+            .attr("x2", xMap(topPoint)) // x position of the second end of the line
+            .attr("y2", yMap(topPoint));
+
+        let yAvg = getAverageOfVariable(data, yVar);
+
+        let leftPoint = {};
+        leftPoint[xVar] = xScaleMin;
+        leftPoint[yVar] = yAvg;
+        let rightPoint = {};
+        rightPoint[xVar] = xScaleMax;
+        rightPoint[yVar] = yAvg;
+
+        svg.append("line") // attach a line
+            .style("stroke", "black") // colour the line
+            .attr("x1", xMap(leftPoint)) // x position of the first end of the line
+            .attr("y1", yMap(leftPoint)) // y position of the first end of the line
+            .attr("x2", xMap(rightPoint)) // x position of the second end of the line
+            .attr("y2", yMap(rightPoint));
+
+        // Draw Z Score Cuttoffs
+        drawZScoreLines(data, xMap, yMap);
+
+
+        // Get rid of the black border
+        svg.selectAll('.domain').style('stroke', 'none');
+    }
+
+    function drawZScoreLines(data, xMap, yMap) {
+        let xAvg = getAverageOfVariable(data, xVar);
+        let yAvg = getAverageOfVariable(data, yVar);
+
+        let xSD = getStandardDeviationOfVariable(data, xVar);
+        let ySD = getStandardDeviationOfVariable(data, yVar);
+
+        // Top Right Quadrant
+        let point1 = {};
+        point1[xVar] = 3 * xSD + xAvg;
+        point1[yVar] = yAvg;
+        let point2 = {};
+        point2[xVar] = xAvg;
+        point2[yVar] = 3 * ySD + yAvg;
+
+        plotZScoreLine(point1, point2, xMap, yMap);
+
+        // Top Left Quadrant
+        point1 = {};
+        point1[xVar] = xAvg - 3 * xSD;
+        point1[yVar] = yAvg;
+        point2 = {};
+        point2[xVar] = xAvg;
+        point2[yVar] = yAvg + 3 * ySD;
+
+        plotZScoreLine(point1, point2, xMap, yMap);
+
+        // Bottom Left Quadrant
+        point1 = {};
+        point1[xVar] = xAvg - 3 * xSD;
+        point1[yVar] = yAvg;
+        point2 = {};
+        point2[xVar] = xAvg;
+        point2[yVar] = yAvg - 3 * ySD;
+
+        plotZScoreLine(point1, point2, xMap, yMap);
+
+        // Bottom Right Quadrant
+        point1 = {};
+        point1[xVar] = xAvg;
+        point1[yVar] = yAvg - 3 * ySD;
+        point2 = {};
+        point2[xVar] = xAvg + 3 * xSD;
+        point2[yVar] = yAvg;
+
+        plotZScoreLine(point1, point2, xMap, yMap);
+
+        svg.selectAll('.zScoreLine')
+            .style('stroke', 'blue')
+            .style('stroke-width', '2px')
+            .attr('stroke-dasharray', '1,5');
+    }
+
+    function plotZScoreLine(p1, p2, xMap, yMap) {
+        svg.append("line") // attach a line
+            .attr('class', 'zScoreLine')
+            .attr("x1", xMap(p1)) // x position of the first end of the line
+            .attr("y1", yMap(p1)) // y position of the first end of the line
+            .attr("x2", xMap(p2)) // x position of the second end of the line
+            .attr("y2", yMap(p2));
+    }
+
+    function drawGridlines(xScale, yScale) {
+        // Draw Gridlines
+        // add the X gridlines
+        svg.append("g")
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + height + ")")
+            .call(make_x_gridlines(xScale)
+                .tickSize(-height)
+                .tickFormat("")
+            )
+
+        // add the Y gridlines
+        svg.append("g")
+            .attr("class", "grid")
+            .call(make_y_gridlines(yScale)
+                .tickSize(-width)
+                .tickFormat("")
+            )
+        svg.selectAll(".grid line").style("stroke", "aliceblue")
+            .style("stroke-width", "1.5px");
+    }
+
+    function make_x_gridlines(xScale) {
+        return d3.axisBottom(xScale)
+            .ticks(10);
+    }
+
+    function make_y_gridlines(yScale) {
+        return d3.axisLeft(yScale)
+            .ticks(10);
+    }
+
+    function toolTipHtml(d) {
+        let html = '';
+
+        Object.keys(d).forEach(function(key) {
+            html += '<b>' + key + '</b>: ' + d[key] + '<br/>';
+        });
+
+        return html;
+    }
+
+    //////////////////////////////////////////////////////////////
+    //////////    Format data for d3    //////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    function formatDataScatterPlot(data) {
+        let jsonData = JSON.parse(JSON.stringify(data)); //so you don't modify the original data
+
+        // Determine what type the x and y data are
+        let totalX = jsonData.length,
+            totalY = jsonData.length,
+            nonNumX = 0,
+            nonNumY = 0,
+            numDateX = 0,
+            numDateY = 0;
+        isDateX = false;
+        isDateY = false;
+        for (let i = 0; i < jsonData.length; i++) {
+            let valX = jsonData[i][xVar],
+                valY = jsonData[i][yVar];
+            if (valX != undefined) {
+                if (!isNaN(valX)) {
+                    jsonData[i][xVar] = parseFloat(jsonData[i][xVar]);
+                } else if (!isNaN(Date.parse(valX))) {
+                    jsonData[i][xVar] = new Date(valX);
+                    numDateX++;
+                } else {
+                    jsonData.splice(i--, 1);
+                    nonNumX++;
+                    if (!isNaN(valY)) {
+                        nonNumY++;
+                    }
+                    continue;
+                }
+            }
+            if (valY != undefined) {
+                if (!isNaN(valY)) {
+                    jsonData[i][yVar] = parseFloat(jsonData[i][yVar]);
+                } else if (!isNaN(Date.parse(valY))) {
+                    jsonData[i][yVar] = new Date(valY);
+                    numDateY++;
+                } else {
+                    jsonData.splice(i--, 1);
+                    nonNumY++;
+                }
+            }
+
+        }
+        if (nonNumX > 0) {
+            addMessage(nonNumX + ' out of ' + totalX + ' values of ' + xVar + ' are non-numeric');
+        }
+        if (nonNumY > 0) {
+            addMessage(nonNumY + ' out of ' + totalY + ' values of ' + yVar + ' are non-numeric');
+        }
+
+        if (numDateX / totalX > 0.5) {
+            isDateX = true;
+        }
+        if (numDateY / totalY > 0.5) {
+            isDateY = true;
+        }
+        return jsonData;
+    }
+
+    /**
+     * Allow users to set particular variables for interface customization
+     */
+    function createAdvancedOptions() {
+        // Clear previous options
+        //jQuery('.advancedOptions').html('');
+
+        let advOptHtml = '';
+
+        let xy = ['x', 'y'];
+        for (let i = 0; i < xy.length; i++) {
+            let v = xy[i];
+
+            // Tick options
+            advOptHtml += '<tr id="' + v + 'TickSize">';
+            advOptHtml += '<td>' + v + ' Tick Font Size:</td><td><button name="' + v +
+                'TickSizePlus">+</button> <button name="' + v + 'TickSizeMinus">-</button></td></tr>';
+            // Label Size
+            advOptHtml += '<tr id="' + v + 'LabelSize">';
+            advOptHtml += '<td>' + v + ' Label Font Size:</td><td><button name="' + v +
+                'LabelSizePlus">+</button> <button name="' + v + 'LabelSizeMinus">-</button></td></tr>';
+
+            // Label Value
+            advOptHtml += '<tr id="' + v + 'Label">';
+            if (v == 'x') {
+                advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
+                    v + 'Label" value="Average Pages Viewed"></td></tr>';
+            } else {
+                advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
+                    v + 'Label" value="Average Score"></td></tr>';
+            }
+
+            // Range
+            advOptHtml += '<tr id="' + v + 'Range">';
+            advOptHtml += '<td>' + v + ' Value Range:</td><td><input type="number" name="' + v + 'RangeMin" value=""> to ' +
+                '<input type="number" name="' + v + 'RangeMax" value=""> </td></tr>';
+        }
+
+        // Color & Bar Width
+        advOptHtml += '<tr id="barColor">';
+        advOptHtml += '<td>Bar Color:</td><td><input type="color" name="barColor" value="#524db2"></td></tr>';
+        advOptHtml += '<tr id="barWidth">';
+        advOptHtml += '<td>Bar Width:</td><td><input type="number" name="barWidth" value="20">px</td></tr>';
+
+        advOptHtml += '<tr id="pointColor">';
+        advOptHtml += '<td>None Category Color:</td><td><input type="color" name="pointColor" value="#000"></td></tr>';
+
+        advOptHtml += '<tr id="pointShapeRow">';
+        advOptHtml += '<td>Point Shape:</td><td><select id="pointShape">' +
+            '<option value="circle">Circle</option>' +
+            '<option value="square">Square</option>' +
+            '<option value="cross">Cross</option>' +
+            '<option value="diamond">Diamond</option>' +
+            '<option value="triangle">Triangle</option>' +
+            '<option value="star">Star</option>' +
+            '<option value="wye">WYE</option>' +
+            '</select></td></tr>';
+
+        // Point Size
+        advOptHtml += '<tr id="pointSize">';
+        advOptHtml += '<td>Point Size:</td><td><button name="' +
+            'PointSizePlus">+</button> <button name="PointSizeMinus">-</button></td></tr>';
+
+        jQuery('.advOptTable').append(advOptHtml);
+        displayAdvancedOptions();
+
+        advancedOptionFunctionality();
+    }
+
+    function displayAdvancedOptions() {
+        // Hide all to begin with, then display them per graph type
+        jQuery('.advOptTable tr').hide();
+
+        // Always displayed regardless of graph type
+        jQuery('#xTickSize, ' +
+            '#xLabelSize, ' +
+            '#xLabel, ' +
+            '#yTickSize, ' +
+            '#yLabelSize, ' +
+            '#pointSize, ' +
+            '.options, ' +
+            '#yLabel').show();
+
+        // Show some options that depend on the graph type
+        jQuery('#pointShapeRow').show();
+        if (jQuery('#catVarSelect').val() === 'none') {
+            jQuery('#pointColor').show();
+        }
+    }
+
+    var advOpt = {};
+
+    function advancedOptionsToObject() {
+        advOpt.xLabel = jQuery('input[name="xLabel"]').val();
+        advOpt.yLabel = jQuery('input[name="yLabel"]').val();
+        advOpt.pointColor = jQuery('input[name="pointColor"]').val();
+        advOpt.pointShape = jQuery('#pointShape option:selected').val();
+
+        if (svg != null) {
+            advOpt.xTickSize = svg.selectAll('.xTicks').style('font-size');
+            advOpt.xLabelSize = svg.selectAll('#xLabel').style('font-size');
+            advOpt.yTickSize = svg.selectAll('.yTicks').style('font-size');
+            advOpt.yLabelSize = svg.selectAll('#yLabel').style('font-size');
+            advOpt.pointSize = advOpt.pointSize;
+        } else {
+            // SVG has not been defined yet, use defaults for sizes
+            let defaultSize = '16px';
+            advOpt.xTickSize = defaultSize;
+            advOpt.xLabelSize = '22px';
+            advOpt.yTickSize = defaultSize;
+            advOpt.yLabelSize = '22px';
+            advOpt.pointSize = '50';
+        }
+    }
+
+    function advancedOptionFunctionality() {
+        let sizeFactor = 1.1;
+
+        // Labels size
+        jQuery('button[name="xLabelSizePlus"').click(function() {
+            let originalSize = svg.selectAll('#xLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('#xLabel').style('font-size', newSize);
+        });
+        jQuery('button[name="yLabelSizePlus"').click(function() {
+            let originalSize = svg.selectAll('#yLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('#yLabel').style('font-size', newSize);
+        });
+        jQuery('button[name="xLabelSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('#xLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('#xLabel').style('font-size', newSize);
+        });
+        jQuery('button[name="yLabelSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('#yLabel').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('#yLabel').style('font-size', newSize);
+        });
+
+        // Ticks size
+        jQuery('button[name="xTickSizePlus"').click(function() {
+            let originalSize = svg.selectAll('.xTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('.xTicks').style('font-size', newSize);
+        });
+        jQuery('button[name="yTickSizePlus"').click(function() {
+            let originalSize = svg.selectAll('.yTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) * sizeFactor) + "px";
+            svg.selectAll('.yTicks').style('font-size', newSize);
+        });
+        jQuery('button[name="xTickSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('.xTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('.xTicks').style('font-size', newSize);
+        });
+        jQuery('button[name="yTickSizeMinus"').click(function() {
+            let originalSize = svg.selectAll('.yTicks').style('font-size');
+            let newSize = (parseFloat(originalSize) / sizeFactor) + "px";
+            svg.selectAll('.yTicks').style('font-size', newSize);
+        });
+
+        // Label text
+        jQuery('input[name="xLabel"]').change(function() {
+            svg.selectAll('#xLabel').text(jQuery('input[name="xLabel"]').val());
+        });
+        jQuery('input[name="yLabel"]').change(function() {
+            svg.selectAll('#yLabel').text(jQuery('input[name="yLabel"]').val());
+        });
+
+        //Color of dots
+        jQuery('input[name="pointColor"]').change(function() {
+            svg.selectAll('.dot').style('fill', jQuery('input[name="pointColor"]').val());
+        });
+
+        //Shape of dots
+        jQuery('#pointShape').change(function() {
+            // Need to redraw graph after this big of a change
+            createScatterPlotWrapper();
+        });
+        jQuery('button[name="PointSizePlus"]').click(function() {
+            advOpt.pointSize = advOpt.pointSize * 1.5;
+            createScatterPlotWrapper();
+        });
+        jQuery('button[name="PointSizeMinus"]').click(function() {
+            advOpt.pointSize = advOpt.pointSize / 1.5;
+            createScatterPlotWrapper();
+        });
+    }
+
+
+    function populateHeaderSelect(data) {
+        //gets all column header
+        var keys = jQuery.map(data[0], function(item, key) {
+            return key;
+        });
+
+        keys.forEach(function(key, ind) {
+            jQuery('#xVarSelect').append(jQuery('<option />').val(key).text(key));
+            if (ind == 1) {
+                jQuery('#yVarSelect').append(jQuery('<option selected />').val(key).text(key));
+            } else {
+                jQuery('#yVarSelect').append(jQuery('<option />').val(key).text(key));
+            }
+            jQuery('#catVarSelect').append(jQuery('<option />').val(key).text(key));
+        });
+
+        jQuery('#xVarSelect option:nth-child(3)').prop('selected', true);
+        jQuery('#yVarSelect option:nth-child(2)').prop('selected', true);
+        //jQuery('#catVarSelect option[value="rise_quadrant"]').prop('selected', true);
+    }
+
+    function getAverageOfVariable(data, variable) {
+        let sum = 0;
+        data.forEach(function(row) {
+            sum = sum + row[variable];
+        });
+
+        return sum / data.length;
+    }
+
+    function getStandardDeviationOfVariable(data, variable) {
+        let avg = getAverageOfVariable(data, variable);
+
+        let sumOfSquaredDiffs = 0;
+        data.forEach(function(row) {
+            sumOfSquaredDiffs += (row[variable] - avg) ** 2;
+        });
+
+        return (sumOfSquaredDiffs / data.length) ** (1 / 2);
+    }
+
+    function getPointSymbol(type) {
+        let symbol = d3.symbol().size([advOpt.pointSize]);
+        var shapes = {
+            'circle': d3.symbolCircle,
+            'cross': d3.symbolCross,
+            'diamond': d3.symbolDiamond,
+            'square': d3.symbolSquare,
+            'star': d3.symbolStar,
+            'triangle': d3.symbolTriangle,
+            'wye': d3.symbolWye
+        };
+        return symbol.type(shapes[type]);
+    }
+
+    function zoomed() {
+        d3.select("#svgContainer g").attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")" +
+            "scale(" + d3.event.transform.k + "," + d3.event.transform.k + ")");
+    }
+
+    function addMessage(message) {
+        jQuery('.messages').append('<div class="message">' + message + '</div>')
+            .css('border', '2px solid black');
+    }
+
+    function clearMessageBox() {
+        jQuery('.messages').html('').css('border', 'none');
+    }
+
+    function allowSaveableImage() {
+        document.getElementById('downloadGraphImage').addEventListener('click', function() {
+            jQuery('#canvasConversion').html('');
+            canvg('canvasConversion', jQuery('#svgContainer').html());
+
+            var canvas = document.getElementById("canvasConversion");
+            var img = canvas.toDataURL("image/png");
+            this.href = img;
+        }, false);
+    }
+
+    function loading(isLoading) {
+        if (isLoading) {
+            jQuery('.loadingDiv').show();
+            /*loadingInterval = setInterval(function() {
+                jQuery('.loadingDiv').animate({'opacity':0}, 400, function() {
+                    jQuery('.loadingDiv').animate({'opacity':1}, 400);
+                });
+            }, 800);*/
+        } else {
+            jQuery('.loadingDiv').hide();
+            //clearInterval(loadingInterval);
+
+        }
+    }
+    </script>
+</body>
+
+</html>

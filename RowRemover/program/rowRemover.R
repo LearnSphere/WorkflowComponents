@@ -1,4 +1,6 @@
 #usage
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValues "ex: aWord, 0" -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Written Assignment 1: Design an Experiment" -valueColumns "Written Assignment 1: Design an Experiment" -node 0 -fileIndex 0 "OLI-Psych-Gradebook_modified.txt"
+
 
 #load libraries and set optins
 options(echo=FALSE)
@@ -73,7 +75,8 @@ while (i <= length(args)) {
     }
     valueColumns = args[i+1]
     #replace all angle brackets, parenthses, space an ash with period
-    valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    #valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    valueColumns <- make.names(valueColumns)
     columns.var.name = as.list(strsplit(valueColumns, ",")[[1]])
     i = i+1
   } else if (args[i] == "-removeValues") {

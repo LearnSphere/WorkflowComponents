@@ -12,7 +12,9 @@
     </connection>
   </connections>
   <top>106</top>
-  <options />
+  <options>
+    <useTitleAsSkillId>false</useTitleAsSkillId>
+  </options>
   <inputs>
     <input0>
       <component_id>Analysis-1-x641889</component_id>
@@ -22,9 +24,9 @@
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
-        <tab-delimited>		  
-		  <file_path>test/resources/eldp.ods</file_path>
-          <file_name>eldp.ods</file_name>
+        <tab-delimited>
+          <file_path>test/resources/eldp_skills.zip</file_path>
+          <file_name>eldp_skills.zip</file_name>
           <index>0</index>
           <label>tab-delimited</label>
           <metadata />

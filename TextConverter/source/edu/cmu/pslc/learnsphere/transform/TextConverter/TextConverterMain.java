@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.CDL;
@@ -20,10 +21,10 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.workflows.ThreadedStreamReader;
 
 public class TextConverterMain extends AbstractComponent {
-    static private String XML_FILE_TYPE = "XML";
+    static private String XML_FILE_TYPE = "xml";
     static private String TAB_DELIM_FILE_TYPE = "tab-delimited";
-    static private String CSV_FILE_TYPE = "CSV";
-    static private String JS_FILE_TYPE = "JSON";
+    static private String CSV_FILE_TYPE = "csv";
+    static private String JS_FILE_TYPE = "json";
     public static void main(String[] args) {
 
         TextConverterMain tool = new TextConverterMain();
@@ -36,8 +37,8 @@ public class TextConverterMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-        String ift = this.getOptionAsString("ift");
-        String oft = this.getOptionAsString("oft");
+        String ift = this.getOptionAsString("ift").toLowerCase();
+        String oft = this.getOptionAsString("oft").toLowerCase();
         String inputFilePath = this.getAttachment(0, 0).getAbsolutePath();
         File inputFile = this.getAttachment(0, 0);
 
@@ -60,7 +61,7 @@ public class TextConverterMain extends AbstractComponent {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
 
         		File jsonFile = xmlToJsonFile(inputFilePath);
-        		generatedFile= convertJsonToDelimited(
+        		generatedFile = convertJsonToDelimited(
     				jsonFile.getAbsolutePath(), JS_FILE_TYPE, oft);
 
         	} else if (oft.equals(JS_FILE_TYPE)) {
@@ -406,7 +407,12 @@ public class TextConverterMain extends AbstractComponent {
 
     private File convertJsonToDelimited(String inputFilePathName, String ift, String oft) {
         logger.info("Converting xml file: " + inputFilePathName);
-        String intermediateFile = "convertedJsonToDelimited";
+        String intermediateFile = null;
+        if (oft.equals(TAB_DELIM_FILE_TYPE)) {
+        	intermediateFile = "tempCsv";
+		} else if (oft.equals(CSV_FILE_TYPE)) {
+			intermediateFile = "convertedDelimited";
+		}
 
         File filePointer = null;
 
@@ -448,7 +454,7 @@ public class TextConverterMain extends AbstractComponent {
 					}
 
 					if (jsonArray != null) {
-				        String csv = CDL.toString(jsonArray);
+				        String csv = CDL.toString(denormArr(jsonArray, null));
 				        bw.write(csv);
 					}
 
@@ -474,6 +480,46 @@ public class TextConverterMain extends AbstractComponent {
 	    	}
         }
         return filePointer;
+    }
+
+    private static JSONObject denorm(JSONObject normalized, JSONObject denormed) {
+        if(denormed == null){
+            denormed = new JSONObject();
+        }
+        Iterator<?> keys = normalized.keys();
+        while(keys.hasNext()){
+            String key = (String)keys.next();
+            try {
+                if(normalized.get(key) instanceof JSONObject){
+                    denorm(normalized.getJSONObject(key), denormed);
+                } else {
+                    denormed.put(key, normalized.get(key));
+                }
+            } catch(JSONException e){
+                System.out.println(e);
+            }
+        }
+        return denormed;
+    }
+
+    private JSONArray denormArr(JSONArray normalized, JSONArray denormedArr) {
+
+        if(denormedArr == null) {
+            denormedArr = new JSONArray();
+        }
+
+        for (Integer i = 0; i < normalized.length(); i++) {
+        	try {
+        		if(denormedArr.length() == 0 || denormedArr.getJSONObject(i) == null) {
+					denormedArr.put(denorm(normalized.getJSONObject(i), null));
+	        	} else {
+	        		denormedArr.put(denorm(normalized.getJSONObject(i), denormedArr.getJSONObject(i)));
+	        	}
+        	} catch (JSONException e) {
+        		this.addErrorMessage("" + e);
+			}
+        }
+        return denormedArr;
     }
 
     /**

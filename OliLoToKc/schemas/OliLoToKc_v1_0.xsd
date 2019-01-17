@@ -33,7 +33,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="ods" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="zip" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="tab-delimited" minOccurs="0" />
     </xs:all>
   </xs:complexType>
@@ -78,6 +78,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element type="xs:boolean" name="useTitleAsSkillId" id="Use_Title_as_Skill_Id" default="false" />
     </xs:choice>
   </xs:complexType>
 

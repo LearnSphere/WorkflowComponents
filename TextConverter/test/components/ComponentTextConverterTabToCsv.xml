@@ -12,10 +12,10 @@
         </connection>
     </connections>
     <options>
-      <ift>tab-delimited</ift>
+      <ift>Tab-delimited</ift>
       <oft>CSV</oft>
   </options>
-    
+
   <inputs>
     <input0>
       <component_id>Import3</component_id>

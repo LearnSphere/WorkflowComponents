@@ -15,7 +15,7 @@
       <ift>XML</ift>
       <oft>CSV</oft>
   </options>
-    
+
   <inputs>
     <input0>
       <component_id>Import4</component_id>
@@ -26,9 +26,9 @@
       <errors/>
       <files>
       <tab-delimited>
-        <file_path>test/test_data/cd_catalog.xml</file_path>
+        <file_path>test/test_data/model result values.xml</file_path>
         <label>file</label>
-        <file_name>cd_catalog.xml</file_name>
+        <file_name>model result values.xml</file_name>
         <index>0</index>
       </tab-delimited>
       </files>

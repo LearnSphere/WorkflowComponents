@@ -3,7 +3,13 @@ package edu.cmu.pslc.learnsphere.analysis.datalab;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
@@ -23,6 +29,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
     private String[] students;
     private int numItems = 0;
     private int numStudents = 0;
+    private static String htmlTemplateName = "cronbachsAlphaTemplate.html";
 
     public static void main(String[] args) {
 
@@ -53,6 +60,9 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
         Array2DRowRealMatrix data = null;
 
+        Boolean summaryColPresent =
+            this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+
         try {
             Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
 
@@ -62,8 +72,20 @@ public class CronbachsAlphaMain extends AbstractComponent {
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
 
-            Boolean summaryColPresent =
-                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+            if (summaryColPresent) {
+                // Remove summary column, this is calculated in the algorithm
+                String [] newHeaders = new String [headers.length - 1];
+                for (int i = 0; i < headers.length - 1; i++) {
+                    newHeaders[i] = headers[i];
+                }
+                headers = newHeaders;
+                data = removeSummaryColumn(data);
+            } else {
+                // Not entirely sure why this is incremented, but this makes the results match
+                // DataLab
+                numItems += 1;
+            }
+
 
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e;
@@ -79,10 +101,22 @@ public class CronbachsAlphaMain extends AbstractComponent {
             if (outputFile == null) {
                 this.addErrorMessage("Failed to create output Cronbach's alpha file.");
             } else {
-                Integer nodeIndex = 0;
-                Integer fileIndex = 0;
-                String fileType = "cronbachs-alpha";
-                this.addOutputFile(outputFile, nodeIndex, fileIndex, fileType);
+                // Add the correlation file to the HTML visualization of it
+                File htmlFile = addDataReferenceToHtmlFile(outputFile, summaryColPresent);
+
+                if (htmlFile != null) {
+                    Integer nodeIndex = 0;
+                    Integer fileIndex = 0;
+                    String fileType = "inline-html";
+                    this.addOutputFile(htmlFile, nodeIndex, fileIndex, fileType);
+
+                    nodeIndex = 1;
+                    fileIndex = 0;
+                    fileType = "correlation";
+                    this.addOutputFile(outputFile, nodeIndex, fileIndex, fileType);
+                } else {
+                    this.addErrorMessage("Could not create correlation html file");
+                }
             }
         }
 
@@ -94,6 +128,24 @@ public class CronbachsAlphaMain extends AbstractComponent {
             System.err.println(err);
         }
 
+    }
+
+    /**
+     * Removes the last column of the matrix. This is designated as the summary column
+     * and does not need to be included with the input file.
+     */
+    private Array2DRowRealMatrix removeSummaryColumn(Array2DRowRealMatrix data) {
+        Array2DRowRealMatrix dataWithoutSummary = new Array2DRowRealMatrix(
+            data.getRowDimension(), data.getColumnDimension() - 1);
+
+        for (int i = 0; i < data.getRowDimension(); i++) {
+            for (int j = 0; j < data.getColumnDimension() - 1; j++) {
+                double cellVal = data.getEntry(i, j);
+                dataWithoutSummary.setEntry(i, j, cellVal);
+            }
+        }
+
+        return dataWithoutSummary;
     }
 
     // Constant
@@ -116,24 +168,24 @@ public class CronbachsAlphaMain extends AbstractComponent {
         // Java try-with-resources
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
 
-                // Write values to export
-                Double[] cronbachValues = getCronbachValues(data);
-                for (int i = 0; i < numItems; i++) {
-                    String label = "All items";
-                    if (i > 0) {
-                        label = headers[i].trim() + " excluded";
-                    }
-                    outputStream.write(label.getBytes("UTF-8"));
-
-                    outputStream.write(TAB_CHAR.getBytes("UTF-8"));
-                    outputStream.write(String.valueOf(cronbachValues[i]).getBytes("UTF-8"));
-                    outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+            // Write values to export
+            Double[] cronbachValues = getCronbachValues(data);
+            for (int i = 0; i < numItems; i++) {
+                String label = "All items";
+                if (i > 0) {
+                    label = headers[i].trim() + " excluded";
                 }
+                outputStream.write(label.getBytes("UTF-8"));
 
-            } catch (Exception e) {
-                // This will be picked up by the workflows platform and relayed to the user.
-                e.printStackTrace();
+                outputStream.write(TAB_CHAR.getBytes("UTF-8"));
+                outputStream.write(String.valueOf(cronbachValues[i]).getBytes("UTF-8"));
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
             }
+
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
         return outputFile;
     }
@@ -212,7 +264,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
         //rowAvgMultiByColumnCount is (row's mean)*columnCnt
         for (int i = 0; i < allRowCnt; i++) {
             if (!Double.isNaN(rowAverage[i])) {
-                rowAvgMultiByColumnCount[i] = rowAverage[i]*(double)columnCnt;
+                rowAvgMultiByColumnCount[i] = rowAverage[i] * (double)columnCnt;
             } else {
                 rowAvgMultiByColumnCount[i] = Double.NaN;
             }
@@ -278,14 +330,14 @@ public class CronbachsAlphaMain extends AbstractComponent {
                     } else {
                         if (Double.isNaN(data.getEntry(j, i))) {
                             totalWithoutThisCol[j] =
-                                (rowAvgMultiByColumnCount[j]/(double)columnCnt)
-                                *(double)(columnCnt-1);
+                                (rowAvgMultiByColumnCount[j] / (double)columnCnt)
+                                * (double)(columnCnt - 1);
                         } else {
                             double sumofThisRow =
-                                (rowAvgMultiByColumnCount[j]/(double)columnCnt)*columnCounts[j];
+                                (rowAvgMultiByColumnCount[j] / (double)columnCnt) * columnCounts[j];
                             totalWithoutThisCol[j] =
                                 ((sumofThisRow - data.getEntry(j, i))
-                                 /((double)columnCounts[j]-1))*(double)(columnCnt-1);
+                                 / ((double)columnCounts[j] - 1)) * (double)(columnCnt - 1);
                         }
                     }
                 }
@@ -304,7 +356,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
                     double[] rowTotalValues =
                         ArrayUtils.toPrimitive(rowTotalAL.toArray(new Double[0]));
                     double varianceOfTotal = StatUtils.variance(rowTotalValues);
-                    double value = computeAlphaValue(columnCnt-1,
+                    double value = computeAlphaValue(columnCnt - 1,
                                                      subsetSumOfColumnVariance,
                                                      varianceOfTotal);
                     if (Double.isInfinite(value) || Double.isNaN(value)) {
@@ -331,6 +383,67 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
     private double computeAlphaValue (double count,
                                       double sumOfItemVariance, double varianceOfTotal) {
-        return ((double)(count/(count-1)))*(1-sumOfItemVariance/varianceOfTotal);
+        return ((double)(count / (count - 1))) * (1 - sumOfItemVariance / varianceOfTotal);
+    }
+
+    private File addDataReferenceToHtmlFile(File correlationFile, boolean summaryColPresent) {
+        File htmlTemplateFile = new File(this.getToolDir() + "/program/" + htmlTemplateName);
+        File outputFile = null;
+        if (htmlTemplateFile.exists() && htmlTemplateFile.isFile() && htmlTemplateFile.canRead()) {
+            outputFile = this.createFile("CronbachsAlphaVisualization.html");
+
+            String outputSubpath = this.componentOutputDir
+                                   .replaceAll("\\\\", "/")
+                                   .replaceAll("^.*/workflows/", "workflows/");
+            String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + correlationFile.getName();
+
+            BufferedReader bReader = null;
+            FileReader fReader = null;
+
+            BufferedWriter bWriter = null;
+            FileWriter fWriter = null;
+
+            try {
+
+                fReader = new FileReader(htmlTemplateFile);
+                bReader = new BufferedReader(fReader);
+
+                fWriter = new FileWriter(outputFile);
+                bWriter = new BufferedWriter(fWriter);
+
+                String line = null;
+                while ((line = bReader.readLine()) != null) {
+                    if (line.contains("${input0}")) {
+                        line = line.replaceAll(Pattern.quote("${input0}"),
+                                               dataFilePath); // name is data.txt
+                    }
+                    if (line.contains("${summaryColPresent}")) {
+                        if (summaryColPresent) {
+                            line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                                   "1"); // 1 summary column
+                        } else {
+                            line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                                   "0"); // No summary column
+                        }
+                    }
+
+                    bWriter.append(line + "\n");
+                }
+            } catch (IOException e) {
+                this.addErrorMessage(e.toString());
+            } finally {
+                try {
+                    if (bReader != null) {
+                        bReader.close();
+                    }
+                    if (bWriter != null) {
+                        bWriter.close();
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }
+        return outputFile;
     }
 }
