@@ -1,0 +1,40 @@
+// Instructions for installing and setting up PHP and Sqlite3
+// on linux machines.
+
+// php.net
+// download php-7.2.9.tar.gz
+
+tar -xvzf php-7.2.9.tar.gz
+
+sudo mv php-7.2.9 /usr/lib/
+
+cd /usr/lib/php-7.2.9
+
+./configure --enable-zip
+
+make
+
+make install
+
+
+// Download sqlite-autoconf-3240000.tar.gz
+
+tar -xvzf sqlite-autoconf-3240000.tar.gz
+
+sudo mv sqlite-autoconf-3240000 /usr/lib/
+
+cd /usr/lib/sqlite-autoconf-3240000
+
+./configure
+
+make
+
+make install
+
+// Initiate PHP with the sqlite3 extension 
+
+cd /usr/lib/php-7.2.9
+
+printf  "extension_dir=\"/usr/lib/php-7.2.9/ext\"\nextension=sqlite3" > php.ini
+
+php --ini php.ini

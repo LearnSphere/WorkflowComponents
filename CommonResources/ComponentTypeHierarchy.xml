@@ -1,0 +1,91 @@
+<component_menu>
+    <Import />
+	<Import>
+	    <Recently_Used />
+		<File />
+		<CSV />
+		<Tab-Delimited />
+		<Discourse_DB />
+		<DataLab>
+			<Gradebook />
+	    </DataLab>
+		<DataShop>
+			<Student-Step />
+			<Transaction />
+		</DataShop>
+	</Import>
+	<Database>
+		<Import_DiscourseDB />
+	</Database>
+	<Transform>
+		<Recently_Used />
+		<Anonymize />
+		<Anonymize_Standalone />
+		<AppendCF />
+		<Classify_with_Lightside />
+		<Column_Remover />
+		<Convert_Multiskill />
+		<Coursera_MOOCdb_Translator />
+		<Data_Conversion />
+		<Datastage_Aggregator />
+		<Deidentify />
+		<Discretize />
+		<Feature_Synthesis />
+		<Generate_PFA_Features />
+		<Generate_TKT_Features />
+		<Join />
+		<Missing_Values />
+		<MOOCdb_Verifier />
+		<MOOCdb_Feature_Extractor />
+		<OLI_LO_to_KC />
+		<Pivot />
+		<Row_Operations />
+		<Row_Remover />
+		<Text_Converter />
+	</Transform>
+	<Analysis>
+	    <Recently_Used />
+		<AFM />
+		<Apply_Detector />
+		<BKT />
+		<Correlation />
+		<Cronbachs_Alpha />
+		<Entity_Set />
+		<iAFM />
+		<Linear_Modeling />
+		<LSA />
+		<OLI_Resource_Use />
+		<Output_Comparator />
+		<PFA />
+		<Python_AFM />
+		<RISE />
+		<RLM_Fitting />
+		<TKT />
+	</Analysis>
+	<Visualization>
+	    <Recently_Used />
+		<Bar_Chart />
+		<D3_Force_Layout />
+		<Histogram />
+		<Learning_Curves />
+		<Line_Graph />
+		<Scatter_Plot />
+		<Solution_Paths />
+	</Visualization>
+	<Tetrad>
+	    <Recently_Used />
+		<Classifier />
+	    <Estimator />
+		<Knowledge />
+		<Regression />
+		<Search />
+		<Tetrad_Graph_Editor />
+	</Tetrad>
+	<Contribute>
+		<Component_Creator />
+	</Contribute>
+	<QA>
+	    <QA_All_Elements />
+	    <QA_Multi_Conn_Input />
+	</QA>
+</component_menu>

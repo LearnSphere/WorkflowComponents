@@ -3,7 +3,13 @@ package edu.cmu.pslc.learnsphere.analysis.datalab;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
@@ -25,6 +31,7 @@ public class CorrelationMain extends AbstractComponent {
     private String[] students;
     private int numItems = 0;
     private int numStudents = 0;
+    private static String htmlTemplateName = "correlation.html";
 
     public static void main(String[] args) {
 
@@ -55,6 +62,9 @@ public class CorrelationMain extends AbstractComponent {
 
         Array2DRowRealMatrix data = null;
 
+        Boolean summaryColPresent =
+            this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+
         try {
             Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
 
@@ -64,8 +74,17 @@ public class CorrelationMain extends AbstractComponent {
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
 
-            Boolean summaryColPresent =
-                this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
+            if (!summaryColPresent) {
+                // Add summary column
+                String [] newHeaders = new String [headers.length + 1];
+                for (int i = 0; i < headers.length; i++) {
+                    newHeaders[i] = headers[i];
+                }
+                newHeaders[headers.length] = "Total Score";
+                headers = newHeaders;
+                data = addSummaryColumn(data);
+                numItems += 1;
+            }
 
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute correlation. " + e;
@@ -81,10 +100,22 @@ public class CorrelationMain extends AbstractComponent {
             if (correlationFile == null) {
                 this.addErrorMessage("Failed to create output correlation file.");
             } else {
-                Integer nodeIndex = 0;
-                Integer fileIndex = 0;
-                String fileType = "correlation";
-                this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+                // Add the correlation file to the HTML visualization of it
+                File htmlFile = addDataReferenceToHtmlFile(correlationFile, summaryColPresent);
+
+                if (htmlFile != null) {
+                    Integer nodeIndex = 0;
+                    Integer fileIndex = 0;
+                    String fileType = "inline-html";
+                    this.addOutputFile(htmlFile, nodeIndex, fileIndex, fileType);
+
+                    nodeIndex = 1;
+                    fileIndex = 0;
+                    fileType = "correlation";
+                    this.addOutputFile(correlationFile, nodeIndex, fileIndex, fileType);
+                } else {
+                    this.addErrorMessage("Could not create correlation html file");
+                }
             }
         }
 
@@ -94,6 +125,28 @@ public class CorrelationMain extends AbstractComponent {
             // These will also be picked up by the workflows platform and relayed to the user.
             System.err.println(err);
         }
+    }
+
+    /**
+     * If the user specified that there was not already a summary column, add
+     * one for them.  It is a column called "Total Score" which is a sum of all
+     * column values per row(student)
+     */
+    private Array2DRowRealMatrix addSummaryColumn(Array2DRowRealMatrix data) {
+        Array2DRowRealMatrix dataWithSummary = new Array2DRowRealMatrix(
+            data.getRowDimension(), data.getColumnDimension() + 1);
+
+        for (int i = 0; i < data.getRowDimension(); i++) {
+            double rowSum = 0.0;
+            for (int j = 0; j < data.getColumnDimension(); j++) {
+                double cellVal = data.getEntry(i, j);
+                rowSum += cellVal;
+                dataWithSummary.setEntry(i, j, cellVal);
+            }
+            dataWithSummary.setEntry(i, data.getColumnDimension(), rowSum);
+        }
+
+        return dataWithSummary;
     }
 
     // Constant
@@ -116,33 +169,33 @@ public class CorrelationMain extends AbstractComponent {
         // Java try-with-resources
         try (OutputStream outputStream = new FileOutputStream(correlationFile)) {
 
-                // Write header to export
-                for (int i = 0; i < headers.length; i++) {
-                    if (i != 0) { outputStream.write(headers[i].getBytes("UTF-8")); }
-                    if (i < headers.length - 1) { outputStream.write(TAB_CHAR.getBytes("UTF-8")); }
-                }
-                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
-                // Write values to export
-                double[][] theData = data.getData();
-                for (int i = 0; i < numItems; i++) {
-                    outputStream.write(headers[i+1].getBytes("UTF-8"));
-                    outputStream.write(TAB_CHAR.getBytes("UTF-8"));
-                    for (int j = 0; j < numItems; j++) {
-                        if (j > i) { continue; }
-                        double correlationValue = getPearsonsCorrelation(data.getColumn(i),
-                                                                         data.getColumn(j));
-                        outputStream.write(String.valueOf(correlationValue).getBytes("UTF-8"));
-                        if (j < (numItems - 1)) { outputStream.write(TAB_CHAR.getBytes("UTF-8")); }
-                    }
-
-                    outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-                }
-
-            } catch (Exception e) {
-                // This will be picked up by the workflows platform and relayed to the user.
-                e.printStackTrace();
+            // Write header to export
+            for (int i = 0; i < headers.length; i++) {
+                if (i != 0) { outputStream.write(headers[i].getBytes("UTF-8")); }
+                if (i < headers.length - 1) { outputStream.write(TAB_CHAR.getBytes("UTF-8")); }
             }
+            outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+
+            // Write values to export
+            double[][] theData = data.getData();
+            for (int i = 0; i < numItems; i++) {
+                outputStream.write(headers[i + 1].getBytes("UTF-8"));
+                outputStream.write(TAB_CHAR.getBytes("UTF-8"));
+                for (int j = 0; j < numItems; j++) {
+                    if (j > i) { continue; }
+                    double correlationValue = getPearsonsCorrelation(data.getColumn(i),
+                                              data.getColumn(j));
+                    outputStream.write(String.valueOf(correlationValue).getBytes("UTF-8"));
+                    if (j < (numItems - 1)) { outputStream.write(TAB_CHAR.getBytes("UTF-8")); }
+                }
+
+                outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
+            }
+
+        } catch (Exception e) {
+            // This will be picked up by the workflows platform and relayed to the user.
+            e.printStackTrace();
+        }
 
         return correlationFile;
     }
@@ -167,5 +220,66 @@ public class CorrelationMain extends AbstractComponent {
             logger.error("Correlation error: not enough data for items.");
         }
         return correlationVal;
+    }
+
+    private File addDataReferenceToHtmlFile(File correlationFile, boolean summaryColPresent) {
+        File htmlTemplateFile = new File(this.getToolDir() + "/program/" + htmlTemplateName);
+        File outputFile = null;
+        if (htmlTemplateFile.exists() && htmlTemplateFile.isFile() && htmlTemplateFile.canRead()) {
+            outputFile = this.createFile("CorrelationVisualization.html");
+
+            String outputSubpath = this.componentOutputDir
+                                   .replaceAll("\\\\", "/")
+                                   .replaceAll("^.*/workflows/", "workflows/");
+            String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + correlationFile.getName();
+
+            BufferedReader bReader = null;
+            FileReader fReader = null;
+
+            BufferedWriter bWriter = null;
+            FileWriter fWriter = null;
+
+            try {
+
+                fReader = new FileReader(htmlTemplateFile);
+                bReader = new BufferedReader(fReader);
+
+                fWriter = new FileWriter(outputFile);
+                bWriter = new BufferedWriter(fWriter);
+
+                String line = null;
+                while ((line = bReader.readLine()) != null) {
+                    if (line.contains("${input0}")) {
+                        line = line.replaceAll(Pattern.quote("${input0}"),
+                                               dataFilePath); // name is data.txt
+                    }
+                    if (line.contains("${summaryColPresent}")) {
+                        if (summaryColPresent) {
+                            line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                                   "1"); // 1 summary column
+                        } else {
+                            line = line.replaceAll(Pattern.quote("${summaryColPresent}"),
+                                                   "0"); // No summary column
+                        }
+                    }
+
+                    bWriter.append(line + "\n");
+                }
+            } catch (IOException e) {
+                this.addErrorMessage(e.toString());
+            } finally {
+                try {
+                    if (bReader != null) {
+                        bReader.close();
+                    }
+                    if (bWriter != null) {
+                        bWriter.close();
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }
+        return outputFile;
     }
 }

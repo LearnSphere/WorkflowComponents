@@ -16,7 +16,9 @@
 <p>Users can choose a column for response. For binomial families, the component can convert true/false and correct/incorrect/hint values to 1 or 0. For other families, the component only allows numeric values for response column.</p>
 <p>The component provides ways for users to construct formula for these analyses. For lm/glm option, users can choose columns for fixed factor(s). For lmer/glmer, in addition to fixed factor(s), users can choose columns for random factor(s) with or without intercept, and with or without categorical nesting factor.
 </p>
-<p>The back-end of the component runs on R.</p></abstract>
+<p>The back-end of the component runs on R.</p>
+<p>To make glmer/lmer runs fast and efficiently, we apply glmerControl with nloptwrap as optimizer and lmerControl with optimx as optimizer.</p>
+<p>To make glm/lm runs fast and efficiently, we use speedglm and speedlm respectively.</p></abstract>
 <description></description>
 
 <inputs>

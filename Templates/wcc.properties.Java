@@ -1,4 +1,4 @@
-# Example properties file for generating an Python component.
+# Example properties file for generating a Java component.
 # Contact us (datashop-help@lists.andrew.cmu.edu) if you have questions
 # or find yourself wanting to do something that isn't obvious here.
 
@@ -38,7 +38,7 @@ component.version=1.0
 component.description=Now is the time for all good mean to come to the aid of their country.
 
 # The number of inputs for the new component. 
-component.num_inputs=1
+component.num_input_nodes=1
 
 # The number of outputs for the new component. 
 component.num_outputs=1
@@ -48,6 +48,12 @@ component.num_options=3
 
 # For each input, specify the type, e.g., file, tab-delimited, csv, student-step
 input.0.type=student-step
+
+# For each input, specify the maximum and minimum number of files connected to it
+# min_num_files=0 -> optional input
+# max_num_files=unbounded -> infinite number of inputs allowed
+input.0.min_num_files=1
+input.0.max_num_files=1
 
 # For each output, specify the name and type, e.g., file, tab-delimited, csv, student-step
 output.0.type=student-step
@@ -63,6 +69,14 @@ option.0.type=FileInputHeader
 option.0.name=kc_model
 option.0.id=KC_Model
 option.0.default=\\s*KC\\s*\\((.*)\\)\\s*
+
+# If the option is of type [Multi]FileInputHeader, you may choose which inputs to get the headers
+# from.  node_index defines which node to get the headers from, and file_index defines which file on that 
+# node to get the headers from (since it is possible to have multiple files per node).  Enter "*" to get 
+# all headers from all nodes and/or files.  Default is "*".
+# In this example below, get column Headers from all files attached to the first node
+option.0.node_index="0"
+option.0.file_index="*"
 
 option.1.type=Enum(AFM, AFM+S)
 option.1.name=model

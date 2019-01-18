@@ -76,7 +76,7 @@ public class DeidentifyMain extends AbstractComponent {
         logger.info("Processing Options");
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
         this.addMetaDataFromInput("user-map", 0, 0, ".*");
-        this.addMetaDataFromInput("transaction", 1, 0, ".*");
+        this.addMetaDataFromInput("tab-delimited", 1, 0, ".*");
 
     }
 
@@ -169,12 +169,20 @@ public class DeidentifyMain extends AbstractComponent {
         }
 
         // Input files
-        userMapFile = this.getAttachment(0, 0);
-        logger.info("user map file: " + userMapFile.getAbsolutePath());
-
-        fileToDeidentify = this.getAttachment(1, 0);
-        logger.info("file to be mapped: " + fileToDeidentify.getAbsolutePath());
-
+        Map<Integer, List<File>> inFilesByNodeIndex = this.getAttachments();
+        for (Integer nodeIndex : inFilesByNodeIndex.keySet()) {
+                //nodeIndex 0 is for user map and is optional
+                if (nodeIndex == 0) {
+                        userMapFile = inFilesByNodeIndex.get(nodeIndex).get(0);
+                        logger.info("user map file: " + userMapFile.getAbsolutePath());
+                } else if (nodeIndex == 1) {
+                        fileToDeidentify = inFilesByNodeIndex.get(nodeIndex).get(0);
+                        logger.info("file to be mapped: " + fileToDeidentify.getAbsolutePath());
+                }
+        }
+        
+        /*fileToDeidentify = this.getAttachment(1, 0);
+        logger.info("file to be mapped: " + fileToDeidentify.getAbsolutePath());*/
 
         // Output files
         File deidentifiedFile = this.createFile("Deidentified", ".txt");
@@ -182,36 +190,35 @@ public class DeidentifyMain extends AbstractComponent {
         // Options
 
         //set column index for actual id and anon id for map and fileToDeidentify
-		if (mapAnonIdColName != null && !mapAnonIdColName.equals("")) {
-			mapAnonIdColInd = getColumnIndex(mapAnonIdColName, userMapFile);
-			if (mapAnonIdColInd == -1) {
-				String errorMsg = "Anonymous id column name: " + mapAnonIdColName + " in user map is invalid.";
-				logger.error(errorMsg);
-				this.addErrorMessage(errorMsg);
-				reqsMet = false;
-			}
+	if (mapAnonIdColName != null && !mapAnonIdColName.equals("")) {
+		mapAnonIdColInd = getColumnIndex(mapAnonIdColName, userMapFile);
+		if (mapAnonIdColInd == -1) {
+			String errorMsg = "Anonymous id column name: " + mapAnonIdColName + " in user map is invalid.";
+			this.addErrorMessage(errorMsg);
+			logger.error(errorMsg);
+			reqsMet = false;
 		}
-		if (mapActualIdColName != null && !mapActualIdColName.equals("")) {
-			mapActualIdColInd = getColumnIndex(mapActualIdColName, userMapFile);
-			if (mapActualIdColInd == -1) {
-				String errorMsg = "Actual id column name: " + mapActualIdColName + " in user map is invalid.";
-				logger.error(errorMsg);
-				this.addErrorMessage(errorMsg);
-				reqsMet = false;
-			}
+	}
+	if (mapActualIdColName != null && !mapActualIdColName.equals("")) {
+	        mapActualIdColInd = getColumnIndex(mapActualIdColName, userMapFile);
+		if (mapActualIdColInd == -1) {
+			String errorMsg = "Actual id column name: " + mapActualIdColName + " in user map is invalid.";
+			logger.error(errorMsg);
+			this.addErrorMessage(errorMsg);
+			reqsMet = false;
 		}
-		if (fileActualIdColName != null && !fileActualIdColName.equals("")) {
-			fileActualIdColInd = getColumnIndex(fileActualIdColName, fileToDeidentify);
-			if (fileActualIdColInd == -1) {
-				String errorMsg = "Actual id column name: " + fileActualIdColName + " in data file is invalid.";
-				logger.error(errorMsg);
-				this.addErrorMessage(errorMsg);
-				reqsMet = false;
-			}
+	}
+	if (fileActualIdColName != null && !fileActualIdColName.equals("")) {
+		fileActualIdColInd = getColumnIndex(fileActualIdColName, fileToDeidentify);
+		if (fileActualIdColInd == -1) {
+			String errorMsg = "Actual id column name: " + fileActualIdColName + " in data file is invalid.";
+			logger.error(errorMsg);
+			this.addErrorMessage(errorMsg);
+			reqsMet = false;
 		}
-
-        // Processing
-		if (reqsMet) {
+	}
+	// Processing
+	if (reqsMet) {
 	        //hashmap that stores actual id as the key and anonymous id as the value
 	        Map<String, String> studentIdPairsOfMap = new HashMap<String, String>();
 	        Map<String, String> studentIdPairsOfFile = new HashMap<String, String>();
@@ -219,6 +226,7 @@ public class DeidentifyMain extends AbstractComponent {
 	        //load map file into studentIdPairsOfMap
 	        if (this.userMapFile != null)
 	                studentIdPairsOfMap = getStudentIdPairsFromMap();
+	        
 	        //get all distinct students in toBeDeidentifiedFile into studentIdPairsOfFile
 	        studentIdPairsOfFile = getStudentIdsFromFile();
 	        //loop thru studentIdPairsOfFile, for each student check:
@@ -229,6 +237,7 @@ public class DeidentifyMain extends AbstractComponent {
 	                for (Map.Entry<String, String> entry : studentIdPairsOfMap.entrySet()) {
 	                        String curActualId = entry.getKey();
 	                        String curAnonId = entry.getValue();
+	                        
 	                        if ((caseSensitive && curActualId.equals(thisStudentActualId)) ||
 	                                        (!caseSensitive && curActualId.equalsIgnoreCase(thisStudentActualId))) {
 	                                anonIdInMap = curAnonId;
@@ -243,7 +252,7 @@ public class DeidentifyMain extends AbstractComponent {
 	                        continue;
 	                } else {
 	                        String anonIdInDS = getDSAnonStudentId(thisStudentActualId);
-	                        if (anonIdInDS != null && anonIdInDS.trim().equals("")) {
+	                        if (anonIdInDS != null && !anonIdInDS.trim().equals("")) {
 	                                studentIdPairsOfFile.put(thisStudentActualId, anonIdInDS);
 	                                studentIdPairsOfMap.put(thisStudentActualId, anonIdInDS);
 	                                continue;
@@ -261,12 +270,15 @@ public class DeidentifyMain extends AbstractComponent {
 	        deidentifyFile(studentIdPairsOfFile, deidentifiedFile);
 
 	        Integer fileIndex = 0;
-	        Integer nodeIndex = 0;
-	        this.addOutputFile(newUserMapFile, nodeIndex, fileIndex, "user-map");
-	        nodeIndex = 1;
-	        this.addOutputFile(deidentifiedFile, nodeIndex, fileIndex, "tab-delimited");
-		}
+	        Integer outputNodeIndex = 0;
+	        this.addOutputFile(newUserMapFile, outputNodeIndex, fileIndex, "user-map");
+	        outputNodeIndex = 1;
+	        this.addOutputFile(deidentifiedFile, outputNodeIndex, fileIndex, "tab-delimited");
+	}
         System.out.println(this.getOutput());
+        for (String err : this.errorMessages) {
+                System.err.println(err);
+        }  
     }
 
     private int getColumnIndex(String columnName, File file) {
@@ -321,12 +333,14 @@ public class DeidentifyMain extends AbstractComponent {
 
     private String getDSAnonStudentId(String studentActualId) {
         // Have to go to mapping_db for actual student info
-        edu.cmu.pslc.datashop.mapping.dao.StudentDao mappedStudentDao =
+         edu.cmu.pslc.datashop.mapping.dao.StudentDao mappedStudentDao =
             edu.cmu.pslc.datashop.mapping.dao.DaoFactory.HIBERNATE.getStudentDao();
-
+                         
         Collection<edu.cmu.pslc.datashop.mapping.item.StudentItem> students = null;
+        students = mappedStudentDao.find(studentActualId);
         if (this.caseSensitive) {
             students = mappedStudentDao.find(studentActualId);
+            
         } else {
             students = mappedStudentDao.findIgnoreCase(studentActualId);
         }

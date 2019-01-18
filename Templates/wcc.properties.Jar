@@ -1,4 +1,4 @@
-# Example properties file for generating an Python component.
+# Example properties file for generating a component that calls an external Jar file.
 # Contact us (datashop-help@lists.andrew.cmu.edu) if you have questions
 # or find yourself wanting to do something that isn't obvious here.
 
@@ -37,7 +37,7 @@ component.version=1.0
 component.description=Now is the time for all good mean to come to the aid of their country.
 
 # The number of inputs for the new component. 
-component.num_inputs=2
+component.num_input_nodes=2
 
 # The number of outputs for the new component. 
 component.num_outputs=1
@@ -48,6 +48,15 @@ component.num_options=3
 # For each input, specify the type, e.g., file, tab-delimited, csv, student-step
 input.0.type=tab-delimited
 input.1.type=tetrad-knowledge
+
+# For each input, specify the maximum and minimum number of files connected to it
+# min_num_files=0 -> optional input
+# max_num_files=unbounded -> infinite number of inputs allowed
+input.0.min_num_files=1
+input.0.max_num_files=1
+# The knowledge (second) input is optional.
+input.1.min_num_files=0
+input.1.max_num_files=1
 
 # For each output, specify the name and type, e.g., file, tab-delimited, csv, student-step
 output.0.type=tetrad-graph

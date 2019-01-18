@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Norman Bier and DataShop
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliLoToKc</url>
+
+<date>2018-08-19</date>
+
+<abstract>This component will build a DataShop KC import from an OLI Skill Model.
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>Skills Zip File</b> - A zip file containing the Skills, Problems, and Learning objectives.  A few assumptions about this zip file: <br/>
+<ul>
+	<li>These files are identified by file names [something]-skills.[ext], [something]-problems.[ext], [something]-los.[ext]</li>
+	<li>No blank rows in your tables</li>
+	<li>This only tests what's in the tables, it does not take into account what exists in your course tree.</li>
+</ul>
+<b>Template kc model</b> - Export a kc model from DataShop for this course.  The last column header should be "KC (new KC model name)".<br/>
+</inputs>
+
+<outputs>
+<b>DataShop KC model</b> - You can import this into the dataset that you got the KC model export from.
+</outputs>
+
+<options>
+<b>Use Title as Skill Id</b> - Many of the skill id's are uninteligible. Using the title would make the KC model output more readable. If this is true, ensure that the titles are unique.
+</options>
+
+</info>

@@ -10,8 +10,11 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +45,9 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.VerticalAlignment;
 import org.jfree.util.ShapeUtilities;
 
-import edu.cmu.pslc.datashop.dto.LearningCurvePoint;
+import edu.cmu.pslc.afm.dataObject.AFMDataObject;
+import edu.cmu.pslc.afm.transferModel.AFMTransferModel;
+import edu.cmu.pslc.afm.transferModel.PenalizedAFMTransferModel;
 import edu.cmu.pslc.datashop.item.SkillItem;
 import edu.cmu.pslc.datashop.servlet.learningcurve.LearningCurveImage;
 import edu.cmu.pslc.datashop.util.LogUtils;
@@ -119,9 +124,9 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     private static final Integer LINE_WIDTH_THUMB = new Integer(2);
 
     /** The font for the title of the chart */
-    private static final Font TITLE_FONT = new Font("Ariel", Font.PLAIN, 18);
+    private static final Font TITLE_FONT = new Font("Arial Unicode MS", Font.PLAIN, 18);
     /** The font for the title of the thumbnail chart */
-    private static final Font TITLE_FONT_THUMB = new Font("Ariel", Font.PLAIN, 10);
+    private static final Font TITLE_FONT_THUMB = new Font("Arial Unicode MS", Font.PLAIN, 10);
 
     /** The number of decimal places to display. */
     private static final int NUM_DECIMAL_PLACES = 3;
@@ -158,6 +163,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     private static final Integer ONE_HUNDRED = 100;
 
     private LearningCurveVisualizationOptions lcOptions = null;
+    
+    private File stepRollupFile = null;
 
     /**
      * Constructor. Initializes the data from the database.
@@ -165,6 +172,16 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
      */
     public LearningCurveDatasetProducerStandalone(LearningCurveVisualizationOptions lcOptions) {
         this.lcOptions = lcOptions;
+    }
+
+    /**
+     * Constructor. Initializes the data from the database.
+     * @param lcOptions the Learning Curve Report option.
+     */
+    public LearningCurveDatasetProducerStandalone(LearningCurveVisualizationOptions lcOptions,
+                                                  File stepRollupFile) {
+        this.lcOptions = lcOptions;
+        this.stepRollupFile = stepRollupFile;
     }
 
     /**
@@ -181,6 +198,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
     /**
      * Creates a dataset from the list of passed in parameters and this producers db results.
+     * @param skillName name of the particular skill
+     * @param skillGamma AFM slope (gamma) for specified skill; null if not present
      * @param params collection of parameters for creating the map.
      * @param lcOptions the learning curve options
      * @return LearningCurveImage object which includes, if appropriate, the classification.
@@ -198,7 +217,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
      * table. Default = false</li>
      * </ul>
      */
-    public LearningCurveImage produceDataset(
+    public LearningCurveImage produceDataset(String skillName,
+                                             Double skillGamma,
                                              LearningCurveVisualizationOptions lcOptions,
                                              GraphOptions lcGraphOptions,
                                              List<LearningCurvePoint> lcPointList) {
@@ -219,6 +239,8 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         dataset = new YIntervalSeriesCollection();
         YIntervalSeries series, lfaSeries, hsSeries;
+        // secondary models
+        Map<String, YIntervalSeries> lfaSeriesList = new Hashtable<String, YIntervalSeries>();
         if (createObservationTable) {
             observationTableMap.clear();
         }
@@ -230,18 +252,25 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         if (lcPointList == null) {
             // No data points --> "Too little data".
+            lcImage.setClassification(LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA);
             return lcImage;
         }
 
 
         //iterate those points creating the JFreeChart dataset.
-        series = new YIntervalSeries(lcGraphOptions.getTitle(), true, false);
-        lfaSeries = new YIntervalSeries(
-            lcGraphOptions.getTitle() + " - "
-                + lcOptions.getPrimaryModelName() + " (Predicted)", true, false);
+        series = new YIntervalSeries("Observed data (Actual)", true, false);
+        lfaSeries = new YIntervalSeries(lcOptions.getPrimaryModelName()
+                                        + " model (Predicted)", true, false);
         lfaSeries.setDescription(PREDICTED);
 
-        hsSeries = new YIntervalSeries(lcGraphOptions.getTitle() + " - HighStakes", true, false);
+        for (String s : lcOptions.getSecondaryModelNames()) {
+            YIntervalSeries lfaSeries2 = new YIntervalSeries(s
+                                                             + " model (Predicted)", true, false);
+            lfaSeries2.setDescription(SECONDARY_PREDICTED);
+            lfaSeriesList.put(s, lfaSeries2);
+        }
+
+        hsSeries = new YIntervalSeries("Observed data (HighStakes)", true, false);
         hsSeries.setDescription(HIGHSTAKES);
 
         Integer maxOppCount = 30;
@@ -259,6 +288,11 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             }
         }
 
+        // Classify curve as part of generating dataset.
+        List<LearningCurvePoint> validPoints = new ArrayList<LearningCurvePoint>(lcPointList);
+
+        boolean lowAndFlat = true;
+
         Integer hsErrorRateOpp = 0;
         Double highStakes = null;
         for (Iterator<LearningCurvePoint> pointsIt
@@ -269,6 +303,20 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 highStakes = graphPoint.getHighStakesErrorRate() * ONE_HUNDRED;
                 hsErrorRateOpp = graphPoint.getOpportunityNumber();
             }
+
+            if (isClassifying(lcOptions)) {
+                if (graphPoint.getErrorRates() == null) {
+                    validPoints.remove(graphPoint);
+                } else if (graphPoint.getStudentsCount() < lcOptions.getStudentThreshold()) {
+                    validPoints.remove(graphPoint);
+                } else {
+                    // Look at errorRate for 'low and flat'
+                    if ((graphPoint.getErrorRates() * ONE_HUNDRED) >= lcOptions.getLowErrorThreshold()) {
+                        lowAndFlat = false;
+                    }
+                }
+            }
+
             Double offset = 0.0;
 
             if (errorBarType != null) {
@@ -291,7 +339,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                     Double highY = theY + offset;
                     series.add(theX, theY, lowY, highY);
                     logDebug("Adding point to dataset: Y-Value=", graphPoint.getErrorRates(),
-                            " X-Value=", graphPoint.getOpportunityNumber());
+                             " X-Value=", graphPoint.getOpportunityNumber());
 
                     //add the LFA curve: no error bar info
                     if (viewPredicted) {
@@ -304,8 +352,24 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                                     " X-Value=", graphPoint.getOpportunityNumber());
                         }
                     }
-                }
 
+                    //Add a secondary LFA curve: no error bar info
+                    if (viewPredicted && lcOptions.getSecondaryModelNames().size() > 0) {
+                        Map<String, Double> secondaryPERMap = graphPoint.getSecondaryPredictedErrorRateMap();
+                        for (String s : lcOptions.getSecondaryModelNames()) {
+                            String secondaryHeaderName = "Predicted Error Rate (" + s + ")";
+                            Double lfaScore = secondaryPERMap.get(secondaryHeaderName);
+                            if (lfaScore != null) {
+                                Double lfaX = graphPoint.getOpportunityNumber().doubleValue();
+                                Double lfaY = lfaScore * ONE_HUNDRED;
+                                lfaSeriesList.get(s).add(lfaX, lfaY, lfaY, lfaY);
+                                logDebug("Adding Secondary LFA point to dataset: Y-Value="
+                                         + lfaScore
+                                         + " X-Value=" + graphPoint.getOpportunityNumber());
+                            }
+                        }
+                    }
+                }
 
             } else if (lcMetric.equals(LearningCurveMetric.ASSISTANCE_SCORE)) {
                 if (graphPoint.getAssistanceScore() != null
@@ -432,8 +496,28 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
         dataset.addSeries(series);
 
+        // Classify curves when appropriate.
+        if (isClassifying(lcOptions)) {
+            lcImage.setClassification(classifyLearningCurve(skillName,
+                                                            skillGamma,
+                                                            lcOptions,
+                                                            validPoints,
+                                                            lowAndFlat));
+            Integer lastOpp = null;
+            if (validPoints.size() > 0) {
+                LearningCurvePoint lastPoint = validPoints.get(validPoints.size() - 1);
+                lastOpp = lastPoint.getOpportunityNumber();
+            }
+            lcImage.setLastValidOpportunity(lastOpp);
+        }
+
         if (viewPredicted && lcMetric.equals(LearningCurveMetric.ERROR_RATE)) {
             dataset.addSeries(lfaSeries);
+
+            for (String s : lcOptions.getSecondaryModelNames()) {
+                YIntervalSeries lfaSeries2 = lfaSeriesList.get(s);
+                dataset.addSeries(lfaSeries2);
+            }
         }
 
         if (viewHighStakes) {
@@ -505,22 +589,13 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
     }
 
     /**
-     * This is used to help create a unique string for every dataset produced.
-     * @return String that is unique depending on selection.
+     * Helper method to determine if the current graph is being classified.
+     * @param lcOptions the LearningCurveVisualizationOptions
+     * @return flag
      */
-    public String getUniqueProducerId() {
-
-        StringBuffer prodId = new StringBuffer();
-        /*if (this.sampleList != null) {
-            for (Iterator it = sampleList.iterator(); it.hasNext();) {
-                SampleItem sample = (SampleItem)it.next();
-                if (sample != null && sample.getId() != null) {
-                    prodId.append(sample.getId());
-                }
-            }
-        }*/
-        return prodId.toString();
-
+    private Boolean isClassifying(LearningCurveVisualizationOptions lcOptions) {
+        return (lcOptions.getClassifyCurves() && lcOptions.isViewBySkill()
+                && (lcOptions.getSelectedMetric().equals(LearningCurveMetric.ERROR_RATE)));
     }
 
     /**
@@ -792,7 +867,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
                 if (!isThumb) {
                     renderer.setSeriesShapesVisible(i, false);
                 }
-                renderer.setSeriesStroke(i, PREDICTED_STROKE_2);
+                renderer.setSeriesStroke(i, PREDICTED_STROKE);
             } else if (HIGHSTAKES.equals(aSeries.getDescription())) {
                 renderer.setSeriesLinesVisible(i, false);
                 renderer.setSeriesShapesVisible(i, true);
@@ -846,18 +921,120 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
  ///   }
 
     /**
+     * Consider this learning curve's dataset and classify it.
+     * @param skillName the name of the skill in this dataset
+     * @param lcOptions the LearningCurveVisualizationOptions
+     * @param validPoints  list of opportunities being classified
+     * @param lowAndFlat indication if all opportunities have error below threshold
+     * @return label for the classification
+     */
+    public String classifyLearningCurve(String skillName,
+                                        Double skillGamma,
+                                        LearningCurveVisualizationOptions lcOptions,
+                                        List<LearningCurvePoint> validPoints,
+                                        Boolean lowAndFlat) {
+
+        if (!lcOptions.getClassifyCurves()) {
+            logDebug("classifyLearningCurve: getClassifyThumbnails is false");
+            return LearningCurveImage.NOT_CLASSIFIED;
+        }
+
+        // Only classify if 'view by skill'.
+        if (!lcOptions.isViewBySkill()) {
+            logDebug("classifyLearningCurve: isViewBySkill is false");
+            return LearningCurveImage.NOT_CLASSIFIED;
+        }
+
+        // Only the 'Error Rate' curves are classified.
+        if (!lcOptions.getSelectedMetric().equals(LearningCurveMetric.ERROR_RATE)) {
+            logDebug("classifyLearningCurve: not error_rate curve");
+            return LearningCurveImage.NOT_CLASSIFIED;
+        }
+
+        // CLASSIFIED_TOO_LITTLE
+        if (validPoints.size() < lcOptions.getOpportunityThreshold()) {
+            logDebug("classifyLearningCurve: too little data: oppThreshold = ",
+                     lcOptions.getOpportunityThreshold());
+            return LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA;
+        }
+
+        // CLASSIFIED_LOW_AND_FLAT
+        if (lowAndFlat) {
+            logDebug("classifyLearningCurve: low and flat: lowErrThreshold = ",
+                     lcOptions.getLowErrorThreshold());
+            return LearningCurveImage.CLASSIFIED_LOW_AND_FLAT;
+        }
+
+        // CLASSIFIED_NO_LEARNING
+        Double afmSlope = getAfmSlope(lcOptions.getPrimaryModelName(), skillName, skillGamma);
+        if ((afmSlope != null) && (afmSlope <= lcOptions.getAfmSlopeThreshold())) {
+            logDebug("classifyLearningCurve: no learning: afmSlopeThreshold = ",
+                     lcOptions.getAfmSlopeThreshold());
+            return LearningCurveImage.CLASSIFIED_NO_LEARNING;
+        }
+
+        LearningCurvePoint lastPoint = validPoints.get(validPoints.size() - 1);
+        Double errorRate = lastPoint.getErrorRates() * ONE_HUNDRED;
+        // CLASSIFIED_STILL_HIGH
+        if (errorRate >= lcOptions.getHighErrorThreshold()) {
+            logDebug("classifyLearningCurve: still high: highErrThreshold = ",
+                     lcOptions.getHighErrorThreshold());
+            return LearningCurveImage.CLASSIFIED_STILL_HIGH;
+        }
+
+        // CLASSIFIED_OTHER
+        logDebug("classifyLearningCurve: other");
+        return LearningCurveImage.CLASSIFIED_OTHER;
+    }
+
+    /**
      * Determine, if available, the AFM slope for the specified Skill.
-     * @param skillId the id of the SkillItem
+     * @param modelName the name of the model
+     * @param skillName the name of the skill, within the model
+     * @param skillGamma the AFM slope, if present
      * @return the AFM slope
      */
-    public Double getAfmSlope(Long skillId) {
-        //SkillDao dao = DaoFactory.DEFAULT.getSkillDao();
-        SkillItem skill = null ; // devcon1 dao.get(skillId);
+    public Double getAfmSlope(String modelName, String skillName, Double skillGamma) {
 
-        if (skill == null) { return null; }
+        if (skillGamma != null) { return skillGamma; }
 
-        // Gamma is 'null' if AFM not run.
-        return skill.getGamma();
+        if (stepRollupFile == null) { return null; }
+
+        PenalizedAFMTransferModel penalizedAFMTransferModel = new PenalizedAFMTransferModel();
+
+        List<Long> invalidLines = new ArrayList<Long>();
+        AFMTransferModel theModel = penalizedAFMTransferModel.runAFM(
+                stepRollupFile, modelName, Collections.synchronizedList(invalidLines));
+
+        AFMDataObject ado = theModel.getAFMDataObject();
+
+        if (ado == null) {
+            return null;
+        }
+
+        List<String> skillNames = ado.getSkills();
+        double[] skillParams = theModel.getSkillParameters();
+
+        int count = 0;
+        for (String s : skillNames) {
+            if (!s.equals(skillName)) {
+                count++;
+                continue;
+            }
+            return getSlope(count, skillParams);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the slope value, aka 'Gamma'.
+     * @param index the index into the skillParams array
+     * @param skillParams the array of values, twice the number of skills
+     * @param the slope
+     */
+    private double getSlope(int index, double[] skillParams) {
+        return skillParams[index * 2 + 1];
     }
 
     /**

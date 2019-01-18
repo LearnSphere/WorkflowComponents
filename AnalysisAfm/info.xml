@@ -21,7 +21,7 @@
 
 <options>
 <b>Model</b> - the column containing the Knowledge Component Model (KCM) data <br/>
-<b>Cross-validation Folds</b> - the parameter for K-folds cross-validation
+
 </options>
 
 </info>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ComponentCreator</url>
+
+<date>2018-10-05</date>
+
+<abstract>
+	Visit this url for more information on the input, options, and output of this component:
+	<a target="_blank" href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md">https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md</a>
+	(Drag this component to the workflow, open the options, and scroll down to copy the url.)
+</abstract>
+
+<description>
+	
+</description>
+
+<inputs>
+<b>zip</b> - Zipped directory of the scripts for the new component.
+</inputs>
+
+<outputs>
+<b>zip</b> - Zipped directory containing files necessary for a new component.
+</outputs>
+
+<options>
+	<a target="_blank" href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/ComponentCreator/info.md">Info on the Component Creator options</a>
+</options>
+
+</info>

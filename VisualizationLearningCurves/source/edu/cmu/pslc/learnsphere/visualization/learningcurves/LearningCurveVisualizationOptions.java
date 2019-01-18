@@ -1,8 +1,7 @@
 package edu.cmu.pslc.learnsphere.visualization.learningcurves;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import edu.cmu.pslc.datashop.item.SampleItem;
 
 public class LearningCurveVisualizationOptions {
 
@@ -153,9 +152,6 @@ public class LearningCurveVisualizationOptions {
     /** The selected learning curve metric. */
     private LearningCurveMetric selectedMetric;
 
-    /** The sample. */
-    private SampleItem sampleItem;
-
     /** List of skill items to draw the curve for. */
     private List skillList;
 
@@ -163,7 +159,7 @@ public class LearningCurveVisualizationOptions {
     private List studentList;
 
     /** Indicates if this graph is a view by skill.  If false it is a view by student. */
-    private boolean isViewBySkill;
+    private boolean isViewBySkill = false;
 
     /**
      * The min opportunity to allow.
@@ -185,14 +181,32 @@ public class LearningCurveVisualizationOptions {
 
     /** Skill model being using to draw the primary curve. */
     private String primaryModel;
-    /** Skill model to draw a secondary predicted curve. */
-    private String secondaryModel;
+    /** Skill models to draw secondary predicted curves. */
+    private List<String> secondaryModelNames = new ArrayList<String>();
 
     /** Type of error bar being displayed. */
     private ErrorBarType errorBarType = ErrorBarType.ERROR_BAR_TYPE_STANDARD_ERROR;
 
     /** Name of the CustomField that hold highStakes info. */
     private String highStakesCFName;
+
+    /** Flag indicating if curves are to be categorized. */
+    private Boolean classifyCurves = true;
+
+    /** High error threshold value. */
+    private Double highErrorThreshold = 40.0;
+
+    /** Low error threshold value. */
+    private Double lowErrorThreshold = 20.0;
+
+    /** AFM slope threshold value. */
+    private Double afmSlopeThreshold = 0.001;
+
+    /** Opportunity threshold value. */
+    private Integer opportunityThreshold = 3;
+
+    /** Student threshold value. */
+    private Integer studentThreshold = 10;
 
     public LearningCurveVisualizationOptions() {
 
@@ -230,22 +244,6 @@ public class LearningCurveVisualizationOptions {
         this.opportunityCutOffMin = opportunityCutOffMin;
     }
 
-    /**
-     * Returns sampleItem.
-     * @return Returns the sampleItem.
-     */
-    public SampleItem getSampleItem() {
-        return sampleItem;
-    }
-
-    /**
-     * Set sampleItem.
-     * @param sampleItem The sampleItem to set.
-     */
-    public void setSampleItem(SampleItem sampleItem) {
-        this.sampleItem = sampleItem;
-    }
-
     /** Returns primaryModel. @return Returns the primaryModel. */
     public String getPrimaryModelName() {
         return primaryModel;
@@ -256,21 +254,8 @@ public class LearningCurveVisualizationOptions {
         this.primaryModel = primaryModel;
     }
 
-    /**
-     * Returns secondaryModel.
-     * @return Returns the secondaryModel.
-     */
-    public String getSecondaryModelName() {
-        return secondaryModel;
-    }
-
-    /**
-     * Set secondaryModel.
-     * @param secondaryModel The secondaryModel to set.
-     */
-    public void setSecondaryModelName(String secondaryModel) {
-        this.secondaryModel = secondaryModel;
-    }
+    public List<String> getSecondaryModelNames() { return secondaryModelNames; }
+    public void setSecondaryModelNames(List<String> in) { secondaryModelNames = in; }
 
     /**
      * Returns skillList.
@@ -429,4 +414,86 @@ public class LearningCurveVisualizationOptions {
      * @param cfName the name of the CF
      */
     public void setHighStakesCFName(String cfName) { this.highStakesCFName = cfName; }
+
+    /**
+     * Get the 'classifyCurves' flag.
+     * @return Boolean classifyCurves
+     */
+    public Boolean getClassifyCurves() { return this.classifyCurves; }
+
+    /**
+     * Set the 'classifyCurves' flag.
+     * @param flag
+     */
+    public void setClassifyCurves(Boolean flag) { this.classifyCurves = flag; }
+
+    /**
+     * Get the high error threshold.
+     * @return Double highErrorThreshold
+     */
+    public Double getHighErrorThreshold() { return this.highErrorThreshold; }
+
+    /**
+     * Set the high error threshold.
+     * @param threshold
+     */
+    public void setHighErrorThreshold(Double threshold) {
+        this.highErrorThreshold = threshold;
+    }
+
+    /**
+     * Get the low error threshold.
+     * @return Double lowErrorThreshold
+     */
+    public Double getLowErrorThreshold() { return this.lowErrorThreshold; }
+
+    /**
+     * Set the low error threshold.
+     * @param threshold
+     */
+    public void setLowErrorThreshold(Double threshold) {
+        this.lowErrorThreshold = threshold;
+    }
+
+    /**
+     * Get the AFM slope threshold.
+     * @return Double afmSlopeThreshold
+     */
+    public Double getAfmSlopeThreshold() { return this.afmSlopeThreshold; }
+
+    /**
+     * Set the AFM slope threshold.
+     * @param threshold
+     */
+    public void setAfmSlopeThreshold(Double threshold) {
+        this.afmSlopeThreshold = threshold;
+    }
+
+    /**
+     * Get the opportunity threshold.
+     * @return Integer opportunityThreshold
+     */
+    public Integer getOpportunityThreshold() { return this.opportunityThreshold; }
+
+    /**
+     * Set the opportunity threshold.
+     * @param threshold
+     */
+    public void setOpportunityThreshold(Integer threshold) {
+        this.opportunityThreshold = threshold;
+    }
+
+    /**
+     * Get the student threshold.
+     * @return Integer studentThreshold
+     */
+    public Integer getStudentThreshold() { return this.studentThreshold; }
+
+    /**
+     * Set the student threshold.
+     * @param threshold
+     */
+    public void setStudentThreshold(Integer threshold) {
+        this.studentThreshold = threshold;
+    }
 }
