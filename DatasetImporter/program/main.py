@@ -49,10 +49,14 @@ if __name__ == '__main__':
         for f in files:
             if f == 'datasetDoc.json':
                 logger.debug("Found dataset in directory: %s" % root)
-                ds = D3MDataset.from_dataset_json(path.join(root, f))
-                if ds.name not in datasets:
-                    logger.info("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
-                    datasets.add(ds.name)
+                try:
+                    ds = D3MDataset.from_dataset_json(path.join(root, f))
+                    if ds.name not in datasets:
+                        logger.info("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
+                        datasets.add(ds.name)
+                except:
+                    # Don't choke on unsupported dataset jsons
+                    logger.warning("Encountered unsupported dataset: %s" % str(path.join(root, f)))
 
     logger.debug("Found datasets: %s" % str(datasets))
 

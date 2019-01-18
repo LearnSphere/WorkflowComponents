@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemCreator</url>
-<date>June 21, 2018</date>
+<date>August 23, 2018</date>
 <abstract>The <b>ProblemCreator</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to create a new problem and select a problem target from the columns of a dataset from a dataset repository</description>
 

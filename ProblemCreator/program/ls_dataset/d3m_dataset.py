@@ -9,8 +9,10 @@ import os
 from io import IOBase
 import json
 import csv
+import pandas as pd
 
 from ls_dataset.ls_dataset import LSDataset
+from ls_dataset.dsr_table import DSRTable
 from ls_dataset.dsr_factory import DatasetResourceFactory
 
 logger = logging.getLogger(__name__)
@@ -39,6 +41,12 @@ class D3MDataset(LSDataset):
 
         # Parse data resources in the dataset
         self.dataResources = [DatasetResourceFactory.get_resource(dsr) for dsr in dsdata['dataResources']]
+
+        # Store qualities field (currently noto used)A
+        if 'qualities' in dsdata:
+            self.qualities = dsdata['qualities']
+        else:
+            self.qualities = None
    
     @staticmethod
     def from_json(d):
@@ -74,19 +82,26 @@ class D3MDataset(LSDataset):
         if isinstance(fpath, str):
             if path.exists(fpath):
                 #Get dataset path from json path
-                dpath = path.split(path.split(fpath)[0])[0] # Assumses root
-                with open(fpath, 'r') as f:
-                    ds_json = json.load(f)
-                    return D3MDataset(dpath,
-                                      ds_json)
+                dpath = path.dirname(fpath)
+                # dpath = path.split(path.split(fpath)[0])[0] # Assumses root
+                try:
+                    with open(fpath, 'r') as f:
+                        ds_json = json.load(f)
+                        return D3MDataset(dpath,
+                                          ds_json)
+                except:
+                    logger.error("Error while decoding dataset json: %s" % fpath)
+
             else:
                 logger.error("Found no dataset json at path: %s" % str(fpath))
                 raise Exception("Found no dataset json at path: %s" % str(fpath))
         elif isinstance(fpath, IOBase):
             logger.debug("Loading dataset json from open file")
             logger.debug("dataset path: %s" % str(fpath))
-            dpath = path.split(path.split(fpath)[0])[0]
-            ds_json = json.load(fpath)
+            dpath = path.dirname(fpath)
+            # dpath = path.split(path.split(fpath)[0])[0]
+            # ds_json = json.load(fpath)
+            ds_json = json.load(fpath, encoding='utf-16')
             return D3MDataset(dpath,
                                 ds_json)
         else:
@@ -158,6 +173,7 @@ class D3MDataset(LSDataset):
         out = json.loads(super().to_json())
         out['about'] = self.about
         out['dataResources'] = [json.loads(rc.to_json()) for rc in self.dataResources]
+        out['qualities'] = self.qualities
         
         if fpath is not None:
             logger.debug("Writing dataset json to: %s" % fpath)
@@ -170,3 +186,27 @@ class D3MDataset(LSDataset):
 
     def __str__(self):
         return self.to_json()
+
+    def load_dataset(self):
+        """
+        Load the dataset table
+
+        """
+        data = None
+        for dr in [dr for dr in self.dataResources if type(dr) is DSRTable]:
+            logger.debug("Found data resource table with ID: %s\tpath: %s" % (dr.resID, dr.resPath))
+            if data is None:
+                dpath = path.join(self.dpath, dr.resPath)
+                data = pd.read_csv(dpath, ',')
+                return data
+
+
+
+    def get_data_columns(self):
+        for dr in [dr for dr in self.dataResources if type(dr) is DSRTable]:
+            logger.debug("Found data resource table with ID: %s\tpath: %s" % (dr.resID, dr.resPath))
+            return [col for col in dr.columns if col.colName != 'd3mIndex']
+
+
+
+

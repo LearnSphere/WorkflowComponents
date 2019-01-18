@@ -53,6 +53,9 @@
       <xs:element name="predictions" substitutionGroup="tab-delimited" />
       <xs:element name="dataset-list" substitutionGroup="tab-delimited" />
       <xs:element name="model-set" substitutionGroup="tab-delimited" />
+      <xs:element name="model-scores" substitutionGroup="tab-delimited" />
+      <xs:element name="ranked-models" substitutionGroup="tab-delimited" />
+      <xs:element name="metrics-list" substitutionGroup="tab-delimited" />
       <xs:element name="fitted-model-set" substitutionGroup="tab-delimited" />
       <xs:element name="problem-target" substitutionGroup="tab-delimited" />
       <xs:element name="problem-task" substitutionGroup="tab-delimited" />
@@ -105,4 +108,6 @@
   <xs:element name="json" substitutionGroup="text" />
       <xs:element name="fit-model" substitutionGroup="json" />
       <xs:element name="modeling-problem" substitutionGroup="json" />
+      <xs:element name="model" substitutionGroup="json" />
+
 </xs:schema>

@@ -11,7 +11,7 @@ import json
 import pprint
 # from datetime import datetime
 
-from google.protobuf import json_format
+from google.protobuf.json_format import MessageToJson
 
 from .ls_problem import ProblemDesc, Input, Target
 from .api_v3 import problem_pb2, problem_pb2_grpc
@@ -26,8 +26,8 @@ class GRPCProblemDesc(ProblemDesc):
     def to_protobuf(self):
         prob = problem_pb2.Problem(
             id=self.id,
-            version=self.version
         )
+        prob.version = str(self.version)
         if self.name is not None:
             prob.name = self.name
         if self.description is not None:
@@ -61,8 +61,23 @@ class GRPCProblemDesc(ProblemDesc):
         
         return msg
 
+    def grpc_to_file(self, fpath):
+        msg = self.to_protobuf()
+        out_data = MessageToJson(msg) 
+        if isinstance(fpath, str):
+            with open(fpath, 'w') as out_file:
+                out_file.write(out_data)
+        elif isinstance(fpath, IOBase):
+            fpath.write(out_data)
+        else:
+            raise Exception("Invalid file/path given to write to file. Given \
+                            input type: %s" % type(fpath))
+
+    
+    @staticmethod
     def from_problem_desc(prob):
         logger.info("Initializing Default problem desc from problem description class")
+        logger.debug("Problem description to translate to GRPC Prob Desc: %s" % str(prob.to_dict()))
                               
         out = GRPCProblemDesc(
             name=prob.name,
@@ -74,6 +89,7 @@ class GRPCProblemDesc(ProblemDesc):
             metadata = prob.metadata
         )
         out.inputs = prob.inputs
+        logger.debug("GRPC Problem description: %s" % str(MessageToJson(out.to_protobuf())))
         return out
 
     @staticmethod
@@ -198,9 +214,8 @@ class DefaultProblemDesc(ProblemDesc):
         out = DefaultProblemDesc(
             name=data['about']['problemName'],
             version=data['about']['problemVersion'],
-            desc = data['about']['problemDescription'],
-            task_type = data['about']['taskType'],
-            subtype = data['about']['taskSubType'],
+            desc=data['about']['problemDescription'] if 'problemDescription' in data['about'].keys() else '',
+            subtype = data['about']['taskSubType'] if 'taskSubType' in data['about'].keys() else '',
             metrics = [metric['metric']
                        for metric in data['inputs']['performanceMetrics']],
             metadata = {
@@ -210,6 +225,7 @@ class DefaultProblemDesc(ProblemDesc):
                             # 'original_json': data
                        }
         )
+        out.add_task_type(data['about']['taskType'])
         if 'problemSchemaVersion' in data['about'].keys():
             out.metadata['schema_version'] = data['about']['problemSchemaVersion']
         if 'dataSplits' in data['inputs'].keys():
@@ -327,18 +343,30 @@ class DefaultProblemDesc(ProblemDesc):
         """
         logger.debug("Getting problem from dataset: %s" % str(ds))
         dname = ds.name
-        dpath = ds.dpath
-        logger.debug("Looking for prolem in dataset path: %s" % dpath)
-        dir_name = path.split(dpath)[1]
+        dpath = path.dirname(ds.dpath)
+        logger.debug("Looking for problem in dataset path: %s" % dpath)
+        ds_dir_name = path.split(ds.dpath)[1]
+        if ds_dir_name.endswith('_dataset'):
+            dir_name = ds_dir_name[:-8]
+        else:
+            dir_name = ds_dir_name
         logger.debug("Getting problem for dataset with name, %s, and dataset_dir: %s" % (dname, dir_name))
-        for root, dirs, files in os.walk(ds.dpath):
+        # for root, dirs, files in os.walk(ds.dpath):
+        result = None
+        for root, dirs, files in os.walk(dpath):
             for f in files:
                 if f == DefaultProblemDesc.__default_schema__:
                     parent = path.split(root)[1]
+                    result = path.join(root, f)
+                    logger.debug("Found problem doc at path: %s" % result)
                     if parent == dir_name + '_problem':
-                        logger.debug("Getting problem schema at path: %s" % path.join(root, f))
-                        return path.join(root, f)
-        logger.warning("Found no default problem doc in dataset at: %s" % dpath)
+                        logger.debug("Getting problem schema at path: %s" % result)
+                        return result
+        if result is not None: 
+            logger.warning("Getting problem schema at unexpected path: %s" % result)
+            return result
+        else:
+            logger.warning("Found no default problem doc in dataset at: %s" % dpath)
     
     def __str__(self):  
         out = self.to_dict()

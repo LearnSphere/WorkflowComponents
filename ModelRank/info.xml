@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelRank</url>
+<date>August 23, 2018</date>
+<abstract>The <b>ModelRank</b> component is an example of a(n) Python component.</abstract>
+<description>Rank models according to a given metric</description>
+
+<inputs>
+<b>dataset</b>
+<b>fitted-model-set</b>
+</inputs>
+
+<outputs>
+<b>ranked-models</b>
+</outputs>
+
+<options>
+<b>metric -- type Enum(ACCURACY, F1, F1_MICRO, F1_MACRO, ROC_AUC, ROC_AUC_MICRO, ROC_AUC_MACRO, MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR_AVG, MEAN_ABSOLUTE_ERROR, R_SQUARED, NORMALIZED_MUTUAL_INFORMATION, JACCARD_SIMILARITY_SCORE, PRECISION_AT_TOP_K, LOSS)</b>
+<b>ordering -- type Enum(Higher_is_Better, Lower_is_Better)</b>
+</options>
+
+</info>

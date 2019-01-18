@@ -1,0 +1,9 @@
+[Logging]
+log_level = INFO
+enable_syslog = True
+enable_file_log = True
+file_log_path = /rdata/dataStore/d3m/tmp
+[TA2]
+ta2_url = localhost:45042
+[Output]
+out_file = ranked-models.tsv

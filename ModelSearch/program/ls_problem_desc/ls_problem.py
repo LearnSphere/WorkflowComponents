@@ -28,6 +28,17 @@ class ProblemDesc(object):
     """
 
     __task_types__ =  [
+            # "classification",
+            # "regression",
+            # "clustering",
+            # "linkPrediction",
+            # "vertexNomination",
+            # "communityDetection",
+            # "graphClustering",
+            # "graphMatching",
+            # "timeSeriesForecasting",
+            # "collaborativeFiltering",
+            # "objectDetection"
         'CLASSIFICATION',
         'REGRESSION',
         'CLUSTERING',
@@ -41,25 +52,32 @@ class ProblemDesc(object):
         'OBJECT_DETECTION '
     ]
     __task_subtypes__ =  [
-        'NONE',
-        'BINARY',
-        'MULTICLASS',
-        'MULTILABEL',
-        'UNIVARIATE',
-        'MULTIVARIATE',
-        'OVERLAPPING',
-        'NONOVERLAPPING'
+			"binary",
+			"multiClass",
+			"multiLabel",
+			"univariate",
+			"multivariate",
+			"overlapping",
+			"nonOverlapping"
+        # 'NONE',
+        # 'BINARY',
+        # 'MULTICLASS',
+        # 'MULTILABEL',
+        # 'UNIVARIATE',
+        # 'MULTIVARIATE',
+        # 'OVERLAPPING',
+        # 'NONOVERLAPPING'
     ]
 
     __ignore_chars__=['-','_']
     
-    def __init__(self, name=None, desc=None, task_type=None, subtype=None, version=1, metrics=None, metadata=None):
+    def __init__(self, name=None, desc=None, task_type=None, subtype=None, version=1.0, metrics=None, metadata=None):
         """
         inputs: 
             metadata - dictionary representation of additional information
         
         """
-        self.id = str(abs(hash(datetime.now())))
+        self.id = "pid" + str(abs(hash(datetime.now())))
         self.name=name
         self.version=version
         self.description=desc
@@ -105,7 +123,9 @@ class ProblemDesc(object):
         for char in self.__ignore_chars__:
             t = t.replace(char, "")
         # Get index of matching type
+        logger.debug("Looking for match of tyoe: %s" % t)
         i = self.get_task_types().index(t)
+        logger.debug("got matching type: %s" % self.__task_types__[i])
         self.task_type = self.__task_types__[i]
 
     def add_metric(self, metric):
@@ -127,6 +147,7 @@ class ProblemDesc(object):
         for i,t in enumerate(tasks):
             for char in ProblemDesc.__ignore_chars__:
                 tasks[i] = t.replace(char, "")
+        logger.debug("Got problem task types: %s" % str(tasks))
         return tasks    
 
     def get_valid_tasks(self):

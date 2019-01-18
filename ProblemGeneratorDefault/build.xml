@@ -60,12 +60,11 @@
     </target>
 
     <target name="env" description="setup the local component python env">
-	<exec executable="/bin/bash" >
-		<arg value="${basedir}/install_component.sh"/>
-	</exec>
+        <exec executable="/bin/bash" >
+            <arg value="${basedir}/install_component.sh"/>
+        </exec>
     </target>
 
-    <!-- Delete the temporary directories. -->
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
         <javac srcdir="${source}" destdir="${build}" debug="on">

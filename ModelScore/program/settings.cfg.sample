@@ -6,5 +6,4 @@ file_log_path = /rdata/dataStore/d3m/tmp
 [TA2]
 ta2_url = localhost:45042
 [Output]
-dataset_out_file = datasetDoc.tsv
-model_out_file = model-flows.tsv
+out_file = model-scores.tsv

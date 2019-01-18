@@ -26,8 +26,10 @@ from ls_dataset.d3m_prediction import D3MPrediction
 from ls_problem_desc.ls_problem import ProblemDesc
 from ls_problem_desc.d3m_problem import DefaultProblemDesc
 from d3m_ta2.ta2_v3_client import TA2Client
+from d3m_eval.summer_2018.prob_discovery import ProblemDiscoveryWriter
 # from ls_workflow.workflow import Workflow as Solution
-from modeling.models import Model, ModelScores, Score
+from modeling.models import *
+from modeling.component_out import *
 
 
 __version__ = '0.1'
@@ -73,13 +75,26 @@ if __name__ == '__main__':
 
     # Init the server connection
     address = config.get_ta2_url()
+    name = config.get_ta2_name()
     
     logger.info("using server at address %s" % address)
-    serv = TA2Client(address)
-    serv.hello()
+    if is_test:
+        serv = TA2Client(address, debug=True, out_dir=args.workingDir, 
+                name=name)
+    else:
+        serv = TA2Client(address, 
+                name=name)
 
-    # Search for solutions
-    search_id = serv.search_solutions(prob, ds)
+    if config.get_mode() == 'D3M':
+        # Write search and problem to file for problem discovery task
+        logger.debug("Writing to out_dir: %s" % config.get_out_path())
+        prob_list = ProblemDiscoveryWriter(config.get_out_path())
+        # Search for solutions
+        search_id, request = serv.search_solutions(prob, ds, get_request=True)
+        prob_list.add_problem(prob, request)
+    else:
+        # Search for solutions
+        search_id = serv.search_solutions(prob, ds, get_request=True)
     soln_ids = serv.get_search_solutions_results(search_id)
     if soln_ids is None:
         raise Exception("No solution returned")
@@ -148,10 +163,11 @@ if __name__ == '__main__':
         # logger.debug("###########################################")
         
     out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
-    with open(out_file_path, 'w') as out_file:
-        out = csv.writer(out_file, delimiter='\t')
-        out.writerow([solns[sln].id for sln in solns])
-        out.writerow([solns[sln].to_dict() for sln in solns])
+    ModelSetIO.to_file(out_file_path, solns)
+    # with open(out_file_path, 'w') as out_file:
+        # out = csv.writer(out_file, delimiter='\t')
+        # out.writerow([solns[sln].id for sln in solns])
+        # out.writerow([solns[sln].to_dict() for sln in solns])
         # out.writerow([scores[sln].to_dict() for sln in solns])
 
     # Write dataset info to output file

@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelScore</url>
-<date>June 22, 2018</date>
+<date>August 23, 2018</date>
 <abstract>The <b>ModelScore</b> component is an example of a(n) Python component.</abstract>
 <description>Evaluate a model with a given performance metric and dataset</description>
 
@@ -19,7 +19,7 @@
 </outputs>
 
 <options>
-<b>metric -- type Enum(METRIC_UNDEFINED, ACCURACY, F1, F1_MICRO, F1_MACRO, ROC_AUC, ROC_AUC_MICRO, ROC_AUC_MACRO, MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR_AVG, MEAN_ABSOLUTE_ERROR, R_SQUARED, NORMALIZED_MUTUAL_INFORMATION, JACCARD_SIMILARITY_SCORE, PRECISION_AT_TOP_K, LOSS)</b>
+<b>metric -- type Enum(ACCURACY, F1, F1_MICRO, F1_MACRO, ROC_AUC, ROC_AUC_MICRO, ROC_AUC_MACRO, MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR, ROOT_MEAN_SQUARED_ERROR_AVG, MEAN_ABSOLUTE_ERROR, R_SQUARED, NORMALIZED_MUTUAL_INFORMATION, JACCARD_SIMILARITY_SCORE, PRECISION_AT_TOP_K, LOSS)</b>
 </options>
 
 </info>

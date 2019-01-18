@@ -64,7 +64,6 @@
   </xs:complexType>
   <xs:simpleType final="restriction" name="metricType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="METRIC_UNDEFINED"/>
       <xs:enumeration value="ACCURACY"/>
       <xs:enumeration value="F1"/>
       <xs:enumeration value="F1_MICRO"/>
