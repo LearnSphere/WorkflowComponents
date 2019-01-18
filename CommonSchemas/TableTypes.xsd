@@ -50,6 +50,7 @@
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
       
       <xs:element name="dataset" substitutionGroup="tab-delimited" />
+      <xs:element name="predictions" substitutionGroup="tab-delimited" />
       <xs:element name="dataset-list" substitutionGroup="tab-delimited" />
       <xs:element name="model-set" substitutionGroup="tab-delimited" />
       <xs:element name="fitted-model-set" substitutionGroup="tab-delimited" />
