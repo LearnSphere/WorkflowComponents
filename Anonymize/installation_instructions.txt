@@ -1,4 +1,0 @@
-cd into Anonymize/program
-
-npm install papaparse
-npm install sjcl
