@@ -1,4 +1,4 @@
-package edu.cmu.learnsphere.d3m.analysis;
+package edu.cmu.learnsphere.d3m.visualization;
 
 import java.io.File;
 
@@ -7,7 +7,7 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 /**
  * Workflow component: template source for a component
  */
-public class ModelSearchMain extends AbstractComponent {
+public class CompareModelPredictionsMain extends AbstractComponent {
 
 
     /**
@@ -16,14 +16,14 @@ public class ModelSearchMain extends AbstractComponent {
      */
     public static void main(String[] args) {
 
-        ModelSearchMain tool = new ModelSearchMain();
+        CompareModelPredictionsMain tool = new CompareModelPredictionsMain();
         tool.startComponent(args);
     }
 
     /**
      * Constructor.
      */
-    public ModelSearchMain() {
+    public CompareModelPredictionsMain() {
         super();
     }
 
@@ -32,16 +32,12 @@ public class ModelSearchMain extends AbstractComponent {
         logger.info("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
-		this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
-
 
 	// Add input meta-data (headers) to output file.
 	this.addMetaDataFromInput("dataset", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
-	this.addMetaData("fitted-model-set", 0, META_DATA_LABEL, "label0", 0, null);
-	this.addMetaData("dataset", 1, META_DATA_LABEL, "label1", 0, null);
-	this.addMetaData("predictions", 2, META_DATA_LABEL, "label2", 0, null);
+	this.addMetaData("inline-html", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
@@ -61,13 +57,9 @@ public class ModelSearchMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/fit-models.tsv");
-	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/datasetDoc.tsv");
-	File outputFile2 = new File(outputDirectory.getAbsolutePath() + "/predictions.tsv");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/viz.html");
 
-		this.addOutputFile(outputFile0, 0, 0, "fitted-model-set");
-		this.addOutputFile(outputFile1, 1, 0, "dataset");
-		this.addOutputFile(outputFile2, 2, 0, "predictions");
+		this.addOutputFile(outputFile0, 0, 0, "inline-html");
 
 
         System.out.println(this.getOutput());
