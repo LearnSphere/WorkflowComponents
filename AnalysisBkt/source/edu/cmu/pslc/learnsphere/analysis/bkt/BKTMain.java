@@ -643,17 +643,20 @@ public class BKTMain extends AbstractComponent {
                 }
 
                 logger.debug("gRMSE = " + gRMSE + ", iRMSE = " + iRMSE + ", nRMSE = " + nRMSE); // Yudelson
+
                 // parse model and prediction file
 //                 logger.debug("Ready for model prediction files parsed."); // Yudelson debug
                 String strResult = parseModelPredictionFiles(
                         resultModelFile.getAbsolutePath(), resultPredictionFile.getAbsolutePath(),
                         sbRunResult.toString(), gRMSE, iRMSE, nRMSE);
 //                 logger.debug("Model prediction files parsed."); // Yudelson debug
+
                 List<Double> predictedValues = new ArrayList<Double>();
                 Boolean saveLines = false;
                 Boolean saveParameters = false;
                 for (String resultLine : strResult.toString().split("\\n")) {
                     String[] splitLine;
+
                     if (resultLine.startsWith("loglikelihood:")) {
                         splitLine = resultLine.split("\\t");
                         logLikelihoodValue = Double.parseDouble(splitLine[1]);
@@ -702,15 +705,21 @@ public class BKTMain extends AbstractComponent {
                         Integer id = Integer.parseInt(splitLine[0]);
                         addElement(parametersDoc, parameter, "id", id);
                         String skill = splitLine[1];
-                        addElement(parametersDoc, parameter, "skill", skill);
+                        //addElement(parametersDoc, parameter, "skill", skill);
+                        addElement(parametersDoc, parameter, "type", "skill");
+                        addElement(parametersDoc, parameter, "name", skill);
                         Double pinit = Double.parseDouble(splitLine[2]);
-                        addElement(parametersDoc, parameter, "p_init", pFormat.format(pinit));
+                        //addElement(parametersDoc, parameter, "p_init", pFormat.format(pinit));
+                        addElement(parametersDoc, parameter, "intercept", pFormat.format(pinit));
                         Double plearn = Double.parseDouble(splitLine[3]);
-                        addElement(parametersDoc, parameter, "p_learn", pFormat.format(plearn));
+                        //addElement(parametersDoc, parameter, "p_learn", pFormat.format(plearn));
+                        addElement(parametersDoc, parameter, "slope", pFormat.format(plearn));
                         Double pslip = Double.parseDouble(splitLine[4]);
-                        addElement(parametersDoc, parameter, "p_slip", pFormat.format(pslip));
+                        //addElement(parametersDoc, parameter, "p_slip", pFormat.format(pslip));
+                        addElement(parametersDoc, parameter, "slip", pFormat.format(pslip));
                         Double pguess = Double.parseDouble(splitLine[5]);
-                        addElement(parametersDoc, parameter, "p_guess", pFormat.format(pguess));
+                        //addElement(parametersDoc, parameter, "p_guess", pFormat.format(pguess));
+                        addElement(parametersDoc, parameter, "guess", pFormat.format(pguess));
                         parametersDoc.getDocumentElement().appendChild(parameter);
                     } // Yudelson ^^^^
 

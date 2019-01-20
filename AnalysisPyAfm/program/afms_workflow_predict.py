@@ -39,7 +39,7 @@ def read_datashop_student_step(step_file, kc_model, ft):
         data = line.rstrip().split('\t')
         original_data = [d for i,d in enumerate(data) if i in cols_to_keep]
         original_step_data.append(original_data)
-
+        
         kc_labels = [kc for kc in data[header[kcm]].split("~~") if kc != ""]
 
         if not kc_labels:
@@ -101,14 +101,13 @@ if __name__ == "__main__":
     #print("KC Model: " + kc_model)
 
     kcs, opps, y, stu, student_label, item_label, original_headers, original_step_data = read_datashop_student_step(ssr_file, kc_model, args.ft)
-
     sv = DictVectorizer()
     qv = DictVectorizer()
     ov = DictVectorizer()
     S = sv.fit_transform(stu)
     Q = qv.fit_transform(kcs)
     O = ov.fit_transform(opps)
-
+    
     # AFM
     X = hstack((S, Q, O))
     y = np.array(y)
@@ -123,13 +122,39 @@ if __name__ == "__main__":
     X = X.toarray()
     X2 = Q.toarray()
 
+    intercept1 = None
+    intercept2 = None
+    coef1 = None
+    coef2 = None
+    ll = None
+    aic = None
+    bic = None
+    nPars = None
+    nDataPoints = None
+
     if args.model == "AFM":
         m = CustomLogistic(bounds=bounds, l2=l2, fit_intercept=False)
         m.fit(X, y)
+        intercept1 = getattr(m, "intercept_")
+        coef1 = getattr(m, "coef_")
+        ll = getattr(m, "ll")
+        aic = getattr(m, "aic")
+        bic = getattr(m, "bic")
+        nPars = getattr(m, "nPars")
+        nDataPoints = getattr(m, "nDataPoints")
         yHat = 1 - m.predict_proba(X)
     elif args.model == "AFM+S":
         m = BoundedLogistic(first_bounds=bounds, first_l2=l2)
         m.fit(X, X2, y)
+        intercept1 = getattr(m, "intercept1_")
+        intercept2 = getattr(m, "intercept2_")
+        coef1 = getattr(m, "coef1_")
+        coef2 = getattr(m, "coef2_")
+        ll = getattr(m, "ll")
+        aic = getattr(m, "aic")
+        bic = getattr(m, "bic")
+        nPars = getattr(m, "nPars")
+        nDataPoints = getattr(m, "nDataPoints")
         yHat = 1 - m.predict_proba(X, X2)
     else:
         raise ValueError("Model type not supported")
@@ -147,3 +172,52 @@ if __name__ == "__main__":
         else:
             d = row + ["%0.4f" % yHat[i-cntRowMissOpp]]
         outfile.write("\t".join(d) + "\n")
+
+    modelValuesOutfilePath = args.workingDir + "/model_values.xml"
+    modelValuesOutfile = open(modelValuesOutfilePath, 'w')
+    modelValuesOutfile.write("<model_values>\n")
+    modelValuesOutfile.write("<model>\n")
+    modelValuesOutfile.write("<name>" + kc_model + "</name>\n")
+    modelValuesOutfile.write("<type>" + args.model + "</type>\n")
+    modelValuesOutfile.write("%s%.4f%s" % ("<log_likelihood>", ll, "</log_likelihood>\n"))
+    modelValuesOutfile.write("%s%.4f%s" % ("<AIC>", aic, "</AIC>\n"))
+    modelValuesOutfile.write("%s%.4f%s" % ("<BIC>", bic, "</BIC>\n"))
+    modelValuesOutfile.write("%s%d%s" % ("<number_of_parameters>", nPars, "</number_of_parameters>\n"))
+    modelValuesOutfile.write("%s%d%s" % ("<number_of_observations>", nDataPoints, "</number_of_observations>\n"))
+    modelValuesOutfile.write("</model>\n")
+    modelValuesOutfile.write("</model_values>\n")
+
+    featuresX = sv.get_feature_names() + qv.get_feature_names() + ov.get_feature_names()
+    featuresX2 = qv.get_feature_names()
+    numStudent = len(sv.get_feature_names())
+    numSkill = len(qv.get_feature_names())
+    
+    parameterEstimateOutfilePath = args.workingDir + "/Parameter-estimate-values.xml"
+    parameterEstimateOutfile = open(parameterEstimateOutfilePath, 'w')
+    parameterEstimateOutfile.write("<parameters>\n")
+    #skill
+    if coef1 is not None:
+        for x in range(0,numSkill):
+            parameterEstimateOutfile.write("<parameter>")
+            parameterEstimateOutfile.write("<type>skill</type>\n")
+            parameterEstimateOutfile.write("<name>" + str(featuresX[x+numStudent]) +"</name>\n")
+            if args.model == "AFM":
+                parameterEstimateOutfile.write("%s%.4f%s" % ("<intercept>", coef1[x+numStudent], "</intercept>\n"))
+            if args.model == "AFM+S" and coef2 is not None:
+                parameterEstimateOutfile.write("%s%.4f%s" % ("<intercept>", coef1[x+numStudent], "</intercept>\n"))
+                parameterEstimateOutfile.write("%s%.4f%s" % ("<slip>", coef2[x], "</slip>\n"))
+            parameterEstimateOutfile.write("%s%.4f%s" % ("<slope>", coef1[x+numStudent+numSkill], "</slope>\n"))
+            parameterEstimateOutfile.write("</parameter>\n")
+    #student
+    if coef1 is not None:
+        for x in range(0,numStudent):
+            parameterEstimateOutfile.write("<parameter>")
+            parameterEstimateOutfile.write("<type>student</type>\n")
+            parameterEstimateOutfile.write("<name>" + str(featuresX[x]) +"</name>\n")
+            parameterEstimateOutfile.write("%s%.4f%s" % ("<intercept>", coef1[x], "</intercept>\n"))
+            parameterEstimateOutfile.write("</parameter>\n")
+            
+    parameterEstimateOutfile.write("</parameters>\n")
+    
+
+    

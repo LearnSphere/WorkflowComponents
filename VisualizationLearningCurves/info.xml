@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationLearningCurves</url>
+<abstract>
+A learning curve visualizes changes in student performance over time. The line graph displays opportunities across the x-axis, and a measure of student performance along the y-axis. A good learning curve reveals improvement in student performance as opportunity count (i.e., practice with a given knowledge component) increases.
+</abstract>
+<description></description>
+
+<inputs>
+One or more <b>Student-Step</b> files.<br/>
+An optional <b>Parameters</b> file for use in categorizing the curves. Without this file, the component will attempt to compute the model's slope so results will take longer to generate.
+</inputs>
+
+<outputs>
+One or more image (.png) files, depicting the requested learning curve(s).
+</outputs>
+
+<options>
+<b>Model: </b>the Knowledge Component (KC) model to plot<br/>
+<b>View secondary: </b>flag indicating whether or not to display secondary model curves<br/>
+<b>Secondary model(s): </b>one or more secondary KCs to include on graph<br/>
+<b>Learning curve type: </b>Knowledge Components, Students, or All Student KCs<br/>
+<b>Learning curve metric: </b>Error Rate, Assistance Score, Number of Incorrects, Number of Hints, Step Duration, Correct Step Duration, or Error Step Duration<br/>
+<b>Categorize curves: </b>flag indicating whether or not to categorize the generated learning curves<br/>
+<b>Student threshold: </b>The categorization algorithm first discards points in each curve based on the <strong>student threshold</strong>. If a point has fewer than that number of students, it is ignored. (default: 10)<br/>
+<b>Opportunity threshold: </b>Then, if the number of points is below the <strong>opportunity threshold</strong>, then that curve has <strong>too little data</strong>. (default: 3)<br/>
+<b>Low Error threshold: </b>Next, if all points on the curve are beneath the <strong>low error threshold</strong>, then the curve is <strong>low and flat</strong>. (default: 20.0)<br/>
+<b>AFM Slope threshold: </b>Then, if the slope of the predicted learning curve (as determined by the AFM algorithm) is below the <strong>AFM slope threshold</strong>, then the curve shows <strong>no learning</strong>. (default: 0.001)<br/>
+<b>High Error threshold: </b>Finally, if the last point of the curve is above the <strong>high error threshold</strong>, then the curve is <strong>still high</strong>. (default: 40.0)<br/>
+<b>Standard deviation cut-off: </b>The number of standard deviations above and below the mean for which to include data points.<br/>
+<b>Max opportunities: </b>A maximum number of opportunities a student must have had with a KC for the student-KC pair to be included in the data.<br/>
+<b>Error bar type: </b>No Error Bars, Standard Deviation, or Standard Error<br/>
+<b>High-stakes CF name: </b>this is the name of a custom field that indicates if a step is high-stakes.
+</options>
+
+</info>

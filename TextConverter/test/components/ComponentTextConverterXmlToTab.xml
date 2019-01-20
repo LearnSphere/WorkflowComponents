@@ -1,0 +1,38 @@
+<component>
+    <component_id>ComponentTestOutputXmlToTab</component_id>
+    <component_id_human>Transform #1</component_id_human>
+    <workflow_id>1</workflow_id>
+    <component_name>XMLParser</component_name>
+    <component_type>transform</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <to>Import1</to>
+        </connection>
+    </connections>
+    <options>
+      <ift>XML</ift>
+      <oft>Tab-delimited</oft>
+  </options>
+
+  <inputs>
+    <input0>
+      <component_id>Import1</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>file</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <tab-delimited>
+        <!-- <file_path>test/test_data/model result values2.xml</file_path>-->
+        <file_path>test/test_data/model result values.xml</file_path>
+        <label>file</label>
+        <file_name>model result values.xml</file_name>
+        <index>0</index>
+      </tab-delimited>
+      </files>
+    </input0>
+    </inputs>
+</component>

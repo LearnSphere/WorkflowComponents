@@ -1,0 +1,48 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>16</workflow_id>
+  <component_name>FeatureSynthesis</component_name>
+  <component_type>transform</component_type>
+  <left>860</left>
+  <connections>
+    <connection>
+      <from>Import-1-x581366</from>
+    </connection>
+  </connections>
+  <top>178</top>
+  <options>
+    <aggPrimitives>Sum,Mean,Percent_True</aggPrimitives>
+    <transPrimitives>Hour</transPrimitives>
+    <maxDepth>1</maxDepth>
+    <encodeOutput>1</encodeOutput>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x581366</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/example_files/output.zip</file_path>
+          <file_name>output.zip</file_name>
+          <index>0</index>
+          <label>file</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
+

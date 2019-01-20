@@ -50,12 +50,12 @@ public class AnalysisIAfm extends AbstractComponent {
 
 	nodeIndex = 1;
         fileLabel = "model-values";
-        File valuesFile = new File(outputDirectory.getAbsolutePath() + "/model-values.txt");
+        File valuesFile = new File(outputDirectory.getAbsolutePath() + "/model-values.xml");
         this.addOutputFile(valuesFile, nodeIndex, fileIndex, fileLabel);
 
 	nodeIndex = 2;
 	fileLabel = "parameters";
-        File paramsFile = new File(outputDirectory.getAbsolutePath() + "/parameters.txt");
+        File paramsFile = new File(outputDirectory.getAbsolutePath() + "/parameters.xml");
         this.addOutputFile(paramsFile, nodeIndex, fileIndex, fileLabel);
 
         // Send the component output back to the workflow.

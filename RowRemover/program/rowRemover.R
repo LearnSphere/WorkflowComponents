@@ -1,4 +1,6 @@
 #usage
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValues "ex: aWord, 0" -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Written Assignment 1: Design an Experiment" -valueColumns "Written Assignment 1: Design an Experiment" -node 0 -fileIndex 0 "OLI-Psych-Gradebook_modified.txt"
+
 
 #load libraries and set optins
 options(echo=FALSE)
@@ -73,7 +75,8 @@ while (i <= length(args)) {
     }
     valueColumns = args[i+1]
     #replace all angle brackets, parenthses, space an ash with period
-    valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    #valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    valueColumns <- make.names(valueColumns)
     columns.var.name = as.list(strsplit(valueColumns, ",")[[1]])
     i = i+1
   } else if (args[i] == "-removeValues") {
@@ -118,6 +121,11 @@ while (i <= length(args)) {
 }
 # Load raw data
 ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+
+#keep original column names
+origFile <- read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE,check.names=FALSE)
+origCols <- colnames(origFile)
+
 
 #make the column.var.name into character
 #ex: ds$Problem.Name <- as.character(ds$Problem.Name)
@@ -199,6 +207,8 @@ if (operation == "remove") {
   }
 }
 
+#change ds column names back to original names
+colnames(ds) <- origCols
 
 outputFile <- paste(workingDir, "/modified_file.txt", sep="")
 write.table(ds, file=outputFile, sep="\t", quote=FALSE, na="", col.names=TRUE, append=FALSE, row.names=FALSE)

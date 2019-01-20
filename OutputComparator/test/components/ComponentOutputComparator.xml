@@ -25,21 +25,37 @@
   </connections>
     
     <options>
-      <fileType>XML</fileType>
-      <!-- <fileType>Properties File</fileType>-->
-      <!-- <fileType>Tabular</fileType>-->
+      <!-- <fileType>XML</fileType>-->
+      <!--<fileType>Properties File</fileType>-->
+      <fileType>Tabular</fileType>
       <caseSensitive>Yes</caseSensitive>
       <removeNull>Yes</removeNull>
-      <matchColumn>Input 0 (0) - Anon Student Id (column 2)</matchColumn>
+      <!--  <matchColumn>Input 0 (0) - Anon Student Id (column 2)</matchColumn>
       <matchColumn>Input 0 (1) - Anon Student Id2 (column 2)</matchColumn>
       <matchColumn>Input 0 (2) - Anon Student Id3 (column 2)</matchColumn>
       <compareColumn>Input 0 (0) - Problem Hierarchy (column 3)</compareColumn>
       <compareColumn>Input 0 (0) - Problem Name (column 4)</compareColumn>
       <compareColumn>Input 0 (1) - Problem View (column 5)</compareColumn>
-      <compareColumn>Input 0 (2) - Problem Hierarchy (column 3)</compareColumn>
+      <compareColumn>Input 0 (2) - Problem Hierarchy (column 3)</compareColumn>-->
+      <numColumnsToMatch>3</numColumnsToMatch>
+    <matchColumns1>Input 0 (0) - Anon Student Id (column 2)</matchColumns1>
+    <matchColumns1>Input 0 (1) - Anon Student Id2 (column 2)</matchColumns1>
+    <matchColumns1>Input 0 (2) - Anon Student Id3 (column 2)</matchColumns1>
+    <matchColumns2>Input 0 (0) - Step Name (column 6)</matchColumns2>
+    <matchColumns2>Input 0 (1) - Step Name (column 6)</matchColumns2>
+    <matchColumns2>Input 0 (2) - Step Name (column 6)</matchColumns2>
+    <matchColumns3>Input 0 (0) - Problem Name (column 4)</matchColumns3>
+    <matchColumns3>Input 0 (1) - Problem Name (column 4)</matchColumns3>
+    <matchColumns3>Input 0 (2) - Problem Name (column 4)</matchColumns3>
+    <compareColumn>Input 0 (0) - Problem Name (column 4)</compareColumn>
+    <compareColumn>Input 0 (0) - Problem View (column 5)</compareColumn>
+    <compareColumn>Input 0 (1) - Problem Name (column 4)</compareColumn>
+    <compareColumn>Input 0 (1) - Problem View (column 5)</compareColumn>
+    <compareColumn>Input 0 (2) - Problem Name (column 4)</compareColumn>
+    <compareColumn>Input 0 (2) - Problem View (column 5)</compareColumn>
   </options>
   <inputs>
-     <input0>
+     <!--  <input0>
       <component_id>Import-1-x346027</component_id>
       <component_id_human>Import #3</component_id_human>
       <component_type>import</component_type>
@@ -86,10 +102,10 @@
         <index>0</index>
       </file>
       </files>
-    </input0>
+    </input0>-->
     
-    <!--  
-    <input0>
+      
+    <!--  <input0>
       <component_id>Import-1-x393351</component_id>
       <component_id_human>Import #1</component_id_human>
       <component_type>import</component_type>
@@ -152,9 +168,9 @@
         <index>0</index>
       </file>
       </files>
-    </input0>
-    -->
-    <!-- 
+    </input0>-->
+    
+    
     <input0>
       <component_id>Import-1-x393351</component_id>
       <component_id_human>Import #1</component_id_human>
@@ -202,7 +218,7 @@
         <index>0</index>
       </file>
       </files>
-    </input0> -->
+    </input0> 
     
     </inputs>
 </component>

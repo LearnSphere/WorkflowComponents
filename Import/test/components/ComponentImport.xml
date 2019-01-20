@@ -8,15 +8,15 @@
   <connections />
   <options>
     <files>
-      <undefined>
+      <student-step>
         <index>0</index>
         <file_path>test/test_data/ds96_student_step_All_Data_203_2015_0729_185914.txt</file_path>
-        <label>undefined</label>
+        <label>student-step</label>
         <file_name>ds96_student_step_All_Data_203_2015_0729_185914.txt</file_name>
         <metadata>
           <header />
         </metadata>
-      </undefined>
+      </student-step>
     </files>
     <Import>{"fileName":"ds96_student_step_All_Data_203_2015_0729_185914.txt","importFileNameTitle":"File: ds96_student_step_All_Data_203_2015_0729_185914.txt","fileType":"student-step","datasetListSelection":"2673","uploadLocation":"importFile","showPotentialMatches":false,"searchDatasetsString":""}</Import>
   </options>

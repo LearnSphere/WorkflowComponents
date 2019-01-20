@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.transform.RPivot;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
@@ -26,20 +27,25 @@ public class RPivotMain extends AbstractComponent {
         File inputFile = getAttachment(0, 0);
         logger.info("RPivot inputFile: " + inputFile.getAbsolutePath());
         this.componentOptions.addContent(0, new Element("f").setText(inputFile.getAbsolutePath()));
+        
+        String moreFactors = this.getOptionAsString("moreFactors");
+        
 
         //check if measurement (-m) column are all double
-        String measurementColName = this.getOptionAsString("mWF");
+        List<String> measurementColNames = this.getMultiOptionAsString("mWF");
         String[][] allCells = IOUtil.read2DRuggedStringArray(inputFile.getAbsolutePath(), false);
         String[] headers = allCells[0];
-        int measurementColInd = -1;
+        List<Integer> measurementColInds = new ArrayList<Integer>();
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
-            if (header.equals(measurementColName)) {
-                measurementColInd = i;
+            for (String measurementColName : measurementColNames) {
+                    if (header.equals(measurementColName)) {
+                        measurementColInds.add(i);
+                    }
             }
         }
 
-        if (measurementColInd == -1) {
+        if (measurementColInds.size() == -1) {
                 //send error message
                 String err = "The measurement column is not found in data.";
                 addErrorMessage(err);
@@ -48,24 +54,38 @@ public class RPivotMain extends AbstractComponent {
         	Boolean reqsMet = true;
 
             for (int i = 1; i < allCells.length; i++) {
-                try {
-                        Double.parseDouble(allCells[i][measurementColInd]);
-                } catch (NumberFormatException e) {
-                        //send error message
-                        String err = "The measurement column contains data that is not number.";
-                        addErrorMessage(err);
-                        logger.info("RPivot is aborted: " + err);
-                        reqsMet = false;
-                }
+                    for (int j = 0; j < measurementColInds.size(); j++) {
+                        try {
+                                Double.parseDouble(allCells[i][measurementColInds.get(j)]);
+                        } catch (NumberFormatException e) {
+                                //send error message
+                                String err = "The measurement column contains data that is not number.";
+                                addErrorMessage(err);
+                                logger.info("RPivot is aborted: " + err);
+                                reqsMet = false;
+                        }
+                    }
             }
 
             if (reqsMet) {
-	            this.componentOptions.addContent(0, new Element("m").setText(removeSpace(measurementColName)));
+                    String mStr = "";
+                    String origMeaNames = "";
+                    for (int i = 0; i < measurementColNames.size(); i++) {
+                            if (i < measurementColNames.size()-1) {
+                                    origMeaNames += measurementColNames.get(i)  + ",";
+                                    mStr += removeSpace(measurementColNames.get(i)) + ",";
+                            } else {
+                                    origMeaNames += measurementColNames.get(i);
+                                    mStr += removeSpace(measurementColNames.get(i));
+                            }
+                    }
+                    
+	            this.componentOptions.addContent(0, new Element("m").setText(mStr));
+	            this.componentOptions.addContent(0, new Element("origm").setText(origMeaNames));
 	            String aggMethodName = this.getOptionAsString("aWF");
 	            if (aggMethodName == null)
 	                    aggMethodName = "length";
 	            this.componentOptions.addContent(0, new Element("a").setText(aggMethodName));
-
 	            List<String> pivotColNames = this.getMultiOptionAsString("cWF");
 	            if (pivotColNames == null) {
                     // send error message
@@ -75,14 +95,21 @@ public class RPivotMain extends AbstractComponent {
 	            } else {
 	            	// else continue with processing
                     String colNames = "";
+                    String origColNames = "";
                     for (int i = 0; i < pivotColNames.size(); i++) {
-                            if (i < pivotColNames.size()-1)
+                            if (i < pivotColNames.size()-1) {
+                                    origColNames += pivotColNames.get(i)  + ",";
                                     colNames += removeSpace(pivotColNames.get(i)) + ",";
-                            else
+                            } else {
+                                    origColNames += pivotColNames.get(i);
                                     colNames += removeSpace(pivotColNames.get(i));
+                            }
                     }
+                    if (moreFactors.equalsIgnoreCase("no"))
+                            colNames = "";
                     this.componentOptions.addContent(0, new Element("c").setText(colNames));
-
+                    this.componentOptions.addContent(0, new Element("origc").setText(origColNames));
+                    
 		            List<String> pivotRowNames = this.getMultiOptionAsString("rWF");
 
 		            if (pivotRowNames == null) {
@@ -93,15 +120,20 @@ public class RPivotMain extends AbstractComponent {
 	                    reqsMet = false;
 		            } else {
 	                    String rowNames = "";
+	                    String origRowNames = "";
 	                    for (int i = 0; i < pivotRowNames.size(); i++) {
 	                        if (i < pivotRowNames.size()-1) {
+	                            origRowNames += pivotRowNames.get(i)  + ",";
 	                            rowNames += removeSpace(pivotRowNames.get(i)) + ",";
 	                        } else {
+	                                origRowNames += pivotRowNames.get(i);
 	                            rowNames += removeSpace(pivotRowNames.get(i));
 	                        }
 	                    }
 
 	                    this.componentOptions.addContent(0, new Element("r").setText(rowNames));
+	                    this.componentOptions.addContent(0, new Element("origr").setText(origRowNames));
+	                    
 		            }
 
 		            if (reqsMet) {

@@ -88,6 +88,8 @@
             <arg value="${basedir}/test/" />
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
+            <arg value="-userId" />  <!-- The source depends on this userId being present (this.getUserId()) -->
+            <arg value="mkomisin" />
             <arg value="-schemaFile" />
             <arg value="${basedir}/schemas/ImportDiscourseDBjs_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Histogram</url>
+<date>2018-9-14</date>
+<abstract>The <b>Histogram</b> component creates a histogramof the input data.  Use a tab-delimited file with column headers as input.  The options are contained in the html output file.</abstract>
+
+<inputs>
+<b>tab-delimited</b> - Must have column headers in the first row.
+</inputs>
+
+<outputs>
+<b>Histogram html file</b><br/>
+<b>Original Input Data File</b> - unmodified<br/>
+</outputs>
+
+<options>
+<b>Options are in the output</b><br/>
+</options>
+
+</info>

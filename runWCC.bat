@@ -34,7 +34,7 @@ echo Using properties file: %PROPFILE%
 
 cd %DIR%
 
-set CP=%DIR%CommonLibraries\datashop.jar;%DIR%CommonLibraries\commons-io-1.2.jar;%DIR%CommonLibraries\commons-lang-2.2.jar;%DIR%CommonLibraries\log4j-1.2.13.jar
+set CP=%DIR%CommonLibraries\datashop.jar;%DIR%CommonLibraries\commons-io-1.2.jar;%DIR%CommonLibraries\commons-lang-2.2.jar;%DIR%CommonLibraries\log4j-1.2.13.jar;%DIR%CommonLibraries\xercesImpl.jar
 echo CP is: %CP%
 
 set TEMPLATESDIR=%DIR%Templates

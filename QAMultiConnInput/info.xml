@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/QAMultiConnInput</url>
+<date>2018-08-14</date>
+<abstract>The <b>QA Multi Connection Input</b> component can be used to test the unordered inputs (many incoming connections per node).</abstract>
+<description>This component allows developers to test the unordered inputs (many incoming connections per node). The output file prints out all user selections.</description>
+
+<inputs><ul>
+<li>One input node that allows unlimited number of files</li>
+</ul></inputs>
+
+<outputs>
+Text file that displays all user selections for developers to verify.
+</outputs>
+
+<options>
+ <ul>
+<li>Multiple Selection List: allows multiple selections</li>
+<li>Single Selection List: allows only one selection.</li></ul>
+</options>
+
+</info>
