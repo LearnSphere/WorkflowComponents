@@ -15,9 +15,12 @@ import argparse
 import pprint
 import csv
 
+import pandas as pd
+
 from google.protobuf import json_format
 
 # Workflow component specific imports
+from ls_utilities.ls_wf_settings import SettingsFactory
 from ls_utilities.ls_logging import setup_logging
 from ls_utilities.cmd_parser import get_default_arg_parser
 from ls_utilities.ls_wf_settings import *
@@ -85,19 +88,53 @@ if __name__ == '__main__':
         serv = TA2Client(address, 
                 name=name)
 
+    logger.debug("********************************")
+    logger.debug("********************************")
+    # Parse the problem and dataset to get the prediction data
+    # Assume the problem has 1 input with 1 target
+    if len(prob.inputs) != 1:
+        logger.warning("Assumed problem has 1 input, but actually has %i inputs" % len(prob.inputs))
+    pinput = prob.inputs[0]
+    if len(pinput.targets) != 1:
+        logger.warning("Assumed problem input has 1 target, but actually has %i inputs" % len(pinput.targets))
+    ptarget = pinput.targets[0]
+
+    # Use problem target info to retreive dataset and prediction column
+    data_resource = None
+    for dr in ds.dataResources:
+        if dr.resID == ptarget.resource_id:
+            data_resource = dr
+            logger.debug("Got Data resourse\n%s" % str(data_resource))
+    if data_resource is None:
+        logger.error("No matching data resouce was found for info from problem\n%s" % str(ptarget))
+    data_path = path.join(ds.get_ds_path(), data_resource.resPath)
+    logger.debug("Got data path from dataset with ds root path: %s\t total path: %s" % (ds.get_ds_path(), data_path))
+    data = pd.read_csv(data_path, sep=',')
+    logger.debug(data.head())
+    predictions = data.loc[:,['d3mIndex', ptarget.column_name]]
+    predictions.index = predictions['d3mIndex']
+    logger.debug("Just predictions data: \n%s" % str(predictions.head()))
+
+    logger.debug("********************************")
+    logger.debug("********************************")
+
+
+
+
+    # Search for solutions
     if config.get_mode() == 'D3M':
         # Write search and problem to file for problem discovery task
         logger.debug("Writing to out_dir: %s" % config.get_out_path())
         prob_list = ProblemDiscoveryWriter(config.get_out_path())
-        # Search for solutions
         search_id, request = serv.search_solutions(prob, ds, get_request=True)
         prob_list.add_problem(prob, request)
     else:
-        # Search for solutions
         search_id = serv.search_solutions(prob, ds, get_request=True)
+    # Get search results
     soln_ids = serv.get_search_solutions_results(search_id)
     if soln_ids is None:
         raise Exception("No solution returned")
+
     
     # Get Model for each solution returned
     solns = {}
@@ -105,70 +142,48 @@ if __name__ == '__main__':
         solns[soln_id] = serv.describe_solution(soln_id)
         logger.debug("Got pipeline descripton for solution id %s: \n%s" % (soln_id, str(solns[soln_id])))
 
-    # Get Score for each solution
-    # score_req_ids = {}
-    # for soln_id in solns:
-        # soln = solns[soln_id]
-        # score_req_ids[soln.id] = serv.score_solution(soln, ds)
-    # scores = {}
-    # for sid in score_req_ids:
-        # results = serv.get_score_solution_results(score_req_ids[sid])
-        # scores[sid] = ModelScores(solns[sid].id, [ds.get_schema_uri()], [Score.from_protobuf(result) for result in results])
+    ### Temp patch of writing to file and reading back in to simulate passing between components
+    out_file_name = "model_data.tsv"
 
-
-    # serv.end_search_solutions(search_id)
-
-    # ### For testing only ###
-    # serv.hello()
-    # serv.list_primitives()
-
-    # search_id = serv.search_solutions(prob, ds)
-    # soln_ids = serv.get_search_solutions_results(search_id)
-    # if soln_ids is None:
-        # raise Exception("No solution returned") 
-
-    # fit_req_ids = {}
-    # fitted_solns = {}
-    # fitted_results = {}
-    # for sid, soln in solns.items():
-        # fit_req_ids[sid] = serv.fit_solution(soln, ds)
-    # for sid, rid in fit_req_ids.items():
-        # logger.debug("solution id: %s\tfit solution request id: %s" % (sid, rid))
-        # fitted_solns[sid], fitted_results[sid] = serv.get_fit_solution_results(rid)
-# 
-    # logger.debug("Got fitted solutions with ids: %s" % str(fitted_solns) )
-# 
-   #  
-    # req_ids = {}
-    # solution_predictions = {}
-    # for sid, fsid in fitted_solns.items():
-        # # req_ids[mid] = serv.produce_solution(model, ds)
-        # req_ids[fsid] = serv.produce_solution(fsid, solns[sid], ds)
-    # logger.debug("Created predoce solution requests with ids: %s" % str(req_ids))
-    # for fsid, rid in req_ids.items():
-        # solution_predictions[fsid] = serv.get_produce_solution_results(rid)
-# 
-    # for fsid, predictions in solution_predictions.items():
-        # logger.debug("Got predictions from fitted solution, %s: %s" % (fsid, predictions))
-
-
-    # serv.end_search_solutions(search_id)
-
-    ### End testing code ###
-   
-    # Write the received solutions to file
-    # for sid, soln in solns.items():
-        # logger.debug("###########################################")
-        # logger.debug("Received solution: %s" % str(soln.to_dict()))
-        # logger.debug("###########################################")
-        
-    out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
+    out_file_path = path.join(args.workingDir, out_file_name)
     ModelSetIO.to_file(out_file_path, solns)
-    # with open(out_file_path, 'w') as out_file:
-        # out = csv.writer(out_file, delimiter='\t')
-        # out.writerow([solns[sln].id for sln in solns])
-        # out.writerow([solns[sln].to_dict() for sln in solns])
-        # out.writerow([scores[sln].to_dict() for sln in solns])
+    logger.info(out_file_path)
+    with open(out_file_path, 'r') as ofile:
+        m_index, models = ModelSetIO.from_file(ofile)
+
+    # Get fitted solution
+    fit_req_ids = {}
+    #fitted_models = {}
+    fitted_results = {}
+    for mid, model in models.items():
+        logger.debug("Fitting model: %s" % str(model))
+        fit_req_ids[mid] = serv.fit_solution(model, ds)
+    for mid, rid in fit_req_ids.items():
+        logger.debug("Model id: %s\tfit model request id: %s" % (mid, rid))
+        models[mid].fitted_id, fitted_results[mid] = serv.get_fit_solution_results(rid)
+
+    for mid in models:
+        logger.debug("Got fitted model with model id: %s" % mid)
+        logger.debug("Model: %s\tFitted Model: %s" % (mid, models[mid].fitted_id))
+
+    result_df = predictions
+    for mid in fitted_results:
+        rdf = fitted_results[mid].copy()
+        rdf.rename(columns={rdf.columns[-1]: mid}, inplace=True)
+        # if result_df is None:
+            # result_df = rdf.copy()
+            # result_df.index = rdf['d3mIndex']
+        # else:
+        result_df = pd.merge(result_df, rdf, on='d3mIndex')
+        logger.debug("********************************")
+        logger.debug(result_df.columns)
+        logger.debug("********************************")
+    
+        
+    # # Write model fit id info to output file
+    out_file_path = path.join(args.workingDir, config.get('Output', 'model_out_file'))
+
+    FittedModelSetIO.to_file(out_file_path, models, m_index)
 
     # Write dataset info to output file
     out_file_path = path.join(args.workingDir, config.get('Output', 'dataset_out_file'))
@@ -177,7 +192,10 @@ if __name__ == '__main__':
         # Write out human readable version for debugging
         ds.to_json_pretty(out_file_path + '.readable')
 
-    # Write Solution workflows to file
+    # # Write model predictions to output file
+    out_file_path = path.join(args.workingDir, config.get('Output', 'pred_out_file'))
+    result_df.to_csv(out_file_path, sep='\t', index=True, header=True)
+
 
 
 

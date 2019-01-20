@@ -39,7 +39,9 @@ public class ModelSearchMain extends AbstractComponent {
 	this.addMetaDataFromInput("dataset", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
-	this.addMetaData("model-set", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("fitted-model-set", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("dataset", 1, META_DATA_LABEL, "label1", 0, null);
+	this.addMetaData("predictions", 2, META_DATA_LABEL, "label2", 0, null);
 
     }
 
@@ -59,9 +61,13 @@ public class ModelSearchMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/model-flows.tsv");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/fit-models.tsv");
+	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/datasetDoc.tsv");
+	File outputFile2 = new File(outputDirectory.getAbsolutePath() + "/predictions.tsv");
 
-		this.addOutputFile(outputFile0, 0, 0, "model-set");
+		this.addOutputFile(outputFile0, 0, 0, "fitted-model-set");
+		this.addOutputFile(outputFile1, 1, 0, "dataset");
+		this.addOutputFile(outputFile2, 2, 0, "predictions");
 
 
         System.out.println(this.getOutput());
