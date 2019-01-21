@@ -1,6 +1,9 @@
 /nbproject/private/
 AnalysisBkt/AnalysisBkt.bbprojectd/
 AnalysisBkt/test/ComponentTestOutput/*
+### Node Install ###
+####################
+node_modules
 
 ### Eclipse directories?? ###
 ##############################
@@ -32,3 +35,8 @@ WorkflowComponent.log
 ##################################################
 staging
 *.zip
+
+### Build Components error outputs ###
+######################################
+build_errors_info.txt
+build_errors.txt
