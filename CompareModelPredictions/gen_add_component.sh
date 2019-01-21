@@ -8,7 +8,7 @@
 wcc=$WCC 
 
 out_file="add_component.sql"
-comp_dir_name="VisualizeConfusionMatrix"
+comp_dir_name="CompareModelPredictions"
 
 # Remove add_component.sql if it exists
 if [ -f $out_file ]; then
@@ -29,8 +29,8 @@ echo -e "\t\`version\`," >> $out_file
 echo -e "\t\`info\`" >> $out_file
 echo -e ")" >> $out_file
 echo "VALUES (" >> $out_file
-echo -e "\t'Analysis'," >> $out_file
-echo -e "\t'Visualize_Confusion_Matrix'," >> $out_file
+echo -e "\t'Visualization'," >> $out_file
+echo -e "\t'Compare_Model_Predictions'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/schemas/$comp_dir_name""_v1_0.xsd'," >> $out_file
 echo -e "\t'/usr/bin/java -jar'," >> $out_file
@@ -39,7 +39,7 @@ echo -e "\t1," >> $out_file
 echo -e "\t'system'," >> $out_file
 echo -e "\t'Steven_C_Dang'," >> $out_file 
 echo -e "\t'1.0', " >> $out_file
-echo -e "\t'Create Confusion Matrix'" >> $out_file
+echo -e "\t'Create Visualization of errors of each model given'" >> $out_file
 echo -e ");" >> $out_file
 
 

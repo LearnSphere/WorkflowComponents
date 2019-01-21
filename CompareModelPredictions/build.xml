@@ -77,7 +77,7 @@
         <delete dir="${build}" />
         <delete dir="${dist}" />
         <delete dir="${javadoc}" />
-        <delete dir="${env}" />
+        <delete dir="${env}" followsymlinks="no"/>
     </target>
 
     <target name="javadoc" depends="compile" description="Create javadoc documentation">
