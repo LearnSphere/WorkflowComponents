@@ -1,6 +1,6 @@
-<project name="CompareModelScores" default="dist" basedir=".">
+<project name="DescribeData" default="dist" basedir=".">
     <description>
-        Python-based CompareModelScores workflow component.
+        Python-based DescribeData workflow component.
     </description>
 
     <!-- set global properties for this build -->
@@ -14,7 +14,7 @@
 
     <property name="version" value="1.0" />
 
-    <property name="component.id" value="CompareModelScores" />
+    <property name="component.id" value="DescribeData" />
     <property name="component.version" value="v${version} 2018" />
 
     <property name="ToolTemplate.jar" value="${dist}/${component.id}-${version}.jar" />
@@ -39,7 +39,7 @@
         </manifestclasspath>
         <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/learnsphere/d3m/visualization/**">
             <manifest>
-                <attribute name="Main-Class" value="edu.cmu.learnsphere.d3m.visualization.CompareModelScoresMain" />
+                <attribute name="Main-Class" value="edu.cmu.learnsphere.d3m.visualization.DescribeDataMain" />
                 <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
         </jar>
@@ -64,7 +64,7 @@
             <arg value="${basedir}/install_component.sh"/>
         </exec>
     </target>
-
+   
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
         <javac srcdir="${source}" destdir="${build}" debug="on">
@@ -77,7 +77,7 @@
         <delete dir="${build}" />
         <delete dir="${dist}" />
         <delete dir="${javadoc}" />
-        <delete dir="${env}" />
+        <delete dir="${env}" followsymlinks="no"/>
     </target>
 
     <target name="javadoc" depends="compile" description="Create javadoc documentation">
@@ -87,17 +87,17 @@
         </javadoc>
     </target>
 
-    <target name="runComponent" depends="clean, compile, dist" description="executes CompareModelScores">
-        <java classname="edu.cmu.learnsphere.d3m.visualization.CompareModelScoresMain" fork="true">
+    <target name="runComponent" depends="clean, compile, dist" description="executes DescribeData">
+        <java classname="edu.cmu.learnsphere.d3m.visualization.DescribeDataMain" fork="true">
             <classpath refid="run.classpath" />
             <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/ComponentCompareModelScores.xml" />
+            <arg value="${basedir}/test/components/ComponentDescribeData.xml" />
             <arg value="-workflowDir" />
             <arg value="${basedir}/test/" />
             <arg value="-toolDir" />
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/CompareModelScores_v1_0.xsd" />
+            <arg value="${basedir}/schemas/DescribeData_v1_0.xsd" />
             <jvmarg value="-Xmx1048m"/>
             <!-- <arg value="-preprocess" /> Use this flag to test component pre-processing. -->
 

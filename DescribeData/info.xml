@@ -5,12 +5,12 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DescribeData</url>
-<date>August 23, 2018</date>
+<date>January 21, 2019</date>
 <abstract>The <b>DescribeData</b> component is an example of a(n) Python component.</abstract>
-<description>Generates an interactive html app that can generate descriptive statistics of each column in a dataset</description>
+<description>Generates exploratory data plots for all columns of a dataset</description>
 
 <inputs>
-<b>d3m-dataset</b>
+<b>dataset</b>
 </inputs>
 
 <outputs>

@@ -21,12 +21,12 @@
 <elapsed_seconds>0</elapsed_seconds>
 <errors />
 <files>
-<d3m-dataset>
+<dataset>
 <index>0</index>
 <file_path>/datashop/workflow_components/DescribeData/test/components/dataset_pred.json</file_path>
 <label>text</label>
 <file_name>dataset_pred.json</file_name>
-</d3m-dataset>
+</dataset>
 </files>
 <inputmeta />
 </input0>

@@ -34,7 +34,7 @@ public class DescribeDataMain extends AbstractComponent {
         // The addMetaData* methods make the meta data available to downstream components.
 
 	// Add input meta-data (headers) to output file.
-	this.addMetaDataFromInput("d3m-dataset", 0, 0, ".*");
+	this.addMetaDataFromInput("dataset", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
 	this.addMetaData("inline-html", 0, META_DATA_LABEL, "label0", 0, null);

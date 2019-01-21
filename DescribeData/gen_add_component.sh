@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Author: Steven C. Dang
+
+# script to generate add_component.sql using local system config
+
 # Ensure this is pointing to where WorkflowComponents is cloned
 wcc=$WCC 
 
@@ -34,5 +39,8 @@ echo -e "\t1," >> $out_file
 echo -e "\t'system'," >> $out_file
 echo -e "\t'Steven_C_Dang'," >> $out_file 
 echo -e "\t'1.0', " >> $out_file
-echo -e "\t'Generates an interactive html app that can generate descriptive statistics of each column in a dataset'" >> $out_file
+echo -e "\t'Create exploratory data graphs for a given dataset'" >> $out_file
 echo -e ");" >> $out_file
+
+
+
