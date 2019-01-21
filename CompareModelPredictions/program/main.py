@@ -178,35 +178,41 @@ if __name__ == '__main__':
         logger.info("Data is not numeric. Using confusion matric")
         plot_type = "confusion matrix"
 
-    # Setup subplots
-    num_plots = pred_data.shape[1] - 2
-    fig = tools.make_subplots(rows=num_plots, cols=1)
-    plots = []
 
     # Iterate over columns of predictions
     logger.debug("Columns: %s" % str(pred_data.columns))
-    truth_col = pred_data.columns[1]
-    np.set_printoptions(precision=2)
-    for i, col in enumerate(pred_data.columns[2:]):
+    data_cols = pred_data.columns[1:]
+    truth_col = data_cols[0]
+    # Setup subplots
+    num_plots = pred_data.shape[1] - 2
+    dim = 600
+    height = dim * num_plots
+    titles = tuple("Model #%s" % m_index.index(mid) for mid in data_cols[1:])
+    fig = tools.make_subplots(rows=num_plots, cols=1, subplot_titles=titles)
+    fig['layout'].update(height=height, width=dim)
+    plots = []
+    for i, col in enumerate(data_cols[1:]):
         logger.info("Generating plot for columns:\t %s" % col)
+        user_mid = m_index.index(col)
+        logger.info("User Model Index: %i" % m_index.index(col))
 	
-	# pdata = pred_data.loc[:,truth_col + [col]]
-    if plot_type == "scatter":
-        fig.append_trace(go.Scatter(
-        x=pred_data.loc[:,truth_col],
-        y=pred_data.loc[:,col],
-        mode='markers'),
-        i + 1, 1)
-    else:
-        # Compute confusion matrix
-        data_labels = pred_data[truth_col].unique()
-        cm = confusion_matrix(pred_data[truth_col], pred_data[col], 
-                labels=data_labels)
-        logger.debug("Confusion Matrix: %s" % str(cm))
-        logger.debug("Data Labels: %s" % str(data_labels))
-        fig.append_trace(go.Heatmap(z=cm),
-            i + 1, 1)   
-		
+        # pdata = pred_data.loc[:,truth_col + [col]]
+        if plot_type == "scatter":
+            fig.append_trace(go.Scatter(
+                x=pred_data.loc[:,truth_col],
+                y=pred_data.loc[:,col],
+                mode='markers'),
+                i + 1, 1)
+        else:
+            # Compute confusion matrix
+            data_labels = pred_data[truth_col].unique()
+            cm = confusion_matrix(pred_data[truth_col], pred_data[col], 
+                    labels=data_labels)
+            logger.debug("Confusion Matrix: %s" % str(cm))
+            logger.debug("Data Labels: %s" % str(data_labels))
+            fig.append_trace(go.Heatmap(z=cm),
+                i + 1, 1)   
+            
 
 
 
@@ -295,7 +301,7 @@ if __name__ == '__main__':
     # logger.info("Writing output html to: %s" % out_file_path)
     # with open(out_file_path, 'w') as out_file:
 	# out_file.write(viz_template.render(template_info))
-    
+   
 
     # Get  html to output file path
     out_file_path = path.join(args.workingDir, 
@@ -303,3 +309,7 @@ if __name__ == '__main__':
                               )
     logger.info("Writing output html to: %s" % out_file_path)
     plot_url = py.offline.plot(fig, filename=out_file_path)
+
+    # test_out = "<iframe src=\"sophia.stevencdang.com:5000\"></iframe>"
+    # with open(out_file_path, "w") as text_file:
+          # print(test_out, file=text_file)
