@@ -82,6 +82,13 @@ if __name__ == '__main__':
     prob = ProblemDesc.from_file(args.file1)
     logger.debug("Got Problem Description: %s" % prob.print())
 
+    # Get URL of App Service 
+    host_url = os.environ["HOST_URL"]
+    # service_subdomain = os.environ["D3M_SERVICE_SUBDOMAIN"]
+    # service_url = service_subdomain + "." + host_url + ":9002"
+    # logger.info("connecting to service at url: %s" % service_url)
+    service_url = "dexploraid.sophia.stevencdang.com:9002"
+
     query_info = {"id": "1"}
     # Write query info to file
     query_file_path = path.join(args.workingDir,
@@ -96,7 +103,8 @@ if __name__ == '__main__':
                               config.get('Output', 'out_file')
                               )
     logger.info("Writing output html to: %s" % out_file_path)
-    out_html = '<iframe src="http://dexploraid.sophia.stevencdang.com:9002"></iframe>'
+    out_html = '<iframe src="http://%s"></iframe>' % service_url
+    # out_html = '<iframe src="http://dexploraid.sophia.stevencdang.com:9002"></iframe>'
     with open(out_file_path, 'w') as out_file:
         out_file.write(out_html)
 
