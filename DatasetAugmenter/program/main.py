@@ -83,7 +83,7 @@ if __name__ == '__main__':
     logger.debug("Got Problem Description: %s" % prob.print())
 
     # Get URL of App Service 
-    host_url = os.environ["HOST_URL"]
+    # host_url = os.environ["HOST_URL"]
     # service_subdomain = os.environ["D3M_SERVICE_SUBDOMAIN"]
     # service_url = service_subdomain + "." + host_url + ":9002"
     # logger.info("connecting to service at url: %s" % service_url)
