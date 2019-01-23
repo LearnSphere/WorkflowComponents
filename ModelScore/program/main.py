@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
     # Decode the models from file
     logger.debug("Model file input: %s" % args.file1)
-    m_index, models = ModelSetIO.from_file(args.file1)
+    m_index, fitted_models, models = FittedModelSetIO.from_file(args.file1)
 
     # Init the server connection
     address = config.get_ta2_url()

@@ -39,7 +39,7 @@
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element default="dataset" minOccurs="0" name="input0" type="xs:string"/>
-      <xs:element default="model-set" minOccurs="0" name="input1" type="xs:string"/>
+      <xs:element default="fitted-model-set" minOccurs="0" name="input1" type="xs:string"/>
     </xs:all>
   </xs:complexType>
   <xs:complexType name="OutputDefinition0">

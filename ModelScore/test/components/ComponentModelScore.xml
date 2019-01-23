@@ -38,12 +38,12 @@
 <elapsed_seconds>0</elapsed_seconds>
 <errors />
 <files>
-<model-set>
+<fitted-model-set>
 <index>1</index>
 <file_path>/datashop/workflow_components/ModelScore/test/components/datasetDoc.tsv</file_path>
 <label>text</label>
 <file_name>datasetDoc.tsv</file_name>
-</model-set>
+</fitted-model-set>
 </files>
 <inputmeta />
 </input1>
