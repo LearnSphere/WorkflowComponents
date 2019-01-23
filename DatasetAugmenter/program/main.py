@@ -103,7 +103,7 @@ if __name__ == '__main__':
                               config.get('Output', 'out_file')
                               )
     logger.info("Writing output html to: %s" % out_file_path)
-    out_html = '<iframe src="http://%s"></iframe>' % service_url
+    out_html = '<iframe src="http://%s" width="1024" height="768"></iframe>' % service_url
     # out_html = '<iframe src="http://dexploraid.sophia.stevencdang.com:9002"></iframe>'
     with open(out_file_path, 'w') as out_file:
         out_file.write(out_html)
