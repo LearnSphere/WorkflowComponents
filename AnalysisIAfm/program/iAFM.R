@@ -154,5 +154,5 @@ if(PERname%in%origCols){
   names(origFile)[ncol(origFile)] <- PERname # Rename the column
 }
 
-suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t"))
+suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""))
 
