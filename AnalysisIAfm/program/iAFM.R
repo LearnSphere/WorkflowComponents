@@ -85,15 +85,15 @@ iafm.model <- suppressWarnings(glmer(errorRate ~ opportunity + (opportunity|indi
 
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
-write("<model>",file=outputFile1,sep="",append=TRUE)
-write(paste("<name>",modelName,"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
+write("\t<model>",file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<name>",modelName,"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
 ## potential outputs
-write(paste("<AIC>",AIC(iafm.model),"</AIC>",sep=""),file=outputFile1,sep="",append=TRUE)
-write(paste("<BIC>",BIC(iafm.model),"</BIC>",sep=""),file=outputFile1,sep="",append=TRUE)
-write(paste("<log_likelihood>",as.numeric(logLik(iafm.model)),"</log_likelihood>",sep=""),file=outputFile1,sep="",append=TRUE)
-write(paste("<main_effect_intercept>",fixef(iafm.model)[[1]],"</main_effect_intercept>",sep=""),file=outputFile1,sep="",append=TRUE)
-write(paste("<main_effect_slope>",fixef(iafm.model)[[2]],"</main_effect_slope>",sep=""),file=outputFile1,sep="",append=TRUE)
-write("</model>",file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<AIC>",AIC(iafm.model),"</AIC>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<BIC>",BIC(iafm.model),"</BIC>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<log_likelihood>",as.numeric(logLik(iafm.model)),"</log_likelihood>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<main_effect_intercept>",fixef(iafm.model)[[1]],"</main_effect_intercept>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<main_effect_slope>",fixef(iafm.model)[[2]],"</main_effect_slope>",sep=""),file=outputFile1,sep="",append=TRUE)
+write("\t</model>",file=outputFile1,sep="",append=TRUE)
 write("</model_values>",file=outputFile1,sep="",append=TRUE)
 
 
@@ -102,13 +102,17 @@ write("<parameters>",file=outputFile2,sep="",append=FALSE)
 # kc.params is a table where column 1 is the KC name, column 2 is the iAFM estimated KC intercept, and column 3 is the iAFM estimated KC slope
 kc.params <- data.frame( cbind(row.names(ranef(iafm.model)$KC), ranef(iafm.model)$KC[,1], ranef(iafm.model)$KC[,2]) )
 kc.params <- cbind(Type="Skill", kc.params)
+
+strBuilder <- ""
 for (x in 1:length(rownames(kc.params))) {
-  write("<parameter>",file=outputFile2,sep="",append=TRUE)
-  write("<type>Skill</type>",file=outputFile2,sep="",append=TRUE)
-  write(paste("<name>",kc.params[x,2],"</name>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write(paste("<intercept>",kc.params[x,3],"</intercept>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write(paste("<slope>",kc.params[x,4],"</slope>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write("</parameter>",file=outputFile2,sep="",append=TRUE)
+  strBuilder <- paste(strBuilder,
+      "\t<parameter>\n",
+      "\t\t<type>Skill</type>\n",
+      "\t\t<name>",kc.params[x,2],"</name>\n",
+      "\t\t<intercept>",kc.params[x,3],"</intercept>\n",
+      "\t\t<slope>",kc.params[x,4],"</slope>\n",
+      "\t</parameter>\n",
+      sep="")
 }
 
 # stud.params is a table where column 1 is the student ID, column 2 is the iAFM estimated student intercept, and column 3 is the iAFM estimated student slope
@@ -116,13 +120,17 @@ stud.params <- data.frame( cbind(row.names(ranef(iafm.model)$individual), ranef(
 stud.params <- cbind(Type="Individual", stud.params)
 colnames(stud.params) <- c("Type", "Name", "Intercept", "Slope")
 for (x in 1:length(rownames(stud.params))) {
-  write("<parameter>",file=outputFile2,sep="",append=TRUE)
-  write("<type>Student</type>",file=outputFile2,sep="",append=TRUE)
-  write(paste("<name>",stud.params[x,2],"</name>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write(paste("<intercept>",stud.params[x,3],"</intercept>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write(paste("<slope>",stud.params[x,4],"</slope>",sep=""),file=outputFile2,sep="",append=TRUE)
-  write("</parameter>",file=outputFile2,sep="",append=TRUE)
+  strBuilder <- paste(strBuilder,
+      "\t<parameter>\n",
+      "\t\t<type>Student</type>\n",
+      "\t\t<name>",stud.params[x,2],"</name>\n",
+      "\t\t<intercept>",stud.params[x,3],"</intercept>\n",
+      "\t\t<slope>",stud.params[x,4],"</slope>\n",
+      "\t</parameter>\n",
+      sep="")
 }
+write(strBuilder,file=outputFile2,sep="",append=TRUE)
+
 
 write("</parameters>",file=outputFile2,sep="",append=TRUE)
 
