@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/LearningCurveGraph</url>
+<date>February 11, 2019</date>
+<abstract>The <b>LearningCurveGraph</b> component is an example of a(n) R component.</abstract>
+<description>This component is used to visualize the graphical results of the GLRKT Analysis.</description>
+
+<inputs>
+</inputs>
+
+<outputs>
+<b>image</b>
+</outputs>
+
+<options>
+</options>
+
+</info>
