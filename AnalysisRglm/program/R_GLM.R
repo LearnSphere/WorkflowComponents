@@ -6,6 +6,9 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~ KC..Circle.Collapse. + Opportunity..Circle.Collapse. + KC..Circle.Collapse.:Opportunity..Circle.Collapse." -modelingFunc lm -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 
 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~  (1|Anon.Student.Id) + KC..Original. + KC..Original.:Opportunity..Original." -modelingFunc glmer -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+
+
 options(echo=FALSE)
 options(warn=-1)
 
@@ -27,6 +30,7 @@ programDir = NULL
 programLocation = NULL
 fittedModel = NULL
 isBinomial = FALSE
+randomEffects = NULL
 
 # parse commandline args
 i = 1
@@ -95,6 +99,12 @@ while (i <= length(args)) {
        }
        responseCol= args[i+1]
        i = i+1
+    } else if (args[i] == "-randomEffects") {
+      if (length(args) == i) {
+        stop("randomEffects must be specified")
+      }
+      randomEffects= args[i+1]
+      i = i+1
     }
     i = i+1
 }
@@ -110,31 +120,31 @@ names(ds) <- make.names(names(ds))
 #clean up ds
 # convert correctness coding to binary, numeric
 if (isBinomial == TRUE) {
-#   #ds$First.Attempt <- gsub("incorrect", 0, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"incorrect\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("correct", 1, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"correct\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("hint", 0, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"hint\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("true", 1, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"true\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("false", 0, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"false\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("0", 0, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"0\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
-# 	#ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
-# 	cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-# 	eval(parse(text=cleanString))
+  #ds$First.Attempt <- gsub("incorrect", 0, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"incorrect\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("correct", 1, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"correct\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("hint", 0, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"hint\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("true", 1, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"true\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("false", 0, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"false\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("0", 0, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"0\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
+	#ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
+	cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+	eval(parse(text=cleanString))
 
 	#ds$First.Attempt <- ifelse(ds$First.Attempt=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
-	cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
-	eval(parse(text=cleanString))
+	#cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
+	#eval(parse(text=cleanString))
 
 
 } else {
@@ -143,31 +153,31 @@ if (isBinomial == TRUE) {
   cleanString = paste("testNumeric <- testNumeric[[\"", responseCol, "\"]]", sep="")
   eval(parse(text=cleanString))
   if (testNumeric == FALSE) {
-    # #ds$First.Attempt <- gsub("incorrect", 0, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"incorrect\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("correct", 1, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"correct\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("hint", 0, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"hint\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("true", 1, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"true\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("false", 0, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"false\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("0", 0, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"0\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
-    # #ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
-    # cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
-    # eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("incorrect", 0, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"incorrect\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("correct", 1, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"correct\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("hint", 0, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"hint\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("true", 1, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"true\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("false", 0, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"false\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("0", 0, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"0\", 0, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
+    #ds$First.Attempt <- gsub("1", 1, ds$First.Attempt, ignore.case = TRUE)
+    cleanString = paste("ds$", responseCol, " <- gsub(\"1\", 1, ds$", responseCol, ", ignore.case = TRUE)", sep="")
+    eval(parse(text=cleanString))
 
     #ds$First.Attempt <- ifelse(ds$First.Attempt=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
-    cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
-    eval(parse(text=cleanString))
+    #cleanString = paste("ds$", responseCol, " <- ifelse(ds$", responseCol, "==\"correct\",1,0)", sep="")
+    #eval(parse(text=cleanString))
 
   }
 }
@@ -202,12 +212,17 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 
 	}
-
   eval(parse(text=modelingString))
-	modelSum <- summary(fittedModel)
+  modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
-	capture.output(modelSum, file = summary.file, append = FALSE)
-	capture.output(params, file = summary.file, append = TRUE)
+	suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
+	suppressMessages(capture.output(params, file = summary.file, append = TRUE))
+
+	# sink(summary.file)
+	# print(modelSum, correlation=TRUE)
+	# sink()  # returns output to the console
+	# capture.output(params, file = summary.file, append = TRUE)
+	# 
 	write("<model_values>",file=model.values.file,sep="",append=FALSE)
 	write("<model>",file=model.values.file,sep="",append=TRUE)
 	write("<parameters>",file=parameters.values.file,sep="",append=FALSE)
@@ -348,7 +363,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 
 	modelSum <- summary(fittedModel)
 	#print(modelSum)
-	capture.output(modelSum, file = summary.file, append = FALSE)
+	suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
 	write("<parameters>",file=parameters.values.file,sep="",append=FALSE)
 	write("<model_values>",file=model.values.file,sep="",append=FALSE)
 	write("<model>",file=model.values.file,sep="",append=TRUE)
