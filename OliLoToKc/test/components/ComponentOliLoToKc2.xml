@@ -15,8 +15,8 @@
   <options>
     <useTitleAsSkillId>false</useTitleAsSkillId>
     <useDatashopDataset>false</useDatashopDataset>
-<!-- 
     <!-- If you've loaded DS2254 locally, specify the dataset id and uncomment this block. -->
+<!-- 
     <useDatashopDataset>true</useDatashopDataset>
     <datasetId>17</datasetId>
     <importNewKCModel>true</importNewKCModel>

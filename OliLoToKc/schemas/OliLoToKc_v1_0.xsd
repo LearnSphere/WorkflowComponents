@@ -85,7 +85,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="xs:boolean" name="useTitleAsSkillId" id="Use_Title_as_Skill_Id" default="false" />
         <xs:element type="xs:boolean" name="useDatashopDataset" id="Use_Datashop_dataset" default="false" />
-        <xs:element type="xs:integer" name="datasetId" id="dataset_id" default="0" />
+        <xs:element type="Dataset" name="datasetId" id="dataset_id" default="0" />
         <xs:element type="xs:boolean" name="importNewKCModel" id="Import_new_KC_model" default="false" />
     </xs:choice>
   </xs:complexType>
