@@ -136,6 +136,10 @@ suppressMessages(library(RColorBrewer))
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 #Transfer of the Parameters' Format
+switch(plancomponents,"KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"="KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id","KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"="KC (Default),KC (Cluster),KC (Cluster),Anon Student Id","KC (Default),KC (Cluster)"="KC (Default),KC (Cluster)");
+switch(prespecfeatures,"basesuc,basefail,basesuc,basefail,propdec"="basesuc,basefail,basesuc,basefail,propdec","basesuc,basefail,basesuc,propdec"="basesuc,basefail,basesuc,propdec","basesuc,basefail"="basesuc,basefail");
+switch(fixedpars,".3,.3,.3,.3,.97"=".3,.3,.3,.3,.97",".3,.3,.3,.97"=".3,.3,.3,.97",".3,.3"=".3,.3");
+switch(seedpars,".3,.3,.3,.3,.025"=".3,.3,.3,.3,.025",".3,.3,.3,.025"=".3,.3,.3,.025",".3,.3"=".3,.3");
 
 plancomponents<-as.character(unlist(strsplit(plancomponents,",")))
 plancomponents<-gsub("[ ()-]", ".",plancomponents)
@@ -144,10 +148,10 @@ fixedpars<-as.numeric(as.character(unlist(strsplit(fixedpars,","))))
 seedpars<-as.numeric(as.character(unlist(strsplit(seedpars,","))))
 
 #Model options
-print(plancomponents)
-print(fixedpars)
-print(seedpars)
-print(prespecfeatures)
+#print(plancomponents)
+#print(fixedpars)
+#print(seedpars)
+#print(prespecfeatures)
 print(mode)
 
 #Set Data Directory
