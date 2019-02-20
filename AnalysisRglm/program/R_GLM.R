@@ -4,9 +4,20 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~ KC..Circle.Collapse. + Opportunity..Circle.Collapse. + (1|Anon.Student.Id) + (Opportunity..Circle.Collapse.|KC..Circle.Collapse./KC..Item.)" -modelingFunc glmer -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 #local folder test glm.lm
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~ KC..Circle.Collapse. + Opportunity..Circle.Collapse. + KC..Circle.Collapse.:Opportunity..Circle.Collapse." -modelingFunc lm -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
-
-
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "KC (Circle-Collapse),Opportunity (Circle-Collapse)" -formula "First.Attempt ~  (1|Anon.Student.Id) + KC..Original. + KC..Original.:Opportunity..Original." -modelingFunc glmer -randomEffects "1^|Anon Student Id,Opportunity (Circle-Collapse)^|KC (Circle-Collapse)/KC (Item)" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+
+#check all models for 1|... to work. 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = logit)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = probit)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "binomial (link = cloglog)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "gaussian (link = identity)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "Gamma (link = inverse)" -fixedEffects "" -formula "Opportunity..Area. ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "Gamma (link = identity)" -fixedEffects "" -formula "Opportunity..Area. ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "Gamma (link = log)" -fixedEffects "" -formula "Opportunity..Area. ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "inverse.gaussian (link = 1/mu^2)" -fixedEffects "" -formula "Opportunity..Area. ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = log)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = identity)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = sqrt)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 
 
 options(echo=FALSE)
@@ -201,11 +212,14 @@ parameters.values.file <- paste(workingDir, "/Parameter-estimate-values.xml", se
 if(modelingFunc == "glmer" || modelingFunc == "lmer"){
   modelingString = ""
 	if (modelingFunc == "glmer") {
-    #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ")", sep="")
-	  #optimx doesn't work when formula has 1|....
-	  #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-	  modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"nloptwrap\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-
+	 
+	  if (family == "gaussian (link = identity)") {
+      modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ")", sep="")
+	  } else {
+	    #optimx doesn't work when formula has 1|....
+	    #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	    modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"nloptwrap\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	  }
 	 } else {
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds, family=", family, ")", sep="")
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
