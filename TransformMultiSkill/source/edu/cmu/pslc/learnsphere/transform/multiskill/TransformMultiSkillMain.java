@@ -146,7 +146,8 @@ public class TransformMultiSkillMain extends AbstractComponent {
                                 }
                         }
                         if (newRow.size() < finalColCnt) {
-                                for (int x = 0; x < finalColCnt - newRow.size(); x++)
+                                int numMissingCols = finalColCnt - newRow.size();
+                                for (int y = 0; y < numMissingCols; y++)
                                         newRow.add("");
                         }
                         return_l.add(newRow.toArray(new String[newRow.size()]));
@@ -178,8 +179,10 @@ public class TransformMultiSkillMain extends AbstractComponent {
                                         }
                                 }
                                 if (newRow.size() < finalColCnt) {
-                                        for (int y = 0; y < finalColCnt - newRow.size(); y++)
+                                        int numMissingCols = finalColCnt - newRow.size();
+                                        for (int y = 0; y < numMissingCols; y++) {
                                                 newRow.add("");
+                                        }
                                 }
                                 return_l.add(newRow.toArray(new String[newRow.size()]));
                         }
