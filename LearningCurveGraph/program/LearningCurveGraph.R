@@ -58,7 +58,8 @@ if (is.null(inputFile)) {
 }
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
-clean <- file(paste(workingDirectory, "LearningCurveGraph-log.wfl", sep=""))
+clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
+
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
@@ -89,8 +90,6 @@ val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val$CF..ansbin.=rep(1,length(val[,1]))
 val$CF..ansbin.[which(val$Outcome=="INCORRECT")]=0
-#print(as.character(val$Duration..sec.))
-#val$Duration..sec. <- as.numeric(as.character(val$Duration..sec.))
 val$Duration..sec. <- as.numeric(as.factor(as.character(val$Duration..sec.)))
 val$Duration..sec.[which(is.na(val$Duration..sec.))] = median(val$Duration..sec.,na.rm=TRUE) #temporary kludge
 
@@ -260,7 +259,7 @@ splittimes<- function(times){
 
 plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
   if(f==TRUE){
-    x11(width=5.5, height=8)
+    #x11(width=5.5, height=8)
     par(mfrow=c(2,1))
     data<-temp$data
     
@@ -631,7 +630,11 @@ seedl <- list(NULL,
 ms<-6
 n<-length(val$Anon.Student.Id)
 ns<-length(unique(val$Anon.Student.Id))
-x11(height=4,width=2.7)
+#x11(height=4,width=2.7)
+switch(Sys.info()[['sysname']],
+Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
+Windows= { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=2000, height=2000, res=300) },
+Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=2000, height=2000, res=300) })
 plot(1, type="n", axes=FALSE, xlab="", ylab="")
 legend("topleft",legend=c("afm","log afm","pfa","log pfa","gong","propdec","RPFA","PPE","TKT","Dash")[1:ms],col=brewer.pal(n = 8, name = "Dark2")[(0:ms %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:ms],lwd=2)
 
