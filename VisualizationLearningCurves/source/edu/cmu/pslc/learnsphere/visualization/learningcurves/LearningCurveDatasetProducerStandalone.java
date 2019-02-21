@@ -55,7 +55,8 @@ import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisual
 import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.LearningCurveMetric;
 import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.LearningCurveType;
 
-
+import static edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.ALL_KCS;
+import static edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.ALL_STUDENTS;
 
 
 /**
@@ -849,7 +850,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
         int colorIndex = 0;
         for (int i = 0; i < dataset.getSeriesCount(); i++) {
             YIntervalSeries aSeries = (YIntervalSeries)dataset.getSeries(i);
-            logDebug("Setting properties on [", i, "]", aSeries.getKey(), " description: ",
+            logDebug("Setting properties on [", i, "] ", aSeries.getKey(), " description: ",
                     aSeries.getDescription());
             renderer.setSeriesLinesVisible(i, true);
             if (aSeries.getDescription() == null) {
@@ -932,6 +933,12 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             return LearningCurveImage.NOT_CLASSIFIED;
         }
 
+        // Don't classify the "All KCs" or "All Students" curves.
+        if (objName.equals(ALL_KCS) || objName.equals(ALL_STUDENTS)) {
+            logDebug("classifyLearningCurve: skip 'All KCs' or 'All Students'");
+            return LearningCurveImage.NOT_CLASSIFIED;
+        }
+
         // Only the 'Error Rate' curves are classified.
         if (!lcOptions.getSelectedMetric().equals(LearningCurveMetric.ERROR_RATE)) {
             logDebug("classifyLearningCurve: not error_rate curve");
@@ -990,8 +997,6 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
      * @return the AFM slope
      */
     public Double getAfmSlope(String modelName, Boolean isViewBySkill, String skillName, Double objGamma) {
-
-        //        logDebug("*** getAfmSlope: isViewBySkill = ", isViewBySkill, ", skillName = ", skillName, ", objGamma = ", objGamma);
 
         if (objGamma != null) { return objGamma; }
 

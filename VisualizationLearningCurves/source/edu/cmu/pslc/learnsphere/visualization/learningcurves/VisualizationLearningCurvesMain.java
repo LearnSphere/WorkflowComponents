@@ -184,20 +184,17 @@ public class VisualizationLearningCurvesMain extends AbstractComponent {
         Integer counter = 0;
 
         List<File> fileList = imageFiles.get(LearningCurveImage.NOT_CLASSIFIED);
-        if ((fileList != null) && (fileList.size() > 0)) {
-            counter = addOutputFiles(fileList, counter);
-        } else {
-            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_LOW_AND_FLAT);
-            counter = addOutputFiles(fileList, counter);
-            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_NO_LEARNING);
-            counter = addOutputFiles(fileList, counter);
-            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_STILL_HIGH);
-            counter = addOutputFiles(fileList, counter);
-            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA);
-            counter = addOutputFiles(fileList, counter);
-            fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_OTHER);
-            counter = addOutputFiles(fileList, counter);
-        }
+        counter = addOutputFiles(fileList, counter);
+        fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_LOW_AND_FLAT);
+        counter = addOutputFiles(fileList, counter);
+        fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_NO_LEARNING);
+        counter = addOutputFiles(fileList, counter);
+        fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_STILL_HIGH);
+        counter = addOutputFiles(fileList, counter);
+        fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_TOO_LITTLE_DATA);
+        counter = addOutputFiles(fileList, counter);
+        fileList = imageFiles.get(LearningCurveImage.CLASSIFIED_OTHER);
+        counter = addOutputFiles(fileList, counter);
 
         // For each skill, write the LC point data out to a file.
         Transformer transformer = initializeTransformer();
