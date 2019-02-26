@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.jdom.Element;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.ArrayUtils;
@@ -220,6 +221,90 @@ public class TransformMultiSkillMain extends AbstractComponent {
                     return true;
             else
                     return false;
+    }
+
+    /**
+     * Only pass along the headers that will be in the output file.  If KeepOtherKcs is false,
+     * then remove the kc's that aren't selected.
+     */
+    @Override
+    protected void processOptions() {
+        logger.debug("processing options");
+        Integer outNodeIndex0 = 0;
+
+        String keepOtherKcsString = this.getOptionAsString("keepOtherKcs");
+        Boolean keepOtherKcs = keepOtherKcsString.equalsIgnoreCase("true") ? true : false;
+        if (keepOtherKcs) {
+            // Return all columns as metadata
+            this.addMetaDataFromInput("student-step", 0, outNodeIndex0, ".*");
+        }
+        // Else remove other kc columns.
+        List<String> allColumns = new ArrayList<String>();
+
+        // Get all column labels
+        List<Element> inputElements = this.inputXml.get(0);
+        if (inputElements == null) {
+            this.addErrorMessage("Convert MultiSkill Requires an input Student-Step file.");
+            return;
+        }
+        for (Element inputElement : inputElements) {
+            if (inputElement.getChild("files") != null && inputElement.getChild("files").getChildren() != null) {
+                for (Element filesChild : (List<Element>) inputElement.getChild("files").getChildren()) {
+                    if (filesChild.getChild("metadata") != null) {
+                        Element inMetaElement = filesChild.getChild("metadata");
+                        if (inMetaElement != null && !inMetaElement.getChildren().isEmpty()) {
+                            for (Element child : (List<Element>) inMetaElement.getChildren()) {
+                                if (child.getChild("name") != null
+                                        && child.getChild("index") != null
+                                        && child.getChild("id") != null) {
+                                    String colLabel = child.getChildTextTrim("name");
+
+                                    allColumns.add(colLabel);
+                                }
+                            }
+                        }
+                        break; // we only get metadata from one of the objects for now.. more code required to handle them separately
+                    }
+                }
+            }
+        }
+        logger.debug("got allColumns");
+
+        String kc_model = this.getOptionAsString("colName");
+        // Remove the other models that are not the selected kc_model
+
+        Pattern p = Pattern.compile("\\s*(?:KC|Opportunity|Predicted Error Rate)\\s*\\((.*)\\)\\s*");
+
+        Matcher keepModelMatcher = p.matcher(kc_model);
+        String kcToKeep = "";
+        if (keepModelMatcher.find()) {
+            kcToKeep = keepModelMatcher.group(1);
+        }
+        logger.debug("KC to keep: " + kcToKeep);
+
+        // Get a list of columns to keep
+        List<String> keptCols = new ArrayList<String>();
+        for (String col : allColumns) {
+            Matcher m = p.matcher(col);
+            if (m.find()) {
+                // This is a KC column
+                String thisKcModel = m.group(1);
+                if (thisKcModel.equals(kcToKeep)) {
+                    // This is the KC model we're using for PyAFM, Keep it
+                    keptCols.add(col);
+                }
+            } else {
+                // Not a KC column, make sure we keep it in metadata
+                keptCols.add(col);
+            }
+        }
+
+        //add meta data for columns that will be in the output
+        int c = 0;
+        for (String col : keptCols) {
+            this.addMetaData("student-step", outNodeIndex0, META_DATA_HEADER, "header" + c, c, col);
+            c++;
+        }
     }
 
 }
