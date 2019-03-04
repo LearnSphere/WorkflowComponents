@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RowRemover</url>
+<date>2018-01-14</date>
+<abstract>The <b>Pivot</b> component mimics the Excel pivot function to allow users to aggregate and transform data.</abstract>
+<description>This component allows you to aggregate and transform data. The functionality that it provides is very similiar to the one used in Excel.</description>
+
+<inputs><ul>
+<li>tab-delimited file: contains data to be modified.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains pivoted result.
+</outputs>
+
+<options>
+ <ul>
+<li>Aggregation Method: functions to be used in aggregation, e.g., count, sum, min, max, sd and median</li>
+<li>Rows in Pivot Table: rows that would appear as rows in the pivot result table. Multiple selection is allowed.</li>
+<li>Measurement: the original columns that would be used for measurement of pivoting. Multiple selection is allowed.</li>
+<li>More Factors: yes or no. Selecting yes will make the next option, Columns in Pivot Table, appear. </li>
+<li>Columns in Pivot Table: the columns to be included in the pivot result table. This provides more specific measurement for the subgroups of the chosen columns. Multiple selection is allowed.</li>
+</ul>
+</options>
+
+</info>
