@@ -32,6 +32,8 @@ public class RPivotMain extends AbstractComponent {
         String aggMethodName = this.getOptionAsString("aWF");
         if (aggMethodName == null)
                 aggMethodName = "length";
+        else if (aggMethodName.equalsIgnoreCase("count"))
+                aggMethodName = "length";
         //check if measurement (-m) column are all double
         List<String> measurementColNames = this.getMultiOptionAsString("mWF");
         String[][] allCells = IOUtil.read2DRuggedStringArray(inputFile.getAbsolutePath(), false);
