@@ -171,6 +171,7 @@ for (i in unique(df$Anon.Student.Id)){
       [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
 return(temp)}#end practiceTime
 
+#val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
 equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0; seedpars <- c(NA)
@@ -454,6 +455,14 @@ switch(mode,
             # save info for inspecection outside of function
             temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
 
+            #save temp$data and pred as one output table, where data is frame, pred is  
+            data<-temp$data
+            pred<-predict(temp,type="response")
+            pred<-as.data.frame(pred)
+            data_pred<-qpcR:::cbind.na(data,pred)
+            outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
+            write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=TRUE,row.names = FALSE)
+
             # compute model fit and report
             fitstat<<-logLik(temp)
             nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
@@ -593,7 +602,6 @@ switch(mode,
                 Nresfit<-length(datTr$Outcome)
                 Nrestest<-length(datTe$Outcome)
                 
-                
                 print(paste("run",i))
                 print(paste("fold",j))
                 cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
@@ -725,7 +733,7 @@ switch(mode,
                 }}}
             # save info for inspecection outside of function
             temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
-
+            
             # compute model fit and report
             fitstat<<-logLik(temp)
             nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
@@ -778,6 +786,7 @@ switch(mode,
         } #end modeloptim
 
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
+
          print(results)
        },
 

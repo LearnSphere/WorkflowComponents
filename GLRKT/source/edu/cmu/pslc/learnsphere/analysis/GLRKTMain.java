@@ -57,7 +57,7 @@ public class GLRKTMain extends AbstractComponent {
         
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsoluteFile() + "/transaction_file_output.txt");
-            File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
+            File file1 = new File(outputDirectory.getAbsolutePath() + "/temp_pred.txt");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/model_result_values.xml");
             
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {    
