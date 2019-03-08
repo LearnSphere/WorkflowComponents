@@ -103,21 +103,41 @@ options(width=120)
 
 #Run the model
 dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,]
+KCs<-length(levels(as.factor(eval(parse(text=paste("dat$",KCmodel,sep=""))))))
+print(KCs)
 if(grepl("Full",flags)){
-x<-glmer(as.formula(paste("CF..ansbin.~
-            CF..cor.:",KCmodel,"+
-            CF..incor.:",KCmodel,"+
-            (1|",KCmodel,")+
-            (1|Anon.Student.Id)")),
-            data=dat,family=binomial(logit))}
-
-if(grepl("Simple",flags)){
+if(KCs==1){
 x<-glmer(as.formula(paste("CF..ansbin.~
             CF..cor.+
             CF..incor.+
-            (1|",KCmodel,")+
+                        (1|Anon.Student.Id)")),
+            data=dat,family=binomial(logit))
+            }
+            else {
+            x<-glmer(as.formula(paste("CF..ansbin.~
+                        CF..cor.:",KCmodel,"+
+                        CF..incor.:",KCmodel,"+
+                        (1|",KCmodel,")+
+                        (1|Anon.Student.Id)")),
+                        data=dat,family=binomial(logit))
+                        }
+            }
+
+if(grepl("Simple",flags)){
+if(KCs==1){
+x<-glmer(as.formula(paste("CF..ansbin.~
+            CF..cor.+
+            CF..incor.+
             (1|Anon.Student.Id)"))
             ,data=dat,family=binomial(logit))}
+            else {
+            x<-glmer(as.formula(paste("CF..ansbin.~
+                        CF..cor.+
+                        CF..incor.+
+                        (1|",KCmodel,")+
+                        (1|Anon.Student.Id)"))
+                        ,data=dat,family=binomial(logit))}
+            }
 
 
 #Output text summary
