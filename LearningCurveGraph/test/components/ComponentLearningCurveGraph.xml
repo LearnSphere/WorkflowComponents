@@ -22,8 +22,8 @@
       <errors/>
       <files>
           <text>
-              <file_path>test/testdata/chinesetones_1_2015_0729_174316.txt</file_path>
-              <file_name>chinesetones_1_2015_0729_174316.txt</file_name>
+              <file_path>test/testdata/temp_pred.txt</file_path>
+              <file_name>temp_pred.txt</file_name>
               <index>0</index>
               <label>text</label>
           </text>
