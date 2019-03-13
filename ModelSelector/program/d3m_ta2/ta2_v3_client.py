@@ -7,6 +7,7 @@ import logging
 import grpc
 from os import path
 from google.protobuf.json_format import MessageToJson
+import pandas as pd
 
 # D3M TA2 API imports
 from .api_v3 import core_pb2, core_pb2_grpc
@@ -343,8 +344,19 @@ class TA2Client(object):
                 logger.warning("Fittin model to solution is in an unknown state: %s" % str(reply.progress))
        
         request = self.fitted_solution_requests.pop(rid, None)
+         
+        for i in results.exposed_outputs:
+            if i == 'predictions':
+                logger.debug(results.exposed_outputs[i])
+                if results.exposed_outputs[i].HasField("csv_uri"):
+                    # logger.debug(results.exposed_outputs[i].csv_uri)
+                    result_data = pd.read_csv(results.exposed_outputs[i].csv_uri)
+                    # logger.debug(result_data.head())
+            else:
+                logger.debug("Output label: %s" % i)
+            # logger.debug(results.exposed_outputs[value_pb2.CSV_URI])
 
-        return results.fitted_solution_id, results.exposed_outputs
+        return results.fitted_solution_id, result_data
         
     def produce_solution(self, fsid, soln, ds, inputs=None, outputs=None):
         logger.info("Produce predictions for solution with id: %s" % soln.id)

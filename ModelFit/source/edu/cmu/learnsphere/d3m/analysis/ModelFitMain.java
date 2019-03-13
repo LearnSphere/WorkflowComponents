@@ -32,15 +32,13 @@ public class ModelFitMain extends AbstractComponent {
         logger.info("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
-		this.addMetaData("d3m-dataset", 0, META_DATA_LABEL, "label0", 0, null);
-
 
 	// Add input meta-data (headers) to output file.
 	this.addMetaDataFromInput("dataset", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
 	this.addMetaData("fitted-model-set", 0, META_DATA_LABEL, "label0", 0, null);
-	this.addMetaData("dataset", 1, META_DATA_LABEL, "label1", 0, null);
+	this.addMetaData("predictions", 1, META_DATA_LABEL, "label1", 0, null);
 
     }
 
@@ -64,7 +62,7 @@ public class ModelFitMain extends AbstractComponent {
 	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/datasetDoc.tsv");
 
 		this.addOutputFile(outputFile0, 0, 0, "fitted-model-set");
-		this.addOutputFile(outputFile1, 1, 0, "dataset");
+		this.addOutputFile(outputFile1, 1, 0, "predictions");
 
 
         System.out.println(this.getOutput());

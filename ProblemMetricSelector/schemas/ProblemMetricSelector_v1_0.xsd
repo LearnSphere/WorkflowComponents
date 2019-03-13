@@ -64,7 +64,7 @@
   </xs:complexType>
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:element default=".*" id="metric" name="metric" type="FileInputHeader" ls:inputNodeIndex="1" ls:inputFileIndex="0"/>
+      <xs:element default=".*" id="metric" name="metric" type="FileInputHeader"/>
     </xs:choice>
   </xs:complexType>
   <xs:element name="component">

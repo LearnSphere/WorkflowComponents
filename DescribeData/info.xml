@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DescribeData</url>
-<date>January 21, 2019</date>
+<date>March 13, 2019</date>
 <abstract>The <b>DescribeData</b> component is an example of a(n) Python component.</abstract>
 <description>Generates exploratory data plots for all columns of a dataset</description>
 

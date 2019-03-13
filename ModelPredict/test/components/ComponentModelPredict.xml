@@ -23,9 +23,9 @@
 <files>
 <dataset>
 <index>0</index>
-<file_path>/datashop/workflow_components/ModelPredict/test/components/datasetDoc.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>datasetDoc.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </dataset>
 </files>
 <inputmeta />
@@ -40,9 +40,9 @@
 <files>
 <fitted-model-set>
 <index>1</index>
-<file_path>/datashop/workflow_components/ModelPredict/test/components/datasetDoc.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>datasetDoc.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </fitted-model-set>
 </files>
 <inputmeta />

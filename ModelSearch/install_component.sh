@@ -5,14 +5,23 @@
 # Assumed dependencies:
 # -- python pip
 # -- python virtualenv
-echo "Setting up Model Search Tigris Components for local system"
+echo "Setting up Component for local system"
 
-virtualenv env --python=python3.6
-source env/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
+cwd="$(pwd)"
+wcc_dir="$(dirname $cwd)"
+venv="$wcc_dir/venv"
+if [ ! -d $venv ]; then
+    virtualenv $venv --python=python3.6
+    source $venv/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+
+    # Deactiate python venv
+    deactivate
+fi
 
 ### Rebuild build.properties using local system path to venv python
+source $venv/bin/activate
 pypath=$(which python)
 export IFS="="
 f1="component.interpreter.path"

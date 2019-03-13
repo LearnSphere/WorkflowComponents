@@ -23,9 +23,9 @@
 <files>
 <model-set>
 <index>0</index>
-<file_path>/datashop/workflow_components/ModelSelector/test/components/dataset-list.tsv</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>dataset-list.tsv</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </model-set>
 </files>
 <inputmeta />

@@ -158,3 +158,22 @@ class D3MSettings(Settings):
     
     def get_mode(self):
         return 'D3M'
+
+class AppServiceSettings(object):
+    """
+    A Settings class for reading configuration files for the D3M Inquiry service
+
+    """
+    def __init__(self, cfg_path=None):
+        self.cfg_file = cfg_path
+        self.cfg = configparser.ConfigParser()
+        if cfg_path is None:
+            self.cfg.read('/datashop/workflow_components/D3M/docker_config.cfg')
+        else:
+            self.cfg.read(cfg_path)
+
+    def get_service_url(self):
+        host = self.cfg.get("ServiceUrl", "HOST_URL")
+        subdomain = self.cfg.get("ServiceUrl", "D3M_SERVICE_SUBDOMAIN")
+        return "http://%s.%s" % (subdomain, host)
+

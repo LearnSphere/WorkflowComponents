@@ -24,7 +24,7 @@ from ls_dataset.d3m_dataset import D3MDataset
 # from ls_problem_desc.ls_problem import ProblemDesc
 # from ls_problem_desc.d3m_problem import D3MProblemDesc
 # from ls_workflow.workflow import Workflow
-from d3m_ta2.ta2_v3_client import TA2Client
+from d3m_ta2.ta2_client import TA2Client
 from modeling.models import *
 from modeling.component_out import *
 

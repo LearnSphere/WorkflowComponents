@@ -23,9 +23,9 @@
 <files>
 <dataset>
 <index>0</index>
-<file_path>/datashop/workflow_components/CompareModelPredictions/test/components/dataset_pred.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>dataset_pred.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </dataset>
 </files>
 <inputmeta />
@@ -40,9 +40,9 @@
 <files>
 <modeling-problem>
 <index>1</index>
-<file_path>/datashop/workflow_components/CompareModelPredictions/test/components/dataset_pred.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>dataset_pred.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </modeling-problem>
 </files>
 <inputmeta />
@@ -57,9 +57,9 @@
 <files>
 <fitted-model-set>
 <index>2</index>
-<file_path>/datashop/workflow_components/CompareModelPredictions/test/components/dataset_pred.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>dataset_pred.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </fitted-model-set>
 </files>
 <inputmeta />
@@ -74,9 +74,9 @@
 <files>
 <predictions>
 <index>3</index>
-<file_path>/datashop/workflow_components/CompareModelPredictions/test/components/dataset_pred.json</file_path>
+<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
 <label>text</label>
-<file_name>dataset_pred.json</file_name>
+<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
 </predictions>
 </files>
 <inputmeta />

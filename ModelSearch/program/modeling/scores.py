@@ -9,7 +9,7 @@ from json import JSONDecodeError
 import ast
 from google.protobuf import json_format
 
-from d3m_ta2.api_v3 import problem_pb2
+from ta3ta2_api import problem_pb2
 
 from .models import Model
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 # Ensure this is pointing to where WorkflowComponents is cloned
-wcc=$WCC 
+wcc=$WCC
 
 out_file="add_component.sql"
-comp_dir_name="ModelSelector"
+comp_dir_name=
 
 # Remove add_component.sql if it exists
 if [ -f $out_file ]; then
@@ -24,8 +24,8 @@ echo -e "\t\`version\`," >> $out_file
 echo -e "\t\`info\`" >> $out_file
 echo -e ")" >> $out_file
 echo "VALUES (" >> $out_file
-echo -e "\t'Analysis'," >> $out_file
-echo -e "\t'Model_Selector'," >> $out_file
+echo -e "\t'comp_type'," >> $out_file
+echo -e "\t'comp_user_name'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/'," >> $out_file
 echo -e "\t'$wcc/$comp_dir_name/schemas/$comp_dir_name""_v1_0.xsd'," >> $out_file
 echo -e "\t'/usr/bin/java -jar'," >> $out_file
@@ -34,5 +34,5 @@ echo -e "\t1," >> $out_file
 echo -e "\t'system'," >> $out_file
 echo -e "\t'Steven_C_Dang'," >> $out_file 
 echo -e "\t'1.0', " >> $out_file
-echo -e "\t'Allow user to select a model from a list of models'" >> $out_file
+echo -e "\t'comp_desc'" >> $out_file
 echo -e ");" >> $out_file

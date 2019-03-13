@@ -35,7 +35,6 @@ if __name__ == '__main__':
         is_test = False
 
     # Get config file
-    # Get config file
     config = SettingsFactory.get_settings(path.join(args.programDir, 'program', 'settings.cfg'), 
                                           program_dir=args.programDir,
                                           working_dir=args.workingDir,

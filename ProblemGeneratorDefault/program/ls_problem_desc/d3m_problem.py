@@ -14,7 +14,7 @@ import pprint
 from google.protobuf.json_format import MessageToJson
 
 from .ls_problem import ProblemDesc, Input, Target
-from .api_v3 import problem_pb2, problem_pb2_grpc
+from ta3ta2_api import problem_pb2, problem_pb2_grpc
 from modeling.scores import Metric
 
 logger = logging.getLogger(__name__)

@@ -10,9 +10,8 @@ from abc import ABC, abstractmethod
 import ast
 
 from google.protobuf import json_format
-from protobuf_to_dict import protobuf_to_dict
 
-from d3m_ta2.api_v3 import core_pb2, pipeline_pb2, problem_pb2, value_pb2
+from ta3ta2_api import core_pb2, pipeline_pb2, problem_pb2, value_pb2
 # from .scores import Metric
 
 logger = logging.getLogger(__name__)

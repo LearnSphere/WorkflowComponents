@@ -69,7 +69,7 @@
   </xs:complexType>
   <xs:complexType name="OutFileList1">
     <xs:choice>
-      <xs:element ref="dataset"/>
+      <xs:element ref="predictions"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="OutputType">

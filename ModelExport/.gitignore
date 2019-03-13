@@ -15,11 +15,8 @@ env
 ######################################
 test/output
 
-# Component Log folder
-logs
-
 # local settings file 
-# settings.cfg
+settings.cfg
 
 # Ignore auto generate log file when generating component
 gen_component.log

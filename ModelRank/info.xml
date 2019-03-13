@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelRank</url>
-<date>August 23, 2018</date>
+<date>March 13, 2019</date>
 <abstract>The <b>ModelRank</b> component is an example of a(n) Python component.</abstract>
 <description>Rank models according to a given metric</description>
 

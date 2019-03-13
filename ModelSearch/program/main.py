@@ -28,7 +28,7 @@ from ls_dataset.d3m_dataset import D3MDataset
 from ls_dataset.d3m_prediction import D3MPrediction
 from ls_problem_desc.ls_problem import ProblemDesc
 from ls_problem_desc.d3m_problem import DefaultProblemDesc
-from d3m_ta2.ta2_v3_client import TA2Client
+from d3m_ta2.ta2_client import TA2Client
 from d3m_eval.summer_2018.prob_discovery import ProblemDiscoveryWriter
 # from ls_workflow.workflow import Workflow as Solution
 from modeling.models import *
@@ -113,6 +113,7 @@ if __name__ == '__main__':
     logger.debug(data.head())
     predictions = data.loc[:,['d3mIndex', ptarget.column_name]]
     predictions.index = predictions['d3mIndex']
+    predictions.drop(labels=['d3mIndex'], axis=1, inplace=True)
     logger.debug("Just predictions data: \n%s" % str(predictions.head()))
 
     logger.debug("********************************")
