@@ -27,6 +27,7 @@
 		<Convert_Multiskill />
 		<Coursera_MOOCdb_Translator />
 		<Data_Conversion />
+		<DataShop_Txn_Rollup />
 		<Datastage_Aggregator />
 		<Deidentify />
 		<Discretize />
@@ -39,6 +40,7 @@
 		<MOOCdb_Feature_Extractor />
 		<OLI_LO_to_KC />
 		<Pivot />
+		<Resource_Use />
 		<Row_Operations />
 		<Row_Remover />
 		<Text_Converter />

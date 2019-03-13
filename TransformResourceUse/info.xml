@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Paulo Carvalho
+  <email>pcarvalho@andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformResourceUse</url>
+<date>2019-03-11</date>
+<abstract>The Resource Use component summarizes use information by student for a specified time interval. The input is a file with student usage information with required headers: Anon Student Id, errors, hints, time, problems, steps and date (last transaction time).</abstract>
+<description></description>
+
+<inputs>
+<b>CSV or tab-delimited</b>Student usage data
+</inputs>
+
+<outputs>
+<b>CSV</b>Student summary
+</outputs>
+
+<options>
+<b>Last run date</b>Date the summary was last computed. Using standard ISO 8601, the required format is %Y-%m-%d, e.g., 2012-03-12.
+</options>
+
+</info>
