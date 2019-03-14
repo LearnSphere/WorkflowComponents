@@ -73,7 +73,7 @@ suppressMessages(library(pROC))
 suppressMessages(library(caTools))
 suppressMessages(library(caret))#data splitting functions
 suppressMessages(library(rms))
-suppressMessages(library(pscl))#nonnested model comparison
+#suppressMessages(library(pscl))#nonnested model comparison
 suppressMessages(library(games))#another package for nonnested model comparison
 suppressMessages(library(optimx))
 suppressMessages(library(Rcgmin))
