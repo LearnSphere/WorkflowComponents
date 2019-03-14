@@ -56,4 +56,13 @@ tryCatch(
 transform_data <- suppressWarnings(data[!`Level (Unit)`%in%c("pre-survey", "post-survey"),.(errors=length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")]),hints=length(Outcome[Outcome=="ERROR"]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,`Level (Section)`)])
 
 #write the summarized data
-suppressWarnings(fwrite(transform_data, file=outputFileName, sep = ","))
+#suppressWarnings(fwrite(transform_data, file=outputFileName, sep = ","))
+tryCatch(
+  {
+    fwrite(transform_data, file=outputFileName, sep = ",")
+  }, warning = function (war_msg) {
+    write(paste("Warn:", war_msg, "\n", sep = " "), file = logFileName, append=TRUE)
+  }, finally = {
+    suppressWarnings(fwrite(transform_data, file=outputFileName, sep = ","))
+  }
+)
