@@ -68,20 +68,8 @@ options(width=120)
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 # load libraries
-suppressMessages(library(MuMIn))
-suppressMessages(library(pROC))
-suppressMessages(library(caTools))
-suppressMessages(library(caret))#data splitting functions
-suppressMessages(library(rms))
-#suppressMessages(library(pscl))#nonnested model comparison
-suppressMessages(library(games))#another package for nonnested model comparison
-suppressMessages(library(optimx))
-suppressMessages(library(Rcgmin))
-suppressMessages(library(BB))
-suppressMessages(library(nloptr))
-suppressMessages(library(qpcR))
 suppressMessages(library(RColorBrewer))
-suppressMessages(library(erer))
+
 
 setwd(workingDirectory)
 temp_pred<-read.table(inputFile,sep="\t", header=TRUE,quote="\"")
