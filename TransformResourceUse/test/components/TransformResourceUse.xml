@@ -39,7 +39,8 @@
     </input0>
   </inputs>
   <options>
-    <lastRunDate>2012-03-12</lastRunDate>
+    <startDate>2012-01-01</startDate>
+    <endDate>2012-05-01</endDate>
   </options>
 
 </component>

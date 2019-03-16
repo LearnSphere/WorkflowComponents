@@ -33,12 +33,19 @@ public class ResourceUse extends AbstractComponent {
     @Override
     protected void runComponent() {
 
-        String lastRunDate = this.getOptionAsString("lastRunDate");
-        Boolean isValid = validateLastRunDate(lastRunDate);
+        String startDate = this.getOptionAsString("startDate");
+        Boolean isValid = validateDateForR(startDate);
         if (!isValid) {
-            addErrorMessage(lastRunDate + " is an invalid date. Must use format: yyyy-MM-dd.");
+            addErrorMessage(startDate + " is an invalid date. Must use format: yyyy-MM-dd.");
             System.out.println(this.getOutput());
             return;
+        }
+        String endDate = this.getOptionAsString("endDate");
+        isValid = validateDateForR(endDate);
+        // For the end date, if not specified or not valid, we default to "open" or end of file.
+        if (!isValid) {
+            this.setOption("endDate", "");
+            logger.warn(endDate + " is an invalid date. Defaulting to last date in file.");
         }
 
         // Run the program...
@@ -54,23 +61,23 @@ public class ResourceUse extends AbstractComponent {
         System.out.println(this.getOutput());
     }
 
-    private Boolean validateLastRunDate(String lastRunDate) {
-        if (lastRunDate == null) { return false; }
-        if (lastRunDate.equals("")) { return false; }
+    private Boolean validateDateForR(String dateStr) {
+        if (dateStr == null) { return false; }
+        if (dateStr.equals("")) { return false; }
 
         Boolean result = false;
         try {
-            Date parsedDate = sdf.parse(lastRunDate);
+            Date parsedDate = sdf.parse(dateStr);
             String reformatted = sdf.format(parsedDate);
 
             // SimpleDateFormat will force all sorts of things into the specified format.
             // Ensuring that the formatted parsed date matches the original string means
             // the original string is indeed a valid date. Thank you StackOverflow.
-            if (lastRunDate.equals(reformatted)) {
+            if (dateStr.equals(reformatted)) {
                 result = true;
             }
         } catch (Exception ex) {
-            logger.debug("Failed to parse date: " + lastRunDate);
+            logger.debug("Failed to parse date: " + dateStr);
             return false;
         }
 

@@ -1,7 +1,7 @@
 #this component takes a file with info on student progress in the AI tutor and outputs progress 
 #information (time spent, # of problems/steps solved, average # errors on those problems)
-#the current version, in addition to the file with the data, requires that a date be defined so the 
-#component knows what is "new" data and what is from the past.
+#the current version, in addition to the file with the data, requires that a date range be defined
+#so the component knows what is "new" data and what is from the past.
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -10,8 +10,9 @@ suppressMessages(library(data.table))
 
 workingDir = "."
 inputFileName = args[1]
-# Default to one week ago
-lastRunDate <- as.Date(Sys.Date())-7
+# Default to last week
+startDate <- as.Date(Sys.Date())-7
+endDate = NULL
 
 if (length(args) > 2) {
   i = 1
@@ -32,11 +33,17 @@ if (length(args) > 2) {
       inputFileName <- args[i + 4]
       i = i + 4
 
-    } else if (args[i] == "-lastRunDate") {
+    } else if (args[i] == "-startDate") {
       if (length(args) == i) {
-        stop("last run date must be specified")
+        stop("start date must be specified")
       }
-      lastRunDate = as.Date(args[i+1])
+      startDate = as.Date(args[i+1])
+      i = i+1
+    } else if (args[i] == "-endDate") {
+      if (length(args) == i) {
+        stop("end date must be specified")
+      }
+      endDate = as.Date(args[i+1])
       i = i+1
     } else if (args[i] == "-workingDir") {
       if (length(args) == i) {
@@ -55,7 +62,12 @@ outputFileName <- paste(workingDir, "/stu_summary.csv", sep="")
 data <- suppressWarnings(fread(input = inputFileName))
 
 #summarize things
-sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(lastRunDate),.(errors=sum(errors),hints=sum(hints),time=sum(time),problems=sum(problems),steps=sum(steps)),by=.(`Anon Student Id`)])
+#if endDate not specified, go to end of file
+if (is.null(endDate)) {
+  sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(startDate),.(errors=sum(errors),hints=sum(hints),time=sum(time),problems=sum(problems),steps=sum(steps)),by=.(`Anon Student Id`)])
+} else {
+   sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(startDate)&as.POSIXct(date)<as.POSIXct(endDate),.(errors=sum(errors),hints=sum(hints),time=sum(time),problems=sum(problems),steps=sum(steps)),by=.(`Anon Student Id`)]) 
+}
 
 #write summary for export (maybe not needed in LS)
 suppressWarnings(fwrite(sumdata, file=outputFileName, sep = ","))
