@@ -1,0 +1,82 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>ComponentSensorDataSegmentation #1</component_id_human>
+  <workflow_id>16</workflow_id>
+  <component_name>ComponentSensorDataSegmentation</component_name>
+  <component_type>transform</component_type>
+  <left>860</left>
+  <connections>
+    <connection>
+      <from>Import-1-x581366</from>
+    </connection>
+    <connection>
+      <from>Import-1-x352396</from>
+    </connection>
+  </connections>
+  <top>178</top>
+ <options>
+      <student>Anon Student Id</student>
+      <time>Time</time>
+      <response>CF (Response Time)</response>
+      <CahnnelType>Ch1</CahnnelType>
+      <signalsamplingrate>220.0</signalsamplingrate>
+      <signalprestarttime>0.0</signalprestarttime>
+      <signalpostendtime>0.0</signalpostendtime>
+      <studenttest>suhaib.alrousan@gmail.com</studenttest>                         
+  </options>
+  <inputs>
+  <input0>
+      <component_id>Import-1-x352396</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+          <tab-delimited>
+          <file_path>test/example_files/DataFile.txt</file_path>
+          <file_name>DataFile.txt</file_name>
+          <index>0</index>
+          <label>file</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>EEG data</name>
+            </header>
+  
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+    <input1>
+      <component_id>Import-1-x581366</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/example_files/signal.csv</file_path>
+          <file_name>signal.csv</file_name>
+          <index>1</index>
+          <label>file</label>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>EEG data</name>
+            </header>
+            
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input1>
+  </inputs>
+</component>
+
