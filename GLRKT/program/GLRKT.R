@@ -1039,7 +1039,6 @@ switch(mode,
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
          print(results)
        })
-
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
 headers<-gsub("[.]1","",headers)
