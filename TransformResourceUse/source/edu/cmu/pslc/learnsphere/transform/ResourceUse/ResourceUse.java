@@ -33,6 +33,8 @@ public class ResourceUse extends AbstractComponent {
     @Override
     protected void runComponent() {
 
+        Boolean specifyRange = this.getOptionAsString("specifyRange").equals("Yes") ? true : false;
+
         String startDate = this.getOptionAsString("startDate");
         Boolean isValid = validateDateForR(startDate);
         if (!isValid) {
@@ -40,12 +42,16 @@ public class ResourceUse extends AbstractComponent {
             System.out.println(this.getOutput());
             return;
         }
-        String endDate = this.getOptionAsString("endDate");
-        isValid = validateDateForR(endDate);
-        // For the end date, if not specified or not valid, we default to "open" or end of file.
-        if (!isValid) {
+        if (specifyRange) {
+            String endDate = this.getOptionAsString("endDate");
+            isValid = validateDateForR(endDate);
+            // For the end date, if not specified or not valid, we default to "open" or end of file.
+            if (!isValid) {
+                this.setOption("endDate", "");
+                logger.warn(endDate + " is an invalid date. Defaulting to last date in file.");
+            }
+        } else {
             this.setOption("endDate", "");
-            logger.warn(endDate + " is an invalid date. Defaulting to last date in file.");
         }
 
         // Run the program...
