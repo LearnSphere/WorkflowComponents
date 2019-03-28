@@ -1,0 +1,37 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>visualization #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>LearningCurveGraph</component_name>
+  <component_type>visualization</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+    <input0>
+      <component_id>LearningCurveGraph</component_id>
+      <component_id_human>Import Transaction #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>ImportFile</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+          <text>
+              <file_path>test/testdata/temp_pred.txt</file_path>
+              <file_name>temp_pred.txt</file_name>
+              <index>0</index>
+              <label>text</label>
+          </text>
+      </files>
+    </input0>
+</inputs>
+
+<options>
+</options>
+
+</component>

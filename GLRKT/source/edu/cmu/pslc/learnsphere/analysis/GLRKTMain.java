@@ -50,17 +50,22 @@ public class GLRKTMain extends AbstractComponent {
      * Processes the input file(s) and option(s) to generate inputs to next component(s).
      */
     @Override
+    @SuppressWarnings("DeadBranch")
     protected void runComponent() {
 
 	// Run the program...
 	File outputDirectory = this.runExternal();
         
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsoluteFile() + "/transaction_file_output.txt");
+            File file0;
+            file0= new File(outputDirectory.getAbsoluteFile() + "/temp_pred.txt");
+            if(!file0.exists()){
+                file0=new File(outputDirectory.getAbsoluteFile() + "/transaction_file_output.txt");
+            }
             File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/model_result_values.xml");
-            
-            if (file0 != null && file0.exists() && file1 != null && file1.exists()) {    
+
+            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {    
             Integer nodeIndex0 = 0;
             Integer fileIndex0 = 0;
             String label0 = "transaction";
@@ -77,7 +82,7 @@ public class GLRKTMain extends AbstractComponent {
             this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
             
             }else{
-                this.addErrorMessage("An unknown error has occurred with the TKT component.");
+                this.addErrorMessage("The output file the GLRKT component.");
             }
         }
 

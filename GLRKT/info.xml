@@ -5,23 +5,26 @@
   <email>ppavlik@memphis.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GLRKT</url>
-<date>Nov.20, 2018</date>
+<date>March 21, 2019</date>
 <abstract>The <b>GLRKT</b> component is an example of a(n) R component.</abstract>
 <description>
-    
- </description>
+    This <b>GLRKT</b> component three modes, do crossvalidation. 
+</description>
 
 <inputs>
-<b>plancomponents,fixedpars,seedpars,prespecfeatures,mode</b>
-
+<b>plancomponents,fixedpars,seedpars,prespecfeatures,mode</b><br/>
+<b>mode</b> - This includes three modes: "best fit model", "five times 2 fold crossvalidated create folds", and "five times 2 fold crossvalidated read folds".
 </inputs>
 
 <outputs>
-<b>R_output_model_summary.txt,transaction_file_output.txt,model_result_values.xml</b>
+<b>transaction_file_output.txt</b>-Original input file<br/>
+<b>temp_pred</b>-The generated that we use for LearningCurveGraph under the mode of best fit model.<br/>
+<b>model_result_values.xml</b>
 </outputs>
 
 <options>
-<b>model -- type String</b>
+<b>Select which of the modes that can be used</b><br/>
+<b>Select some given values for parameters</b>
 </options>
 
 </info>

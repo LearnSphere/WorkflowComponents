@@ -119,23 +119,17 @@ suppressMessages(library(MuMIn))
 suppressMessages(library(XML))
 suppressMessages(library(pROC))
 suppressMessages(library(caTools))
-suppressMessages(library(TTR))
-suppressMessages(library(plyr))
 suppressMessages(library(caret))
 suppressMessages(library(rms))
-suppressMessages(library(pscl))
-suppressMessages(library(games))
-suppressMessages(library(optimx))
-suppressMessages(library(Rcgmin))
-suppressMessages(library(BB))
-suppressMessages(library(nloptr))
-suppressMessages(library(qpcR))
-suppressMessages(library(RColorBrewer))
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
 
 #Transfer of the Parameters' Format
+switch(plancomponents,"KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"="KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id","KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"="KC (Default),KC (Cluster),KC (Cluster),Anon Student Id","KC (Default),KC (Cluster)"="KC (Default),KC (Cluster)");
+switch(prespecfeatures,"basesuc,basefail,basesuc,basefail,propdec"="basesuc,basefail,basesuc,basefail,propdec","basesuc,basefail,basesuc,propdec"="basesuc,basefail,basesuc,propdec","basesuc,basefail"="basesuc,basefail");
+switch(fixedpars,".3,.3,.3,.3,.97"=".3,.3,.3,.3,.97",".3,.3,.3,.97"=".3,.3,.3,.97",".3,.3"=".3,.3");
+switch(seedpars,".3,.3,.3,.3,.025"=".3,.3,.3,.3,.025",".3,.3,.3,.025"=".3,.3,.3,.025",".3,.3"=".3,.3");
 
 plancomponents<-as.character(unlist(strsplit(plancomponents,",")))
 plancomponents<-gsub("[ ()-]", ".",plancomponents)
@@ -144,10 +138,10 @@ fixedpars<-as.numeric(as.character(unlist(strsplit(fixedpars,","))))
 seedpars<-as.numeric(as.character(unlist(strsplit(seedpars,","))))
 
 #Model options
-print(plancomponents)
-print(fixedpars)
-print(seedpars)
-print(prespecfeatures)
+#print(plancomponents)
+#print(fixedpars)
+#print(seedpars)
+#print(prespecfeatures)
 print(mode)
 
 #Set Data Directory
@@ -167,6 +161,7 @@ for (i in unique(df$Anon.Student.Id)){
       [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
 return(temp)}#end practiceTime
 
+#val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
 equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0; seedpars <- c(NA)
@@ -450,6 +445,14 @@ switch(mode,
             # save info for inspecection outside of function
             temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
 
+            #save temp$data and pred as one output table, where data is frame, pred is  
+            data<-temp$data
+            pred<-predict(temp,type="response")
+            pred<-as.data.frame(pred)
+            data_pred<-qpcR:::cbind.na(data,pred)
+            outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
+            write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=TRUE,row.names = FALSE)
+
             # compute model fit and report
             fitstat<<-logLik(temp)
             nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
@@ -589,7 +592,6 @@ switch(mode,
                 Nresfit<-length(datTr$Outcome)
                 Nrestest<-length(datTe$Outcome)
                 
-                
                 print(paste("run",i))
                 print(paste("fold",j))
                 cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
@@ -721,7 +723,7 @@ switch(mode,
                 }}}
             # save info for inspecection outside of function
             temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
-
+            
             # compute model fit and report
             fitstat<<-logLik(temp)
             nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
@@ -774,6 +776,7 @@ switch(mode,
         } #end modeloptim
 
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
+
          print(results)
        },
 
@@ -1036,7 +1039,6 @@ switch(mode,
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
          print(results)
        })
-
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
 headers<-gsub("[.]1","",headers)
