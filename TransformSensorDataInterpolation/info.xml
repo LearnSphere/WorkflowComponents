@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <info>
 <author>Dr.Bashir Morshed
   <email>bmorshed@memphis.edu</email>
 </author>
 <author>Ms. Afroz
   <email>safroz@memphis.edu</email>
-</author>
-
-
- 
-<abstract>The <b>Sensor Data Interpolation</b> component performs interpolation of one sensor data and interpolate as required to match the output sampling rate.</abstract>
-<description>Sensor Data Interpolation component accepts one tab delimited sensor raw sensor data input. The user needs to specify the sampling rate of this input. The interpolation algorithm will resample the input data to the output sampling rate. The user can select an interpolation algorithm from a list of 3 algorithms: spline, linear, and constant. The user can also generate a time vector, which will be added at the first column in the output file.</description>
-
+</author> 
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/TransformSensorDataInterpolation</url>
+<date>2019-03-27</date>
+<abstract>The <b>Sensor Data Interpolation</b> component performs interpolation of one sensor data and interpolate as required to match the output sampling rate.
+</abstract>
+<description>Sensor Data Interpolation component accepts one tab delimited sensor raw sensor data input. The user needs to specify the sampling rate of this input. The interpolation algorithm will resample the input data to the output sampling rate. The user can select an interpolation algorithm from a list of 3 algorithms: spline, linear, and constant. The user can also generate a time vector, which will be added at the first column in the output file.
+</description>
 <inputs>
 <b>tab-delimited</b>
 </inputs>
-
 <outputs>
 <b>tab-delimited</b>
 <b>Alignement of two sensor data</b>
 </outputs>
-
 <options>
-<b>Signal 1 Column Name</b> - Choice of the sensor column from input file1 for alignment<br/>
-<b>Signal 1 sampling rate</b> - The sampling rate of the Signal 1 (Sensordata from file1)<br/>
-<b>Output Resample rate</b> - The sampling rate of resulted output of two signal (sensor data)</br>
-<b>Interpolation_Type</b> - Choice of interpolation type from where the data is being interpolated</br>
-<b>Generate time vector</b> - Choice of generating a column for time sequence for ouput signal data</br>
+<b>Signal 1 Column Name </b> - Choice of the sensor column from input file1 for alignment<br/>
+<b>Signal 1 sampling rate </b> - The sampling rate of the Signal 1 (Sensordata from file1)<br/>
+<b>Output Resample rate </b> - The sampling rate of resulted output of two signal (sensor data) <br/>
+<b>Interpolation_Type </b> - Choice of interpolation type from where the data is being interpolated<br/>
+<b>Generate time vector </b> - Choice of generating a column for time sequence for ouput signal data<br/>
 <b>Input_Header</b>Input signal has column header name or not
 </options>
-
 </info>
