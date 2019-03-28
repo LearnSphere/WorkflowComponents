@@ -12,6 +12,7 @@ suppressMessages(library(plyr))
 suppressMessages(library(htmlTable))
 suppressMessages(library(rmarkdown))
 suppressMessages(library(lattice))
+suppressMessages(library(data.table))
 
 #function to calculate mean
 getmean <- function(data, facs, bar){
@@ -123,6 +124,9 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 outputFilePath<- paste(workingDirectory, "factor.html", sep="")
 outputFilePath2<- paste(workingDirectory, "factorbyfactor.html", sep="")
 outputFilePath3<- paste(workingDirectory, "factorbyfactorbyfactor.html", sep="")
+outputFilePath4<- paste(workingDirectory, "result1.html", sep="")
+outputFilePath5<- paste(workingDirectory, "result2.html", sep="")
+
 
 
 
@@ -131,6 +135,7 @@ val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "",blank
 
 # replaces space in column with period
 names(val) <- gsub(" ", ".", names(val))
+
 
 #relpace parenthesis and space with period
 if (length(unitCategory)>0)
@@ -196,6 +201,13 @@ if("First.Attempt" %in% colnames(val))
     }
 }
 
+#getmean <- function(data, facs, bar){
+ # result = ddply(data, facs, here(summarize),
+  #               mean = round(mean(eval(parse(text=bar)), na.rm=TRUE),digits=3)
+  #)
+  #return(result)
+#}
+
 #factorbyfactorbyfactor calculation
 if (length(unitCategory)>0)
 {
@@ -241,6 +253,35 @@ res <- merge(res,minmax,by=superordinateGroupingCategory)
 res <- merge(res,stdev,by=superordinateGroupingCategory)
 res <- merge(res,freq,by=superordinateGroupingCategory)
 
+#additional calculation
+table(val$Anon.Student.Id)
+df= data.frame(table(val$Anon.Student.Id))
+mean.trials = mean(df$Freq)
+
+data_1<- val[,c("Row","Duration..sec.","Anon.Student.Id")]
+df1 = ddply(data_1, .(Anon.Student.Id), summarise, sum = sum(Duration..sec.))
+mean.subject.interval = mean(df1$sum)
+
+data_2 <- val[,c("Row","Anon.Student.Id","Problem.Start.Time")]
+data_2 <- data_2[order(data_2$Anon.Student.Id,data_2$Problem.Start.Time),]
+data_2$tdiff <- unlist(tapply(data_2$Problem.Start.Time, INDEX =data_2$Anon.Student.Id,
+                              FUN = function(x) c(0, diff(as.numeric(x)))))
+setDT(data_2)
+setkey(data_2,Anon.Student.Id)
+data_res <-data_2[ data_2[ tdiff >=60, .(count.time=.N), by = Anon.Student.Id]]
+mean.sessions<-ddply(data_res,~Anon.Student.Id,summarise,mean=mean(count.time))
+#mean_session <-with(mean_sess,mean(mean))
+sd.sessions <-ddply(data_res,~Anon.Student.Id,summarise,std=sd(count.time))
+#sd_session<-with(sd_sess, sd(sd))
+
+#Mean intersession interval 
+data_intersession <-subset(data_res, select = -c(count.time))
+mean_intersession <-ddply(data_intersession,~Anon.Student.Id,summarise,mean=mean(tdiff)) 
+mean_intersession_intervals<-with(mean_intersession,mean(mean))
+
+
+res_add <- cbind.data.frame( mean.trials, mean.subject.interval,mean_intersession_intervals)
+res_sub <- cbind.data.frame(mean.sessions,sd.sessions[2])
 
 #to print histogram
 
@@ -328,6 +369,7 @@ names(res)<-gsub("[.]$",")",names(res))
 
 
 
+
 #write to a html file in the form of table
 if (length(unitCategory)>0)
 {
@@ -343,4 +385,8 @@ write.table(factorbyfactor,file=outputFilePath2,sep="\t", quote=FALSE,na = "",co
 factor<-htmlTable(res,align="r",css.cell = "padding-left: .5em; padding-right: .2em;")
 write.table(factor,file=outputFilePath,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 
+additional_factor<-htmlTable(res_add,align="r",css.cell = "padding-left: .5em; padding-right: .2em;", widths = rep(280, 6),caption="Means across all subjects")
+write.table(additional_factor,file=outputFilePath4,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 
+result2<-htmlTable(res_sub,align="r",css.cell = "padding-left: .5em; padding-right: .2em;", widths = rep(250, 6),caption="Means by subject")
+write.table(result2,file=outputFilePath5,sep="\t", quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)

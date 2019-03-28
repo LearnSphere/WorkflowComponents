@@ -49,8 +49,11 @@ public class DescriptiveMain extends AbstractComponent {
             File file3 = new File(outputDirectory.getAbsolutePath() + "/factorbyfactorbyfactor.html");
             File file4 = new File(outputDirectory.getAbsolutePath() + "/histogramff.png");
             File file5 = new File(outputDirectory.getAbsolutePath() + "/histogramf.png");
+            File file6 =  new File(outputDirectory.getAbsolutePath() + "/result1.html");
+            File file7 =  new File(outputDirectory.getAbsolutePath() + "/result2.html");
+            
 
-            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file4 != null && file4.exists() && file5 != null && file5.exists()) {
+            if (file0 != null && file0.exists() && file1 != null && file1.exists() && file4 != null && file4.exists() && file5 != null && file5.exists() && file5 != null && file5.exists() && file6 != null && file6.exists() && file7 != null && file7.exists()) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
@@ -81,6 +84,16 @@ public class DescriptiveMain extends AbstractComponent {
                 Integer fileIndex5 = 0;
                 String label5 = "image";
                 this.addOutputFile(file5, nodeIndex5, fileIndex5, label5);
+                
+                Integer nodeIndex6 = 6;
+                Integer fileIndex6 = 0;
+                String label6 = "html";
+                this.addOutputFile(file6, nodeIndex6, fileIndex6, label6);
+                
+                Integer nodeIndex7 = 7;
+                Integer fileIndex7 = 0;
+                String label7 = "html";
+                this.addOutputFile(file6, nodeIndex7, fileIndex7, label7);
                 
             } else {
                 this.addErrorMessage("An unknown error has occurred with the Descriptive component.");
