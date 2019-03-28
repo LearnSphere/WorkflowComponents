@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/info.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE info SYSTEM "info.dtd">
+
+    <info>
+    ...
+    </info>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT info (author|author|url|date|abstract|description|inputs|outputs|options)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT author (#PCDATA|email)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT email (#PCDATA)>
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT url (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT date (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT abstract (#PCDATA|b)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT b (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT description (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT inputs (b)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT outputs (b)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT options (#PCDATA|b|br)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT br EMPTY>
