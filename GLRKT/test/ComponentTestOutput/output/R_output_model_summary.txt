@@ -1,0 +1,34 @@
+[1] "KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"
+[1] "basesuc,basefail,basesuc,propdec"
+[1] ".3,.3,.3,.97"
+[1] ".3,.3,.3,.025"
+[1] "best fit model"
+   logLik = -5147.62261719   basesuc basefail basesuc propdec  --- 0.2075 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.3092  -0.9627   0.2228   1.0190   2.0189  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept) -2.14988    0.08622 -24.936 < 0.0000000000000002 ***
+F4           3.13826    0.14935  21.013 < 0.0000000000000002 ***
+F3           0.07568    0.41068   0.184                0.854    
+F2           2.29781    0.30064   7.643   0.0000000000000212 ***
+F1          15.36443    0.58766  26.145 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 12990  on 9436  degrees of freedom
+Residual deviance: 10295  on 9432  degrees of freedom
+AIC: 10305
+
+Number of Fisher Scoring iterations: 5
+
+There were 50 or more warnings (use warnings() to see the first 50)

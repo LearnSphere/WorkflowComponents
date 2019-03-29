@@ -225,6 +225,9 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   if(feat=="lineafm"){return((df$cor+df$icor))}
   if(feat=="logafm"){return(log(1+df$cor+df$icor))}
   if(feat=="powafm"){return((df$cor+df$icor)^par1)}
+  if(feat=="recency"){
+    eval(parse(text=paste("df$meanrec <- df$",fcomp,"spacing",sep="")))
+    return(ifelse(df$meanrec==0,0,df$meanrec^-(10*par1)))}
   if(feat=="expdecafm"){return(ave(rep(1,length(df$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))} 
   if(feat=="base"){
     df$mintime <- ave(df$CF..Time.,index, FUN=min)
@@ -448,10 +451,10 @@ switch(mode,
             #save temp$data and pred as one output table, where data is frame, pred is  
             data<-temp$data
             pred<-predict(temp,type="response")
-            pred<-as.data.frame(pred)
-            data_pred<-qpcR:::cbind.na(data,pred)
+            pred<-as.data.frame(pred)                    
+            data_pred<-cbind(data,pred)
             outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
-            write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=TRUE,row.names = FALSE)
+            write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
 
             # compute model fit and report
             fitstat<<-logLik(temp)
@@ -776,7 +779,6 @@ switch(mode,
         } #end modeloptim
 
          mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
-
          print(results)
        },
 
