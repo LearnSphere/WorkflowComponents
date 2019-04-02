@@ -161,7 +161,8 @@ for (i in unique(df$Anon.Student.Id)){
       [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
 return(temp)}#end practiceTime
 
-#val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
+val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
+val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
 equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0; seedpars <- c(NA)
