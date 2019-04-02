@@ -64,9 +64,9 @@ data <- suppressWarnings(fread(input = inputFileName))
 #summarize things
 #if endDate not specified, go to end of file
 if (is.null(endDate)) {
-  sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(startDate),.(propCorrectSteps=sum(propCorrectSteps),hints=sum(hints),time=sum(time),problems=sum(problems),totalSteps=sum(steps)),by=.(`Anon Student Id`)])
+  sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(range_start_date),.(propCorrectSteps=mean(propCorrectSteps),hints=sum(hints),time=sum(time),problems=sum(problems),totalSteps=sum(steps)),by=.(`Anon Student Id`)])
 } else {
-   sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(startDate)&as.POSIXct(date)<as.POSIXct(endDate),.(propCorrectSteps=sum(propCorrectSteps),hints=sum(hints),time=sum(time),problems=sum(problems),totalSteps=sum(steps)),by=.(`Anon Student Id`)]) 
+  sumdata <- suppressWarnings(data[as.POSIXct(date)>as.POSIXct(range_start_date)&as.POSIXct(date)<as.POSIXct(range_end_date),.(propCorrectSteps=mean(propCorrectSteps),hints=sum(hints),time=sum(time),problems=sum(problems),totalSteps=sum(steps)),by=.(`Anon Student Id`)])
 }
 
 #write summary for export (maybe not needed in LS)
