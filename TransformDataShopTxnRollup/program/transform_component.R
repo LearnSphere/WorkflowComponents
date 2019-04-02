@@ -64,7 +64,7 @@ data$newLevel <- do.call(paste, as.data.frame(m, stringsAsFactors=FALSE))
 rm(m,Levels)
 
 #summarize to get number of hours spent in tutor, number of problems completed, number of hits requested, number of errors, 
-transform_data <- suppressWarnings(data[,.(propCorrectSteps=1-(length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")])/length(Outcome)),hints=length(Outcome[Outcome=="ERROR"]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,newLevel)])
+transform_data <- suppressWarnings(data[,.(propCorrectSteps=length(Outcome[Outcome%in%c("OK")])/length(Outcome),hints=length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,newLevel)])
 
 #transform_data <- suppressWarnings(data[,.(propCorrectSteps=1-(length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")])/length(Outcome)),hints=length(Outcome[Outcome=="ERROR"]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`)]) #we might actually be able to get away without the Level summary but leaving it in for now.
 
