@@ -1,11 +1,9 @@
 <component_menu>
-    <Import>
+	<Analysis>
+        <Recently_Used />
         <Dataset_Importer />
         <Dataset_Selector />
         <Dataset_Augmenter />
-    </Import>
-	<Analysis>
-        <Recently_Used />
         <Default_Problem_Generator />
         <Problem_Creator />
         <Problem_Task_Selector />
