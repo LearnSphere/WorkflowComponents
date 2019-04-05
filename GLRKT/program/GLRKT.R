@@ -121,6 +121,7 @@ suppressMessages(library(pROC))
 suppressMessages(library(caTools))
 suppressMessages(library(caret))
 suppressMessages(library(rms))
+suppressMessages(library(optimx))
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
@@ -494,7 +495,7 @@ switch(mode,
           if(parlength>0){    
             pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
             #pars<<- bobyqa(seeds,tempfun,lower = .0001, upper = 1)
-          cat(pars)}
+          print(pars)}
           else {tempfun(numeric(0))  }
 
           # report
@@ -765,8 +766,7 @@ switch(mode,
           if(parlength>0){    
             pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
             #pars<<- bobyqa(seeds,tempfun,lower = .0001, upper = 1)
-
-          cat(pars)}
+          print(pars)}
           else {tempfun(numeric(0))  }
 
           # report
@@ -835,7 +835,6 @@ switch(mode,
                 results[t,2] = round(auc(trainfoldTr$CF..ansbin.,predfit),5)
                 results[t,3] = round(auc(trainfoldTe$CF..ansbin.,predtest),5)
                 results[t,4] = round(sqrt(mean((predtest-trainfoldTe$CF..ansbin.)^2)),5)
-
 
                 if(makeFolds==1){#only adding to dat if didn't have folds on val already
                   if(j==1){
@@ -1024,9 +1023,7 @@ switch(mode,
           if(parlength>0){    
             pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
             #pars<<- bobyqa(seeds,tempfun,lower = .0001, upper = 1)
-
-
-          cat(pars)}
+          print(pars)}
           else {tempfun(numeric(0))  }
 
           # report

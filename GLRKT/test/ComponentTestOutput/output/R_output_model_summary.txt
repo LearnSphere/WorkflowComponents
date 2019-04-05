@@ -2,8 +2,10 @@
 [1] 0.30 0.30 0.30 0.97
 [1] 0.300 0.300 0.300 0.025
 [1] "basesuc"  "basefail" "basesuc"  "propdec" 
-[1] "best fit model"
-   logLik = -1066.87151362   basesuc basefail basesuc propdec  --- 0.1978 McFadden's R2
+[1] "five times 2 fold crossvalidated create folds"
+  [1] "run 1"
+[1] "fold 1"
+   logLik = -512.1381182  basesuc basefail basesuc propdec  --- 0.1687 McFadden's R2
 
 Call:
 glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
@@ -11,24 +13,305 @@ glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--3.0315  -0.9887   0.2256   1.0824   1.8480  
+-2.9741  -1.0033   0.2623   1.1047   1.6732  
 
 Coefficients:
             Estimate Std. Error z value             Pr(>|z|)    
-(Intercept)  -1.9228     0.2176  -8.836 < 0.0000000000000002 ***
-F4            2.6121     0.3795   6.884     0.00000000000583 ***
-F3           -0.7838     0.9306  -0.842                  0.4    
-F2            2.7853     0.6718   4.146     0.00003383525274 ***
-F1           17.7380     1.3809  12.845 < 0.0000000000000002 ***
+(Intercept)  -0.9724     0.3428  -2.837              0.00456 ** 
+F4            0.8568     0.6100   1.405              0.16013    
+F3           -2.4858     1.4555  -1.708              0.08766 .  
+F2            3.9659     1.0097   3.928            0.0000857 ***
+F1           18.0060     2.0419   8.818 < 0.0000000000000002 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 2659.8  on 1940  degrees of freedom
-Residual deviance: 2133.7  on 1936  degrees of freedom
-AIC: 2143.7
+    Null deviance: 1232.1  on 899  degrees of freedom
+Residual deviance: 1024.3  on 895  degrees of freedom
+AIC: 1034.3
 
 Number of Fisher Scoring iterations: 5
 
+[1] "run 1"
+[1] "fold 2"
+   logLik = -512.1381182  basesuc basefail basesuc propdec  --- 0.1687 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9741  -1.0033   0.2623   1.1047   1.6732  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -0.9724     0.3428  -2.837              0.00456 ** 
+F4            0.8568     0.6100   1.405              0.16013    
+F3           -2.4858     1.4555  -1.708              0.08766 .  
+F2            3.9659     1.0097   3.928            0.0000857 ***
+F1           18.0060     2.0419   8.818 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1232.1  on 899  degrees of freedom
+Residual deviance: 1024.3  on 895  degrees of freedom
+AIC: 1034.3
+
+Number of Fisher Scoring iterations: 5
+
+  [1] "run 2"
+[1] "fold 1"
+   logLik = -512.92357782  basesuc basefail basesuc propdec  --- 0.192 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8281  -0.9902   0.2044   1.0939   1.8583  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -2.1075     0.3224  -6.537      0.0000000000627 ***
+F4            2.8780     0.5575   5.163      0.0000002433706 ***
+F3           -0.4526     1.3155  -0.344              0.73083    
+F2            2.9009     0.9824   2.953              0.00315 ** 
+F1           17.5700     2.0190   8.702 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1269.6  on 920  degrees of freedom
+Residual deviance: 1025.8  on 916  degrees of freedom
+AIC: 1035.8
+
+Number of Fisher Scoring iterations: 5
+
+[1] "run 2"
+[1] "fold 2"
+   logLik = -512.92357782  basesuc basefail basesuc propdec  --- 0.192 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8281  -0.9902   0.2044   1.0939   1.8583  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -2.1075     0.3224  -6.537      0.0000000000627 ***
+F4            2.8780     0.5575   5.163      0.0000002433706 ***
+F3           -0.4526     1.3155  -0.344              0.73083    
+F2            2.9009     0.9824   2.953              0.00315 ** 
+F1           17.5700     2.0190   8.702 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1269.6  on 920  degrees of freedom
+Residual deviance: 1025.8  on 916  degrees of freedom
+AIC: 1035.8
+
+Number of Fisher Scoring iterations: 5
+
+  [1] "run 3"
+[1] "fold 1"
+   logLik = -622.5101432  basesuc basefail basesuc propdec  --- 0.2097 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9510  -0.9483   0.1958   1.0830   1.8924  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept) -2.04402    0.27793  -7.354    0.000000000000192 ***
+F4           2.74227    0.49725   5.515    0.000000034893443 ***
+F3          -0.07601    1.23689  -0.061              0.95100    
+F2           2.23038    0.85974   2.594              0.00948 ** 
+F1          16.64281    1.72046   9.673 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1575.4  on 1141  degrees of freedom
+Residual deviance: 1245.0  on 1137  degrees of freedom
+AIC: 1255
+
+Number of Fisher Scoring iterations: 5
+
+[1] "run 3"
+[1] "fold 2"
+   logLik = -622.5101432  basesuc basefail basesuc propdec  --- 0.2097 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9510  -0.9483   0.1958   1.0830   1.8924  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept) -2.04402    0.27793  -7.354    0.000000000000192 ***
+F4           2.74227    0.49725   5.515    0.000000034893443 ***
+F3          -0.07601    1.23689  -0.061              0.95100    
+F2           2.23038    0.85974   2.594              0.00948 ** 
+F1          16.64281    1.72046   9.673 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1575.4  on 1141  degrees of freedom
+Residual deviance: 1245.0  on 1137  degrees of freedom
+AIC: 1255
+
+Number of Fisher Scoring iterations: 5
+
+  [1] "run 4"
+[1] "fold 1"
+   logLik = -501.21185742  basesuc basefail basesuc propdec  --- 0.1877 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.3568  -1.0135   0.1799   1.0830   1.5520  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -1.0965     0.3606  -3.041             0.002360 ** 
+F4            1.0765     0.6248   1.723             0.084879 .  
+F3           -0.7637     1.4890  -0.513             0.608004    
+F2            3.8866     1.0234   3.798             0.000146 ***
+F1           20.6831     2.5028   8.264 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1234.1  on 906  degrees of freedom
+Residual deviance: 1002.4  on 902  degrees of freedom
+AIC: 1012.4
+
+Number of Fisher Scoring iterations: 6
+
+[1] "run 4"
+[1] "fold 2"
+   logLik = -501.21185742  basesuc basefail basesuc propdec  --- 0.1877 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.3568  -1.0135   0.1799   1.0830   1.5520  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -1.0965     0.3606  -3.041             0.002360 ** 
+F4            1.0765     0.6248   1.723             0.084879 .  
+F3           -0.7637     1.4890  -0.513             0.608004    
+F2            3.8866     1.0234   3.798             0.000146 ***
+F1           20.6831     2.5028   8.264 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1234.1  on 906  degrees of freedom
+Residual deviance: 1002.4  on 902  degrees of freedom
+AIC: 1012.4
+
+Number of Fisher Scoring iterations: 6
+
+  [1] "run 5"
+[1] "fold 1"
+   logLik = -470.14241766  basesuc basefail basesuc propdec  --- 0.2505 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.0874  -0.9278   0.1395   0.9893   1.8747  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -2.3835     0.3124  -7.630   0.0000000000000234 ***
+F4            3.3146     0.5193   6.383   0.0000000001737288 ***
+F3            0.5352     1.4025   0.382               0.7028    
+F2            2.7439     1.0245   2.678               0.0074 ** 
+F1           19.9700     2.3343   8.555 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1254.60  on 915  degrees of freedom
+Residual deviance:  940.28  on 911  degrees of freedom
+AIC: 950.28
+
+Number of Fisher Scoring iterations: 6
+
+[1] "run 5"
+[1] "fold 2"
+   logLik = -470.14241766  basesuc basefail basesuc propdec  --- 0.2505 McFadden's R2
+
+Call:
+glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
+    data = df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.0874  -0.9278   0.1395   0.9893   1.8747  
+
+Coefficients:
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -2.3835     0.3124  -7.630   0.0000000000000234 ***
+F4            3.3146     0.5193   6.383   0.0000000001737288 ***
+F3            0.5352     1.4025   0.382               0.7028    
+F2            2.7439     1.0245   2.678               0.0074 ** 
+F1           19.9700     2.3343   8.555 < 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1254.60  on 915  degrees of freedom
+Residual deviance:  940.28  on 911  degrees of freedom
+AIC: 950.28
+
+Number of Fisher Scoring iterations: 6
+
+         [,1]    [,2]    [,3]    [,4]
+ [1,] 0.37168 0.80705 0.74904 0.44876
+ [2,] 0.27659 0.77797 0.77687 0.43485
+ [3,] 0.32353 0.79048 0.78797 0.43603
+ [4,] 0.31090 0.78539 0.78689 0.43062
+ [5,] 0.29849 0.79079 0.79016 0.43502
+ [6,] 0.33571 0.79241 0.77221 0.43918
+ [7,] 0.34626 0.79394 0.76534 0.44114
+ [8,] 0.30317 0.79788 0.78720 0.43781
+ [9,] 0.26456 0.77224 0.80788 0.42461
+[10,] 0.38946 0.81778 0.75343 0.44796
 There were 50 or more warnings (use warnings() to see the first 50)
