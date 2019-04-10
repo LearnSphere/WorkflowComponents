@@ -32,7 +32,7 @@ public class LearningCurveGraphMain extends AbstractComponent {
         logger.info("Processing Options");
 
         // The addMetaData* methods make the meta data available to downstream components.
-
+        // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
     }
 
     @Override

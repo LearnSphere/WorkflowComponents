@@ -48,7 +48,6 @@
     </xs:choice>
   </xs:complexType>
   
-  
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0"/>
@@ -56,7 +55,9 @@
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:choice maxOccurs="unbounded" minOccurs="0"/>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element type="xs:string"  name="freqthres" id="freqThres" default="0.1"/>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

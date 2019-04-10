@@ -22,8 +22,8 @@
       <errors/>
       <files>
           <text>
-              <file_path>test/testdata/temp_pred.txt</file_path>
-              <file_name>temp_pred.txt</file_name>
+              <file_path>test/testdata/temp_pred_chinesetones.txt</file_path>
+              <file_name>temp_pred_chinesetones.txt</file_name>
               <index>0</index>
               <label>text</label>
           </text>
@@ -32,6 +32,7 @@
 </inputs>
 
 <options>
+    <freqthres>0.2</freqthres>
 </options>
 
 </component>
