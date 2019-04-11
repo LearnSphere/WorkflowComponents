@@ -35,6 +35,13 @@ if (args[i] == "-workingDir") {
        workingDirectory = args[i+1]
        i = i+1
     } else
+if (args[i] == "-freqthres") {
+       if (length(args) == i) {
+          stop("lentimes name must be specified")
+       }
+       freqthres = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
@@ -70,9 +77,11 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 # load libraries
 suppressMessages(library(RColorBrewer))
 
-
 setwd(workingDirectory)
 temp_pred<-read.table(inputFile,sep="\t", header=TRUE,quote="\"")
+
+#Transfer to numeric
+freqthres<-as.numeric(freqthres)
 
 # Create Functions
 # general cause to self
@@ -87,7 +96,7 @@ splittimes<- function(times){
 }#end splittimes
 
 #Create Function plotlearning
-plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
+plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE,freqthresfnc){
   if(f==TRUE){
     #x11(width=5.5, height=8)
     par(mfrow=c(2,1))
@@ -106,7 +115,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
     vpred<-aggregate(pred[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
     dv<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
     thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
-    len<-sum(thres>(thres[1]*.1))
+    len<-sum(thres>(thres[1]*freqthres))
     plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.05,max(dv[1:len])+.05),type="n", xaxt="n")
     axis(side=1,at=1:len,labels=1:len)
     lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
@@ -122,7 +131,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
     vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x
     dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
     thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
-    len2<-sum(thres>(thres[1]*.1))
+    len2<-sum(thres>(thres[1]*freqthres))
     plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
     axis(side=1,at=1:len2,labels=1:len2)
     lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)
@@ -147,7 +156,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
     dv<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
     vpred<-aggregate(pred[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
     thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
-    len<-sum(thres>(thres[1]*.1))
+    len<-sum(thres>(thres[1]*freqthres))
     # print(vpred[1:len])
     # print(1:len)
     par(mfg=c(1,1))
@@ -164,7 +173,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
     dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
     vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x    
     thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
-    len2<-sum(thres>(thres[1]*.1))
+    len2<-sum(thres>(thres[1]*freqthres))
     par(mfg=c(2,1))
     plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
     axis(side=1,at=1:len2,labels=1:len2)
@@ -175,7 +184,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
         (cat(v,d,w,"\n"))
       sum((c(1,v[1:w]) * d^((w):0))/sum(d^((w+1):0)))}
 
-    ms<-6
+    ms<-1
     switch(Sys.info()[['sysname']],
     Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
     Windows= { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=2000, height=2000, res=300) },
@@ -190,7 +199,7 @@ plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f=FALSE){
         Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
         Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
         Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
-        plotlearning(8,3,"KC..Default.",brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1)
+        plotlearning(8,3,"KC..Default.",brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
       }}
 
 # Stop logging
