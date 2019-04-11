@@ -12,6 +12,7 @@ library(nloptr)
 library(qpcR)
 library(RColorBrewer)
 library(erer)
+library(XML)
 
 ######################################
 #define functions
@@ -529,7 +530,7 @@ modeloptim <- function(comps,feats,df)
     cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
     #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
     if(length(pars)>0){cat(paste("  step par values ="))
-      #cat(pars,sep=",")
+      cat(pars,sep=",")
       cat("\n ")}
     cat(" ")
     }
@@ -600,7 +601,6 @@ modeloptim <- function(comps,feats,df)
     passpars<<-c(unlist(opars[1:length(seeds)]),temptrain$coefficients)}
     else {
     pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
-    cat(pars)
     }
     
   }   else
@@ -645,13 +645,15 @@ modeloptim <- function(comps,feats,df)
   Nres<-length(df$Outcome)
   R1<-r.squaredLR(temp)
   pred<<-predict(temp,type="response")
+  
+  top <- newXMLNode("model_output")
   newXMLNode("N", Nres, parent = top)
   newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
   newXMLNode("RMSE", round(sqrt(mean((pred-df$CF..ansbin.)^2)),5), parent = top)
   newXMLNode("Accuracy", round(sum(df$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
   newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
   newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)  
-  newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)               
+  newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)    
   saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 }
 }
