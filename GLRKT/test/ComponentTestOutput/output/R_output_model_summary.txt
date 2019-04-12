@@ -1,3 +1,117 @@
+Type 'citation("pROC")' for a citation.
+
+Attaching package: 'pROC'
+
+The following objects are masked from 'package:stats':
+
+    cov, smooth, var
+
+Loading required package: lattice
+Loading required package: ggplot2
+Loading required package: Hmisc
+Loading required package: survival
+
+Attaching package: 'survival'
+
+The following object is masked from 'package:caret':
+
+    cluster
+
+Loading required package: Formula
+
+Attaching package: 'Hmisc'
+
+The following objects are masked from 'package:base':
+
+    format.pval, units
+
+Loading required package: SparseM
+Loading required package: methods
+
+Attaching package: 'SparseM'
+
+The following object is masked from 'package:base':
+
+    backsolve
+
+Classes and Methods for R developed in the
+Political Science Computational Laboratory
+Department of Political Science
+Stanford University
+Simon Jackman
+hurdle and zeroinfl functions by Achim Zeileis
+Loading required package: maxLik
+Loading required package: miscTools
+
+Attaching package: 'miscTools'
+
+The following object is masked from 'package:MuMIn':
+
+    coefTable
+
+
+Please cite the 'maxLik' package as:
+Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI 10.1007/s00180-010-0217-1.
+
+If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
+https://r-forge.r-project.org/projects/maxlik/
+Loading required package: MASS
+
+Attaching package: 'games'
+
+The following object is masked from 'package:pscl':
+
+    vuong
+
+
+Attaching package: 'Rcgmin'
+
+The following objects are masked from 'package:optimx':
+
+    Rcgmin, Rcgminb, Rcgminu
+
+Loading required package: minpack.lm
+Loading required package: rgl
+Loading required package: robustbase
+
+Attaching package: 'robustbase'
+
+The following objects are masked from 'package:miscTools':
+
+    colMedians, rowMedians
+
+The following object is masked from 'package:survival':
+
+    heart
+
+Loading required package: Matrix
+
+Attaching package: 'qpcR'
+
+The following object is masked from 'package:caret':
+
+    RMSE
+
+The following object is masked from 'package:MuMIn':
+
+    AICc
+
+Loading required package: lmtest
+Loading required package: zoo
+
+Attaching package: 'zoo'
+
+The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
+
+Attaching package: 'lmtest'
+
+The following object is masked from 'package:rms':
+
+    lrtest
+
 Warning message:
 NAs introduced by coercion 
 [1] "KC..Default."    "KC..Cluster."    "KC..Cluster."    "Anon.Student.Id"
@@ -5,54 +119,50 @@ NAs introduced by coercion
 [1] 0.300 0.300 0.300 0.025
 [1] "basesuc"  "basefail" "basesuc"  "propdec" 
 [1] "best fit model"
-   logLik = -1089.06409947    step par values =
-     logLik = -1089.06409947    step par values =
-     logLik = -1089.0641064    step par values =
-     logLik = -1049.30067182    step par values =
-     logLik = -1049.30065309    step par values =
-     logLik = -1076.23771536    step par values =
-     logLik = -1076.23772803    step par values =
-     logLik = -1052.86727465    step par values =
-     logLik = -1052.86729157    step par values =
-     logLik = -1049.30067182    step par values =
-     logLik = -1049.30065309    step par values =
-     logLik = -1040.47377482    step par values =
-     logLik = -1040.473779    step par values =
-     logLik = -1040.04538239    step par values =
-     logLik = -1040.04538227    step par values =
-     logLik = -1040.04502232    step par values =
-     logLik = -1040.04502232    step par values =
-     logLik = -1040.04502198    step par values =
-     logLik = -1040.04502198    step par values =
-     logLik = -1040.04502198    step par values =
-     logLik = -1040.04502198    step par values =
-             p1    value fevals gevals niter convcode kkt1 kkt2 xtime
-spg 0.0941136 1040.045     10     NA     9        0   NA   NA  9.22
-basesuc basefail basesuc propdec  --- 0.2179 McFadden's R2
+   logLik = -5237.99984825    step par values =0.5
+     logLik = -5237.99984825    step par values =0.5
+     logLik = -5237.99988131    step par values =0.5000001
+     logLik = -5094.3875483    step par values =0
+     logLik = -5094.3874688    step par values =0.0000001
+     logLik = -5177.31560304    step par values =0.3531464
+     logLik = -5177.31565474    step par values =0.3531465
+     logLik = -5094.06073203    step par values =0.2139956
+     logLik = -5094.06079244    step par values =0.2139957
+     logLik = -5094.3875483    step par values =0
+     logLik = -5094.3874688    step par values =0.0000001
+     logLik = -5054.24006457    step par values =0.1216043
+     logLik = -5054.24008127    step par values =0.1216044
+     logLik = -5052.4489002    step par values =0.1004936
+     logLik = -5052.4489002    step par values =0.1004937
+     logLik = -5052.44890013    step par values =0.1004979
+     logLik = -5052.44890013    step par values =0.100498
+     logLik = -5052.44890013    step par values =0.1004977
+     logLik = -5052.44890013    step par values =0.1004978
+  basesuc basefail basesuc propdec  --- 0.2221 McFadden's R2
 
 Call:
 glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
-    data = df)
+    data = df, x = TRUE)
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--2.9390  -0.9274   0.2658   0.9231   1.9396  
+-3.1281  -0.9306   0.2513   0.9105   2.0677  
 
 Coefficients:
-            Estimate Std. Error z value             Pr(>|z|)    
-(Intercept)  -2.1085     0.2231  -9.452 < 0.0000000000000002 ***
-F4            2.4708     0.3839   6.436       0.000000000123 ***
-F3            0.2666     0.8580   0.311                0.756    
-F2            3.9049     0.6839   5.709       0.000000011333 ***
-F1            4.5913     0.3123  14.704 < 0.0000000000000002 ***
+            Estimate Std. Error z value            Pr(>|z|)    
+(Intercept) -2.24615    0.08765 -25.626 <0.0000000000000002 ***
+F4           2.92150    0.15066  19.392 <0.0000000000000002 ***
+F3           0.93680    0.37942   2.469              0.0135 *  
+F2           3.11427    0.30388  10.248 <0.0000000000000002 ***
+F1           4.31008    0.14662  29.397 <0.0000000000000002 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 2659.8  on 1940  degrees of freedom
-Residual deviance: 2080.1  on 1936  degrees of freedom
-AIC: 2090.1
+    Null deviance: 12990  on 9436  degrees of freedom
+Residual deviance: 10105  on 9432  degrees of freedom
+AIC: 10115
 
 Number of Fisher Scoring iterations: 5
 
