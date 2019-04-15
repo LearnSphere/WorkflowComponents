@@ -7,8 +7,11 @@ suppressWarnings(suppressMessages(library(data.table)))
 
 workingDir = "."
 inputFileName = args[1]
+# Default to last week
+startDate <- as.Date(Sys.Date())-7
+endDate = NULL
 
-if (length(args) > 1) {
+if (length(args) > 2) {
   i = 1
   while (i <= length(args)) {
     if (args[i] == "-node") {
@@ -26,6 +29,19 @@ if (length(args) > 1) {
       
       inputFileName <- args[i + 4]
       i = i + 4
+      
+    } else if (args[i] == "-startDate") {
+      if (length(args) == i) {
+        stop("start date must be specified")
+      }
+      startDate = as.Date(args[i+1])
+      i = i+1
+    } else if (args[i] == "-endDate") {
+      if (length(args) == i) {
+        stop("end date must be specified")
+      }
+      endDate = as.Date(args[i+1])
+      i = i+1
       
     } else if (args[i] == "-workingDir") {
       if (length(args) == i) {
@@ -63,8 +79,12 @@ m <- data[,..Levels]
 data$newLevel <- do.call(paste, as.data.frame(m, stringsAsFactors=FALSE))
 rm(m,Levels)
 
-#summarize to get number of hours spent in tutor, number of problems completed, number of hits requested, number of errors, 
-transform_data <- suppressWarnings(data[,.(propCorrectSteps=length(Outcome[Outcome%in%c("OK")])/length(Outcome),hints=length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,newLevel)])
+#summarize to get number of hours spent in tutor, number of problems completed, number of hits requested, number of errors,
+if (is.null(endDate)) {
+transform_data <- suppressWarnings(data[as.POSIXct(Time)>as.POSIXct(startDate),.(propCorrectSteps=length(Outcome[Outcome%in%c("OK")])/length(Outcome),hints=length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,newLevel)])
+} else {
+  transform_data <- suppressWarnings(data[as.POSIXct(Time)>as.POSIXct(startDate)&as.POSIXct(Time)<as.POSIXct(endDate),.(propCorrectSteps=length(Outcome[Outcome%in%c("OK")])/length(Outcome),hints=length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`,newLevel)])
+}
 
 #transform_data <- suppressWarnings(data[,.(propCorrectSteps=1-(length(Outcome[Outcome%in%c("INITIAL_HINT","HINT_LEVEL_CHANGE")])/length(Outcome)),hints=length(Outcome[Outcome=="ERROR"]),time=sum(as.numeric(`Duration (sec)`),na.rm = T)/3600,problems=length(unique(`Problem Name`)),steps=length(unique(`Step Name`)),date=as.character(max(as.POSIXct(Time)))),by=.(`Anon Student Id`)]) #we might actually be able to get away without the Level summary but leaving it in for now.
 

@@ -39,6 +39,9 @@
     </input0>
   </inputs>
   <options>
+    <specifyRange>No</specifyRange>
+    <startDate>2012-01-01</startDate>
+    <endDate>2012-05-01</endDate>
   </options>
 
 </component>
