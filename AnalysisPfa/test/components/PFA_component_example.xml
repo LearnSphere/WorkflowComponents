@@ -12,7 +12,7 @@
         </connection>
     </connections>
     <options>
-      <model>KC (Cluster)</model>
+      <model>KC (Single-KC)</model>
       <analysis>Simple</analysis>
     </options>
     <inputs>

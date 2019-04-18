@@ -9,12 +9,11 @@ library(optimx)
 library(Rcgmin)
 library(BB)
 library(nloptr)
-#library(qpcR)
+library(qpcR)
 library(RColorBrewer)
 library(erer)
 library(XML)
 
-paper.=FALSE
 ######################################
 #define functions
 #cross-validation function
@@ -80,27 +79,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.","<-999*rep(1,length(foldIDX[,i]))")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Ftr]","<-predfit")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Fte]","<-predtest")))
-
         }
-          #Output text summary
-          Nresfit<-length(datTr$Outcome)
-          Nrestest<-length(datTe$Outcome)
-          print(paste("run",i))
-          print(paste("fold",j))
-          print(summary(temp))
-          r2LR<<-results[t,1]
-          d<-newXMLNode("Index", attrs = c(ReplicationIndex = i, FoldIndex = j), parent = top)      
-          newXMLNode("N",Nresfit,parent = d)
-          newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = d)         
-          newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = d)
-          newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = d)
-          newXMLNode("AUC", results[t,2], parent = d)         
-          newXMLNode("r2LR", r2LR , parent = d)
-          newXMLNode("tN", Nrestest, parent = d)
-          newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = d)
-          newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = d)
-          newXMLNode("tAUC", results[t,3], parent = d)               
-          saveXML(top,file=outputFilePath2,compression=0,indent=TRUE)
       }
       print(results)
     }
@@ -540,15 +519,13 @@ modeloptim <- function(comps,feats,df)
     if(length(pars)>0){cat(paste("  step par values ="), file = log_modeloptim)
       cat(pars,sep=",", file = log_modeloptim) }
     close(log_modeloptim)} else {
-    #save temp$data and pred as one output table, where data is frame, pred is
-    if(cvSwitch==0 & makeFolds==0){
-        data<-temp$data
-        pred<-predict(temp,type="response")
-        pred<-as.data.frame(pred)                    
-        data_pred<-cbind(data,pred)
-        outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
-        write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
-    }   
+    #save temp$data and pred as one output table, where data is frame, pred is  
+    data<-temp$data
+    pred<-predict(temp,type="response")
+    pred<-as.data.frame(pred)                    
+    data_pred<-cbind(data,pred)
+    outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
+    write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
     nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
     cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
     #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
@@ -663,23 +640,21 @@ modeloptim <- function(comps,feats,df)
   subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
   # report
   cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
-  if(cvSwitch==0 & makeFolds==0){
-        #Output text summary
-        print(summary(temp)) 
-        Nres<-length(df$Outcome)
-        R1<-r.squaredLR(temp)
-        pred<<-predict(temp,type="response")
-
-        top <- newXMLNode("model_output")
-        newXMLNode("N", Nres, parent = top)
-        newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
-        newXMLNode("RMSE", round(sqrt(mean((pred-df$CF..ansbin.)^2)),5), parent = top)
-        newXMLNode("Accuracy", round(sum(df$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
-        newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
-        newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)  
-        newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)    
-        saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
-  }
+  #Output text summary
+  print(summary(temp)) 
+  Nres<-length(df$Outcome)
+  R1<-r.squaredLR(temp)
+  pred<<-predict(temp,type="response")
+  
+  top <- newXMLNode("model_output")
+  newXMLNode("N", Nres, parent = top)
+  newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
+  newXMLNode("RMSE", round(sqrt(mean((pred-df$CF..ansbin.)^2)),5), parent = top)
+  newXMLNode("Accuracy", round(sum(df$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
+  newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
+  newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)  
+  newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)    
+  saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 }
 }
 
