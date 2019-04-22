@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/StudentProgressClassification</url>
+<date>2018-01-14</date>
+<abstract>The <b>Student Progress Classification</b> component assigns progress classification to student based on student's usage and accuracy info; and the goal that student set up.
+The four progress classifications are Miss You, Ramp it up, Keep it up and Wow. If a student meets the usage and accuracy goals in a time frame, he gets Wow.
+If student doesn't meet the threshold of usage goal within a time frame, student gets Miss You. 
+If student doesn't meet the threshold of accuracy, student gets Ramp it up. If student doesn't meet any of criteria mentioned aove, student gets Keep it up.</abstract>
+<description>The <b>Student Progress Classification</b> component assigns progress classification to student based on student's usage and accuracy info; and the goal that student set up.</description>
+
+<inputs><ul>
+<li>Resource Use file. Required columns are: Anon Student Id, propCorrectSteps, time, problems, time_frame_start, time_frame_end. Column 'time' is time in minutes that student spent in the time frame. The 'prolems' is how many prolems student completed in the time frame. When this variable is empty, the 'time' column is used. The 'propCorrectSteps' is percent correct student gets.</li>
+<li>Student Goal file. Required columns are: student_id, objective_units, objective_time, objective_prop_correct, objective_problems_completed. The column 'objective_units' is the time frame for the goals, e.g. per-week. The 'objective_time' is student goal for how much time to spend. The 'objective_problems_completed' is student goal for how many prolems to finish. The 'objective_prop_correct' is student goal for accuracy for percent correct.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains columns from original Resource Use file plus student progress classification  
+</outputs>
+
+<options>
+ <ul>
+<li>usage_threshold. Default is 50%. If student only finishes less than 50% of usage goal, student will get a Miss You</li>
+<li>accuracy_threshold. Default is 100%. For example, if accuracy_threshold is 80% and accuracy goal is 90%, if student gets more than 72% correct and more than usage goal, student gets a Keep it up.</li>
+</ul>
+</options>
+
+</info>

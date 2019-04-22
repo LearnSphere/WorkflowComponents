@@ -1,0 +1,59 @@
+<component>
+  <component_id>Analysis-1-x326772</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>Student Progress Classification</component_name>
+  <component_type>analysis</component_type>
+  <left>473.296875</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x145267</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Data-1-x523569</from>
+    </connection>
+  </connections>
+  <top>133</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x145267</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <index>0</index>
+          <file_path>test/test_data/stu_summary.csv</file_path>
+          <label>csv</label>
+          <file_name>stu_summary.csv</file_name>
+        </csv>
+      </files>
+    </input0>
+    <input1>
+      <component_id>Data-1-x523569</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>1</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <index>0</index>
+          <file_path>test/test_data/goal.csv</file_path>
+          <label>csv</label>
+          <file_name>goal.csv</file_name>
+        </csv>
+      </files>
+    </input1>
+  </inputs>
+  <options>
+    <usage_threshold>50%</usage_threshold>
+    <accuracy_threshold>100%</accuracy_threshold>
+  </options>
+</component>

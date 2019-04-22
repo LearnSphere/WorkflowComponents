@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/WheelSpinDetector</url>
+<date>2018-01-14</date>
+<abstract>The <b>Wheel Spin Detector</b> component can detect which students are wheel spinning. The students who have consecutive three corrects are labeled as "false" for wheel spin. 
+Students who didn't achieve 3 consecutive corrects within 10 opportunities are labeled true for wheel spin. Students who has less than 10 opportunities to determine wheel spin are labeled as undetermined.</abstract>
+<description>This component can detect which students are wheel spinning. The students who have consecutive three corrects are labeled as "false" for wheel spin. 
+Students who didn't achieve 3 consecutive corrects within 10 opportunities are labeled true for wheel spin. Students who has less than 10 opportunities to determine wheel spin are labeled as undetermined.</description>
+
+<inputs><ul>
+<li>Student step roll up from Datashop.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains result. Each result row contains a unique combination of student and skill.  
+</outputs>
+
+<options>
+ <ul>
+<li>KC model from input file</li>
+</ul>
+</options>
+
+</info>

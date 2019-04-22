@@ -64,7 +64,9 @@
 		<Python_AFM />
 		<RISE />
 		<RLM_Fitting />
+		<Student_Progress_Classification />
 		<TKT />
+		<Wheel_Spin_Detector />
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
