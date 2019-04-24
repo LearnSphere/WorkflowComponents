@@ -63,16 +63,21 @@ public class StudentProgressClassificationMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-            String s_usageThreshold  = this.getOptionAsString("usage_threshold");
+            String s_highUsageThreshold  = this.getOptionAsString("high_usage_threshold");
+            String s_lowUsageThreshold  = this.getOptionAsString("low_usage_threshold");
             String s_accuracyThreshold  = this.getOptionAsString("accuracy_threshold");
-            Integer usageThreshold = null;
+            Integer highUsageThreshold = null;
+            Integer lowUsageThreshold = null;
             try {
-                    usageThreshold = Integer.parseInt(s_usageThreshold);
+                    highUsageThreshold = Integer.parseInt(s_highUsageThreshold);
+                    lowUsageThreshold = Integer.parseInt(s_lowUsageThreshold);
             } catch (NumberFormatException nfe) {
                     //in case the input is number with a % sign
-                    s_usageThreshold = s_usageThreshold.substring(0, s_usageThreshold.length() - 1);
+                    s_highUsageThreshold = s_highUsageThreshold.substring(0, s_highUsageThreshold.length() - 1);
+                    s_lowUsageThreshold = s_lowUsageThreshold.substring(0, s_lowUsageThreshold.length() - 1);
                     try {
-                            usageThreshold = Integer.parseInt(s_usageThreshold);
+                            highUsageThreshold = Integer.parseInt(s_highUsageThreshold);
+                            lowUsageThreshold = Integer.parseInt(s_lowUsageThreshold);
                     } catch (NumberFormatException nfe2) {}
             }
             Integer accuracyThreshold = null;
@@ -85,7 +90,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                             accuracyThreshold = Integer.parseInt(s_accuracyThreshold);
                     } catch (NumberFormatException nfe2) {}
             }
-            if (usageThreshold == null || accuracyThreshold == null) {
+            if (highUsageThreshold == null || lowUsageThreshold == null || accuracyThreshold == null) {
                     //send error message
                     String errMsgForUI = "Usage or accuracy threshold is in wrong format. Use a number or number with percent.";
                     String errMsgForLog = errMsgForUI;
@@ -314,7 +319,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                                         hasEmptyTimeFrameEnd = true;
                                 }
                                         
-                                String status = StudentStatusItem.computeProgressStatus(resourceUseItem, goalItem, (double)usageThreshold/100, (double)accuracyThreshold/100);
+                                String status = StudentStatusItem.computeProgressStatus(resourceUseItem, goalItem, (double)lowUsageThreshold/100, (double)highUsageThreshold/100, (double)accuracyThreshold/100);
                                 
                                 if (status == null)
                                         status = "";
@@ -323,7 +328,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                                         bw.append(headerLine + delim + "status\n");
                                         headerWritten = true;
                                 }
-                                //write to output file with empty student prgress classification
+                                //write to output file with empty student progress classification
                                 if (!hasEmptyTimeFrameEnd)
                                         bw.append(line + delim + status + "\n");
                                 else {
@@ -367,5 +372,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
             System.out.println(getOutput());
             return; 
     }
+    
+    
 
 }
