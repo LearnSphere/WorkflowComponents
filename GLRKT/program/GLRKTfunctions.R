@@ -9,7 +9,7 @@ library(optimx)
 library(Rcgmin)
 library(BB)
 library(nloptr)
-#library(qpcR)
+library(lmer)
 library(RColorBrewer)
 library(erer)
 library(XML)
@@ -64,7 +64,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
         if(j==1){glmT=glm1;datTr=dat1;datTe=dat2;trainfoldTr=trainfold1;trainfoldTe=trainfold2;Ftr=F1;Fte=F2}else{
           glmT=glm2;datTr=dat2;datTe=dat1;trainfoldTr=trainfold2;trainfoldTe=trainfold1;Ftr=F2;Fte=F1
         }
-        t=t+1 
+        t=t+1
         predfit <- predict(glmT,datTr, type = "response")
         predtest <- predict(glmT,newdata = datTe, re.form = NULL, type="response", allow.new.levels = TRUE)
         results[t,1] = round(lrm(glmT)$stats[10],5)
@@ -80,27 +80,27 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.","<-999*rep(1,length(foldIDX[,i]))")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Ftr]","<-predfit")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Fte]","<-predtest")))
-
+          
         }
-          #Output text summary
-          Nresfit<-length(datTr$Outcome)
-          Nrestest<-length(datTe$Outcome)
-          print(paste("run",i))
-          print(paste("fold",j))
-          print(summary(temp))
-          r2LR<<-results[t,1]
-          d<-newXMLNode("Index", attrs = c(ReplicationIndex = i, FoldIndex = j), parent = top)      
-          newXMLNode("N",Nresfit,parent = d)
-          newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = d)         
-          newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = d)
-          newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = d)
-          newXMLNode("AUC", results[t,2], parent = d)         
-          newXMLNode("r2LR", r2LR , parent = d)
-          newXMLNode("tN", Nrestest, parent = d)
-          newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = d)
-          newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = d)
-          newXMLNode("tAUC", results[t,3], parent = d)               
-          saveXML(top,file=outputFilePath2,compression=0,indent=TRUE)
+        #Output text summary
+        Nresfit<-length(datTr$Outcome)
+        Nrestest<-length(datTe$Outcome)
+        print(paste("run",i))
+        print(paste("fold",j))
+        print(summary(temp))
+        r2LR<<-results[t,1]
+        d<-newXMLNode("Index", attrs = c(ReplicationIndex = i, FoldIndex = j), parent = top)
+        newXMLNode("N",Nresfit,parent = d)
+        newXMLNode("Loglikelihood", round(logLik(glmT),5), parent = d)
+        newXMLNode("RMSE", round(sqrt(mean((predfit-datTr$CF..ansbin.)^2)),5), parent = d)
+        newXMLNode("Accuracy", round(sum(datTr$CF..ansbin.==(predfit>.5))/Nresfit,5), parent = d)
+        newXMLNode("AUC", results[t,2], parent = d)
+        newXMLNode("r2LR", r2LR , parent = d)
+        newXMLNode("tN", Nrestest, parent = d)
+        newXMLNode("tRMSE", round(sqrt(mean((predtest-datTe$CF..ansbin.)^2)),5), parent = d)
+        newXMLNode("tAccuracy", round(sum(datTe$CF..ansbin.==(predtest>.5))/Nrestest,5), parent = d)
+        newXMLNode("tAUC", results[t,3], parent = d)
+        saveXML(top,file=outputFilePath2,compression=0,indent=TRUE)
       }
       print(results)
     }
@@ -114,7 +114,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
 #Get feedback duration function, still experimental as awaiting response from Neil regarding a few questions 10/22/2018
 #High correlation between old export median RTs per sub and new export (r>.9).
 #Some outliers though, and some kludgey stuff that may disappear if Neil gives new export
-getFeedDur <-function(df,index){temp<-rep(0,length(df$CF..ansbin.)) 
+getFeedDur <-function(df,index){temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(index)){
   # print(i)
   le<-length(df$time_to_answer[index==i])
@@ -136,7 +136,7 @@ right = function (string, char){
   substr(string,nchar(string)-(char-1),nchar(string))}
 
 # general cause to self
-countOutcome <-function(df,index,item) { 
+countOutcome <-function(df,index,item) {
   df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
   df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
   as.numeric(df$temp)}
@@ -185,9 +185,9 @@ countOutcomeDashPerf <- function(dfv, seeking, scalev) {
 }
 
 
-aves<-function (x, ..., FUN = mean) 
+aves<-function (x, ..., FUN = mean)
 { y<- rep(0,length(x[,1]))
-if (missing(...)) 
+if (missing(...))
   x[] <- FUN(x)
 else {
   g <- interaction(...)
@@ -206,7 +206,7 @@ y
 
 # specific cause to self
 # notation indexfactor%sourcefactor%sourcevalue
-countOutcomeGen <-function(df,index,item,sourcecol,sourc) { 
+countOutcomeGen <-function(df,index,item,sourcecol,sourc) {
   df$tempout<-paste(df$Outcome,sourcecol)
   item<-paste(item,sourc)
   df$temp<-ave(as.character(df$tempout),index,FUN =function(x) as.numeric(cumsum(x==item)))
@@ -215,7 +215,7 @@ countOutcomeGen <-function(df,index,item,sourcecol,sourc) {
 
 # notation targetcol?whichtarget?sourcecol?whichsource
 # specific cause to any
-countOutcomeOther <-function(df,index,item,sourcecol,sourc,targetcol,target) { 
+countOutcomeOther <-function(df,index,item,sourcecol,sourc,targetcol,target) {
   df$tempout<-paste(df$Outcome,sourcecol)
   item<-paste(item,sourc)
   targetcol<-as.numeric(targetcol==target)
@@ -232,14 +232,14 @@ for (i in unique(df$Anon.Student.Id)){
 return(temp)}
 
 # adds spacings to compute age since first trial (in seconds)
-Duration <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))              
+Duration <-function(df,index) {temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(index)){
   le<-length(df$time_to_answer[index==i])
   temp[index==i]<-df$time_to_answer[index==i][1:le] - c(0,df$time_to_answer[index==i][1:(le-1)])}
 return(temp)}
 
 # computes spacing from prior repetition for index (in seconds)
-compspacing <-function(df,index,times) {temp<-rep(0,length(df$CF..ansbin.))          
+compspacing <-function(df,index,times) {temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(index)){
   lv<-length(df$CF..ansbin.[index==i])
   if (lv>1){
@@ -269,10 +269,10 @@ expdec <- function (v,d){
   w<-length(v)
   sum(v[1:w] * d^((w-1):0))}
 
-# 3 failed ghosts RPFA success function
-#  propdec <- function (v,d){
-#  w<-length(v)
-#  sum((v[1:w] * d^((w-1):0))/sum(d^((w+2):0)))}
+#3 failed ghosts RPFA success function
+propdec2 <- function (v,d){
+  w<-length(v)
+  sum((v[1:w] * d^((w-1):0))/sum(d^((w+2):0)))}
 
 # 2 failed and 1 success ghost RPFA success function
 propdec <- function (v,d){
@@ -290,20 +290,26 @@ logitdec <- function (v,d){
 # exponential decay for sequence
 slideexpdec <- function(x, d) {
   v <- c(rep(0, length(x)))
-  for (i in 1:length(x) ) {  
+  for (i in 1:length(x) ) {
     v[i] <- expdec(x[1:i],d)  }
   return(c(0,v[1:length(x)-1]))}
 
-# proportion exponential decay for sequence 
+# proportion exponential decay for sequence
 slidepropdec <- function(x, d) {
   v <- c(rep(0, length(x)))
-  for (i in 1:length(x) ) {  
+  for (i in 1:length(x) ) {
     v[i] <- propdec(x[1:i],d)  }
   return(c(.5,v[1:length(x)-1]))}
 
+slidepropdec2 <- function(x, d) {
+  v <- c(rep(0, length(x)))
+  for (i in 1:length(x) ) {
+    v[i] <- propdec2(x[1:i],d)  }
+  return(c(0,v[1:length(x)-1]))}
+
 slidelogitdec <- function(x, d) {
   v <- c(rep(0, length(x)))
-  for (i in 1:length(x) ) {  
+  for (i in 1:length(x) ) {
     v[i] <- logitdec(x[1:i],d)  }
   return(c(0,v[1:length(x)-1]))}
 
@@ -316,7 +322,7 @@ ppew <-function(times,wpar){
 ppet <- function(times) {
   times[length(times)]-times}
 
-# ppe adjusted time for each trial in sequence 
+# ppe adjusted time for each trial in sequence
 ppetw <- function(x, d) {
   v <- length(x)
   ppetv<-ppet(x)[1:(v-1)]
@@ -325,10 +331,10 @@ ppetw <- function(x, d) {
          1,
          crossprod(ppewv[1:(v-1)],ppetv[1:(v-1)] ))}
 
-# PPE adjusted times for entire sequence 
+# PPE adjusted times for entire sequence
 slideppetw <- function(x, d) {
   v <- c(rep(0, length(x)))
-  for (i in 1:length(x) ) {  
+  for (i in 1:length(x) ) {
     v[i] <- ppetw(x[1:i],d)  }
   return(c(v[1:length(x)]))}
 
@@ -337,8 +343,8 @@ baselevel <-  function(x, d) {
   return(c(0,x[2:length(x)]^-d))}
 
 computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
-  # fixed features 
-  feat<-gsub("[$]","",feat)
+  # fixed features
+  feat<-gsub("[$@]","",feat)
   if(feat=="intercept"){return(index2)}
   if(feat=="lineafm"){return((df$cor+df$icor))}
   if(feat=="logafm"){return(log(1+df$cor+df$icor))}
@@ -346,7 +352,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   if(feat=="recency"){
     eval(parse(text=paste("df$rec <- df$",fcomp,"spacing",sep="")))
     return(ifelse(df$rec==0,0,df$rec^par1))}
-  if(feat=="expdecafm"){return(ave(rep(1,length(df$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))} 
+  if(feat=="expdecafm"){return(ave(rep(1,length(df$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="base"){
     df$mintime <- ave(df$CF..Time.,index, FUN=min)
     df$CF..age. <- df$CF..Time.-df$mintime
@@ -423,12 +429,13 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   if(feat=="linecomp"){return((df$cor-df$icor))}
   if(feat=="logit"){return(log((.1+par1*30+df$cor)/(.1+par1*30+df$icor)))}
   if(feat=="propdec"){return(ave(df$CF..ansbin.,index,FUN=function(x) slidepropdec(x,par1)))}
+  if(feat=="propdec2"){return(ave(df$CF..ansbin.,index,FUN=function(x) slidepropdec2(x,par1)))}
   if(feat=="logitdec"){return(ave(df$CF..ansbin.,index,FUN=function(x) slidelogitdec(x,par1)))}
   if(feat=="prop"){ifelse(is.nan(df$cor/(df$cor+df$icor)),.5,df$cor/(df$cor+df$icor))}
 }
 
 
-modeloptim <- function(comps,feats,df)   
+modeloptim <- function(comps,feats,df)
 {
   tempfun <- function(pars){
     
@@ -449,7 +456,7 @@ modeloptim <- function(comps,feats,df)
         df$cor<-as.numeric(paste(eval(parse(text=paste("countOutcomeGen(df,df$index,\"CORRECT\",df$",KCs[[1]][2],",\"",KCs[[1]][3],"\")",sep="")))))
         df$icor<-as.numeric(paste(eval(parse(text=paste("countOutcomeGen(df,df$index,\"INCORRECT\",df$",KCs[[1]][2],",\"",KCs[[1]][3],"\")",sep="")))))
       }
-      else 
+      else
         
         # count an effect when both counted factor and recipeinet factor are specified
         if(length(grep("\\?",comps[k]))){
@@ -460,7 +467,7 @@ modeloptim <- function(comps,feats,df)
         }
       else
         
-        # normal KC Q-matrix
+        # normal KC type Q-matrix
       {
         df$index<-paste(eval(parse(text=paste("df$",comps[k],sep=""))),df$Anon.Student.Id,sep="")
         df$indexcomp<-paste(eval(parse(text=paste("df$",comps[k],sep=""))),sep="")
@@ -470,11 +477,11 @@ modeloptim <- function(comps,feats,df)
       
       
       # track parameters used
-      if(gsub("[$]","",i) %in% c("powafm","recency","propdec","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
+      if(gsub("[$]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
                                  "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe")){
         if(is.na(fixedpars[m])){ # if not fixed them optimize it
           para<-pars[optimparcount]
-          optimparcount<-optimparcount+1} 
+          optimparcount<-optimparcount+1}
         else
         { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) { # if fixed is set to 1 or more, interpret it as an indicator to use optimized parameter
           para<-pars[fixedpars[m]]
@@ -486,7 +493,7 @@ modeloptim <- function(comps,feats,df)
         
         if(is.na(fixedpars[m])){
           parb<-pars[optimparcount]
-          optimparcount<-optimparcount+1} 
+          optimparcount<-optimparcount+1}
         else
         { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
           parb<-pars[fixedpars[m]]
@@ -497,7 +504,7 @@ modeloptim <- function(comps,feats,df)
         
         if(is.na(fixedpars[m])){
           parc<-pars[optimparcount]
-          optimparcount<-optimparcount+1} 
+          optimparcount<-optimparcount+1}
         else
         { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
           parc<-pars[fixedpars[m]]
@@ -508,55 +515,60 @@ modeloptim <- function(comps,feats,df)
         
         if(is.na(fixedpars[m])){
           pard<-pars[optimparcount]
-          optimparcount<-optimparcount+1} 
+          optimparcount<-optimparcount+1}
         else
         { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
           pard<-pars[fixedpars[m]]
         }else{pard<-fixedpars[m]
         }}
         m<-m+1}
-      eval(parse(text=paste("df$F",k,"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep=""))) 
+      eval(parse(text=paste("df$F",k,"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
+      
+      #create an EQ for lmer here
       if(right(i,1)=="$"){
         # add the feature to the model with a coefficient per level
         eval(parse(text=paste("eq<<-paste(\"F\",k,\":df$\",comps[k],\"+\",eq,sep=\"\")")))}
-      else { 
-        # add the feature to the model with the same coefficient for all levels 
-        if(length(grep("%",comps[k]))){
-          KCs<-strsplit(comps[k],"%")
-          eval(parse(text=paste("eq<<-paste(\"F\",k,\"+\",eq,sep=\"\")")))} 
-        else {
-          eval(parse(text=paste("eq<<-paste(\"F\",k,\"+\",eq,sep=\"\")")))
-          
-        }}}
+      else if (right(i,1)=="@"){
+        # add the feature to the model with a coefficient per level
+        eval(parse(text=paste("eq<<-paste(\"(1|F\",k,\")+\",eq,sep=\"\")")))}
+      else {
+        # add the feature to the model with the same coefficient for all levels
+        eval(parse(text=paste("eq<<-paste(\"F\",k,\"+\",eq,sep=\"\")")))
+      }}
     # save info for inspecection outside of function
-    temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
-    
+    if(any(grep("[@]",feats))){
+      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))} else
+      {
+        temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+      }
+    #print("statnext")
     # compute model fit and report
     fitstat<<-logLik(temp)
+    
     if(paper.==TRUE){
-    log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
-    cat("\n ", file = log_modeloptim)
-    cat(paste(feats,sep=","),paste(" logLik = ",round(fitstat,8),"  ",sep=""), file = log_modeloptim)
-    if(length(pars)>0){cat(paste("  step par values ="), file = log_modeloptim)
-      cat(pars,sep=",", file = log_modeloptim) }
-    close(log_modeloptim)} else {
-    #save temp$data and pred as one output table, where data is frame, pred is
-    if(cvSwitch==0 & makeFolds==0){
-        data<-temp$data
-        pred<-predict(temp,type="response")
-        pred<-as.data.frame(pred)                    
-        data_pred<-cbind(data,pred)
-        outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
-        write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
-    }   
-    nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
-    cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
-    #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
-    if(length(pars)>0){cat(paste("  step par values ="))
-      cat(pars,sep=",")
-      cat("\n ")}
-    cat(" ")
-    }
+      log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
+      cat("\n ", file = log_modeloptim)
+      cat(paste(feats,sep=","),paste(" logLik = ",round(fitstat,8),"  ",sep=""), file = log_modeloptim)
+      if(length(pars)>0){cat(paste("  step par values ="), file = log_modeloptim)
+        cat(pars,sep=",", file = log_modeloptim) }
+      close(log_modeloptim)} else {
+        #save temp$data and pred as one output table, where data is frame, pred is
+        if(cvSwitch==0 & makeFolds==0){
+          pred<-predict(temp,type="response")
+          pred<-as.data.frame(pred)
+          data_pred<-cbind(df,pred)
+          outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
+          write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
+        }
+        
+        nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
+        cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
+        #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
+        if(length(pars)>0){cat(paste("  step par values ="))
+          cat(pars,sep=",")
+          cat("\n ")}
+        cat(" ")
+      }
     
     -fitstat[1]  }
   # count # of parameters
@@ -565,6 +577,7 @@ modeloptim <- function(comps,feats,df)
     sum("recency" == gsub("[$]","",feats))+
     sum("logit" == gsub("[$]","",feats))+
     sum("propdec" == gsub("[$]","",feats))+
+    sum("propdec2" == gsub("[$]","",feats))+
     sum("logitdec" == gsub("[$]","",feats))+
     sum("base" == gsub("[$]","",feats))+
     sum("expdecafm" == gsub("[$]","",feats))+
@@ -579,108 +592,109 @@ modeloptim <- function(comps,feats,df)
     sum("base2fail" == gsub("[$]","",feats))*2 +
     sum("dashafm" == gsub("[$]","",feats))+
     sum("dashsuc" == gsub("[$]","",feats))+
-    sum("dashfail" == gsub("[$]","",feats))- 
+    sum("dashfail" == gsub("[$]","",feats))-
     sum(!is.na(fixedpars))
   
-  # number of seeds is just those pars specified and not fixed 
+  # number of seeds is just those pars specified and not fixed
   seeds<- seedpars[is.na(fixedpars)]
   
   # if not set seeds set to .5
   seeds[is.na(seeds)]<-.5
-    
+  
   
   # optimize the model
-  if(parlength>0){    
+  if(parlength>0){
     if(paper.==TRUE){
-    
-    #needs a setting just to do the optim on all the data
-    dfstore<-df
-    df<- df[(df$Anon.Student.Id %in% foldlevels[[1]]),]
-    opars<- optim(seeds,tempfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
-    temptrain<<-temp
-    
-    log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
-    sink(file=paste(Sys.info()[4],"log_modeloptim.txt",sep=""), append=TRUE, split=FALSE)
-    print(opars)
-    cat("\n") 
-    sink()
-    
-    df<-dfstore
-    print(as.numeric(unlist(opars)[1:length(seeds)]))
-    fixedpars<<-as.numeric(unlist(opars)[1:length(seeds)])
-    tempfun(numeric(0))
-    tempall<<-temp
-    
-    df<-dfold[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
-    datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
-    
-    # needed later
-    nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
-    testprediction<<-datvals %*%  temptrain$coefficients
-    testprediction<<-1/(1+exp(-testprediction))
-    testans<<-tempall$data$CF..ansbin.[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
-    modfittest<<-sum(log(1-abs(testans-testprediction)))
-    testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])] 
-    passpars<<-c(unlist(opars[1:length(seeds)]),temptrain$coefficients)}
+      
+      #needs a setting just to do the optim on all the data
+      dfstore<-df
+      df<- df[(df$Anon.Student.Id %in% foldlevels[[1]]),]
+      opars<- optim(seeds,tempfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
+      temptrain<<-temp
+      
+      log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
+      sink(file=paste(Sys.info()[4],"log_modeloptim.txt",sep=""), append=TRUE, split=FALSE)
+      print(opars)
+      cat("\n")
+      sink()
+      
+      df<-dfstore
+      print(as.numeric(unlist(opars)[1:length(seeds)]))
+      fixedpars<<-as.numeric(unlist(opars)[1:length(seeds)])
+      tempfun(numeric(0))
+      tempall<<-temp
+      
+      df<-dfold[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
+      datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
+      
+      # needed later
+      nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
+      testprediction<<-datvals %*%  temptrain$coefficients
+      testprediction<<-1/(1+exp(-testprediction))
+      testans<<-tempall$data$CF..ansbin.[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
+      modfittest<<-sum(log(1-abs(testans-testprediction)))
+      testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
+      passpars<<-c(unlist(opars[1:length(seeds)]),temptrain$coefficients)}
     else {
-    pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
+      pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
     }
     
   }   else
     # no nolinear parameters
   {
     tempfun(numeric(0))
-    if(paper.==TRUE){
-    tempall<<-temp
-    dfstore<-df
-    
-    df<- df[(tempall$data$Anon.Student.Id %in% foldlevels[[1]]),]
-    tempfun(numeric(0))  
-    temptrain<<-temp
-    passpars<<-c(temptrain$coefficients)
-
-    
-    df<-dfstore[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
-    datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
-    coefs<-temptrain$coefficients
-    coefs[is.na(coefs)] <- 0
-    
-    #neeeded later
-    nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
-    testprediction<<-datvals %*%  coefs
-    testprediction<<-1/(1+exp(-testprediction))
-    testans<<-tempall$data$CF..ansbin.[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
-    modfittest<<-sum(log(1-abs(testans-testprediction)))
-    testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]  } 
+    if(paper.==TRUE)
+    {
+      tempall<<-temp
+      dfstore<-df
+      
+      df<- df[(tempall$data$Anon.Student.Id %in% foldlevels[[1]]),]
+      tempfun(numeric(0))
+      temptrain<<-temp
+      passpars<<-c(temptrain$coefficients)
+      
+      
+      df<-dfstore[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
+      datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
+      coefs<-temptrain$coefficients
+      coefs[is.na(coefs)] <- 0
+      
+      #neeeded later
+      nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
+      testprediction<<-datvals %*%  coefs
+      testprediction<<-1/(1+exp(-testprediction))
+      testans<<-tempall$data$CF..ansbin.[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
+      modfittest<<-sum(log(1-abs(testans-testprediction)))
+      testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]  }
   }
   
   if(paper.==TRUE){ #this stuff is for split half cv only
-  trainprediction<<-predict(temptrain,temptrain$data, type = "response")
-  testframe<-tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
-  difs <- (testprediction-testframe$CF..ansbin.)^2
-  testvals<-cbind.data.frame(difs,testframe$Anon.Student.Id)
-  colnames(testvals)[2]<-"Anon.Student.Id"
-  subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
-  # report
-  cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
-  if(cvSwitch==0 & makeFolds==0){
+    trainprediction<<-predict(temptrain,temptrain$data, type = "response")
+    testframe<-tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
+    difs <- (testprediction-testframe$CF..ansbin.)^2
+    testvals<-cbind.data.frame(difs,testframe$Anon.Student.Id)
+    colnames(testvals)[2]<-"Anon.Student.Id"
+    subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
+      # report
+      cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
+      if(cvSwitch==0 & makeFolds==0){
         #Output text summary
-        print(summary(temp)) 
+        print(summary(temp))
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
-
+        
         top <- newXMLNode("model_output")
         newXMLNode("N", Nres, parent = top)
         newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
         newXMLNode("RMSE", round(sqrt(mean((pred-df$CF..ansbin.)^2)),5), parent = top)
         newXMLNode("Accuracy", round(sum(df$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
         newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
-        newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)  
-        newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)    
+        newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
+        newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
-  }
-}
+      }
+    }
 }
 
 splittimes<- function(times){
