@@ -9,7 +9,7 @@ library(optimx)
 library(Rcgmin)
 library(BB)
 library(nloptr)
-library(lmer)
+library(lme4)
 library(RColorBrewer)
 library(erer)
 library(XML)
@@ -80,7 +80,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.","<-999*rep(1,length(foldIDX[,i]))")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Ftr]","<-predfit")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Fte]","<-predtest")))
-          
+
         }
         #Output text summary
         Nresfit<-length(datTr$Outcome)
@@ -159,14 +159,14 @@ countOutcomeDash <- function(times, scalev) {
 
 countOutcomeDashPerf <- function(dfv, seeking, scalev) {
   temp<-rep(0,length(dfv[,1]))
-  
+
   for(s in unique(dfv[,3])){
     # print(s)
     l <- length(dfv[, 1][dfv[,3]==s])
     v1 <- c(rep(0, l))
     v2 <- c(rep(0, l))
     r <- as.character(dfv[, 2][dfv[,3]==s]) == seeking
-    
+
     # print(r)
     v1[1] <- 0
     v2[1] <- v1[1] + r[1]
@@ -424,7 +424,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
     df$CF..age.<-(df$CF..trueage.-df$CF..intage.)*par2+df$CF..intage.
     #print(c(par1,par2))
     return(log(1+df$cor)*ave(df$CF..age.,index,FUN=function(x) baselevel(x,par1)))}
-  
+
   # double factor dynamic features
   if(feat=="linecomp"){return((df$cor-df$icor))}
   if(feat=="logit"){return(log((.1+par1*30+df$cor)/(.1+par1*30+df$icor)))}
@@ -438,7 +438,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
 modeloptim <- function(comps,feats,df)
 {
   tempfun <- function(pars){
-    
+
     # i ntialize counts and vars
     k<-0
     optimparcount<-1
@@ -447,7 +447,7 @@ modeloptim <- function(comps,feats,df)
     eq<<-"1"
     for(i in feats){
       k<-k+1
-      
+
       # count an effect only when counted factor is of specific type
       if(length(grep("%",comps[k]))){
         KCs<-strsplit(comps[k],"%")
@@ -457,7 +457,7 @@ modeloptim <- function(comps,feats,df)
         df$icor<-as.numeric(paste(eval(parse(text=paste("countOutcomeGen(df,df$index,\"INCORRECT\",df$",KCs[[1]][2],",\"",KCs[[1]][3],"\")",sep="")))))
       }
       else
-        
+
         # count an effect when both counted factor and recipeinet factor are specified
         if(length(grep("\\?",comps[k]))){
           KCs<-strsplit(comps[k],"\\?")
@@ -466,7 +466,7 @@ modeloptim <- function(comps,feats,df)
           df$icor<-as.numeric(paste(eval(parse(text=paste("countOutcomeOther(df,df$Anon.Student.Id,\"INCORRECT\",df$",KCs[[1]][3],",\"",KCs[[1]][4],"\",df$",KCs[[1]][1],",\"",KCs[[1]][2],"\")",sep="")))))
         }
       else
-        
+
         # normal KC type Q-matrix
       {
         df$index<-paste(eval(parse(text=paste("df$",comps[k],sep=""))),df$Anon.Student.Id,sep="")
@@ -474,8 +474,8 @@ modeloptim <- function(comps,feats,df)
         df$cor<-countOutcome(df,df$index,"CORRECT")
         df$icor<-countOutcome(df,df$index,"INCORRECT")}
       df$tcor<-as.numeric(df$cor)+as.numeric(df$icor)
-      
-      
+
+
       # track parameters used
       if(gsub("[$]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
                                  "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe")){
@@ -488,9 +488,9 @@ modeloptim <- function(comps,feats,df)
         }else{para<-fixedpars[m] #otherwise just use it
         }}
         m<-m+1}
-      
+
       if(gsub("[$]","",i) %in% c("base2","base4","base2suc","base2fail","ppe")){
-        
+
         if(is.na(fixedpars[m])){
           parb<-pars[optimparcount]
           optimparcount<-optimparcount+1}
@@ -501,7 +501,7 @@ modeloptim <- function(comps,feats,df)
         }}
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base4","ppe")){
-        
+
         if(is.na(fixedpars[m])){
           parc<-pars[optimparcount]
           optimparcount<-optimparcount+1}
@@ -512,7 +512,7 @@ modeloptim <- function(comps,feats,df)
         }}
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base4","ppe")){
-        
+
         if(is.na(fixedpars[m])){
           pard<-pars[optimparcount]
           optimparcount<-optimparcount+1}
@@ -523,7 +523,7 @@ modeloptim <- function(comps,feats,df)
         }}
         m<-m+1}
       eval(parse(text=paste("df$F",k,"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
-      
+
       #create an EQ for lmer here
       if(right(i,1)=="$"){
         # add the feature to the model with a coefficient per level
@@ -544,7 +544,7 @@ modeloptim <- function(comps,feats,df)
     #print("statnext")
     # compute model fit and report
     fitstat<<-logLik(temp)
-    
+
     if(paper.==TRUE){
       log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
       cat("\n ", file = log_modeloptim)
@@ -560,7 +560,7 @@ modeloptim <- function(comps,feats,df)
           outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
           write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
         }
-        
+
         nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
         cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
         #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
@@ -569,7 +569,7 @@ modeloptim <- function(comps,feats,df)
           cat("\n ")}
         cat(" ")
       }
-    
+
     -fitstat[1]  }
   # count # of parameters
   parlength<<-
@@ -594,39 +594,39 @@ modeloptim <- function(comps,feats,df)
     sum("dashsuc" == gsub("[$]","",feats))+
     sum("dashfail" == gsub("[$]","",feats))-
     sum(!is.na(fixedpars))
-  
+
   # number of seeds is just those pars specified and not fixed
   seeds<- seedpars[is.na(fixedpars)]
-  
+
   # if not set seeds set to .5
   seeds[is.na(seeds)]<-.5
-  
-  
+
+
   # optimize the model
   if(parlength>0){
     if(paper.==TRUE){
-      
+
       #needs a setting just to do the optim on all the data
       dfstore<-df
       df<- df[(df$Anon.Student.Id %in% foldlevels[[1]]),]
       opars<- optim(seeds,tempfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
       temptrain<<-temp
-      
+
       log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
       sink(file=paste(Sys.info()[4],"log_modeloptim.txt",sep=""), append=TRUE, split=FALSE)
       print(opars)
       cat("\n")
       sink()
-      
+
       df<-dfstore
       print(as.numeric(unlist(opars)[1:length(seeds)]))
       fixedpars<<-as.numeric(unlist(opars)[1:length(seeds)])
       tempfun(numeric(0))
       tempall<<-temp
-      
+
       df<-dfold[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
       datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
-      
+
       # needed later
       nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
       testprediction<<-datvals %*%  temptrain$coefficients
@@ -638,7 +638,7 @@ modeloptim <- function(comps,feats,df)
     else {
       pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
     }
-    
+
   }   else
     # no nolinear parameters
   {
@@ -647,18 +647,18 @@ modeloptim <- function(comps,feats,df)
     {
       tempall<<-temp
       dfstore<-df
-      
+
       df<- df[(tempall$data$Anon.Student.Id %in% foldlevels[[1]]),]
       tempfun(numeric(0))
       temptrain<<-temp
       passpars<<-c(temptrain$coefficients)
-      
-      
+
+
       df<-dfstore[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
       datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
       coefs<-temptrain$coefficients
       coefs[is.na(coefs)] <- 0
-      
+
       #neeeded later
       nullfittest<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),],family=binomial(logit)))
       testprediction<<-datvals %*%  coefs
@@ -667,7 +667,7 @@ modeloptim <- function(comps,feats,df)
       modfittest<<-sum(log(1-abs(testans-testprediction)))
       testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]  }
   }
-  
+
   if(paper.==TRUE){ #this stuff is for split half cv only
     trainprediction<<-predict(temptrain,temptrain$data, type = "response")
     testframe<-tempall$data[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
@@ -683,7 +683,7 @@ modeloptim <- function(comps,feats,df)
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
-        
+
         top <- newXMLNode("model_output")
         newXMLNode("N", Nres, parent = top)
         newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
