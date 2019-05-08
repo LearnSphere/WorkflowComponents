@@ -14,9 +14,9 @@
   </xs:complexType>
   
   <xs:complexType name="InputType">
-    <xs:all>
-        <xs:element minOccurs="0" name="input0" type="InputDefinition0"/>
-    </xs:all>
+    <xs:choice maxOccurs="unbounded">
+        <xs:element minOccurs="0" name="input0" type="InputDefinition0" maxOccurs="10"/>
+    </xs:choice>
   </xs:complexType>
   
   <xs:complexType name="InputLabel">
