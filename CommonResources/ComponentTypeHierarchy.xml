@@ -32,6 +32,7 @@
 		<Deidentify />
 		<Discretize />
 		<Feature_Synthesis />
+		<Generate_GLRKT_Features />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
     <Import_EDF />
