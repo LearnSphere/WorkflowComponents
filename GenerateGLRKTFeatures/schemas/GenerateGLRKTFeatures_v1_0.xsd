@@ -53,7 +53,12 @@
     </xs:sequence>
   </xs:complexType>
 
- <xs:complexType name="OptionsType"/>
+
+    <xs:complexType name="OptionsType">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+      </xs:choice>
+    </xs:complexType>
 
   <xs:element name="component">
     <xs:complexType>
