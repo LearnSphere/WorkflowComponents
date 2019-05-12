@@ -11,25 +11,25 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="InFileList0">
     <xs:choice>
       <xs:element minOccurs="0" ref="file"/>
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element default="file" minOccurs="0" name="input0" type="xs:string"/>
+      <xs:element default="transaction" minOccurs="0" name="input0" type="xs:string"/>
     </xs:all>
   </xs:complexType>
-  
+
   <xs:complexType name="InputType">
     <xs:choice>
       <xs:element minOccurs="1" maxOccurs="unbounded" name="input0" type="InputDefinition0"/>
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -40,21 +40,21 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="tab-delimited"/>
+      <xs:element ref="transaction"/>
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0"/>
     </xs:sequence>
   </xs:complexType>
- 
+
  <xs:complexType name="OptionsType"/>
-     
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all>
