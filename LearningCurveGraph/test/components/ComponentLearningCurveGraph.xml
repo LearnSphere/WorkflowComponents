@@ -67,7 +67,7 @@
 </inputs>
 
 <options>
-    <freqthres>0.1</freqthres>
+    <freqthres>0.02</freqthres>
 </options>
 
 </component>

@@ -52,9 +52,11 @@ public class LearningCurveGraphMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
 
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
-
-        if (outputFile0 != null && outputFile0.exists() ) {
+        File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/LegendPlot.png");
+        
+        if (outputFile0 != null && outputFile0.exists() && outputFile1 != null && outputFile1.exists()) {
             this.addOutputFile(outputFile0, 0, 0, "image");
+            this.addOutputFile(outputFile1, 1, 0, "image");
         }else {
                  this.addErrorMessage("Files missing.");
         }
