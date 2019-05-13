@@ -1,0 +1,45 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>LFA Search</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+  <options>
+      <heuristic>BIC</heuristic>
+      <modelPMatrix>Input 0 (0) - KC (Area) (column 19)</modelPMatrix>
+      <modelPMatrix>Input 0 (0) - KC (Circle-Collapse) (column 22)</modelPMatrix>
+      <maxIter>20</maxIter>
+      <stopRepCnt>3</stopRepCnt>
+      <numOfOutputModels>50</numOfOutputModels>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Student Step</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>0</index>
+          <file_path>test/test_data/ds76_student_step_export.txt</file_path>
+          <label>student-step</label>
+          <file_name>ds76_student_step_export.txt</file_name>
+          
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+
+</component>
