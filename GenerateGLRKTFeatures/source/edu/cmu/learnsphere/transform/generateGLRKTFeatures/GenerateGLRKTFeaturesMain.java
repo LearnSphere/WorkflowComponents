@@ -36,7 +36,7 @@ public class GenerateGLRKTFeaturesMain extends AbstractComponent {
 	// Add input meta-data (headers) to output file.
 	this.addMetaDataFromInput("transaction", 0, 0, ".*");
 	// Add additional meta-data for each output file.
-	this.addMetaData("transaction", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("file", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
@@ -53,14 +53,8 @@ public class GenerateGLRKTFeaturesMain extends AbstractComponent {
 
 	// Run the program...
 	File outputDirectory = this.runExternal();
-
-
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/GLRKT.text");
-
-	this.addOutputFile(outputFile0, 0, 0, "transaction");
-
-
+	this.addOutputFile(outputFile0, 0, 0, "file");
         System.out.println(this.getOutput());
-
     }
 }
