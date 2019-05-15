@@ -101,18 +101,18 @@
       <xs:enumeration value="filterByRegistration" />
       <xs:enumeration value="filterBySince" />
       <xs:enumeration value="filterByUntil" />
-      <xs:enumeration value="Custome" />
     </xs:restriction>
   </xs:simpleType>
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
-    <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="url" id="url" default="http://lrs.x-in-y.com/data/xAPI/" />
     <xs:element type="xs:string" name="username" id="username" default="user" ls:privateOption="true" />
     <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
+    <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
-    <xs:element type="xs:string" name="customFilter" id="customFilter" default="context.extensions.yourExtension" />
+    <xs:element type="xs:string" name="queryPath01" id="queryPath01" default="null" />
+    <xs:element type="xs:string" name="headers01" id="headers01" default="null" />
     </xs:choice>
   </xs:complexType>
 

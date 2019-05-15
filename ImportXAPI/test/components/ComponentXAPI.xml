@@ -16,8 +16,9 @@
     <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
     <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
     <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
-    <customFilter>Null</customFilter>
-      
+    <queryPath01>actor,mbox</queryPath01>
+    <headers01>null</headers01>
+    
   </options>
   <inputs>
     <input0>
@@ -27,6 +28,7 @@
       <component_name>ImportXAPI</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
+      
       <files>
         <text>
             <file_path>test/test_data/Configuration.txt</file_path>
@@ -38,8 +40,6 @@
       <inputmeta />
       <optionmeta />
     </input0>
-
-
 
   </inputs>
     <top>106</top>
