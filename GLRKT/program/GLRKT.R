@@ -204,8 +204,16 @@ for(i in 1:10){
 
 prespecfeatures<-as.character(prespecfeatures)
 plancomponents<-gsub("[ ()-]", ".",as.character(plancomponents))
-fixedpars<-as.numeric(as.character(fixedpars))
-seedpars<-as.numeric(as.character(seedpars))
+suppressWarnings(fixedpars<-as.numeric(fixedpars))
+suppressWarnings(seedpars<-as.numeric(seedpars))
+
+cat("prespecfeatures:",prespecfeatures,"\n")
+cat("plancomponents:",plancomponents,"\n")
+cat("fixedpars:",fixedpars,"\n")
+cat("seedpars:",seedpars,"\n")
+
+#print(seedpars[2])
+#print(class(seedpars[2]))
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")

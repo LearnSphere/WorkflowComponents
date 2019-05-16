@@ -35,9 +35,9 @@
 <options>
     <mode>best fit model</mode>
     <optRow1>basesuc,KC (Default),.3,.3</optRow1>
-    <optRow2>basefail,KC (Cluster),.3,.3</optRow2>
-    <optRow3>basesuc,KC (Cluster),.3,.3</optRow3>
-    <optRow4>propdec,Anon Student Id,.97,.025</optRow4>
+    <optRow2>basefail,KC (Cluster),.3,NA</optRow2>
+    <optRow3>basesuc,KC (Cluster),NA,.3</optRow3>
+    <optRow4>propdec,Anon Student Id,.97,NA</optRow4>
     <optRow5>null</optRow5>
     <optRow6>null</optRow6>
     <optRow7>null</optRow7>

@@ -89,16 +89,34 @@ The following object is masked from 'package:rms':
 
 [1] "best fit model"
 [1] "basesuc,KC (Default),.3,.3"
-[1] "basefail,KC (Cluster),.3,.3"
-[1] "basesuc,KC (Cluster),.3,.3"
-[1] "propdec,Anon Student Id,.97,.025"
+[1] "basefail,KC (Cluster),.3,NA"
+[1] "basesuc,KC (Cluster),NA,.3"
+[1] "propdec,Anon Student Id,.97,NA"
 [1] "null"
 [1] "null"
 [1] "null"
 [1] "null"
 [1] "null"
 [1] "null"
-   logLik = -1066.87151362   basesuc basefail basesuc propdec  --- 0.1978 McFadden's R2
+prespecfeatures: basesuc basefail basesuc propdec 
+plancomponents: KC..Default. KC..Cluster. KC..Cluster. Anon.Student.Id 
+fixedpars: 0.3 0.3 NA 0.97 
+seedpars: 0.3 NA 0.3 NA 
+   logLik = -1065.8786724    step par values =0.5
+     logLik = -1065.8786724    step par values =0.5
+     logLik = -1065.87867221    step par values =0.5000001
+     logLik = -1066.64330403    step par values =1
+     logLik = -1065.84557644    step par values =0.6371424
+     logLik = -1065.84557654    step par values =0.6371425
+     logLik = -1065.81368172    step par values =0.5881737
+     logLik = -1065.81368174    step par values =0.5881738
+     logLik = -1065.8123157    step par values =0.5739061
+     logLik = -1065.8123157    step par values =0.5739062
+     logLik = -1065.81226553    step par values =0.5762172
+     logLik = -1065.81226553    step par values =0.5762173
+     logLik = -1065.81226547    step par values =0.576143
+     logLik = -1065.81226547    step par values =0.5761431
+  basesuc basefail basesuc propdec  --- 0.1986 McFadden's R2
 
 Call:
 glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
@@ -106,23 +124,23 @@ glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--3.0315  -0.9887   0.2256   1.0824   1.8480  
+-2.9884  -0.9850   0.2284   1.0746   1.8559  
 
 Coefficients:
             Estimate Std. Error z value             Pr(>|z|)    
-(Intercept)  -1.9228     0.2176  -8.836 < 0.0000000000000002 ***
-F4            2.6121     0.3795   6.884     0.00000000000583 ***
-F3           -0.7838     0.9306  -0.842                  0.4    
-F2            2.7853     0.6718   4.146     0.00003383525274 ***
-F1           17.7380     1.3809  12.845 < 0.0000000000000002 ***
+(Intercept)  -1.9476     0.2180  -8.933 < 0.0000000000000002 ***
+F4            2.6550     0.3752   7.076     0.00000000000148 ***
+F3           -7.5574     4.5066  -1.677               0.0936 .  
+F2            2.9381     0.6767   4.342     0.00001414684988 ***
+F1           18.1752     1.3400  13.564 < 0.0000000000000002 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
     Null deviance: 2659.8  on 1940  degrees of freedom
-Residual deviance: 2133.7  on 1936  degrees of freedom
-AIC: 2143.7
+Residual deviance: 2131.6  on 1936  degrees of freedom
+AIC: 2141.6
 
 Number of Fisher Scoring iterations: 5
 
