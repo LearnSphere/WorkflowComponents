@@ -70,32 +70,7 @@ The following objects are masked from 'package:optimx':
 
     Rcgmin, Rcgminb, Rcgminu
 
-Loading required package: minpack.lm
-Loading required package: rgl
-Loading required package: robustbase
-
-Attaching package: 'robustbase'
-
-The following objects are masked from 'package:miscTools':
-
-    colMedians, rowMedians
-
-The following object is masked from 'package:survival':
-
-    heart
-
 Loading required package: Matrix
-
-Attaching package: 'qpcR'
-
-The following object is masked from 'package:caret':
-
-    RMSE
-
-The following object is masked from 'package:MuMIn':
-
-    AICc
-
 Loading required package: lmtest
 Loading required package: zoo
 
@@ -112,33 +87,18 @@ The following object is masked from 'package:rms':
 
     lrtest
 
-Warning message:
-NAs introduced by coercion 
-[1] "KC..Default."    "KC..Cluster."    "KC..Cluster."    "Anon.Student.Id"
-[1]   NA 0.30 0.30 0.97
-[1] 0.300 0.300 0.300 0.025
-[1] "basesuc"  "basefail" "basesuc"  "propdec" 
 [1] "best fit model"
-   logLik = -5237.99984825    step par values =0.5
-     logLik = -5237.99984825    step par values =0.5
-     logLik = -5237.99988131    step par values =0.5000001
-     logLik = -5094.3875483    step par values =0
-     logLik = -5094.3874688    step par values =0.0000001
-     logLik = -5177.31560304    step par values =0.3531464
-     logLik = -5177.31565474    step par values =0.3531465
-     logLik = -5094.06073203    step par values =0.2139956
-     logLik = -5094.06079244    step par values =0.2139957
-     logLik = -5094.3875483    step par values =0
-     logLik = -5094.3874688    step par values =0.0000001
-     logLik = -5054.24006457    step par values =0.1216043
-     logLik = -5054.24008127    step par values =0.1216044
-     logLik = -5052.4489002    step par values =0.1004936
-     logLik = -5052.4489002    step par values =0.1004937
-     logLik = -5052.44890013    step par values =0.1004979
-     logLik = -5052.44890013    step par values =0.100498
-     logLik = -5052.44890013    step par values =0.1004977
-     logLik = -5052.44890013    step par values =0.1004978
-  basesuc basefail basesuc propdec  --- 0.2221 McFadden's R2
+[1] "basesuc,KC (Default),.3,.3"
+[1] "basefail,KC (Cluster),.3,.3"
+[1] "basesuc,KC (Cluster),.3,.3"
+[1] "propdec,Anon Student Id,.97,.025"
+[1] "null"
+[1] "null"
+[1] "null"
+[1] "null"
+[1] "null"
+[1] "null"
+   logLik = -1066.87151362   basesuc basefail basesuc propdec  --- 0.1978 McFadden's R2
 
 Call:
 glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit), 
@@ -146,23 +106,23 @@ glm(formula = as.formula(paste(equation, eq, sep = "")), family = binomial(logit
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--3.1281  -0.9306   0.2513   0.9105   2.0677  
+-3.0315  -0.9887   0.2256   1.0824   1.8480  
 
 Coefficients:
-            Estimate Std. Error z value            Pr(>|z|)    
-(Intercept) -2.24615    0.08765 -25.626 <0.0000000000000002 ***
-F4           2.92150    0.15066  19.392 <0.0000000000000002 ***
-F3           0.93680    0.37942   2.469              0.0135 *  
-F2           3.11427    0.30388  10.248 <0.0000000000000002 ***
-F1           4.31008    0.14662  29.397 <0.0000000000000002 ***
+            Estimate Std. Error z value             Pr(>|z|)    
+(Intercept)  -1.9228     0.2176  -8.836 < 0.0000000000000002 ***
+F4            2.6121     0.3795   6.884     0.00000000000583 ***
+F3           -0.7838     0.9306  -0.842                  0.4    
+F2            2.7853     0.6718   4.146     0.00003383525274 ***
+F1           17.7380     1.3809  12.845 < 0.0000000000000002 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 12990  on 9436  degrees of freedom
-Residual deviance: 10105  on 9432  degrees of freedom
-AIC: 10115
+    Null deviance: 2659.8  on 1940  degrees of freedom
+Residual deviance: 2133.7  on 1936  degrees of freedom
+AIC: 2143.7
 
 Number of Fisher Scoring iterations: 5
 

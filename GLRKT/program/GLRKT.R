@@ -49,34 +49,6 @@ if (args[i] == "-workingDir") {
 # This dir is the working dir for the component instantiation.
        workingDirectory = args[i+1]
        i = i+1
-    } else 
-if (args[i] == "-plancomponents") {
-       if (length(args) == i) {
-          stop("Parameters' names of plancomponents must be specified")
-       }
-       plancomponents = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-fixedpars") {
-       if (length(args) == i) {
-          stop("Characteristics Values of fixedpars must be specified")
-       }
-       fixedpars = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-seedpars") {
-       if (length(args) == i) {
-          stop("Characteristics Values of seedpars name must be specified")
-       }
-       seedpars = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-prespecfeatures") {
-       if (length(args) == i) {
-          stop("Parameters' names of prespecfeatures1 must be specified")
-       }
-       prespecfeatures = args[i+1]
-       i = i+1
     } else
 if (args[i] == "-mode") {
        if (length(args) == i) {
@@ -84,7 +56,77 @@ if (args[i] == "-mode") {
        }
        mode = args[i+1]
        i = i+1
+    } else  
+if (args[i] == "-optRow1") {
+       if (length(args) == i) {
+          stop("Characteristics Values of optRow1 must be specified")
+       }
+       optRow1 = args[i+1]
+       i = i+1
     } else 
+if (args[i] == "-optRow2") {
+       if (length(args) == i) {
+          stop("Characteristics Values of optRow2 name must be specified")
+       }
+       optRow2 = args[i+1]
+       i = i+1
+    } else 
+if (args[i] == "-optRow3") {
+       if (length(args) == i) {
+          stop("Parameters' names of optRow3 must be specified")
+       }
+       optRow3 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow4") {
+       if (length(args) == i) {
+          stop("optRow4 name must be specified")
+       }
+       optRow4 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow5") {
+       if (length(args) == i) {
+          stop("optRow5 name must be specified")
+       }
+       optRow5 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow6") {
+       if (length(args) == i) {
+          stop("optRow6 name must be specified")
+       }
+       optRow6 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow7") {
+       if (length(args) == i) {
+          stop("optRow7 name must be specified")
+       }
+       optRow7 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow8") {
+       if (length(args) == i) {
+          stop("optRow8 name must be specified")
+       }
+       optRow8 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow9") {
+       if (length(args) == i) {
+          stop("optRow9 name must be specified")
+       }
+       optRow9 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-optRow10") {
+       if (length(args) == i) {
+          stop("optRow10 name must be specified")
+       }
+       optRow10 = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
@@ -120,18 +162,50 @@ sourceFunction=paste(programLocation,"GLRKTfunctions.R",sep="")
 source(sourceFunction)
 
 #Transfer of the Parameters' Format
-plancomponents<-as.character(unlist(strsplit(plancomponents,",")))
-plancomponents<-gsub("[ ()-]", ".",plancomponents)
-prespecfeatures<-as.character(unlist(strsplit(prespecfeatures,",")))
-fixedpars<-as.numeric(as.character(unlist(strsplit(fixedpars,","))))
-seedpars<-as.numeric(as.character(unlist(strsplit(seedpars,","))))
-
-#Model options
-print(plancomponents)
-print(fixedpars)
-print(seedpars)
-print(prespecfeatures)
 print(mode)
+
+print(optRow1)
+print(optRow2)
+print(optRow3)
+print(optRow4)
+print(optRow5)
+print(optRow6)
+print(optRow7)
+print(optRow8)
+print(optRow9)
+print(optRow10)
+
+optRow1<-unlist(strsplit(optRow1,","))
+optRow2<-unlist(strsplit(optRow2,","))
+optRow3<-unlist(strsplit(optRow3,","))
+optRow4<-unlist(strsplit(optRow4,","))
+optRow5<-unlist(strsplit(optRow5,","))
+optRow6<-unlist(strsplit(optRow6,","))
+optRow7<-unlist(strsplit(optRow7,","))
+optRow8<-unlist(strsplit(optRow8,","))
+optRow9<-unlist(strsplit(optRow9,","))
+optRow10<-unlist(strsplit(optRow10,","))
+
+prespecfeatures=list()
+plancomponents=list()
+fixedpars=list()
+seedpars=list()
+
+optList<-list(optRow1,optRow2,optRow3,optRow4,optRow5,optRow6,optRow7,optRow8,optRow9,optRow10)
+
+for(i in 1:10){
+    if(lengths(optList[i])==4){
+        prespecfeatures<-c(prespecfeatures,(optList[[i]])[1])
+        plancomponents<-c(plancomponents,(optList[[i]])[2])
+        fixedpars<-c(fixedpars,(optList[[i]])[3])
+        seedpars<-c(seedpars,(optList[[i]])[4])
+    }
+}
+
+prespecfeatures<-as.character(prespecfeatures)
+plancomponents<-gsub("[ ()-]", ".",as.character(plancomponents))
+fixedpars<-as.numeric(as.character(fixedpars))
+seedpars<-as.numeric(as.character(seedpars))
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")

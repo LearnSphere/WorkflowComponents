@@ -1,9 +1,9 @@
 <model_output>
-  <N>9437</N>
-  <Loglikelihood>-5052.4489</Loglikelihood>
-  <RMSE>0.42433</RMSE>
-  <Accuracy>0.72438</Accuracy>
-  <AUC>0.79908</AUC>
-  <r2LR>0.26345</r2LR>
-  <r2NG>0.35241</r2NG>
+  <N>1941</N>
+  <Loglikelihood>-1066.87151</Loglikelihood>
+  <RMSE>0.4328</RMSE>
+  <Accuracy>0.71355</Accuracy>
+  <AUC>0.78801</AUC>
+  <r2LR>0.2374</r2LR>
+  <r2NG>0.31824</r2NG>
 </model_output>
