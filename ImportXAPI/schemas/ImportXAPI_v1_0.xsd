@@ -48,49 +48,11 @@
     </xs:choice>
   </xs:complexType>
 
-
-    <xs:complexType name="OutputDefinition1">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList1" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-    <xs:complexType name="OutFileList1">
-    <xs:choice>
-      <xs:element ref="tab-delimited" />
-    </xs:choice>
-  </xs:complexType>
-
-      <xs:complexType name="OutputDefinition2">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList2" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-    <xs:complexType name="OutFileList2">
-    <xs:choice>
-      <xs:element ref="tab-delimited" />
-    </xs:choice>
-  </xs:complexType>
-
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
-      <xs:element name="output1" type="OutputDefinition1" />
-      <xs:element name="output2" type="OutputDefinition2" />
     </xs:sequence>
   </xs:complexType>
-
 
   <xs:simpleType name="filterType" final="restriction">
     <xs:restriction base="xs:string">
@@ -101,18 +63,144 @@
       <xs:enumeration value="filterByRegistration" />
       <xs:enumeration value="filterBySince" />
       <xs:enumeration value="filterByUntil" />
+      <xs:enumeration value="filterByActor-filterByVerb" />
     </xs:restriction>
   </xs:simpleType>
-
+  
+  <xs:complexType name="option_dependency">
+    <xs:choice>		
+      <xs:element type="disjunctive" name="dependency1" ls:dependentOption="queryPath02" ls:dependsOn="queryPath01" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency2" ls:dependentOption="queryPath03" ls:dependsOn="queryPath02" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency3" ls:dependentOption="queryPath04" ls:dependsOn="queryPath03" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency4" ls:dependentOption="queryPath05" ls:dependsOn="queryPath04" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency5" ls:dependentOption="queryPath06" ls:dependsOn="queryPath05" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency6" ls:dependentOption="queryPath07" ls:dependsOn="queryPath06" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency7" ls:dependentOption="queryPath08" ls:dependsOn="queryPath07" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency8" ls:dependentOption="queryPath09" ls:dependsOn="queryPath08" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency9" ls:dependentOption="queryPath10" ls:dependsOn="queryPath09" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency10" ls:dependentOption="queryPath11" ls:dependsOn="queryPath10" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency11" ls:dependentOption="queryPath12" ls:dependsOn="queryPath11" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency12" ls:dependentOption="queryPath13" ls:dependsOn="queryPath12" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency13" ls:dependentOption="queryPath14" ls:dependsOn="queryPath13" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency14" ls:dependentOption="queryPath15" ls:dependsOn="queryPath14" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency15" ls:dependentOption="queryPath16" ls:dependsOn="queryPath15" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency16" ls:dependentOption="queryPath17" ls:dependsOn="queryPath16" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency17" ls:dependentOption="queryPath18" ls:dependsOn="queryPath17" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency18" ls:dependentOption="queryPath19" ls:dependsOn="queryPath18" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency19" ls:dependentOption="queryPath20" ls:dependsOn="queryPath19" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency20" ls:dependentOption="queryPath21" ls:dependsOn="queryPath20" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency21" ls:dependentOption="queryPath22" ls:dependsOn="queryPath21" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency22" ls:dependentOption="queryPath23" ls:dependsOn="queryPath22" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency23" ls:dependentOption="queryPath24" ls:dependsOn="queryPath23" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency24" ls:dependentOption="queryPath25" ls:dependsOn="queryPath24" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency25" ls:dependentOption="queryPath26" ls:dependsOn="queryPath25" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency26" ls:dependentOption="queryPath27" ls:dependsOn="queryPath26" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency27" ls:dependentOption="queryPath28" ls:dependsOn="queryPath27" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency28" ls:dependentOption="queryPath29" ls:dependsOn="queryPath28" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency29" ls:dependentOption="queryPath30" ls:dependsOn="queryPath29" ls:constraint="matches(null)" ls:negation="true"/>
+      
+      <xs:element type="disjunctive" name="dependency31" ls:dependentOption="headers01" ls:dependsOn="queryPath01" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency32" ls:dependentOption="headers02" ls:dependsOn="queryPath02" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency33" ls:dependentOption="headers03" ls:dependsOn="queryPath03" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency34" ls:dependentOption="headers04" ls:dependsOn="queryPath04" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency35" ls:dependentOption="headers05" ls:dependsOn="queryPath05" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency36" ls:dependentOption="headers06" ls:dependsOn="queryPath06" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency37" ls:dependentOption="headers07" ls:dependsOn="queryPath07" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency38" ls:dependentOption="headers08" ls:dependsOn="queryPath08" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency39" ls:dependentOption="headers09" ls:dependsOn="queryPath09" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency40" ls:dependentOption="headers10" ls:dependsOn="queryPath10" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency41" ls:dependentOption="headers11" ls:dependsOn="queryPath11" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency42" ls:dependentOption="headers12" ls:dependsOn="queryPath12" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency43" ls:dependentOption="headers13" ls:dependsOn="queryPath13" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency44" ls:dependentOption="headers14" ls:dependsOn="queryPath14" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency45" ls:dependentOption="headers15" ls:dependsOn="queryPath15" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency46" ls:dependentOption="headers16" ls:dependsOn="queryPath16" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency47" ls:dependentOption="headers17" ls:dependsOn="queryPath17" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency48" ls:dependentOption="headers18" ls:dependsOn="queryPath18" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency49" ls:dependentOption="headers19" ls:dependsOn="queryPath19" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency50" ls:dependentOption="headers20" ls:dependsOn="queryPath20" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency51" ls:dependentOption="headers21" ls:dependsOn="queryPath21" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency52" ls:dependentOption="headers22" ls:dependsOn="queryPath22" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency53" ls:dependentOption="headers23" ls:dependsOn="queryPath23" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency54" ls:dependentOption="headers24" ls:dependsOn="queryPath24" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency55" ls:dependentOption="headers25" ls:dependsOn="queryPath25" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency56" ls:dependentOption="headers26" ls:dependsOn="queryPath26" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency57" ls:dependentOption="headers27" ls:dependsOn="queryPath27" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency58" ls:dependentOption="headers28" ls:dependsOn="queryPath28" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency59" ls:dependentOption="headers29" ls:dependsOn="queryPath29" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="dependency60" ls:dependentOption="headers30" ls:dependsOn="queryPath30" ls:constraint="matches(null)" ls:negation="true"/>      
+    </xs:choice>
+</xs:complexType>
+       
   <xs:complexType name="OptionsType">
-    <xs:choice minOccurs="1" maxOccurs="unbounded">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element type="xs:string" name="url" id="url" default="http://lrs.x-in-y.com/data/xAPI/" />
     <xs:element type="xs:string" name="username" id="username" default="user" ls:privateOption="true" />
     <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
     <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
+
     <xs:element type="xs:string" name="queryPath01" id="queryPath01" default="null" />
-    <xs:element type="xs:string" name="headers01" id="headers01" default="null" />
+        <xs:element type="xs:string" name="headers01" id="headers01" default="null" />
+    <xs:element type="xs:string" name="queryPath02" id="queryPath02" default="null" />
+        <xs:element type="xs:string" name="headers02" id="headers02" default="null" />
+    <xs:element type="xs:string" name="queryPath03" id="queryPath03" default="null" />
+        <xs:element type="xs:string" name="headers03" id="headers03" default="null" />
+    <xs:element type="xs:string" name="queryPath04" id="queryPath04" default="null" />
+        <xs:element type="xs:string" name="headers04" id="headers04" default="null" />
+    <xs:element type="xs:string" name="queryPath05" id="queryPath05" default="null" />
+        <xs:element type="xs:string" name="headers05" id="headers05" default="null" />
+    <xs:element type="xs:string" name="queryPath06" id="queryPath06" default="null" />
+        <xs:element type="xs:string" name="headers06" id="headers06" default="null" />
+    <xs:element type="xs:string" name="queryPath07" id="queryPath07" default="null" />
+        <xs:element type="xs:string" name="headers07" id="headers07" default="null" />
+    <xs:element type="xs:string" name="queryPath08" id="queryPath08" default="null" />
+        <xs:element type="xs:string" name="headers08" id="headers08" default="null" />
+    <xs:element type="xs:string" name="queryPath09" id="queryPath09" default="null" />
+        <xs:element type="xs:string" name="headers09" id="headers09" default="null" />
+    <xs:element type="xs:string" name="queryPath10" id="queryPath10" default="null" />
+        <xs:element type="xs:string" name="headers10" id="headers10" default="null" />
+    <xs:element type="xs:string" name="queryPath11" id="queryPath11" default="null" />
+        <xs:element type="xs:string" name="headers11" id="headers11" default="null" />
+    <xs:element type="xs:string" name="queryPath12" id="queryPath12" default="null" />
+        <xs:element type="xs:string" name="headers12" id="headers12" default="null" />
+    <xs:element type="xs:string" name="queryPath13" id="queryPath13" default="null" />
+        <xs:element type="xs:string" name="headers13" id="headers13" default="null" />
+    <xs:element type="xs:string" name="queryPath14" id="queryPath14" default="null" />
+        <xs:element type="xs:string" name="headers14" id="headers14" default="null" />
+    <xs:element type="xs:string" name="queryPath15" id="queryPath15" default="null" />
+        <xs:element type="xs:string" name="headers15" id="headers15" default="null" />
+    <xs:element type="xs:string" name="queryPath16" id="queryPath16" default="null" />
+        <xs:element type="xs:string" name="headers16" id="headers16" default="null" />
+    <xs:element type="xs:string" name="queryPath17" id="queryPath17" default="null" />
+        <xs:element type="xs:string" name="headers17" id="headers17" default="null" />
+    <xs:element type="xs:string" name="queryPath18" id="queryPath18" default="null" />
+        <xs:element type="xs:string" name="headers18" id="headers18" default="null" />
+    <xs:element type="xs:string" name="queryPath19" id="queryPath19" default="null" />
+        <xs:element type="xs:string" name="headers19" id="headers19" default="null" />
+    <xs:element type="xs:string" name="queryPath20" id="queryPath20" default="null" />
+        <xs:element type="xs:string" name="headers20" id="headers20" default="null" />
+    <xs:element type="xs:string" name="queryPath21" id="queryPath21" default="null" />
+        <xs:element type="xs:string" name="headers21" id="headers21" default="null" />
+    <xs:element type="xs:string" name="queryPath22" id="queryPath22" default="null" />
+        <xs:element type="xs:string" name="headers22" id="headers22" default="null" />
+    <xs:element type="xs:string" name="queryPath23" id="queryPath23" default="null" />
+        <xs:element type="xs:string" name="headers23" id="headers23" default="null" />
+    <xs:element type="xs:string" name="queryPath24" id="queryPath24" default="null" />
+        <xs:element type="xs:string" name="headers24" id="headers24" default="null" />
+    <xs:element type="xs:string" name="queryPath25" id="queryPath25" default="null" />
+        <xs:element type="xs:string" name="headers25" id="headers25" default="null" />
+    <xs:element type="xs:string" name="queryPath26" id="queryPath26" default="null" />
+        <xs:element type="xs:string" name="headers26" id="headers26" default="null" />
+    <xs:element type="xs:string" name="queryPath27" id="queryPath27" default="null" />
+        <xs:element type="xs:string" name="headers27" id="headers27" default="null" />
+    <xs:element type="xs:string" name="queryPath28" id="queryPath28" default="null" />
+        <xs:element type="xs:string" name="headers28" id="headers28" default="null" />
+    <xs:element type="xs:string" name="queryPath29" id="queryPath29" default="null" />
+        <xs:element type="xs:string" name="headers29" id="headers29" default="null" />
+    <xs:element type="xs:string" name="queryPath30" id="queryPath30" default="null" />
+        <xs:element type="xs:string" name="headers30" id="headers30" default="null" />    
+
     </xs:choice>
   </xs:complexType>
 
