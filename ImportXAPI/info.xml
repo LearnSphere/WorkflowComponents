@@ -5,25 +5,28 @@
   <email>lzhang13@memphis.edu</email>
 </author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
-<date>2018-07-10</date>
+<date>2019-05-19</date>
 <abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
-<details>1.Require configuration file. The values on the left of the equals is the new header name that you prefer to use, while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly. Choose the headers' names from the xAPI-JsonFlattener-file.txt. 2.Output Two output files: xAPI_JsonFlattener_file_HeadNames.txt and xAPI_TabDelimited_file_HeadNames.txt.</details>
+<details>
+    1.First, access to the LRS. The url, username, and password of LRS are needed. <br/>
+    2.Secondly, use the <b>Filter</b> functions to point to some specific group of target xAPI statements. The <b>FilterValue</b> corresponds to the id value from xAPI statement<br/>
+    3.Thirdly, query the specific information by QueryPath. The QueryPath refers to the serious nodes of Json-structured xAPI statement. For example, QueryPath can be "actor,name", can be "verb,display,en-US", can be "context,extensions,http://autotutor.x-in-y.com/AT,timeTaken" and so on<br/>
+    4.Forthly, rename the headers. The headers refers to the actual headers name that will display in the column of the output tabular data. You may define whatever you want<br/>
+</details>
 
 <inputs>
-<b>Configuration file</b>
-<b>url,username,password,filter,filterValue and customFilter</b>
+<b>Url,Username,Password of LRS</b> <br/>
+<b>Filter,FilterValue, QueryPath#, and Headers#</b> <br/>
 </inputs>
 
 <outputs>
-<b>xAPI_JsonFlattener_file_HeadNames.txt</b> - List the heads' names from the XAPI statements in tabular representation <br/>
-<b>xAPI_TabDelimited_file.txt</b>-Present all columns for statistical models <br/>
+<b>xAPI_Query.txt</b>- The table for queried xAPI statements<br/>
 </outputs>
 <Options>
-    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil,Custome<br/>
-    <b>Url</b>-the url of learning locker account<br/>
-    <b>Username</b>- the usernmae of learning locker account<br/>
-    <b>Password</b>- the password of learning locker account<br/>
-    <b>FilterValue</b>- the correspodning id following Filter criterion<br/>
-    <b>CustomerFilter</b>use "Null" by default<br/>
+    <b>Url</b>-the url of LRS<br/>
+    <b>Username</b>- the username of LRS<br/>
+    <b>Password</b>- the password of LRS<br/>
+    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil<br/>
+    <b>FilterValue</b>- the correspodning id of Filter funtions<br/>
 </Options>
 </info>
