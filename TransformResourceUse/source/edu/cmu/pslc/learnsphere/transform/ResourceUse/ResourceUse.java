@@ -28,6 +28,8 @@ public class ResourceUse extends AbstractComponent {
     @Override
     protected void processOptions() {
         logger.info("Processing Options");
+
+        this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
     }
 
     @Override

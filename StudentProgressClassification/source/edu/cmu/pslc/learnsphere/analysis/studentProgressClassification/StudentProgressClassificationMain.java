@@ -53,12 +53,11 @@ public class StudentProgressClassificationMain extends AbstractComponent {
         super();
     }
 
-    
     @Override
     protected void processOptions() {
-        // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        logger.debug("processing options");
-        
+        logger.info("Processing Options");
+
+        this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
     }
 
     @Override
