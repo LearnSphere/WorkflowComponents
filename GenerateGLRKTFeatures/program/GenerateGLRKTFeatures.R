@@ -41,7 +41,13 @@ if (args[i] == "-node") {
 		} else {
 			i = i+1
 		}
-    } else 
+    } else if (args[i] == "-model") {
+       if (length(args) == i) {
+          stop("model name must be specified")
+       }
+       KCmodel <- gsub("[ ()-]", ".", args[i+1])
+       i = i+1 
+    }else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -95,9 +101,11 @@ return(temp)}
 
 val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
+val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
+#remove no KC lines
+eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
-equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0; seedpars <- c(NA)
 val$CF..reltime. <- practiceTime(val)
 options(scipen = 999)
 options(max.print=1000000)

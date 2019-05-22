@@ -6,7 +6,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element name="files" type="InFileList0"/>
-          <xs:any minOccurs="0" processContents="skip"/>
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -53,8 +53,12 @@
     </xs:sequence>
   </xs:complexType>
  
- <xs:complexType name="OptionsType"/>
-     
+ <xs:complexType name="OptionsType">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element type="FileInputHeader" name="model" id="KC_Model_for_Meaning_Spacing" default="\s*KC\s*\((.*)\)\s*" />  
+    </xs:choice>
+ </xs:complexType>
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all>

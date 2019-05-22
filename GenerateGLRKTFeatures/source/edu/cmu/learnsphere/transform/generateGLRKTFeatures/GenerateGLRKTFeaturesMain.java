@@ -54,7 +54,7 @@ public class GenerateGLRKTFeaturesMain extends AbstractComponent {
 	// Run the program...
 	File outputDirectory = this.runExternal();
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/GLRKT.text");
-	this.addOutputFile(outputFile0, 0, 0, "file");
+	this.addOutputFile(outputFile0, 0, 0, "transaction");
         System.out.println(this.getOutput());
     }
 }

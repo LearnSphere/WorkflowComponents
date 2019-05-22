@@ -24,12 +24,14 @@
             <file>
             <index>0</index>
             <file_path>test/testdata/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
-            <label>file</label>
+            <label>text</label>
             <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
             </file>
         </files>
     </input0>
 </inputs>
-<options/>
+<options>
+      <model>KC (Default)</model>
+</options>
 
 </component>
