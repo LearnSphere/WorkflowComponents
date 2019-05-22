@@ -102,6 +102,16 @@ prespecfeatures: basesuc basefail basesuc propdec
 plancomponents: KC..Default. KC..Cluster. KC..Cluster. Anon.Student.Id 
 fixedpars: 0.3 0.3 NA 0.97 
 seedpars: 0.3 NA 0.3 NA 
+Check class of each values of fixedpars:0.3 : numeric 
+0.3 : numeric 
+NA : numeric 
+0.97 : numeric 
+Check class of each values of seedpars:
+0.3 : numeric 
+NA : numeric 
+0.3 : numeric 
+NA : numeric 
+[1] NA
    logLik = -1065.8786724    step par values =0.5
      logLik = -1065.8786724    step par values =0.5
      logLik = -1065.87867221    step par values =0.5000001
