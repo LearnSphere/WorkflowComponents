@@ -1,6 +1,6 @@
-<project name="ImportTabDelimited" default="dist" basedir=".">
+<project name="ImportXAPI" default="dist" basedir=".">
     <description>
-        Java-based ImportTabDelimited workflow component.
+        Java-based ImportXAPI workflow component.
     </description>
 
     <!-- set global properties for this build -->

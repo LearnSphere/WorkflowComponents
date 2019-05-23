@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Liang Zhang
+  <email>lzhang13@memphis.edu</email>
+</author>
+<url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
+<date>2019-05-23</date>
+<abstract>ImportXAPI is used to query learning statements data from LRS, and export to Workflows of LearnSphere for model analysis.<br/>
+<a href="http://tiny.cc/xapidatashop" target="_blank"><button style="color:#F8F7F9;background-color:#8106BF;font-family:Arial;"><b>Click Here</b></button></a> <b>for more details on how to use Import XAPI.</b> 
+</abstract>
+</info>

@@ -11,12 +11,72 @@
         </connection>
     </connections>
   <options>
+    <url>http://lrs.x-in-y.com/data/xAPI/</url>
+    <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
+    <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
     <filter>filterByVerb</filter>
-    <url>https://lrs.adlnet.gov/xAPI</url>
-    <username>SKOAdmin</username>
-    <password>password</password>
-    <filterValue>helo</filterValue>
-    <customFilter>Null</customFilter>
+    <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
+    <limit>null</limit>
+    <queryPath01>verb,display,en-US</queryPath01>
+        <headers01>Action</headers01>
+    <queryPath02>actor,name</queryPath02>
+        <headers02>Student Name</headers02>
+    <queryPath03>context,extensions,http://autotutor.x-in-y.com/AT,timeTaken</queryPath03>
+        <headers03>Time(secs)</headers03>
+    <queryPath04>id</queryPath04>
+        <headers04>ID</headers04>
+    <queryPath05>actor,mbox</queryPath05>
+        <headers05>Mbox</headers05>
+    <queryPath06>verb,id</queryPath06>
+        <headers06>Action</headers06>
+    <queryPath07>null</queryPath07>
+        <headers07>null</headers07> 
+    <queryPath08>null</queryPath08>
+        <headers08>null</headers08>
+    <queryPath09>null</queryPath09>
+        <headers09>null</headers09>
+    <queryPath10>null</queryPath10>
+        <headers10>null</headers10>    
+    <queryPath11>null</queryPath11>
+        <headers11>null</headers11>
+    <queryPath12>null</queryPath12>
+        <headers12>null</headers12>
+    <queryPath13>null</queryPath13>
+        <headers13>null</headers13>
+    <queryPath14>null</queryPath14>
+        <headers14>null</headers14>
+    <queryPath15>null</queryPath15>
+        <headers15>null</headers15>
+    <queryPath16>null</queryPath16>
+        <headers16>null</headers16>
+     <queryPath17>null</queryPath17>
+        <headers17>null</headers17>
+    <queryPath18>null</queryPath18>
+        <headers18>null</headers18>
+    <queryPath19>null</queryPath19>
+        <headers19>null</headers19>
+    <queryPath20>null</queryPath20>
+        <headers20>null</headers20>    
+    <queryPath21>null</queryPath21>
+        <headers21>null</headers21>
+    <queryPath22>null</queryPath22>
+        <headers22>null</headers22>
+    <queryPath23>null</queryPath23>
+        <headers23>null</headers23>
+    <queryPath24>null</queryPath24>
+        <headers24>null</headers24>
+    <queryPath25>null</queryPath25>
+        <headers25>null</headers25>
+    <queryPath26>null</queryPath26>
+        <headers26>null</headers26>
+     <queryPath27>null</queryPath27>
+        <headers27>null</headers27>
+    <queryPath28>null</queryPath28>
+        <headers28>null</headers28>
+    <queryPath29>null</queryPath29>
+        <headers29>null</headers29>
+    <queryPath30>null</queryPath30>
+        <headers30>null</headers30>       
   </options>
     <top>106</top>
 </component>
