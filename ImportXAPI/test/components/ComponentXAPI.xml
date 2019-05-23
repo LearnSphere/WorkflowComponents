@@ -17,7 +17,6 @@
     <filter>filterByVerb</filter>
     <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
     <limit>null</limit>
-
     <queryPath01>verb,display,en-US</queryPath01>
         <headers01>Action</headers01>
     <queryPath02>actor,name</queryPath02>
@@ -78,7 +77,6 @@
         <headers29>null</headers29>
     <queryPath30>null</queryPath30>
         <headers30>null</headers30>       
-
   </options>
     <top>106</top>
 </component>

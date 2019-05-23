@@ -414,7 +414,6 @@ public class ImportXAPImain extends AbstractComponent {
                     }
                 }
                 
-                System.out.println(size);
                 //System.out.println(cSize);
                 //System.out.println(selectPathsList.size());
                 String [][] queryContent=new String[size][cSize+1];

@@ -15,7 +15,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="text" />
+      <xs:element ref="tab-delimited" />
     </xs:choice>
   </xs:complexType>
 
@@ -110,7 +110,7 @@
     <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
     <xs:element type="filterType" name="filter" id="filter" default="Null" />
     <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
-
+    
     <xs:element type="xs:string" name="queryPath01" id="queryPath01" default="null" />
         <xs:element type="xs:string" name="headers01" id="headers01" default="null" />
     <xs:element type="xs:string" name="queryPath02" id="queryPath02" default="null" />

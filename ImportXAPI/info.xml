@@ -6,8 +6,8 @@
 </author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
 <date>2019-05-19</date>
-<abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
-<help>
-    <url>http://tiny.cc/xapidatashop</url>
-</help>
+<abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop.
+For more details, please visit: <a href="http://tiny.cc/xapidatashop">Help</a>
+http://tiny.cc/xapidatashop
+</abstract>
 </info>
