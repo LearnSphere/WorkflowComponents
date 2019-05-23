@@ -132,7 +132,8 @@ public class ImportXAPImain extends AbstractComponent {
                 String queryPath29 = null;
                 String headers29 = null;
                 String queryPath30 = null;
-                String headers30 = null;                
+                String headers30 = null; 
+                String limit = null;
                 
                 queryPath01 = this.getOptionAsString("queryPath01");
                     headers01 = this.getOptionAsString("headers01");
@@ -195,6 +196,8 @@ public class ImportXAPImain extends AbstractComponent {
                 queryPath30 = this.getOptionAsString("queryPath30");
                     headers30 = this.getOptionAsString("headers30");  
                 
+                limit=this.getOptionAsString("limit");
+                
 	    	StatementClient client = new StatementClient(url, username, password);
                 client = getStatementClientWithFilter(filter,filterValue, client,customfilter);
                 StatementResult results = client.getStatements();
@@ -225,6 +228,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
                 JSONArray jsonArray = new JSONArray(jsonTxt); 
                 int size = jsonArray.length();
+                
         
                 //Collect all the queryPaths and headers
                 List<String> allPathsList=new ArrayList<String>();
@@ -401,7 +405,16 @@ public class ImportXAPImain extends AbstractComponent {
                     map.put(j+1,mainValueList);      
                 }
 
+                
                 int cSize=selectPathsList.size();
+                if (!limit.equals("null")){
+                    int Limit = Integer.parseInt(limit);
+                    if (Limit<size){
+                        size=Limit;
+                    }
+                }
+                
+                System.out.println(size);
                 //System.out.println(cSize);
                 //System.out.println(selectPathsList.size());
                 String [][] queryContent=new String[size][cSize+1];

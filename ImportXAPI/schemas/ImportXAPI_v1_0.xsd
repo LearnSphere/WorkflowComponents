@@ -2,35 +2,6 @@
 
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
-    <xs:complexType name="InputDefinition0">
-      <xs:complexContent>
-        <xs:extension base="InputContainer">
-          <xs:sequence>
-            <xs:element type="InFileList0" name="files" />
-            <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-          </xs:sequence>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="InputType">
-      <xs:all>
-        <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      </xs:all>
-    </xs:complexType>
-
-    <xs:complexType name="InFileList0">
-      <xs:choice>
-        <xs:element ref="file" minOccurs="0" />
-      </xs:choice>
-    </xs:complexType>
-
-    <xs:complexType name="InputLabel">
-      <xs:all>
-        <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
-      </xs:all>
-    </xs:complexType>
-
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -200,7 +171,8 @@
         <xs:element type="xs:string" name="headers29" id="headers29" default="null" />
     <xs:element type="xs:string" name="queryPath30" id="queryPath30" default="null" />
         <xs:element type="xs:string" name="headers30" id="headers30" default="null" />    
-
+    
+    <xs:element type="xs:string" name="limit" id="limit" default="null" />
     </xs:choice>
   </xs:complexType>
 
@@ -216,8 +188,6 @@
         <xs:element type="xs:double" name="top" />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
 
-        <xs:element name="inputs" type="InputType" minOccurs="0" />
-        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
         <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
       </xs:all>

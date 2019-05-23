@@ -16,6 +16,7 @@
     <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
     <filter>filterByVerb</filter>
     <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
+    <limit>null</limit>
 
     <queryPath01>verb,display,en-US</queryPath01>
         <headers01>Action</headers01>
@@ -79,20 +80,5 @@
         <headers30>null</headers30>       
 
   </options>
-  <inputs>
-    <input0>
-      <component_id>Import-1-x995490</component_id>
-      <component_id_human>Import #1</component_id_human>
-      <component_type>transform</component_type>
-      <component_name>ImportXAPI</component_name>
-      <elapsed_seconds>0</elapsed_seconds>
-      <errors />
-
-      <files/>
-      <inputmeta />
-      <optionmeta />
-    </input0>
-
-  </inputs>
     <top>106</top>
 </component>

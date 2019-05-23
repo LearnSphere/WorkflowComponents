@@ -7,26 +7,7 @@
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
 <date>2019-05-19</date>
 <abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
-<details>
-    1.First, access to the LRS. The url, username, and password of LRS are needed. <br/>
-    2.Secondly, use the <b>Filter</b> functions to point to some specific group of target xAPI statements. The <b>FilterValue</b> corresponds to the id value from xAPI statement<br/>
-    3.Thirdly, query the specific information by QueryPath. The QueryPath refers to the serious nodes of Json-structured xAPI statement. For example, QueryPath can be "actor,name", can be "verb,display,en-US", can be "context,extensions,http://autotutor.x-in-y.com/AT,timeTaken" and so on<br/>
-    4.Forthly, rename the headers. The headers refers to the actual headers name that will display in the column of the output tabular data. You may define whatever you want<br/>
-</details>
-
-<inputs>
-<b>Url,Username,Password of LRS</b> <br/>
-<b>Filter,FilterValue, QueryPath#, and Headers#</b> <br/>
-</inputs>
-
-<outputs>
-<b>xAPI_Query.txt</b>- The table for queried xAPI statements<br/>
-</outputs>
-<Options>
-    <b>Url</b>-the url of LRS<br/>
-    <b>Username</b>- the username of LRS<br/>
-    <b>Password</b>- the password of LRS<br/>
-    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil<br/>
-    <b>FilterValue</b>- the correspodning id of Filter funtions<br/>
-</Options>
+<help>
+    <url>http://tiny.cc/xapidatashop</url>
+</help>
 </info>
