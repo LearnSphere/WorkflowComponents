@@ -212,31 +212,13 @@ cat("plancomponents:",plancomponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 
-cat("Check class of each values of fixedpars:")
-cat(fixedpars[1],":",class(fixedpars[1]),"\n")
-cat(fixedpars[2],":",class(fixedpars[2]),"\n")
-cat(fixedpars[3],":",class(fixedpars[3]),"\n")
-cat(fixedpars[4],":",class(fixedpars[4]),"\n")
-
-cat("Check class of each values of seedpars:\n")
-cat(seedpars[1],":",class(seedpars[1]),"\n")
-cat(seedpars[2],":",class(seedpars[2]),"\n")
-cat(seedpars[3],":",class(seedpars[3]),"\n")
-cat(seedpars[4],":",class(seedpars[4]),"\n")
-
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
 outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
 
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
-
-val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
-val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
-val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
-val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
 equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0;
-val$CF..reltime. <- practiceTime(val)
 options(scipen = 999)
 options(max.print=1000000)
 

@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
+<file_path>test/testdata/GLRKT.txt</file_path>
 <label>text</label>
-<file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
+<file_name>GLRKT.txt</file_name>
 </student-step>
 </files>
 <inputmeta />
