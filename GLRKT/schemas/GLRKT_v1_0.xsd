@@ -92,47 +92,36 @@
         </xs:restriction>
   </xs:simpleType>
   
-  <xs:simpleType name="prespecfeaturesOption" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="basesuc,basefail,basesuc,basefail,propdec"/>
-            <xs:enumeration value="basesuc,basefail,basesuc,propdec"/>
-            <xs:enumeration value="basesuc,basefail"/>
-        </xs:restriction>
-  </xs:simpleType>
-  
-  <xs:simpleType name="plancomponentsOption" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="KC (Default),KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"/>
-            <xs:enumeration value="KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"/>
-            <xs:enumeration value="KC (Default),KC (Cluster)"/>
-        </xs:restriction>
-  </xs:simpleType>
-  
-  <xs:simpleType name="fixedparsOption" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value=".3,.3,.3,.3,.97"/>
-            <xs:enumeration value=".3,.3,.3,.97"/>
-            <xs:enumeration value=".3,.3"/>
-        </xs:restriction>
-  </xs:simpleType>
-  
-  <xs:simpleType name="seedparsOption" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value=".3,.3,.3,.3,.025"/>
-            <xs:enumeration value=".3,.3,.3,.025"/>
-            <xs:enumeration value=".3,.3"/>
-        </xs:restriction>
-  </xs:simpleType>
-  
-    <xs:complexType name="OptionsType">
+  <xs:complexType name="option_dependency">
+	<xs:choice>		
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="optRow2" ls:dependsOn="optRow1" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="optRow3" ls:dependsOn="optRow2" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="optRow4" ls:dependsOn="optRow3" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="optRow5" ls:dependsOn="optRow4" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="optRow6" ls:dependsOn="optRow5" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="optRow7" ls:dependsOn="optRow6" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="optRow8" ls:dependsOn="optRow7" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="optRow9" ls:dependsOn="optRow8" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="optRow10" ls:dependsOn="optRow9" ls:constraint="matches(null)" ls:negation="true"/>
+	</xs:choice>
+</xs:complexType>
+
+  <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
-        <xs:element type="prespecfeaturesOption"  name="prespecfeatures" id="Prespecfeatures" default="basesuc,basefail,basesuc,propdec"/>
-        <xs:element type="plancomponentsOption"  name="plancomponents" id="Plancomponents" default="KC (Default),KC (Cluster),KC (Cluster),Anon Student Id"/>
-        <xs:element type="fixedparsOption"  name="fixedpars" id="Fixedpars" default=".3,.3,.3,.97"/>
-        <xs:element type="seedparsOption"  name="seedpars" id="Seedpars" default=".3,.3,.3,.025"/>
+        <xs:element type="xs:string" name="optRow1" id="OptRow1" default="null" />
+        <xs:element type="xs:string" name="optRow2" id="OptRow2" default="null" />
+        <xs:element type="xs:string" name="optRow3" id="OptRow3" default="null" />
+        <xs:element type="xs:string" name="optRow4" id="OptRow4" default="null" />
+        <xs:element type="xs:string" name="optRow5" id="OptRow5" default="null" />
+        <xs:element type="xs:string" name="optRow6" id="OptRow6" default="null" />
+        <xs:element type="xs:string" name="optRow7" id="OptRow7" default="null" />
+        <xs:element type="xs:string" name="optRow8" id="OptRow8" default="null" />
+        <xs:element type="xs:string" name="optRow9" id="OptRow9" default="null" />
+        <xs:element type="xs:string" name="optRow10" id="OptRow10" default="null" />
+        
       </xs:choice>
-    </xs:complexType>
+  </xs:complexType>
  
   <xs:element name="component">
     <xs:complexType>

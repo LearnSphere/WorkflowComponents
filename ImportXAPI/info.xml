@@ -5,25 +5,8 @@
   <email>lzhang13@memphis.edu</email>
 </author>
 <url>https://github.com/PSLCDataShop/WorkflowComponents/tree/memphis/ImportXAPI</url>
-<date>2018-07-10</date>
-<abstract>ImportXAPI used for querying an LRS, filter functions of original study statements and then produce Tab-delimited format file that accepted by DataShop</abstract>
-<details>1.Require configuration file. The values on the left of the equals is the new header name that you prefer to use, while the values on the right side refers to the headers' names from original features/attributes from Learning Locker directly. Choose the headers' names from the xAPI-JsonFlattener-file.txt. 2.Output Two output files: xAPI_JsonFlattener_file_HeadNames.txt and xAPI_TabDelimited_file_HeadNames.txt.</details>
-
-<inputs>
-<b>Configuration file</b>
-<b>url,username,password,filter,filterValue and customFilter</b>
-</inputs>
-
-<outputs>
-<b>xAPI_JsonFlattener_file_HeadNames.txt</b> - List the heads' names from the XAPI statements in tabular representation <br/>
-<b>xAPI_TabDelimited_file.txt</b>-Present all columns for statistical models <br/>
-</outputs>
-<Options>
-    <b>Filter</b>-filterByVerb,filterByActor,filterByActivity,filterByRegistration,filterBySince,filterByUntil,Custome<br/>
-    <b>Url</b>-the url of learning locker account<br/>
-    <b>Username</b>- the usernmae of learning locker account<br/>
-    <b>Password</b>- the password of learning locker account<br/>
-    <b>FilterValue</b>- the correspodning id following Filter criterion<br/>
-    <b>CustomerFilter</b>use "Null" by default<br/>
-</Options>
+<date>2019-05-23</date>
+<abstract>ImportXAPI is used to query learning statements data from LRS, and export to Workflows of LearnSphere for model analysis.<br/>
+<a href="http://tiny.cc/xapidatashop" target="_blank"><button style="color:#F8F7F9;background-color:#8106BF;font-family:Arial;"><b>Click Here</b></button></a> <b>for more details on how to use Import XAPI.</b> 
+</abstract>
 </info>

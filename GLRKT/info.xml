@@ -12,7 +12,7 @@
 </description>
 
 <inputs>
-<b>plancomponents,fixedpars,seedpars,prespecfeatures,mode</b><br/>
+<b>mode,prespecfeatures,plancomponents,fixedpars,seedpars</b><br/>
 <b>mode</b> - This includes three modes: "best fit model", "five times 2 fold crossvalidated create folds", and "five times 2 fold crossvalidated read folds".
 </inputs>
 

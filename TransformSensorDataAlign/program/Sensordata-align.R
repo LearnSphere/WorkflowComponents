@@ -1,6 +1,7 @@
 # Component for Transforming Sensor Data and Alignment
 # Developed by Dr. Morshed and Ms. Afroz, The University of Memphis
 # Contact: bmorshed@memphis.edu and safroz@memphis.edu
+# component aligns and joins 2 sensor signals
 echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -9,7 +10,7 @@ args <- commandArgs(trailingOnly = TRUE)
 inputFile0 = NULL
 inputFile1 = NULL
 
-#initialize 
+#initialize
 inputFile0 = NULL
 inputFile1 = NULL
 workingDirectory = NULL
@@ -139,7 +140,7 @@ datalocation <- paste(componentDirectory, "/program/", sep="")
 if(inputHeader){
 FileInputData1 <-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 FileInputData2 <-read.table(inputFile1,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
-# Change the HeaderName to match with the table column header 
+# Change the HeaderName to match with the table column header
 file1ColumnName <- make.names(file1ColumnName)
 file2ColumnName <-make.names(file2ColumnName)
 
@@ -157,7 +158,7 @@ if(is.numeric(as.numeric(file2ColumnName))){
  file2ColumnName <- as.numeric(file2ColumnName)
 file2ColumnName <- file2ColumnName+1
 }
-# Change the column name of the table data 
+# Change the column name of the table data
  colnames(FileInputData1)[file1ColumnName] <- file1ColumnName
  colnames(FileInputData2)[file2ColumnName] <- file2ColumnName
 
@@ -186,7 +187,7 @@ offset <- as.numeric(offsetofsignal2fromsignal1)
 
 # Output sampling rate after interpolation (sps)
 SampOut <- as.numeric(outputresamplerate)
- 
+
 # CALCULATION starts from here
 # Determine lengths of input vectors
 LenInput1 <- length(InputData1)

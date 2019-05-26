@@ -14,9 +14,9 @@
   </xs:complexType>
   
   <xs:complexType name="InputType">
-    <xs:all>
-        <xs:element minOccurs="0" name="input0" type="InputDefinition0"/>
-    </xs:all>
+    <xs:choice maxOccurs="unbounded">
+        <xs:element minOccurs="0" name="input0" type="InputDefinition0" maxOccurs="10"/>
+    </xs:choice>
   </xs:complexType>
   
   <xs:complexType name="InputLabel">
@@ -48,15 +48,34 @@
     </xs:choice>
   </xs:complexType>
   
+    <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList1"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="image"/>
+    </xs:choice>
+  </xs:complexType>
   
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0"/>
+      <xs:element name="output1" type="OutputDefinition1"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="OptionsType">
-    <xs:choice maxOccurs="unbounded" minOccurs="0"/>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element type="xs:string"  name="freqthres" id="freqThres" default="0.1"/>
+    </xs:choice>
   </xs:complexType>
 
   <xs:element name="component">

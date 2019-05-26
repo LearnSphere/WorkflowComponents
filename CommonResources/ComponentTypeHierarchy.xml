@@ -32,6 +32,7 @@
 		<Deidentify />
 		<Discretize />
 		<Feature_Synthesis />
+		<Generate_GLRKT_Features />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
     <Import_EDF />
@@ -77,6 +78,7 @@
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
+		<LearningCurveGraph />
 		<Line_Graph />
 		<Scatter_Plot />
 		<Solution_Paths />

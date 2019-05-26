@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/transaction file output.txt</file_path>
+<file_path>test/testdata/GLRKT.txt</file_path>
 <label>text</label>
-<file_name>transaction file output.txt</file_name>
+<file_name>GLRKT.txt</file_name>
 </student-step>
 </files>
 <inputmeta />
@@ -34,10 +34,16 @@
 
 <options>
     <mode>best fit model</mode>
-    <plancomponents>KC (Default),KC (Cluster),KC (Cluster),Anon Student Id</plancomponents>
-    <fixedpars>.3,.3,.3,.97</fixedpars>
-    <seedpars>.3,.3,.3,.025</seedpars>
-    <prespecfeatures>basesuc,basefail,basesuc,propdec</prespecfeatures>
+    <optRow1>basesuc,KC (Default),.3,.3</optRow1>
+    <optRow2>basefail,KC (Cluster),.3,.3</optRow2>
+    <optRow3>basesuc,KC (Cluster),NA,.3</optRow3>
+    <optRow4>propdec,Anon Student Id,.97,NA</optRow4>
+    <optRow5>null</optRow5>
+    <optRow6>null</optRow6>
+    <optRow7>null</optRow7>
+    <optRow8>null</optRow8>
+    <optRow9>null</optRow9>
+    <optRow10>null</optRow10>
 </options>
 
 </component>
