@@ -53,6 +53,15 @@ Modify the `dir` variable in `WorkflowComponents/build.sh` to match your `Workfl
 
 Issue the `ant dist` command.
 
+## python dependencies 
+
+ python 3.6.0
+
+ pip install pandas 0.23.0
+
+ pip install  numpy 1.16.2
+
+
 
 
 

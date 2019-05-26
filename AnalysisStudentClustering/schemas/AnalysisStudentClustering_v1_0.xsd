@@ -69,11 +69,6 @@
     </xs:complexType>
 
 
-
-
-
-
-
     <xs:complexType name="OutputType">
         <xs:sequence>
             <xs:element name="output0" type="OutputDefinition0" />
@@ -81,16 +76,57 @@
         </xs:sequence>
     </xs:complexType>
 
-
-
-
-    <xs:complexType name="OptionsType">
+   <xs:simpleType name="methodType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="dpmeans"/>
+            <xs:enumeration value="kmeans"/>
+            <xs:enumeration value="hierarchical clustering"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="dataformatCheck" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="wide"/>
+            <xs:enumeration value="long"/>           
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="durationCheck" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>           
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="outcomeCheck" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>           
+        </xs:restriction>
+    </xs:simpleType>
+    
+     <xs:simpleType name="mean_or_median" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mean"/>
+            <xs:enumeration value="median"/>           
+        </xs:restriction>
+    </xs:simpleType>
+    
+       <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
              <xs:element type="FileInputHeader" name="student" id="student_ID" default=".*"  />
              <xs:element type="FileInputHeader" name="model" id="model" default=".*" />
              <xs:element type="FileInputHeader" name="duration" id="duration" default=".*" />
              <xs:element type="FileInputHeader" name="outcome" id="outcome" default=".*" />
              <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
+             <xs:element type="methodType"  name="method"  id="Type_of_Clustering" default="hierarchical clustering"/>
+             <xs:element type="xs:string" name="lambada" id="lambada" default="3" />
+             <xs:element type="dataformatCheck"  name="dataformat"  id="dataformat" default="wide"/>
+             <xs:element type="durationCheck"  name="isduration"  id="isduration" default="yes"/>
+             <xs:element type="outcomeCheck"  name="isoutcome"  id="isoutcome" default="yes"/>
+             <xs:element type="mean_or_median"  name="mean_or_median"  id="mean_or_median" default="mean"/>
+              
+             
+            
 
         </xs:choice>
     </xs:complexType>

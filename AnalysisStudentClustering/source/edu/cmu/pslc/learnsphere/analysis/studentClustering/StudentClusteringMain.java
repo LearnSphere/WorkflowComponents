@@ -37,14 +37,15 @@ public class StudentClusteringMain extends AbstractComponent {
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
         File outputDirectory = this.runExternal();
+        
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
            
             File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
-          //  File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
+            //File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/Results.txt");
 
-            if (file0 != null && file0.exists()  && file2 != null && file2.exists() ) {
+            if (file0 != null && file0.exists() && file2 != null && file2.exists() ) {
 
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;

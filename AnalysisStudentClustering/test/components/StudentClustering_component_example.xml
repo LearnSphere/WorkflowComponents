@@ -17,6 +17,13 @@
         <duration>Duration (sec)</duration>
         <outcome>Outcome</outcome>
         <numberOfClusters>4</numberOfClusters>
+        <lambada>3</lambada>
+        <!--kmeans, hierarchical clustering, dpmeans-->
+        <method>hierarchical clustering</method>
+        <dataformat>long</dataformat>
+        <isduration>yes</isduration>
+        <isoutcome>yes</isoutcome>
+        <mean_or_median>median</mean_or_median>
   </options>
     <inputs>
     <input0>
@@ -28,12 +35,16 @@
       <errors/>
       <files>
           <text>
-              <file_path>test/example_transactions/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
-              <file_name>data.txt</file_name>
+              <!-- ds1940_tx_All_Data_84_2016_1109_094411.txt-->
+              <!--DPmeans_input.xlsx -->
+              <file_path>test/example_transactions/ds1940_tx_All_Data_84_2016_1109_094411.txt </file_path>
+              <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt </file_name>
               <index>0</index>
               <label>text</label>
           </text>
       </files>
     </input0>
+    
+     
   </inputs>
 </component>
