@@ -250,12 +250,12 @@ if (method == "hierarchical clustering"){
        student_means<-cbind(student_means[,1],Clusters,student_means[,2:length(colnames(student_means))])
        names(student_means)[1]<-"Anon.Student.Id"
        # Output data
-       outputFilePath <- paste(workingDirectory,"hclust_result.txt", sep="")
+       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
        write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if(dataformat == "wide")
      {
-       outputFilePath <- paste(workingDirectory,"hclust_result.txt", sep="")
+       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
        df <- data.frame(student_id,Clusters)
        names(df) <- c("ID","Cluster")
        write.table(df ,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
@@ -278,12 +278,12 @@ if (method == "kmeans"){
     if (dataformat == "long")
     {   
       student_means<-cbind(student_means[,1],km$cluster,student_means[,2:length(colnames(student_means))])
-      outputFilePath <- paste(workingDirectory,"kmeans_result.txt", sep="")
+      outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
       write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if (dataformat == "wide")
      {
-        outputFilePath <- paste(workingDirectory,"kmeans_result.txt", sep="")
+        outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
        
         #print(id)
         res <-km$cluster
@@ -301,7 +301,7 @@ if (method == "kmeans"){
        
        dpmeanPath <-paste(dpmeanlocation,"DPmeans.py",sep="")
    
-       outputFilePath <- paste(workingDirectory,"DPmeans_result.txt", sep="") 
+       outputFilePath <- paste(workingDirectory,"Results.txt", sep="") 
        
        command = "python" 
        
