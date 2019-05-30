@@ -188,7 +188,7 @@ if (dataformat == "long")
 #aggregate data using z_scores
 if (isduration =="yes" && isoutcome == "yes")
 {
-    cols <- c('Duration..sec.', 'Outcome')
+    cols <- c(header3, header4)
     val[cols] <- scale(val[cols])
 }
 
@@ -270,6 +270,12 @@ if (method == "kmeans"){
    
    #Kmeans clustering
     km <- kmeans(mydata, centers=kClusters) 
+
+    switch(Sys.info()[['sysname']],
+
+    Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+    Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+    Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
   
    #kmeans visualization
     plot(km$cluster)
@@ -277,7 +283,8 @@ if (method == "kmeans"){
    #output kmeans results
     if (dataformat == "long")
     {   
-      student_means<-cbind(student_means[,1],km$cluster,student_means[,2:length(colnames(student_means))])
+      student_means<-cbind(student_means[,1],km$cluster,student_means[,2:length(colnames(student_means))])      
+      colnames(student_means)[colnames(student_means)=="km$cluster"] <- "Cluster "
       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
       write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }

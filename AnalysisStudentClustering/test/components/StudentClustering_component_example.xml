@@ -19,11 +19,11 @@
         <numberOfClusters>4</numberOfClusters>
         <lambada>3</lambada>
         <!--kmeans, hierarchical clustering, dpmeans-->
-        <method>hierarchical clustering</method>
+        <method>kmeans</method>
         <dataformat>long</dataformat>
         <isduration>yes</isduration>
-        <isoutcome>yes</isoutcome>
-        <mean_or_median>median</mean_or_median>
+        <isoutcome>no</isoutcome>
+        <mean_or_median>mean</mean_or_median>
   </options>
     <inputs>
     <input0>
