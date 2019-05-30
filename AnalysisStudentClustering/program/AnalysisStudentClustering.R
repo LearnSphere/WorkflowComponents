@@ -307,6 +307,19 @@ if (method == "kmeans"){
        dpmeanlocation <- paste(componentDirectory, "/program/", sep="") 
        
        dpmeanPath <-paste(dpmeanlocation,"DPmeans.py",sep="")
+
+       #Kmeans clustering
+       km <- kmeans(mydata, centers=kClusters) 
+
+        switch(Sys.info()[['sysname']],
+
+        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+        Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+        Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
+  
+       #kmeans visualization
+         plot(km$cluster)
+
    
        outputFilePath <- paste(workingDirectory,"Results.txt", sep="") 
        
