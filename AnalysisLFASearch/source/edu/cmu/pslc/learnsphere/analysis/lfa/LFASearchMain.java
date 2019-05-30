@@ -21,7 +21,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.FileHelper;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.IOUtil;
-
+import edu.cmu.pslc.statisticalCorrectnessModeling.utils.dataStructure.NamedMatrix;
 // The PenalizedAFMTransferModel applies the AFM to the student-step data.
 import edu.cmu.pslc.afm.transferModel.AFMTransferModel;
 import edu.cmu.pslc.afm.transferModel.PenalizedAFMTransferModel;
@@ -42,6 +42,10 @@ public class LFASearchMain extends AbstractComponent {
         private static final Integer unEXPANDED_STATE_SIZE = 1000;
         private static final boolean MULTI_CORE = false;
         private static final Integer NUMBER_OF_CORE = 1;
+        private static final int MAX_ROW_NUMBER = 10000;
+        private static final int MAX_STUDENT_NUMBER = 100;
+        private static final int MAX_P_SKILL_NUMBER = 100;
+        
 
     /**
      * Main method.
@@ -183,9 +187,9 @@ public class LFASearchMain extends AbstractComponent {
                                 return;
                         }
                 }
-                //input file can't have more than 100,000 rows
-                if (obsNum > 100000) {
-                        String errMsgForUI = "Input file is not allowed to contain more than 100,000 rows that have observations";
+                //input file can't have more than MAX_ROW_NUMBER rows
+                if (obsNum > MAX_ROW_NUMBER) {
+                        String errMsgForUI = "Number of data rows exceeds limit. Allowed: " + MAX_ROW_NUMBER + "; found: " + obsNum + ".";
                         String errMsgForLog = errMsgForUI;
                         handleAbortingError (errMsgForUI, errMsgForLog);
                         return;
@@ -257,11 +261,24 @@ public class LFASearchMain extends AbstractComponent {
                         SSSFile = "SSS.txt";
                 }
         }
-        //p matrix can't have more than 100 skills
         LFASearch lfaSearch = new LFASearch();
         AFMTransferModel initModel = lfaSearch.setupSearchWithDatashopExportFiles(componentOutputDir, componentOutputDir, matricesNames, matricesFileNames, SSSFile);
         if (initModel == null) {
                 String errMsgForUI = "Error found for initial model ";
+                String errMsgForLog = errMsgForUI;
+                handleAbortingError (errMsgForUI, errMsgForLog);
+                return;
+        }
+        if (initModel.getStudentParameters() != null && initModel.getStudentParameters().length > MAX_STUDENT_NUMBER) {
+                String errMsgForUI = "Number of students exceeds limit. Allowed: " + MAX_STUDENT_NUMBER + ", found: " + initModel.getStudentParameters().length + ".";
+                String errMsgForLog = errMsgForUI;
+                handleAbortingError (errMsgForUI, errMsgForLog);
+                return;
+        }
+        //p matrix can't have more than MAX_P_SKILL_NUMBER skills
+        NamedMatrix pMat = new NamedMatrix(IOUtil.read2DStringArray(componentOutputDir + "MultiModelCombinedPMatrix.txt"));
+        if (pMat.columns() > MAX_P_SKILL_NUMBER) {
+                String errMsgForUI = "Number of skills in P matrix exceeds limit. Allowed: " + MAX_P_SKILL_NUMBER + ", found: " + pMat.columns() + ".";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
                 return;

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Hui Cheng
-  <email>hcheng@cs.cmu.edu</email>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisLFA</url>
 <date>2016-06-08</date>
 <abstract>The <b>Learning Factor Analysis</b> (LFA) performs heuristic search over provided difficulty factors. 
 	Search ends when one of the following conditions is met in the order specified:
-	1. when all states are evaluated
-	2. when stop repetition count is met (see options section for explanation of stop repetition count)
-	3. when maximum iteration number is reached
+	<ul><li>when all states are evaluated</li>
+	<li>when stop repetition count is met (see options section for explanation of stop repetition count)</li>
+	<li>when maximum iteration number is reached</li>
+	</ul>
+	<p>Since LFA search is a very computational expensive process, we limit input data to contain less than 10,000 rows, less than 100 students and less than 100 difficulty factors.
+	If you have data larger than these limits, we recommend you to do following:
+	<ul><li>Include less students in your dataset</li>
+	<li>Break dataset up by unit so there are less difficulty factors to search through</li>
+	<li>Download LFA search program from <a href="https://pslcdatashop.web.cmu.edu/ExternalTools?toolId=10">Datashop External Tools (https://pslcdatashop.web.cmu.edu/ExternalTools?toolId=10)</a> and run LFA offline</li>
+	<li>Contact Datashop <a href="mailto:datashop-help@lists.andrew.cmu.edu">datashop-help@lists.andrew.cmu.edu</a> to have us run LFA search offline for you</li>
+	</ul>
+	</p>
 </abstract>
 <description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>
 
 <inputs><ul>
-<li>Datashop Student-Step Rollup export file. We limit the max number of rows to 100,000.</li>
+<li>Datashop Student-Step Rollup export file. We limit the max number of rows to 10,000, 100 students and 100 difficult factors.</li>
 </ul></inputs>
 
 <options>
