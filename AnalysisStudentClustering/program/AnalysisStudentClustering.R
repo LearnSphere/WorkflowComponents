@@ -9,6 +9,11 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # parse commandline args
 i = 1
+model = "KC (Default)" 
+duration = "Duration (sec)"
+student ="Anon Student Id"
+outcome = "Outcome"
+
 while (i <= length(args)) {
   if (args[i] == "-node") {
     if (length(args) < i+4) {
@@ -25,31 +30,38 @@ while (i <= length(args)) {
       
       
     i = i+4
-  }   else if (args[i] == "-student") {
-    if (length(args) == i) {
-      stop("student must be specified")
-    }
-    student = args[i+1]
-    i = i+1
-  }  else if (args[i] == "-model") {
-    if (length(args) == i) {
-      stop("model must be specified")
-    }
-    model = args[i+1]
-    i = i+1
-  } else if (args[i] == "-duration") {
-    if (length(args) == i) {
-      stop("duration must be specified")
-    }
-    duration = args[i+1]
-    i = i+1
-  } else if (args[i] == "-outcome") {
-    if (length(args) == i) {
-      stop("outcome must be specified")
-    }
-    outcome = args[i+1]
-    i = i+1
-  }
+  }   
+   #else if (args[i] == "-student") {
+    #if (length(args) == i) {
+     # stop("student must be specified")
+     #}
+    #student = args[i+1]
+    #i = i+1
+   #} 
+   #else if (args[i] == "-model") {
+    #if (length(args) == i) {
+      #stop("model must be specified")
+   # }
+     #model = args[i+1]
+     #i = i+1
+  #} 
+
+  # else if (args[i] == "-duration") {
+    #if (length(args) == i) {
+     # stop("duration must be specified")
+    #}
+    #duration = args[i+1]
+    #i = i+1
+  #} 
+
+   #else if (args[i] == "-outcome") {
+    #if (length(args) == i) {
+     # stop("outcome must be specified")
+    #}
+    #outcome = args[i+1]
+   # i = i+1
+  #}
+  
    else if (args[i] == "-method") {
     if (length(args) == i) {
       stop("clustering method must be specified")
