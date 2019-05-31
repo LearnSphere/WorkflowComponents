@@ -30,38 +30,8 @@ while (i <= length(args)) {
       
       
     i = i+4
-  }   
-   #else if (args[i] == "-student") {
-    #if (length(args) == i) {
-     # stop("student must be specified")
-     #}
-    #student = args[i+1]
-    #i = i+1
-   #} 
-   #else if (args[i] == "-model") {
-    #if (length(args) == i) {
-      #stop("model must be specified")
-   # }
-     #model = args[i+1]
-     #i = i+1
-  #} 
-
-  # else if (args[i] == "-duration") {
-    #if (length(args) == i) {
-     # stop("duration must be specified")
-    #}
-    #duration = args[i+1]
-    #i = i+1
-  #} 
-
-   #else if (args[i] == "-outcome") {
-    #if (length(args) == i) {
-     # stop("outcome must be specified")
-    #}
-    #outcome = args[i+1]
-   # i = i+1
-  #}
-  
+   }   
+    
    else if (args[i] == "-method") {
     if (length(args) == i) {
       stop("clustering method must be specified")
@@ -76,14 +46,14 @@ while (i <= length(args)) {
     }
     dataformat = args[i+1]
     i = i+1
-  }
- else if (args[i] == "-isduration") {
+    }
+  else if (args[i] == "-isduration") {
     if (length(args) == i) {
       stop("isduration method must be specified")
     }
     isduration = args[i+1]
     i = i+1
-  }
+    }
 
 else if (args[i] == "-isoutcome") {
     if (length(args) == i) {
@@ -91,7 +61,7 @@ else if (args[i] == "-isoutcome") {
     }
     isoutcome = args[i+1]
     i = i+1
-  }
+    }
 else if (args[i] == "-mean_or_median") {
     if (length(args) == i) {
       stop("mean_or_median must be specified")
@@ -339,7 +309,7 @@ if (method == "kmeans"){
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file
       
-       args = c(inputFile,lambada,10,outputFilePath)
+       args = c(dataformat,inputFile,lambada,10,outputFilePath)
 
        allArgs = c(dpmeanPath, args)
 
