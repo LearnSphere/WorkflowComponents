@@ -102,7 +102,7 @@ for(k in 1:models){
     }#end splittimes
 
     #Create Function plotlearning
-    plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthresfnc){
+    plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthres){
       if(f==TRUE){
         #x11(width=5.5, height=8)
         par(mfrow=c(2,1))
@@ -185,11 +185,6 @@ for(k in 1:models){
         axis(side=1,at=1:len2,labels=1:len2)
         lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)}}#end plotlearning
 
-        propdec <- function (v,d){
-          w<-length(v)
-            (cat(v,d,w,"\n"))
-          sum((c(1,v[1:w]) * d^((w):0))/sum(d^((w+1):0)))}
-
         gs<-models
         switch(Sys.info()[['sysname']],
         Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
@@ -198,17 +193,14 @@ for(k in 1:models){
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
         #legend("topleft",legend=c("afm","log afm","pfa","log pfa","gong","propdec","RPFA","PPE","TKT","Dash")[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
         legend("topleft",legend=c("model 1","model 2","model 3","model 4","model 5","model 6","model 7","model 8","model 9","model 10")[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
+        i<-k
+        c<- ((i-1) %% 8)+1
+        switch(Sys.info()[['sysname']],
+        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+        Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+        Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
+        plotlearning(8,3,"KC..Default.",brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
 
-        ms<-k
-        for (j in 1:1){
-          for (i in 1:ms) {
-            c<- ((i-1) %% 8)+1
-            switch(Sys.info()[['sysname']],
-            Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
-            Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
-            Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
-            plotlearning(8,3,"KC..Default.",brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
-          }}
 }
 # Stop logging
 sink()
