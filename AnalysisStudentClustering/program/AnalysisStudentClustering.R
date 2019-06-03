@@ -1,5 +1,5 @@
 library(reticulate)
-use_python("/usr/local/bin/python")
+use_python("/usr/local/lib/python3.5")
 # Creates output log file
 echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
