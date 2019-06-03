@@ -304,9 +304,10 @@ if (method == "kmeans"){
 
    
        outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
-
+      
+      
    
-       command = "python" 
+       command = "/usr/local/bin/python3.5" 
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file
       
