@@ -94,31 +94,31 @@
   
   <xs:complexType name="option_dependency">
 	<xs:choice>		
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="optRow2" ls:dependsOn="optRow1" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="optRow3" ls:dependsOn="optRow2" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="optRow4" ls:dependsOn="optRow3" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="optRow5" ls:dependsOn="optRow4" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="optRow6" ls:dependsOn="optRow5" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="optRow7" ls:dependsOn="optRow6" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="optRow8" ls:dependsOn="optRow7" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="optRow9" ls:dependsOn="optRow8" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="optRow10" ls:dependsOn="optRow9" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="Term2" ls:dependsOn="Term1" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="Term3" ls:dependsOn="Term2" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="Term4" ls:dependsOn="Term3" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="Term5" ls:dependsOn="Term4" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="Term6" ls:dependsOn="Term5" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="Term7" ls:dependsOn="Term6" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="Term8" ls:dependsOn="Term7" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="Term9" ls:dependsOn="Term8" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="Term10" ls:dependsOn="Term9" ls:constraint="matches(null)" ls:negation="true"/>
 	</xs:choice>
 </xs:complexType>
 
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
-        <xs:element type="xs:string" name="optRow1" id="OptRow1" default="null" />
-        <xs:element type="xs:string" name="optRow2" id="OptRow2" default="null" />
-        <xs:element type="xs:string" name="optRow3" id="OptRow3" default="null" />
-        <xs:element type="xs:string" name="optRow4" id="OptRow4" default="null" />
-        <xs:element type="xs:string" name="optRow5" id="OptRow5" default="null" />
-        <xs:element type="xs:string" name="optRow6" id="OptRow6" default="null" />
-        <xs:element type="xs:string" name="optRow7" id="OptRow7" default="null" />
-        <xs:element type="xs:string" name="optRow8" id="OptRow8" default="null" />
-        <xs:element type="xs:string" name="optRow9" id="OptRow9" default="null" />
-        <xs:element type="xs:string" name="optRow10" id="OptRow10" default="null" />
+        <xs:element type="xs:string" name="Term1" id="Term1" default="null" />
+        <xs:element type="xs:string" name="Term2" id="Term2" default="null" />
+        <xs:element type="xs:string" name="Term3" id="Term3" default="null" />
+        <xs:element type="xs:string" name="Term4" id="Term4" default="null" />
+        <xs:element type="xs:string" name="Term5" id="Term5" default="null" />
+        <xs:element type="xs:string" name="Term6" id="Term6" default="null" />
+        <xs:element type="xs:string" name="Term7" id="Term7" default="null" />
+        <xs:element type="xs:string" name="Term8" id="Term8" default="null" />
+        <xs:element type="xs:string" name="Term9" id="Term9" default="null" />
+        <xs:element type="xs:string" name="Term10" id="Term10" default="null" />
         
       </xs:choice>
   </xs:complexType>
