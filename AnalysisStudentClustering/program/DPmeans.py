@@ -62,6 +62,7 @@ class DPMEANS:
 
 
 if __name__ == '__main__':
+    pd.options.mode.chained_assignment = None
   
     if sys.argv[1] == "wide":
    

@@ -8,7 +8,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # parse commandline args
 i = 1
-model = "KC (Default)" 
+ model = "KC (Default)" 
 duration = "Duration (sec)"
 student ="Anon Student Id"
 outcome = "Outcome"
@@ -290,34 +290,33 @@ if (method == "kmeans"){
        
        dpmeanPath <-paste(dpmeanlocation,"DPmeans.py",sep="")
 
+ 
        #Kmeans clustering
        km <- kmeans(mydata, centers=kClusters) 
 
-        switch(Sys.info()[['sysname']],
+       switch(Sys.info()[['sysname']],
 
-        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
-        Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
-        Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
+       Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+       Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+       Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
   
-       #kmeans visualization
-         plot(km$cluster)
-
-   
-       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
-      
+      #kmeans visualization
+       plot(km$cluster)
+         
+       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")  
       
    
-       command = "/usr/local/bin/python3.5" 
+       command = "/usr/local/bin/python3.5"
+       #command = "python" 
        
-       # arguments for the DPmeans : input file, lambada, iterations ,output file
-      
+       # arguments for the DPmeans : input file, lambada, iterations ,output file      
        args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median)
 
        allArgs = c(dpmeanPath, args)
 
-       system2(command, args=allArgs, stdout=TRUE)      
+       system2(command, args=allArgs, stdout=TRUE) 
 
-       
+     
   }
   
 # Stop logging
