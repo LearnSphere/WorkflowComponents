@@ -57,74 +57,74 @@ if (args[i] == "-mode") {
        mode = args[i+1]
        i = i+1
     } else  
-if (args[i] == "-optRow1") {
+if (args[i] == "-Term1") {
        if (length(args) == i) {
-          stop("Characteristics Values of optRow1 must be specified")
+          stop("Characteristics Values of Term1 must be specified")
        }
-       optRow1 = args[i+1]
+       Term1 = args[i+1]
        i = i+1
     } else 
-if (args[i] == "-optRow2") {
+if (args[i] == "-Term2") {
        if (length(args) == i) {
-          stop("Characteristics Values of optRow2 name must be specified")
+          stop("Characteristics Values of Term2 name must be specified")
        }
-       optRow2 = args[i+1]
+       Term2 = args[i+1]
        i = i+1
     } else 
-if (args[i] == "-optRow3") {
+if (args[i] == "-Term3") {
        if (length(args) == i) {
-          stop("Parameters' names of optRow3 must be specified")
+          stop("Parameters' names of Term3 must be specified")
        }
-       optRow3 = args[i+1]
+       Term3 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow4") {
+if (args[i] == "-Term4") {
        if (length(args) == i) {
-          stop("optRow4 name must be specified")
+          stop("Term4 name must be specified")
        }
-       optRow4 = args[i+1]
+       Term4 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow5") {
+if (args[i] == "-Term5") {
        if (length(args) == i) {
-          stop("optRow5 name must be specified")
+          stop("Term5 name must be specified")
        }
-       optRow5 = args[i+1]
+       Term5 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow6") {
+if (args[i] == "-Term6") {
        if (length(args) == i) {
-          stop("optRow6 name must be specified")
+          stop("Term6 name must be specified")
        }
-       optRow6 = args[i+1]
+       Term6 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow7") {
+if (args[i] == "-Term7") {
        if (length(args) == i) {
-          stop("optRow7 name must be specified")
+          stop("Term7 name must be specified")
        }
-       optRow7 = args[i+1]
+       Term7 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow8") {
+if (args[i] == "-Term8") {
        if (length(args) == i) {
-          stop("optRow8 name must be specified")
+          stop("Term8 name must be specified")
        }
-       optRow8 = args[i+1]
+       Term8 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow9") {
+if (args[i] == "-Term9") {
        if (length(args) == i) {
-          stop("optRow9 name must be specified")
+          stop("Term9 name must be specified")
        }
-       optRow9 = args[i+1]
+       Term9 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-optRow10") {
+if (args[i] == "-Term10") {
        if (length(args) == i) {
-          stop("optRow10 name must be specified")
+          stop("Term10 name must be specified")
        }
-       optRow10 = args[i+1]
+       Term10 = args[i+1]
        i = i+1
     } else
 if (args[i] == "-programDir") {
@@ -162,45 +162,56 @@ sourceFunction=paste(programLocation,"GLRKTfunctions.R",sep="")
 source(sourceFunction)
 
 #Transfer of the Parameters' Format
-print(mode)
+cat("mode:",mode,"\n")
 
-print(optRow1)
-print(optRow2)
-print(optRow3)
-print(optRow4)
-print(optRow5)
-print(optRow6)
-print(optRow7)
-print(optRow8)
-print(optRow9)
-print(optRow10)
-
-optRow1<-unlist(strsplit(optRow1,","))
-optRow2<-unlist(strsplit(optRow2,","))
-optRow3<-unlist(strsplit(optRow3,","))
-optRow4<-unlist(strsplit(optRow4,","))
-optRow5<-unlist(strsplit(optRow5,","))
-optRow6<-unlist(strsplit(optRow6,","))
-optRow7<-unlist(strsplit(optRow7,","))
-optRow8<-unlist(strsplit(optRow8,","))
-optRow9<-unlist(strsplit(optRow9,","))
-optRow10<-unlist(strsplit(optRow10,","))
+Term1<-unlist(strsplit(Term1,";"))
+Term2<-unlist(strsplit(Term2,";"))
+Term3<-unlist(strsplit(Term3,";"))
+Term4<-unlist(strsplit(Term4,";"))
+Term5<-unlist(strsplit(Term5,";"))
+Term6<-unlist(strsplit(Term6,";"))
+Term7<-unlist(strsplit(Term7,";"))
+Term8<-unlist(strsplit(Term8,";"))
+Term9<-unlist(strsplit(Term9,";"))
+Term10<-unlist(strsplit(Term10,";"))
 
 prespecfeatures=list()
 plancomponents=list()
-fixedpars=list()
-seedpars=list()
+fixedparsList=list()
+seedparsList=list()
 
-optList<-list(optRow1,optRow2,optRow3,optRow4,optRow5,optRow6,optRow7,optRow8,optRow9,optRow10)
+optList<-list(Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,Term9,Term10)
 
 for(i in 1:10){
     if(lengths(optList[i])==4){
-        prespecfeatures<-c(prespecfeatures,(optList[[i]])[1])
-        plancomponents<-c(plancomponents,(optList[[i]])[2])
-        fixedpars<-c(fixedpars,(optList[[i]])[3])
-        seedpars<-c(seedpars,(optList[[i]])[4])
+        prespecfeatures<-c(prespecfeatures,trimws((optList[[i]])[1]))
+        plancomponents<-c(plancomponents,trimws((optList[[i]])[2]))
+        fixedparsList<-c(fixedparsList,trimws((optList[[i]])[3]))
+        seedparsList<-c(seedparsList,trimws((optList[[i]])[4]))
     }
 }
+
+
+for(j in 1:length(fixedparsList)){
+    if(j>1){
+       fixedparsLi<-paste(fixedparsLi,fixedparsList[j],sep =',') 
+    }else{
+       fixedparsLi<-fixedparsList[1]
+    }
+}
+
+for(j in 1:length(seedparsList)){
+    if(j>1){
+       seedparsLi<-paste(seedparsLi,seedparsList[j],sep =',') 
+    }else{
+       seedparsLi<-seedparsList[1]
+    }
+}
+
+fixedpars<-fixedparsLi[1];
+fixedpars<-trimws(unlist(strsplit(fixedpars,",")))
+seedpars<-seedparsLi[1];
+seedpars<-trimws(unlist(strsplit(seedpars,",")))
 
 prespecfeatures<-as.character(prespecfeatures)
 plancomponents<-gsub("[ ()-]", ".",as.character(plancomponents))
@@ -210,7 +221,7 @@ suppressWarnings(seedpars<-as.numeric(seedpars))
 cat("prespecfeatures:",prespecfeatures,"\n")
 cat("plancomponents:",plancomponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
-cat("seedpars:",seedpars,"\n")
+cat("seedpars:",seedpars,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
