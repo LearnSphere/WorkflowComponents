@@ -1,5 +1,3 @@
-library(reticulate)
-use_python("/usr/local/lib/python3.5")
 # Creates output log file
 echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
@@ -305,8 +303,9 @@ if (method == "kmeans"){
          plot(km$cluster)
 
    
-       outputFilePath <- paste(workingDirectory,"Results.txt", sep="") 
-       
+       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
+
+   
        command = "python" 
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file
