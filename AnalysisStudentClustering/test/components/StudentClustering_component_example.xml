@@ -14,12 +14,12 @@
     <options>
         
         <numberOfClusters>4</numberOfClusters>
-        <lambada>50</lambada>
+        <lambada>3</lambada>
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>dpmeans</method>
         <dataformat>long</dataformat>
         <isduration>yes</isduration>
-        <isoutcome>no</isoutcome>
+        <isoutcome>yes</isoutcome>
         <mean_or_median>mean</mean_or_median>
   </options>
     <inputs>

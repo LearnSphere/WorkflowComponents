@@ -1,4 +1,5 @@
-
+library(reticulate)
+use_python("/usr/local/bin/python")
 # Creates output log file
 echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
@@ -128,6 +129,7 @@ if (dataformat == "long")
   header2 = gsub("[ ()-]", ".", model)
   header3 = gsub("[ ()-]", ".", duration)
   header4 = gsub("[ ()-]", ".", outcome)
+
   #This dataset has been cleaned beforehand
   val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
   val<-val[,c(header1,header2,header3,header4)]
@@ -309,7 +311,7 @@ if (method == "kmeans"){
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file
       
-       args = c(dataformat,inputFile,lambada,10,outputFilePath)
+       args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median)
 
        allArgs = c(dpmeanPath, args)
 

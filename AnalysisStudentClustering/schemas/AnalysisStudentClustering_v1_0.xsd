@@ -112,11 +112,7 @@
     </xs:simpleType>
     
        <xs:complexType name="OptionsType">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-             <!--<xs:element type="FileInputHeader" name="student" id="student_ID" default=".*"  />-->
-             <!--<xs:element type="FileInputHeader" name="model" id="model" default=".*" />-->
-             <!--<xs:element type="FileInputHeader" name="duration" id="duration" default=".*" />-->
-             <!--<xs:element type="FileInputHeader" name="outcome" id="outcome" default=".*" /> -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">            
              <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
              <xs:element type="methodType"  name="method"  id="Type_of_Clustering" default="hierarchical clustering"/>
              <xs:element type="xs:string" name="lambada" id="lambada" default="3" />

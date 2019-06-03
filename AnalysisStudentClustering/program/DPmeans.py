@@ -3,6 +3,7 @@ import numpy as np
 import sys
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import LabelEncoder
+from scipy import stats
 
 class DPMEANS:
     def __init__(self, londa, max_iter=1):
@@ -158,37 +159,62 @@ if __name__ == '__main__':
             ids[row['Student Id']] = row['Anon Student Id']
             row_index[index]=row['Student Id']
 
-        df_for_clustering = df[['Student Id','Duration (sec)','outcome']]     
+        df_for_clustering = df[['Student Id','Duration (sec)','outcome']]
+     
+        isoutcome = sys.argv[6]
+        isduration =sys.argv[7]
+        mean_or_median = sys.argv[8]
+        np_components =0
+        istudentid = "no"
+        
+        if  isoutcome=="yes" and isduration=="no":
+            if mean_or_median =="mean" :
+                df_for_clustering=df_for_clustering.groupby('Student Id', as_index=False).agg({"outcome": "mean"})
+                np_components = 2
 
-        pca = PCA(n_components=3).fit(df_for_clustering)
+            if mean_or_median =="median" :
+                df_for_clustering=df_for_clustering.groupby('Student Id', as_index=False).agg({"outcome": "median"})
+                np_components = 2
+
+            istudentid="yes"
+
+        if isoutcome == "yes" and isduration == "yes":
+            df_for_clustering= stats.zscore(df_for_clustering)
+            np_components=3
+            istudentid = "no"
+
+        pca = PCA(n_components=np_components).fit(df_for_clustering)
         X = pca.transform(df_for_clustering)
 
         lambada = int(sys.argv[3])
         DF = DPMEANS(lambada, 10)
-        DF.fit(X)
+        DF.fit(X)     
+      
+        if istudentid == "yes" :
+            result=[]
+            for key, value in DF.s_l.items():
+                for item in value :
+                  temp = []
+                  temp.append(ids[item])
+                  temp.append(key)
+                  temp.append(df_for_clustering.iloc[item]['outcome'])
+                  result.append(temp)
+       
+            df_result = pd.DataFrame(result,columns=['Anon Student Id','Cluster','aggr.outcome'])
+            df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t')
 
-        clusters={}
-        res=[]
-        data_res=[]
-        
-        for item in DF.s_l :
-           res=DF.s_l[item]
-
-           #res.clear()
-           l=[]
-           for i in res:
-              l.append(row_index[i])
-
-           l=set(l)
-           res_1 =[]
-
-           for i in l :
-              temp=[]
-              res_1.append(ids[i])
-              res_1.append(item)
-              temp.append(ids[i])
-              temp.append(item)
-              data_res.append(temp)
-
-        df_result = pd.DataFrame(data_res,columns=['Anon Student Id','Cluster'])
-        df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t')
+        if istudentid == "no":
+            result_1=[]
+            for key, value in DF.s_l.items():
+               for index in value :
+                   temp=[]                
+                   temp.append(df_origin.iloc[index]['Anon Student Id'])
+                   temp.append(key)
+                   temp.append(df_origin.iloc[index]['Duration (sec)'])
+                   temp.append(df_origin.iloc[index]['Outcome'])
+                   temp.append(df_origin.iloc[index]['Level (Unit)'])
+                   #temp.append(df_origin.iloc[index]['KC (Default))'])
+                   result_1.append(temp)
+       
+            df_result = pd.DataFrame(result_1, columns=['Anon Student Id', 'Cluster','Duration','Outcome','Level Unit'])
+            df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t')
