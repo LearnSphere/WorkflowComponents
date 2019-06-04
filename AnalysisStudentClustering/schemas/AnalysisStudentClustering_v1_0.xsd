@@ -113,7 +113,7 @@
     
        <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">            
-             <xs:element type="xs:string" name="numberOfClusters(not dpmeans)" id="number_of_clusters" default="4" />
+             <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
              <xs:element type="methodType"  name="method"  id="Type_of_Clustering" default="hierarchical clustering"/>
              <xs:element type="xs:string" name="lambada" id="lambada" default="3" />
              <xs:element type="dataformatCheck"  name="dataformat"  id="dataformat" default="wide"/>
