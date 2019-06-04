@@ -8,7 +8,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # parse commandline args
 i = 1
- model = "KC (Default)" 
+model = "KC (Default)" 
 duration = "Duration (sec)"
 student ="Anon Student Id"
 outcome = "Outcome"
@@ -306,8 +306,8 @@ if (method == "kmeans"){
        outputFilePath <- paste(workingDirectory,"Results.txt", sep="")  
       
    
-       command = "/usr/local/bin/python3.5"
-       #command = "python" 
+       #command = "/usr/local/bin/python3.5"
+       command = "python" 
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file      
        args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median)

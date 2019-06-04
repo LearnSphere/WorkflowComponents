@@ -18,7 +18,7 @@
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>dpmeans</method>
         <dataformat>long</dataformat>
-        <isduration>no</isduration>
+        <isduration>yes</isduration>
         <isoutcome>yes</isoutcome>
         <mean_or_median>mean</mean_or_median>
   </options>
