@@ -11,17 +11,17 @@
         </connection>
     </connections>
   <options>
-    <url>http://lrs.x-in-y.com/data/xAPI/</url>
+    <url> http://lrs.x-in-y.com/data/xAPI/</url>
     <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
-    <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
+    <password> 0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
     <filter>filterByVerb</filter>
-    <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
+    <filterValue>https://umiis.github.io/ITSProfile/verbs/transition</filterValue>
     <limit>null</limit>
-    <queryPath01>verb,display,en-US</queryPath01>
+    <queryPath01> verb , display , en-US </queryPath01>
         <headers01>Action</headers01>
-    <queryPath02>actor,name</queryPath02>
+    <queryPath02> actor , name</queryPath02>
         <headers02>Student Name</headers02>
-    <queryPath03>context,extensions,http://autotutor.x-in-y.com/AT,timeTaken</queryPath03>
+    <queryPath03>context , extensions , http://autotutor.x-in-y.com/AT,timeTaken</queryPath03>
         <headers03>Time(secs)</headers03>
     <queryPath04>id</queryPath04>
         <headers04>ID</headers04>
@@ -30,7 +30,7 @@
     <queryPath06>verb,id</queryPath06>
         <headers06>Action</headers06>
     <queryPath07>null</queryPath07>
-        <headers07>null</headers07> 
+        <headers07>null</headers07>
     <queryPath08>null</queryPath08>
         <headers08>null</headers08>
     <queryPath09>null</queryPath09>

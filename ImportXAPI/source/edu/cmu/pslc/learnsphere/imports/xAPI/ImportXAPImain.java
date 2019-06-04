@@ -228,7 +228,6 @@ public class ImportXAPImain extends AbstractComponent {
                 
                 JSONArray jsonArray = new JSONArray(jsonTxt); 
                 int size = jsonArray.length();
-                
         
                 //Collect all the queryPaths and headers
                 List<String> allPathsList=new ArrayList<String>();
@@ -329,9 +328,9 @@ public class ImportXAPImain extends AbstractComponent {
                 map.put(0,row);
 
                 for(int j=0;j<selectPathsList.size();j++){  
-                    //Split the comma-separaeted queryPath
-
-                    List<String> queryPath00List = Arrays.asList(selectPathsList.get(j).split(",")); 
+                    
+                    //Split the comma-separated queryPath
+                    List<String> queryPath00List = Arrays.asList(selectPathsList.get(j).split(","));
                     int queryPath00Leth = queryPath00List.size();
                     List<String> mainValueList = new ArrayList<String>();
                     String queryStringValue = null;
@@ -341,13 +340,13 @@ public class ImportXAPImain extends AbstractComponent {
                     if (queryPath00Leth > 1) {
                             for (int i=0; i<size;i++){
                                 JSONObject sts= jsonArray.getJSONObject(i);
-                                    String queryStringValue0=queryPath00List.get(0);
+                                    String queryStringValue0=queryPath00List.get(0).trim();
                                     //System.out.println(sts.has(queryStringValue0));
                                     if(sts.has(queryStringValue0)){
                                         JSONObject node=sts.getJSONObject(queryStringValue0);
                                         if(queryPath00Leth > 2){
                                             for (int m=1;m<queryPath00Leth-1;m++){ 
-                                                queryStringValue=queryPath00List.get(m);
+                                                queryStringValue=queryPath00List.get(m).trim();
                                                 if(!node.has(queryStringValue)){
                                                     node=null;
                                                     break;
@@ -358,7 +357,7 @@ public class ImportXAPImain extends AbstractComponent {
                                             if(node==null){
                                                 qvalue="null";
                                             }else{
-                                                queryStringValue=queryPath00List.get(queryPath00Leth-1);
+                                                queryStringValue=queryPath00List.get(queryPath00Leth-1).trim();
                                                 //If qvalue !exists, make qvalue as NA
                                                 if(node.has(queryStringValue)){
                                                     qvalue = node.get(queryStringValue);
@@ -367,7 +366,7 @@ public class ImportXAPImain extends AbstractComponent {
                                                 }
                                             } 
                                         }else{
-                                            queryStringValue=queryPath00List.get(1);
+                                            queryStringValue=queryPath00List.get(1).trim();
                                             //If qvalue !exists, make qvalue as NA
                                             if(node.has(queryStringValue)){
                                                 qvalue= node.get(queryStringValue);
@@ -387,7 +386,7 @@ public class ImportXAPImain extends AbstractComponent {
                                 mainValueList.add(qvalue.toString());
                             }
                     } else {
-                        queryStringValue=queryPath00List.get(0);
+                        queryStringValue=queryPath00List.get(0).trim();
                         for (int i=0; i<size;i++){
                             JSONObject sts= jsonArray.getJSONObject(i);
                             if (sts.has(queryStringValue)){
@@ -405,7 +404,6 @@ public class ImportXAPImain extends AbstractComponent {
                     map.put(j+1,mainValueList);      
                 }
 
-                
                 int cSize=selectPathsList.size();
                 if (!limit.equals("null")){
                     int Limit = Integer.parseInt(limit);
