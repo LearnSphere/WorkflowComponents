@@ -17,7 +17,7 @@
         <lambada>3</lambada>
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>dpmeans</method>
-        <dataformat>long</dataformat>
+        <dataformat>wide</dataformat>
         <isduration>yes</isduration>
         <isoutcome>yes</isoutcome>
         <mean_or_median>mean</mean_or_median>
@@ -34,8 +34,8 @@
           <text>
               <!-- ds1940_tx_All_Data_84_2016_1109_094411.txt-->
               <!--DPmeans_input.xlsx -->
-              <file_path>test/example_transactions/ds1940_tx_All_Data_84_2016_1109_094411.txt </file_path>
-              <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
+              <file_path>test/example_transactions/DPmeans_input.xlsx </file_path>
+              <file_name>DPmeans_input.xlsx</file_name>
               <index>0</index>
               <label>text</label>
           </text>
