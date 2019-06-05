@@ -34,6 +34,11 @@
       <xs:enumeration value="filterByUntil" />
       <xs:enumeration value="filterByActivity" />
       <xs:enumeration value="filterByRegistration" />
+      <xs:enumeration value="filterByStatementId"/>
+      <xs:enumeration value="filterByVerb_filterBySince"/>
+      <xs:enumeration value="filterByVerb_filterByUntil"/>
+      <xs:enumeration value="filterByActor_filterBySince"/>
+      <xs:enumeration value="filterByActor_filterByUntil"/>
     </xs:restriction>
   </xs:simpleType>
   

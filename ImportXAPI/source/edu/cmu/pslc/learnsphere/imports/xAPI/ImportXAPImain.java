@@ -199,12 +199,132 @@ public class ImportXAPImain extends AbstractComponent {
                 limit=this.getOptionAsString("limit");
                 
 	    	StatementClient client = new StatementClient(url, username, password);
+                String jsonTxt = null;
+                
+        if (filter.equals("filterByStatementId")){
+            //Query by statement id
+                String jsonTxtSpr1 =null;
+                Statement result = client.getStatement(filterValue);
+                Object object1= result.serialize();
+                
+                Gson gson1 = new Gson();
+                jsonTxtSpr1= gson1.toJson(object1).toString();
+                String Str="[";
+                jsonTxt=new StringBuilder(Str).append(jsonTxtSpr1).toString();
+                jsonTxt=new StringBuilder(jsonTxt).append("]").toString();
+        }
+        
+        else if (filter.equals("filterByVerb_filterBySince")){
+            //Query by the combined conditions: filterByVerb and filterBySince
+                List<String> queryCombList = Arrays.asList(filterValue.split(","));
+                StatementResult results = client.filterByVerb(queryCombList.get(0)).filterBySince(queryCombList.get(1)).getStatements();
+                String jsonTxtSpr;
+                try {
+                     StringBuilder sb = new StringBuilder();
+                     Object object= results.getStatements();
+                     Gson gson = new Gson();
+	             sb.append(gson.toJson(object));
+                     
+                     while(results.hasMore()){
+                        String moreString = results.getMore();
+                        moreString = moreString.replace("/data/xAPI", "");
+                        results = client.getStatements(moreString);
+                        Object obj = results.getStatements();
+                        sb.append(gson.toJson(obj));
+                     }
+                     jsonTxtSpr= sb.toString();
+                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }        
+        }
+        
+        else if (filter.equals("filterByVerb_filterByUntil")){
+            //Query by the combined conditions: filterByVerb and filterByUntil
+                List<String> queryCombList = Arrays.asList(filterValue.split(","));
+                StatementResult results = client.filterByVerb(queryCombList.get(0)).filterByUntil(queryCombList.get(1)).getStatements();
+                String jsonTxtSpr;
+                try {
+                     StringBuilder sb = new StringBuilder();
+                     Object object= results.getStatements();
+                     Gson gson = new Gson();
+	             sb.append(gson.toJson(object));
+                     
+                     while(results.hasMore()){
+                        String moreString = results.getMore();
+                        moreString = moreString.replace("/data/xAPI", "");
+                        results = client.getStatements(moreString);
+                        Object obj = results.getStatements();
+                        sb.append(gson.toJson(obj));
+                     }
+                     jsonTxtSpr= sb.toString();
+                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }        
+        }
+        
+        else if (filter.equals("filterByActor_filterBySince")){
+            //Query by the combined conditions: filterByActor and filterBySince
+                List<String> queryCombList = Arrays.asList(filterValue.split(","));
+                Actor actor = new Agent(null,queryCombList.get(0));
+                StatementResult results = client.filterByActor(actor).filterBySince(queryCombList.get(1)).getStatements();
+                String jsonTxtSpr;
+                try {
+                     StringBuilder sb = new StringBuilder();
+                     Object object= results.getStatements();
+                     Gson gson = new Gson();
+	             sb.append(gson.toJson(object));
+                     
+                     while(results.hasMore()){
+                        String moreString = results.getMore();
+                        moreString = moreString.replace("/data/xAPI", "");
+                        results = client.getStatements(moreString);
+                        Object obj = results.getStatements();
+                        sb.append(gson.toJson(obj));
+                     }
+                     jsonTxtSpr= sb.toString();
+                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }        
+        }     
+
+        else if (filter.equals("filterByActor_filterByUntil")){
+            //Query by the combined conditions: filterByActor and filterByUntil
+                List<String> queryCombList = Arrays.asList(filterValue.split(","));
+                Actor actor = new Agent(null,queryCombList.get(0));
+                StatementResult results = client.filterByActor(actor).filterByUntil(queryCombList.get(1)).getStatements();
+                String jsonTxtSpr;
+                try {
+                     StringBuilder sb = new StringBuilder();
+                     Object object= results.getStatements();
+                     Gson gson = new Gson();
+	             sb.append(gson.toJson(object));
+                     
+                     while(results.hasMore()){
+                        String moreString = results.getMore();
+                        moreString = moreString.replace("/data/xAPI", "");
+                        results = client.getStatements(moreString);
+                        Object obj = results.getStatements();
+                        sb.append(gson.toJson(obj));
+                     }
+                     jsonTxtSpr= sb.toString();
+                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }        
+        }   
+        
+        else {    
+            //Query by other functions    
+                String jsonTxtSpr;
                 client = getStatementClientWithFilter(filter,filterValue, client,customfilter);
                 StatementResult results = client.getStatements();
-                
-                String jsonTxt = null;
-                String jsonTxtSpr;
-                
                 // Retrieving xAPI statements
 	        try {
                      StringBuilder sb = new StringBuilder();
@@ -225,10 +345,10 @@ public class ImportXAPImain extends AbstractComponent {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	        }
+        }
                 
                 JSONArray jsonArray = new JSONArray(jsonTxt); 
                 int size = jsonArray.length();
-        
                 //Collect all the queryPaths and headers
                 List<String> allPathsList=new ArrayList<String>();
                 List<String> allHeadersList=new ArrayList<String>();        
@@ -341,7 +461,6 @@ public class ImportXAPImain extends AbstractComponent {
                             for (int i=0; i<size;i++){
                                 JSONObject sts= jsonArray.getJSONObject(i);
                                     String queryStringValue0=queryPath00List.get(0).trim();
-                                    //System.out.println(sts.has(queryStringValue0));
                                     if(sts.has(queryStringValue0)){
                                         JSONObject node=sts.getJSONObject(queryStringValue0);
                                         if(queryPath00Leth > 2){
@@ -370,18 +489,13 @@ public class ImportXAPImain extends AbstractComponent {
                                             //If qvalue !exists, make qvalue as NA
                                             if(node.has(queryStringValue)){
                                                 qvalue= node.get(queryStringValue);
-                                                //System.out.println(qvalue);
                                             }else{
                                                 qvalue="null";
                                             }
                                         }
-                                        //System.out.println(qvalue);
-                                        //mainValueList.add(qvalue.toString());
                                     }else{
                                         qvalue="null";
                                         logger.info("Incorrect Path String from the first node");
-                                        //mainValueList.add(qvalue.toString());
-                                        //System.out.println(qvalue);
                                     }
                                 mainValueList.add(qvalue.toString());
                             }
@@ -399,8 +513,7 @@ public class ImportXAPImain extends AbstractComponent {
                             }
                         }
                     }
-                    //System.out.println(mainValueList);
-                    //System.out.println(mainValueList);
+
                     map.put(j+1,mainValueList);      
                 }
 
@@ -412,8 +525,6 @@ public class ImportXAPImain extends AbstractComponent {
                     }
                 }
                 
-                //System.out.println(cSize);
-                //System.out.println(selectPathsList.size());
                 String [][] queryContent=new String[size][cSize+1];
                 //Create matrix for query content
                 for (int crf=0;crf<cSize+1;crf++){
@@ -443,7 +554,7 @@ public class ImportXAPImain extends AbstractComponent {
                 String fileType0 = "tab-delimited";
                 this.addOutputFile(jsonFile, nodeIndex0, fileIndex0, fileType0);
                 System.out.println(this.getOutput()); 
-          
+
 	}
             
             private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){
@@ -473,6 +584,16 @@ public class ImportXAPImain extends AbstractComponent {
                                 break;
                         case "Custom":
                                 outputClient = client.addFilter(customfilter,filterValue);
+                                break;
+                        case "filterByStatementId":
+                                break;
+                        case "filterByVerb_filterBySince":
+                                break;
+                        case "filterByVerb_filterByUntil":
+                                break;
+                        case "filterByActor_filterBySince":
+                                break;
+                        case "filterByActor_filterByUntil":
                                 break;
                         default:
                             this.addErrorMessage("Invalid filter type");
