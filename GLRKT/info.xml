@@ -10,22 +10,48 @@
 <details>
     This <b>GKT</b> component has three modes, but crossvalidation has not been thouroughly tested and shoudl be considered experimental. The user enters up to as many as 10 4 valued terms, where each of the 4 values defines a linear regression predictor term. Examples:
 
-    To produce standard AFM with random-effect intercepts:
-    Term 1: intercept@; Anon Student Id; NA ; NA
-    Term 2: intercept@; KC (Default); NA ; NA
-    Term 3: lineafm$; KC (Default); NA; NA
+    <p>To produce standard AFM with random-effect intercepts for student and KC:
+      <ol>
+              <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
+              <li>Term 2: intercept@; KC (Default); NA ; NA</li>
+              <li>Term 3: lineafm$; KC (Default); NA; NA</li></ol>
+</p>
 
-    To produce standard PFA with random-effect intercepts:
-    Term 1: intercept@; Anon Student Id; NA ; NA
-    Term 2: intercept@; KC (Default); NA ; NA
-    Term 3: linesuc$; KC (Default); NA; NA
-    Term 3: linefail$; KC (Default); NA; NA
-
-    To produce AFM with fixed-effect intercepts and long-term forgetting
-    Term 1: intercept; Anon Student Id; NA ; NA
-    Term 2: intercept; KC (Default); NA ; NA
-    Term 3: base2$; KC (Default); NA,NA; .3,.05
-
+      <p>To produce standard PFA with random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
+    <li>Term 2: intercept@; KC (Default); NA ; NA</li>
+    <li>Term 3: linesuc$; KC (Default); NA; NA</li>
+    <li>Term 4: linefail$; KC (Default); NA; NA</li></ol>
+</p>
+      <p>To produce AFM with fixed-effect intercepts for student and KC and long-term forgetting:
+        <ol>
+                <li>Term 1: intercept; Anon Student Id; NA ; NA</li>
+    <li>Term 2: intercept; KC (Default); NA ; NA</li>
+    <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li></ol>
+</p>
+      <p>To produce AFM model with fixed-effect intercepts for student and KC, KC long-term forgetting, and item level PFA (simple hierarcical domain model)
+        <ol>
+                <li>Term 1: intercept; Anon Student Id; NA ; NA</li>
+    <li>Term 2: intercept; KC (Default); NA ; NA</li>
+    <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li>
+    <li>Term 4: linesuc$; KC (Item); NA; NA</li>
+    <li>Term 5: linefail$; KC (Item); NA; NA</li></ol>
+</p>
+      <p>To produce PFA with student ability tracing :
+        <ol>
+                <li>Term 1: propdec; Anon Student Id; NA ; .9</li>
+    <li>Term 2: intercept; KC (Default); NA ; NA</li>
+    <li>Term 3: linesuc$; KC (Default); NA; NA</li>
+    <li>Term 4: linefail$; KC (Default); NA; NA</li></ol>
+</p>
+      <p>To produce PFA with long-term forgetting and random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
+    <li>Term 2: intercept@; KC (Default); NA ; NA</li>
+    <li>Term 3: base2suc$; KC (Default); NA; .3,.05</li>
+    <li>Term 4: base2fail$; KC (Default); NA; .3,.05</li></ol>
+</p>
 </details>
 
 <inputs>
