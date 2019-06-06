@@ -195,7 +195,7 @@ for(j in 1:length(fixedparsList)){
     if(j>1){
        fixedparsLi<-paste(fixedparsLi,fixedparsList[j],sep =',') 
     }else{
-       fixedparsLi<-fixedparsList[1]
+       fixedparsLi<-as.character(fixedparsList[1])
     }
 }
 
@@ -203,23 +203,12 @@ for(j in 1:length(seedparsList)){
     if(j>1){
        seedparsLi<-paste(seedparsLi,seedparsList[j],sep =',') 
     }else{
-       seedparsLi<-seedparsList[1]
+       seedparsLi<-as.character(seedparsList[1])
     }
 }
 
-fixedpars<-fixedparsLi[1];
-if (length(fixedpars)==1){
-    fixedpars=trimws(unlist(fixedpars))
-}else{
-    fixedpars<-trimws(unlist(strsplit(fixedpars,",")))
-}
-
-seedpars<-seedparsLi[1];
-if (length(seedpars)==1){
-    seedpars=trimws(unlist(seedpars))
-}else{
-    seedpars<-trimws(unlist(strsplit(seedpars,",")))
-}
+fixedpars<-trimws(unlist(strsplit(fixedparsLi,",")))
+seedpars<-trimws(unlist(strsplit(seedparsLi,",")))
 
 prespecfeatures<-as.character(prespecfeatures)
 plancomponents<-gsub("[ ()-]", ".",as.character(plancomponents))
