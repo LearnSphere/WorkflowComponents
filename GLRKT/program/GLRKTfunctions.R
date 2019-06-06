@@ -111,6 +111,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
   else{modeloptim(plancomponents,prespecfeatures,val)}#leaving open option to explicitly run without cross-val
 }#end mocv
 
+
 #Get feedback duration function, still experimental as awaiting response from Neil regarding a few questions 10/22/2018
 #High correlation between old export median RTs per sub and new export (r>.9).
 #Some outliers though, and some kludgey stuff that may disappear if Neil gives new export
@@ -439,7 +440,7 @@ modeloptim <- function(comps,feats,df)
 {
   tempfun <- function(pars){
 
-    # i ntialize counts and vars
+    # intialize counts and vars
     k<-0
     optimparcount<-1
     fixedparcount<-1
@@ -552,15 +553,6 @@ modeloptim <- function(comps,feats,df)
       if(length(pars)>0){cat(paste("  step par values ="), file = log_modeloptim)
         cat(pars,sep=",", file = log_modeloptim) }
       close(log_modeloptim)} else {
-        #save temp$data and pred as one output table, where data is frame, pred is
-        if(cvSwitch==0 & makeFolds==0){
-          pred<-predict(temp,type="response")
-          pred<-as.data.frame(pred)
-          data_pred<-cbind(df,pred)
-          outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
-          write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
-        }
-
         nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
         cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
         #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))

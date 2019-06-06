@@ -154,7 +154,7 @@ if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirecto
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
-options(width=120)
+options(width=300)
 
 # This dir contains the R program or any R helper functions
 programLocation<- paste(componentDirectory, "program/", sep="")
@@ -183,11 +183,21 @@ seedparsList=list()
 optList<-list(Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,Term9,Term10)
 
 for(i in 1:10){
-    if(lengths(optList[i])==4){
-        prespecfeatures<-c(prespecfeatures,trimws((optList[[i]])[1]))
-        plancomponents<-c(plancomponents,trimws((optList[[i]])[2]))
-        fixedparsList<-c(fixedparsList,trimws((optList[[i]])[3]))
-        seedparsList<-c(seedparsList,trimws((optList[[i]])[4]))
+    if(lengths(optList[i])>1){
+        if(!trimws((optList[[i]])[1])=="NULL"){
+            prespecfeatures<-c(prespecfeatures,trimws((optList[[i]])[1]))
+        }
+        if(!trimws((optList[[i]])[2])=="NULL"){
+            plancomponents<-c(plancomponents,trimws((optList[[i]])[2]))
+        }
+        if(lengths(optList[i])>2){
+            if(!trimws((optList[[i]])[3])=="NULL"){
+                fixedparsList<-c(fixedparsList,trimws((optList[[i]])[3]))
+            }
+            if(lengths(optList[i])>3&!trimws((optList[[i]])[4])=="NULL"){
+                seedparsList<-c(seedparsList,trimws((optList[[i]])[4]))
+            }
+        }
     }
 }
 
@@ -241,6 +251,12 @@ switch(mode,
          
          modeloptim(plancomponents,prespecfeatures,val)
          val$CF..modbin.= predict(temp,type="response")
+         
+         pred<-predict(temp,type="response")
+         pred<-as.data.frame(pred)
+         data_pred<-cbind(val,pred)
+         outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
+         write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
        },
 
        "five times 2 fold crossvalidated create folds"={
