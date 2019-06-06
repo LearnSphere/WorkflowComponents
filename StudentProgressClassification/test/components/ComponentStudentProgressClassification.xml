@@ -53,8 +53,6 @@
     </input1>
   </inputs>
   <options>
-    <low_usage_threshold>90%</low_usage_threshold>
-    <high_usage_threshold>110%</high_usage_threshold>
-    <accuracy_threshold>100%</accuracy_threshold>
+    <wow_factor>120%</wow_factor>
   </options>
 </component>

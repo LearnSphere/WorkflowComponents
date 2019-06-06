@@ -62,36 +62,21 @@ public class StudentProgressClassificationMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-            String s_highUsageThreshold  = this.getOptionAsString("high_usage_threshold");
-            String s_lowUsageThreshold  = this.getOptionAsString("low_usage_threshold");
-            String s_accuracyThreshold  = this.getOptionAsString("accuracy_threshold");
-            Integer highUsageThreshold = null;
-            Integer lowUsageThreshold = null;
+            String s_wowFactor  = this.getOptionAsString("wow_factor");
+            Integer wowFactor = null;
             try {
-                    highUsageThreshold = Integer.parseInt(s_highUsageThreshold);
-                    lowUsageThreshold = Integer.parseInt(s_lowUsageThreshold);
+                    wowFactor = Integer.parseInt(s_wowFactor);
             } catch (NumberFormatException nfe) {
                     //in case the input is number with a % sign
-                    s_highUsageThreshold = s_highUsageThreshold.substring(0, s_highUsageThreshold.length() - 1);
-                    s_lowUsageThreshold = s_lowUsageThreshold.substring(0, s_lowUsageThreshold.length() - 1);
+                    s_wowFactor = s_wowFactor.substring(0, s_wowFactor.length() - 1);
                     try {
-                            highUsageThreshold = Integer.parseInt(s_highUsageThreshold);
-                            lowUsageThreshold = Integer.parseInt(s_lowUsageThreshold);
+                            wowFactor = Integer.parseInt(s_wowFactor);
                     } catch (NumberFormatException nfe2) {}
             }
-            Integer accuracyThreshold = null;
-            try {
-                    accuracyThreshold = Integer.parseInt(s_accuracyThreshold);
-            } catch (NumberFormatException nfe) {
-                    //in case the input is number with a % sign
-                    s_accuracyThreshold = s_accuracyThreshold.substring(0, s_accuracyThreshold.length() - 1);
-                    try {
-                            accuracyThreshold = Integer.parseInt(s_accuracyThreshold);
-                    } catch (NumberFormatException nfe2) {}
-            }
-            if (highUsageThreshold == null || lowUsageThreshold == null || accuracyThreshold == null) {
+            
+            if (wowFactor == null) {
                     //send error message
-                    String errMsgForUI = "Usage or accuracy threshold is in wrong format. Use a number or number with percent.";
+                    String errMsgForUI = "Threshhod for Wow Status is in wrong format. Use a number or number with percent.";
                     String errMsgForLog = errMsgForUI;
                     handleAbortingError (errMsgForUI, errMsgForLog);
             }
@@ -102,11 +87,11 @@ public class StudentProgressClassificationMain extends AbstractComponent {
             logger.info("goalFile: " + goalFile.getAbsolutePath());
             
             //process files, acceptale delimiters are , or \t
-            String delim = ",";
+            char delim = ',';
             String fileExt = ".csv";
             LinkedHashMap<String, Integer> resourceUseColumnHeaders = WorkflowImportHelper.getColumnHeaders(resourceUseFile, delim);
             if (resourceUseColumnHeaders.size() <= 1) {
-                    delim = "\t";
+                    delim = '\t';
                     fileExt = ".txt";
                     resourceUseColumnHeaders = WorkflowImportHelper.getColumnHeaders(resourceUseFile, delim);
                     if (resourceUseColumnHeaders.size() <= 1) {
@@ -117,10 +102,10 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                             handleAbortingError (errMsgForUI, errMsgForLog);
                     }
             }
-            String goalDelim = ",";
+            char goalDelim = ',';
             LinkedHashMap<String, Integer> goalColumnHeaders = WorkflowImportHelper.getColumnHeaders(goalFile, goalDelim);
             if (goalColumnHeaders.size() <= 1) {
-                    goalDelim = "\t";
+                    goalDelim = '\t';
                     goalColumnHeaders = WorkflowImportHelper.getColumnHeaders(goalFile, goalDelim);
                     if (goalColumnHeaders.size() <= 1) {
                             //tried , and \t for delimiter. neither works. throw error
@@ -147,12 +132,13 @@ public class StudentProgressClassificationMain extends AbstractComponent {
             }
             //process goal. studentGoalItems has student id as key and goalItem as value
             Hashtable<String, GoalItem> studentGoalItems = new Hashtable<String, GoalItem>();
+            String s_delim = Character.toString(delim);
             try (BufferedReader bReader = new BufferedReader(new FileReader(goalFile));) {
                     //skip header line
                     String line = bReader.readLine();
                     line = bReader.readLine();
                     while (line != null) {
-                            String goalRow[] = line.split(delim, -1);
+                            String goalRow[] = line.split(s_delim, -1);
                             //GOAL_STUDENT_ID
                             String student = goalRow[goalColumnHeaders.get(GOAL_STUDENT_ID)];
                             GoalItem goalItem = new GoalItem();
@@ -202,7 +188,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                     String line = bReader.readLine();
                     line = bReader.readLine();
                     while (line != null) {
-                            String resourceUseRow[] = line.split(delim, -1);
+                            String resourceUseRow[] = line.split(s_delim, -1);
                             //RESOURCE_USE_TIME_FRAME_START
                             String tempVal = resourceUseRow[resourceUseColumnHeaders.get(RESOURCE_USE_TIME_FRAME_START)];
                             if (tempVal != null && !tempVal.trim().equals("")) {
@@ -238,10 +224,10 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                 try (BufferedReader bReader = new BufferedReader(new FileReader(resourceUseFile));) {
                         //skip headers
                         String headerLine = bReader.readLine();
-                        boolean headerWritten = false;
+                        bw.append(headerLine + delim + "status\n");
                         String line = bReader.readLine();
                         while (line != null) {
-                                String resourceUseRow[] = line.split(delim, -1);
+                                String resourceUseRow[] = line.split(s_delim, -1);
                                 //RESOURCE_USE_ANON_STUDENT_ID
                                 String student = resourceUseRow[resourceUseColumnHeaders.get(RESOURCE_USE_ANON_STUDENT_ID)];
                                 GoalItem goalItem = studentGoalItems.get(student);
@@ -318,15 +304,11 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                                         hasEmptyTimeFrameEnd = true;
                                 }
                                         
-                                String status = StudentStatusItem.computeProgressStatus(resourceUseItem, goalItem, (double)lowUsageThreshold/100, (double)highUsageThreshold/100, (double)accuracyThreshold/100);
+                                String status = StudentStatusItem.computeProgressStatus(resourceUseItem, goalItem, (double)wowFactor/100);
                                 
                                 if (status == null)
                                         status = "";
-                                //write header if it is not written yet
-                                if (!headerWritten) {
-                                        bw.append(headerLine + delim + "status\n");
-                                        headerWritten = true;
-                                }
+                                
                                 //write to output file with empty student progress classification
                                 if (!hasEmptyTimeFrameEnd)
                                         bw.append(line + delim + status + "\n");

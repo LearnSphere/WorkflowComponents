@@ -79,9 +79,7 @@
   
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    	<xs:element type="xs:string" name="low_usage_threshold" id="Percentage_Threshold_for_Less_than_Objective_Usage_To_Get_Miss_You" default="90%" />
-        <xs:element type="xs:string" name="high_usage_threshold" id="Percentage_Threshold_for_More_than_Objective_Usage_To_Get_Wow" default="110%" />
-        <xs:element type="xs:string" name="accuracy_threshold" id="Percentage_Threshold_for_Lower_than_Objective_Accuracy" default="30%" />
+    	<xs:element type="xs:string" name="wow_factor" id="Threshold_for_Wow_Status" default="120%" />
     </xs:choice>
   </xs:complexType>
 
