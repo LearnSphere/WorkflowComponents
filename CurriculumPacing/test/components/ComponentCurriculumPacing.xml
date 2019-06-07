@@ -1,0 +1,45 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>visualization #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>CurriculumPacing</component_name>
+  <component_type>visualization</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+<input0>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<tab-delimited>
+<index>0</index>
+<file_path>test/test_data/student_data.txt</file_path>
+<label>text</label>
+<file_name>student_data.txt</file_name>
+</tab-delimited>
+</files>
+<inputmeta />
+</input0>
+</inputs>
+
+<options>
+<Plot>Usage</Plot>
+<TimeScale>Relative</TimeScale>
+<TimeScaleRes>Week</TimeScaleRes>
+<RelMinTimeUnit>1</RelMinTimeUnit>
+<RelMaxTimeUnit>52</RelMaxTimeUnit>
+<AbsMinTimeUnit>1900-01-01 00:00:00</AbsMinTimeUnit>
+<AbsMaxTimeUnit>3000-01-01 00:00:00</AbsMaxTimeUnit>
+</options>
+
+</component>
