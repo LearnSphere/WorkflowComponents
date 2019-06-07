@@ -1,0 +1,37 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>transform #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>GenerateGKTFeatures</component_name>
+  <component_type>transform</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+    <input0>
+        <component_id>Import-1-x995490</component_id>
+        <component_id_human>Import #1</component_id_human>
+        <component_type>import</component_type>
+        <component_name>File</component_name>
+        <elapsed_seconds>0</elapsed_seconds>
+        <errors />
+        <files>
+            <file>
+            <index>0</index>
+            <file_path>test/testdata/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
+            <label>text</label>
+            <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
+            </file>
+        </files>
+    </input0>
+</inputs>
+<options>
+      <model>KC (Default)</model>
+</options>
+
+</component>

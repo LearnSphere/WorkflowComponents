@@ -8,49 +8,49 @@
 <date>March 21, 2019</date>
 <abstract>The <b>GKT</b> component is implements generalized knowledge tracing.</abstract>
 <details>
-    This <b>GKT</b> component has three modes, but crossvalidation has not been thouroughly tested and shoudl be considered experimental. The user enters up to as many as 10 4 valued terms, where each of the 4 values defines a linear regression predictor term. Examples:
+    This <b>GKT</b> component has three modes, but crossvalidation has not been thouroughly tested and shoudl be considered experimental. The user enters up to as many as 10 4 valued terms, where each of the 4 values defines a linear regression predictor term Only the first 2 terms are used if it is a feature that is linear (e.g. lineafm and logafm). Terms 3 and 4 represent the either fixed or seed parameters repectively, and should be comma seperated lists (except many non-linear features use only 1 parameter, so commas are unneeded then.) Examples:
 
     <p>To produce standard AFM with random-effect intercepts for student and KC:
       <ol>
-              <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
-              <li>Term 2: intercept@; KC (Default); NA ; NA</li>
-              <li>Term 3: lineafm$; KC (Default); NA; NA</li></ol>
+              <li>Term 1: intercept@; Anon Student Id</li>
+              <li>Term 2: intercept@; KC (Default)</li>
+              <li>Term 3: lineafm$; KC (Default)</li></ol>
 </p>
 
       <p>To produce standard PFA with random-effect intercepts for student and KC:
         <ol>
-                <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
-    <li>Term 2: intercept@; KC (Default); NA ; NA</li>
-    <li>Term 3: linesuc$; KC (Default); NA; NA</li>
-    <li>Term 4: linefail$; KC (Default); NA; NA</li></ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
 </p>
       <p>To produce AFM with fixed-effect intercepts for student and KC and long-term forgetting:
         <ol>
-                <li>Term 1: intercept; Anon Student Id; NA ; NA</li>
-    <li>Term 2: intercept; KC (Default); NA ; NA</li>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
     <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li></ol>
 </p>
       <p>To produce AFM model with fixed-effect intercepts for student and KC, KC long-term forgetting, and item level PFA (simple hierarcical domain model)
         <ol>
-                <li>Term 1: intercept; Anon Student Id; NA ; NA</li>
-    <li>Term 2: intercept; KC (Default); NA ; NA</li>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
     <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li>
-    <li>Term 4: linesuc$; KC (Item); NA; NA</li>
-    <li>Term 5: linefail$; KC (Item); NA; NA</li></ol>
+    <li>Term 4: linesuc$; KC (Item)</li>
+    <li>Term 5: linefail$; KC (Item)</li></ol>
 </p>
       <p>To produce PFA with student ability tracing :
         <ol>
-                <li>Term 1: propdec; Anon Student Id; NA ; .9</li>
-    <li>Term 2: intercept; KC (Default); NA ; NA</li>
-    <li>Term 3: linesuc$; KC (Default); NA; NA</li>
-    <li>Term 4: linefail$; KC (Default); NA; NA</li></ol>
+                <li>Term 1: propdec; Anon Student Id; NA; .9</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
 </p>
       <p>To produce PFA with long-term forgetting and random-effect intercepts for student and KC:
         <ol>
-                <li>Term 1: intercept@; Anon Student Id; NA ; NA</li>
-    <li>Term 2: intercept@; KC (Default); NA ; NA</li>
-    <li>Term 3: base2suc$; KC (Default); NA; .3,.05</li>
-    <li>Term 4: base2fail$; KC (Default); NA; .3,.05</li></ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: base2suc$; KC (Default); NA,NA; .3,.05</li>
+    <li>Term 4: base2fail$; KC (Default); NA,NA; .3,.05</li></ol>
 </p>
 </details>
 

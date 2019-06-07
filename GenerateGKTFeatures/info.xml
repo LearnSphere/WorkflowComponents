@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GenerateGKTFeatures</url>
+<date>May 08, 2019</date>
+<abstract>The <b>Generate GKT Features</b> This component generates some needed values for the GKT analysis.</abstract>
+<details>This component does preprocessing for the dataset. This is necessary for the dataset overall. Additionally this must be run once for each KC used in features with spacing effects (i.e. ppe and base4).</details>
+
+<inputs>
+  <b>transaction</b>
+</inputs>
+
+<outputs>
+<b>transaction</b>
+</outputs>
+
+<options>
+<b>KC model</b>
+</options>
+
+</info>
