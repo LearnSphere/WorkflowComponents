@@ -32,10 +32,8 @@
     <Deidentify />
     <Discretize />
     <Feature_Synthesis />
-    <Generate_GLRKT_Features />
     <Generate_GKT_Features />
     <Generate_PFA_Features />
-    <Generate_TKT_Features />
     <Import_EDF />
     <Import_XAPI />
     <Join />
@@ -60,8 +58,7 @@
     <BKT />
     <Correlation />
     <Cronbachs_Alpha />
-    <GLRKT/>
-    <GKT/>
+    <GKT />
     <Entity_Set />
     <iAFM />
     <Linear_Modeling />
@@ -72,7 +69,6 @@
     <Python_AFM />
     <RISE />
     <RLM_Fitting />
-    <TKT />
   </Analysis>
   <Visualization>
     <Recently_Used />
