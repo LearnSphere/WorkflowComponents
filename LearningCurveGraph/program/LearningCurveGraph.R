@@ -28,7 +28,7 @@ if (args[i] == "-node") {
     index = index + 1
     i = i+4
 
-    } else 
+    } else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -50,10 +50,10 @@ if (args[i] == "-programDir") {
        }
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
- 
+
 if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirectory)) {
 if (is.null(inputFile)) {
       warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
@@ -85,13 +85,13 @@ models<-length(files)
 for(k in 1:models){
     inputFile=files[k]
 
-    temp_pred<-read.table(inputFile,sep="\t", header=TRUE,quote="\"")
+    temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
     #Transfer to numeric
     freqthres<-as.numeric(freqthres)
 
     # Create Functions
     # general cause to self
-    countOutcome <-function(df,index,item) { 
+    countOutcome <-function(df,index,item) {
       df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
       df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
       as.numeric(df$temp)}
@@ -177,7 +177,7 @@ for(k in 1:models){
         data$tcor<-as.numeric(data$cor)+as.numeric(data$icor)
 
         dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
-        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x    
+        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
         len2<-sum(thres>(thres[1]*freqthres))
         par(mfg=c(2,1))
