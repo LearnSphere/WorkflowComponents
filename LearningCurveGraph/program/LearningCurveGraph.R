@@ -122,7 +122,7 @@ for(k in 1:models){
         dv<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
         len<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.05,max(dv[1:len])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len,labels=1:len)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
         lines(1:len,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:len],col=1,lty=1,lwd=2)
@@ -138,7 +138,7 @@ for(k in 1:models){
         dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
         len2<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len2,labels=1:len2)
         lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)
         lines(1:len2,aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x[1:len2],col=1,lty=1,lwd=2)
@@ -166,7 +166,7 @@ for(k in 1:models){
         # print(vpred[1:len])
         # print(1:len)
         par(mfg=c(1,1))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.05,max(dv[1:len])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len,labels=1:len)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
 
@@ -181,7 +181,7 @@ for(k in 1:models){
         thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
         len2<-sum(thres>(thres[1]*freqthres))
         par(mfg=c(2,1))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len2,labels=1:len2)
         lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)}}#end plotlearning
 

@@ -76,7 +76,7 @@
     <D3_Force_Layout />
     <Histogram />
     <Learning_Curves />
-    <LearningCurveGraph />
+    <GKT_Learning_Curve_Comparison />
     <Line_Graph />
     <Scatter_Plot />
     <Solution_Paths />
