@@ -7,15 +7,16 @@
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/LearningCurveGraph</url>
 <date>March 21, 2019</date>
 <abstract>The <b>LearningCurveGraph</b> component is an example of a(n) R component.</abstract>
-<description>This component is used to visualize the graphical results of the GLRKT Analysis.</description>
+<details>This component is used to visualize the graphical results of the GLRKT Analysis.</details>
 
 <inputs>
-    <b>temp_pred</b> - It is the file produced by the GLRKT component. 
+    <b>transaction file from GKT</b> - GKT adds a model probability column.
+    <b>KC to be plotted for each subject</b> - the graph is plotted for the repetitions of KCs, so the first value is the average proportion correct for the first time each student encounters each KC.
+    <b>frequency thrshold</b> - For each graph, the proportion of transactions that trial N needs to be of trial 1 for it to be plotted. (Provides a cutoff as a proportion of the first trial N.)
 </inputs>
 
 <outputs>
-<b>myplot.png</b>-It is the 
-
+<b>Figures for the plot</b> - the 2 panels are the the data before and after the longest time interval for each KC for each subject. The 2nd plot is a simple legend. Figures are numbered in the order of their attachemnt in the GUI.
 </outputs>
 
 </info>

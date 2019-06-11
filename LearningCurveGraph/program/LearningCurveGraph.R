@@ -28,7 +28,7 @@ if (args[i] == "-node") {
     index = index + 1
     i = i+4
 
-    } else 
+    } else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -50,10 +50,10 @@ if (args[i] == "-programDir") {
        }
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
- 
+
 if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirectory)) {
 if (is.null(inputFile)) {
       warning("Missing required input parameter(s): -node m -fileIndex n <infile>")
@@ -85,13 +85,13 @@ models<-length(files)
 for(k in 1:models){
     inputFile=files[k]
 
-    temp_pred<-read.table(inputFile,sep="\t", header=TRUE,quote="\"")
+    temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
     #Transfer to numeric
     freqthres<-as.numeric(freqthres)
 
     # Create Functions
     # general cause to self
-    countOutcome <-function(df,index,item) { 
+    countOutcome <-function(df,index,item) {
       df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
       df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
       as.numeric(df$temp)}
@@ -122,7 +122,7 @@ for(k in 1:models){
         dv<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
         len<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.05,max(dv[1:len])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len,labels=1:len)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
         lines(1:len,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:len],col=1,lty=1,lwd=2)
@@ -138,7 +138,7 @@ for(k in 1:models){
         dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
         len2<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len2,labels=1:len2)
         lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)
         lines(1:len2,aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x[1:len2],col=1,lty=1,lwd=2)
@@ -166,7 +166,7 @@ for(k in 1:models){
         # print(vpred[1:len])
         # print(1:len)
         par(mfg=c(1,1))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.05,max(dv[1:len])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len,labels=1:len)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
 
@@ -177,11 +177,11 @@ for(k in 1:models){
         data$tcor<-as.numeric(data$cor)+as.numeric(data$icor)
 
         dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
-        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x    
+        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
         len2<-sum(thres>(thres[1]*freqthres))
         par(mfg=c(2,1))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.05,max(dv[1:len2])+.05),type="n", xaxt="n")
+        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
         axis(side=1,at=1:len2,labels=1:len2)
         lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)}}#end plotlearning
 

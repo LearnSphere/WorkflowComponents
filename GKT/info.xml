@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GKT</url>
+<date>March 21, 2019</date>
+<abstract>The <b>GKT</b> component is implements generalized knowledge tracing.</abstract>
+<details>
+    This <b>GKT</b> component has three modes, but crossvalidation has not been thouroughly tested and shoudl be considered experimental. The user enters up to as many as 10 4 valued terms, where each of the 4 values defines a linear regression predictor term Only the first 2 terms are used if it is a feature that is linear (e.g. lineafm and logafm). Terms 3 and 4 represent the either fixed or seed parameters repectively, and should be comma seperated lists (except many non-linear features use only 1 parameter, so commas are unneeded then.) Examples:
+
+    <p>To produce standard AFM with random-effect intercepts for student and KC:
+      <ol>
+              <li>Term 1: intercept@; Anon Student Id</li>
+              <li>Term 2: intercept@; KC (Default)</li>
+              <li>Term 3: lineafm$; KC (Default)</li></ol>
+</p>
+
+      <p>To produce standard PFA with random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
+</p>
+      <p>To produce AFM with fixed-effect intercepts for student and KC and long-term forgetting:
+        <ol>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li></ol>
+</p>
+      <p>To produce AFM model with fixed-effect intercepts for student and KC, KC long-term forgetting, and item level PFA (simple hierarcical domain model)
+        <ol>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: base2$; KC (Default); NA,NA; .3,.05</li>
+    <li>Term 4: linesuc$; KC (Item)</li>
+    <li>Term 5: linefail$; KC (Item)</li></ol>
+</p>
+      <p>To produce PFA with student ability tracing :
+        <ol>
+                <li>Term 1: propdec; Anon Student Id; NA; .9</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
+</p>
+      <p>To produce PFA with long-term forgetting and random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: base2suc$; KC (Default); NA,NA; .3,.05</li>
+    <li>Term 4: base2fail$; KC (Default); NA,NA; .3,.05</li></ol>
+</p>
+</details>
+
+<inputs>
+    <b>Transaction export with GKT features (from Generate GKT Features Transform component)</b>
+</inputs>
+
+<outputs>
+    <b>Transaction export with model predictions attached, R model output with parameter values, R model fit statistics in xml</b>
+</outputs>
+
+<options>
+  <p>
+      <b>Type</b> - the user can select to find the best fitting model, or 5 times 2-fold cross-validation. 5 times 2-fold crossvalidation works only at the subject level (subject stratified) under the assumption that generalization to other subjects is what is desired. The user has the option to randomly create folds or to use the folds existing in a prior run of this component (i.e. if you feed the transaction file back into the analysis, you can choose read to use the exact same folds for a replication).</p>
+      <p>
+        <b>Term N</b> - The user can specify up to 10 terms</p>
+
+</options>
+
+</info>

@@ -106,6 +106,7 @@ val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmod
 eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
+val$Duration..sec.<-as.numeric(val$Duration..sec.)
 val$CF..reltime. <- practiceTime(val)
 options(scipen = 999)
 options(max.print=1000000)
