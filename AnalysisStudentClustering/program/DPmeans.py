@@ -65,81 +65,94 @@ if __name__ == '__main__':
     pd.options.mode.chained_assignment = None
   
     if sys.argv[1] == "wide":
+      extension= sys.argv[2].rpartition('.')[-1]
+      
+      if extension == "xlsx" :
+     
+        # Read data from the excel file
+        df = pd.read_excel(sys.argv[2])
    
+        # extract the students ids as a list
+        ids = pd.read_excel(sys.argv[2], usecols = "A")
+    
+        student_ids = ids.values.tolist()    
 
-      # Read data from the excel file
-      df = pd.read_excel(sys.argv[2])
+        data = df.iloc[:,1:36].values
+
+        #df_score =df.Posttest  
+        #data_score = df_score.values
+    
+        students_ids = {}
+        students_posttest = {}
+        student_pretest = {}
+        scores_index = {}
+
+        
+        #print(data)
+        pca = PCA(n_components=24).fit(data)
+        X = pca.transform(data)
    
-      # extract the students ids as a list
-      ids = pd.read_excel(sys.argv[2], usecols = "A")
+        lambada = int(sys.argv[3])   
+        iterations = int(sys.argv[4])    
     
-      student_ids = ids.values.tolist()    
+        DF = DPMEANS(lambada, iterations)
+        DF.fit(X)     
 
-      data = df.iloc[:,1:36].values
+        students_clusters = {}
+        for item in DF.s_l:
+           print(item , DF.s_l[item])
+           for s in DF.s_l[item] :
+             students_clusters[s]=item
 
-      #df_score =df.Posttest  
-      #data_score = df_score.values
+        data_res=[]
     
-      students_ids = {}
-      students_posttest = {}
-      student_pretest = {}
-      scores_index = {}
+        for i in range(len(student_ids)):
+           l=[]
+           l.append(student_ids[i][0].strip(":"))
+           l.append(students_clusters[i])
+           #l.append(students_posttest[i])
+           #l.append(student_pretest[i])
+           data_res.append(l)
+    
+        df_result = pd.DataFrame(data_res,columns=['ID', 'Cluster'])
+        df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t')
+    
+      if extension == "txt" :
+        df_origin = pd.read_table(sys.argv[2])
+        df = df_origin.drop(['Cluster '], axis=1)
 
-      #for i in range(len(data_score)):
-      #students_ids[i] = student_ids[i]
-      #students_posttest[i] = data_score[i]
+        LE = LabelEncoder()
+        df['Student Id'] = LE.fit_transform(df['student_means[, 1]'])
+        #print(df)
+        ids = {}
+        for index, row in df.iterrows():
+           ids[row['Student Id']] = row['student_means[, 1]']
 
-      #df_pretest = df.Prestest 
-      #pretest_score = df_pretest.values
 
-      #for i in range(len(pretest_score)):
-        #student_pretest[i]=pretest_score[i]
-
-      #print(data)
-      pca = PCA(n_components=24).fit(data)
-      X = pca.transform(data)
+        df_clustering=df.drop(['student_means[, 1]'],axis=1)
+        pca = PCA(n_components=2).fit(df_clustering)
+        X = pca.transform(df_clustering)
    
-      lambada = int(sys.argv[3])   
-      iterations = int(sys.argv[4])
+        lambada = int(sys.argv[3])   
+        iterations = int(sys.argv[4])    
     
-    
-      DF = DPMEANS(lambada, iterations)
-      DF.fit(X)
+        DF = DPMEANS(lambada, iterations)       
+        DF.fit(X)
 
-      #scores1 = []
+        students_clusters = {}
+        for key, value in DF.s_l.items():
+           for item in value:
+              students_clusters[ids[item]] = key
 
-      #for item in DF.s_l[1] :
-        #print(students_posttest[item])
-        #scores1.append(students_posttest[item])
+        clusters = []
+        for row in df_origin['student_means[, 1]'].items():
+            clusters.append(students_clusters[row[1]])
 
-      #scores_1_index={}
-      #for j in range(1, len(DF.s_l)+1):
-        #scores = []
-        #scores_1=[]
-          #for item in DF.s_l[j]:
-             #scores.append(students_posttest[item])
-              #scores_1.append(student_pretest[item])
-          #scores_index[j] = np.mean(scores)
-          #scores_1_index[j]=np.mean(scores_1)
 
-      students_clusters = {}
-      for item in DF.s_l:
-         print(item , DF.s_l[item])
-         for s in DF.s_l[item] :
-            students_clusters[s]=item
-
-      data_res=[]
-    
-      for i in range(len(student_ids)):
-          l=[]
-          l.append(student_ids[i][0].strip(":"))
-          l.append(students_clusters[i])
-          #l.append(students_posttest[i])
-          #l.append(student_pretest[i])
-          data_res.append(l)
-    
-      df_result = pd.DataFrame(data_res,columns=['ID', 'Cluster'])
-      df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t')
+        students =df['student_means[, 1]']
+        list_of_tuples = list(zip(students, clusters))
+        df_result = pd.DataFrame(list_of_tuples, columns=['Student', 'Cluster'])
+        df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t', mode='a')
 
     if sys.argv[1] == "long":
         df_origin = pd.read_table(sys.argv[2])

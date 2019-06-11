@@ -8,7 +8,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # parse commandline args
 i = 1
-model = "KC (Default)" 
+#model = "KC (Default)" 
 duration = "Duration (sec)"
 student ="Anon Student Id"
 outcome = "Outcome"
@@ -38,7 +38,13 @@ while (i <= length(args)) {
     method = args[i+1]
     i = i+1
   }
-
+    else if (args[i] == "-model") {
+    if (length(args) == i) {
+      stop("model must be specified")
+    }
+   model = args[i+1]
+    i = i+1
+   }
    else if (args[i] == "-dataformat") {
     if (length(args) == i) {
       stop("dataformat is not specified")
@@ -159,32 +165,40 @@ if (dataformat == "long")
     if (mean_or_median == "mean")
     { 
       val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
-      val<-val[,c(1,2,5,6)]
+      
     }
  if (mean_or_median == "median")
     {
      val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=median)
-     val<-val[,c(1,2,5,6)]
+    
     }
+   
+    val<-val[,c(1,2,5,6)]
+    colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
+    aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
+    #change data form and replace missing data with column means
+    student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
+    for(i in 2:ncol(student_means)){
+    student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
+
+     #mydata is a preprocessed data
+     mydata<-student_means[,c(2:length(colnames(student_means)))]
 }
 #aggregate data using z_scores
 if (isduration =="yes" && isoutcome == "yes")
 {
-    cols <- c(header3, header4)
-    val[cols] <- scale(val[cols])
+    val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
+    val<-val[,c(1,2,5,6)]
+    colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
+    aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
+    #change data form and replace missing data with column means
+    student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
+    for(i in 2:ncol(student_means)){
+    student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}    
+    mydata<-student_means[,c(2:length(colnames(student_means)))]
+    mydata<-scale(mydata)
+    mydata[is.nan(mydata)] <-0 
 }
-
- colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
- aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
-
- #change data form and replace missing data with column means
- student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
- for(i in 2:ncol(student_means)){
- student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
-
- #mydata is a preprocessed data
-  mydata<-student_means[,c(2:length(colnames(student_means)))]
- #mydata<-scale(mydata)
 
 } #end of if dataformat = "long"
 
@@ -195,13 +209,18 @@ if (dataformat == "wide")
   extension <-ext[-1]
   if (extension == "txt")
   {
-      mydata<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
+     
+      mydata<-read.delim(inputFile)
+      students <-mydata[,1]
+      mydata[,c("Cluster")] <- list(NULL)      
+      mydata<-mydata[,2:length(mydata)]
+     
   }
   if (extension == "xlsx")
   {
     library("xlsx") 
     mydata<- read.xlsx2(inputFile, 1, header=TRUE)
-    student_id <- mydata$X0
+    students <- mydata$X0
     mydata<-mydata[,-c(1,37,38)] 
         
   }
@@ -232,14 +251,14 @@ if (method == "hierarchical clustering"){
        student_means<-cbind(student_means[,1],Clusters,student_means[,2:length(colnames(student_means))])
        names(student_means)[1]<-"Anon.Student.Id"
        # Output data
-       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
+       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
        write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if(dataformat == "wide")
      {
-       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
-       df <- data.frame(student_id,Clusters)
-       names(df) <- c("ID","Cluster")
+       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
+       df <- data.frame(students,Clusters)
+       names(df) <- c("Student","Cluster")
        write.table(df ,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
      }
 
@@ -251,7 +270,7 @@ if (method == "kmeans"){
     set.seed(123)   
    
    #Kmeans clustering
-    km <- kmeans(mydata, centers=kClusters) 
+    km <- kmeans(mydata, centers=kClusters)   
 
     switch(Sys.info()[['sysname']],
 
@@ -259,25 +278,26 @@ if (method == "kmeans"){
     Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
     Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
   
-   #kmeans visualization
-    plot(km$cluster)
+   #plot no figure
+    plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+    text(x = 0.5, y = 0.5, paste("There is no figure.\n"),cex = 1.6, col = "black")
 
    #output kmeans results
+
     if (dataformat == "long")
     {   
       student_means<-cbind(student_means[,1],km$cluster,student_means[,2:length(colnames(student_means))])      
       colnames(student_means)[colnames(student_means)=="km$cluster"] <- "Cluster "
-      outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
+      outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
       write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if (dataformat == "wide")
      {
-        outputFilePath <- paste(workingDirectory,"Results.txt", sep="")
-       
+        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")       
         #print(id)
         res <-km$cluster
-        df <- data.frame(student_id,res)
-        names(df) <- c("ID","Cluster")
+        df <- data.frame(students,res)
+        names(df) <- c("Student","Cluster")
         write.table(df,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
      }   
 
@@ -288,22 +308,19 @@ if (method == "kmeans"){
               
        dpmeanlocation <- paste(componentDirectory, "/program/", sep="") 
        
-       dpmeanPath <-paste(dpmeanlocation,"DPmeans.py",sep="")
-
- 
-       #Kmeans clustering
-       km <- kmeans(mydata, centers=kClusters) 
-
+       dpmeanPath <-paste(dpmeanlocation,"DPmeans.py",sep="") 
+     
        switch(Sys.info()[['sysname']],
 
        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
        Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
        Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
   
-      #kmeans visualization
-       plot(km$cluster)
-         
-       outputFilePath <- paste(workingDirectory,"Results.txt", sep="")  
+      #plot no figure
+      plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+      text(x = 0.5, y = 0.5, paste("There is no figure.\n"),cex = 1.6, col = "black")
+       
+      outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")  
       
    
        command = "/usr/local/bin/python3.5"

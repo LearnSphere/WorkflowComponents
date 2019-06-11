@@ -43,7 +43,7 @@ public class StudentClusteringMain extends AbstractComponent {
            
             File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
             //File file1 = new File(outputDirectory.getAbsolutePath() + "/R_output_model_summary.txt");
-            File file2 = new File(outputDirectory.getAbsolutePath() + "/Results.txt");
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/Matrix.txt");
 
             if (file0 != null && file0.exists() && file2 != null && file2.exists() ) {
 
