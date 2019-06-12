@@ -229,10 +229,7 @@ if (dataformat == "wide")
 
 #clustering
 if (method == "hierarchical clustering"){
-   if (dataformat=="long")
-   {
-      mydata<-scale(mydata)
-   }
+  
     d <- dist(mydata, method = "euclidean") # distance matrix
     #jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
     switch(Sys.info()[['sysname']],
@@ -248,11 +245,15 @@ if (method == "hierarchical clustering"){
     Clusters <- cutree(fit, k=kClusters)
     if (dataformat == "long")
     {
-       student_means<-cbind(student_means[,1],Clusters,student_means[,2:length(colnames(student_means))])
-       names(student_means)[1]<-"Anon.Student.Id"
+      
+       Student <-student_means[,1]
+       Cluster <-Clusters
+       my_data <-data.frame(Student,Cluster)
+       my_data <-cbind(my_data,mydata)    
+
        # Output data
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-       write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+       write.table(my_data,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if(dataformat == "wide")
      {
@@ -285,11 +286,13 @@ if (method == "kmeans"){
    #output kmeans results
 
     if (dataformat == "long")
-    {   
-      student_means<-cbind(student_means[,1],km$cluster,student_means[,2:length(colnames(student_means))])      
-      colnames(student_means)[colnames(student_means)=="km$cluster"] <- "Cluster "
-      outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-      write.table(student_means,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+    {       
+       Student <-student_means[,1]
+       Cluster <-km$cluster
+       my_data <-data.frame(Student,Cluster)
+       my_data <-cbind(my_data,mydata)     
+       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
+       write.table(my_data,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if (dataformat == "wide")
      {

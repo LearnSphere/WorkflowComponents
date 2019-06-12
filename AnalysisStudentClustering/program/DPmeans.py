@@ -92,7 +92,7 @@ if __name__ == '__main__':
         pca = PCA(n_components=24).fit(data)
         X = pca.transform(data)
    
-        lambada = int(sys.argv[3])   
+        lambada = float(sys.argv[3])   
         iterations = int(sys.argv[4])    
     
         DF = DPMEANS(lambada, iterations)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
         pca = PCA(n_components=2).fit(df_clustering)
         X = pca.transform(df_clustering)
    
-        lambada = int(sys.argv[3])   
+        lambada = float(sys.argv[3])   
         iterations = int(sys.argv[4])    
     
         DF = DPMEANS(lambada, iterations)       
@@ -208,7 +208,7 @@ if __name__ == '__main__':
         pca = PCA(n_components=np_components).fit(df_for_clustering)
         X = pca.transform(df_for_clustering)
 
-        lambada = int(sys.argv[3])
+        lambada = float(sys.argv[3])
         DF = DPMEANS(lambada, 10)
         DF.fit(X)     
       
