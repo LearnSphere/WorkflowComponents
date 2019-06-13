@@ -23,15 +23,16 @@
         <files>
             <file>
             <index>0</index>
-            <file_path>test/testdata/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
+            <file_path>test/testdata/EDMSummerSchool.txt</file_path>
             <label>text</label>
-            <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
+            <file_name>EDMSummerSchool.txt</file_name>
             </file>
         </files>
     </input0>
 </inputs>
 <options>
-      <model>KC (Default)</model>
+      <model>KC (Unique-step)</model>
+      <Number_of_Students>null</Number_of_Students>
 </options>
 
 </component>
