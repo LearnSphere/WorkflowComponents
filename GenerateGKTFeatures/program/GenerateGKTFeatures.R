@@ -121,12 +121,8 @@ val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
 
-if(length(val$KC..Default.)>0){
-    val$KC..Default.[which(val$KC..Default.=="tones_neutral")] = "neutral"
-    keepKC = c("neutral","tone1","tone2","tone3","tone4")
-    keep=(which(val$Attempt.At.Step==1 & val$Selection!="done" & val$KC..Default. %in% keepKC & val$Student.Response.Type!="HINT_REQUEST"))
+keep=(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))& val$Student.Response.Type!="HINT_REQUEST"))
     val=val[keep,]
-}
 
 #remove no KC lines
 eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
