@@ -46,7 +46,7 @@ if (args[i] == "-node") {
           stop("model name must be specified")
        }
        KCmodel <- gsub("[ ()-]", ".", args[i+1])
-       i = i+1 
+       i = i+1
     }else
 if (args[i] == "-Number_of_Students") {
        if (length(args) == i) {
@@ -54,7 +54,7 @@ if (args[i] == "-Number_of_Students") {
        }
        Number_of_Students = args[i+1]
        i = i+1
-    } else 
+    } else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -62,17 +62,17 @@ if (args[i] == "-workingDir") {
 # This dir is the working dir for the component instantiation.
        workingDirectory = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
        }
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
- 
+
 if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile0)) {
       warning("Missing required input parameter: -file0")
@@ -102,7 +102,7 @@ smallSet <- function(data,nSub){
   totsub=length(unique(data$Anon.Student.Id))
   datasub=unique(data$Anon.Student.Id)
   smallSub=datasub[sample(1:totsub)[1:nSub]]
-  
+
   smallIdx=which(data$Anon.Student.Id %in% smallSub)
   smalldata = data[smallIdx,]
   smalldata=droplevels(smalldata)
@@ -117,6 +117,8 @@ for (i in unique(df$Anon.Student.Id)){
       [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
 return(temp)}
 
+val$Duration..sec.<-as.numeric(val$Duration..sec.)
+val$Duration..sec.[which(is.na(val$Duration..sec.))] = median(val$Duration..sec.,na.rm=TRUE)
 val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
@@ -128,13 +130,27 @@ keep=(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=pas
 eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
-val$Duration..sec.<-as.numeric(val$Duration..sec.)
 val$CF..reltime. <- practiceTime(val)
 options(scipen = 999)
 options(max.print=1000000)
 
 if(!Number_of_Students=="null"){
     val<-smallSet(val,as.numeric(Number_of_Students))
+}
+
+for(i in c(KCmodel)){
+  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+  eval(parse(text=paste("val$",i,"spacing <- compspacing(val,val$index,val$CF..Time.)",sep="")))
+  eval(parse(text=paste("val$",i,"relspacing <- compspacing(val,val$index,val$CF..reltime.)",sep="")))}
+
+for(i in c(KCmodel)){
+  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+  eval(parse(text=paste("val$",i,"meanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))
+  eval(parse(text=paste("val$",i,"relmeanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))  }
+
+for(i in c(KCmodel)){
+  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+  eval(parse(text=paste("val$",i,"spacinglagged <- laggedspacingf(val,val$index,val$",i,"spacing)",sep="")))
 }
 
 # Export modified data frame for reimport after header attachment
