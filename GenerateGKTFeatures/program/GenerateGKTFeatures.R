@@ -108,6 +108,32 @@ smallSet <- function(data,nSub){
   smalldata=droplevels(smalldata)
   return(smalldata)
 }
+# computes spacing from prior repetition for index (in seconds)
+compspacing <-function(df,index,times) {temp<-rep(0,length(df$CF..ansbin.))
+for (i in unique(index)){
+  lv<-length(df$CF..ansbin.[index==i])
+  if (lv>1){
+    temp[index==i]<-  c(0,times[index==i][2:(lv)] - times[index==i][1:(lv-1)])
+  }}
+return(temp)}
+
+# computes mean spacing
+meanspacingf <-function(df,index,spacings) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing
+for (i in unique(index)){
+  j<-length(temp[index==i])
+  if(j>1){temp[index==i][2]<- -1}
+  if(j==3){temp[index==i][3]<-spacings[index==i][2]}
+  if(j>3){temp[index==i][3:j]<-runmean(spacings[index==i][2:(j-1)],k=25,alg=c("exact"),align=c("right"))}}
+return(temp)}
+
+laggedspacingf <-function(df,index,spacings) {temp<-rep(0,length(df$CF..ansbin.))    #computes mean spacing
+for (i in unique(index)){
+  j<-length(temp[index==i])
+  if(j>1){temp[index==i][2]<- 0}
+  if(j>=3){temp[index==i][3:j]<-spacings[index==i][2:(j-1)]}
+}
+return(temp)}
+
 
 # computes practice times using trial durations only
 practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))
