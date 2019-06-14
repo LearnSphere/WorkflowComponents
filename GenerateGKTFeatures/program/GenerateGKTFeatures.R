@@ -137,6 +137,10 @@ for (i in unique(index)){
 return(temp)}
 
 
+if(!Number_of_Students=="null"){
+    val<-smallSet(val,as.numeric(Number_of_Students))
+}
+
 # computes practice times using trial durations only
 practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(df$Anon.Student.Id)){
@@ -152,17 +156,16 @@ val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..reltime. <- practiceTime(val)
 
-keep<-(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))))
+keep<-which(val$Attempt.At.Step==1 & 
+          eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep=""))) &
+          (val$CF..ansbin==0 | val$CF..ansbin.==1)
+          )
 val<-val[keep,]
-
-val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
+val<-droplevels(val)
 
 options(scipen = 999)
 options(max.print=1000000)
 
-if(!Number_of_Students=="null"){
-    val<-smallSet(val,as.numeric(Number_of_Students))
-}
 
 for(i in c(KCmodel)){
   val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
