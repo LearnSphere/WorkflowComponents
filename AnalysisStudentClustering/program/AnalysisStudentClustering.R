@@ -135,7 +135,9 @@ if (dataformat == "long")
   header4 = gsub("[ ()-]", ".", outcome)
 
   #This dataset has been cleaned beforehand
+  
   val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
+  origin_data<-val
   val<-val[,c(header1,header2,header3,header4)]
 
   val[,header4] <- as.character(val[,header4])
@@ -146,6 +148,8 @@ if (dataformat == "long")
 
   val[,3]<-as.numeric(val[,3])
   val[,4]<-as.numeric(val[,4])
+
+ 
 
  #Put between line 112 and 114; before aggregation
  # The following is about the "Duration" column, which I am not sure what it is called in line 112
@@ -162,7 +166,8 @@ if (dataformat == "long")
 #aggregation
  if (isduration =="yes" && isoutcome == "no")
   {
-    if (mean_or_median == "mean")
+   
+   if (mean_or_median == "mean")
     { 
       val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
       
@@ -173,8 +178,34 @@ if (dataformat == "long")
     
     }
    
-    val<-val[,c(1,2,5,6)]
-    colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
+    val<-val[,c(1,2,5)]
+    colnames(val)<-c('Anon.Student.Id','KC','Duration')
+    aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
+    #change data form and replace missing data with column means
+    student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
+    for(i in 2:ncol(student_means)){
+    student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
+
+     #mydata is a preprocessed data
+     mydata<-student_means[,c(2:length(colnames(student_means)))]
+}
+
+if (isduration =="no" && isoutcome == "yes")
+  {
+   
+   if (mean_or_median == "mean")
+    { 
+      val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
+      
+    }
+ if (mean_or_median == "median")
+    {
+     val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=median)
+    
+    }
+   
+    val<-val[,c(1,2,6)]
+    colnames(val)<-c('Anon.Student.Id','KC','Correct')
     aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
     #change data form and replace missing data with column means
     student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
@@ -249,11 +280,21 @@ if (method == "hierarchical clustering"){
        Student <-student_means[,1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
-       my_data <-cbind(my_data,mydata)    
-
+       #my_data <-cbind(my_data,mydata)    
+       origin_students<- origin_data[,4]
+       clstrs = list()
+        for (i in origin_students)
+        {
+          c= my_data$Cluster[my_data$Student==i]
+          clstrs <- c(clstrs,c)
+       }
+       cluster <- do.call(rbind, lapply(clstrs, as.numeric))
+       res<-data.frame(origin_students,cluster)
+       Clusters <-res$cluster
+       res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
        # Output data
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-       write.table(my_data,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+       write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if(dataformat == "wide")
      {
@@ -287,12 +328,23 @@ if (method == "kmeans"){
 
     if (dataformat == "long")
     {       
-       Student <-student_means[,1]
+       Student <-student_means[,1]       
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
-       my_data <-cbind(my_data,mydata)     
+       origin_students<- origin_data[,4]
+       clstrs = list()
+        for (i in origin_students)
+        {
+          c= my_data$Cluster[my_data$Student==i]
+          clstrs <- c(clstrs,c)
+       }
+       cluster <- do.call(rbind, lapply(clstrs, as.numeric))
+       res<-data.frame(origin_students,cluster)
+       Clusters <-res$cluster
+       res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
+       #my_data <-cbind(my_data,mydata)     
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-       write.table(my_data,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+       write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
     }
     if (dataformat == "wide")
      {
