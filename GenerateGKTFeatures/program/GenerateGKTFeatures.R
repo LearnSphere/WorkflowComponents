@@ -120,17 +120,15 @@ return(temp)}
 val$Duration..sec.<-as.numeric(val$Duration..sec.)
 val$Duration..sec.[which(is.na(val$Duration..sec.))] = median(val$Duration..sec.,na.rm=TRUE)
 val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
-val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
-val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
-
-keep=(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))& val$Student.Response.Type!="HINT_REQUEST"))
-    val=val[keep,]
-
-#remove no KC lines
-eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
-val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
+val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..reltime. <- practiceTime(val)
+
+keep<-(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))& val$Student.Response.Type!="HINT_REQUEST"))
+val<-val[keep,]
+
+val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
+
 options(scipen = 999)
 options(max.print=1000000)
 
