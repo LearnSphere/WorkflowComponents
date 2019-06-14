@@ -29,6 +29,13 @@ if (args[i] == "-node") {
     i = i+4
 
     } else
+if (args[i] == "-KC_Model") {
+       if (length(args) == i) {
+          stop("KC_Model must be specified")
+       }
+       KC_Model = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -82,6 +89,8 @@ suppressMessages(library(RColorBrewer))
 setwd(workingDirectory)
 models<-length(files)
 
+KC_Model<-gsub("[ ()-]", ".",as.character(KC_Model))
+
 for(k in 1:models){
     inputFile=files[k]
 
@@ -92,9 +101,9 @@ for(k in 1:models){
     # Create Functions
     # general cause to self
     countOutcome <-function(df,index,item) {
-      df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
-      df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
-      as.numeric(df$temp)}
+    df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
+    df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
+    as.numeric(df$temp)}
 
     #Create function splittimes
     splittimes<- function(times){
@@ -199,7 +208,7 @@ for(k in 1:models){
         Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
         Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
         Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
-        plotlearning(8,3,"KC..Default.",brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
+        plotlearning(8,3,KC_Model,brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
 
 }
 # Stop logging

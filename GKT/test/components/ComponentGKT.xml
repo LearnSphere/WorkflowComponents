@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/GKT.txt</file_path>
+<file_path>test/testdata/GKT_ChineseToneStudy.txt</file_path>
 <label>text</label>
-<file_name>GKT.txt</file_name>
+<file_name>GKT_ChineseToneStudy.txt</file_name>
 </student-step>
 </files>
 <inputmeta />
@@ -34,10 +34,10 @@
 
 <options>
     <mode>best fit model</mode>
-    <Term1>basesuc ;   KC (Default); NA, .3;  .3</Term1>
-    <Term2>basefail  ;KC (Cluster)   ; .3;.3 </Term2>
-    <Term3>basesuc  ;  KC (Cluster)  ;NA  ; .3, .3 </Term3>
-    <Term4>propdec  ;  Anon Student Id  ;.97 ;  NA  </Term4>
+    <Term1>basesuc ;   KC (Default); NA;  .3</Term1>
+    <Term2>lineafm;   KC (Default)</Term2>
+    <Term3>intercept; KC (Default)</Term3>
+    <Term4>null</Term4>
     <Term5>null</Term5>
     <Term6>null</Term6>
     <Term7>null</Term7>

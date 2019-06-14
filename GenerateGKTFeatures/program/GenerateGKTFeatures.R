@@ -48,6 +48,13 @@ if (args[i] == "-node") {
        KCmodel <- gsub("[ ()-]", ".", args[i+1])
        i = i+1 
     }else
+if (args[i] == "-Number_of_Students") {
+       if (length(args) == i) {
+          stop("Number_of_Students must be specified")
+       }
+       Number_of_Students = args[i+1]
+       i = i+1
+    } else 
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -91,6 +98,17 @@ outputFilePath<- paste(workingDirectory, "GKT.txt", sep="")
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 
+smallSet <- function(data,nSub){
+  totsub=length(unique(data$Anon.Student.Id))
+  datasub=unique(data$Anon.Student.Id)
+  smallSub=datasub[sample(1:totsub)[1:nSub]]
+  
+  smallIdx=which(data$Anon.Student.Id %in% smallSub)
+  smalldata = data[smallIdx,]
+  smalldata=droplevels(smalldata)
+  return(smalldata)
+}
+
 # computes practice times using trial durations only
 practiceTime <-function(df) {   temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(df$Anon.Student.Id)){
@@ -102,6 +120,10 @@ return(temp)}
 val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..KCindex.<-  paste(val$Anon.Student.Id,eval(parse(text=paste("val$",KCmodel,sep=""))),sep="-")
+
+keep=(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))& val$Student.Response.Type!="HINT_REQUEST"))
+    val=val[keep,]
+
 #remove no KC lines
 eval(parse(text=paste("val<-val[!is.na(val$",KCmodel,"),]",sep="")))
 val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
@@ -110,6 +132,10 @@ val$Duration..sec.<-as.numeric(val$Duration..sec.)
 val$CF..reltime. <- practiceTime(val)
 options(scipen = 999)
 options(max.print=1000000)
+
+if(!Number_of_Students=="null"){
+    val<-smallSet(val,as.numeric(Number_of_Students))
+}
 
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
