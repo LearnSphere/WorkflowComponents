@@ -92,6 +92,8 @@ sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
 
+library(caTools)
+
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "GKT.txt", sep="")
 
