@@ -152,7 +152,7 @@ val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..reltime. <- practiceTime(val)
 
-keep<-(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))& val$Student.Response.Type!="HINT_REQUEST"))
+keep<-(which(val$Attempt.At.Step==1 & val$Selection!="done" & eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep="")))))
 val<-val[keep,]
 
 val<-val[val$CF..ansbin==0 | val$CF..ansbin.==1,]
