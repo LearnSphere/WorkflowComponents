@@ -280,7 +280,7 @@ if (method == "hierarchical clustering"){
        Student <-student_means[,1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
-       my_data_wide <-cbind(my_data,mydata)    
+       #my_data_wide <-cbind(my_data,mydata)    
        origin_students<- origin_data[,4]
        clstrs = list()
         for (i in origin_students)
@@ -335,7 +335,7 @@ if (method == "kmeans"){
        Student <-student_means[,1]       
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
-       my_data_wide <-cbind(my_data,mydata) 
+       #my_data_wide <-cbind(my_data,mydata) 
 
        origin_students<- origin_data[,4]
        clstrs = list()
