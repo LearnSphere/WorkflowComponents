@@ -195,6 +195,7 @@ if __name__ == '__main__':
 
             istudentid="yes"
 
+
         if isoutcome == "yes" and isduration == "yes":
                df1=df_for_clustering.groupby(['Student Id'], as_index=False).agg({"outcome": "mean"})
                df1['outcome']= stats.zscore(df1['outcome'])

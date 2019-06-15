@@ -280,7 +280,7 @@ if (method == "hierarchical clustering"){
        Student <-student_means[,1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
-       #my_data <-cbind(my_data,mydata)    
+       my_data_wide <-cbind(my_data,mydata)    
        origin_students<- origin_data[,4]
        clstrs = list()
         for (i in origin_students)
@@ -292,9 +292,13 @@ if (method == "hierarchical clustering"){
        res<-data.frame(origin_students,cluster)
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
-       # Output data
-       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
+      
+       # Output data in lonfg format :
+       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="") 
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+
+       outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if(dataformat == "wide")
      {
@@ -331,6 +335,8 @@ if (method == "kmeans"){
        Student <-student_means[,1]       
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
+       my_data_wide <-cbind(my_data,mydata) 
+
        origin_students<- origin_data[,4]
        clstrs = list()
         for (i in origin_students)
@@ -342,9 +348,14 @@ if (method == "kmeans"){
        res<-data.frame(origin_students,cluster)
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
-       #my_data <-cbind(my_data,mydata)     
+           
+       #output in the long format:
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+     
+      #output in the long format
+       outputFilePath2<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(my_data_wide ,file=outputFilePath2,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if (dataformat == "wide")
      {
