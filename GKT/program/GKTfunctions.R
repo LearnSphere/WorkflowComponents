@@ -138,8 +138,9 @@ right = function (string, char){
 
 # general cause to self
 countOutcome <-function(df,index,item) {
-  df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
-  df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
+  df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
+             df$temp[tolower(as.character(df$Outcome))==tolower(item)]<-
+  as.numeric(df$temp[tolower(as.character(df$Outcome))==tolower(item)])-1
   as.numeric(df$temp)}
 
 countOutcomeDash <- function(times, scalev) {
@@ -210,8 +211,8 @@ y
 countOutcomeGen <-function(df,index,item,sourcecol,sourc) {
   df$tempout<-paste(df$Outcome,sourcecol)
   item<-paste(item,sourc)
-  df$temp<-ave(as.character(df$tempout),index,FUN =function(x) as.numeric(cumsum(x==item)))
-  df$temp[as.character(df$tempout)==item]<-as.numeric(df$temp[as.character(df$tempout)==item])-1
+  df$temp<-ave(as.character(df$tempout),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
+  df$temp[tolower(as.character(df$tempout))==tolower(item)]<-as.numeric(df$temp[tolower(as.character(df$tempout))==tolower(item)])-1
   as.numeric(df$temp)}
 
 # notation targetcol?whichtarget?sourcecol?whichsource
@@ -220,8 +221,8 @@ countOutcomeOther <-function(df,index,item,sourcecol,sourc,targetcol,target) {
   df$tempout<-paste(df$Outcome,sourcecol)
   item<-paste(item,sourc)
   targetcol<-as.numeric(targetcol==target)
-  df$temp<-ave(as.character(df$tempout),index,FUN =function(x) as.numeric(cumsum(x==item)))
-  df$temp[as.character(df$tempout)==item]<-as.numeric(df$temp[as.character(df$tempout)==item])-1
+  df$temp<-ave(as.character(df$tempout),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
+  df$temp[tolower(as.character(df$tempout))==tolower(item)]<-as.numeric(df$temp[tolower(as.character(df$tempout))==tolower(item)])-1
   as.numeric(df$temp) * targetcol}
 
 # computes practice times using trial durations only
