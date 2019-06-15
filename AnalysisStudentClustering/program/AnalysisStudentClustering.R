@@ -297,8 +297,8 @@ if (method == "hierarchical clustering"){
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="") 
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
-       outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
-       write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
+       #outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       #write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if(dataformat == "wide")
      {
@@ -354,8 +354,8 @@ if (method == "kmeans"){
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
      
       #output in the long format
-       outputFilePath2<- paste(workingDirectory,"Matrix_wide.txt", sep="")
-       write.table(my_data_wide ,file=outputFilePath2,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
+       #outputFilePath2<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       #write.table(my_data_wide ,file=outputFilePath2,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if (dataformat == "wide")
      {
