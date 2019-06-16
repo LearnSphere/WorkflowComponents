@@ -18,14 +18,6 @@
    </outputs>
    <options>
      <ol>
-       <xs:element type="FileInputHeader" name="model" id="model_of_features" default=".*" />
-       <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
-       <xs:element type="methodType"  name="method"  id="type_of_clustering" default="hierarchical clustering"/>
-       <xs:element type="xs:string" name="lambda" id="lambda" default="3" />
-       <xs:element type="dataformatCheck"  name="dataformat"  id="input_data_format" default="wide"/>
-       <xs:element type="durationCheck"  name="isduration"  id="use_duration" default="yes"/>
-       <xs:element type="outcomeCheck"  name="isoutcome"  id="use_outcome" default="yes"/>
-       <xs:element type="mean_or_median"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
 
        <li><b>Model</b> - aggregate using this model.</li>
        <li><b>k</b> - Number of clusters (at least 2).</li>
