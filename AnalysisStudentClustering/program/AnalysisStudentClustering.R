@@ -280,7 +280,7 @@ if (method == "hierarchical clustering"){
        Student <-student_means[,1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
-       #my_data_wide <-cbind(my_data,mydata)    
+       my_data_wide <-cbind(my_data,mydata)    
        origin_students<- origin_data[,4]
        clstrs = list()
         for (i in origin_students)
@@ -297,15 +297,20 @@ if (method == "hierarchical clustering"){
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="") 
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
 
-       #outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
-       #write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
+       outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if(dataformat == "wide")
      {
+       
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
        df <- data.frame(students,Clusters)
        names(df) <- c("Student","Cluster")
        write.table(df ,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+
+       text <-"not applicable"
+       outputFilePath3<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(text ,file=outputFilePath3,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
      }
 
 }
@@ -335,7 +340,7 @@ if (method == "kmeans"){
        Student <-student_means[,1]       
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
-       #my_data_wide <-cbind(my_data,mydata) 
+       my_data_wide <-cbind(my_data,mydata) 
 
        origin_students<- origin_data[,4]
        clstrs = list()
@@ -354,8 +359,8 @@ if (method == "kmeans"){
        write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
      
       #output in the long format
-       #outputFilePath2<- paste(workingDirectory,"Matrix_wide.txt", sep="")
-       #write.table(my_data_wide ,file=outputFilePath2,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
+       outputFilePath2<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(my_data_wide ,file=outputFilePath2,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
     }
     if (dataformat == "wide")
      {
@@ -365,6 +370,10 @@ if (method == "kmeans"){
         df <- data.frame(students,res)
         names(df) <- c("Student","Cluster")
         write.table(df,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+
+       text <-"not applicable"
+       outputFilePath3<- paste(workingDirectory,"Matrix_wide.txt", sep="")
+       write.table(text ,file=outputFilePath3,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE) 
      }   
 
 }
@@ -387,13 +396,13 @@ if (method == "kmeans"){
       text(x = 0.5, y = 0.5, paste("There is no figure.\n"),cex = 1.6, col = "black")
        
       outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")  
-      
+      outputFilePath_wide<-paste(workingDirectory,"Matrix_wide.txt", sep="")  
    
        command = "/usr/local/bin/python3.5"
        #command = "python" 
        
        # arguments for the DPmeans : input file, lambada, iterations ,output file      
-       args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median)
+       args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median,outputFilePath_wide)
 
        allArgs = c(dpmeanPath, args)
 

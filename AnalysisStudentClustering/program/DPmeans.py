@@ -4,6 +4,7 @@ import sys
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import LabelEncoder
 from scipy import stats
+from pandas.compat import StringIO
 
 class DPMEANS:
     def __init__(self, londa, max_iter=1):
@@ -153,6 +154,12 @@ if __name__ == '__main__':
         list_of_tuples = list(zip(students, clusters))
         df_result = pd.DataFrame(list_of_tuples, columns=['Student', 'Cluster'])
         df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t', mode='a')
+       
+        
+        text="not applicable"
+        df_wide = pd.read_csv(StringIO(text))
+        df_wide.to_csv(sys.argv[9], header=True, index=False, sep='\t', mode='a')
+       
 
     if sys.argv[1] == "long":
         df_origin = pd.read_table(sys.argv[2])
@@ -193,7 +200,18 @@ if __name__ == '__main__':
                 df_for_clustering=df_for_clustering.groupby('Student Id', as_index=False).agg({"outcome": "median"})
                 np_components = 2
 
-            istudentid="yes"
+            #istudentid="yes"
+
+        if  isoutcome=="no" and isduration=="yes":
+            if mean_or_median =="mean" :
+                df_for_clustering=df_for_clustering.groupby('Student Id', as_index=False).agg({"Duration (sec)": "mean"})
+                np_components = 2
+
+            if mean_or_median =="median" :
+                df_for_clustering=df_for_clustering.groupby('Student Id', as_index=False).agg({"Duration (sec)": "median"})
+                np_components = 2
+
+            #istudentid="yes"
 
 
         if isoutcome == "yes" and isduration == "yes":
@@ -214,9 +232,11 @@ if __name__ == '__main__':
         DF.fit(X)     
       
         students_clusters={}
+        wide_clusters=[]
         for key, value in DF.s_l.items():
             for item in value :
                   students_clusters[ids[item]]=key
+                  wide_clusters.append(key)
        
         clusters=[]
         for row in df_origin['Anon Student Id'].items():
@@ -225,6 +245,12 @@ if __name__ == '__main__':
         df_result = df_origin
         df_result.insert(loc=4, column='Cluster', value=clusters,allow_duplicates=False)
         df_result.to_csv(sys.argv[5], header=True, index=False, sep='\t', mode='a')
+      
+        
+        df_result_wide=df_for_clustering
+        df_result_wide['Cluster']=wide_clusters
+        df_result_wide['Student Id']=ids.values()
+        df_result_wide.to_csv(sys.argv[9], header=True, index=False, sep='\t', mode='a')
 
        
         
