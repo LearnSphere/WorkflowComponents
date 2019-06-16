@@ -29,7 +29,7 @@ public class StudentClusteringMain extends AbstractComponent {
         // plus one extra column for Predicted Error Rate, if it doesn't already exist.
 
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
- 
+
     }
 
 
@@ -37,10 +37,10 @@ public class StudentClusteringMain extends AbstractComponent {
     protected void runComponent() {
         // Run the program and add the files it generates to the component output.
         File outputDirectory = this.runExternal();
-        
+
         // Attach the output files to the component output with addOutputFile(..>)
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-           
+
             File file0 = new File(outputDirectory.getAbsolutePath() + "/myplot.png");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/Matrix_wide.txt");
             File file2 = new File(outputDirectory.getAbsolutePath() + "/Matrix.txt");
@@ -52,7 +52,7 @@ public class StudentClusteringMain extends AbstractComponent {
                 String label0 = "image";
                 Integer nodeIndex1 = 1;
                 Integer fileIndex1 = 0;
-                String label1 = "text";
+                String label1 = "tab-delimited";
                 Integer nodeIndex2 = 1;
                 Integer fileIndex2 = 0;
                 String label2 = "tab-delimited";
