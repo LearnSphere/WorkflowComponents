@@ -16,10 +16,16 @@
               <li>Term 2: intercept@; KC (Default)</li>
               <li>Term 3: lineafm$; KC (Default)</li></ol>
 </p>
+<p>To produce modified AFM with random-effect intercepts for student and KC and only a single slope by omitting $. :
+  <ol>
+          <li>Term 1: intercept@; Anon Student Id</li>
+          <li>Term 2: intercept@; KC (Default)</li>
+          <li>Term 3: lineafm; KC (Default)</li></ol>
+</p>
 <p>To produce intercepts and some feature fits to clusters (ones that don't rely on timing factors). In the example, term 2 finds a coefficient for the log of prior success in cluster 1 only. :
   <ol>
           <li>Term 1: intercept; Clusters</li>
-          <li>Term 2: logsuc; KC (Default)%Clusters%1</li>
+          <li>Term 2: logsuc; KC (Default)%Clusters%1</li></ol>
 
 </p>
       <p>To produce standard PFA with random-effect intercepts for student and KC:
@@ -71,7 +77,7 @@
   <p>
       <b>Type</b> - the user can select to find the best fitting model, or 5 times 2-fold cross-validation. 5 times 2-fold crossvalidation works only at the subject level (subject stratified) under the assumption that generalization to other subjects is what is desired. The user has the option to randomly create folds or to use the folds existing in a prior run of this component (i.e. if you feed the transaction file back into the analysis, you can choose read to use the exact same folds for a replication).</p>
       <p>
-        <b>Term N</b> - The user can specify up to 10 terms</p>
+        <b>Term N</b> - The user can specify up to 10 terms. See details.</p>
 
 </options>
 

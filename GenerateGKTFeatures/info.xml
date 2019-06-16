@@ -10,9 +10,7 @@
 <details>This component does preprocessing for the dataset. This is necessary for the dataset overall. Additionally this must be run once for each KC used in features with spacing effects (i.e. ppe and base4).</details>
 
 <inputs>
-  <b>model</b> - model to compute spacings for.<br/>
-  <b>number of students</b> - null indicates sample full set, a number indicates a random sample of size n.<br/>
-  <b>transaction</b> - data to process.<br/>
+<b>transaction</b> - data to process.<br/>
 </inputs>
 
 <outputs>
@@ -20,7 +18,8 @@
 </outputs>
 
 <options>
-<b>KC model</b>
+  <b>Model</b> - model to compute spacings for.<br/>
+  <b>Number of students</b> - null indicates sample full set, a number indicates a random sample of size n.<br/>
 </options>
 
 </info>
