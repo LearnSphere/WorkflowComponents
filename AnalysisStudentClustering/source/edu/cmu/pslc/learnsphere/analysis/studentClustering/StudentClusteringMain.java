@@ -53,7 +53,7 @@ public class StudentClusteringMain extends AbstractComponent {
                 Integer nodeIndex1 = 1;
                 Integer fileIndex1 = 0;
                 String label1 = "tab-delimited";
-                Integer nodeIndex2 = 1;
+                Integer nodeIndex2 = 2;
                 Integer fileIndex2 = 0;
                 String label2 = "tab-delimited";
                 this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
