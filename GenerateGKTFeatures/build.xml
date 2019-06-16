@@ -23,7 +23,22 @@
             <include name="**/**.jar" />
         </fileset>
     </path>
+    <target name="runComponent" depends="clean, compile, dist" description="executes GenerateGKTFeatures">
+        <java classname="edu.cmu.learnsphere.transform.generateGKTFeatures.GenerateGKTFeaturesMain" fork="true">
+            <classpath refid="run.classpath" />
+            <arg value="-componentXmlFile" />
+            <arg value="${basedir}/test/components/ComponentGenerateGKTFeatures.xml" />
+            <arg value="-workflowDir" />
+            <arg value="${basedir}/test/" />
+            <arg value="-toolDir" />
+            <arg value="${basedir}/" />
+            <arg value="-schemaFile" />
+            <arg value="${basedir}/schemas/GenerateGKTFeatures_v1_0.xsd" />
+            <jvmarg value="-Xmx1048m"/>
+            <!-- <arg value="-preprocess" /> Use this flag to test component pre-processing. -->
 
+        </java>
+    </target>
     <target name="dist" depends="compile" description="generate the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}" />
@@ -79,20 +94,5 @@
         </javadoc>
     </target>
 
-    <target name="runComponent" depends="clean, compile, dist" description="executes GenerateGKTFeatures">
-        <java classname="edu.cmu.learnsphere.transform.generateGKTFeatures.GenerateGKTFeaturesMain" fork="true">
-            <classpath refid="run.classpath" />
-            <arg value="-componentXmlFile" />
-            <arg value="${basedir}/test/components/ComponentGenerateGKTFeatures.xml" />
-            <arg value="-workflowDir" />
-            <arg value="${basedir}/test/" />
-            <arg value="-toolDir" />
-            <arg value="${basedir}/" />
-            <arg value="-schemaFile" />
-            <arg value="${basedir}/schemas/GenerateGKTFeatures_v1_0.xsd" />
-            <jvmarg value="-Xmx1048m"/>
-            <!-- <arg value="-preprocess" /> Use this flag to test component pre-processing. -->
 
-        </java>
-    </target>
 </project>

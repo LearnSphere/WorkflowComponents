@@ -74,11 +74,11 @@ else if (args[i] == "-mean_or_median") {
     mean_or_median = args[i+1]
     i = i+1
   }
-else if (args[i] == "-lambada") {
+else if (args[i] == "-lambda") {
     if (length(args) == i) {
-      stop("lambada must be specified")
+      stop("lambda must be specified")
     }
-    lambada = args[i+1]
+    lambda = args[i+1]
     i = i+1
   }
     else if (args[i] == "-workingDir") {
@@ -401,8 +401,8 @@ if (method == "kmeans"){
        command = "/usr/local/bin/python3.5"
        #command = "python" 
        
-       # arguments for the DPmeans : input file, lambada, iterations ,output file      
-       args = c(dataformat,inputFile,lambada,10,outputFilePath,isoutcome,isduration,mean_or_median,outputFilePath_wide)
+       # arguments for the DPmeans : input file, lambda, iterations ,output file      
+       args = c(dataformat,inputFile,lambda,10,outputFilePath,isoutcome,isduration,mean_or_median,outputFilePath_wide)
 
        allArgs = c(dpmeanPath, args)
 

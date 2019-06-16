@@ -14,7 +14,7 @@
     <options>
         <model>KC (Default)</model>
         <numberOfClusters>4</numberOfClusters>
-        <lambada>3.0</lambada>
+        <lambda>3.0</lambda>
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>dpmeans</method>
         <dataformat>long</dataformat>

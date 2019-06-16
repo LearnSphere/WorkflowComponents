@@ -16,7 +16,12 @@
               <li>Term 2: intercept@; KC (Default)</li>
               <li>Term 3: lineafm$; KC (Default)</li></ol>
 </p>
+<p>To produce intercepts and some feature fits to clusters (ones that don't rely on timing factors). In the example, term 2 finds a coefficient for the log of prior success in cluster 1 only. :
+  <ol>
+          <li>Term 1: intercept; Clusters</li>
+          <li>Term 2: logsuc; KC (Default)%Clusters%1</li>
 
+</p>
       <p>To produce standard PFA with random-effect intercepts for student and KC:
         <ol>
                 <li>Term 1: intercept@; Anon Student Id</li>

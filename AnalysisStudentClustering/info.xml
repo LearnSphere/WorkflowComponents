@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-  <author>Ying Fang <email>ying.fang07@gmail.com</email>
-  </author>
-  <author>Suhaib Al-Rousan <email>slrousan@memphis.edu</email>
-  </author>
-  <author> Nisrmail>ine Ait Khayi <email> ntkhynyn@memphis.edu</email>
+  <author>Ying Fang, Suhaib Al-Rousan, and Nisrine Ait Khayi <email> ntkhynyn@memphis.edu</email>
   </author>
 
   <url>https://github.com/LearnSphere/WorkflowComponents/tree/memphis/AnalysisStudentClustering</url>
-  <abstract>The <b>Student Clustering</b> component applies three different clustering methods : kmeans, hierarchical clustering and dpmeans  to capture learning patterns among students.</abstract>
-  <details>Student Clustering component accepts two format types of data input : long and wide. In case of kmeans and hierarchical clustering, the user needs to specify the number of clusters  between 2 and 16. It is 4 by default. The user should specify if the clustering should be based on outcome and/or duration. This should be specified in the parameters : isoutcome and is duration. The values are yes or no. The user should specify if we use the mean or median of the outcome. The parameter Mean or Median has the values mean or median. In case of the dpmeans clustering the user should specify the value of lambada. The R package “hclust” (Murtagh and Legendre, 2014) is applied in this clustering analysis.</details>
-  
+  <abstract>The <b>Student Clustering</b> component applies three different clustering methods : kmeans, hierarchical clustering and dpmeans to capture learning patterns among students.</abstract>
+  <details>Student Clustering component accepts two format types of data input : long and wide. In case of kmeans and hierarchical clustering, the user needs to specify the number of clusters  between 2 and 16. It is 4 by default. The user should specify if the clustering should be based on outcome and/or duration. This should be specified in the parameters : isoutcome and is duration. The values are yes or no. The user should specify if we use the mean or median of the outcome. The parameter Mean or Median has the values mean or median. In case of the dpmeans clustering the user should specify the value of lambda. The R package “hclust” (Murtagh and Legendre, 2014) is applied forhierarchical clustering analysis.</details>
+
    <inputs>
     <b>long or wide </b>
    </inputs>
    <outputs>
-     <b> clustering Plot (png)</b>- It shows the clustering's visualization.    <b>Data with clusters (txt)</b>- It shows clusters and the student data related to each one in a tabular form.
+     <b> clustering Plot (png)</b>- It shows the clustering's visualization if there is one.<br/>
+   <b>Wide form data used for clustering (txt)</b>- It shows clusters and the student feature data related to each one in a tabular form.<br/>
+   <b>Long form data with clusters (txt)</b>- It shows the orginal data with a column added "Clusters" that indicates the cluster for each trial given the student cluster. Only if long data provided as input.<br/>
    </outputs>
    <options>
      <ol>
        <li><b>k</b> - Number of clusters (at least 2)</li>
        <li> <b>Type of Clustering </b>- Type of Clustering </li>
-       <li> <b>Lambada</b> - Lambada </li>
-       <li> <b>Dataformat </b> - Data format </li>           
+       <li> <b>Lambda</b> - Lambda </li>
+       <li> <b>Dataformat </b> - Data format </li>
        <li> <b>isDuration</b> - isDuration </li>
        <li> <b>isOutcome</b> - isOutcome </li>
        <li> <b>Mean or Median</b> - mean or median </li>
-              
+
      </ol>
-    </options>        
+    </options>
  </info>
