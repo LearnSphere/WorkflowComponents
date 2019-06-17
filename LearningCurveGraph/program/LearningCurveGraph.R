@@ -100,10 +100,12 @@ for(k in 1:models){
 
     # Create Functions
     # general cause to self
+
     countOutcome <-function(df,index,item) {
-    df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(x==item)))
-    df$temp[as.character(df$Outcome)==item]<-as.numeric(df$temp[as.character(df$Outcome)==item])-1
-    as.numeric(df$temp)}
+      df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
+                 df$temp[tolower(as.character(df$Outcome))==tolower(item)]<-
+      as.numeric(df$temp[tolower(as.character(df$Outcome))==tolower(item)])-1
+      as.numeric(df$temp)}
 
     #Create function splittimes
     splittimes<- function(times){
