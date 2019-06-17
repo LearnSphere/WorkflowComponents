@@ -295,7 +295,17 @@ if (method == "hierarchical clustering"){
 
        # Output data in lonfg format :
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-       write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
+       headers<-gsub("Unique[.]step","Unique-step",colnames(res_final))
+       headers<-gsub("[.]1","",headers)
+       headers<-gsub("[.]2","",headers)
+       headers<-gsub("[.]3","",headers)
+       headers<-gsub("Single[.]KC","Single-KC",headers)
+       headers<-gsub("[.][.]"," (",headers)
+       headers<-gsub("[.]$",")",headers)
+       headers<-gsub("[.]"," ",headers)
+       headers<-paste(headers,collapse="\t")
+       write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+       write.table(res_final,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 
        outputFilePath1<- paste(workingDirectory,"Matrix_wide.txt", sep="")
        write.table(my_data_wide ,file=outputFilePath1,sep="\t",quote=FALSE,na = "NA",append=FALSE,col.names=TRUE,row.names = FALSE)
@@ -356,7 +366,7 @@ if (method == "kmeans"){
 
        #output in the long format:
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-      
+
        headers<-gsub("Unique[.]step","Unique-step",colnames(res_final))
        headers<-gsub("[.]1","",headers)
        headers<-gsub("[.]2","",headers)
