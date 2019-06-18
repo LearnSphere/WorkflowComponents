@@ -83,6 +83,8 @@ if __name__ == "__main__":
     outputFilePath = args.workingDir + "/all_qa_result.txt"
     outfile = open(outputFilePath, 'w')
     outfile.write(outputStr)
+    outfile.close()
+
     
     
 

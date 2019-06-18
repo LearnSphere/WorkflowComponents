@@ -14,6 +14,7 @@
   <top>106</top>
   <options>
     <useTitleAsSkillId>true</useTitleAsSkillId>
+    <useDatashopDataset>false</useDatashopDataset>
   </options>
   <inputs>
     <input0>

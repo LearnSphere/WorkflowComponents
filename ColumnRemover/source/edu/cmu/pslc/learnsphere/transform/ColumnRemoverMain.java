@@ -101,7 +101,7 @@ public class ColumnRemoverMain extends AbstractComponent {
           while (bReader.ready()) {
             String line = bReader.readLine();
 
-            String [] lineTokens = line.split("\t");
+            String [] lineTokens = line.split("\t", -1);
             if (lineTokens.length <= 0) {
               continue;
             }

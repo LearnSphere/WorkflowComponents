@@ -37,6 +37,9 @@ import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.LearningCurveType;
 
+import static edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.ALL_KCS;
+import static edu.cmu.pslc.learnsphere.visualization.learningcurves.LearningCurveVisualizationOptions.ALL_STUDENTS;
+
 /**
  * This class is used to generate the Learning Curve data points
  * used to create the Learning Curve graphs and point info. It
@@ -244,6 +247,8 @@ public class LearningCurveVisualization {
                 Double correctStepDuration = null;
 
                 String criteria = null;
+                // 'All Types' curve, where 'type' is KC or Student
+                String allTypesCriteria = null;
 
                 for (int skillCounter = 0; skillCounter < skillNamesSplit.length; skillCounter++) {
 
@@ -256,24 +261,29 @@ public class LearningCurveVisualization {
 
                     String hsCriteria = null;
                     criteria = null;
-                    // Which criteria to use for aggregation, i.e. the "View By":
-                    // 1) by Opportunity, 2) by Step, or 3) by Student
+                    // Which criteria to use for aggregation, i.e. the "View By": KC or Student
                     if (learningCurveType != null
                             && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENT_STEPS_ALL)) {
-                        // For 'By Student', across all students
+                        // Composite: all students, all KCs... deprecate this option?
                         criteria = sampleName + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, lcOptions.getPrimaryModelName());
                         hsCriteria = lcOptions.getPrimaryModelName();
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STEPS_OPPORTUNITIES)) {
-                        // For 'By KC'
+                        // For 'By KCs'
                         criteria = sampleName + "_" + skillNamesSplit[skillCounter] + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, skillNamesSplit[skillCounter]);
                         hsCriteria = skillNamesSplit[skillCounter];
+
+                        allTypesCriteria = sampleName + "_" + ALL_KCS + "_" + opportunitiesSplit[oppIndex];
+                        aggregateBy.put(allTypesCriteria, ALL_KCS);
                     } else if (learningCurveType != null && learningCurveType.equals(LearningCurveType.CRITERIA_STUDENTS_OPPORTUNITIES)) {
-                        // For individual student...
+                        // For 'By Students'
                         criteria = sampleName + "_" + anonStudentId + "_" + opportunitiesSplit[oppIndex];
                         aggregateBy.put(criteria, anonStudentId);
                         hsCriteria = anonStudentId;
+
+                        allTypesCriteria = sampleName + "_" + ALL_STUDENTS + "_" + opportunitiesSplit[oppIndex];
+                        aggregateBy.put(allTypesCriteria, ALL_STUDENTS);
                     }
 
                     // The predicted error rate is set later to prevent exceptions during type casting
@@ -283,17 +293,82 @@ public class LearningCurveVisualization {
                     skillNames.put(criteria, skillName);
                     String opportunity = opportunitiesSplit[oppIndex];
                     opportunities.put(criteria, opportunity);
-
-                    // Create new values for the criteria if they do not exist
-                    if (!validRowCounts.containsKey(criteria))
-                        validRowCounts.put(criteria, new Integer(0));
-
-                    if (!maxOpportunities.containsKey(hsCriteria)) {
-                        maxOpportunities.put(hsCriteria, new Integer(0));
+                    if (allTypesCriteria != null) {
+                        opportunities.put(allTypesCriteria, opportunity);
                     }
 
-                    if (!lsCounts.containsKey(criteria)) {
-                        lsCounts.put(criteria, new Integer(0));
+                    // Create new values for the criteria if they do not exist
+                    HashSet<String> tempCriteriaSet = new HashSet<String>();
+                    tempCriteriaSet.add(criteria);
+                    if (allTypesCriteria != null) { tempCriteriaSet.add(allTypesCriteria); }
+                    for (String crit : tempCriteriaSet) {
+                        if (!validRowCounts.containsKey(crit))
+                            validRowCounts.put(crit, new Integer(0));
+
+                        if (!lsCounts.containsKey(crit)) {
+                            lsCounts.put(crit, new Integer(0));
+                        }
+
+                        if (!avgAssistanceScore.containsKey(crit))
+                            avgAssistanceScore.put(crit, new Double(0));
+                        
+                        if (!avgErrorRate.containsKey(crit))
+                            avgErrorRate.put(crit, new Double(0));
+                        
+                        if (!avgIncorrects.containsKey(crit))
+                            avgIncorrects.put(crit, new Double(0));
+                        
+                        if (!avgHints.containsKey(crit))
+                            avgHints.put(crit, new Double(0));
+                        
+                        if (!avgStepDuration.containsKey(crit))
+                            avgStepDuration.put(crit, new Double(0));
+                        
+                        if (!avgCorrectStepDuration.containsKey(crit))
+                            avgCorrectStepDuration.put(crit, new Double(0));
+                        
+                        if (!avgErrorStepDuration.containsKey(crit))
+                            avgErrorStepDuration.put(crit, new Double(0));
+                        
+                        if (!avgPredictedErrorRate.containsKey(crit))
+                            avgPredictedErrorRate.put(crit, new Double(0));
+                        
+                        if (!countObservations.containsKey(crit))
+                            countObservations.put(crit, new Double(0));
+                        
+                        if (!stepDurationObs.containsKey(crit))
+                            stepDurationObs.put(crit, new Double(0));
+                        
+                        if (!correctStepDurationObs.containsKey(crit))
+                            correctStepDurationObs.put(crit, new Double(0));
+                        
+                        if (!errorStepDurationObs.containsKey(crit))
+                            errorStepDurationObs.put(crit, new Double(0));
+                        
+                        if (!countSteps.containsKey(crit))
+                            countSteps.put(crit, new HashSet<String>());
+                        
+                        if (!countSkills.containsKey(crit))
+                            countSkills.put(crit, new HashSet<String>());
+                        
+                        if (!countStudents.containsKey(crit))
+                            countStudents.put(crit, new HashSet<String>());
+                        
+                        if (!countProblems.containsKey(crit))
+                            countProblems.put(crit, new HashSet<String>());
+
+                        if (crit != null) {
+                            for (String s : secondaryPredictedErrorRateNames) {
+                                Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
+                                if (!avgSecondaryPER.containsKey(crit))
+                                    avgSecondaryPER.put(crit, new Double(0));
+                            }
+                        }
+                    }
+
+                    // Initialize high-stakes values.
+                    if (!maxOpportunities.containsKey(hsCriteria)) {
+                        maxOpportunities.put(hsCriteria, new Integer(0));
                     }
 
                     if (!hsCounts.containsKey(hsCriteria)) {
@@ -302,60 +377,6 @@ public class LearningCurveVisualization {
 
                     if (!hsErrorRate.containsKey(hsCriteria)) {
                         hsErrorRate.put(hsCriteria, new Double(0));
-                    }
-
-                    if (!avgAssistanceScore.containsKey(criteria))
-                        avgAssistanceScore.put(criteria, new Double(0));
-
-                    if (!avgErrorRate.containsKey(criteria))
-                        avgErrorRate.put(criteria, new Double(0));
-
-                    if (!avgIncorrects.containsKey(criteria))
-                        avgIncorrects.put(criteria, new Double(0));
-
-                    if (!avgHints.containsKey(criteria))
-                        avgHints.put(criteria, new Double(0));
-
-                    if (!avgStepDuration.containsKey(criteria))
-                        avgStepDuration.put(criteria, new Double(0));
-
-                    if (!avgCorrectStepDuration.containsKey(criteria))
-                        avgCorrectStepDuration.put(criteria, new Double(0));
-
-                    if (!avgErrorStepDuration.containsKey(criteria))
-                        avgErrorStepDuration.put(criteria, new Double(0));
-
-                    if (!avgPredictedErrorRate.containsKey(criteria))
-                        avgPredictedErrorRate.put(criteria, new Double(0));
-
-                    if (!countObservations.containsKey(criteria))
-                        countObservations.put(criteria, new Double(0));
-
-                    if (!stepDurationObs.containsKey(criteria))
-                        stepDurationObs.put(criteria, new Double(0));
-
-                    if (!correctStepDurationObs.containsKey(criteria))
-                        correctStepDurationObs.put(criteria, new Double(0));
-
-                    if (!errorStepDurationObs.containsKey(criteria))
-                        errorStepDurationObs.put(criteria, new Double(0));
-
-                    if (!countSteps.containsKey(criteria))
-                        countSteps.put(criteria, new HashSet<String>());
-
-                    if (!countSkills.containsKey(criteria))
-                        countSkills.put(criteria, new HashSet<String>());
-
-                    if (!countStudents.containsKey(criteria))
-                        countStudents.put(criteria, new HashSet<String>());
-
-                    if (!countProblems.containsKey(criteria))
-                        countProblems.put(criteria, new HashSet<String>());
-
-                    for (String s : secondaryPredictedErrorRateNames) {
-                        Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
-                        if (!avgSecondaryPER.containsKey(criteria))
-                            avgSecondaryPER.put(criteria, new Double(0));
                     }
 
                     // Parse double values, provided the value exists
@@ -420,10 +441,15 @@ public class LearningCurveVisualization {
 
                     Integer validRowCount = validRowCounts.get(criteria);
                     validRowCounts.put(criteria, validRowCount + 1);
+                    if (allTypesCriteria != null) {
+                        validRowCount = validRowCounts.get(allTypesCriteria);
+                        validRowCounts.put(allTypesCriteria, validRowCount + 1);
+                    }
 
                     // Criteria for groupings
                     criteriaSet.add(criteria);
                     criteriaSet.add(hsCriteria);
+                    if (allTypesCriteria != null) { criteriaSet.add(allTypesCriteria); }
 
 		    Boolean highStakesPresent = false;
 		    Integer headingMapIndex = null;
@@ -434,65 +460,73 @@ public class LearningCurveVisualization {
 			}
 		    }
 
-                    // Handle required fields
-                    avgAssistanceScore.put(criteria,
-                        (avgAssistanceScore.get(criteria) + incorrects + hints));
-                    avgIncorrects.put(criteria,
-                        (avgIncorrects.get(criteria) + incorrects));
-                    avgHints.put(criteria,
-                        (avgHints.get(criteria) + hints));
-		    if (predictedErrorRate != null) {
-			avgPredictedErrorRate.put(criteria,
-						  (avgPredictedErrorRate.get(criteria) + predictedErrorRate));
-		    }
-                    for (String s : secondaryPredictedErrorRateNames) {
-                        Double per = secondaryPredictedErrorRate.get(s);
-                        Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
-			avgSecondaryPER.put(criteria,
-                                            (avgSecondaryPER.get(criteria) + per));
+                    tempCriteriaSet = new HashSet<String>();
+                    tempCriteriaSet.add(criteria);
+                    if (allTypesCriteria != null) { tempCriteriaSet.add(allTypesCriteria); }
+                    for (String crit : tempCriteriaSet) {
+
+                        // Handle required fields
+                        avgAssistanceScore.put(crit,
+                                               (avgAssistanceScore.get(crit) + incorrects + hints));
+                        avgIncorrects.put(crit,
+                                          (avgIncorrects.get(crit) + incorrects));
+                        avgHints.put(crit,
+                                     (avgHints.get(crit) + hints));
+
+                        if (predictedErrorRate != null) {
+                            avgPredictedErrorRate.put(crit,
+                                                      (avgPredictedErrorRate.get(crit) + predictedErrorRate));
+                        }
+
+                        for (String s : secondaryPredictedErrorRateNames) {
+                            Double per = secondaryPredictedErrorRate.get(s);
+                            Map<String, Double> avgSecondaryPER = avgSecondaryPERMap.get(s);
+                            avgSecondaryPER.put(crit,
+                                                (avgSecondaryPER.get(crit) + per));
+                        }
+
+                        // Handle missing values which are allowed for some fields
+                        if (stepDuration != null) {
+                            avgStepDuration.put(crit,
+                                                (avgStepDuration.get(crit) + stepDuration));
+                            stepDurationObs.put(crit,
+                                                (stepDurationObs.get(crit) + 1.0f));
+                        }
+                        if (errorStepDuration != null) {
+                            avgErrorStepDuration.put(crit,
+                                                     (avgErrorStepDuration.get(crit) + errorStepDuration));
+                            errorStepDurationObs.put(crit,
+                                                     (errorStepDurationObs.get(crit) + 1.0f));
+                        }
+                        if (correctStepDuration != null) {
+                            avgCorrectStepDuration.put(crit,
+                                                       (avgCorrectStepDuration.get(crit) + correctStepDuration));
+                            correctStepDurationObs.put(crit,
+                                                       (correctStepDurationObs.get(crit) + 1.0f));
+                        }
+
+                        // Observations
+                        // "Your most unhappy customers are your greatest source of learning." --Bill Gates
+                        countObservations.put(crit,
+                                              (countObservations.get(crit) + 1.0f));
+
+                        // Counts
+                        HashSet<String> stepSet = countSteps.get(crit);
+                        stepSet.add(stepName);
+                        countSteps.put(crit, stepSet);
+                        
+                        HashSet<String> skillSet = countSkills.get(crit);
+                        skillSet.add(skillName);
+                        countSkills.put(crit, skillSet);
+
+                        HashSet<String> studentSet = countStudents.get(crit);
+                        studentSet.add(anonStudentId);
+                        countStudents.put(crit, studentSet);
+
+                        HashSet<String> problemSet = countProblems.get(crit);
+                        problemSet.add(problemName);
+                        countProblems.put(crit, problemSet);
                     }
-
-                    // Handle missing values which are allowed for some fields
-                    if (stepDuration != null) {
-                        avgStepDuration.put(criteria,
-                            (avgStepDuration.get(criteria) + stepDuration));
-                        stepDurationObs.put(criteria,
-                                (stepDurationObs.get(criteria) + 1.0f));
-                    }
-                    if (errorStepDuration != null) {
-                        avgErrorStepDuration.put(criteria,
-                            (avgErrorStepDuration.get(criteria) + errorStepDuration));
-                        errorStepDurationObs.put(criteria,
-                            (errorStepDurationObs.get(criteria) + 1.0f));
-                    }
-                    if (correctStepDuration != null) {
-                        avgCorrectStepDuration.put(criteria,
-                            (avgCorrectStepDuration.get(criteria) + correctStepDuration));
-                        correctStepDurationObs.put(criteria,
-                            (correctStepDurationObs.get(criteria) + 1.0f));
-                    }
-
-
-                    // Observations
-                    // "Your most unhappy customers are your greatest source of learning." --Bill Gates
-                    countObservations.put(criteria,
-                        (countObservations.get(criteria) + 1.0f));
-                    // Counts
-                    HashSet<String> stepSet = countSteps.get(criteria);
-                    stepSet.add(stepName);
-                    countSteps.put(criteria, stepSet);
-
-                    HashSet<String> skillSet = countSkills.get(criteria);
-                    skillSet.add(skillName);
-                    countSkills.put(criteria, skillSet);
-
-                    HashSet<String> studentSet = countStudents.get(criteria);
-                    studentSet.add(anonStudentId);
-                    countStudents.put(criteria, studentSet);
-
-                    HashSet<String> problemSet = countProblems.get(criteria);
-                    problemSet.add(problemName);
-                    countProblems.put(criteria, problemSet);
 
                     // Keep track of max opportunity for this curve.
                     if (opp > maxOpportunities.get(hsCriteria)) {
@@ -512,12 +546,20 @@ public class LearningCurveVisualization {
 				avgErrorRate.put(criteria,
 						 avgErrorRate.get(criteria) + errorRate);
 				lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+				avgErrorRate.put(allTypesCriteria,
+						 avgErrorRate.get(allTypesCriteria) + errorRate);
+				lsCounts.put(allTypesCriteria, lsCounts.get(allTypesCriteria) + 1);
 			    }
                         }
                     } else {
 			// If no 'highStakes' CF, revert to normal errorRate behavior.
 			avgErrorRate.put(criteria, avgErrorRate.get(criteria) + errorRate);
 			lsCounts.put(criteria, lsCounts.get(criteria) + 1);
+                        if (allTypesCriteria != null) {
+                            avgErrorRate.put(allTypesCriteria,
+                                             avgErrorRate.get(allTypesCriteria) + errorRate);
+                            lsCounts.put(allTypesCriteria, lsCounts.get(allTypesCriteria) + 1);
+                        }
 		    }
 
                 } // end of skillNamesSplit loop
@@ -596,25 +638,6 @@ public class LearningCurveVisualization {
                     avgSecondaryPERMap.put(s, avgSecondaryPER);  // ???
                     avgSecondaryPERResult.put(s, result);
                 }
-
-                Object[] result = {
-                    skillNames.get(criteria),
-                    opportunities.get(criteria),
-                    avgAssistanceScore.get(criteria),
-                    avgErrorRate.get(criteria),
-                    avgIncorrects.get(criteria),
-                    avgHints.get(criteria),
-                    avgPredictedErrorRate.get(criteria),
-                    avgStepDuration.get(criteria),
-                    avgErrorStepDuration.get(criteria),
-                    avgCorrectStepDuration.get(criteria),
-                    countObservations.get(criteria),
-                    countSteps.get(criteria).size(),
-                    countSkills.get(criteria).size(),
-                    countStudents.get(criteria).size(),
-                    countProblems.get(criteria).size(),
-                    //                    avgSecondaryPredictedErrorRate.get(criteria),
-                };
 
                 LearningCurvePoint lcp = new LearningCurvePoint();
 
@@ -708,14 +731,14 @@ public class LearningCurveVisualization {
                     lcDataList.add(lcp);
                     lcData.put(aggregateBy.get(criteria), lcDataList);
                 }
-
+                /*
                 StringBuffer sb = new StringBuffer("[");
                 for (String s : secondaryPredictedErrorRateNames) {
                     sb.append(avgSecondaryPERResult.get(s));
                     sb.append(", ");
                 }
                 sb.append("]");
-                logger.fatal("Result: " + Arrays.toString(result) + sb.toString());
+                */
             }
 
             if (br != null) {
@@ -794,7 +817,7 @@ public class LearningCurveVisualization {
                 logger.debug("LC Graph Image filePath: " + fullFilePath);
 
                 // Determine AFM slope (gamma) using parameters file, if present. Null otherwise.
-                Double gamma = getGamma(key, parametersFile);
+                Double gamma = getGamma(key, lcOptions.isViewBySkill(), parametersFile);
 
                 lcImage = producer.produceDataset(key, gamma, lcOptions, lcGraphOptions, lcData.get(key));
 
@@ -805,6 +828,8 @@ public class LearningCurveVisualization {
                 }
 
                 String titleText = key;
+                if (key.equals(ALL_KCS)) { titleText = "All Knowledge Components"; }
+                if (key.equals(ALL_STUDENTS)) { titleText = "All Students"; }
                 // If curve has been classified, update titleText for non-thumb graphs.
                 if (!classification.equals(LearningCurveImage.NOT_CLASSIFIED)) {
                     titleText += " (Category: " + classification + ")";
@@ -829,14 +854,18 @@ public class LearningCurveVisualization {
     /**
      * Helper method to read AFM gamma (slope) value from parameters file, if present.
      *
-     * @param skillName the skill of interest
+     * @param objName the object of interest, skill or student
+     * @param isSkill flag indicating object is skill or not (student)
      * @param parametersFile the file with AFM output parameters
      * @return Double the gamma value
      */
-    private Double getGamma(String skillName, File parametersFile) {
+    private Double getGamma(String objName, Boolean isSkill, File parametersFile) {
+
         if (parametersFile == null) { return null; }
 
-        // Parse XML parameters file for gamma of named skill.
+        String typeStr = isSkill ? "skill" : "student";
+
+        // Parse XML parameters file for gamma of named object and type.
         SAXBuilder builder = new SAXBuilder();
         builder.setReuseParser(false);
         try {
@@ -852,7 +881,7 @@ public class LearningCurveVisualization {
                     List<Element> children = e.getChildren();
                     String pType = e.getChildText("type");
                     String pName = e.getChildText("name");
-                    if (pType.equalsIgnoreCase("skill") && pName.equalsIgnoreCase(skillName)) {
+                    if (pType.equalsIgnoreCase(typeStr) && pName.equalsIgnoreCase(objName)) {
                         String pSlope = e.getChildText("slope");
                         return new Double(pSlope);
                     }
@@ -864,6 +893,10 @@ public class LearningCurveVisualization {
             return null;
         } catch (JDOMException je) {
             String exErr = "XML file in wrong format. Error: " + je.getMessage();
+            logger.info(exErr);
+            return null;
+        } catch (NumberFormatException nfe) {
+            String exErr = "Slope value in XML file not a number. Error: " + nfe.getMessage();
             logger.info(exErr);
             return null;
         }

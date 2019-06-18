@@ -29,8 +29,11 @@ public class RPivotMain extends AbstractComponent {
         this.componentOptions.addContent(0, new Element("f").setText(inputFile.getAbsolutePath()));
         
         String moreFactors = this.getOptionAsString("moreFactors");
-        
-
+        String aggMethodName = this.getOptionAsString("aWF");
+        if (aggMethodName == null)
+                aggMethodName = "length";
+        else if (aggMethodName.equalsIgnoreCase("count"))
+                aggMethodName = "length";
         //check if measurement (-m) column are all double
         List<String> measurementColNames = this.getMultiOptionAsString("mWF");
         String[][] allCells = IOUtil.read2DRuggedStringArray(inputFile.getAbsolutePath(), false);
@@ -52,20 +55,21 @@ public class RPivotMain extends AbstractComponent {
                 logger.info("RPivot is aborted: " + err);
         } else {
         	Boolean reqsMet = true;
-
-            for (int i = 1; i < allCells.length; i++) {
-                    for (int j = 0; j < measurementColInds.size(); j++) {
-                        try {
-                                Double.parseDouble(allCells[i][measurementColInds.get(j)]);
-                        } catch (NumberFormatException e) {
-                                //send error message
-                                String err = "The measurement column contains data that is not number.";
-                                addErrorMessage(err);
-                                logger.info("RPivot is aborted: " + err);
-                                reqsMet = false;
-                        }
+        	if (!aggMethodName.equalsIgnoreCase("length")) {
+                    for (int i = 1; i < allCells.length; i++) {
+                            for (int j = 0; j < measurementColInds.size(); j++) {
+                                try {
+                                        Double.parseDouble(allCells[i][measurementColInds.get(j)]);
+                                } catch (NumberFormatException e) {
+                                        //send error message
+                                        String err = "The measurement column contains data that is not number.";
+                                        addErrorMessage(err);
+                                        logger.info("RPivot is aborted: " + err);
+                                        reqsMet = false;
+                                }
+                            }
                     }
-            }
+        	}
 
             if (reqsMet) {
                     String mStr = "";
@@ -82,9 +86,8 @@ public class RPivotMain extends AbstractComponent {
                     
 	            this.componentOptions.addContent(0, new Element("m").setText(mStr));
 	            this.componentOptions.addContent(0, new Element("origm").setText(origMeaNames));
-	            String aggMethodName = this.getOptionAsString("aWF");
-	            if (aggMethodName == null)
-	                    aggMethodName = "length";
+	            
+	            
 	            this.componentOptions.addContent(0, new Element("a").setText(aggMethodName));
 	            List<String> pivotColNames = this.getMultiOptionAsString("cWF");
 	            if (pivotColNames == null) {

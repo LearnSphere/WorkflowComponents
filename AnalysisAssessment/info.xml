@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAssessment</url>
+<date>2016-10-08</date>
+<abstract>The <b>Assessment</b> calculates Cronbach's Alpha, reliability values, for items (columns) in a gradebook. The component also appends summary information, namely, the average and standard deviation for each item as well as it's correlation to the total score.</abstract>
+<description>The description goes here.</description>
+
+<inputs>
+<b>Tab-delimited</b>
+</inputs>
+
+<outputs>
+<b>Tab-delimited</b>
+</outputs>
+
+<options>
+<b>Summary column present</b> - flag indicating if last column is a summary column <br/>
+</options>
+
+</info>

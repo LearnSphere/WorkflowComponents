@@ -25,10 +25,10 @@
   </xs:complexType>
 
   <xs:complexType name="InputType">
-    <xs:all>
+    <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
       <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
-    </xs:all>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
@@ -99,6 +99,15 @@
       <!-- 
         HELPER DEPENDENCIES 
       -->
+      
+      <!-- Remove options if FASK is selected -->
+      <xs:element type="conjunctive" name="dataTypeDependency" ls:dependentOption="dataType" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="testTypeDiscreteDependency" ls:dependentOption="testTypeDiscrete" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="testTypeContinuousDependency" ls:dependentOption="testTypeContinuous" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="testTypeMixedDependency" ls:dependentOption="testTypeMixed" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="scoreTypeContinuousDependency" ls:dependentOption="scoreTypeContinuous" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="scoreTypeDiscreteDependency" ls:dependentOption="scoreTypeDiscrete" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
+      <xs:element type="conjunctive" name="scoreTypeMixedDependency" ls:dependentOption="scoreTypeMixed" ls:dependsOn="algorithm" ls:constraint="matches(((?!FASK).)*)" />
 
       <!-- Conditional Gaussian BIC is selected -->
       <xs:element type="conjunctive" name="condGausBICDependency1" ls:dependentOption="condGausBICDependency1" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
@@ -151,10 +160,10 @@
 
 
       <!-- alpha -->
-      <xs:element type="disjunctive" name="alphaDependency" ls:dependentOption="alpha" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES)" />
+      <xs:element type="disjunctive" name="alphaDependency" ls:dependentOption="alpha" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES|FASK)" />
 
       <!-- maxSizeConditioningSet -->
-      <xs:element type="disjunctive" name="maxSizeConditioningSetDependency" ls:dependentOption="maxSizeConditioningSet" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES)" />
+      <xs:element type="disjunctive" name="maxSizeConditioningSetDependency" ls:dependentOption="maxSizeConditioningSet" ls:dependsOn="algorithm" ls:negation="true" ls:constraint="matches(FGES|FASK)" />
 
       <!-- testType -->
       <xs:element type="conjunctive" name="testTypeDependencyContinuous1" ls:dependentOption="testTypeContinuous" ls:dependsOn="dataType" ls:constraint="matches(Completely_Continuous)" />
@@ -215,7 +224,7 @@
       <xs:element type="conjunctive" name="penaltyDiscountDependency7" ls:dependentOption="penaltyDiscountDependency7" ls:dependsOn="penaltyDiscountDependency29" ls:constraint="true" />
       
 
-      <xs:element type="disjunctive" name="penaltyDiscountDependency30" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency1" ls:constraint="true" />
+      <!--<xs:element type="disjunctive" name="penaltyDiscountDependency30" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency1" ls:constraint="true" />-->
       <xs:element type="disjunctive" name="penaltyDiscountDependency31" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency2" ls:constraint="true" />
       <xs:element type="disjunctive" name="penaltyDiscountDependency32" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency3" ls:constraint="true" />
       <xs:element type="disjunctive" name="penaltyDiscountDependency33" ls:dependentOption="penaltyDiscount" ls:dependsOn="penaltyDiscountDependency4" ls:constraint="true" />
@@ -298,6 +307,27 @@
       <xs:element type="conjunctive" name="samplePriorDependency1" ls:dependentOption="samplePrior" ls:dependsOn="algorithm" ls:constraint="matches(FGES)" />
       <xs:element type="conjunctive" name="samplePriorDependency2" ls:dependentOption="samplePrior" ls:dependsOn="scoreTypeDiscrete" ls:constraint="matches(BDeu)" />
 
+
+
+      <!-- FASK option dependencies -->
+      <!--<xs:element type="conjunctive" name="Dependency" ls:dependentOption="maxLengthDiscriminatingPath" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />-->
+      <xs:element type="conjunctive" name="faskScoreDependency" ls:dependentOption="faskScore" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskMaxSizeConditioningSetDependency" ls:dependentOption="faskMaxSizeConditioningSet" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskAlphaTwoCycleDependency" ls:dependentOption="faskAlphaTwoCycle" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskThreshEdgeDependency" ls:dependentOption="faskThreshEdge" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskThreshJudgeNegDependency" ls:dependentOption="faskThreshJudgeNeg" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskAdjFASDependency" ls:dependentOption="faskAdjFAS" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskAfjCondCorrDependency" ls:dependentOption="faskAfjCondCorr" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+
+      <xs:element type="conjunctive" name="faskStructurePriorDependency1" ls:dependentOption="faskStructurePrior" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskStructurePriorDependency2" ls:dependentOption="faskStructurePrior" ls:dependsOn="faskScore" ls:constraint="matches(Conditional_Gaussian_BIC)" />
+
+      <xs:element type="conjunctive" name="faskAlphaPriorDependency1" ls:dependentOption="faskAlpha" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskAlphaPriorDependency2" ls:dependentOption="faskAlpha" ls:dependsOn="faskScore" ls:constraint="matches(Fisher_Z)" />
+
+      <xs:element type="conjunctive" name="faskPenaltyDiscountDependency1" ls:dependentOption="faskPenaltyDiscount" ls:dependsOn="algorithm" ls:constraint="matches(FASK)" />
+      <xs:element type="conjunctive" name="faskPenaltyDiscountDependency2" ls:dependentOption="faskPenaltyDiscount" ls:dependsOn="faskScore" ls:constraint="matches(SEM_BIC)" />
+
     </xs:choice>
   </xs:complexType>
 
@@ -311,6 +341,7 @@
       <xs:enumeration value="FGES" />
 	    <xs:enumeration value="FCI" />
 	    <xs:enumeration value="MBFS" />
+	    <xs:enumeration value="FASK" />
 	  <!--
       <xs:enumeration value="IMaGES_Discrete" />
       <xs:enumeration value="IMaGES_Continuous" />
@@ -439,6 +470,37 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <!-- OPTIONS FOR FASK SEARCH ALGORITHM. ONLY APPEAR IF FASK IS SELECTED -->
+
+  <xs:simpleType name="FaskScoreTypeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Conditional_Gaussian_BIC" />
+      <xs:enumeration value="Fisher_Z" />
+      <xs:enumeration value="SEM_BIC" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FaskDiscretizeChildType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="yes" />
+      <xs:enumeration value="no" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FaskAdjecenciesFASType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="yes" />
+      <xs:enumeration value="no" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FaskAdjecenciesCondCorrType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="yes" />
+      <xs:enumeration value="no" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="algorithmType" name="algorithm" id="Algorithm" default="PC" />
@@ -470,6 +532,24 @@
       <xs:element type="completeRuleSetUsedType" name="completeRuleSetUsed" id="Yes_if_the_complete_FCI_rule_set_should_be_used" default="no" />
       <!--<xs:element type="verboseType" name="verbose" id="Yes_if_verbose_output_should_be_printed_or_logged" default="no" />-->
       <!--<xs:element type="FileInputHeader" name="target" id="target"  default=".*" />-->
+
+      <!-- FASK options -->
+      <xs:element type="FaskScoreTypeType" name="faskScore" id="Score" default="Conditional_Gaussian_BIC" />
+
+      <xs:element type="xs:double" name="faskAlpha" id="Cutoff_for_p_values_aka_alpha_"  default="0.01" />
+      <xs:element type="xs:double" name="faskPenaltyDiscount" id="Penalty_discount_"  default="2" />
+      <xs:element type="xs:double" name="faskStructurePrior" id="Structure_prior_coefficient_"  default="1" />
+      <xs:element type="FaskDiscretizeChildType" name="faskDiscretize" id="_Yes_if_continuous_variables_should_be_discretized_when_child_is_discrete" default="yes" />
+
+      <xs:element type="xs:integer" name="faskMaxSizeConditioningSet" id="Maximum_size_of_conditioning_set__-1_is_unlimited" default="-1" />
+      <xs:element type="xs:double" name="faskAlphaTwoCycle" id="Alpha_orienting_2_cycles"  default="0.000001" />
+      <xs:element type="xs:double" name="faskThreshEdge" id="Threshold_for_including_extra_edges"  default="0.3" />
+      <xs:element type="xs:double" name="faskThreshJudgeNeg" id="Threshold_for_judging_negative_coefficient_edges_as_X_to_Y"  default="-0.2" />
+      <xs:element type="FaskAdjecenciesFASType" name="faskAdjFAS" id="Yes_if_adjacencies_from_the_FAS_search_should_be_used" default="yes" />
+      <xs:element type="FaskAdjecenciesCondCorrType" name="faskAfjCondCorr" id="Yes_if_adjacencies_from_conditional_correlation_differences_should_be_used" default="yes" />
+
+
+
     </xs:choice>
   </xs:complexType>
 

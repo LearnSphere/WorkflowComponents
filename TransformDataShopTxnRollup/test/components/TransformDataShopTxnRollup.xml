@@ -1,0 +1,47 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>TransformDataShopTxnRollup</component_name>
+  <component_type>transform</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+    <connection>
+      <to>Visualization-1-x938260</to>
+      <index>0</index>
+    </connection>
+  </connections>
+  <top>218</top>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Transaction</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <index>0</index>
+          <file_path>test/test_data/Hopewell.txt</file_path>
+          <label>transaction</label>
+          <file_name>Hopewell.txt</file_name>
+          <metadata>
+          </metadata>
+        </transaction>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+  <options>
+    <specifyRange>No</specifyRange>
+    <startDate>2012-01-01</startDate>
+    <endDate>2012-05-01</endDate>
+  </options>
+
+</component>

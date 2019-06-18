@@ -24,6 +24,37 @@
         </fileset>
     </path>
 
+    <path id="spring.lib.path">
+        <fileset dir="${lib}/spring">
+            <include name="**/spring.jar" />
+        </fileset>
+    </path>
+
+    <path id="hibernate.lib.path">
+        <fileset dir="${lib}/hibernate">
+            <include name="**/hibernate3.jar" />
+            <include name="**/dom4j-1.6.1.jar" />
+            <include name="**/antlr-2.7.6.jar" />
+            <include name="**/asm.jar" />
+            <include name="**/asm-attrs.jar" />
+            <include name="**/cglib-2.1.3.jar" />
+            <include name="**/ehcache-1.2.3.jar" />
+            <include name="**/jta.jar" />
+            <include name="**/commons-collections-2.1.1.jar" />
+        </fileset>
+        <fileset dir="${lib}">
+            <include name="**/commons-logging.jar" />
+        </fileset>
+    </path>
+
+    <path id="run.classpath">
+        <pathelement path="${ToolTemplate.jar}" />
+        <path refid="lib.path" />
+        <path refid="spring.lib.path" />
+        <path refid="hibernate.lib.path" />
+        <pathelement path="." />
+    </path>
+
     <target name="dist" depends="compile" description="generate the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}" />
@@ -34,7 +65,7 @@
             </fileset>
         </path>
         <manifestclasspath property="lib.list" jarfile="${ToolTemplate.jar}">
-            <classpath refid="build-classpath" />
+            <classpath refid="run.classpath" />
         </manifestclasspath>
         <jar jarfile="${ToolTemplate.jar}" basedir="${build}" includes="edu/cmu/pslc/learnsphere/oli/**">
             <manifest>
@@ -60,8 +91,10 @@
 
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
-        <javac includeantruntime="false" srcdir="${source}" destdir="${build}" debug="on">
+        <javac srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
+            <classpath refid="spring.lib.path" />
+            <classpath refid="hibernate.lib.path" />
         </javac>
     </target>
 
@@ -102,6 +135,8 @@
             <arg value="${basedir}/" />
             <arg value="-schemaFile" />
             <arg value="${basedir}/schemas/OliLoToKc_v1_0.xsd" />
+            <arg value="-userId" />
+            <arg value="ctipper" />
             <jvmarg value="-Xmx1048m"/>
         </java>
     </target>

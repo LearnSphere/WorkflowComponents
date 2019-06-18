@@ -58,7 +58,7 @@
 
   <xs:simpleType name="analysisType" final="restriction">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="length" />
+      <xs:enumeration value="count" />
       <xs:enumeration value="sum" />
       <xs:enumeration value="mean" />
       <xs:enumeration value="sd" />

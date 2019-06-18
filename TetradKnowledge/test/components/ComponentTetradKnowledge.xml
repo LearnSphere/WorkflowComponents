@@ -13,7 +13,7 @@
     </connection>
   </connections>
   <options>
-    <TetradKnowledge></TetradKnowledge>
+    <TetradKnowledge>{"numTiers":4,"tiers":[["v1"],["v2","v3","v5"],["v4"],["v6"]],"forbidWithinTier":[false,false,false,false],"unusedVars":[]}</TetradKnowledge>
     <!--<forbiddenTier4>No</forbiddenTier4>
     <tier3Vars>Input 0 - T.Quiz (column 3)</tier3Vars>
     <forbiddenTier3>No</forbiddenTier3>
@@ -66,38 +66,7 @@
           <file_path>test/resources/data1.txt</file_path>
           <label>tab-delimited</label>
           <file_name>data1.txt</file_name>
-          <metadata>
-            <header>
-              <id>header0</id>
-              <index>0</index>
-              <name>Pretest</name>
-            </header>
-            <header>
-              <id>header1</id>
-              <index>1</index>
-              <name>activities_started</name>
-            </header>
-            <header>
-              <id>header2</id>
-              <index>2</index>
-              <name>play</name>
-            </header>
-            <header>
-              <id>header3</id>
-              <index>3</index>
-              <name>T.Quiz</name>
-            </header>
-            <header>
-              <id>header4</id>
-              <index>4</index>
-              <name>Fina__Exam</name>
-            </header>
-            <header>
-              <id>header5</id>
-              <index>5</index>
-              <name>non_activities_pageview</name>
-            </header>
-          </metadata>
+          <metadata/>
         </tab-delimited>
       </files>
       <inputmeta />

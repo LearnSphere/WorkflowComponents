@@ -17,7 +17,7 @@ public class LearningCurveVisualizationOptions {
         },
         CRITERIA_STUDENT_STEPS_ALL(1) {
             public String toString() {
-                return "All Student KCs";
+                return "All Students, All KCs";
             }
             public String getId() {
                 return "all_student_kcs";
@@ -142,6 +142,12 @@ public class LearningCurveVisualizationOptions {
             }
         },
     };
+
+    /** Constant for 'All Knowledge Components' curve. */
+    public static final String ALL_KCS = "All_KCs";
+
+    /** Constant for 'All Students' curve. */
+    public static final String ALL_STUDENTS = "All_Students";
 
     /** Magic 2.5 for the stdDeviationCutoff default value. */
     private static final Double MAGIC_TWO_POINT_FIVE = new Double(2.5);

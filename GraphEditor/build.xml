@@ -27,6 +27,11 @@
         <fileset dir="${lib}">
             <include name="**/**.jar" />
         </fileset>
+    </path>
+    <path id="lib.path.tetrad">
+        <fileset dir="${lib}">
+            <include name="**/**.jar" />
+        </fileset>
         <fileset dir="${tetrad.lib}">
            <include name="**/**.jar" />
        </fileset>
@@ -86,7 +91,7 @@
             <classpath refid="lib.path" />
         </javac>
         <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on" fork="yes" executable="${javac8}">
-            <classpath refid="lib.path" />
+            <classpath refid="lib.path.tetrad" />
         </javac>
     </target>
 

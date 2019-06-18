@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Nirmal Patel
+  <email>nirmal@playpowerlabs.com</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/CurriculumPacing</url>
+<date>March 14, 2019</date>
+<abstract>The <b>CurriculumPacing</b> component is an example of a(n) R component.</abstract>
+<description>Curriculum Pacing is a way to visualize student learning trajectories through curriculum units and sections. This visualization is suitable to quickly explore end-to-end curriculum data and see patterns of student learning. Try creating this visualization for different sub-samples of the data having different properties and it might reveal differences in student learning paths in the different cohorts.</description>
+
+<inputs><ul>
+<li>student-problem</li>
+<li>hierarchy-order</li></ul>
+</inputs>
+
+<outputs>
+<b>image</b>
+</outputs>
+
+<options>
+<ul>
+<li>PlotType -- type Enum(Usage, Usage and performance)</li>
+<li>TimeScaleType -- type Enum(Relative, Absolute)</li>
+<li>TimeScaleRes -- type Enum(Day, Week, Month)</li>
+<li>RelMinTimeUnit -- type xs:integer</li>
+<li>RelMaxTimeUnit -- type xs:integer</li>
+<li>AbsMinTimeUnit -- type xs:string</li>
+<li>AbsMaxTimeUnit -- type xs:string</li>
+</ul>
+</options>
+
+</info>

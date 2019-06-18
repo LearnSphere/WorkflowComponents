@@ -96,7 +96,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Knowledge Components" />
       <xs:enumeration value="Students" />
-      <xs:enumeration value="All Student KCs" />
+      <xs:enumeration value="All Students, All KCs" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -122,12 +122,18 @@
 
   <xs:complexType name="option_dependency">
     <xs:choice>
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="studentThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
-	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="opportunityThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
-	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="lowErrorThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
-	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="highErrorThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
-	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
-	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="secondaryModel" ls:dependsOn="viewSecondary" ls:constraint="matches(true)" />
+	<xs:element type="disjunctive" name="dependency0" ls:dependentOption="classifyCurves" ls:dependsOn="learningCurve" ls:constraint="matches(All Students, All KCs)" ls:negation="true" />
+	<xs:element type="conjunctive" name="dependency1" ls:dependentOption="studentThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
+	<xs:element type="conjunctive" name="dependency2" ls:dependentOption="studentThreshold" ls:dependsOn="learningCurve" ls:constraint="matches(Knowledge Components)" />
+	<xs:element type="conjunctive" name="dependency3" ls:dependentOption="opportunityThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
+	<xs:element type="conjunctive" name="dependency4" ls:dependentOption="opportunityThreshold" ls:dependsOn="learningCurve" ls:constraint="matches(All Students, All KCs)" ls:negation="true" />
+	<xs:element type="conjunctive" name="dependency5" ls:dependentOption="lowErrorThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
+	<xs:element type="conjunctive" name="dependency6" ls:dependentOption="lowErrorThreshold" ls:dependsOn="learningCurve" ls:constraint="matches(All Students, All KCs)" ls:negation="true" />
+	<xs:element type="conjunctive" name="dependency7" ls:dependentOption="highErrorThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
+	<xs:element type="conjunctive" name="dependency8" ls:dependentOption="highErrorThreshold" ls:dependsOn="learningCurve" ls:constraint="matches(All Students, All KCs)" ls:negation="true" />
+	<xs:element type="conjunctive" name="dependency9" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="classifyCurves" ls:constraint="matches(true)" />
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="learningCurve" ls:constraint="matches(All Students, All KCs)" ls:negation="true"/>
+	<xs:element type="conjunctive" name="dependency11" ls:dependentOption="secondaryModel" ls:dependsOn="viewSecondary" ls:constraint="matches(true)" />
     </xs:choice>
 </xs:complexType>
 

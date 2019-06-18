@@ -14,6 +14,13 @@
   <top>106</top>
   <options>
     <useTitleAsSkillId>false</useTitleAsSkillId>
+    <useDatashopDataset>false</useDatashopDataset>
+    <!-- If you've loaded DS2254 locally, specify the dataset id and uncomment this block. -->
+<!-- 
+    <useDatashopDataset>true</useDatashopDataset>
+    <datasetId>17</datasetId>
+    <importNewKCModel>true</importNewKCModel>
+-->
   </options>
   <inputs>
     <input0>
@@ -35,7 +42,7 @@
       <inputmeta />
       <optionmeta />
     </input0>
-
+    <!-- If you've loaded DS2254 locally, comment out this input. -->
     <input1>
       <component_id>Analysis-1-x64189</component_id>
       <component_id_human>Analysis #1</component_id_human>

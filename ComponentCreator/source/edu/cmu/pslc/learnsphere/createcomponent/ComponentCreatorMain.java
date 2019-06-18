@@ -34,7 +34,7 @@ import java.nio.file.Files;
 
 import java.util.regex.Pattern;
 
-import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
+import edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils;
 import edu.cmu.pslc.datashop.util.FileUtils;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
@@ -89,7 +89,7 @@ public class ComponentCreatorMain extends AbstractComponent {
         if (newComponentDir != null && newComponentDir.exists()) {
             // Turn the new Component directory into a zip file
             String zipFileName = this.getComponentOutputDir() + File.separator + newComponentDir.getName() + ".zip";
-            zipFileName = WorkflowHelper.getStrictDirFormat(zipFileName);
+            zipFileName = WorkflowFileUtils.getStrictDirFormat(zipFileName);
 
             logger.debug("Zip file name: " + zipFileName);
             try {
@@ -124,7 +124,7 @@ public class ComponentCreatorMain extends AbstractComponent {
 
         logger.debug("unzippedDir  " + unzippedDir.getName());
 
-        this.compProgramsDirName =  WorkflowHelper.getStrictDirFormat(
+        this.compProgramsDirName =  WorkflowFileUtils.getStrictDirFormat(
                                         this.getComponentOutputDir()
                                         + unzippedDir.getName());
 
@@ -146,7 +146,7 @@ public class ComponentCreatorMain extends AbstractComponent {
         String component_lang = getOption("component_lang");
         String componentProgramsDir = "";
         if (!component_lang.equalsIgnoreCase("java")) {
-            componentProgramsDir = WorkflowHelper.getStrictDirFormat(this.compProgramsDirName);
+            componentProgramsDir = WorkflowFileUtils.getStrictDirFormat(this.compProgramsDirName);
             logger.debug("componentProgramsDir " + componentProgramsDir);
         }
 
@@ -320,7 +320,7 @@ public class ComponentCreatorMain extends AbstractComponent {
                 } else if (optionType.equalsIgnoreCase("boolean")) {
                     String optionVal = getOption("option_" + i + "_default");
                     if (!optionVal.equals("true") && !optionVal.equals("false")) {
-                        addErrorMessage("Default value for a boolean option, must be " + 
+                        addErrorMessage("Default value for a boolean option, must be " +
                             "either \"true\" or \"false\".  They must be lowercase: " +
                             "option " + i + "  " + optionVal);
                     }

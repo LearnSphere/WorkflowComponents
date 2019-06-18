@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cmu.pslc.datashop.servlet.workflows.WorkflowHelper;
+import edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 
 public class ExportZipMain extends AbstractComponent {
@@ -49,7 +49,7 @@ public class ExportZipMain extends AbstractComponent {
         allFiles.addAll(this.getAttachments(0));
 
 
-        File zipFile = WorkflowHelper.compressFiles(this.getComponentOutputDir(), allFiles);
+        File zipFile = WorkflowFileUtils.compressFiles(this.getComponentOutputDir(), allFiles);
 
         Integer nodeIndex = 0;
         Integer fileIndex = 0;

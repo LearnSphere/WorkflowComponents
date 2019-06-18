@@ -22,7 +22,9 @@
 
 <outputs>
 <b>tetrad-graph</b> - SEM estimated graph if SEM is selected in the options.  Otherwise, if Bayes is selected, then it is the original graph.<br/>
-<b>tetrad-im</b> - Instatiated model as output from the estimator.
+<b>text</b> - Model statistics. Various information about the estimated model.<br/>
+<b>tab-delimited</b> - Table with various information about the model. Only for SEM.<br/>
+<b>tab-delimited</b> - Correlation Matrix
 </outputs>
 
 <options>

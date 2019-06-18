@@ -1,0 +1,110 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>Assessment</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <options>
+    <summary_column_present>true</summary_column_present>
+  </options>
+  <top>218</top>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Gradebook</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <gradebook>
+          <index>0</index>
+          <file_path>test/example_gradebook/OLI-Psych_Q9.txt</file_path>
+          <label>gradebook</label>
+          <file_name>OLI-Psych_Q9.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Student Id</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>week 1</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>week 2</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>week 3</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>week 4</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>week 5</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>6</index>
+              <name>Disc. Chemistry</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>7</index>
+              <name>Disc. REDOX</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>8</index>
+              <name>Disc. Cell Membrane</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>9</index>
+              <name>Quiz2 REDOX</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>10</index>
+              <name>Quiz3 ATP concept map</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>11</index>
+              <name>Quiz4 Protein Folding</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>12</index>
+              <name>Quiz5 Cell membrane</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>13</index>
+              <name>Points at Midterm</name>
+            </header>
+          </metadata>
+        </gradebook>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
