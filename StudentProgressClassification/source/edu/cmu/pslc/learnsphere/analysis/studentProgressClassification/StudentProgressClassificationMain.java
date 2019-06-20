@@ -18,8 +18,8 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 
-import edu.cmu.pl2.item.GoalItem;
-import edu.cmu.pl2.item.ResourceUseItem;
+import edu.cmu.pl2.item.MathiaGoalItem;
+import edu.cmu.pl2.item.MathiaUsageItem;
 import edu.cmu.pl2.item.StudentStatusItem;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowImportHelper;
@@ -131,7 +131,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                     }
             }
             //process goal. studentGoalItems has student id as key and goalItem as value
-            Hashtable<String, GoalItem> studentGoalItems = new Hashtable<String, GoalItem>();
+            Hashtable<String, MathiaGoalItem> studentGoalItems = new Hashtable<String, MathiaGoalItem>();
             String s_delim = Character.toString(delim);
             try (BufferedReader bReader = new BufferedReader(new FileReader(goalFile));) {
                     //skip header line
@@ -141,7 +141,7 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                             String goalRow[] = line.split(s_delim, -1);
                             //GOAL_STUDENT_ID
                             String student = goalRow[goalColumnHeaders.get(GOAL_STUDENT_ID)];
-                            GoalItem goalItem = new GoalItem();
+                            MathiaGoalItem goalItem = new MathiaGoalItem();
                             //GOAL_OBJECTIVE_UNITS
                             goalItem.setObjectiveUnits(goalRow[goalColumnHeaders.get(GOAL_OBJECTIVE_UNITS)]);
                             //GOAL_OBJECTIVE_TIME
@@ -230,14 +230,14 @@ public class StudentProgressClassificationMain extends AbstractComponent {
                                 String resourceUseRow[] = line.split(s_delim, -1);
                                 //RESOURCE_USE_ANON_STUDENT_ID
                                 String student = resourceUseRow[resourceUseColumnHeaders.get(RESOURCE_USE_ANON_STUDENT_ID)];
-                                GoalItem goalItem = studentGoalItems.get(student);
+                                MathiaGoalItem goalItem = studentGoalItems.get(student);
                                 if (goalItem == null) {
                                         //write to output file with empty student prgress classification
                                         bw.append(line + delim + "\n");
                                         line = bReader.readLine();
                                         continue;
                                 }
-                                ResourceUseItem resourceUseItem = new ResourceUseItem();
+                                MathiaUsageItem resourceUseItem = new MathiaUsageItem();
                                 //RESOURCE_USE_PROP_CORRECT_STEPS
                                 String tempVal = resourceUseRow[resourceUseColumnHeaders.get(RESOURCE_USE_PROP_CORRECT_STEPS)];
                                 if (tempVal != null && !tempVal.trim().equals("")) {
