@@ -238,9 +238,9 @@ public class CurriculumPacingMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 	
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/curriculumpacing.png");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/curriculumpacing.pdf");
 
-		this.addOutputFile(outputFile0, 0, 0, "image");
+		this.addOutputFile(outputFile0, 0, 0, "pdf");
 
 
         System.out.println(this.getOutput());
