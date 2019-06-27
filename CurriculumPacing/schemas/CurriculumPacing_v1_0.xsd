@@ -58,7 +58,7 @@
   </xs:complexType>
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="image"/>
+      <xs:element ref="pdf"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="OutputType">

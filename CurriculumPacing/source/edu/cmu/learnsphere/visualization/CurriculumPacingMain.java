@@ -235,12 +235,19 @@ public class CurriculumPacingMain extends AbstractComponent {
             }
             
 	// Run the program...
+        //First need to make sure there is no /curriculumpacing.pdf exists otherwise R will not work
+            
+            File existingFile = new File(this.getComponentOutputDir() + "/curriculumpacing.pdf");
+        if (existingFile.exists() && existingFile.isFile()) {
+                existingFile.delete();
+                logger.info("Curriculum Pacing deleted exisitng " + existingFile.getAbsolutePath() );
+        }
 	File outputDirectory = this.runExternal();
 	
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/curriculumpacing.png");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/curriculumpacing.pdf");
 
-		this.addOutputFile(outputFile0, 0, 0, "image");
+		this.addOutputFile(outputFile0, 0, 0, "pdf");
 
 
         System.out.println(this.getOutput());

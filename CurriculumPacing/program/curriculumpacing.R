@@ -247,5 +247,5 @@ plt <- make_plot(student_step_data = rdf,
 
 # save ggplot object
 # height and width are in inches
-ggsave(file.path(working_dir, "curriculumpacing.png"), plt, height = 10, width = 12)
+ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = 10, width = 12)
 
