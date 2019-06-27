@@ -18,7 +18,7 @@
 </outputs>
 
 <options>
-  <b>Model</b> - model to compute spacings for.<br/>
+  <b>Model</b> - model to compute spacings for. This model must be supplied if spacing effects are used (ppe or base4 features in GKT). If not, this value must be input but is unused.<br/>
   <b>Number of students</b> - null indicates sample full set, a number indicates a random sample of size n.<br/>
 </options>
 

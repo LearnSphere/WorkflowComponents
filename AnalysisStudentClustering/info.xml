@@ -9,7 +9,7 @@
   <details>Student Clustering component accepts two format types of data input : long and wide. In case of kmeans and hierarchical clustering, the user needs to specify the number of clusters  between 2 and 16. It is 4 by default. The user should specify if the clustering should be based on outcome and/or duration. This should be specified in the parameters : isoutcome and is duration. The values are yes or no. The user should specify if we use the mean or median of the outcome. The parameter Mean or Median has the values mean or median. In case of the dpmeans clustering the user should specify the value of lambda. The R package “hclust” (Murtagh and Legendre, 2014) is applied forhierarchical clustering analysis.</details>
 
    <inputs>
-    <b>long or wide </b>
+    <b>long or wide data set</b> - Assumes standard header for Anon Student Id either in long trasnaction/step file or precomputed wide file.
    </inputs>
    <outputs>
      <b> clustering Plot (png)</b>- It shows the clustering's visualization if there is one.<br/>
@@ -23,7 +23,7 @@
        <li><b>k</b> - Number of clusters (at least 2).</li>
        <li> <b>Type of clustering </b>- Type of clustering. </li>
        <li> <b>Lambda</b> - Lambda. </li>
-       <li> <b>Input data format </b> - long or wide. </li>
+       <li> <b>Input data format </b> - long (standard DataShop) or wide. Note: wide only for dpmeans.</li>
        <li> <b>Use duration</b> - make features using duration. </li>
        <li> <b>Use outcome</b> - make features using outcome. </li>
        <li> <b>Use mean or median</b> - mean or median for features. </li>
