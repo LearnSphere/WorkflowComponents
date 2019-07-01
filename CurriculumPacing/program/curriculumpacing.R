@@ -245,6 +245,8 @@ plt <- make_plot(student_step_data = rdf,
                  max_datetime_unit = abs_max_time_unit,
                  plot_type = plot_type)
 
+plt <- plt + labs(caption = input_file)
+
 # save ggplot object
 # height and width are in inches
 ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = 10, width = 12)
