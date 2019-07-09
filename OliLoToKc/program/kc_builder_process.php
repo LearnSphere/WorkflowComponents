@@ -1,4 +1,6 @@
 <?php
+ini_set("auto_detect_line_endings", true);
+
 session_start();
 include("includes/common_functions.php");
 
