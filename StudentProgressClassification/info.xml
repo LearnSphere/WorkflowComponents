@@ -13,7 +13,7 @@ If student doesn't meet the accuracy goal, student gets Ramp it up. If student d
 <description>The <b>Student Progress Classification</b> component assigns progress classification to student based on student's usage and accuracy info; and the goal that student set up.</description>
 
 <inputs><ul>
-<li>Resource Use file. Required columns are: Anon Student Id, propCorrectSteps, time, problems, time_frame_start, time_frame_end. Column 'time' is time in minutes that student spent in the time frame. The 'prolems' is how many prolems student completed in the time frame. When this variable is empty, the 'time' column is used. The 'propCorrectSteps' is percent correct student gets.</li>
+<li>Resource Use file. Required columns are: Anon Student Id, propCorrectSteps, time, problems, time_frame_start(requried format:yyyy-mm-dd), time_frame_end(requried format:yyyy-mm-dd). Column 'time' is time in minutes that student spent in the time frame. The 'prolems' is how many prolems student completed in the time frame. When this variable is empty, the 'time' column is used. The 'propCorrectSteps' is percent correct student gets.</li>
 <li>Student Goal file. Required columns are: student_id, objective_units, objective_time, objective_prop_correct, objective_problems_completed. The column 'objective_units' is the time frame for the goals, e.g. per-week. The 'objective_time' is student goal for how much time to spend. The 'objective_problems_completed' is student goal for how many prolems to finish. The 'objective_prop_correct' is student goal for accuracy for percent correct.</li>
 </ul></inputs>
 
