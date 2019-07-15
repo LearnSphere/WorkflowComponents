@@ -376,7 +376,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   if(feat=="powafm"){return((df$cor+df$icor)^par1)}
   if(feat=="recency"){
     eval(parse(text=paste("df$rec <- df$",fcomp,"spacing",sep="")))
-    return(ifelse(df$rec==0,0,df$rec^par1))}
+    return(ifelse(df$rec==0,0,df$rec^-par1))}
   if(feat=="expdecafm"){return(ave(rep(1,length(df$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="base"){
     df$mintime <- ave(df$CF..Time.,index, FUN=min)
@@ -595,6 +595,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE)
         temp$data$Duration..sec.[outVals] = quantile(temp$data$Duration..sec.,.95) # Winsorize outliers
       }
       the.rt=temp$data$Duration..sec.[which(temp$data$CF..ansbin.==1)]
+      
       the.rt=the.rt
       rt.pred=rt.pred
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
@@ -685,7 +686,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE)
       testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
       passpars<<-c(unlist(opars[1:length(seeds)]),temptrain$coefficients)}
     else {
-      pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
+      pars<<- optim(seeds,tempfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
     }
 
   }   else
@@ -724,7 +725,9 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE)
     colnames(testvals)[2]<-"Anon.Student.Id"
     subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
       # report
-      if(dualfit==TRUE){cat(paste("\n","--------------------------","\n","Latency model params-> ","\n","Scalar: ",coef(lm.rt)[2],"\n","Intercept: ",coef(lm.rt)[1],"\n","--------------------------","\n",sep=''))}
+      if(dualfit==TRUE){print(paste("Failure latency: ",mean(temp$data$Duration..sec.[which(temp$data$CF..ansbin.==0)])))
+        cat(paste("\n","--------------------------","\n","Latency model params-> ","\n","Scalar: ",
+                  coef(lm.rt)[2],"\n","Intercept: ",coef(lm.rt)[1],"\n","--------------------------","\n",sep=''))}
       cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
       if(cvSwitch==0 & makeFolds==0){
         #Output text summary
