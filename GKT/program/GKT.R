@@ -57,6 +57,13 @@ if (args[i] == "-mode") {
        mode = args[i+1]
        i = i+1
     } else  
+if (args[i] == "-Include_Latency_Model") {
+       if (length(args) == i) {
+          stop("Include_Latency_Model name must be specified")
+       }
+       Include_Latency_Model = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Term1") {
        if (length(args) == i) {
           stop("Characteristics Values of Term1 must be specified")
@@ -163,6 +170,8 @@ source(sourceFunction)
 
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
+cat("Include Latency Model:",Include_Latency_Model,"\n")
+dualfit<-as.logical(Include_Latency_Model)
 
 Term1<-unlist(strsplit(Term1,";"))
 Term2<-unlist(strsplit(Term2,";"))
@@ -248,8 +257,8 @@ switch(mode,
        "best fit model"={
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
-         
-         modeloptim(plancomponents,prespecfeatures,val)
+
+         modeloptim(plancomponents,prespecfeatures,val,dualfit)
          val$CF..modbin.= predict(temp,type="response")
          
          pred<-predict(temp,type="response")
@@ -263,14 +272,16 @@ switch(mode,
          cvSwitch=1
          makeFolds=1
 
-         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
+         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds,dualfit)
+         val<<-dat
        },
 
        "five times 2 fold crossvalidated read folds"={
          cvSwitch=1
          makeFolds=0
 
-         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds)
+         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds,dualfit)
+         val<<-dat
        })
 # Export modified data frame for reimport after header attachment
 headers<-gsub("Unique[.]step","Unique-step",colnames(val))
