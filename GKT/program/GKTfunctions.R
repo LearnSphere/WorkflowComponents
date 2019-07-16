@@ -469,7 +469,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
 }
 
 
-modeloptim <- function(comps,feats,df,dualfit = FALSE)
+modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
 {
   tempfun <- function(pars){
 
@@ -478,7 +478,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE)
     optimparcount<-1
     fixedparcount<-1
     m<-1
-    eq<<-"1"
+    if (interc==TRUE){eq<<-"1"} else {eq<<-"0"}
     for(i in feats){
       k<-k+1
 
@@ -595,7 +595,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE)
         temp$data$Duration..sec.[outVals] = quantile(temp$data$Duration..sec.,.95) # Winsorize outliers
       }
       the.rt=temp$data$Duration..sec.[which(temp$data$CF..ansbin.==1)]
-      
+
       the.rt=the.rt
       rt.pred=rt.pred
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
