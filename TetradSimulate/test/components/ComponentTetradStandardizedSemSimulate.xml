@@ -1,0 +1,55 @@
+<component>
+  <component_id>StandardizedSemTest</component_id>
+  <component_id_human>TetradSearch #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>TetradSearch</component_name>
+  <component_type>tetrad</component_type>
+  <left>695</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Analysis-1-x641889</from>
+    </connection>
+  </connections>
+  <top>106</top>
+  <options>
+	<model>Standardized_SEM</model>
+
+
+    <leastNumCategories>2</leastNumCategories>
+    <greatestNumCategories>5</greatestNumCategories>
+
+    <coefLow>0.5</coefLow>
+    <coefHigh>1.5</coefHigh>
+    <coefSymmetric>true</coefSymmetric>
+
+    <errCovLow>0.1</errCovLow>
+    <errCovHigh>0.2</errCovHigh>
+    <errCovSymmetric>true</errCovSymmetric>
+
+    <errStdDevLow>1.0</errStdDevLow>
+    <errStdDevHigh>3.0</errStdDevHigh>
+
+    <sampleSize>100</sampleSize>
+
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Analysis-1-x641889</component_id>
+      <component_id_human>Analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>Afm</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>		  
+		  <file_path>test/resources/graph.html</file_path>
+          <file_name>graph.html</file_name>
+          <index>0</index>
+          <label>tetrad-graph</label>
+          <metadata/>
+        </student-step>
+      </files>
+    </input0>
+  </inputs>
+</component>
