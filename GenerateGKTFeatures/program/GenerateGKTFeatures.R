@@ -41,7 +41,15 @@ if (args[i] == "-node") {
 		} else {
 			i = i+1
 		}
-    } else if (args[i] == "-model") {
+    } else 
+if (args[i] == "-Include_KC_Model") {
+       if (length(args) == i) {
+          stop("Include_KC_Model name must be specified")
+       }
+       Include_KC_Model <- gsub("[ ()-]", ".", args[i+1])
+       i = i+1
+    }else
+if (args[i] == "-model") {
        if (length(args) == i) {
           stop("model name must be specified")
        }
@@ -137,7 +145,7 @@ for (i in unique(index)){
 return(temp)}
 
 
-if(!Number_of_Students=="null"){
+if(!Number_of_Students=="all"){
     val<-smallSet(val,as.numeric(Number_of_Students))
 }
 
@@ -165,21 +173,23 @@ val<-droplevels(val)
 
 options(scipen = 999)
 options(max.print=1000000)
+Include_KC_Model<-as.logical(Include_KC_Model)
 
+if(Include_KC_Model<-TRUE){
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"spacing <- compspacing(val,val$index,val$CF..Time.)",sep="")))
+      eval(parse(text=paste("val$",i,"relspacing <- compspacing(val,val$index,val$CF..reltime.)",sep="")))}
 
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"spacing <- compspacing(val,val$index,val$CF..Time.)",sep="")))
-  eval(parse(text=paste("val$",i,"relspacing <- compspacing(val,val$index,val$CF..reltime.)",sep="")))}
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"meanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))
+      eval(parse(text=paste("val$",i,"relmeanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))  }
 
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"meanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))
-  eval(parse(text=paste("val$",i,"relmeanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))  }
-
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"spacinglagged <- laggedspacingf(val,val$index,val$",i,"spacing)",sep="")))
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"spacinglagged <- laggedspacingf(val,val$index,val$",i,"spacing)",sep="")))
+    }
 }
 
 # Export modified data frame for reimport after header attachment
