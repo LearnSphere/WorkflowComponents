@@ -64,6 +64,13 @@ if (args[i] == "-Include_Latency_Model") {
        Include_Latency_Model = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Use_Global_Intercept") {
+       if (length(args) == i) {
+          stop("Use_Global_Intercept name must be specified")
+       }
+       Use_Global_Intercept = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Term1") {
        if (length(args) == i) {
           stop("Characteristics Values of Term1 must be specified")
@@ -171,7 +178,9 @@ source(sourceFunction)
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
 cat("Include Latency Model:",Include_Latency_Model,"\n")
+cat("Use_Global_Intercept:",Use_Global_Intercept,"\n")
 dualfit<-as.logical(Include_Latency_Model)
+interc<-as.logical(Use_Global_Intercept)
 
 Term1<-unlist(strsplit(Term1,";"))
 Term2<-unlist(strsplit(Term2,";"))
@@ -258,7 +267,7 @@ switch(mode,
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
 
-         modeloptim(plancomponents,prespecfeatures,val,dualfit)
+         modeloptim(plancomponents,prespecfeatures,val,dualfit,interc)
          val$CF..modbin.= predict(temp,type="response")
          
          pred<-predict(temp,type="response")

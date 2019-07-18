@@ -51,11 +51,11 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
       F1 <- which(foldIDX[,i]==1)#fold 1
       F2 <- which(foldIDX[,i]==2)#fold 2
       trainfold1 = val[F1,]
-      modeloptim(plancomponents,prespecfeatures,trainfold1,dualfit=dualfit)
+      modeloptim(plancomponents,prespecfeatures,trainfold1,dualfit=dualfit,interc=interc)
       glm1=temp
       dat1 = glm1$data #test is val with columns for F1,F2 etc created inside modeloptim()
       trainfold2 = val[F2,]
-      modeloptim(plancomponents,prespecfeatures,trainfold2,dualfit=dualfit)
+      modeloptim(plancomponents,prespecfeatures,trainfold2,dualfit=dualfit,interc=interc)
       glm2=temp
       dat2 = glm2$data #test is val with columns for F1,F2 etc created inside modeloptim()
       for(j in 1:2){

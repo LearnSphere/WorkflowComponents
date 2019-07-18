@@ -45,6 +45,7 @@
     <Term9>null</Term9>
     <Term10>null</Term10>
     <Include_Latency_Model>false</Include_Latency_Model>
+    <Use_Global_Intercept>true</Use_Global_Intercept>
 </options>
 
 </component>
