@@ -404,21 +404,30 @@ public class TetradSimulate {
             //Get nodes
             List<Node> nodeList = new ArrayList<Node>();
             boolean onNodes = false;
+            boolean isSem = false;
             //while ( b.ready() ) {
             int c = 0;
             for ( ; c < graphLines.length; c++) {
                 String line = graphLines[c];
                 //String line = b.readLine();
                 if ( !onNodes ) {
-                    if ( line.contains("Graph Nodes:") ) {
+                    if ( line.contains("Graph Nodes") ) {
                         onNodes = true;
+                        if (line.contains("SEM")) {
+                            isSem = true;
+                        }
+
                         continue;
                     }
                 }
 
                 String [] nodeAr = line.split(",");
                 for ( int i = 0; i < nodeAr.length; i++ ) {
-                    nodeList.add( new GraphNode( nodeAr[i].replaceAll(" ", "_") ));
+                    if (isSem) {
+                        nodeList.add( new GraphNode( nodeAr[i].split(" ")[0].replaceAll(" ", "_") ));
+                    } else {
+                        nodeList.add( new GraphNode( nodeAr[i].replaceAll(" ", "_") ));
+                    }
                 }
                 break;
             }
@@ -432,7 +441,7 @@ public class TetradSimulate {
             for ( ; c < graphLines.length; c++) {
                 String line = graphLines[c];
                 if ( !onEdges ) {
-                    if ( line.contains("Graph Edges:") ) {
+                    if ( line.contains("Graph Edges") ) {
                         onEdges = true;
                         continue;
                     }
@@ -524,6 +533,14 @@ public class TetradSimulate {
                         newEdge.addProperty(Edge.Property.dd);
                     }
                 }
+
+                // // If sem add the probability
+                // try {
+                //     EdgeTypeProbability etp = new EdgeTypeProbability();
+                //     double prob = Double.parseDouble(tokens[tokens.length-1]);
+                //     etp.setProbability(prob);
+                //     newEdge.addEdgeTypeProbability(etp);
+                // } catch (Exception e) {}
 
                 // addToDebugMessages("" + newEdge);
                 g.addEdge(newEdge);
