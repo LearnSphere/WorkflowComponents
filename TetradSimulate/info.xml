@@ -11,7 +11,7 @@
 
 <abstract>The <b>simulation</b> component will simulate data based on the input graph.  If you would like to create a continuous dataset, select a SEM or Standardized SEM (Structural Equation Model).  For discrete data, select Bayes.
 <br/>
-Model parameters are set randomly, though, you can specify ranges for the number of categories in a Bayes model and the various parameters in the SEM model.
+Model parameters are set randomly.
 <br/><a target="_blank" href="http://www.phil.cmu.edu/tetrad/index.html">Tetrad Website</a>
 </abstract>
 
@@ -28,8 +28,8 @@ Model parameters are set randomly, though, you can specify ranges for the number
 
 <options>
 <b>Model</b> - Type of model used to generate data.  SEM for continous, Bayes for discrete.<br/>
-<b>Number of categories</b> - Number of categories for each variable in a Bayes model.  Specify the range and a random number will be selected from that for each variable in the graph.<br/>
-<b>Coefficient/Covariance/Standard Deviation ranges</b> - Specify ranges of values that will be randomly chosen for SEM parameters.<br/>
+<!-- <b>Number of categories</b> - Number of categories for each variable in a Bayes model.  Specify the range and a random number will be selected from that for each variable in the graph.<br/>
+<b>Coefficient/Covariance/Standard Deviation ranges</b> - Specify ranges of values that will be randomly chosen for SEM parameters.<br/> -->
 <b>Sample Size</b> - Number of rows in the generated dataset.<br/>
 </options>
 
