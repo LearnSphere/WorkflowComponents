@@ -29,6 +29,16 @@ def get_default_arg_parser(desc):
     parser.add_argument('-userId', type=str,
                        help='the user id')
 
+    parser.add_argument('-workflowDir', type=str,
+                       help='the workflow directory')
+
+    parser.add_argument('-toolDir', type=str,
+                       help='the main directory of the component')
+
+    parser.add_argument('-componentXmlFile', type=str,
+                       help='a fake path to a component xml file for this instance of the component')
+
+
     # For local testing outside of Tigris env
     parser.add_argument('-is_test', type=int,
                        help='set to any integer to indicate this script is being  \

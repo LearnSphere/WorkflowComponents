@@ -49,7 +49,6 @@
 	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
       
-      <xs:element name="dataset" substitutionGroup="tab-delimited" />
       <xs:element name="predictions" substitutionGroup="tab-delimited" />
       <xs:element name="dataset-list" substitutionGroup="tab-delimited" />
       <xs:element name="model-set" substitutionGroup="tab-delimited" />
@@ -63,21 +62,21 @@
 
 	  <xs:element name="model-values" substitutionGroup="text" />
 	  <xs:element name="parameters" substitutionGroup="text" />
-	    <xs:element name="analysis-summary" substitutionGroup="text" />
+	  <xs:element name="analysis-summary" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
 	  <xs:element name="sql" substitutionGroup="text" />
-		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
-<xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
-<xs:element name="coursera-anonymized-general" substitutionGroup="text" />
-	<xs:element name="MOOCdb" substitutionGroup="file" />
-<xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
-<xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
-<xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />
+	  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />
+      <xs:element name="coursera-anonymized-forum" substitutionGroup="text" />
+      <xs:element name="coursera-anonymized-general" substitutionGroup="text" />
+	  <xs:element name="MOOCdb" substitutionGroup="file" />
+      <xs:element name="MOOCdb-features" substitutionGroup="tab-delimited" />
+      <xs:element name="longitudinal-features" substitutionGroup="tab-delimited" />
+      <xs:element name="MOOCdb-feature-description" substitutionGroup="tab-delimited" />
 	  <xs:element name="discoursedb" substitutionGroup="text" />
 	  <xs:element name="xml" substitutionGroup="text" />
-		  <xs:element name="inline-html" substitutionGroup="xml" />
-		  <xs:element name="html" substitutionGroup="xml" />
-		  <xs:element name="ctat-log" substitutionGroup="xml" />
+      <xs:element name="inline-html" substitutionGroup="xml" />
+      <xs:element name="html" substitutionGroup="xml" />
+      <xs:element name="ctat-log" substitutionGroup="xml" />
 
       <xs:element name="tetrad-graph" substitutionGroup="inline-html" />
       <xs:element name="tetrad-knowledge" substitutionGroup="tab-delimited" />
@@ -110,5 +109,7 @@
       <xs:element name="modeling-problem" substitutionGroup="json" />
       <xs:element name="model" substitutionGroup="json" />
       <xs:element name="dataset-query" substitutionGroup="json" />
+      <xs:element name="dataset" substitutionGroup="json" />
+      <xs:element name="problem" substitutionGroup="json" />
 
 </xs:schema>

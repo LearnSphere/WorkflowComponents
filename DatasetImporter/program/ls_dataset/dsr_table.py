@@ -30,6 +30,12 @@ class DSRTable(DatasetResource):
         out = json.loads(super().to_json())
         out['columns'] = [json.loads(rc.to_json()) for rc in self.columns]
         return json.dumps(out)
+
+    def get_column(self, col_id):
+        for col in self.columns:
+            if col.colIndex == col_id:
+                return col
+        logger.warning("No matching columns found with index: %s" % str(col_id))
         
 
     def __str__(self):

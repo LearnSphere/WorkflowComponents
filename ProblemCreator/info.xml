@@ -5,22 +5,20 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemCreator</url>
-<date>March 13, 2019</date>
+<date>July 18, 2019</date>
 <abstract>The <b>ProblemCreator</b> component is an example of a(n) Python component.</abstract>
-<description>Allow user to create a new problem and select a problem target from the columns of a dataset from a dataset repository</description>
+<description>Allow user to create a new problem given a problem wizard</description>
 
 <inputs>
-<b>dataset</b>
 </inputs>
 
 <outputs>
-<b>problem-target</b>
+<b>problem</b>
+<b>ranked-models</b>
+<b>inline-html</b>
 </outputs>
 
 <options>
-<b>probname -- type xs:string</b>
-<b>probdesc -- type xs:string</b>
-<b>targetname -- type FileInputHeader</b>
 </options>
 
 </info>

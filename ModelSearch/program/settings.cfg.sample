@@ -6,6 +6,6 @@ file_log_path = /rdata/dataStore/d3m/tmp
 [TA2]
 ta2_url = localhost:45042
 [Output]
-dataset_out_file = datasetDoc.tsv
-model_out_file = fit-models.tsv
-pred_out_file = predictions.tsv
+session_out_file = session.json
+ui_out_file = ui.html
+/*pred_out_file = predictions.tsv*/

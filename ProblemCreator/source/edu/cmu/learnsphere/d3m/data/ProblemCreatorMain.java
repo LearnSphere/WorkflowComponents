@@ -9,12 +9,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
  */
 public class ProblemCreatorMain extends AbstractComponent {
 
-	/** Component option (probname). */
-	String probname = null;
-	/** Component option (probdesc). */
-	String probdesc = null;
-	/** Component option (targetname). */
-	String targetname = null;
 
     /**
      * Main method.
@@ -39,26 +33,12 @@ public class ProblemCreatorMain extends AbstractComponent {
 
         // The addMetaData* methods make the meta data available to downstream components.
 
-	// Add input meta-data (headers) to output file.
-	this.addMetaDataFromInput("dataset", 0, 0, ".*");
-
-	// Add additional meta-data for each output file.
-	this.addMetaData("problem-target", 0, META_DATA_LABEL, "label0", 0, null);
 
     }
 
     @Override
     protected void parseOptions() {
 
-	if(this.getOptionAsString("probname") != null) {
-		probname = this.getOptionAsString("probname");
-	}
-	if(this.getOptionAsString("probdesc") != null) {
-		probdesc = this.getOptionAsString("probdesc");
-	}
-	if(this.getOptionAsString("targetname") != null) {
-		targetname = this.getOptionAsString("targetname");
-	}
 
     }
 
@@ -72,9 +52,13 @@ public class ProblemCreatorMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/problemTarget.tsv");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/session.json");
+	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/ranked-models.tsv");
+	File outputFile2 = new File(outputDirectory.getAbsolutePath() + "/ui.html");
 
-		this.addOutputFile(outputFile0, 0, 0, "problem-target");
+		this.addOutputFile(outputFile0, 0, 0, "problem");
+		this.addOutputFile(outputFile1, 1, 0, "ranked-models");
+		this.addOutputFile(outputFile2, 2, 0, "inline-html");
 
 
         System.out.println(this.getOutput());

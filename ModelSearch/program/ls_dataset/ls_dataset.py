@@ -21,6 +21,8 @@ class LSDataset(object):
     __default_schema__ = "datasetDoc.json"
 
     def __init__(self, dpath, schema_path=None):
+        # id in database
+        self._id = None
         # path to the root directory of the dataset
         self.dpath = dpath
         # Name of the dataset (assumes the datset name is the same as the directory name

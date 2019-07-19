@@ -52,9 +52,11 @@ public class DatasetImporterMain extends AbstractComponent {
 	File outputDirectory = this.runExternal();
 
 
-	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/dataset-list.tsv");
+	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/session.json");
+	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/ui.html");
 
-		this.addOutputFile(outputFile0, 0, 0, "dataset-list");
+		this.addOutputFile(outputFile0, 0, 0, "dataset");
+		this.addOutputFile(outputFile1, 1, 0, "inline-html");
 
 
         System.out.println(this.getOutput());

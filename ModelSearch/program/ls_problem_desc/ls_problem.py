@@ -44,12 +44,14 @@ class ProblemDesc(object):
         'CLUSTERING',
         'LINK_PREDICTION',
         'VERTEX_NOMINATION',
+        'VERTEX_CLASSIFICATION',
         'COMMUNITY_DETECTION',
-        'GRAPH_CLUSTERING',
         'GRAPH_MATCHING',
         'TIME_SERIES_FORECASTING',
-        'COLLABORATIVE_FILTERING ',
-        'OBJECT_DETECTION '
+        'COLLABORATIVE_FILTERING',
+        'OBJECT_DETECTION',
+        'SEMISUPERVISED_CLASSIFICATION',
+        'SEMISUPERVISED_REGRESSION'
     ]
     __task_subtypes__ =  [
 			"binary",
@@ -71,13 +73,13 @@ class ProblemDesc(object):
 
     __ignore_chars__=['-','_']
     
-    def __init__(self, name=None, desc=None, task_type=None, subtype=None, version=1.0, metrics=None, metadata=None):
+    def __init__(self, _id=None, name=None, desc=None, task_type=None, subtype=None, version=1.0, metrics=None, metadata=None):
         """
         inputs: 
             metadata - dictionary representation of additional information
         
         """
-        self.id = "pid" + str(abs(hash(datetime.now())))
+        self._id=_id
         self.name=name
         self.version=version
         self.description=desc
@@ -92,13 +94,55 @@ class ProblemDesc(object):
                 self.metrics = [Metric.from_json(m) for m in metrics]
         else:
             raise Exception("Invalid metrics given, must be a list")
+        self.data_split = None
         self.inputs = []
+        self.expected_outputs = None
+        self.data_aug_params = []
        
         # Catchall for extra information to support easy subclassing
         if metadata is not None:
             self.metadata = metadata
         else:
             self.metadata = None
+
+    def add_data_split(self,
+                 method=None,
+                 test_size=None,
+                 num_folds=None,
+                 stratified=None,
+                 num_repeats=None,
+                 random_seed=None,
+                 splits_file=None,
+                 split_script=None
+                 ):
+        self.data_split = ProblemDataSplit(
+            method=method,
+            test_size=test_size,
+            num_folds=num_folds,
+            stratified=stratified,
+            num_repeats=num_repeats,
+            random_seed=random_seed,
+            splits_file=splits_file,
+            split_script=split_script
+        )
+
+    def add_expected_outputs(self, 
+                             pred_file=None,
+                             score_file=None
+                             ):
+        self.expected_outputs = ExpectedProblemOutput(
+            pred_file=pred_file, 
+            score_file=score_file
+        )
+
+    def add_data_aug_params(self,
+                            domains=[],
+                            keywords=[]
+                            ):
+        dap = DataAugmentationParamaters(
+            domains=domains,
+            keywords=keywords)
+        self.data_aug_params.push(dap)
 
     def add_input(self, did, res, col):
         if len(self.inputs) == 0:
@@ -170,11 +214,12 @@ class ProblemDesc(object):
         # logger.debug("ProblmDesc to dict")
         # logger.debug("######################################")
         out = {
-            "id": self.id,
             "version": self.version,
             "metrics": [metric.to_dict() for metric in self.metrics],
             "inputs": [inpt.to_dict() for inpt in self.inputs]
         }
+        if self._id is not None:
+            out['_id'] = self._id
         if self.name is not None:
             out["name"] = self.name
         if self.description is not None:
@@ -182,10 +227,21 @@ class ProblemDesc(object):
         if self.task_type is not None:
             out["task_type"] = self.task_type
         if self.subtype is not None:
-            out["task_subtype"] = self.subtype
+            out["subtype"] = self.subtype
         if self.metadata is not None:
             out["metadata"] = self.metadata
+        
+        if self.data_split is not None:
+            out['data_split'] = self.data_split.__dict__
+        if self.expected_outputs is not None:
+            out['expected_outputs'] = self.expected_outputs.__dict__
+        if self.data_aug_params is not None:
+            out['data_aug_params'] = [dap.__dict__ for dap in self.data_aug_params]
+       
         return out
+
+    def to_json(self):
+        return json.dumps(self.to_dict())
 
     def to_file(self, fpath):
         if isinstance(fpath, str):
@@ -233,7 +289,7 @@ class ProblemDesc(object):
         name = data['name'] if 'name' in data.keys() else None
         desc = data['description'] if 'description' in data.keys() else None
         task_type = data['task_type'] if 'task_type' in data.keys() else None
-        task_subtype = data['task_subtype'] if 'task_subtype' in data.keys() else None
+        subtype = data['subtype'] if 'subtype' in data.keys() else None
         version = data['version'] if 'version' in data.keys() else 1
         metrics = [Metric.from_json(metric) for metric in data['metrics']] if 'metrics' in data.keys() else None
         metadata = data['metadata'] if 'metadata' in data.keys() else None
@@ -242,14 +298,15 @@ class ProblemDesc(object):
             name=name,
             desc=desc,
             task_type=task_type,
-            subtype=task_subtype,
+            subtype=subtype,
             version=version,
             metrics=None,
             metadata=metadata
         )
 
-        # Override the autogenerated id
-        prob.id = data['id']
+        # Add DB id if present, and cast the mongodb ObjectID
+        if '_id' in data.keys():
+            prob._id = str(data['_id'])
 
         # Add metrics
         for metric in data['metrics']:
@@ -280,6 +337,7 @@ class Input(object):
     def __init__(self, did):
         self.dataset_id = did
         self.targets = []
+        self.privileged_data = []
 
     def add_target(self, res, col):
         i = len(self.targets)
@@ -289,19 +347,21 @@ class Input(object):
     def to_dict(self):
         out = {'dataset_id': self.dataset_id}
         out['targets'] = [t.to_dict() for t in self.targets]
+        out['privileged_data'] = [d.__dict__ for d in self.privileged_data]
         return out
 
     @staticmethod
     def from_dict(data):
         out = Input(data['dataset_id'])
         out.targets.extend([Target.from_dict(t) for t in data['targets']])
+        out.privileged_data.extend([PrivilegedData(**d) for d in data['privileged_data']])
         return out
 
     def __str__(self):
         return str(self.to_dict())
 
 class Target(object):
-    def __init__(self, indx, res=None, col=None):
+    def __init__(self, indx, res=None, col=None, num_clusters=None):
         self.target_index = indx
         if col is not None:
             self.column_index = col.colIndex
@@ -315,14 +375,18 @@ class Target(object):
         else:
             self.resource_id = None
 
+        self.num_clusters=num_clusters
+
 
     def to_dict(self):
-        return {
-            'target_index': self.target_index,
-            'column_index': self.column_index,
-            'column_name': self.column_name,
-            'resource_id': self.resource_id
-        }
+        return self.__dict__
+        # return {
+            # 'target_index': self.target_index,
+            # 'column_index': self.column_index,
+            # 'column_name': self.column_name,
+            # 'resource_id': self.resource_id,
+            # 'num_clusters': self.num_clusters
+        # }
 
     @staticmethod
     def from_dict(data):
@@ -330,11 +394,78 @@ class Target(object):
         out.column_index = data['column_index']
         out.column_name = data['column_name']
         out.resource_id = data['resource_id']
+        if 'num_clusters' in data:
+            out.num_clusters = data['num_clusters']
         return out
 
     def __str__(self):
         return str(self.to_dict())
 
+class ProblemDataSplit(object):
+    def __init__(self,
+                 method=None,
+                 test_size=None,
+                 num_folds=None,
+                 stratified=None,
+                 num_repeats=None,
+                 random_seed=None,
+                 splits_file=None,
+                 split_script=None
+                 ):
+        self.method = method
+        self.test_size = test_size
+        self.num_folds = num_folds
+        self.stratified = stratified
+        self.num_repeats = num_repeats
+        self.random_seed = random_seed
+        self.splits_file = splits_file
+        self.split_script = split_script
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
+
+class PriviledgedData(object):
+    def __init__(self,
+                 priviledged_data_index=None,
+                 resource_id=None,
+                 col_index=None,
+                 col_name=None
+                 ):
+        self.priviledged_data_index = priviledged_data_index
+        self.resource_id = resource_id
+        self.col_index = col_index
+        self.col_name = col_name
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
+
+class ExpectedProblemOutput(object):
+    def __init__(self,
+                 pred_file='predictions.csv',
+                 scores_file='scores.csv'
+                 ):
+        self.pred_file = pred_file
+        self.scores_file = scores_file
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
+
+class DataAugmentationParameters(object):
+    def __init__(self,
+                 domains=[],
+                 keywords=[]
+                 ):
+        if type(domains) is list:
+            self.domains = domains
+        else:
+            self.domains = [domains]
+        if type(keywords) is list:
+            self.keywords = keywords
+        else:
+            self.keywords = [keywords]
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
 
 class ModelingProblem(ProblemDesc):
 

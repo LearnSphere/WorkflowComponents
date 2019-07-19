@@ -1,5 +1,7 @@
-[Dataset]
-out_file = problemTarget.tsv
+[Output]
+session_out_file = session.json
+ui_out_file = ui.html
+ranked_model_file = ranked-models.tsv
 [Logging]
 log_level = INFO
 enable_syslog = True
