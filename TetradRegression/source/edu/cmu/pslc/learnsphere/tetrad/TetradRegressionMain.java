@@ -76,7 +76,7 @@ public class TetradRegressionMain extends AbstractComponent {
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
             File file0 = new File(outputDirectory.getAbsolutePath() + "/RegressionGraph.html");
             File file1 = new File(outputDirectory.getAbsolutePath() + "/RegressionTable.txt");
-
+            File file2 = new File(outputDirectory.getAbsolutePath() + "/RegressionModelStatistics.txt");
 
             if (file0 != null && file0.exists() && file1 != null && file1.exists()) {
 
@@ -87,8 +87,13 @@ public class TetradRegressionMain extends AbstractComponent {
 
                 Integer nodeIndex1 = 1;
                 Integer fileIndex1 = 0;
-                String label1 = "text";
+                String label1 = "tab-delimited";
                 this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
+
+                Integer nodeIndex2 = 2;
+                Integer fileIndex2 = 0;
+                String label2 = "text";
+                this.addOutputFile(file2, nodeIndex2, fileIndex2, label2);
             } else {
                 errorMessages.add("cannot add output files");
             }
@@ -155,12 +160,12 @@ public class TetradRegressionMain extends AbstractComponent {
     private void addErrorsAndDebugsToLogger(String outputPath) {
         ArrayList<String> errors = getErrorMessagesFromComponent(outputPath);
         for (int i = 0; i < errors.size(); i++) {
-            errorMessages.add("[error from TetradMissingValues.java] " + errors.get(i));
+            errorMessages.add("[error from TetradRegression.java] " + errors.get(i));
         }
 
         ArrayList<String> debugMessages = getDebugMessagesFromComponent(outputPath);
         for (int i = 0; i < debugMessages.size(); i++) {
-            logger.debug("[debug from TetradMissingValues.java] " + debugMessages.get(i));
+            logger.debug("[debug from TetradRegression.java] " + debugMessages.get(i));
         }
 
         clearComponentOutputFile(outputPath);
