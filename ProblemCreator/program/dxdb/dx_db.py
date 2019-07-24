@@ -25,7 +25,22 @@ class DXDB(object):
     }
     
     def __init__(self, db_url):
+        logger.debug("Connecting to mongo at: %s" % ("mongodb://%s" % db_url))
         self.db = MongoClient("mongodb://%s" % db_url)['dexplorer']
+
+    def list_all_collections(self):
+        logger.info("Getting list of all collections in db")
+        result = self.db.list_collection_names()
+        logger.debug("Got %i collection names from db" % len(result))
+        return result
+
+    def get_all_datasets(self):
+        logger.info("Call pymongo collections" )
+        logger.info(self.db.list_collection_names())
+        logger.info("Retrieving all datasets from db")
+        results = self.db[self.tbls['ds_metadata']].find()
+        logger.debug("Retrieved %i datasets from db" % results.count())
+        return results
         
 
     def insert_dataset_metadata(self, ds):

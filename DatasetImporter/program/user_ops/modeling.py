@@ -120,7 +120,10 @@ class ModelSearch(object):
             fit_req_ids[mid] = serv.fit_solution(model, train_ds)
         for mid, rid in fit_req_ids.items():
             logger.debug("Model id: %s\tfit model request id: %s" % (mid, rid))
-            models[mid].fitted_id, fitted_results[mid] = serv.get_fit_solution_results(rid)
+            try:
+                models[mid].fitted_id, fitted_results[mid] = serv.get_fit_solution_results(rid)
+            except Exception as e:
+                logger.warning("Got null result for fit solution requerst: %s" % e)
 
         for mid in models:
             logger.debug("Got fitted model with model id: %s" % mid)

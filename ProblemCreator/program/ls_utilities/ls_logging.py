@@ -58,9 +58,9 @@ def setup_logging(settings):
     if settings.is_file_log_enabled():
         log_id = dt.now().isoformat()
         if settings.get_file_log_path() is None:
-            log_file = path.join(workingDir, 'log-%s.txt' % log_id)
+            log_file = path.join(workingDir, 'log-%s.wfl' % log_id)
         else:
-            log_file = path.join(settings.get_file_log_path(), 'log-%s.txt' % log_id)
+            log_file = path.join(settings.get_file_log_path(), 'log-%s.wfl' % log_id)
         ch = FileHandler(filename=log_file)
         ch.setLevel(settings.get_log_level())
         ch.setFormatter(formatter)

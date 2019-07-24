@@ -23,13 +23,17 @@ class Dexplorer(object):
 class DexplorerUIServer(object):
 
     def __init__(self, url):
-        self.url = url
+        # url # no longer aboslute because services are hidden behind proxy
+        if url.startswith("/"):
+            self.url = url
+        else:
+            self.url = "/" + url
 
     def get_simple_eda_ui_url(self, wfs):
         return self.url + "/eda" + "/%s" % (wfs._id)
 
     def get_dataset_importer_ui_url(self, wfs):
-        return self.url + "/datasetimport" + "/%s" % (wfs._id)
+        return self.url + "/datasetimporter" + "/%s" % (wfs._id)
 
     def get_problem_creator_ui_url(self, wfs):
         return self.url + "/problemcreator" + "/%s" % (wfs._id)

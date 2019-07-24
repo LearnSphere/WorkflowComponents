@@ -175,7 +175,8 @@ class TA2Client(object):
             logger.debug("Got message: %s" % str(reply))
             if reply.solution_id:
                 logger.debug("Got a message with a solution id: %s" % reply.solution_id)
-                soln_ids.add(reply.solution_id)
+                if reply.solution_id != "":
+                    soln_ids.add(reply.solution_id)
             if reply.progress.state == core_pb2.PENDING:
                 logger.debug("Search is still pending and hasn't begin")
             elif reply.progress.state == core_pb2.RUNNING:
@@ -355,9 +356,14 @@ class TA2Client(object):
                 results = reply
             elif reply.progress.state == core_pb2.ERRORED:
                 logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+                raise Exception("Fit solution resulted in error: %s" % str(reply.progress.status))
             else:
                 logger.warning("Fittin model to solution is in an unknown state: %s" % str(reply.progress))
-       
+      
+        if "error" in results.progress.status:
+            logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+            raise Exception("Fit solution resulted in error: %s" % str(reply.progress.status))
+        
         request = self.fitted_solution_requests.pop(rid, None)
          
         for i in results.exposed_outputs:

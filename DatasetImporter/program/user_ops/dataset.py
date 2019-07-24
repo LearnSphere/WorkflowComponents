@@ -64,9 +64,10 @@ class DatasetImporter(object):
                                 logger.debug("Retrieved dataset from db with id %s: %s" % (ds._id, str(ds.to_json())))
                                 datasets.add(ds._id)
 
-                        except:
+                        except Exception as e:
                             # Don't choke on unsupported dataset jsons
-                            logger.warning("Encountered unsupported dataset: %s" % str(path.join(root, f)))
+                            logger.warning("Encountered unsupported dataset: %s" % str(e))
+
 
         logger.debug("Found datasets with ids: %s" % str(datasets))
 

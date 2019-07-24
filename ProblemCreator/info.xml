@@ -5,16 +5,16 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProblemCreator</url>
-<date>July 18, 2019</date>
+<date>July 24, 2019</date>
 <abstract>The <b>ProblemCreator</b> component is an example of a(n) Python component.</abstract>
 <description>Allow user to create a new problem given a problem wizard</description>
 
 <inputs>
+<b>dataset</b>
 </inputs>
 
 <outputs>
 <b>problem</b>
-<b>ranked-models</b>
 <b>inline-html</b>
 </outputs>
 

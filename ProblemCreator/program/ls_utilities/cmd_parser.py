@@ -4,12 +4,28 @@
 # Convenience class and functions for supporting parsing cmd line inputs
 # when running Workflow components
 
-# import logging
+import logging
 import argparse
+import os.path as path
 
 
 # logging.basicConfig()
-# logger = logging.getLogger('cmd_parser')
+logger = logging.getLogger(__name__)
+
+def get_session_info(my_args):
+    # Get Session Metadata
+
+    working_dir = my_args.workingDir.split(path.sep)[1:]
+    user_id = my_args.userId
+    logger.debug("User ID: %s" % user_id)
+    workflow_id = working_dir[-3]
+    logger.debug("Workflow ID: %s" % workflow_id)
+    comp_type = path.split(path.abspath(my_args.programDir))[1]
+    logger.debug("Component Type: %s" % comp_type)
+    comp_id = working_dir[-2]
+    logger.debug("Component Id: %s" % comp_id)
+
+    return user_id, workflow_id, comp_type, comp_id
 
 
 def get_default_arg_parser(desc):

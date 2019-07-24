@@ -195,9 +195,8 @@ class AppServiceSettings(object):
             self.cfg.read(cfg_path)
 
     def get_service_url(self):
-        host = self.cfg.get("ServiceUrl", "HOST_URL")
-        subdomain = self.cfg.get("ServiceUrl", "D3M_SERVICE_SUBDOMAIN")
-        return "http://%s.%s" % (subdomain, host)
+        host = self.cfg.get("backend", "HOST_URL")
+        return "http://%s" % host
 
     def get_db_backend_url(self):
         return self.cfg.get("db", "HOST_URL")

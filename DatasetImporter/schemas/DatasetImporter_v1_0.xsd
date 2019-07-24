@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:ls="http://learnsphere.org/ls" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified">
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
   <xs:complexType name="InputType">
-    <xs:sequence/>
+    <xs:all/>
   </xs:complexType>
   <xs:complexType name="InputLabel">
     <xs:all/>

@@ -180,7 +180,8 @@ class D3MDataset(LSDataset):
         # logger.debug("D3MDataset to json")
 
         out = json.loads(super().to_json())
-        out['_id'] = str(self._id)
+        if self._id is not None:
+            out['_id'] = str(self._id)
         out['about'] = self.about
         out['dataResources'] = [json.loads(rc.to_json()) for rc in self.dataResources]
         out['qualities'] = self.qualities
