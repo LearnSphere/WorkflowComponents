@@ -33,6 +33,10 @@ public class ModelExportMain extends AbstractComponent {
 
         // The addMetaData* methods make the meta data available to downstream components.
 
+	// Add input meta-data (headers) to output file.
+	this.addMetaDataFromInput("ranked-models", 0, 0, ".*");
+
+	// Add additional meta-data for each output file.
 
     }
 
