@@ -93,15 +93,15 @@ class D3MDataset(LSDataset):
                 # dpath = path.split(path.split(fpath)[0])[0] # Assumses root
                 try:
                     with open(fpath, 'r', encoding="utf-8") as f:
-                        logger.info("Loading json")
+                        logger.debug("Loading json")
                         ds_json = json.load(f)
                 except:
                     logger.error("Error while decoding dataset json: %s" % fpath)
-                logger.info("Constructing D3MDataset")
+                logger.debug("Constructing D3MDataset")
                 return D3MDataset(dpath,
                                   ds_json)
 
-                logger.info("Constructing D3MDataset")
+                logger.debug("Constructing D3MDataset")
                 return D3MDataset(dpath,
                                   ds_json)
 
@@ -311,4 +311,22 @@ class D3MDataset(LSDataset):
 
 
 
+
+class DataAugmentationParameters(object):
+
+    def __init__(self,
+                 domains=[],
+                 keywords=[]
+                 ):
+        if type(domains) is list:
+            self.domains = domains
+        else:
+            self.domains = [domains]
+        if type(keywords) is list:
+            self.keywords = keywords
+        else:
+            self.keywords = [keywords]
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
 

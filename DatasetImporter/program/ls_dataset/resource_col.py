@@ -32,8 +32,21 @@ class ResourceColumn(object):
                      'timeIndicator',
                      'locationIndicator',
                      'boundaryIndicator',
+                     'interval',
                      'instanceWeight',
-                     'boundingBox'
+                     'boundingPolygon',
+                     'suggestedPrivilegedData',
+                     'suggestedGroupingKey',
+                     'edgeSource',
+                     'directedEdgeSource',
+                     'undirectedEdgeSource',
+                     'multiEdgeSource',
+                     'simpleEdgeSource',
+                     'edgeTarget',
+                     'directedEdgeTarget',
+                     'undirectedEdgeTarget',
+                     'multiEdgeTarget',
+                     'SimpleEdgeTarget'
                      ]
 
 

@@ -15,6 +15,7 @@ import pprint
 import ast
 
 from ls_dataset.d3m_dataset import D3MDataset
+from ls_dataset.d3m_dataset import DataAugmentationParameters
 from modeling.scores import Metric
 
 logger = logging.getLogger(__name__)
@@ -236,7 +237,7 @@ class ProblemDesc(object):
         if self.expected_outputs is not None:
             out['expected_outputs'] = self.expected_outputs.__dict__
         if self.data_aug_params is not None:
-            out['data_aug_params'] = [dap.__dict__ for dap in self.data_aug_params]
+            out['data_aug_params'] = [params.to_json() for params in self.data_aug_params]
        
         return out
 
@@ -446,23 +447,6 @@ class ExpectedProblemOutput(object):
                  ):
         self.pred_file = pred_file
         self.scores_file = scores_file
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
-
-class DataAugmentationParameters(object):
-    def __init__(self,
-                 domains=[],
-                 keywords=[]
-                 ):
-        if type(domains) is list:
-            self.domains = domains
-        else:
-            self.domains = [domains]
-        if type(keywords) is list:
-            self.keywords = keywords
-        else:
-            self.keywords = [keywords]
 
     def to_json(self):
         return json.dumps(self.__dict__)

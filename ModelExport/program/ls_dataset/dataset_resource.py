@@ -22,6 +22,7 @@ class DatasetResource(object):
                           'table',
                           'timeseries',
                           'edgeList',
+                          'raw',
                           ]
 
     def __init__(self, metadata):

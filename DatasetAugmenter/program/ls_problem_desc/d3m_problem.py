@@ -14,6 +14,7 @@ import pprint
 from google.protobuf.json_format import MessageToJson
 
 from .ls_problem import *
+from ls_dataset.d3m_dataset import DataAugmentationParameters
 from ta3ta2_api import problem_pb2, problem_pb2_grpc
 from modeling.scores import Metric
 
@@ -219,7 +220,7 @@ class DefaultProblemDesc(ProblemDesc):
     def from_file(fpath):
         logger.info("Initializing DefaultProblemDesc from json file")
         if isinstance(fpath, str):
-            with open(fpath, 'r') as f:
+            with open(fpath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
         elif isinstance(fpath, IOBase):
             data = json.load(fpath)
@@ -228,9 +229,14 @@ class DefaultProblemDesc(ProblemDesc):
                             Problem Description. Got %s instead" % type(fpath))
         # logger.debug("Read in Problem Doc from file: %s" % str(data))
         # Initialize the class
+        if 'problemVersion' in data['about']:
+            version = data['about']['problemVersion']
+        else:
+            version=None
         out = ProblemDesc(
             name=data['about']['problemName'],
-            version=data['about']['problemVersion'],
+
+            version=version,
             desc=data['about']['problemDescription'] if 'problemDescription' in data['about'].keys() else '',
             subtype = data['about']['taskSubType'] if 'taskSubType' in data['about'].keys() else '',
             metrics = [metric['metric']
@@ -270,11 +276,14 @@ class DefaultProblemDesc(ProblemDesc):
             if 'scoresFile' in data['expectedOutputs'].keys():
                 out.expected_outputs.scores_file = data['expectedOutputs']['scoresFile']
         if 'dataAugmentation' in data.keys():
-            out.data_aug_params = DataAugmentationParamaters()
-            if 'domain' in data['inputs']['dataAugmentation']:
-                out.data_aug_params.domains = data['inputs']['dataAugmentation']['domain']
-            if 'keywords' in data['inputs']['dataAugmentation']:
-                out.data_aug_params.keywords = data['inputs']['dataAugmentation']['keywords']
+            out.data_aug_params = []
+            for data_aug in data['dataAugmentation']:
+                da = DataAugmentationParameters()
+                if 'domain' in data_aug:
+                    da.domains = data_aug['domain']
+                if 'keywords' in data_aug:
+                    da.keywords = data_aug['keywords']
+                out.data_aug_params.append(da)
             
 
         # Overrite the auto-generated ID

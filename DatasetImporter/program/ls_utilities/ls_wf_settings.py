@@ -70,7 +70,7 @@ class Settings(object):
 
     def get_log_level(self):
         if self.is_test:
-            return logging.DEBUG
+            return logging.getLevelName(self.cfg.get('Logging', 'log_level'))
         else:
             return logging.getLevelName(self.cfg.get('Logging', 'log_level'))
 
