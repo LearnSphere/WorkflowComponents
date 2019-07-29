@@ -14,6 +14,7 @@ preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   names(df)[which( colnames(df)==make.names(eval(opportunity)) )] <- "opportunity" #replace the opportunity name with "opportunity"
   names(df)[which( colnames(df)==make.names(eval(individual)) )] <- "individual" #replace the individualizing factor name with "individual"
   success <- ifelse(df$response=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
+  df$success <- success
   df$errorRate <- 1-success #add a success column
   rm(success)
   return(df)
