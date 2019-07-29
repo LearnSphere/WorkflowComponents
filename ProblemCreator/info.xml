@@ -10,6 +10,7 @@
 <description>Allow user to create a new problem given a problem wizard</description>
 
 <inputs>
+<b>dataset</b>
 </inputs>
 
 <outputs>
