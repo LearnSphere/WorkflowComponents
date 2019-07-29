@@ -81,7 +81,7 @@ if (length(args) == 2) {
 df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 
 ## fit iAFM - four params - individual intercept, individual slope, KC intercept, and KC slope
-iafm.model <- suppressWarnings(glmer(errorRate ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
+iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
 
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
@@ -148,9 +148,9 @@ KCname = paste("KC (",eval(actualModelName),")",sep="")
 PERname = paste("Predicted Error Rate (",eval(actualModelName),")",sep="")
 
 if(PERname%in%origCols){
-  origFile[,eval(PERname)] <- predict(iafm.model,df,type="response",allow.new.levels=TRUE) # replace the values in the column
+  origFile[,eval(PERname)] <- 1 - predict(iafm.model,df,type="response",allow.new.levels=TRUE) # replace the values in the column
 }else{
-  origFile$PredictedErrorRate <- predict(iafm.model,df,type="response",allow.new.levels=TRUE) # add the column
+  origFile$PredictedErrorRate <- 1 - predict(iafm.model,df,type="response",allow.new.levels=TRUE) # add the column
   names(origFile)[ncol(origFile)] <- PERname # Rename the column
 }
 
