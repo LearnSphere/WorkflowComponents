@@ -16,7 +16,7 @@
 	<model>Bayes</model>
 
 
-    <leastNumCategories>2</leastNumCategories>
+    <!-- <leastNumCategories>2</leastNumCategories>
     <greatestNumCategories>5</greatestNumCategories>
 
     <coefLow>0.5</coefLow>
@@ -28,7 +28,7 @@
     <errCovSymmetric>true</errCovSymmetric>
 
     <errStdDevLow>1.0</errStdDevLow>
-    <errStdDevHigh>3.0</errStdDevHigh>
+    <errStdDevHigh>3.0</errStdDevHigh> -->
 
     <sampleSize>100</sampleSize>
 

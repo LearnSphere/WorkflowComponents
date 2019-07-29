@@ -83,12 +83,13 @@
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />
-		<Classifier />
+	    <Classifier />
 	    <Estimator />
-		<Knowledge />
-		<Regression />
-		<Search />
-		<Tetrad_Graph_Editor />
+	    <Knowledge />
+	    <Regression />
+	    <Search />
+	    <Simulation />
+	    <Tetrad_Graph_Editor />
 	</Tetrad>
 	<Contribute>
 		<Component_Creator />

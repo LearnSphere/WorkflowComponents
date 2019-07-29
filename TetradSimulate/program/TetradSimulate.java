@@ -87,6 +87,8 @@ public class TetradSimulate {
         String modelType = cmdParams.get("-model");
         Integer sampleSize = Integer.parseInt(cmdParams.get("-sampleSize"));
 
+
+
         Parameters simParams = new Parameters();
         simParams.set("standardize", new Boolean(false));
         simParams.set("measurementVariance", new Double(0));
@@ -155,8 +157,8 @@ public class TetradSimulate {
                     int leastNumCategories = 2;
                     int greatestNumCategories = 2;
                     try {
-                        leastNumCategories = Integer.parseInt(cmdParams.get("-leastNumCategories"));
-                        greatestNumCategories = Integer.parseInt(cmdParams.get("-greatestNumCategories"));
+                        leastNumCategories = 2; // Integer.parseInt(cmdParams.get("-leastNumCategories"));
+                        greatestNumCategories = 2; // Integer.parseInt(cmdParams.get("-greatestNumCategories"));
                     } catch (Exception e) {
                         addToErrorMessages("Could not parse a numCategories cmd line var" + stackTrace(e));
                     }
@@ -297,16 +299,25 @@ public class TetradSimulate {
         Parameters params = new Parameters();
 
         try {
-            params.set("coefLow", Double.parseDouble(cmdParams.get("-coefLow")));
-            params.set("coefHigh", Double.parseDouble(cmdParams.get("-coefHigh")));
-            params.set("covLow", Double.parseDouble(cmdParams.get("-errCovLow")));
-            params.set("covHigh", Double.parseDouble(cmdParams.get("-errCovHigh")));
-            params.set("varLow", Double.parseDouble(cmdParams.get("-errStdDevLow")));
-            params.set("varHigh", Double.parseDouble(cmdParams.get("-errStdDevHigh")));
-            boolean coefSymmetric = cmdParams.get("-coefSymmetric").equals("true");
-            boolean covSymmetric = cmdParams.get("-errCovSymmetric").equals("true");
-            params.set("coefSymmetric", coefSymmetric);
-            params.set("covSymmetric", covSymmetric);
+            // params.set("coefLow", Double.parseDouble(cmdParams.get("-coefLow")));
+            // params.set("coefHigh", Double.parseDouble(cmdParams.get("-coefHigh")));
+            // params.set("covLow", Double.parseDouble(cmdParams.get("-errCovLow")));
+            // params.set("covHigh", Double.parseDouble(cmdParams.get("-errCovHigh")));
+            // params.set("varLow", Double.parseDouble(cmdParams.get("-errStdDevLow")));
+            // params.set("varHigh", Double.parseDouble(cmdParams.get("-errStdDevHigh")));
+            // boolean coefSymmetric = cmdParams.get("-coefSymmetric").equals("true");
+            // boolean covSymmetric = cmdParams.get("-errCovSymmetric").equals("true");
+            // params.set("coefSymmetric", coefSymmetric);
+            // params.set("covSymmetric", covSymmetric);
+
+            params.set("coefLow", 0.5);
+            params.set("coefHigh", 1.5);
+            params.set("covLow", 0.1);
+            params.set("covHigh", 0.2);
+            params.set("varLow", 1.0);
+            params.set("varHigh", 3.0);
+            params.set("coefSymmetric", false);
+            params.set("covSymmetric", false);
         } catch (Exception e) {
             addToErrorMessages("Could not parse a parameter: " + stackTrace(e));
         }

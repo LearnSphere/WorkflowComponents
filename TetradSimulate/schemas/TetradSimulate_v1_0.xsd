@@ -94,7 +94,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="option_dependency">
+  <!-- <xs:complexType name="option_dependency">
     <xs:choice>
       <xs:element type="conjunctive" name="bayesCategoryDependency1" ls:dependentOption="leastNumCategories" ls:dependsOn="model" ls:constraint="matches(Bayes)" />
       <xs:element type="conjunctive" name="bayesCategoryDependency2" ls:dependentOption="greatestNumCategories" ls:dependsOn="model" ls:constraint="matches(Bayes)" />
@@ -111,7 +111,7 @@
       <xs:element type="conjunctive" name="semDependency7" ls:dependentOption="errStdDevLow" ls:dependsOn="model" ls:constraint="matches(SEM)" />
       <xs:element type="conjunctive" name="semDependency8" ls:dependentOption="errStdDevHigh" ls:dependsOn="model" ls:constraint="matches(SEM)" />
     </xs:choice>
-  </xs:complexType>
+  </xs:complexType> -->
 
 
 
@@ -129,7 +129,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="modelType" name="model" id="Model" default="Standardized_SEM" />
 
-      <xs:element type="xs:integer" name="leastNumCategories" id="Least_number_of_categories_for_each_variable" default="2" />
+      <!-- <xs:element type="xs:integer" name="leastNumCategories" id="Least_number_of_categories_for_each_variable" default="2" />
       <xs:element type="xs:integer" name="greatestNumCategories" id="Greatest_number_of_categories_for_each_variable" default="2" />
 
       <xs:element type="xs:double" name="coefLow" id="Coefficient_values_are_drawn_from"  default="0.5" />
@@ -141,7 +141,7 @@
       <xs:element type="xs:boolean" name="errCovSymmetric" id="Symmetric_about_zero_"  default="true" />
 
       <xs:element type="xs:double" name="errStdDevLow" id="Error_standard_deviation_values_are_drawn_from"  default="1.0" />
-      <xs:element type="xs:double" name="errStdDevHigh" id="to_"  default="3.0" />
+      <xs:element type="xs:double" name="errStdDevHigh" id="to_"  default="3.0" /> -->
 
 
       <xs:element type="xs:integer" name="sampleSize" id="Sample_size" default="1000" />

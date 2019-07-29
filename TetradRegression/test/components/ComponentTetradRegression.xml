@@ -13,7 +13,8 @@
   </connections>
   <top>106</top>
   <options>
-	<regression>Logistic_Regression</regression>
+	<!-- <regression>Logistic_Regression</regression> -->
+    <regression>Multiple_Linear_Regression</regression>
 	<target>Acetic</target>
 	<regressors>Case</regressors>
 	<regressors>taste</regressors>
