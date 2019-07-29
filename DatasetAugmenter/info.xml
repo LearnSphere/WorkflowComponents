@@ -5,13 +5,11 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatasetAugmenter</url>
-<date>March 13, 2019</date>
+<date>July 29, 2019</date>
 <abstract>The <b>DatasetAugmenter</b> component is an example of a(n) Python component.</abstract>
 <description>Import a dataset from DataMart for augmenting a given dataset</description>
 
 <inputs>
-<b>dataset</b>
-<b>modeling-problem</b>
 </inputs>
 
 <outputs>

@@ -53,6 +53,9 @@ class WorkflowSession(object):
         elif  ses_json['comp_type'].lower() == "problemcreator":
             logger.debug("initializing a problem creation session")
             ses = ProblemCreatorSession(**ses_json)
+        elif  ses_json['comp_type'].lower() == "modelsearch":
+            logger.debug("initializing a model search session")
+            ses = ModelSearchSession(**ses_json)
         else:
             raise Exception("Unable to identify class to initialize workflow session with session: %s" % str(ses_json))
         return ses
@@ -206,7 +209,7 @@ class ProblemCreatorSession(WorkflowSession):
 
     def set_problem_id(self, prob_id):
         logger.debug("Setting session problem id: %s" % prob_id)
-        self.problem_id = prob_id
+        self.prob_id = prob_id
 
     def set_prob_state(self, prob):
         logger.debug("Setting problem state with problem: %s" % prob.to_json())
@@ -249,6 +252,13 @@ class ModelSearchSession(WorkflowSession):
                  dataset_id=None,
                  prob_id=None,
                  ta2_addr=None,
+                 search_id=None,
+                 soln_ids=[],
+                 fitted_ids=[],
+                 fitted_pred_ids=[],
+                 score_ids=[],
+                 test_pred_ids=[],
+                 ranked_mdl_ids=[],
                  session_url=None):
         super().__init__(user_id=user_id, 
                          workflow_id=workflow_id, 
@@ -260,6 +270,13 @@ class ModelSearchSession(WorkflowSession):
         self.prob_id = prob_id
         self.input_wfids = input_wfids
         self.ta2_addr = ta2_addr
+        self.search_id = search_id
+        self.soln_ids = soln_ids
+        self.fitted_ids = fitted_ids
+        self.fitted_pred_ids = fitted_pred_ids
+        self.score_ids = score_ids
+        self.test_pred_ids = test_pred_ids
+        self.ranked_mdl_ids = ranked_mdl_ids
         if state is None:
             self.state = self.available_states[0]
         else:
@@ -285,9 +302,14 @@ class ModelSearchSession(WorkflowSession):
 
     def set_problem_id(self, prob_id):
         logger.debug("Setting session problem id: %s" % prob_id)
-        self.problem_id = prob_id
+        self.prob_id = prob_id
 
     def set_input_wfids(self, wfids):
         logger.debug("Adding list of input workflow ids to session")
         self.input_wfids = wfids
+
+    def add_soln_ids(self, sids):
+        logger.debug("Adding solution ids to session")
+        new_sids = [s for s in sids if s not in self.soln_ids]
+        self.soln_ids.extend(new_sids)
 

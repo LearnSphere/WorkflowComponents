@@ -370,9 +370,9 @@ class TA2Client(object):
             if i == 'predictions':
                 logger.debug(results.exposed_outputs[i])
                 if results.exposed_outputs[i].HasField("csv_uri"):
-                    # logger.debug(results.exposed_outputs[i].csv_uri)
+                    logger.debug(results.exposed_outputs[i].csv_uri)
                     result_data = pd.read_csv(results.exposed_outputs[i].csv_uri)
-                    # logger.debug(result_data.head())
+                    logger.debug(result_data.head())
             else:
                 logger.debug("Output label: %s" % i)
             # logger.debug(results.exposed_outputs[value_pb2.CSV_URI])
@@ -426,20 +426,34 @@ class TA2Client(object):
 
         for reply in self.serv.GetProduceSolutionResults(msg):
             if reply.progress.state == core_pb2.PENDING:
-                logger.debug("Fitting model to solution is still pending and hasn't begin")
+                logger.debug("Produce Solution is still pending and hasn't begun")
             elif reply.progress.state == core_pb2.RUNNING:
-                logger.debug("Fitting model to solution is currently running and has not completed: %s" % reply.progress.status)
+                logger.debug("Produce solution is currently running and has not completed: %s" % reply.progress.status)
             elif reply.progress.state == core_pb2.COMPLETED:
-                logger.info("Fitting model to solution has completed successfully: %s" % reply.progress.status)
-                return reply.exposed_outputs
+                logger.info("Produce solution has completed successfully: %s" % reply.progress.status)
+                results = reply
             elif reply.progress.state == core_pb2.ERRORED:
-                logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+                logger.error("Produce solution has completed in an error state: %s" % reply.progress.status)
             else:
-                logger.warning("Fittin model to solution is in an unknown state: %s" % str(reply.progress))
+                logger.warning("Produce solution is in an unknown state: %s" % str(reply.progress))
 
         # logger.debug("Got %i completed responses" % len(replies))
         # fitted_ids = [reply.fitted_solution_id for reply in replies]
         request = self.produce_solution_requests.pop(rid, None)
+         
+        for i in results.exposed_outputs:
+            if i == 'predictions':
+                logger.debug(results.exposed_outputs[i])
+                if results.exposed_outputs[i].HasField("csv_uri"):
+                    logger.debug(results.exposed_outputs[i].csv_uri)
+                    result_data = pd.read_csv(results.exposed_outputs[i].csv_uri)
+                    logger.debug(result_data.head())
+            else:
+                logger.debug("Output label: %s" % i)
+            # logger.debug(results.exposed_outputs[value_pb2.CSV_URI])
+
+        return  result_data
+        
 
 
     def list_primitives(self):

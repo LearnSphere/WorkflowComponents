@@ -20,8 +20,12 @@ class DXDB(object):
             'ds_metadata': 'Datasets',
             'problems': 'Problems',
             'wf_sessions': 'WorkflowSessions',
-            'viz_sessions': 'VizSessions'
-
+            'viz_sessions': 'VizSessions',
+            'solutions': "Solutions",
+            'fitted_solutions': "FittedSolutions",
+            'predictions': "Predictions",
+            'model_scores': "ModelScores",
+            'ranked_models': "RankedModels"
     }
     
     def __init__(self, db_url):
@@ -111,6 +115,9 @@ class DXDB(object):
         logger.info("Replacing problem in db with given problem with id: %s" % pid)
         # prob._id = ObjectId(prob._id)
         d = json.loads(prob.to_json())
+        if '_id' in d.keys():
+            logger.debug("Found _id in problem. Removing to not overwrite")
+            del(d['_id'])
         logger.debug("Loaded problem to json: %s" % str(d))
         result = self.db[self.tbls['problems']].replace_one(
             {'_id': ObjectId(pid)},
@@ -159,4 +166,77 @@ class DXDB(object):
         out = [SimpleEDAViz.from_json(doc, self) for doc in results]
         logger.debug("Found matches: %s" % out)
         return out
+
+    def add_solution(self, data):
+        logger.debug("Adding given solution to db")
+        d = self.db[self.tbls['solutions']].insert_one(data.__dict__)
+        logger.debug("Added solution to db with id: %s" % str(d.inserted_id))
+        # did = self.db[self.tbls['wf_sessions']].insert_one(session.__dict__).inserted_id
+        data._id = str(d.inserted_id)
+        return data
+
+    def add_fitted_solution(self, data):
+        logger.debug("Adding given fitted solution to db")
+        d = self.db[self.tbls['fitted_solutions']].insert_one(data.__dict__)
+        logger.debug("Added fitted solution to db with id: %s" % str(d.inserted_id))
+        # did = self.db[self.tbls['wf_sessions']].insert_one(session.__dict__).inserted_id
+        data._id = str(d.inserted_id)
+        return data
+
+    def insert_data(self, tbl, data):
+        if tbl not in self.tbls:
+            raise Exception("Invalid table given to insert data: %s\nMust specify one of: %s" % 
+                            (tbl, str(list(self.tbls.values()))))
+        else:
+            logger.debug("Adding given data to table, %s" % self.tbls[tbl])
+            # dd = data.__dict__
+            dd = data.to_json()
+            if '_id' in dd.keys():
+                logger.warning("Found _id, %s, in data to be inserted. Removing to insert new data" % dd['_id'])
+                del dd['_id']
+            try:
+                d = self.db[self.tbls[tbl]].insert_one(dd)
+            except Exception as e:
+                logger.error("Could not insert data into table %s:\n %s" % (self.tbls[tbl], str(data)))
+                raise Exception("Error encountered when inserting new data into table %s. Error: %s" % 
+                                (self.tbls[tbl], str(e)))
+            logger.debug("Added data to table, %s,  with id: %s" % (self.tbls[tbl], str(d.inserted_id)))
+            # did = self.db[self.tbls['wf_sessions']].insert_one(session.__dict__).inserted_id
+            data._id = str(d.inserted_id)
+            return data._id
+
+
+    def update_data_fields(self, tbl, data, fields):
+        if tbl not in self.tbls:
+            raise Exception("Invalid table given to update data fields: %s\nMust specify one of: %s" % 
+                            (tbl, str(list(self.tbls.values()))))
+        else:
+            logger.debug("Updating fields %s for db entry with _id, %s, in table, %s" % 
+                         (str({k: v for k, v in data.__dict__.items() if k in fields }), 
+                          data._id, self.tbls[tbl]))
+            try:
+                self.db[self.tbls[tbl]].update_one(
+                        {"_id": ObjectId(data._id)},
+                        {"$set": {k: v for k, v in data.__dict__.items() if k in fields }}
+                        )
+            except Exception as e:
+                logger.error("Error while updating object: %s" % str(e))
+                raise Exception("Error encountered while updating object in db table, %s. Error: %s" %
+                                (self.tbls[tbl], str(e)))
+    
+    def get_object(self, tbl, obj_id):
+        logger.debug("Getting object from table %s with id: %s" % (self.tbls[tbl], obj_id))
+        try: 
+            obj = self.db[self.tbls[tbl]].find_one({'_id': ObjectId(obj_id)})
+        except Exception as e:
+            logger.error("Error while retrieving object with _id, %s, from table %s" %
+                         (obj_id, self.tbls[tbl]))
+            raise Exception("Error encountered while getting object from table %s. Error: %s" %
+                            (self.tbls[tbl], str(e)))
+        # Convert ObjectId in _id field from mongodb to str for easier management
+        obj['_id'] = str(obj['_id'])
+        logger.debug("Got object from table %s: %s" % (self.tbls[tbl], str(obj)))
+        return obj
+
+
 

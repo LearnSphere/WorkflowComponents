@@ -10,17 +10,9 @@ from google.protobuf.json_format import MessageToJson
 import pandas as pd
 
 # D3M TA2 API imports
-# from .api_v3 import core_pb2, core_pb2_grpc
-# from .api_v3 import value_pb2
-# from .api_v3 import problem_pb2
-# from .api_v3 import core_pb2, core_pb2_grpc, pipeline_pb2, pipeline_pb2_grpc,\
-        # problem_pb2, value_pb2 
-from ta3ta2_api import core_pb2, core_pb2_grpc, pipeline_pb2, pipeline_pb2_grpc,\
-        problem_pb2, value_pb2 
-# from ta3ta2_api import core_pb2, core_pb2_grpc
-# from ta3ta2_api import pipeline_pb2, pipeline_pb2_grpc
-# from ta3ta2_api import problem_pb2
-# from ta3ta2_api import value_pb2
+from ta3ta2_api import core_pb2, core_pb2_grpc, \
+    pipeline_pb2, pipeline_pb2_grpc,\
+    problem_pb2, value_pb2 
 
 from ls_problem_desc.d3m_problem import *
 from modeling.models import *
@@ -35,7 +27,7 @@ class TA2Client(object):
     __name__ = "CMU Tigris TA3 v2.0"
     __version__ = "v2019.1.22"
     __protocol_version__ = core_pb2.DESCRIPTOR.GetOptions().Extensions[core_pb2.protocol_version]
-    __allowed_values__ = [value_pb2.RAW, value_pb2.DATASET_URI, value_pb2.CSV_URI]
+    __allowed_values__ = [value_pb2.RAW, value_pb2.CSV_URI]
     
     def __init__(self, addr, debug=False, out_dir=None, name=None):
         logger.info("Initializing TA2 Client with address: %s" % addr)
@@ -95,7 +87,15 @@ class TA2Client(object):
             self.write_msg_to_file(reply, 'hello_response.json')
         return reply
 
-    def search_solutions(self, prob, dataset, inputs=None, pipeline=None, max_time=0, priority=0,
+    def search_solutions(self, 
+                         prob, 
+                         dataset, 
+                         inputs=None, 
+                         pipeline=None, 
+                         max_time=5, 
+                         priority=0,
+                         time_bound=1,
+                         rank_solutions_limit=10,
             get_request=False):
         """
         Initiate a solution search request
@@ -114,7 +114,7 @@ class TA2Client(object):
             user_agent = self.__name__,
             version = self.__protocol_version__,
             allowed_value_types = self.__allowed_values__,
-            time_bound = max_time,
+            time_bound_search = max_time,
             priority = priority,
             problem = p.to_protobuf(),
         )
@@ -136,6 +136,13 @@ class TA2Client(object):
                 i = msg.inputs.add()
                 # For now force it into a string until type checking is implemented
                 i.string = str(inpt)
+
+        # Set time bound for a single run
+        msg.time_bound_run = time_bound
+
+        # Set limit for number of solutions to tank
+        msg.rank_solutions_limit = rank_solutions_limit
+
 
         # logger.debug("################################")
         # logger.debug("Sending msg: %s" % str(msg))
@@ -168,7 +175,8 @@ class TA2Client(object):
             logger.debug("Got message: %s" % str(reply))
             if reply.solution_id:
                 logger.debug("Got a message with a solution id: %s" % reply.solution_id)
-                soln_ids.add(reply.solution_id)
+                if reply.solution_id != "":
+                    soln_ids.add(reply.solution_id)
             if reply.progress.state == core_pb2.PENDING:
                 logger.debug("Search is still pending and hasn't begin")
             elif reply.progress.state == core_pb2.RUNNING:
@@ -348,18 +356,23 @@ class TA2Client(object):
                 results = reply
             elif reply.progress.state == core_pb2.ERRORED:
                 logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+                raise Exception("Fit solution resulted in error: %s" % str(reply.progress.status))
             else:
                 logger.warning("Fittin model to solution is in an unknown state: %s" % str(reply.progress))
-       
+      
+        if "error" in results.progress.status:
+            logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+            raise Exception("Fit solution resulted in error: %s" % str(reply.progress.status))
+        
         request = self.fitted_solution_requests.pop(rid, None)
          
         for i in results.exposed_outputs:
             if i == 'predictions':
                 logger.debug(results.exposed_outputs[i])
                 if results.exposed_outputs[i].HasField("csv_uri"):
-                    # logger.debug(results.exposed_outputs[i].csv_uri)
+                    logger.debug(results.exposed_outputs[i].csv_uri)
                     result_data = pd.read_csv(results.exposed_outputs[i].csv_uri)
-                    # logger.debug(result_data.head())
+                    logger.debug(result_data.head())
             else:
                 logger.debug("Output label: %s" % i)
             # logger.debug(results.exposed_outputs[value_pb2.CSV_URI])
@@ -413,20 +426,34 @@ class TA2Client(object):
 
         for reply in self.serv.GetProduceSolutionResults(msg):
             if reply.progress.state == core_pb2.PENDING:
-                logger.debug("Fitting model to solution is still pending and hasn't begin")
+                logger.debug("Produce Solution is still pending and hasn't begun")
             elif reply.progress.state == core_pb2.RUNNING:
-                logger.debug("Fitting model to solution is currently running and has not completed: %s" % reply.progress.status)
+                logger.debug("Produce solution is currently running and has not completed: %s" % reply.progress.status)
             elif reply.progress.state == core_pb2.COMPLETED:
-                logger.info("Fitting model to solution has completed successfully: %s" % reply.progress.status)
-                return reply.exposed_outputs
+                logger.info("Produce solution has completed successfully: %s" % reply.progress.status)
+                results = reply
             elif reply.progress.state == core_pb2.ERRORED:
-                logger.error("Fitting model to solution has completed in an error state: %s" % reply.progress.status)
+                logger.error("Produce solution has completed in an error state: %s" % reply.progress.status)
             else:
-                logger.warning("Fittin model to solution is in an unknown state: %s" % str(reply.progress))
+                logger.warning("Produce solution is in an unknown state: %s" % str(reply.progress))
 
         # logger.debug("Got %i completed responses" % len(replies))
         # fitted_ids = [reply.fitted_solution_id for reply in replies]
         request = self.produce_solution_requests.pop(rid, None)
+         
+        for i in results.exposed_outputs:
+            if i == 'predictions':
+                logger.debug(results.exposed_outputs[i])
+                if results.exposed_outputs[i].HasField("csv_uri"):
+                    logger.debug(results.exposed_outputs[i].csv_uri)
+                    result_data = pd.read_csv(results.exposed_outputs[i].csv_uri)
+                    logger.debug(result_data.head())
+            else:
+                logger.debug("Output label: %s" % i)
+            # logger.debug(results.exposed_outputs[value_pb2.CSV_URI])
+
+        return  result_data
+        
 
 
     def list_primitives(self):

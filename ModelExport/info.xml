@@ -5,12 +5,11 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelExport</url>
-<date>March 13, 2019</date>
+<date>July 29, 2019</date>
 <abstract>The <b>ModelExport</b> component is an example of a(n) Python component.</abstract>
 <description>Export a set of models for evaluation</description>
 
 <inputs>
-<b>ranked-models</b>
 </inputs>
 
 <outputs>

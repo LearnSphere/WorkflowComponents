@@ -16,6 +16,34 @@ from ta3ta2_api import core_pb2, pipeline_pb2, problem_pb2, value_pb2
 
 logger = logging.getLogger(__name__)
 
+class DBModel(ABC):
+
+    def __init__(self, _id):
+        self._id = _id
+        super().__init__()
+
+    def to_json(self):
+        return self.__dict__
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    @classmethod
+    def from_json(cls, data):
+        logger.debug("type of data to load from json: %s" % str(type(data)))
+        if isinstance(data, str):
+            try: 
+                d = json.loads(data)
+            except JSONDecodeError:
+                d = ast.literal_eval(data)
+        elif isinstance(data, dict):
+            d = data
+        else:
+            raise Exception("Invalid type given: %s" % str(type(data)))
+
+        logger.debug("got json data for new model: %s" % str(d))
+        return cls(**d)
+
 class ModelInput(object):
 
     def __init__(self, name):
@@ -68,14 +96,15 @@ class SearchModelNode(ModelNode):
     def get_type(self):
         return "SearchModelNode"
 
-class Model(object):
+class Model(DBModel):
 
-    def __init__(self, mid, name=None, desc=None, model=None):
+    def __init__(self, mid, name=None, desc=None, model=None, _id=None):
         self.id = mid
         self.fitted_id = None
         self.name = name
         self.desc = desc
         self.model = model
+        super().__init__(_id)
     
     def add_description(self, model):
         self.model = model
@@ -123,7 +152,7 @@ class Model(object):
         
         out = Model(d['id'])
         out.name = d['name']
-        out.desc = d['description']
+        out.desc = d['desc']
         out.add_description(d['model'])
         if 'fitted_id' in d.keys():
             logger.debug("Found fitted id in model json")
@@ -147,12 +176,15 @@ class Model(object):
         out = {
             'id': self.id,
             'name': self.name,
-            'description': self.desc,
+            'desc': self.desc,
             'model': self.model
         }
         if self.fitted_id is not None:
             out['fitted_id'] = self.fitted_id
         return out
+
+    def to_json(self):
+        return self.to_dict()
     
 
     def __str__(self):
@@ -164,3 +196,28 @@ class SubModelNode(Model, ModelNode):
     def get_type(self):
         return "SubModelNode"
 
+
+class FittedModel(DBModel):
+
+    def __init__(self, solution_id, fitted_id, dataset_id, _id=None):
+        self.solution_id = solution_id
+        self.fitted_id = fitted_id
+        self.dataset_id = dataset_id
+        super().__init__(_id)
+    
+class ModelPredictions(DBModel):
+
+    def __init__(self, dataset_id, problem_id, fitted_model_id, data, _id=None):
+        self.dataset_id = dataset_id
+        self.problem_id = problem_id
+        self.fitted_model_id = fitted_model_id
+        self.data=data
+        super().__init__(_id)
+
+class ModelScore(DBModel):
+
+    def __init__(self, dataset_id, metric, score, _id=None):
+        self.dataset_id = dataset_id
+        self.metric = metric
+        self.score = score
+        super().__init__(_id)

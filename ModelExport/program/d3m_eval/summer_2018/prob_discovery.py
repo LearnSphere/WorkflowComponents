@@ -67,19 +67,19 @@ class ProblemDiscoveryWriter(object):
 
 
     def add_problem(self, prob, search):
-        logger.debug("Problem ID to add: %s\t%s" % (prob.id, type(prob.id)))
+        logger.debug("Problem ID to add: %s\t%s" % (prob._id, type(prob._id)))
         # logger.debug("Current problem list: %s" % str(self.prob_list['problem_id']))
         logger.debug("Current problem list: %s" % str(self.prob_list.problem_id))
-        logger.debug("Is in list? %s" % str(prob.id in self.prob_list.problem_id.values))
-        # if prob.id not in self.prob_list.problem_id.astype(str).values:
-        if prob.id not in self.prob_list.problem_id.values:
-            logger.debug("Adding new problem to problem list with id: %s" % prob.id)
-            self.prob_list = self.prob_list.append({'problem_id': prob.id,
+        logger.debug("Is in list? %s" % str(prob._id in self.prob_list.problem_id.values))
+        # if prob._id not in self.prob_list.problem_id.astype(str).values:
+        if prob._id not in self.prob_list.problem_id.values:
+            logger.debug("Adding new problem to problem list with id: %s" % prob._id)
+            self.prob_list = self.prob_list.append({'problem_id': prob._id,
                                    'system': 'user',
                                    'meaningful': 'not_asked'
                                    }, ignore_index=True)
             self.write_output()
-            prob_dir = path.join(self.out_dir, prob.id)
+            prob_dir = path.join(self.out_dir, prob._id)
             out_prob = GRPCProblemDesc.from_problem_desc(prob)
             try:
                 # Create directory with problem id as name
@@ -96,5 +96,5 @@ class ProblemDiscoveryWriter(object):
                 raise IOError(e)
         else:
             logger.warning("Attempted to add Problem already in problem list with id %s" 
-                    % prob.id)
+                    % prob._id)
 

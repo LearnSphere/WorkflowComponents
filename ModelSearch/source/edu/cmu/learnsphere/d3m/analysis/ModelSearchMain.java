@@ -55,7 +55,7 @@ public class ModelSearchMain extends AbstractComponent {
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/session.json");
 	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/ui.html");
 
-		this.addOutputFile(outputFile0, 0, 0, "problem");
+		this.addOutputFile(outputFile0, 0, 0, "ranked-models");
 		this.addOutputFile(outputFile1, 1, 0, "inline-html");
 
 

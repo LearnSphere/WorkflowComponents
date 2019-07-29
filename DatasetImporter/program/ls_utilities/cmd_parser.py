@@ -61,4 +61,24 @@ def get_default_arg_parser(desc):
                        run outside a Tigris Workflow')
     return parser
 
+def get_input_files(args, indx):
+    """
+    Get files specified at a given node index
+
+    """
+    out_files = []
+    for node_indx in range(len(args.node)):
+        # Getting dataset session from db given at node 0 of component
+        logger.debug("Looking at input node #%i" % node_indx)
+        logger.debug("Node %i: %s" % (node_indx, args.node[node_indx]))
+        if int(args.node[node_indx][0]) == indx:
+            logger.debug("Getting fileindex for node 0 at node index: %i" % node_indx)
+            inpts = args.fileIndex[node_indx]
+            # Double check that indices match between node and fileindex
+            if int(inpts[0]) == indx:
+                out_files.append(inpts[1])
+    logger.debug("Got files: %s" % str(out_files))
+    return out_files
+
+
 

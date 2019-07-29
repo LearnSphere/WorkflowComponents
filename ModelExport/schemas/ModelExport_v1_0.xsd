@@ -1,29 +1,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified">
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
-  <xs:complexType name="InputDefinition0">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element name="files" type="InFileList0"/>
-          <xs:any maxOccurs="unbounded" minOccurs="1" processContents="skip"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="InFileList0">
-    <xs:choice>
-      <xs:element minOccurs="0" ref="file"/>
-    </xs:choice>
-  </xs:complexType>
   <xs:complexType name="InputType">
-    <xs:all>
-      <xs:element minOccurs="1" name="input0" type="InputDefinition0"/>
-    </xs:all>
+    <xs:all/>
   </xs:complexType>
   <xs:complexType name="InputLabel">
-    <xs:all>
-      <xs:element default="ranked-models" minOccurs="0" name="input0" type="xs:string"/>
-    </xs:all>
+    <xs:all/>
   </xs:complexType>
   <xs:complexType name="OutputType">
     <xs:all/>

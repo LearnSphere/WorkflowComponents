@@ -21,6 +21,19 @@ class SettingsFactory(object):
         else:
             return Settings(cfg_path, program_dir, working_dir, is_test)
 
+    @staticmethod
+    def get_dx_settings():
+        cfg_file_name = "docker_config.cfg"
+        if 'D3MCONFIG' not in os.environ:
+            config_file = os.path.join("/datashop/workflow_components/D3M", cfg_file_name)
+        else:
+            config_file = os.path.join(os.path.dirname(os.environ['D3MCONFIG']),
+                    "docker_config.cfg")
+        return AppServiceSettings(config_file)
+
+    def get_env_settings():
+        return EnvServiceSettings()
+
 class Settings(object):
     """
     A generic settings class including a few operators for reading in configuration files
@@ -68,13 +81,22 @@ class Settings(object):
         return self.cfg.getboolean('Logging', 'enable_file_log')
 
     def get_file_log_path(self):
-        return os.path.join(self.working_dir)
+        if self.working_dir is None:
+            return os.getcwd()
+        else:
+            return os.path.join(self.working_dir)
 
     def get_working_dir(self):
-        return self.working_dir
+        if self.working_dir is None:
+            return os.getcwd()
+        else:
+            return self.working_dir
 
     def get_program_dir(self):
-        return self.program_dir
+        if self.program_dir is None:
+            return os.getcwd()
+        else:
+            return self.program_dir
 
     def parse_logging(self):
         """
@@ -173,7 +195,131 @@ class AppServiceSettings(object):
             self.cfg.read(cfg_path)
 
     def get_service_url(self):
-        host = self.cfg.get("ServiceUrl", "HOST_URL")
-        subdomain = self.cfg.get("ServiceUrl", "D3M_SERVICE_SUBDOMAIN")
-        return "http://%s.%s" % (subdomain, host)
+        host = self.cfg.get("backend", "HOST_URL")
+        return "http://%s" % host
 
+    def get_db_backend_url(self):
+        return self.cfg.get("db", "HOST_URL")
+
+    def get_dexplorer_url(self):
+        return self.cfg.get("frontend", "EXTERNAL_URL")
+
+    def get_viz_server_url(self):
+        return "http://%s" % self.cfg.get("viz", "HOST_URL")
+
+class EnvServiceSettings(object):
+    """
+    A Settings class for reading settings from environment variables
+
+    """
+    def __init__(self):
+        self.settings = {}
+
+    def get_db_addr(self):
+        if "db_addr" in self.settings:
+            return self.settings['db_addr']
+        else:
+            if 'DBADDR' not in os.environ:
+                raise Exception("No DB Address found")
+            else:
+                addr = os.environ['DBADDR']
+                if 'DBPORT' in os.environ:
+                    port = os.environ['DBPORT']
+                    addr = addr + ":" + port
+                self.settings['db_addr'] = addr
+                return addr
+                
+    def get_viz_addr(self):
+        if "viz_addr" in self.settings:
+            return self.settings['viz_addr']
+        else:
+            if 'VIZADDR' not in os.environ:
+                raise Exception("No Viz Address found")
+            else:
+                addr = os.environ['VIZADDR']
+                if 'VIZPORT' in os.environ:
+                    port = os.environ['VIZPORT']
+                    addr = addr + ":" + port
+                self.settings['viz_addr'] = addr
+                return addr
+
+    def get_frontend_addr(self):
+        if "frontend_addr" in self.settings:
+            return self.settings['frontend_addr']
+        else:
+            if 'FRONTENDADDR' not in os.environ:
+                raise Exception("No Frontend Address found")
+            addr = os.environ['FRONTENDADDR']
+            if 'FRONTENDPORT' in os.environ:
+                port = os.environ['FRONTENDPORT']
+                addr = addr + ":" + port
+            self.settings['frontend_addr'] = addr
+            return addr
+
+                
+    def get_backend_addr(self):
+        if "backend_addr" in self.settings:
+            return self.settings['backend_addr']
+        else:
+            if 'BACKENDADDR' not in os.environ:
+                raise Exception("No Backend Address found")
+            addr = os.environ['BACKENDADDR']
+            if 'BACKENDPORT' in os.environ:
+                port = os.environ['BACKENDPORT']
+                addr = addr + ":" + port
+            self.settings['backend_addr'] = addr
+            return addr
+
+    def get_ta2_addr(self):
+        if "ta2_addr" in self.settings:
+            return self.settings['ta2_addr']
+        else:
+            if 'TA2ADDR' not in os.environ:
+                raise Exception("No TA2 Address found")
+            addr = os.environ['TA2ADDR']
+            if 'TA2PORT' in os.environ:
+                port = os.environ['TA2PORT']
+                addr = addr + ":" + port
+            self.settings['ta2_addr'] = addr
+            return addr
+
+    def get_tigris_addr(self):
+        if "tigris_addr" in self.settings:
+            return self.settings['tigris_addr']
+        else:
+            if 'TIGRISADDR' not in os.environ:
+                raise Exception("No Tigris Address found")
+            addr = os.environ['TIGRISADDR']
+            if 'TIGRISPORT' in os.environ:
+                port = os.environ['TIGRISPORT']
+                addr = addr + ":" + port
+            self.settings['tigris_addr'] = addr
+            return addr
+
+           
+    def get_ta2_name(self):
+        if "ta2_name" in self.settings:
+            return self.settings['ta2_name']
+        else:
+            if 'TA2NAME' not in os.environ:
+                name = "Unknown TA2"
+            else:
+                name = os.environ['TA2NAME']
+            self.settings['ta2_name'] = name
+            return name
+    
+    def get_out_path(self):
+        if 'D3MOUTPUTDIR' in os.environ:
+            name = os.environ['D3MOUTPUTDIR']
+        else:
+            # Default path
+            name = "/output"
+        return name
+
+    def get_dataset_path(self):
+        if 'D3MOUTPUTDIR' in os.environ:
+            name = os.environ['D3MINPUTDIR']
+        else:
+            # Default path
+            name = "/input"
+        return name

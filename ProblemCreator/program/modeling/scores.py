@@ -11,7 +11,7 @@ from google.protobuf import json_format
 
 from ta3ta2_api import problem_pb2
 
-from .models import Model
+from .models import Model, DBModel
 
 logger = logging.getLogger(__name__)
 
@@ -236,9 +236,43 @@ class Metric(object):
     def to_json(self, fpath=None):
         out = self.__str__()
 
-class ModelScores(object):
+    @staticmethod
+    def get_metric_order(metric):
+        m = Metric.convert_type(metric)
+        if m in [
+                "accuracy",
+                "precision",
+                "recall",
+                "f1",
+                "f1Micro",
+                "f1Macro",
+                "rocAuc",
+                "rocAucMacro",
+                "rocAucMicro",
+                "rSquared",
+                "normalizedMutualInformation",
+                "jaccardSimilarityScore",
+                "precisionAtTopK",
+                "objectDetectionAP",
+                "averageMeanReciprocalRank"
+        ]:
+            return "higher_is_better"
+        elif m in [
+                "meanSquaredError",
+                "rootMeanSquaredError",
+                "meanAbsoluteError",
+                "hammingLoss"
+        ]:
+            return "lower_is_better"
+        else:
+            logger.warning("Uncertain order of given metric, %s, returning Higher is Better" %
+                           m)
+            return "higher_is_better"
 
-    def __init__(self, mid, inputs, scores):
+
+class ModelScores(DBModel):
+
+    def __init__(self, mid, inputs, scores, _id=None):
         logger.debug("ModelScore initialized with id: %s\ninputs: %s\nscores: %s" % (mid, str(inputs), str(scores)))
         # A ModeL id this score applies to
         self.mid = mid
@@ -246,15 +280,21 @@ class ModelScores(object):
         self.inputs = inputs
         # list of scores
         self.scores = scores
+        super().__init__(_id)
 
     def to_dict(self):
-        out = {'model_id': self.mid,
+        # out = self.__dict__
+        out = {'_id': self._id,
+               'mid': self.mid,
                'inputs': self.inputs,
-               # 'scores': [json_format.MessageToJson(score) for score in self.scores]
-               # 'scores': [protobuf_to_dict(score) for score in self.scores]
                'scores': [score.to_dict() for score in self.scores]
         }
+        # out['scores'] = [score.to_dict() for score in self.scores]
         return out
+
+    def to_json(self):
+        # Override DBModel version of to_json
+        return self.to_dict()
 
     def __str__(self):
         out = self.to_dict()
@@ -366,20 +406,25 @@ class Fit(object):
         self.dataset = dataset
         self.fit = fit
 
-class RankedModel(object):
+class RankedModel(DBModel):
 
-    def __init__(self, mdl, rank):
+    def __init__(self, mdl, rank, _id=None):
         self.mdl = mdl
         self.rank = rank
+        super().__init__(_id)
 
     def update_rank(self, rank):
         self.rank = rank
 
     def to_dict(self):
         return {
+            '_id': self._id,
             'model': self.mdl.to_dict(),
             'rank': self.rank
         }
+
+    def to_json(self):
+        return self.to_dict()
 
     def __str__(self):
         return str(self.to_dict())
@@ -396,4 +441,4 @@ class RankedModel(object):
 
         logger.debug("Creating RankedModel from %s: %s" % (str(type(data)), str(data)))
         model = Model.from_json(data['model'])
-        return RankedModel(model, data['rank'])
+        return RankedModel(mdl=model, rank=data['rank'], _id=data['_id'])

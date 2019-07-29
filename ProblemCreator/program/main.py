@@ -15,7 +15,7 @@ import csv
 
 # Workflow component specific imports
 from ls_utilities.ls_logging import setup_logging
-from ls_utilities.cmd_parser import get_default_arg_parser, get_session_info
+from ls_utilities.cmd_parser import *
 from ls_utilities.ls_wf_settings import *
 from ls_dataset.d3m_dataset import D3MDataset
 from ls_problem_desc.d3m_problem import DefaultProblemDesc
@@ -33,14 +33,8 @@ if __name__ == '__main__':
 
     # Parse argumennts
     parser = get_default_arg_parser("Initialize a new problem")
-    # parser.add_argument('-probname', type=str,
-                       # help='the name of the new problem given by the user')
-    # parser.add_argument('-probdesc', type=str,
-                       # help='the plain text description of the problem supplied by the user')
-    # parser.add_argument('-targetname', type=str,
-                       # help='the name of the column from the dataset to use')
-    parser.add_argument('-file0', type=argparse.FileType('r'),
-                       help='the dataset selection session information')
+    parser.add_argument("-node", nargs=1, action='append')
+    parser.add_argument("-fileIndex", nargs=2, action='append')
     args = parser.parse_args()
 
     if args.is_test is not None:
@@ -70,8 +64,17 @@ if __name__ == '__main__':
     db = DXDB(dx_config.get_db_backend_url())
 
     # Getting dataset session from db
-    sess_json = json.load(args.file0, encoding='utf-16')
-    ds_sess = db.get_workflow_session(sess_json['_id'])
+    # Parsing inputs
+    session_indx = 0
+    session_files = get_input_files(args, session_indx)
+    # Assume only 1 session input file
+    try:
+        with open(session_files[0], 'r') as session_file:
+            sess_json = json.load(session_file, encoding='utf-16')
+    except Exception as e:
+        logger.error("Error while loading session json at %s" % session_files[0])
+    obj = db.get_object('wf_sessions', sess_json['_id'])
+    ds_sess = WorkflowSession.from_json(obj) 
     logger.debug("recovered dataset session: %s" % ds_sess.to_json())
 
     # Checking if dataset has been selected in dataset session
@@ -140,12 +143,16 @@ if __name__ == '__main__':
     session.set_state_ready()
     db.update_workflow_session(session, ['state'])
 
+
     # Test retrieve problem
-    # temp_prob = db.get_problem(prob._id)
     # logger.debug("********************************************")
     # logger.debug("********************************************")
     # logger.debug("Got problem from DB: %s" % str(temp_prob))
 
+    pid = prob._id
+    prob = def_prob
+    prob._id = pid
+    db.replace_problem(pid, prob)
     
     # # prob.description = "CMU-Tigris User generated problem"
     # # prob.name = "Problem-%s" % str(datetime.now())

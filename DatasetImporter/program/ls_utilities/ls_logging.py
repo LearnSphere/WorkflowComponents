@@ -61,7 +61,7 @@ def setup_logging(settings):
             log_file = path.join(workingDir, 'log-%s.wfl' % log_id)
         else:
             log_file = path.join(settings.get_file_log_path(), 'log-%s.wfl' % log_id)
-        ch = FileHandler(filename=log_file)
+        ch = FileHandler(filename=log_file, encoding="UTF-16")
         ch.setLevel(settings.get_log_level())
         ch.setFormatter(formatter)
         lgr.addHandler(ch)
@@ -72,7 +72,7 @@ def setup_logging(settings):
         # Add explicit file log
         log_file = path.join(workingDir, 'test.log')
         # logger.debug("Writing logs to : %s" % str(log_file))
-        ch = FileHandler(filename=log_file)
+        ch = FileHandler(filename=log_file, encoding="UTF-16")
         ch.setLevel(settings.get_log_level())
         ch.setFormatter(formatter)
         lgr.addHandler(ch)

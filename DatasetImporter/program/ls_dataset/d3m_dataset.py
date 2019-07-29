@@ -95,11 +95,15 @@ class D3MDataset(LSDataset):
                     with open(fpath, 'r', encoding="utf-8") as f:
                         logger.info("Loading json")
                         ds_json = json.load(f)
-                        logger.info("Constructing D3MDataset")
-                        return D3MDataset(dpath,
-                                          ds_json)
                 except:
                     logger.error("Error while decoding dataset json: %s" % fpath)
+                logger.info("Constructing D3MDataset")
+                return D3MDataset(dpath,
+                                  ds_json)
+
+                logger.info("Constructing D3MDataset")
+                return D3MDataset(dpath,
+                                  ds_json)
 
             else:
                 logger.error("Found no dataset json at path: %s" % str(fpath))

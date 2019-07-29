@@ -13,7 +13,7 @@ import pprint
 
 from google.protobuf.json_format import MessageToJson
 
-from .ls_problem import ProblemDesc, Input, Target
+from .ls_problem import *
 from ta3ta2_api import problem_pb2, problem_pb2_grpc
 from modeling.scores import Metric
 
@@ -24,14 +24,7 @@ class GRPCProblemDesc(ProblemDesc):
     __version__ = "D3M TA3TA2 API v2018.5.1"
 
     def to_protobuf(self):
-        prob = problem_pb2.Problem(
-            id=self.id,
-        )
-        prob.version = str(self.version)
-        if self.name is not None:
-            prob.name = self.name
-        if self.description is not None:
-            prob.description = self.description
+        prob = problem_pb2.Problem()
         if self.task_type is not None:
             prob.task_type = GRPCProblemDesc.get_task_type(self.task_type)
         if self.subtype is not None:
@@ -44,8 +37,15 @@ class GRPCProblemDesc(ProblemDesc):
             if metric.pos is not None:
                 m.pos_label = metric.pos
         msg = problem_pb2.ProblemDescription(
+            id=self._id,
             problem=prob
         )
+        msg.version = str(self.version)
+        if self.name is not None:
+            msg.name = self.name
+        if self.description is not None:
+            msg.description = self.description
+
         # logger.debug("Adding inputs: %s" % str(self.inputs))
         for inpt in self.inputs:
             i = msg.inputs.add()
@@ -57,7 +57,24 @@ class GRPCProblemDesc(ProblemDesc):
                 t.resource_id = target.resource_id
                 t.column_index = target.column_index
                 t.column_name = target.column_name
+                if target.num_clusters is not None:
+                    t.clusters_number = target.num_clusters
                 # Clusters_number????
+            for pfd in inpt.privileged_data:
+                pd = i.privileged_data.add()
+                pd.privileged_data_index = pfd.priviledged_data_index
+                pd.resource_id = pfd.resource_id
+                pd.column_index = pfd.col_index
+                pd.column_name = pfd.col_name
+
+        # Add data augmentation parameters
+        for dap in self.data_aug_params:
+            d = msg.data_augmentation.add()
+            for domain in dap.domains:
+                d.domain.add(domain)
+            for kw in dap.keywords:
+                d.keywords.add(kw)
+
         
         return msg
 
@@ -211,7 +228,7 @@ class DefaultProblemDesc(ProblemDesc):
                             Problem Description. Got %s instead" % type(fpath))
         # logger.debug("Read in Problem Doc from file: %s" % str(data))
         # Initialize the class
-        out = DefaultProblemDesc(
+        out = ProblemDesc(
             name=data['about']['problemName'],
             version=data['about']['problemVersion'],
             desc=data['about']['problemDescription'] if 'problemDescription' in data['about'].keys() else '',
@@ -229,12 +246,39 @@ class DefaultProblemDesc(ProblemDesc):
         if 'problemSchemaVersion' in data['about'].keys():
             out.metadata['schema_version'] = data['about']['problemSchemaVersion']
         if 'dataSplits' in data['inputs'].keys():
-            out.metadata['dataSplits'] = data['inputs']['dataSplits'],
+            out.data_split = ProblemDataSplit()
+            if 'method' in data['inputs']['dataSplits']:
+                out.data_split.method = data['inputs']['dataSplits']['method']
+            if 'testSize' in data['inputs']['dataSplits']:
+                out.data_split.test_size = data['inputs']['dataSplits']['testSize']
+            if 'numFolds' in data['inputs']['dataSplits']:
+                out.data_split.num_folds = data['inputs']['dataSplits']['numFolds']
+            if 'stratified' in data['inputs']['dataSplits']:
+                out.data_split.stratified = data['inputs']['dataSplits']['stratified']
+            if 'numRepeats' in data['inputs']['dataSplits']:
+                out.data_split.num_repeats = data['inputs']['dataSplits']['numRepeats']
+            if 'randomSeed' in data['inputs']['dataSplits']:
+                out.data_split.random_seed = data['inputs']['dataSplits']['randomSeed']
+            if 'splitsFile' in data['inputs']['dataSplits']:
+                out.data_split.splits_file = data['inputs']['dataSplits']['splitsFile']
+            if 'splitScript' in data['inputs']['dataSplits']:
+                out.data_split.splitScript = data['inputs']['dataSplits']['splitScript']
         if 'expectedOutputs' in data.keys():
-            out.metadata['expectedOutputs'] = data['expectedOutputs']
+            out.expected_outputs = ExpectedProblemOutput()
+            if 'predictionsFile' in data['expectedOutputs'].keys():
+                out.expected_outputs.pred_file = data['expectedOutputs']['predictionsFile']
+            if 'scoresFile' in data['expectedOutputs'].keys():
+                out.expected_outputs.scores_file = data['expectedOutputs']['scoresFile']
+        if 'dataAugmentation' in data.keys():
+            out.data_aug_params = DataAugmentationParamaters()
+            if 'domain' in data['inputs']['dataAugmentation']:
+                out.data_aug_params.domains = data['inputs']['dataAugmentation']['domain']
+            if 'keywords' in data['inputs']['dataAugmentation']:
+                out.data_aug_params.keywords = data['inputs']['dataAugmentation']['keywords']
+            
 
         # Overrite the auto-generated ID
-        out.id = data['about']['problemID']
+        # out.id = data['about']['problemID']
 
         # Manually create inputs and add them
         for d in data['inputs']['data']:
@@ -245,6 +289,8 @@ class DefaultProblemDesc(ProblemDesc):
                 target.resource_id = t['resID']
                 target.column_index = t['colIndex']
                 target.column_name = t['colName']
+                if 'numClusters' in t:
+                    target.num_clusters = t['numClusters']
                 inpt.targets.append(target)
 
             out.inputs.append(inpt)
@@ -296,7 +342,7 @@ class DefaultProblemDesc(ProblemDesc):
         logger.debug("######################################")
         out = {
             'about': {
-                'problemID': self.id,
+                'problemID': self._id,
                 'problemVersion': self.version
             },
             'inputs': {

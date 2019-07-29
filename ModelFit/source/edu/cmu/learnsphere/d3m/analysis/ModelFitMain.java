@@ -33,12 +33,6 @@ public class ModelFitMain extends AbstractComponent {
 
         // The addMetaData* methods make the meta data available to downstream components.
 
-	// Add input meta-data (headers) to output file.
-	this.addMetaDataFromInput("dataset", 0, 0, ".*");
-
-	// Add additional meta-data for each output file.
-	this.addMetaData("fitted-model-set", 0, META_DATA_LABEL, "label0", 0, null);
-	this.addMetaData("predictions", 1, META_DATA_LABEL, "label1", 0, null);
 
     }
 
