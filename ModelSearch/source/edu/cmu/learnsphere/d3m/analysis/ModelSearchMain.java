@@ -33,6 +33,12 @@ public class ModelSearchMain extends AbstractComponent {
 
         // The addMetaData* methods make the meta data available to downstream components.
 
+	// Add input meta-data (headers) to output file.
+	this.addMetaDataFromInput("problem", 0, 0, ".*");
+
+	// Add additional meta-data for each output file.
+	this.addMetaData("ranked-models", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("inline-html", 1, META_DATA_LABEL, "label1", 0, null);
 
     }
 
