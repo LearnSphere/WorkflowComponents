@@ -19,6 +19,8 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = identity)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = sqrt)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -userId hcheng -family "binomial (link = logit)" -fixedEffects "tag_code:Opportunity" -formula "is_right ~ tag_code:Opportunity + (1|user_id)" -modelingFunc glmer -randomEffects "1^|user_id" -response_nodeIndex 0 -response_fileIndex 0 -response is_right -responseCol is_right -node 0 -fileIndex 0 math_record_cleaned_2.txt
+
 
 options(echo=FALSE)
 options(warn=-1)
@@ -225,8 +227,8 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
 	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 
-	}
-  eval(parse(text=modelingString))
+	 }
+  suppressWarnings(suppressMessages(eval(parse(text=modelingString))))
   modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
 	suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
