@@ -31,7 +31,7 @@ class DatasetResource(object):
             metadata - json object describing the d3m dataset resource
 
         """
-        logger.debug("Initializing DatasetResource with metadata: %s" % str(metadata))
+        # logger.debug("Initializing DatasetResource with metadata: %s" % str(metadata))
         self.resID = metadata['resID']
         self.resPath = metadata['resPath']
         # placeholder logic for more custom type handling

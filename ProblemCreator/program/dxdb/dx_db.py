@@ -62,15 +62,15 @@ class DXDB(object):
             logger.debug("dataset already has _id defined. Querying using _id: %s" % ds._id)
             results = self.db[self.tbls['ds_metadata']].find({'_id': ObjectId(ds._id)})
             if results.count() > 0:
-                logger.info("Dataset is in db")
+                logger.debug("Dataset is in db")
                 return True
         logger.debug("checking db for dataset with id: %s" % ds.id)
         results = self.db[self.tbls['ds_metadata']].find({'about.datasetID': ds.id})
         if results.count() > 0:
-            logger.info("Dataset is in db")
+            logger.debug("Dataset is in db")
             return True
         else:
-            logger.info("Dataset is not in db")
+            logger.debug("Dataset is not in db")
             return False
 
     def get_dataset_with_name(self, name=None):
@@ -81,7 +81,7 @@ class DXDB(object):
             ds_json = self.db[self.tbls['ds_metadata']].find_one({'about.datasetID': name})
         # Convert _id to string
         ds_json['_id'] = str(ds_json['_id'])
-        logger.debug("Got dataset: %s" % str(ds_json))
+        logger.debug("Got dataset: %s" % str(ds_json)[:400])
         return D3MDataset.from_json(ds_json)
 
     def get_dataset_metadata(self, dsid=None):
