@@ -1,6 +1,7 @@
 #usage
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/program/RLMFitting.R -programDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/ -workingDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting/test/ComponentTestOutput/output/ -d "Total.Quiz,Final_Exam" -d_wf "Total.Quiz,Final_Exam" -i "Activities,Non Activities_Reading,Video,Pretest" -i_wf "Activities,Non Activities_Reading,Video,Pretest" -node 0 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\RLMFitting\test\test_data\data.txt
-
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" RLMFitting.R -programDir . -workingDir . userId hcheng -d gr_finalf -d_wf_nodeIndex 0 -d_wf_fileIndex 0 -d_wf gr_finalf -i prc_quiz_w1 -i_wf_nodeIndex 0 -i_wf_fileIndex 0 -i_wf prc_quiz_w1 -node 0 -fileIndex 0 clickstream_0730_1.csv
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" RLMFitting.R -programDir . -workingDir . -userId hcheng -d gr_finalc -d_wf_nodeIndex 0 -d_wf_fileIndex 0 -d_wf gr_finalc -i prc_quiz_w1,prc_quiz_w2 -i_wf_nodeIndex 0 -i_wf_fileIndex 0 -i_wf prc_quiz_w1 -i_wf_nodeIndex 0 -i_wf_fileIndex 0 -i_wf prc_quiz_w2 -node 0 -fileIndex 0 clickstream_0730_cleaned_1.txt
 #SET UP LIBRARIES
 options(scipen=999)
 options(width=120)
@@ -8,7 +9,11 @@ options(width=120)
 
 #SET UP LOADING DATE FUNCTION
 import.data <- function(filename){
-  return(read.table(filename,sep="\t" ,header=TRUE))
+  df = read.table(filename,sep="\t" ,header=TRUE)
+  if (length(colnames(df)) > 1) {
+    return(df)
+  }
+  else return(read.csv(filename,sep="," ,header=TRUE))
 }
 
 #verify column
@@ -131,6 +136,8 @@ if (!dataIsRead) {
   stop("file must be provided")
 }
 
+suppressMessages(suppressWarnings(library(tidyr)))
+myData = myData %>% drop_na()
 
 # # Creates output summary file
 # clean.summary <- file(summary.file,  open = "wt")
