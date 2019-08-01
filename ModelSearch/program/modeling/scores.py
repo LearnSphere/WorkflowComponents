@@ -139,41 +139,49 @@ class Metric(object):
     @staticmethod
     def get_perf_metric(metric):
         if isinstance(metric, str):
-            m = metric.upper()
-            if m == 'METRIC_UNDEFINED':
+            m = Metric.convert_type(metric)
+            if m == 'metricundefined':
                 return problem_pb2.METRIC_UNDEFINED
-            elif m == 'ACCURACY':
+            elif m == 'accuracy':
                 return problem_pb2.ACCURACY
-            elif m == 'F1':
+            elif m == 'precision':
+                return problem_pb2.PRECISION
+            elif m == 'recall':
+                return problem_pb2.RECALL
+            elif m == 'f1':
                 return problem_pb2.F1
-            elif m == 'F1_MICRO' or m.lower() == 'f1micro':
+            elif m == 'f1micro':
                 return problem_pb2.F1_MICRO
-            elif m == 'F1_MACRO' or m.lower() == 'f1macro':
+            elif m == 'f1macro':
                 return problem_pb2.F1_MACRO
-            elif m == 'ROC_AUC':
+            elif m == 'rocauc':
                 return problem_pb2.ROC_AUC
-            elif m == 'ROC_AUC_MICRO':
+            elif m == 'rocaucmicro':
                 return problem_pb2.ROC_AUC_MICRO
-            elif m == 'ROC_AUC_MACRO':
+            elif m == 'rocaucmacro':
                 return problem_pb2.ROC_AUC_MACRO
-            elif m == 'MEAN_SQUARED_ERROR':
+            elif m == 'meansquarederror':
                 return problem_pb2.MEAN_SQUARED_ERROR
-            elif m == 'ROOT_MEAN_SQUARED_ERROR':
+            elif m == 'rootmeansquarederror':
                 return problem_pb2.ROOT_MEAN_SQUARED_ERROR
-            elif m == 'ROOT_MEAN_SQUARED_ERROR_AVG':
-                return problem_pb2.ROOT_MEAN_SQUARED_ERROR_AVG
-            elif m == 'MEAN_ABSOLUTE_ERROR':
+            # elif m == 'rootmeansquarederroravg':
+                # return problem_pb2.ROOT_MEAN_SQUARED_ERROR_AVG
+            elif m == 'meanabsoluteerror':
                 return problem_pb2.MEAN_ABSOLUTE_ERROR
-            elif m == 'R_SQUARED':
+            elif m == 'rsquared':
                 return problem_pb2.R_SQUARED
-            elif m == 'NORMALIZED_MUTUAL_INFORMATION':
+            elif m == 'normalizedmutualinformation':
                 return problem_pb2.NORMALIZED_MUTUAL_INFORMATION
-            elif m == 'JACCARD_SIMILARITY_SCORE':
+            elif m == 'jaccardsimilarityscore':
                 return problem_pb2.JACCARD_SIMILARITY_SCORE
-            elif m == 'PRECISION_AT_TOP_K':
+            elif m == 'precisionattopk':
                 return problem_pb2.PRECISION_AT_TOP_K
-            elif m == 'LOSS':
-                return problem_pb2.LOSS
+            elif m == 'objectdetectionap':
+                return problem_pb2.OBJECT_DETECTION_AVERAGE_PRECISION
+            elif m == 'hammingloss':
+                return problem_pb2.HAMMING_LOSS
+            elif m == 'averagemeanreciprocalrank':
+                return problem_pb2.RANK
             else:
                 raise Exception ("Invalid metric given: %s" % m)
         else:
@@ -198,8 +206,8 @@ class Metric(object):
                 return 'MEAN_SQUARED_ERROR'
             elif m == problem_pb2.ROOT_MEAN_SQUARED_ERROR:
                 return 'ROOT_MEAN_SQUARED_ERROR'
-            elif m == problem_pb2.ROOT_MEAN_SQUARED_ERROR_AVG:
-                return 'ROOT_MEAN_SQUARED_ERROR_AVG'
+            # elif m == problem_pb2.ROOT_MEAN_SQUARED_ERROR_AVG:
+                # return 'ROOT_MEAN_SQUARED_ERROR_AVG'
             elif m == problem_pb2.MEAN_ABSOLUTE_ERROR:
                 return 'MEAN_ABSOLUTE_ERROR'
             elif m == problem_pb2.R_SQUARED:
@@ -210,8 +218,12 @@ class Metric(object):
                 return 'JACCARD_SIMILARITY_SCORE'
             elif m == problem_pb2.PRECISION_AT_TOP_K:
                 return 'PRECISION_AT_TOP_K'
-            elif m == problem_pb2.LOSS:
-                return 'LOSS'
+            elif m == problem_pb2.OBJECT_DETECTION_AVERAGE_PRECISION:
+                return 'OBJECT_DETECTIONAP'
+            elif m == problem_pb2.HAMMING_LOSS:
+                return 'HAMMING_LOSS'
+            elif m == problem_pb2.RANK:
+                return 'AVERAGE_MEAN_RECIPROCAL_RANK'
             else:
                 raise Exception ("Invalid metric given: %s" % str(m))
     

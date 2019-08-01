@@ -48,7 +48,7 @@ class DatasetImporter(object):
                         try:
                             ds = D3MDataset.from_dataset_json(path.join(root, f))
                             if not self.db.has_dataset(ds):
-                                logger.info("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
+                                logger.debug("Found dataset name: %s\nAt path: %s" % (ds.name,  ds.dpath))
                                 logger.debug(str(json.loads(ds.to_json())))
                                 # Add dataset to db 
                                 dsid = self.db.insert_dataset_metadata(ds)
@@ -59,9 +59,9 @@ class DatasetImporter(object):
                                 logger.debug("Has dataset after insert: %s" % str(self.db.has_dataset(ds)))
                                 datasets.add(ds._id)
                             else:
-                                logger.info("Dataset with name: %s\t was already in db. Retrieving record from db" % ds.name)
+                                logger.debug("Dataset with name: %s\t was already in db. Retrieving record from db" % ds.name)
                                 ds = self.db.get_dataset_with_name(ds.id)
-                                logger.debug("Retrieved dataset from db with id %s: %s" % (ds._id, str(ds.to_json())))
+                                # logger.debug("Retrieved dataset from db with id %s: %s" % (ds._id, str(ds.to_json())))
                                 datasets.add(ds._id)
 
                         except Exception as e:
