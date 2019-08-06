@@ -25,13 +25,14 @@ make_plot <- function(student_step_data,
                       min_datetime_unit = "1900-01-01 00:00:00", 
                       max_datetime_unit = "3000-01-01 00:00:00",
                       plot_type = c("Usage", "Usage and performance")) {
-  
   suppressMessages(suppressWarnings(require(dplyr)))
   suppressMessages(suppressWarnings(require(ggplot2)))
   suppressMessages(suppressWarnings(require(stringr)))
   suppressMessages(suppressWarnings(require(ggthemes)))
   suppressMessages(suppressWarnings(require(gtools)))
   suppressMessages(suppressWarnings(require(lubridate)))
+  
+  
   
   #require(dplyr)
   #require(ggplot2)

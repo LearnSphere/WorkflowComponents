@@ -1,3 +1,5 @@
+ suppressMessages(suppressWarnings(library(logWarningsMessagesPkg)))
+ suppressMessages(suppressWarnings(library(rlang)))
 suppressMessages(suppressWarnings(library(tibble)))
 suppressMessages(suppressWarnings(library(readr)))
 suppressMessages(suppressWarnings(library(ggplot2)))
@@ -14,6 +16,7 @@ override <- FALSE
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt -node 1 -fileIndex 0 order_data.csv -height 10 -width 12
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt -height 10 -width 12
 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -userId hcheng -AbsMaxTimeUnit "3000-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScale Relative -TimeScaleRes Week -height 10 -width 1, -node 0 -fileIndex 0 ds1258_student_problem_All_Data_4937_2019_0718_190606.txt
 # Curriculum pacing R code
 
 # input file that will contain student data
@@ -213,7 +216,9 @@ if (override) {
         stop("Graph height must be specified")
       }
       
-      graph_height <- as.numeric(args[i + 1])
+      #graph_height <- as.numeric(args[i + 1])
+      graph_height <- logWarningsMessages(as.numeric(args[i + 1]), logFileName = "curriculum_pacing.wfl")
+        
       print(paste("Graph height:", graph_height))
       i <- i + 1
       
@@ -224,7 +229,8 @@ if (override) {
         stop("Graph width must be specified")
       }
       
-      graph_width <- as.numeric(args[i + 1])
+      #graph_width <- as.numeric(args[i + 1])
+      graph_width <- logWarningsMessages(as.numeric(args[i + 1]), logFileName = "curriculum_pacing.wfl")
       print(paste("Graph width:", graph_width))
       i <- i + 1
       
@@ -254,12 +260,14 @@ source(paste(make_plot_program_dir, "make_plot.R", sep=""))
 
 print("All options scanned...")
 
-rdf <- suppressMessages(suppressWarnings(read_tsv(input_file)))
+#rdf <- suppressMessages(suppressWarnings(read_tsv(input_file)))
+rdf <- logWarningsMessages(read_tsv(input_file), logFileName = "curriculum_pacing.wfl")
 
 ord_df <- if(is.null(hierarchy_order) || hierarchy_order == "") {
   NULL
 } else {
-  suppressMessages(suppressWarnings(read_csv(hierarchy_order)))
+  #suppressMessages(suppressWarnings(read_csv(hierarchy_order)))
+  logWarningsMessages(read_csv(hierarchy_order), logFileName = "curriculum_pacing.wfl")
 }
 
 plt <- make_plot(student_step_data = rdf,
@@ -276,5 +284,7 @@ plt <- plt + labs(caption = input_file)
 
 # save ggplot object
 # height and width are in inches
-ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = graph_height, width = graph_width)
+#ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = graph_height, width = graph_width)
+
+logWarningsMessages(ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = graph_height, width = graph_width), logFileName = "curriculum_pacing.wfl")
 

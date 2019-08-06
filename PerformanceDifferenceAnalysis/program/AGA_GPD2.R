@@ -1,5 +1,9 @@
+suppressMessages(suppressWarnings(library(logWarningsMessagesPkg)))
+suppressMessages(suppressWarnings(library(rlang)))
 suppressMessages(suppressWarnings(library(ggplot2)))
-                                  suppressMessages(suppressWarnings(library(gridExtra)))
+suppressMessages(suppressWarnings(library(gridExtra)))
+
+wfl_log_file = "AGA_GPD2.wfl"
 #Variables required in spreadsheet 
 #FINAL.GRADE is letter grade in target course
 #SEX is student’s (binary only) gender 
@@ -155,7 +159,8 @@ if (override) {
 TargetCourseUnits <- 10
 
 #read csv
-GPDdata <- suppressMessages(suppressWarnings(read.csv(input_file)))
+#GPDdata <- suppressMessages(suppressWarnings(read.csv(input_file)))
+GPDdata <- logWarningsMessages(read.csv(input_file), logFileName = wfl_log_file)
 
 colIndex = 1
 for (colname in colnames(GPDdata)) {
@@ -267,12 +272,20 @@ pString = paste("p = ggplot(out_all, aes(x=GPAO_bin, y=Course_Grade, color=", an
 
 eval(parse(text=pString))
 
+# p +
+#   suppressMessages(suppressWarnings(geom_errorbar(aes(ymin=Course_Grade-se, ymax=Course_Grade+se), width=.1, position=pd))) +
+#   geom_point(position=pd, size=2) +
+#   geom_abline(intercept = 0, slope = 1) +
+#   xlab("Grade Point Average in Other Courses") + ylab("Grade") +
+#   theme(legend.position = "bottom", legend.box = "vertical")
+
 p +
-  suppressMessages(suppressWarnings(geom_errorbar(aes(ymin=Course_Grade-se, ymax=Course_Grade+se), width=.1, position=pd))) +
+  logWarningsMessages(geom_errorbar(aes(ymin=Course_Grade-se, ymax=Course_Grade+se), width=.1, position=pd), logFileName = wfl_log_file) +
   geom_point(position=pd, size=2) +
   geom_abline(intercept = 0, slope = 1) +
   xlab("Grade Point Average in Other Courses") + ylab("Grade") +
   theme(legend.position = "bottom", legend.box = "vertical")
+
 
 dev.off()
 
