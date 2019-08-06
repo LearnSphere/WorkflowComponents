@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>stevenda
+  <email>stevenda@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GamingDetector</url>
+<date>August 06, 2019</date>
+<abstract>The <b>GamingDetector</b> component is an example of a(n) Python component.</abstract>
+<description>Given a transaction file, generate labels for gaming based on Paquette 2014 detector</description>
+
+<inputs>
+<b>transaction</b>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b>
+</outputs>
+
+<options>
+</options>
+
+</info>
