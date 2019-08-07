@@ -24,11 +24,33 @@ class SettingsFactory(object):
     @staticmethod
     def get_dx_settings():
         cfg_file_name = "docker_config.cfg"
-        if 'D3MCONFIG' not in os.environ:
-            config_file = os.path.join("/datashop/workflow_components/D3M", cfg_file_name)
+        if 'DOCKERCONFIG' in os.environ:
+            logger.debug("Using dockerconfig location spec in DOCKERCONFIG: %s"  % os.environ['DOCKERCONFIG'])
+            config_file = os.path.join(os.environ['DOCKERCONFIG'], cfg_file_name)
         else:
-            config_file = os.path.join(os.path.dirname(os.environ['D3MCONFIG']),
-                    "docker_config.cfg")
+            if 'D3MCONFIG' not in os.environ:
+                logger.debug("Using default path for docker config file")
+                config_file = os.path.join("/datashop/workflow_components/D3M", cfg_file_name)
+            else:
+                logger.debug("Using path for docker config file from env variable")
+                config_file = os.path.join(os.path.dirname(os.environ['D3MCONFIG']),
+                        "docker_config.cfg")
+        logger.info("Using docker config file at path %s" % str(config_file))
+
+        # Temp testing section
+        ########################
+        with open(config_file) as f:
+            conf = f.readlines()
+        logger.debug("***********************************************")
+        logger.debug("***********************************************")
+        logger.debug("Docker config:")
+        logger.debug("***********************************************")
+        logger.debug("***********************************************")
+
+        for line in conf:
+            logger.debug(line)
+        ########################
+
         return AppServiceSettings(config_file)
 
     def get_env_settings():

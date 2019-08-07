@@ -149,10 +149,11 @@ if __name__ == '__main__':
     # logger.debug("********************************************")
     # logger.debug("Got problem from DB: %s" % str(temp_prob))
 
-    # pid = prob._id
-    # prob = def_prob
-    # prob._id = pid
-    # db.replace_problem(pid, prob)
+    # Dummy code to set default problem as initial problem
+    pid = prob._id
+    prob = def_prob
+    prob._id = pid
+    db.replace_problem(pid, prob)
     
     # # prob.description = "CMU-Tigris User generated problem"
     # # prob.name = "Problem-%s" % str(datetime.now())

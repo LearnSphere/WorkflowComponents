@@ -126,6 +126,8 @@ class GRPCProblemDesc(ProblemDesc):
                 return problem_pb2.LINK_PREDICTION
             elif t == 'VERTEX_NOMINATION':
                 return problem_pb2.VERTEX_NOMINATION
+            elif t == 'VERTEX_CLASSIFICATION':
+                return problem_pb2.VERTEX_CLASSIFICATION
             elif t == 'COMMUNITY_DETECTION':
                 return problem_pb2.COMMUNITY_DETECTION
             elif t == 'GRAPH_CLUSTERING':
@@ -136,6 +138,12 @@ class GRPCProblemDesc(ProblemDesc):
                 return problem_pb2.TIME_SERIES_FORECASTING
             elif t == 'COLLABORATIVE_FILTERING':
                 return problem_pb2.COLLABORATIVE_FILTERING
+            elif t == 'OBJECT_DETECTION':
+                return problem_pb2.OBJECT_DETECTION
+            elif t == 'SEMISUPERVISED_CLASSIFICATION':
+                return problem_pb2.SEMISUPERVISED_CLASSIFICATION
+            elif t == 'SEMISUPERVISED_REGRESSION':
+                return problem_pb2.SEMISUPERVISED_REGRESSION
             else:
                 return problem_pb2.TASK_TYPE_UNDEFINED
         else:

@@ -184,7 +184,7 @@ class ModelSearch(object):
             predictions = ModelPredictions(dataset_id=ds._id, problem_id=prob._id, fitted_model_id=fitted_mdl._id, data=fitted_results.to_dict('list'))
             predictions._id = self.db.insert_data('predictions', predictions)
             mdl_predictions[fitted_mdl._id] = predictions
-            logger.debug("Added predictions to db: %s" % str(predictions))
+            logger.debug("Added predictions to db: %s" % str(predictions)[:300])
 
 
         valid_slns = [mdl.solution_id for mid, mdl in fitted_models.items()]
@@ -226,7 +226,7 @@ class ModelSearch(object):
                 predictions = ModelPredictions(dataset_id=ds._id, problem_id=prob._id, fitted_model_id=fmid, data=fmdl_predictions.to_dict('list'))
                 predictions._id = self.db.insert_data('predictions', predictions)
                 test_predictions[predictions._id] = predictions
-                logger.debug("Added predictions to db: %s" % str(predictions))
+                logger.debug("Added predictions to db: %s" % str(predictions)[:300])
             except Exception as e:
                 logger.warning("Encountered error while producing predictions for fitted model, %s.\n Error: %s" %
                                (fmid, str(e)))
