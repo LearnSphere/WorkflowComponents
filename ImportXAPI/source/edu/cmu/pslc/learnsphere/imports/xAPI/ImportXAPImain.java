@@ -572,7 +572,7 @@ public class ImportXAPImain extends AbstractComponent {
                 }
                 
                 //Add new tag: "Outcome" based on result score: include"raw","max","min","scaled".
-                if(headersList.contains("Outcome")){
+                if(headersList.contains("Outcome")&(!threshold.equals("null"))){
                    int IdNum=headersList.indexOf("Outcome");
                    for (int r=0; r<size;r++){
                     double threshold_use=Double.parseDouble(threshold);
