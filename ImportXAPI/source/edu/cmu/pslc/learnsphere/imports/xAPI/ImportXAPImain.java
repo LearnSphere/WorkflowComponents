@@ -137,6 +137,7 @@ public class ImportXAPImain extends AbstractComponent {
                 String queryPath30 = null;
                 String headers30 = null; 
                 String limit = null;
+                String threshold= null;
                 
                 queryPath01 = this.getOptionAsString("queryPath01");
                     headers01 = this.getOptionAsString("headers01");
@@ -200,6 +201,7 @@ public class ImportXAPImain extends AbstractComponent {
                     headers30 = this.getOptionAsString("headers30");  
                 
                 limit=this.getOptionAsString("limit");
+                threshold=this.getOptionAsString("outcome");
                 
 	    	StatementClient client = new StatementClient(url, username, password);
                 String jsonTxt = null;
@@ -554,15 +556,32 @@ public class ImportXAPImain extends AbstractComponent {
                     }
                 }
                 
-                //Transfer Duration Format
-                if(headersList.contains("Duration")){
-                    int IdNum=headersList.indexOf("Duration");
+                //Transfer Duration Format 
+                if(headersList.contains("Duration (sec)")){
+                    int IdNum=headersList.indexOf("Duration (sec)");
                     for (int r=0; r<size;r++){
-                        double duration=Double.parseDouble(queryContent[r][IdNum])/1000;
-                        BigDecimal b =new BigDecimal(duration);
-                        double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-                        queryContent[r][IdNum]=Double.toString(f1);
+                        if(!queryContent[r][IdNum].equals("null")){
+                            double duration=Double.parseDouble(queryContent[r][IdNum])/1000;
+                            BigDecimal b =new BigDecimal(duration);
+                            double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                            queryContent[r][IdNum]=Double.toString(f1);
+                        }else {
+                            queryContent[r][IdNum]="null";
+                        }
                     }
+                }
+                
+                //Add new tag: "Outcome" based on result score: include"raw","max","min","scaled".
+                if(headersList.contains("Outcome")){
+                   int IdNum=headersList.indexOf("Outcome");
+                   for (int r=0; r<size;r++){
+                    double threshold_use=Double.parseDouble(threshold);
+                    if (Double.parseDouble(queryContent[r][IdNum])>=threshold_use){
+                       queryContent[r][IdNum]="CORRECT";
+                   }else {
+                       queryContent[r][IdNum]="INCORRECT";
+                    }
+                   }
                 }
                 
                 //Print the query results
