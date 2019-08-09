@@ -14,7 +14,7 @@ if [ ! -d $venv ]; then
     virtualenv $venv --python=python3.6
     source $venv/bin/activate
     pip install --upgrade pip
-    # pip install -r requirements.txt
+    pip install -r requirements.txt
     
     # Deactiate python venv
     deactivate

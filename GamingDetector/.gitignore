@@ -1,0 +1,10 @@
+# Virtual Env #
+###############
+venv
+
+__pycache__
+# Testing files #
+##################
+run_component.log
+test/tx_test.csv
+
