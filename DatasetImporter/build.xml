@@ -67,9 +67,9 @@
     </target>
 
     <target name="env" description="setup the local component python env">
-	<exec executable="/bin/bash" >
-		<arg value="${basedir}/install_component.sh"/>
-	</exec>
+      <exec executable="/bin/bash" >
+        <arg value="${basedir}/install_component.sh"/>
+      </exec>
     </target>
 
     <!-- Delete the temporary directories. -->

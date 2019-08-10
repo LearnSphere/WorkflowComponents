@@ -32,7 +32,7 @@ __version__ = '0.1'
 if __name__ == '__main__':
 
     # Parse argumennts
-    parser = get_default_arg_parser("Initialize a new problem")
+    parser = get_default_arg_parser("Initialize parser")
     parser.add_argument("-node", nargs=1, action='append')
     parser.add_argument("-fileIndex", nargs=2, action='append')
     args = parser.parse_args()
@@ -150,10 +150,10 @@ if __name__ == '__main__':
     # logger.debug("Got problem from DB: %s" % str(temp_prob))
 
     # Dummy code to set default problem as initial problem
-    pid = prob._id
-    prob = def_prob
-    prob._id = pid
-    db.replace_problem(pid, prob)
+    # pid = prob._id
+    # prob = def_prob
+    # prob._id = pid
+    # db.replace_problem(pid, prob)
     
     # # prob.description = "CMU-Tigris User generated problem"
     # # prob.name = "Problem-%s" % str(datetime.now())

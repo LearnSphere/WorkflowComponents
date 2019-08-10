@@ -5,7 +5,7 @@
   <email>stevenda@cs.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ModelExport</url>
-<date>August 07, 2019</date>
+<date>August 10, 2019</date>
 <abstract>The <b>ModelExport</b> component is an example of a(n) Python component.</abstract>
 <description>Export a set of models for evaluation</description>
 

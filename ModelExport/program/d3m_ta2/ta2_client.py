@@ -92,7 +92,7 @@ class TA2Client(object):
                          dataset, 
                          inputs=None, 
                          pipeline=None, 
-                         max_time=5, 
+                         max_time=30, 
                          priority=0,
                          time_bound=1,
                          rank_solutions_limit=10,
@@ -198,7 +198,7 @@ class TA2Client(object):
         reply = self.serv.EndSearchSolutions(msg)
         if sid in self.search_solution_requests:
             try: 
-                del search_solution_requestsi[sid]
+                del self.search_solution_requests[sid]
             except KeyError:
                 logger.warning("Can't find search with ID, %s, to end search" % sid)
         else:
