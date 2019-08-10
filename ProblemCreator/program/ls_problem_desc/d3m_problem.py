@@ -71,11 +71,14 @@ class GRPCProblemDesc(ProblemDesc):
         # Add data augmentation parameters
         for dap in self.data_aug_params:
             d = msg.data_augmentation.add()
-            for domain in dap.domains:
-                d.domain.add(domain)
-            for kw in dap.keywords:
-                d.keywords.add(kw)
-
+            d.domain.extend(dap.domains)
+            d.keywords.extend(dap.keywords)
+            # for domain in dap.domains:
+                # aug_domain = d.domain.add()
+                # aug_domain = domain
+            # for kw in dap.keywords:
+                # aug_kw = d.keywords.add()
+                # aug_kw = kw
         
         return msg
 
@@ -107,6 +110,7 @@ class GRPCProblemDesc(ProblemDesc):
             metadata = prob.metadata
         )
         out.inputs = prob.inputs
+        out.data_aug_params = prob.data_aug_params
         logger.debug("GRPC Problem description: %s" % str(MessageToJson(out.to_protobuf())))
         return out
 
