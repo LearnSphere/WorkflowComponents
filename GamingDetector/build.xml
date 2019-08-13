@@ -10,7 +10,6 @@
     <property name="dist" location="${basedir}/dist" />
     <property name="lib" location="../CommonLibraries" />
     <property name="javadoc" location="${basedir}/javadoc" />
-    <property name="env" location="${basedir}/venv" />
 
     <property name="version" value="1.0" />
 
@@ -51,7 +50,7 @@
         <pathelement path="." />
     </path>
 
-    <target name="init" depends="env">
+    <target name="init">
         <!-- Create the time stamp in DSTAMP -->
         <tstamp />
         <!-- Create the build directory structure used by compile -->
@@ -64,12 +63,6 @@
         <javac srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
         </javac>
-    </target>
-
-    <target name="env" description="setup the local component python env">
-      <exec executable="/bin/bash" >
-        <arg value="${basedir}/install_component.sh"/>
-      </exec>
     </target>
 
     <!-- Delete the temporary directories. -->

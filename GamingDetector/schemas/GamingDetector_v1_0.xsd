@@ -47,7 +47,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="OptionsType">
-    <xs:choice maxOccurs="unbounded" minOccurs="0"/>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element default="Transaction_Id" id="Transaction_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="transaction_id" type="FileInputHeader"/>
+      <xs:element default="Anon_Student_Id" id="Student_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="student_id" type="FileInputHeader"/>
+      <xs:element default="Session_Id" id="Session_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="session_id" type="FileInputHeader"/>
+      <xs:element default="Outcome" id="Outcome_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="outcome_column" type="FileInputHeader"/>
+      <xs:element default="Duration_(sec)" id="Duration_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="duration_column" type="FileInputHeader"/>
+      <xs:element default="Input" id="Input_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="input_column" type="FileInputHeader"/>
+      <xs:element default="Problem_Name" id="Problem_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="problem_column" type="FileInputHeader"/>
+      <xs:element default="Step_Name" id="Step_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="step_column" type="FileInputHeader"/>
+      <xs:element default="OK,_OK_AMBIGUOUS" id="Correct_Outcome_Values" name="correct_labels" type="xs:string"/>
+      <xs:element default="ERROR,_BUG" id="Incorrect_Outcome_Values" name="incorrect_labels" type="xs:string"/>
+      <xs:element default="INITIAL_HINT,_HINT_LEVEL_CHANGE" id="Hint_Outcome_Values" name="hint_labels" type="xs:string"/>
+      <xs:element default="BUG" id="Bug_Outcome_Values" name="bug_labels" type="xs:string"/>
+    </xs:choice>
   </xs:complexType>
   <xs:element name="component">
     <xs:complexType>

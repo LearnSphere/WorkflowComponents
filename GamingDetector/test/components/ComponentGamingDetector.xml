@@ -33,6 +33,18 @@
 </inputs>
 
 <options>
+<transaction_id>Transaction_Id</transaction_id>
+<student_id>Anon_Student_Id</student_id>
+<session_id>Session_Id</session_id>
+<outcome_column>Outcome</outcome_column>
+<duration_column>Duration_(sec)</duration_column>
+<input_column>Input</input_column>
+<problem_column>Problem_Name</problem_column>
+<step_column>Step_Name</step_column>
+<correct_labels>OK,_OK_AMBIGUOUS</correct_labels>
+<incorrect_labels>ERROR,_BUG</incorrect_labels>
+<hint_labels>INITIAL_HINT,_HINT_LEVEL_CHANGE</hint_labels>
+<bug_labels>BUG</bug_labels>
 </options>
 
 </component>
