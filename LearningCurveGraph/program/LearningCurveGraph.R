@@ -91,13 +91,22 @@ models<-length(files)
 
 KC_Model<-gsub("[ ()-]", ".",as.character(KC_Model))
 
+#get the model name by levels function
+ModelNamesList<-c()
+for(k in 1:models){
+    inputFile=files[k]
+    temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
+    Levels<-levels(temp_pred$CF..GraphName.)
+    ModelNamesList<-c(ModelNamesList,Levels)
+}
+
 for(k in 1:models){
     inputFile=files[k]
 
     temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
     #Transfer to numeric
     freqthres<-as.numeric(freqthres)
-
+  
     # Create Functions
     # general cause to self
 
@@ -203,7 +212,7 @@ for(k in 1:models){
         Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=2000, height=2000, res=300) })
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
         #legend("topleft",legend=c("afm","log afm","pfa","log pfa","gong","propdec","RPFA","PPE","TKT","Dash")[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
-        legend("topleft",legend=c("model 1","model 2","model 3","model 4","model 5","model 6","model 7","model 8","model 9","model 10")[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
+        legend("topleft",legend=ModelNamesList[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
         i<-k
         c<- ((i-1) %% 8)+1
         switch(Sys.info()[['sysname']],
