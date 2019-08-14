@@ -112,6 +112,7 @@
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
         <xs:element type="xs:boolean" name="Include_Latency_Model" id="Include_Latency_Model" default="false" />
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
+        <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
         
         <xs:element type="xs:string" name="Term1" id="Term1" default="null" />
         <xs:element type="xs:string" name="Term2" id="Term2" default="null" />

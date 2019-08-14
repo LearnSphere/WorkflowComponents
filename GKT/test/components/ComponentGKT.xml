@@ -33,9 +33,10 @@
 </inputs>
 
 <options>
-    <mode>five times 2 fold crossvalidated read folds</mode>
-    <Term1>null</Term1>
-    <Term2>null</Term2>
+    <mode>best fit model</mode>
+    <Model_Name>Model Name C</Model_Name>
+    <Term1>base ;   KC (Textbook); .3;  .3</Term1>
+    <Term2>lineafm  ;KC (Textbook)   ; .3;.3</Term2>
     <Term3>null</Term3>
     <Term4>null</Term4>
     <Term5>null</Term5>

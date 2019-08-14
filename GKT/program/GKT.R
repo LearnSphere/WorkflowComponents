@@ -71,6 +71,13 @@ if (args[i] == "-Use_Global_Intercept") {
        Use_Global_Intercept = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Model_Name") {
+       if (length(args) == i) {
+          stop("Model_Name must be specified")
+       }
+       Model_Name = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Term1") {
        if (length(args) == i) {
           stop("Characteristics Values of Term1 must be specified")
@@ -273,6 +280,7 @@ switch(mode,
          pred<-predict(temp,type="response")
          pred<-as.data.frame(pred)
          data_pred<-cbind(val,pred)
+         data_pred$CF..GraphName.=Model_Name
          outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
          write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
        },
