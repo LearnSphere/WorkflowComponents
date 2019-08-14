@@ -25,8 +25,20 @@ if __name__ == '__main__':
 
     # Parse argumennts
     parser = get_default_arg_parser("Initialize a new problem")
-    parser.add_argument("-node", nargs=1, action='append')
-    parser.add_argument("-fileIndex", nargs=2, action='append')
+    parser.add_argument("-node", nargs=1, action="append")
+    parser.add_argument("-fileIndex", nargs=2, action="append")
+    parser.add_argument("-transaction_id", type=str, help="")
+    parser.add_argument("-student_id", type=str, help="")
+    parser.add_argument("-session_id", type=str, help="")
+    parser.add_argument("-outcome_column", type=str, help="")
+    parser.add_argument("-duration_column", type=str, help="")
+    parser.add_argument("-input_column", type=str, help="")
+    parser.add_argument("-problem_column", type=str, help="")
+    parser.add_argument("-step_column", type=str, help="")
+    parser.add_argument("-correct_labels", nargs=1, action="append")
+    parser.add_argument("-incorrect_labels", nargs=1, action="append")
+    parser.add_argument("-hint_labels", nargs=1, action="append")
+    parser.add_argument("-bug_labels", nargs=1, action="append")
     args = parser.parse_args()
 
     tx_file_indx = 0
@@ -58,6 +70,34 @@ if __name__ == '__main__':
     is_correct = ["OK", "OK_AMBIGUOUS"]
     is_error = ["ERROR", "BUG"]
     is_hint = ["INITIAL_HINT", "HINT_LEVEL_CHANGE"]
+
+    ##################################################################
+
+    ########################## Dataset Specific config ##########################
+
+    # Column labels for this dataset
+    outcome_col = args.outcome_column
+    duration_col = args.duration_column
+    input_col = args.input_column
+    prob_col = args.problem_column
+    step_col = args.step_column
+
+    # Identifier Columns
+    ses_id = args.session_id
+    stu_id = args.student_id
+    tx_id = args.transaction_id
+
+    # Checking Outcome column values. 
+    # Outcome labels
+    logger.info("Outcome column labels in data: %s" % str(tx[outcome_col].unique()))
+    is_bug = [elm.strip() for elm in args.bug_labels[0][0].split(",")]
+    logger.debug("Bug labels: %s" % str(is_bug))
+    is_correct = [elm.strip() for elm in args.correct_labels[0][0].split(",")]
+    logger.debug("Correct labels: %s" % str(is_correct))
+    is_error = [elm.strip() for elm in args.incorrect_labels[0][0].split(",")]
+    logger.debug("Incorrect labels: %s" % str(is_error))
+    is_hint = [elm.strip() for elm in args.hint_labels[0][0].split(",")]
+    logger.debug("Hint labels: %s" % str(is_hint))
 
     ##################################################################
 
@@ -908,6 +948,9 @@ if __name__ == '__main__':
     out_path = args.workingDir
     out_file = "gaming-labels.tsv"
     out_file_path = os.path.join(out_path, out_file)
+    #Ensure out directory exists
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
     tx.loc[:,out_cols].to_csv(out_file_path, sep='\t', index=False)
     logger.info("Wrote tx with gaming data to file: %s" % out_file_path)
 

@@ -56,9 +56,9 @@
       <xs:element default="Input" id="Input_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="input_column" type="FileInputHeader"/>
       <xs:element default="Problem_Name" id="Problem_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="problem_column" type="FileInputHeader"/>
       <xs:element default="Step_Name" id="Step_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="step_column" type="FileInputHeader"/>
-      <xs:element default="OK,_OK_AMBIGUOUS" id="Correct_Outcome_Values" name="correct_labels" type="xs:string"/>
-      <xs:element default="ERROR,_BUG" id="Incorrect_Outcome_Values" name="incorrect_labels" type="xs:string"/>
-      <xs:element default="INITIAL_HINT,_HINT_LEVEL_CHANGE" id="Hint_Outcome_Values" name="hint_labels" type="xs:string"/>
+      <xs:element default="CORRECT" id="Correct_Outcome_Values" name="correct_labels" type="xs:string"/>
+      <xs:element default="INCORRECT" id="Incorrect_Outcome_Values" name="incorrect_labels" type="xs:string"/>
+      <xs:element default="HINT" id="Hint_Outcome_Values" name="hint_labels" type="xs:string"/>
       <xs:element default="BUG" id="Bug_Outcome_Values" name="bug_labels" type="xs:string"/>
     </xs:choice>
   </xs:complexType>

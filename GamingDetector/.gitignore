@@ -7,4 +7,4 @@ __pycache__
 ##################
 run_component.log
 test/tx_test.csv
-
+test/output
