@@ -209,7 +209,7 @@ for(k in 1:models){
         switch(Sys.info()[['sysname']],
         Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
         Windows= { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) },
-        Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=2000, height=2000, res=300) })
+        Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) })
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
         #legend("topleft",legend=c("afm","log afm","pfa","log pfa","gong","propdec","RPFA","PPE","TKT","Dash")[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
         legend("topleft",legend=ModelNamesList[1:gs],col=brewer.pal(n = 8, name = "Dark2")[(0:gs %% 8)+1],lty=c(2,3,4,5,6,7,8,9,10,11)[1:gs],lwd=2)
