@@ -12,39 +12,96 @@
     </connection>
   </connections>
   <top>218</top>
-<inputs>
-<input0>
-<component_id>Import-1-x995490</component_id>
-<component_id_human>Import #1</component_id_human>
-<component_type>import</component_type>
-<component_name>Dummy Import Name</component_name>
-<elapsed_seconds>0</elapsed_seconds>
-<errors />
-<files>
-<transaction>
-<index>0</index>
-<file_path>PUT PATH TO TEST INPUT HERE.</file_path>
-<label>text</label>
-<file_name>PUT NAME OF TEST INPUT HERE.</file_name>
-</transaction>
-</files>
-<inputmeta />
-</input0>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Tab Delimited</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <index>0</index>
+          <label>transaction</label>
+          <file_path>test/tx_test.csv</file_path>
+          <file_name>tx_test.csv</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>Sample Name</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>Transaction Id</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Session Id</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>Time</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>7</index>
+              <name>Duration (sec)</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>13</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>16</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>19</index>
+              <name>Outcome</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>22</index>
+              <name>Input</name>
+            </header>
+          </metadata>
+        </transaction>
+      </files>
+      <inputmeta />
+    </input0>
 </inputs>
 
-<options>
-<transaction_id>Transaction_Id</transaction_id>
-<student_id>Anon_Student_Id</student_id>
-<session_id>Session_Id</session_id>
-<outcome_column>Outcome</outcome_column>
-<duration_column>Duration_(sec)</duration_column>
-<input_column>Input</input_column>
-<problem_column>Problem_Name</problem_column>
-<step_column>Step_Name</step_column>
-<correct_labels>OK,_OK_AMBIGUOUS</correct_labels>
-<incorrect_labels>ERROR,_BUG</incorrect_labels>
-<hint_labels>INITIAL_HINT,_HINT_LEVEL_CHANGE</hint_labels>
-<bug_labels>BUG</bug_labels>
-</options>
+  <options>
+    <transaction_id>Transaction Id</transaction_id>
+    <student_id>Anon Student Id</student_id>
+    <session_id>Session Id</session_id>
+    <outcome_column>Outcome</outcome_column>
+    <duration_column>Duration (sec)</duration_column>
+    <input_column>Input</input_column>
+    <problem_column>Problem Name</problem_column>
+    <step_column>Step Name</step_column>
+    <correct_labels>CORRECT</correct_labels>
+    <incorrect_labels>INCORRECT</incorrect_labels>
+    <hint_labels>HINT</hint_labels>
+    <bug_labels>BUG</bug_labels>
+  </options>
 
 </component>
