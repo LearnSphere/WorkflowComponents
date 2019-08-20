@@ -2,8 +2,12 @@
 Script to label 2011-12 Bernacki data for gaming using Paquette et al, 2014
 
 """
+import sys
 import os
 import logging
+from logging.handlers import SysLogHandler
+from logging import StreamHandler
+from logging import FileHandler
 import hashlib
 from random import randint
 import random
@@ -17,11 +21,6 @@ from Levenshtein import distance
 from cmd_parser import *
 
 if __name__ == '__main__':
-
-    logging.basicConfig()
-    logger = logging.getLogger("main")
-    logger.setLevel(logging.DEBUG)
-    logger.info("Imported all packages")
 
     # Parse argumennts
     parser = get_default_arg_parser("Initialize a new problem")
@@ -40,6 +39,29 @@ if __name__ == '__main__':
     parser.add_argument("-hint_labels", nargs=1, action="append")
     parser.add_argument("-bug_labels", nargs=1, action="append")
     args = parser.parse_args()
+
+    # Configure logging 
+    logger = logging.getLogger("main")
+    log_level = logging.DEBUG
+    logger.setLevel(log_level)
+    # Set log msg format
+    formatter = logging.Formatter('%(levelname)s\t%(name)s\t%(asctime)s\t: %(message)s')
+
+    # Write log msgs to *.wfl file for user debugging
+    log_id = dt.now().isoformat()
+    log_file = path.join(args.workingDir, 'log-%s.wfl' % log_id)
+    ch = FileHandler(filename=log_file, encoding="UTF-16")
+    ch.setLevel(log_level)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    # Create stream handler to output error messages to stderr
+    ch = StreamHandler(sys.stderr)
+    ch.setLevel(logging.ERROR)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+    logger.info("Imported all packages")
 
     tx_file_indx = 0
     tx_files = get_input_files(args, tx_file_indx)
@@ -926,7 +948,7 @@ if __name__ == '__main__':
         pcol = i + 1
         d = tx[get_game_pcol(pcol)]
         for j in range(2,length+1):
-            d = d | tx[get_game_pcol(pcol)].rolling(j, min_periods=j).apply(lambda x: x[-1]).shift(1-j)
+            d = d | tx[get_game_pcol(pcol)].rolling(j, min_periods=j).apply(lambda x: x[-1], raw=True).shift(1-j)
         if debug:
             k = d[d].index[1]
             logger.debug(d.iloc[(k - 5):(k + 5)])
