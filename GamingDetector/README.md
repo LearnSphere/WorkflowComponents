@@ -7,6 +7,31 @@ Copyright 2016. All Rights Reserved.
 
 [Tigris](https://pslcdatashop.web.cmu.edu/LearnSphereLogin) is a workflow authoring tool which is part of the community software infrastructure being built for the LearnSphere project. The platform provides a way to create custom analyses and interact with new as well as existing data formats and repositories.
 
+# Gaming Detector
+
+This is a python implementation of a gaming the system detector on datashop format transaction data. The detector is a direct implementation taken from Paquette et al, 2014. The code implements a feature engineered version of gaming that was developed cognitive task analysis of experts who labeled  student behaviors on an Algebra 1 CogTutor.
+
+## I. Dependencies
+1. Python 3.6
+2. python virtualenv
+
+## Build instructions
+Before executing the component, the local runtime environment must be configured. the install_component.sh script handles the local setup, assuming dependencies have already been installed. This script is automatically called when running 'ant dist' to build the component. It installs a python virtualenv within the componenet directory, install python dependencies specified within requirements.txt, and generates build.properties to point to the python binary within the newly created virtualenv.
+
+To register teh component, the gen_add_component.sh script is provided for convenience to create a new sql entry for the component.
+
+## Testing
+
+You can test the component using 'ant runComponent'. The script, run_component.sh, is simply a wrapper around the options that ant runComponent would normally pass when calling the script. This file if for rapid testing and iteration of input paramters.
+
+The component is configured to analyze a publicly available dataset from Datashop using default parameters.
+
+## Files
+
+program/main.py implments the bulk of the logic that loads the data, annotates it, and returns a label for each transaction for each of 14 patterns as well as the union of all patterns for a generic gaming label.
+program/cmd_parser.py implmenters helpers to parse inputs when main.py is called as a script
+
+
 # Appendix A. Technical Details 
 ## I. Dependencies
 

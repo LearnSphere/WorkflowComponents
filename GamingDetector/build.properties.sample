@@ -1,2 +1,2 @@
-component.interpreter.path=/usr/local/bin/python2.7
+component.interpreter.path=/usr/local/bin/python3.6
 component.program.path=program/main.py
