@@ -1,4 +1,4 @@
-# Build features for PFA models
+#* Build features for LearningCurveGraph
 ech<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -91,6 +91,8 @@ models<-length(files)
 
 KC_Model<-gsub("[ ()-]", ".",as.character(KC_Model))
 
+lenList<-list()
+
 #get the model name by levels function
 ModelNamesList<-c()
 for(k in 1:models){
@@ -120,7 +122,7 @@ for(k in 1:models){
     splittimes<- function(times){
       (match(max(rank(diff(times))),rank(diff(times))))
     }#end splittimes
-
+    
     #Create Function plotlearning
     plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthres){
       if(f==TRUE){
@@ -142,26 +144,31 @@ for(k in 1:models){
         dv<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
         len<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:len,labels=1:len)
+
+       ####Defination for second Plot
+        pred2<-pred[data$tcor>=data$sessend]
+        data2<-data[data$tcor>=data$sessend,]
+        data2$cor<-countOutcome(data2,data2$index,"CORRECT")
+        data2$icor<-countOutcome(data2,data2$index,"INCORRECT")
+        data2$tcor<-as.numeric(data2$cor)+as.numeric(data2$icor)
+
+        vpred2<-aggregate(pred2,by=list(data2$tcor),FUN=mean)$x
+        dv2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x
+        thres2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=length)$x
+        len2<-sum(thres2>(thres2[1]*freqthres))
+
+        lenList<-append(lenList,len)
+        lenList<-append(lenList,len2)
+        lenMax<-max(unlist(lenList))
+
+        plot1<-plot(xlab="Trials session 1", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
+        axis(side=1,at=1:lenMax,labels=1:lenMax)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
-        lines(1:len,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:len],col=1,lty=1,lwd=2)
-        #print(thres)
-
-        pred<-pred[data$tcor>=data$sessend]
-        data<-data[data$tcor>=data$sessend,]
-        data$cor<-countOutcome(data,data$index,"CORRECT")
-        data$icor<-countOutcome(data,data$index,"INCORRECT")
-        data$tcor<-as.numeric(data$cor)+as.numeric(data$icor)
-
-        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x
-        dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
-        thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
-        len2<-sum(thres>(thres[1]*freqthres))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:len2,labels=1:len2)
-        lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)
-        lines(1:len2,aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x[1:len2],col=1,lty=1,lwd=2)
+        lines(1:lenMax,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
+        plot2<-plot(xlab="Trials session 2", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
+        axis(side=1,at=1:lenMax,labels=1:lenMax)    
+        lines(1:len2,vpred2[1:len2],col=cnum,lty=ltyp,lwd=2)
+        lines(1:lenMax,aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
         #print(thres)
 
       } else {
@@ -183,31 +190,38 @@ for(k in 1:models){
         vpred<-aggregate(pred[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x
         thres<-aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=length)$x
         len<-sum(thres>(thres[1]*freqthres))
-        # print(vpred[1:len])
-        # print(1:len)
+
+        pred2<-pred[data$tcor>=data$sessend]
+        data2<-data[data$tcor>=data$sessend,]
+        data2$cor<-countOutcome(data2,data2$index,"CORRECT")
+        data2$icor<-countOutcome(data2,data2$index,"INCORRECT")
+        data2$tcor<-as.numeric(data2$cor)+as.numeric(data2$icor)
+
+        dv2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x
+        vpred2<-aggregate(pred2,by=list(data2$tcor),FUN=mean)$x
+        thres2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=length)$x
+        len2<-sum(thres>(thres[1]*freqthres))
+
+        axis(side=1,at=1:len2,labels=1:len2)
+        lenList<-append(lenList,len)
+        lenList<-append(lenList,len2)
+        lenMax<-max(unlist(lenList))
+
         par(mfg=c(1,1))
-        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,len),c(min(dv[1:len])-.1,max(dv[1:len])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:len,labels=1:len)
+        plot(xlab="Trials session 1", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
+        axis(side=1,at=1:len,labels=1:lenMax)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
 
-        pred<-pred[data$tcor>=data$sessend]
-        data<-data[data$tcor>=data$sessend,]
-        data$cor<-countOutcome(data,data$index,"CORRECT")
-        data$icor<-countOutcome(data,data$index,"INCORRECT")
-        data$tcor<-as.numeric(data$cor)+as.numeric(data$icor)
-
-        dv<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=mean)$x
-        vpred<-aggregate(pred,by=list(data$tcor),FUN=mean)$x
-        thres<-aggregate(data$CF..ansbin.,by=list(data$tcor),FUN=length)$x
-        len2<-sum(thres>(thres[1]*freqthres))
         par(mfg=c(2,1))
-        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,len),c(min(dv[1:len2])-.1,max(dv[1:len2])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:len2,labels=1:len2)
-        lines(1:len2,vpred[1:len2],col=cnum,lty=ltyp,lwd=2)}}#end plotlearning
+        plot(xlab="Trials session 2", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
+        axis(side=1,at=1:lenMax,labels=1:lenMax)
+        lines(1:len2,vpred2[1:len2],col=cnum,lty=ltyp,lwd=2)
+        }
+    }#end plotlearning
 
         gs<-models
         switch(Sys.info()[['sysname']],
-        Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
+        Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),type="png16m",width=1000, height=800, res=300)},#image size
         Windows= { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) },
         Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) })
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
@@ -216,7 +230,7 @@ for(k in 1:models){
         i<-k
         c<- ((i-1) %% 8)+1
         switch(Sys.info()[['sysname']],
-        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),type="png16m") },
         Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
         Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
         plotlearning(8,3,KC_Model,brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
