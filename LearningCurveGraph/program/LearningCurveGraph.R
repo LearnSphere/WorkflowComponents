@@ -221,7 +221,9 @@ for(k in 1:models){
 
         gs<-models
         switch(Sys.info()[['sysname']],
-        Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),type="png16m",width=1000, height=800, res=300)},#image size
+        Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),"png16m") },
+        #Linux  = { bitmap(file = paste(workingDirectory, "LegendPlot.png", sep=""),type="png16m",width=1000, height=800, res=300)},
+
         Windows= { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) },
         Darwin = { png(file = paste(workingDirectory, "LegendPlot.png", sep=""), width=1000, height=800, res=300) })
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
@@ -230,7 +232,8 @@ for(k in 1:models){
         i<-k
         c<- ((i-1) %% 8)+1
         switch(Sys.info()[['sysname']],
-        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),type="png16m") },
+        Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+        #Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),type="png16m") },
         Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
         Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
         plotlearning(8,3,KC_Model,brewer.pal(n = 8, name = "Dark2")[c],i+1,i==1,freqthres)
