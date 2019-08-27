@@ -104,7 +104,7 @@ optim.idx = which.max(efficiency)
 
 ###-------------PLOTTING----------------------###
 switch(Sys.info()[['sysname']],
-Linux  = { bitmap(file = paste(workingDirectory, "EfficiencyCurve.png", sep=""),type="png16m",width=2000, height=1600, res=300) },
+Linux  = { bitmap(file = paste(workingDirectory, "EfficiencyCurve.png", sep=""),"png16m") },
 Windows= { png(file = paste(workingDirectory, "EfficiencyCurve.png", sep=""), width=2000, height=1600, res=300) },
 Darwin = { png(file = paste(workingDirectory, "EfficiencyCurve.png", sep=""), width=2000, height=1600, res=300) })
 
