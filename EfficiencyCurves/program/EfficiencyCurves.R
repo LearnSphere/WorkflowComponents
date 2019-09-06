@@ -111,7 +111,7 @@ Darwin = { png(file = paste(workingDirectory, "EfficiencyCurve.png", sep=""), wi
 plot(p,efficiency,pch=16,cex=1.25,xlab="Probability of Recall",ylab="Gain per Second",cex.lab=1.5,col="dimgray")
 lines(p,efficiency,lwd=5,cex=1.25,xlab="Probability of Recall",ylab="Gain per Second",cex.lab=1.5,col="dimgray")
 abline(v=p[optim.idx],lwd=4,col="cornflowerblue")
-text(p[optim.idx]-.03,median(efficiency)*.75,font=2,srt=90,labels = paste("Optimal efficiency at ",p[optim.idx],sep=""))
+text(p[optim.idx]-.03,median(efficiency)*.75,font=2,srt=90,cex=1.5,labels = paste("Optimal efficiency at ",p[optim.idx],sep=""))
 
 sink()
 sink(type="message")
