@@ -203,27 +203,27 @@ y
 #d[,2]<-as.character(d[,2])
 #d[,3]<-as.character(d[,3])
 countOutcomeDifficulty1 <-function(df,index,r) {
-  temp<-df$predv
+  temp<-df$pred
   temp<-ifelse(df$Outcome==r,temp,0)
   df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   df$temp<- df$temp-temp
   df$temp}
 
 countOutcomeDifficulty2 <-function(df,index,r) {
-  temp<-df$predv^2
+  temp<-df$pred^2
   temp<-ifelse(df$Outcome==r,temp,0)
   df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   df$temp<- df$temp-temp
   df$temp}
 
 countOutcomeDifficultyAll1 <-function(df,index) {
-  temp<-df$predv
+  temp<-df$pred
 
   df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   df$temp<- df$temp-temp
   df$temp}
 countOutcomeDifficultyAll2 <-function(df,index) {
-  temp<-df$predv^2
+  temp<-df$pred^2
 
   df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   df$temp<- df$temp-temp
