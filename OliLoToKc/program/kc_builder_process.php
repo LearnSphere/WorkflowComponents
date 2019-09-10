@@ -30,17 +30,44 @@ $_SESSION['sqlitePath'] = get_build_property("sqlite.path");
 $los_file_path=get_from_command_line($argv, "-losFile");
 $los_file_path=str_replace("/", DIRECTORY_SEPARATOR, $los_file_path);
 $los_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $los_file_path);
-$_SESSION["los_file_path"] = $los_file_path;
+
+if (strcmp($los_file_path, "") == 0) {
+   $debugStr = "-losFile arg not specified. Exiting." . "\n";
+   save_out_file($debugFileName, $debugStr);
+   exit($debugStr);
+} else {
+  $debugStr = "los_file_path = " . $los_file_path . "\n";
+  save_out_file($debugFileName, $debugStr);
+  $_SESSION["los_file_path"] = $los_file_path;
+}
 
 $problems_file_path=get_from_command_line($argv, "-problemsFile");
 $problems_file_path=str_replace("/", DIRECTORY_SEPARATOR, $problems_file_path);
 $problems_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $problems_file_path);
-$_SESSION["problems_file_path"] = $problems_file_path;
+
+if (strcmp($problems_file_path, "") == 0) {
+   $debugStr = "-problemsFile arg not specified. Exiting." . "\n";
+   save_out_file($debugFileName, $debugStr);
+   exit($debugStr);
+} else {
+  $debugStr = "problems_file_path = " . $problems_file_path . "\n";
+  save_out_file($debugFileName, $debugStr);
+  $_SESSION["problems_file_path"] = $problems_file_path;
+}
 
 $skills_file_path=get_from_command_line($argv, "-skillsFile");
 $skills_file_path=str_replace("/", DIRECTORY_SEPARATOR, $skills_file_path);
 $skills_file_path=str_replace("\\", DIRECTORY_SEPARATOR, $skills_file_path);
-$_SESSION["skills_file_path"] = $skills_file_path;
+
+if (strcmp($skills_file_path, "") == 0) {
+   $debugStr = "-skillsFile arg not specified. Exiting." . "\n";
+   save_out_file($debugFileName, $debugStr);
+   exit($debugStr);
+} else {
+  $debugStr = "skills_file_path = " . $skills_file_path . "\n";
+  save_out_file($debugFileName, $debugStr);
+  $_SESSION["skills_file_path"] = $skills_file_path;
+}
 
 // This script will create the sqlite database
 include("includes/db_std.php");
