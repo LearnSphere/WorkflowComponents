@@ -84,6 +84,13 @@ public class OliLoToKcMain extends AbstractComponent {
 
 	}
 
+    // Constants.
+    // Technically we should consider upper and lower case to handle locale
+    // funkiness but for us just one case comparison is sufficient.
+    private static final String PROBLEMS = "problems";
+    private static final String LOS = "los";
+    private static final String SKILLS = "skills";
+
 	@Override
 	protected void runComponent() {
 
@@ -139,13 +146,14 @@ public class OliLoToKcMain extends AbstractComponent {
 			if (inputFile.exists() && inputFile.canRead()) {
 				String fileName = inputFile.getName();
 				String fileNameWithoutExt = fileName.replaceFirst("[.][^.]+$", "");
+                                String fileNameLower = fileNameWithoutExt.toLowerCase();
 
-				if (fileNameWithoutExt.endsWith("-problems")) {
-					this.setOption("problemsFile", inputFile.getAbsolutePath());
-				} else if (fileNameWithoutExt.endsWith("-los")) {
-					this.setOption("losFile", inputFile.getAbsolutePath());
-				} else if (fileNameWithoutExt.endsWith("-skills")) {
-					this.setOption("skillsFile", inputFile.getAbsolutePath());
+                                if (fileNameLower.endsWith(PROBLEMS)) {
+                                    this.setOption("problemsFile", inputFile.getAbsolutePath());
+                                } else if (fileNameLower.endsWith(LOS)) {
+                                    this.setOption("losFile", inputFile.getAbsolutePath());
+                                } else if (fileNameLower.endsWith(SKILLS)) {
+                                    this.setOption("skillsFile", inputFile.getAbsolutePath());
 				}
 			} else {
 				logger.debug("Issue with input file: " + inputFile.getAbsolutePath());

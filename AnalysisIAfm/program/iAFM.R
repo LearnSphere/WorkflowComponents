@@ -1,9 +1,12 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" iAFM.R -programDir . -workingDir . -model "KC (NewModel)" -node 0 -fileIndex 0 ds2174_student_step_All_Data_3991_2017_1128_123902.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" iAFM.R -programDir . -workingDir . -userId hcheng -firstAttempt_nodeIndex 0 -firstAttempt_fileIndex 0 -firstAttempt "First Attempt" -model_nodeIndex 0 -model_fileIndex 0 -model "KC (Default)" -opportunity_nodeIndex 0 -opportunity_fileIndex 0 -opportunity "Opportunity (Default)" -student_nodeIndex 0 -student_fileIndex 0 -student "Anon Student Id" -node 0 -fileIndex 0 ds96_reordered_multiskill_converted.txt
 args <- commandArgs(trailingOnly = TRUE)
 
-suppressMessages(library(lme4))
-suppressMessages(library(data.table))
-suppressMessages(library(optimx))
+suppressWarnings(suppressMessages(library(logWarningsMessagesPkg)))
+suppressWarnings(suppressMessages(library(rlang)))
+suppressWarnings(suppressMessages(library(lme4)))
+suppressWarnings(suppressMessages(library(data.table)))
+suppressWarnings(suppressMessages(library(optimx)))
 
 preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   #kcm_index <- grep(kcm,names(origRollup))
@@ -19,7 +22,7 @@ preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   rm(success)
   return(df)
 }
-
+wfl_log_file = "iAFM.wfl"
 workingDir = "."
 
 if (length(args) == 2) {
@@ -79,10 +82,12 @@ if (length(args) == 2) {
   }
 }
 
-df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+#df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 
 ## fit iAFM - four params - individual intercept, individual slope, KC intercept, and KC slope
-iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
+#iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
+iafm.model <- logWarningsMessages(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
 
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
@@ -139,7 +144,8 @@ write("</parameters>",file=outputFile2,sep="",append=TRUE)
 outputFile3 <- paste(workingDir, "/student-step.txt", sep="")
 
 # Make note of original header, including column ordering
-origFile <- suppressWarnings(fread(file=stuStepFileName,verbose = F))
+#origFile <- suppressWarnings(fread(file=stuStepFileName,verbose = F))
+origFile <- logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file)
 origCols <- colnames(origFile)
 
 # Add PER for the specified model. if it exists replaces, if it doesn't exist gets added to the end
@@ -155,5 +161,6 @@ if(PERname%in%origCols){
   names(origFile)[ncol(origFile)] <- PERname # Rename the column
 }
 
-suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""))
+#suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""))
+logWarningsMessages(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""), logFileName = wfl_log_file)
 
