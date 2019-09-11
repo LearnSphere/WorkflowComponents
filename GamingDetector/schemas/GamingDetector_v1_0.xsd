@@ -48,14 +48,14 @@
   </xs:complexType>
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:element default="Transaction_Id" id="Transaction_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="transaction_id" type="FileInputHeader"/>
-      <xs:element default="Anon_Student_Id" id="Student_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="student_id" type="FileInputHeader"/>
-      <xs:element default="Session_Id" id="Session_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="session_id" type="FileInputHeader"/>
-      <xs:element default="Outcome" id="Outcome_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="outcome_column" type="FileInputHeader"/>
-      <xs:element default="Duration_(sec)" id="Duration_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="duration_column" type="FileInputHeader"/>
-      <xs:element default="Input" id="Input_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="input_column" type="FileInputHeader"/>
-      <xs:element default="Problem_Name" id="Problem_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="problem_column" type="FileInputHeader"/>
-      <xs:element default="Step_Name" id="Step_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="step_column" type="FileInputHeader"/>
+      <xs:element default=".*" id="Transaction_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="transaction_id" type="FileInputHeader"/>
+      <xs:element default=".*" id="Student_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="student_id" type="FileInputHeader"/>
+      <xs:element default=".*" id="Session_ID" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="session_id" type="FileInputHeader"/>
+      <xs:element default=".*" id="Outcome_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="outcome_column" type="FileInputHeader"/>
+      <xs:element default=".*" id="Duration_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="duration_column" type="FileInputHeader"/>
+      <xs:element default=".*" id="Input_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="input_column" type="FileInputHeader"/>
+      <xs:element default=".*" id="Problem_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="problem_column" type="FileInputHeader"/>
+      <xs:element default=".*" id="Step_Column" ls:inputFileIndex="*" ls:inputNodeIndex="*" name="step_column" type="FileInputHeader"/>
       <xs:element default="CORRECT" id="Correct_Outcome_Values" name="correct_labels" type="xs:string"/>
       <xs:element default="INCORRECT" id="Incorrect_Outcome_Values" name="incorrect_labels" type="xs:string"/>
       <xs:element default="HINT" id="Hint_Outcome_Values" name="hint_labels" type="xs:string"/>

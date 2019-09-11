@@ -27,13 +27,29 @@ if __name__ == '__main__':
     parser.add_argument("-node", nargs=1, action="append")
     parser.add_argument("-fileIndex", nargs=2, action="append")
     parser.add_argument("-transaction_id", type=str, help="")
+    parser.add_argument("-transaction_id_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-transaction_id_fileIndex", nargs=1, action="append")
     parser.add_argument("-student_id", type=str, help="")
+    parser.add_argument("-student_id_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-student_id_fileIndex", nargs=1, action="append")
     parser.add_argument("-session_id", type=str, help="")
+    parser.add_argument("-session_id_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-session_id_fileIndex", nargs=1, action="append")
     parser.add_argument("-outcome_column", type=str, help="")
+    parser.add_argument("-outcome_column_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-outcome_column_fileIndex", nargs=1, action="append")
     parser.add_argument("-duration_column", type=str, help="")
+    parser.add_argument("-duration_column_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-duration_column_fileIndex", nargs=1, action="append")
     parser.add_argument("-input_column", type=str, help="")
+    parser.add_argument("-input_column_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-input_column_fileIndex", nargs=1, action="append")
     parser.add_argument("-problem_column", type=str, help="")
+    parser.add_argument("-problem_column_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-problem_column_fileIndex", nargs=1, action="append")
     parser.add_argument("-step_column", type=str, help="")
+    parser.add_argument("-step_column_nodeIndex", nargs=1, action="append")
+    parser.add_argument("-step_column_fileIndex", nargs=1, action="append")
     parser.add_argument("-correct_labels", nargs=1, action="append")
     parser.add_argument("-incorrect_labels", nargs=1, action="append")
     parser.add_argument("-hint_labels", nargs=1, action="append")
@@ -159,11 +175,12 @@ if __name__ == '__main__':
 
 
     # Checking duration column is in seconds
-    t = np.quantile(tx[duration_col].dropna(), 0.75)
+    t = np.median(tx[duration_col].dropna())
     if t < 100 and t > 1:
-        logger.info("Duration of TX seems to be in seconds. 75 quantile = %f" % t)
+        logger.info("Duration of TX seems to be in seconds. median = %f" % t)
     else:
-        logger.info("Duration column not in seconds. 75 quantile = %f" % t)
+        logger.error("Duration column not in seconds. median = %f" % t)
+        ### TODO: Need to convert column to seconds
         
     #####  Previous tx column labels #####
     prev_outcome_col = "Previous outcome"
