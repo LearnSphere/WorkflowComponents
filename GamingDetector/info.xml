@@ -6,7 +6,7 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GamingDetector</url>
 <date>August 13, 2019</date>
-<abstract>The <b>GamingDetector</b> component is an example of a(n) Python component.</abstract>
+<abstract>Given a transaction file, generate labels for gaming based on Paquette et al, 2014 detector</abstract>
 <description>Given a transaction file, generate labels for gaming based on Paquette 2014 detector</description>
 
 <inputs>
@@ -18,18 +18,18 @@
 </outputs>
 
 <options>
-<b>transaction_id -- type FileInputHeader</b>
-<b>student_id -- type FileInputHeader</b>
-<b>session_id -- type FileInputHeader</b>
-<b>outcome_column -- type FileInputHeader</b>
-<b>duration_column -- type FileInputHeader</b>
-<b>input_column -- type FileInputHeader</b>
-<b>problem_column -- type FileInputHeader</b>
-<b>step_column -- type FileInputHeader</b>
-<b>correct_labels -- type xs:string</b>
-<b>incorrect_labels -- type xs:string</b>
-<b>hint_labels -- type xs:string</b>
-<b>bug_labels -- type xs:string</b>
+  <b>transaction_id</b> -- column designating the unique transaction identifier</br>
+  <b>student_id </b> -- column designating a unique ID per student</br>
+  <b>session_id </b> -- column with the ID for each student work session</br>
+  <b>outcome_column </b> -- column containing the label of the outcome for each transaction</br>
+  <b>duration_column </b> -- column containing the time duration of each transaction</br>
+  <b>input_column </b> -- column containing the actual value of the student input associated with this transaction</br>
+  <b>problem_column </b> -- column with the label for the unique problem identifier</br>
+  <b>step_column </b> -- columns with the unique label for the problem sub-step identifier</br>
+  <b>correct_labels </b> -- Values of outcome column corresponding to a correct input</br>
+  <b>incorrect_labels </b> -- Values of outcome column corresponding to an incorrect input</br>
+  <b>hint_labels </b> -- Values of outcome column corresponding to a transaction that was a help request</br> 
+  <b>bug_labels </b> -- Values of outcome column corresponding to a transaction  with an input that was identified as reflecting a well known misconception or mistake</br> 
 </options>
 
 </info>
