@@ -601,6 +601,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
       fitstat2<-cor(the.rt,predict(lm.rt,type="response"))^2
       print(paste("Correctness R2: ",fitstat1,"Latency R2: ",fitstat2),sep='')
+      
       fitstat<<-sum(c(fitstat1,fitstat2))
     }
 
@@ -725,13 +726,19 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
     colnames(testvals)[2]<-"Anon.Student.Id"
     subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
       # report
-      if(dualfit==TRUE){print(paste("Failure latency: ",mean(temp$data$Duration..sec.[which(temp$data$CF..ansbin.==0)])))
+      if(dualfit==TRUE){
+        FaliureLatency<-mean(temp$data$Duration..sec.[which(temp$data$CF..ansbin.==0)])
+        print(paste("Failure latency: ",FaliureLatency))
+        Scalar<-coef(lm.rt)[2]
+        Intercept<-coef(lm.rt)[1]
         cat(paste("\n","--------------------------","\n","Latency model params-> ","\n","Scalar: ",
-                  coef(lm.rt)[2],"\n","Intercept: ",coef(lm.rt)[1],"\n","--------------------------","\n",sep=''))}
+                  Scalar,"\n","Intercept: ",Intercept,"\n","--------------------------","\n",sep=''))}
       cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
       if(cvSwitch==0 & makeFolds==0){
         #Output text summary
         print(summary(temp))
+        DifcorComp<-coef(summary(temp))["F1","Estimate"]
+        Difincor1<-coef(summary(temp))["F2","Estimate"]
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
@@ -743,6 +750,11 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
         newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
         newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
         newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
+        newXMLNode("DifcorComp",DifcorComp,parent = top)
+        newXMLNode("Difincor1",Difincor1,parent = top)
+        newXMLNode("LatencyCoef",Scalar,parent = top)
+        newXMLNode("LatencyIntercept",Intercept,parent = top)
+        newXMLNode("FailCost",FaliureLatency,parent = top)
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
       }
     }

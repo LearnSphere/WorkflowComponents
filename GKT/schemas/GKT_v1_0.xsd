@@ -5,7 +5,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element name="files" type="InFileList0"/>
-          <xs:any maxOccurs="unbounded" minOccurs="1" processContents="skip"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
