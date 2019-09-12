@@ -14,6 +14,7 @@
   <top>218</top>
 
 <options>
+    <Include_Latency_Parameters>true</Include_Latency_Parameters>
     <difcorComp>2.5</difcorComp>
     <difincor1>-.1</difincor1>
     <latency_coef>.7</latency_coef>

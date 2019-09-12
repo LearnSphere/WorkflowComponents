@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:ls="http://learnsphere.org/ls" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="InFileList0"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element minOccurs="0" ref="file"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element minOccurs="0" name="input0" type="InputDefinition0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element default="file" minOccurs="0" name="input0" type="xs:string"/>
+    </xs:all>
+  </xs:complexType>
   
   <xs:complexType name="OutputDefinition0">
     <xs:complexContent>
@@ -24,8 +49,19 @@
     </xs:sequence>
   </xs:complexType>
   
+ <xs:complexType name="option_dependency">
+     <xs:choice>
+        <xs:element type="disjunctive" name="dependency1" ls:dependentOption="difcorComp" ls:dependsOn="Include_Latency_Parameters" ls:constraint="matches(false)" />
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="difincor1" ls:dependsOn="Include_Latency_Parameters" ls:constraint="matches(false)" />
+        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="latency_coef" ls:dependsOn="Include_Latency_Parameters" ls:constraint="matches(false)" />
+        <xs:element type="disjunctive" name="dependency4" ls:dependentOption="latency_intercept" ls:dependsOn="Include_Latency_Parameters" ls:constraint="matches(false)" />
+        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="failcost" ls:dependsOn="Include_Latency_Parameters" ls:constraint="matches(false)" />
+     </xs:choice>
+ </xs:complexType>    
+  
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element type="xs:boolean" name="Include_Latency_Parameters" id="Include_Latency_Parameters" default="true" />
         <xs:element type="xs:string"  name="difcorComp" id="difcorComp" default="2.5"/>
         <xs:element type="xs:string"  name="difincor1" id="difincor1" default="-.1"/>
         <xs:element type="xs:string"  name="latency_coef" id="latency_coef" default=".7"/>
@@ -45,6 +81,8 @@
         <xs:element name="left" type="xs:double"/>
         <xs:element name="top" type="xs:double"/>
         <xs:element maxOccurs="1" minOccurs="0" name="connections" type="ConnectionType"/>
+        <xs:element minOccurs="0" name="inputs" type="InputType"/>
+        <xs:element minOccurs="0" name="inputLabels" type="InputLabel"/>
         <xs:element minOccurs="0" name="outputs" type="OutputType"/>
         <xs:element minOccurs="0" name="options" type="OptionsType"/>
       </xs:all>

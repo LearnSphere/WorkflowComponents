@@ -1,0 +1,14 @@
+<model_output>
+  <N>5104</N>
+  <Loglikelihood>-2729.28952</Loglikelihood>
+  <RMSE>0.42037</RMSE>
+  <Accuracy>0.75098</Accuracy>
+  <AUC>0.65062</AUC>
+  <r2LR>0.05043</r2LR>
+  <r2NG>0.0748</r2NG>
+  <DifcorComp>0.477456525950446</DifcorComp>
+  <Difincor1>-0.100570625887777</Difincor1>
+  <LatencyCoef>0.939204338398845</LatencyCoef>
+  <LatencyIntercept>10.6303694286014</LatencyIntercept>
+  <FailCost>14.7011041009464</FailCost>
+</model_output>

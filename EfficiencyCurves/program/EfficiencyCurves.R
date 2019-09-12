@@ -5,6 +5,7 @@ args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
 
 # initialize variables
+inputFile = NULL
 workingDirectory = NULL
 componentDirectory = NULL
 flags = NULL
@@ -13,6 +14,34 @@ flags = NULL
 i = 1
 
 while (i <= length(args)) {
+
+if (args[i] == "-node") {
+       if (length(args) < i+4) {
+          stop("input file name must be specified")
+       }
+       if (args[i+1] == "0") { # the first input node
+	       	nodeIndex <- args[i+1]
+		    fileIndex = NULL
+		    fileIndexParam <- args[i+2]
+		    if (fileIndexParam == "fileIndex") {
+		    	fileIndex <- args[i+3]
+		    }
+		    inputFile0 = args[i+4]
+		    i = i+4
+		} else if (args[i+1] == "1") { # The second input node
+	       	fileIndex = NULL
+		    fileIndexParam <- args[i+2]
+		    if (fileIndexParam == "fileIndex") {
+		    	fileIndex <- args[i+3]
+		    }
+
+		    inputFile1 = args[i+4]
+		    i = i+4
+		} else {
+			i = i+1
+		}
+    } else 
+
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -66,7 +95,7 @@ if (args[i] == "-programDir") {
     i = i+1
 }
 
-if (is.null(workingDirectory) || is.null(componentDirectory)) {
+if ( is.null(workingDirectory) || is.null(componentDirectory)) {
    if (is.null(workingDirectory)) {
       warning("Missing required input parameter: -workingDir")
    }
@@ -87,11 +116,26 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 
 setwd(workingDirectory)
 
-difcorComp<-as.numeric(difcorComp)
-difincor1<-as.numeric(difincor1)
-latency.coef<-as.numeric(latency_coef)
-latency.intercept<-as.numeric(latency_intercept)
-failcost<-as.numeric(failcost)
+#get data
+library(methods)
+library(XML)
+
+if(!exists("inputFile0")){
+    difcorComp<-as.numeric(difcorComp)
+    difincor1<-as.numeric(difincor1)
+    latency.coef<-as.numeric(latency_coef)
+    latency.intercept<-as.numeric(latency_intercept)
+    failcost<-as.numeric(failcost)
+} else{
+    modelResultValuesXml <- xmlParse(inputFile0)
+    xml_data <- xmlToList(modelResultValuesXml)
+    print(xml_data)
+    difcorComp<-as.numeric(xml_data$DifcorComp)
+    difincor1<-as.numeric(xml_data$Difincor1)
+    latency.coef<-as.numeric(xml_data$LatencyCoef)
+    latency.intercept<-as.numeric(xml_data$LatencyIntercept)
+    failcost<-as.numeric(xml_data$FailCost)
+}
 
 ###---------VALUES FOR PLOTTING---------------###
 p = seq(0,1,.01)
