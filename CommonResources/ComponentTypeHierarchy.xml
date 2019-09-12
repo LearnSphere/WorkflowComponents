@@ -55,6 +55,7 @@
 		<Correlation />
 		<Cronbachs_Alpha />
 		<Entity_Set />
+		<Gaming_Detector />
 		<iAFM />
 		<LFA_Search />
 		<Linear_Modeling />
