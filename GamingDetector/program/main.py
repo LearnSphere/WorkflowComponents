@@ -179,7 +179,7 @@ if __name__ == '__main__':
     if t < 100 and t > 1:
         logger.info("Duration of TX seems to be in seconds. median = %f" % t)
     else:
-        logger.error("Duration column not in seconds. median = %f" % t)
+        logger.info("Duration column not in seconds. median = %f" % t)
         ### TODO: Need to convert column to seconds
         
     #####  Previous tx column labels #####
