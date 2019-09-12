@@ -25,5 +25,8 @@ suppressMessages(library(rlang))
 logWarningsMessages(fit_model <- lm(x~y+z), logFileName = "my_log_file_name.wfl")
 or
 logWarningsMessages(eval(parse(text=modelingString)), logFileName = "my_log_file_name.wfl")
-In the examples, all warnings and messages that are generated can be found in file: my_log_file_name.wfl. Since this file has extension .wfl, it's content 
-are picked up by Workflow web application UI interface. 
+In the examples, all warnings and messages that are generated can be found in file: my_log_file_name.wfl. Since this file has extension .wfl, it's content are picked up by Workflow web application UI interface. 
+
+3. Examples of how to use logWarningsMessages() to output debugging message. 
+logWarningsMessages(warning(paste("myVar=", myVar, sep="")), logFileName = "my_log_file_name.wfl")
+In the example, warning() function call is necessary for your debug message be caught in file: my_log_file_name.wfl. Since this file has extension .wfl, its content are picked up by Workflow web application UI interface.
