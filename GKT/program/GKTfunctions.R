@@ -737,8 +737,13 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
       if(cvSwitch==0 & makeFolds==0){
         #Output text summary
         print(summary(temp))
-        DifcorComp<-coef(summary(temp))["F1","Estimate"]
-        Difincor1<-coef(summary(temp))["F2","Estimate"]
+        coeffRownames<-rownames(summary(temp)$coefficients)
+        
+        if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){ 
+            DifcorComp<-coef(summary(temp))["F1","Estimate"]
+            Difincor1<-coef(summary(temp))["F2","Estimate"]
+        }
+
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
@@ -750,11 +755,15 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
         newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
         newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
         newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
-        newXMLNode("DifcorComp",DifcorComp,parent = top)
-        newXMLNode("Difincor1",Difincor1,parent = top)
-        newXMLNode("LatencyCoef",Scalar,parent = top)
-        newXMLNode("LatencyIntercept",Intercept,parent = top)
-        newXMLNode("FailCost",FaliureLatency,parent = top)
+
+        if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){
+            newXMLNode("DifcorComp",DifcorComp,parent = top)
+            newXMLNode("Difincor1",Difincor1,parent = top)
+            newXMLNode("LatencyCoef",Scalar,parent = top)
+            newXMLNode("LatencyIntercept",Intercept,parent = top)
+            newXMLNode("FailCost",FaliureLatency,parent = top)
+        }
+
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
       }
     }
