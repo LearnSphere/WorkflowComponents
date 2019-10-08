@@ -736,17 +736,31 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
       cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
       if(cvSwitch==0 & makeFolds==0){
         #Output text summary
+        #collect all the features except "intercept"
+        featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2","base4","ppe","dashafm","dashsuc","diffcor1","diffcor2","diffcorComp","diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2","logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
+        
+        #collect all parameters from prespecfeatures and plancomponents (input code)
+        #prespecfeatures<-gsub("[[:punct:]]","",prespecfeatures)
+
+        fNames<-list()
+        for (p in 1:length(prespecfeatures)){
+            if(prespecfeatures[p] %in% featsList){
+               fName<-gsub(" ","",(paste(prespecfeatures[p],plancomponents[p])))
+               fNames<-c(fNames,fName)
+            }
+        }
+
         print(summary(temp))
         coeffRownames<-rownames(summary(temp)$coefficients)
-        
         if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){ 
             DifcorComp<-coef(summary(temp))["F1","Estimate"]
             Difincor1<-coef(summary(temp))["F2","Estimate"]
         }
-
+        
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
+
         top <- newXMLNode("model_output")
         newXMLNode("N", Nres, parent = top)
         newXMLNode("Loglikelihood", round(logLik(temp),5), parent = top)
@@ -764,6 +778,27 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
             newXMLNode("FailCost",FaliureLatency,parent = top)
         }
 
+        #collect all the F#, Add into list
+        fNumNames<-list()
+        fNumNames1<-grep("[0-9]$",coeffRownames,value=T)
+        fNumNames2<-grep("^F",fNumNames1,value=T)
+        for(fNumNamesX in fNumNames2){
+            if (nchar(fNumNamesX)<= 3 && nchar(fNumNamesX)>= 2){
+                fNumNames<-c(fNumNames,fNumNamesX)
+            }
+        }
+        if(!length(fNumNames)==0){
+            for (c in coeffRownames){
+                cValues=coef(summary(temp))[c,"Estimate"]
+                for (loc in 1:length(rev(fNumNames))){
+                    if (toString(fNumNames[loc])==c){
+                        c=fNames[loc]
+                    }
+                }
+                c<-gsub("^F[0-9]","",c)
+                newXMLNode(c,cValues,parent = top)
+            }
+        }    
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
       }
     }
