@@ -1,0 +1,3 @@
+# ignore precompiled stuff
+__pycache__/
+*.py[cod]
