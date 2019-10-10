@@ -62,9 +62,12 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
         Boolean summaryColPresent =
             this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
-
+      
+        //replace all NA, NONE or NAN with empty string
+        File tempFile = replaceNAStr(this.getAttachment(0, 0), "");
         try {
-            Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
+        	//Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
+        	Gradebook gradebook = GradebookUtils.readFile(tempFile);
 
             data = gradebook.getData();
             headers = gradebook.getHeaders();
@@ -92,7 +95,10 @@ public class CronbachsAlphaMain extends AbstractComponent {
             logger.info(msg);
             this.addErrorMessage(msg);
         }
-
+        //delete tempFile
+        if (tempFile != null && tempFile.exists())
+        	tempFile.delete();
+        
         // Write the output file.
         File outputFile = populateCronbachsAlphaFile(data);
 
@@ -445,5 +451,60 @@ public class CronbachsAlphaMain extends AbstractComponent {
             }
         }
         return outputFile;
+    }
+    
+    //replace all NA, Nan, None strings in the input file
+    private File replaceNAStr(File inputFile, String replaceBy) {
+    	String absolutePath = inputFile.getAbsolutePath();
+    	String filePath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));
+    	String tempFileName = filePath + File.separator + "temp_" + inputFile.getName();
+    	File tempFile = new File(tempFileName);
+    	if (tempFile.exists()) {
+    		tempFile.delete();
+    	}
+    	BufferedReader bReader = null;
+        FileReader fReader = null;
+
+        BufferedWriter bWriter = null;
+        FileWriter fWriter = null;
+
+        try {
+
+            fReader = new FileReader(inputFile);
+            bReader = new BufferedReader(fReader);
+
+            fWriter = new FileWriter(tempFile);
+            bWriter = new BufferedWriter(fWriter);
+
+            String line = null;
+            while ((line = bReader.readLine()) != null) {
+            	//nan should be in front of na
+            	if (line.toLowerCase().contains("nan") ) {
+                    line = line.replaceAll("(?i)nan",replaceBy); 
+                }
+            	if (line.toLowerCase().contains("na") ) {
+                    line = line.replaceAll("(?i)na",replaceBy); 
+                }
+                if (line.toLowerCase().contains("none") ) {
+                    line = line.replaceAll("(?i)none",replaceBy); 
+                }
+                
+                bWriter.append(line + "\n");
+            }
+        } catch (IOException e) {
+            this.addErrorMessage(e.toString());
+        } finally {
+            try {
+                if (bReader != null) {
+                    bReader.close();
+                }
+                if (bWriter != null) {
+                    bWriter.close();
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    	return tempFile;
     }
 }
