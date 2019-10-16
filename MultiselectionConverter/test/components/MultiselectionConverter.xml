@@ -1,0 +1,58 @@
+<component>
+  <component_id>Transform-1-x165102</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>1</workflow_id>
+  <component_name>Multiselection Converter</component_name>
+  <component_type>transform</component_type>
+  <left>377</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x881705</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x927904</from>
+    </connection>
+  </connections>
+  <top>86</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x881705</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>test/test_data/ds2846_tx_test.txt</file_path>
+          <label>transaction</label>
+          <file_name>ds2846_tx_test.txt</file_name>
+        </file>
+      </files>
+      <inputmeta />
+    </input0>
+    <input1>
+      <component_id>Data-1-x927904</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <file>
+          <index>0</index>
+          <file_path>test/test_data/ds2846_non_instructional_steps_map.txt</file_path>
+          <label>map</label>
+          <file_name>ds2846_non_instructional_steps_map.txt</file_name>
+        </file>
+      </files>
+      <inputmeta />
+    </input1>
+  </inputs>
+  <options />
+</component>

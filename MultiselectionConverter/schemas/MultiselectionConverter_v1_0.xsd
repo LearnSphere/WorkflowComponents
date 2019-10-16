@@ -19,16 +19,35 @@
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
   </xs:complexType>
+  
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
 
   <xs:complexType name="InputType">
     <xs:all>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="transaction" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="map" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -45,7 +64,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="student-step" />
+      <xs:element ref="transaction" />
     </xs:choice>
   </xs:complexType>
 
@@ -56,26 +75,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:simpleType name="aggregateFileType" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Transaction" />
-      <xs:enumeration value="Student-step rollup" />
-    </xs:restriction>
-  </xs:simpleType>
-  
-  
-  <xs:complexType name="option_dependency">
-	<xs:choice>
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="kcModelsToAggregate" ls:dependsOn="aggregatedTo" ls:constraint="matches(Student-step rollup)" />
-	</xs:choice>
-</xs:complexType>
-
-
-  <xs:complexType name="OptionsType">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-    	<xs:element type="aggregateFileType" name="aggregatedTo" id="Aggregate_to_File_Type" default="Student-step rollup" />
-      	<xs:element type="MultiFileInputHeader" name="kcModelsToAggregate" id="KC_Models_to_Aggregate" default="\s*KC\s*\((.*)\)\s*" />
-    </xs:choice>
+<xs:complexType name="OptionsType">
   </xs:complexType>
 
 

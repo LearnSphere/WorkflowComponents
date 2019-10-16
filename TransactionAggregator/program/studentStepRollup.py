@@ -1,7 +1,7 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
-# In[302]:
+# In[39]:
 
 
 import pandas as pd
@@ -13,7 +13,7 @@ import re
 import copy
 
 
-# In[303]:
+# In[40]:
 
 
 #check/convert time format
@@ -24,7 +24,7 @@ def checkDatetimeFormat(colName):
         return None
 
 
-# In[304]:
+# In[41]:
 
 
 #check/convert numeric format
@@ -35,7 +35,7 @@ def checkIntegerFormat(df, colName):
         return None
 
 
-# In[305]:
+# In[42]:
 
 
 #check/convert numeric format
@@ -47,19 +47,23 @@ def checkNumericData(colName):
         return False
 
 
-# In[306]:
+# In[43]:
 
 
 #make dataframe with unique combination of columns passes
-def uniqueColumnsDF(cols):
-    uniqueDF = df[cols].drop_duplicates().reset_index()
+def uniqueColumnsDF(cols, includeNullValue=True):
+    uniqueDF = None
+    if includeNullValue:
+         uniqueDF = df[cols].drop_duplicates().reset_index()
+    else:
+        uniqueDF = df[cols].drop_duplicates().dropna().reset_index()
     #drop the old index column and get new index
     uniqueDF.drop('index', axis=1, inplace=True)
     uniqueDF.reset_index(inplace=True)
     return uniqueDF
 
 
-# In[307]:
+# In[44]:
 
 
 #adjust for time zone: timeDF has a time column followed a time zone column
@@ -91,7 +95,7 @@ def localizeTimeZone(timeDF):
         return None
 
 
-# In[308]:
+# In[45]:
 
 
 def logToWfl(msg):
@@ -109,7 +113,7 @@ def logProgressToWfl(progressMsg):
   
 
 
-# In[85]:
+# In[8]:
 
 
 #test command from WF component:
@@ -134,7 +138,7 @@ logFile.close();
 
 file_encoding = 'utf8'        # set file_encoding to the file encoding (utf8, latin1, etc.)
 input_fd = open(args.fileIndex[0][1], encoding=file_encoding, errors = 'backslashreplace')
-df = pd.read_table(input_fd, na_values=['null', 'na', 'n/a', 'nan'])
+df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t")
 originalAllColNames = df.columns
 
 #flag for converting to student step
@@ -150,18 +154,18 @@ if args.kcModelsToAggregate is not None:
         kcModelsToInclude.append(patternC.sub(r'\1', x))
 
 
-# In[309]:
+# In[46]:
 
 
 #test with jupyter notebook
-if False:
+if True:
     file_encoding = 'utf8'        # set file_encoding to the file encoding (utf8, latin1, etc.)
     #input_fd = open('test_data_transaction.txt', encoding=file_encoding, errors = 'backslashreplace')
     #input_fd = open('ds445_tx_All_Data_1469_2016_0403_085024.txt', encoding=file_encoding, errors = 'backslashreplace')
     #input_fd = open('ds76_tx_All_Data_74_2018_0912_070949_ori.txt', encoding=file_encoding, errors = 'backslashreplace')
-    input_fd = open('simple_crafted_tx_export.txt', encoding=file_encoding, errors = 'backslashreplace')
+    input_fd = open('new_aggr_sp_event_type_col_results/ds2846_tx_test_converted_with_event_type.txt', encoding=file_encoding, errors = 'backslashreplace')
     
-    df = pd.read_table(input_fd, na_values=['null', 'na', 'n/a', 'nan'])
+    df = pd.read_table(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t")
     originalAllColNames = df.columns
     #print(df.dtypes)
     
@@ -175,7 +179,7 @@ if False:
     #kcModelsToInclude = ['KC (Area)', 'KC (Original)']
 
 
-# In[310]:
+# In[47]:
 
 
 if convertToStudentStep:
@@ -195,7 +199,8 @@ if convertToStudentStep:
                     'Condition Name',
                     'Condition Type',
                     'School',
-                    'Class']
+                    'Class',
+                  'Event Type']
     keepPartialMatchedColumns = ['Level (', 'KC (', 'KC Category (', 'Condition ']
     dropColumns = []
     for x in df.columns.values.tolist():
@@ -213,7 +218,7 @@ if convertToStudentStep:
     logToWfl('Student step rollup process has dropped these columns: %s\n' % (', '.join(dropColumns)))
 
 
-# In[311]:
+# In[48]:
 
 
 #delete un-interested KC columns for convertToStudentStep
@@ -231,12 +236,12 @@ if convertToStudentStep:
                     df.drop(colName, axis=1, inplace=True)
 
 
-# In[312]:
+# In[49]:
 
 
-#check null values in required columns: Anon Student Id, time, problem name, Step Name
+#check null values in required columns: Anon Student Id, time, problem name
 #if any null values, send out error message
-requiredColumns = ['Anon Student Id', 'Time', 'Problem Name', 'Step Name']
+requiredColumns = ['Anon Student Id', 'Time', 'Problem Name']
 colNullSum = df.isnull().sum()
 #print(colNullSum)
 errorMsg = ""
@@ -251,7 +256,7 @@ if errorMsg != "":
     sys.exit(errorMsg)    
 
 
-# In[313]:
+# In[50]:
 
 
 #check and convert time format for Time 
@@ -265,7 +270,7 @@ else:
     df['Time'] = newCol
 
 
-# In[314]:
+# In[51]:
 
 
 #check if at least one of problem view and problem start time columns exist
@@ -296,7 +301,7 @@ if pvExist and not checkNumericData('Problem View'):
     sys.exit(errorMsg)
 
 
-# In[315]:
+# In[52]:
 
 
 #adjust for time zone for Time and problem start time column
@@ -333,7 +338,7 @@ if timezoneExist:
                 df['Problem Start Time'] = newCol
 
 
-# In[316]:
+# In[53]:
 
 
 #order df by student, time, problem_name PV and/or PST
@@ -345,7 +350,7 @@ if pstExist:
 df = df.sort_values(by=sortColm)
 
 
-# In[317]:
+# In[54]:
 
 
 #turn levels into problem hierarchy column and drop all level columns
@@ -377,7 +382,7 @@ if convertToStudentStep:
     logToWfl('Combine these Levels columns into Problem Hierarchy column: %s\n' % (', '.join(levelColNames)))
 
 
-# In[318]:
+# In[55]:
 
 
 #turn Condition Name, Condition Type columns to Condition column
@@ -408,7 +413,7 @@ if convertToStudentStep:
         sys.exit(errorMsg)
 
 
-# In[319]:
+# In[56]:
 
 
 #make dataframe for unique student+school+class
@@ -426,7 +431,7 @@ if convertToStudentStep:
 df.rename(columns={'index': 'student_id'}, inplace=True)
 
 
-# In[320]:
+# In[57]:
 
 
 #make uniqueProblem(hierarchy+problem),
@@ -440,13 +445,13 @@ if convertToStudentStep:
 df.rename(columns={'index': 'problem_id'}, inplace=True)
 
 
-# In[321]:
+# In[58]:
 
 
 #make uniqueStep(problemId+step)
 #replace step name with step_id
 stepUniqueColumns = ['problem_id', 'Step Name']
-stepUniqueDF = uniqueColumnsDF(stepUniqueColumns)
+stepUniqueDF = uniqueColumnsDF(stepUniqueColumns, includeNullValue=False)
 df = pd.merge(df, stepUniqueDF,  how='left', on=stepUniqueColumns)
 if convertToStudentStep:
     #drop original columns
@@ -454,7 +459,7 @@ if convertToStudentStep:
 df.rename(columns={'index': 'step_id'}, inplace=True)
 
 
-# In[322]:
+# In[59]:
 
 
 #combine KC (model), KC Category (model) to KC (model)
@@ -521,7 +526,7 @@ for i in range(len(KCNames)):
     df.rename(columns={'index': KCColNames[i]}, inplace=True)
 
 
-# In[323]:
+# In[60]:
 
 
 #make uniqueSkillStep(skillId+StepId), later use for kc(model) columns
@@ -538,14 +543,14 @@ uniqueSkillStepDF.drop('index', axis=1, inplace=True)
 uniqueSkillStepDF.reset_index(inplace=True)
 
 
-# In[324]:
+# In[61]:
 
 
 #delete all columns for KC to save space. the mapping info of model to skill are stored in uniqueSkillStepDF
 df.drop(KCColNames, axis=1, inplace=True)
 
 
-# In[325]:
+# In[62]:
 
 
 #convert outcome column values: 
@@ -558,7 +563,7 @@ if 'Outcome' in df.columns:
     df['Outcome'] = df["Outcome"].apply(lambda x: None if pd.isnull(x) else ('unknown' if x.lower() not in ['hint','correct', 'incorrect']  else x))
 
 
-# In[326]:
+# In[63]:
 
 
 #add new columns: prev_txn_time
@@ -570,8 +575,7 @@ if pvExist and pstExist:
     df = df.reindex(columns = df.columns.tolist() + ['prev_txn_time'])
 
 
-
-# In[327]:
+# In[64]:
 
 
 #set prev_txn_time, should come before problem event
@@ -593,7 +597,7 @@ df.drop(['Time shifted'], axis=1, inplace=True)
 df.drop(['Student shifted'], axis=1, inplace=True)
 
 
-# In[328]:
+# In[65]:
 
 
 #handle problem_event
@@ -707,7 +711,7 @@ df.rename(columns={'index': 'problem_event_id'}, inplace=True)
 #at this point problem start time, problem view, problem_event_id, prev_txn_time
 
 
-# In[329]:
+# In[66]:
 
 
 #populate 'attempt_at_subgoal' and 'is_last_attempt'
@@ -716,9 +720,12 @@ df['Attempt At Step'] = df.groupby(['student_id','problem_event_id','step_id']).
 #is_last_attempt is at step level not at problem_event level
 df.loc[df.groupby(['student_id','step_id'])["Time"].idxmax(), 'Is Last Attempt']=1
 df.loc[df['Is Last Attempt'].isnull(), 'Is Last Attempt'] = 0
+#step the rows that have no step
+df.loc[df['step_id'].isnull(), 'Attempt At Step'] = np.nan
+df.loc[df['step_id'].isnull(), 'Is Last Attempt'] = np.nan
 
 
-# In[330]:
+# In[67]:
 
 
 #compute duration
@@ -754,7 +761,7 @@ def row_func_duration(row):
 df['duration'] = df.apply(row_func_duration, axis=1)
 
 
-# In[331]:
+# In[68]:
 
 
 #handle identical txn with identical timestamp
@@ -775,7 +782,7 @@ for index, row in df_identical_timestamps.iterrows():
     
 
 
-# In[332]:
+# In[69]:
 
 
 if not convertToStudentStep:
@@ -824,7 +831,7 @@ if not convertToStudentStep:
     
 
 
-# In[333]:
+# In[70]:
 
 
 #make student_step roll up table with group by student_id, problem_id, step_id, problem_view
@@ -878,7 +885,17 @@ else:
     df_rollup.rename(columns={'Outcome':'first_attempt'}, inplace=True)
 
 
-# In[334]:
+# In[71]:
+
+
+#get the rows that has the min transaction time, and use it for event type
+#prev_txn_time, should come before problem event time 
+if 'Event Type' in df.columns:
+    min_time_event_type_txn = df.loc[min_time_rows, ['student_id', 'problem_id', 'step_id', 'problem_event_id', 'Problem View', 'Event Type']]
+    df_rollup = pd.merge(df_rollup, min_time_event_type_txn,  how='left', on=rollupColumns)
+
+
+# In[72]:
 
 
 #compute step_start_time
@@ -917,7 +934,7 @@ def row_func_step_start_time(row):
 df_rollup['step_start_time'] = df_rollup.apply(row_func_step_start_time, axis=1)
 
 
-# In[335]:
+# In[73]:
 
 
 #calculate correct_step_duration and error_step_duration and modif step_duration
@@ -946,14 +963,14 @@ if 'Outcome' in df.columns:
     df_rollup['error_step_duration'] = df_rollup.apply(row_func_error_step_duration, axis=1)
 
 
-# In[336]:
+# In[74]:
 
 
 #before compute KC and opportunitie, reorder by student, first_transaction_time, step_start_time
 df_rollup = df_rollup.sort_values(by=['student_id', 'first_transaction_time', 'step_start_time', 'problem_id', 'Problem View'])
 
 
-# In[337]:
+# In[75]:
 
 
 def sameRow(row1, row2):
@@ -994,6 +1011,10 @@ def row_func_kc_opp(row, modelName, skillsSubDF):
     step_id = row['step_id']
     student_id = row['student_id']
     
+    incrementOpportunity = True
+    if 'Event Type' in row.keys() and 'instruct' not in str(row['Event Type']):
+        incrementOpportunity = False
+      
     totalCnt = len(allModels) * len(df_rollup)
     #get all skills for this step
     skills = skillsSubDF[skillsSubDF['step_id']==step_id][['skill', 'skill_id']]
@@ -1010,15 +1031,26 @@ def row_func_kc_opp(row, modelName, skillsSubDF):
     lastStudentId = student_id
     
     opportunitiesStr = ''
-    for skill in skills['skill']:
-        oppForSkill = 1
-        if not sameRow(lastRow, row) and skill in studentSkillDic:
-            oppForSkill = studentSkillDic[skill] + 1
-        studentSkillDic[skill] = oppForSkill
-        if opportunitiesStr == '':
-            opportunitiesStr = str(oppForSkill)
-        else:
-            opportunitiesStr = opportunitiesStr + "~~" + str(oppForSkill)
+    if incrementOpportunity:
+        for skill in skills['skill']:
+            oppForSkill = 1
+            if not sameRow(lastRow, row) and skill in studentSkillDic:
+                oppForSkill = studentSkillDic[skill] + 1
+            studentSkillDic[skill] = oppForSkill
+            if opportunitiesStr == '':
+                opportunitiesStr = str(oppForSkill)
+            else:
+                opportunitiesStr = opportunitiesStr + "~~" + str(oppForSkill)
+    else:
+        for skill in skills['skill']:
+            oppForSkill = 0
+            if not sameRow(lastRow, row) and skill in studentSkillDic:
+                oppForSkill = studentSkillDic[skill]
+            studentSkillDic[skill] = oppForSkill
+            if opportunitiesStr == '':
+                opportunitiesStr = str(oppForSkill)
+            else:
+                opportunitiesStr = opportunitiesStr + "~~" + str(oppForSkill)
     lastRow = copy.copy(row)
     df_rollup_cnt = df_rollup_cnt + 1
     if df_rollup_cnt/totalCnt > df_rollup_pct:
@@ -1053,8 +1085,7 @@ for model in allModels:
     df_rollup[[newKCColumn, newOppColumn, newPredErrColumn]] = df_rollup.apply(row_func_kc_opp, args = (model, skillsSubDF,), axis=1)
 
 
-
-# In[338]:
+# In[76]:
 
 
 #put student, school, class back
@@ -1089,9 +1120,15 @@ else:
     df_rollup.rename(columns={'step_start_time':'Step Start Time', 'first_transaction_time':'First Transaction Time', 'correct_transaction_time':'Correct Transaction Time', 'step_end_time':'Step End Time', 'step_duration':'Step Duration (sec)', 'correct_step_duration':'Correct Step Duration (sec)', 'error_step_duration':'Error Step Duration (sec)', 'first_attempt':'First Attempt', 'incorrects':'Incorrects', 'hints':'Hints', 'corrects':'Corrects'}, inplace=True)
 
 
-# In[339]:
+# In[77]:
 
 
 #close all output files and finish!!
 df_rollup.to_csv('studentStepRollup.txt', sep='\t', index=False)
+
+
+# In[ ]:
+
+
+
 

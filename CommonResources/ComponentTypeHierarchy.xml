@@ -38,6 +38,7 @@
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
+		<Multiselection_Converter />
 		<OLI_LO_to_KC />
 		<Pivot />
 		<Resource_Use />

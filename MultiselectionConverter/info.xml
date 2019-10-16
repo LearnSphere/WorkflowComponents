@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/MultiselectionConverter</url>
+<date>2019-01-02</date>
+<abstract><p>The <b>Multiselection Converter</b> component converts a multi-selection row into multiple rows of single step and modify outcome of accordingly.
+The required input files are: a Datashop transaction export file and a multi-selection item mapping file. The mapping file should contains the same Levels, Problem Name and Step Name hierarchy depicted in the Datashop transaction export. 
+For example, if transaction export contains "Level (Sequence)", "Level (Unit)", "Level (Module)", "Problem Name" and "Step Name" columns, the mapping file should contain them too. In addition, the mapping file should also contain two other columns: "Selections" and "Correct Answers". 
+<table border="1">
+        <tr>
+            <td>Level (Sequence)</td>
+            <td>Level (Unit)</td>
+            <td>Level (Module)</td>
+            <td>Problem Name</td>
+            <td>Step Name</td>
+            <td>Selections</td>
+            <td>Correct Answers</td>
+        </tr>
+        <tr>
+            <td>Course Syllabus</td>
+            <td>Backward Design: Goals and Assessment</td>
+            <td>Determining instructional goals KLI KCs; Blooms taxonomy</td>
+            <td>_2-3_prequiz</td>
+            <td>q3_identify_hypths_KLI_frmwrk_pool_i1 UpdateCheckbox</td>
+            <td>A,B,C,D</td>
+            <td>A,B,C</td>
+        </tr>
+        <tr>
+            <td>Course Syllabus</td>
+            <td>Backward Design: Goals and Assessment</td>
+            <td>Determining instructional goals KLI KCs; Blooms taxonomy</td>
+            <td>_2-3_prequiz</td>
+            <td>q3_identify_hypths_KLI_frmwrk_pool_i1 UpdateCheckbox2</td>
+            <td>A,B,C,D,E</td>
+            <td>A,B,C</td>
+        </tr>
+        </table> 
+ 
+<br></br>
+This component component turns a multi-selection row into multiple rows of single step, appends selections' option to original step name to make new step name, modify outcome of accordingly, and add a new column: "Event Type". All other columns remain the same. 
+Here is an example of a multi-selection step conversion for a multi-selection step named "some step", which has A,B,C,D as all options and A,B,C as the correct selections.
+<br></br>
+<br></br>
+Input file: 
+<table border="1">
+        <tr>
+            <td>Row</td>
+            <td>.......</td>
+            <td>Transaction Id</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>Step Name</td>
+            <td>.......</td>
+            <td>Outcome</td>
+            <td>.......</td>
+            <td>Input</td>
+            <td>.......</td>
+        </tr>
+        <tr>
+            <td>1097</td>
+            <td>.......</td>
+            <td>adfb9c3f842245b4c5a9d7735b340c92</td>
+            <td>Stu_131b73a798e989a5b4b6977e42ea6ed0</td>
+            <td>.......</td>
+            <td>some step</td>
+            <td>.......</td>
+            <td>INCORRECT</td>
+            <td>.......</td>
+            <td>B,C</td>
+            <td>.......</td>
+		</tr>
+        </table> 
+<br></br>
+Output file: <table border="1">
+        <tr>
+            <td>Row</td>
+            <td>.......</td>
+            <td>Transaction Id</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>Step Name</td>
+            <td>.......</td>
+            <td>Outcome</td>
+            <td>.......</td>
+            <td>Input</td>
+            <td>.......</td>
+			<td>Event Type</td>
+        </tr>
+		<tr>
+            <td>1097</td>
+            <td>.......</td>
+            <td>adfb9c3f842245b4c5a9d7735b340c92</td>
+            <td>Stu_131b73a798e989a5b4b6977e42ea6ed0</td>
+            <td>.......</td>
+            <td>some step_A</td>
+            <td>.......</td>
+            <td>INCORRECT</td>
+            <td>.......</td>
+            <td>B,C</td>
+            <td>.......</td>
+			<td>assess</td>
+		</tr>
+		<tr>
+            <td>1097</td>
+            <td>.......</td>
+            <td>adfb9c3f842245b4c5a9d7735b340c92</td>
+            <td>Stu_131b73a798e989a5b4b6977e42ea6ed0</td>
+            <td>.......</td>
+            <td>some step_B</td>
+            <td>.......</td>
+            <td>CORRECT</td>
+            <td>.......</td>
+            <td>B,C</td>
+            <td>.......</td>
+			<td>assess</td>
+		</tr>
+		<tr>
+            <td>1097</td>
+            <td>.......</td>
+            <td>adfb9c3f842245b4c5a9d7735b340c92</td>
+            <td>Stu_131b73a798e989a5b4b6977e42ea6ed0</td>
+            <td>.......</td>
+            <td>some step_C</td>
+            <td>.......</td>
+            <td>CORRECT</td>
+            <td>.......</td>
+            <td>B,C</td>
+            <td>.......</td>
+			<td>assess</td>
+		</tr>
+		<tr>
+            <td>1097</td>
+            <td>.......</td>
+            <td>adfb9c3f842245b4c5a9d7735b340c92</td>
+            <td>Stu_131b73a798e989a5b4b6977e42ea6ed0</td>
+            <td>.......</td>
+            <td>some step_D</td>
+            <td>.......</td>
+            <td>CORRECT</td>
+            <td>.......</td>
+            <td>B,C</td>
+            <td>.......</td>
+			<td>assess_instruct</td>
+		</tr>
+        </table>		
+</p>
+</abstract>
+<description>This component converts a multi-selection row into multiple rows of single step and modify outcome of accordingly.
+</description>
+
+<inputs><ul>
+<li>Datashop transaction export file, tab-delimited </li>
+<li>Multi-selection item mapping file, tab-delimited. See above for detailed description</li>
+</ul></inputs>
+
+<outputs>
+Equivalent to Datashop transaction export file with one extra column: Event Type.
+</outputs>
+
+</info>
