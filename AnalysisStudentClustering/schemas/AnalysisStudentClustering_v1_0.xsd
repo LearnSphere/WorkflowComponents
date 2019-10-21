@@ -68,7 +68,7 @@
         </xs:choice>
     </xs:complexType>
 
-        <xs:complexType name="OutputDefinition2">
+    <xs:complexType name="OutputDefinition2">
             <xs:complexContent>
                 <xs:extension base="InputContainer">
                     <xs:sequence>
@@ -77,14 +77,13 @@
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
-        </xs:complexType>
-
-
-        <xs:complexType name="OutFileList2">
+    </xs:complexType>
+    
+    <xs:complexType name="OutFileList2">
             <xs:choice>
                 <xs:element ref="tab-delimited" />
             </xs:choice>
-        </xs:complexType>
+    </xs:complexType>
 
 
     <xs:complexType name="OutputType">

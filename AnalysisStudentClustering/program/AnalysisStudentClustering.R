@@ -429,7 +429,6 @@ if (method == "kmeans"){
 
        system2(command, args=allArgs, stdout=TRUE)
 
-
   }
 
 # Stop logging

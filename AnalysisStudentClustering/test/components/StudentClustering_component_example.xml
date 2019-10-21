@@ -21,7 +21,7 @@
         <isduration>true</isduration>
         <isoutcome>true</isoutcome>
         <mean_or_median>mean</mean_or_median>
-  </options>
+    </options>
     <inputs>
     <input0>
       <component_id>analysisStudentClustering</component_id>
