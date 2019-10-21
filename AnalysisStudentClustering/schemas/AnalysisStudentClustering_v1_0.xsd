@@ -1,5 +1,5 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    
     <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
 
     <xs:complexType name="InputDefinition0">
@@ -109,27 +109,20 @@
             <xs:enumeration value="long"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="durationCheck" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="yes"/>
-            <xs:enumeration value="no"/>
-        </xs:restriction>
-    </xs:simpleType>
 
-    <xs:simpleType name="outcomeCheck" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="yes"/>
-            <xs:enumeration value="no"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-     <xs:simpleType name="mean_or_median" final="restriction">
+     <xs:simpleType name="meanormedian" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="mean"/>
             <xs:enumeration value="median"/>
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:complexType name="option_dependency">
+        <xs:choice>
+           <xs:element type="disjunctive" name="dependency" ls:dependentOption="lambda" ls:dependsOn="type_of_Clustering" ls:constraint="matches(kmeans)" />
+        </xs:choice>
+    </xs:complexType> 
+ 
        <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
              <xs:element type="FileInputHeader" name="model" id="model_of_features" default=".*" />
@@ -137,13 +130,9 @@
              <xs:element type="methodType"  name="method"  id="type_of_Clustering" default="hierarchical clustering"/>
              <xs:element type="xs:string" name="lambda" id="lambda" default="3" />
              <xs:element type="dataformatCheck"  name="dataformat"  id="input_data_format" default="wide"/>
-             <xs:element type="durationCheck"  name="isduration"  id="use_duration" default="yes"/>
-             <xs:element type="outcomeCheck"  name="isoutcome"  id="use_outcome" default="yes"/>
-             <xs:element type="mean_or_median"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
-
-
-
-
+             <xs:element type="xs:boolean"  name="isduration"  id="use_duration" default="true"/>
+             <xs:element type="xs:boolean"  name="isoutcome"  id="use_outcome" default="true"/>
+             <xs:element type="meanormedian"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
         </xs:choice>
     </xs:complexType>
 

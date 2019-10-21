@@ -164,7 +164,7 @@ if (dataformat == "long")
  #After this the outliers are removed, and aggregation can be done on the basis of the clean data
 
 #aggregation
- if (isduration =="yes" && isoutcome == "no")
+ if (isduration =="true" && isoutcome == "false")
   {
 
    if (mean_or_median == "mean")
@@ -190,7 +190,7 @@ if (dataformat == "long")
      mydata<-student_means[,c(2:length(colnames(student_means)))]
 }
 
-if (isduration =="no" && isoutcome == "yes")
+if (isduration =="false" && isoutcome == "true")
   {
 
    if (mean_or_median == "mean")
@@ -216,7 +216,7 @@ if (isduration =="no" && isoutcome == "yes")
      mydata<-student_means[,c(2:length(colnames(student_means)))]
 }
 #aggregate data using z_scores
-if (isduration =="yes" && isoutcome == "yes")
+if (isduration =="true" && isoutcome == "true")
 {
     val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
     val<-val[,c(1,2,5,6)]
