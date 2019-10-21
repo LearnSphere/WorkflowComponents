@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # coding: utf-8
 
 # In[126]:
@@ -158,7 +158,7 @@ if args.kcModelsToAggregate is not None:
 
 
 #test with jupyter notebook
-if True:
+if False:
     file_encoding = 'utf8'        # set file_encoding to the file encoding (utf8, latin1, etc.)
     #input_fd = open('test_data_transaction.txt', encoding=file_encoding, errors = 'backslashreplace')
     #input_fd = open('ds445_tx_All_Data_1469_2016_0403_085024.txt', encoding=file_encoding, errors = 'backslashreplace')
