@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[30]:
+# In[14]:
 
 
 import os
@@ -12,7 +12,7 @@ import datetime as dt
 from dateutil.parser import parse
 
 
-# In[31]:
+# In[15]:
 
 
 def changeColumns(x):
@@ -43,7 +43,7 @@ def changeColumns(x):
     return x
 
 
-# In[32]:
+# In[16]:
 
 
 map_file_name = ""
@@ -64,7 +64,7 @@ else:
     data_file_name = 'new_aggr_sp_no_data_in_event_type_results/ds2846_tx_test_converted_with_event_type_no_data.txt'
 
 
-# In[33]:
+# In[17]:
 
 
 df_map = pd.read_csv(map_file_name, dtype=str, sep="\t")
@@ -95,7 +95,7 @@ for i in range(len(df_map.index)):
             df_map_new = df_map_new.append(new_row)
 
 
-# In[34]:
+# In[18]:
 
 
 df = pd.read_csv(data_file_name, dtype=str, sep="\t", encoding = "ISO-8859-1")
@@ -105,11 +105,12 @@ original_headers = infile.readline().strip()
 if "Event Type" in original_headers:
     #delete the Event Type column and so new one can be made
     df.drop("Event Type", axis=1, inplace=True)
+    original_headers = original_headers + "\n"
 else:
     original_headers = original_headers + "\t" + "Event Type" + "\n"
 
 
-# In[36]:
+# In[19]:
 
 
 #find the columns that has Level() in names for mapFile. Assuming mapFile and dataFile has the same names
@@ -137,4 +138,10 @@ out_file.write(original_headers)
 out_file.close()
 with open(out_file_name, 'a', newline='') as f:
     df_combined.to_csv(f, sep='\t', index=False, header=False)
+
+
+# In[ ]:
+
+
+
 
