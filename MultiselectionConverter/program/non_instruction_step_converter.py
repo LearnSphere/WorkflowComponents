@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[28]:
+# In[30]:
 
 
 import os
@@ -12,7 +12,7 @@ import datetime as dt
 from dateutil.parser import parse
 
 
-# In[29]:
+# In[31]:
 
 
 def changeColumns(x):
@@ -43,7 +43,7 @@ def changeColumns(x):
     return x
 
 
-# In[30]:
+# In[32]:
 
 
 map_file_name = ""
@@ -60,10 +60,11 @@ if command_line_exe:
     map_file_name = args.mapFile
 else:
     map_file_name = 'ds2846_non_instructional_steps_map.txt'
-    data_file_name = 'ds2846_tx_test.txt'
+    #data_file_name = 'ds2846_tx_test.txt'
+    data_file_name = 'new_aggr_sp_no_data_in_event_type_results/ds2846_tx_test_converted_with_event_type_no_data.txt'
 
 
-# In[31]:
+# In[33]:
 
 
 df_map = pd.read_csv(map_file_name, dtype=str, sep="\t")
@@ -94,17 +95,21 @@ for i in range(len(df_map.index)):
             df_map_new = df_map_new.append(new_row)
 
 
-# In[32]:
+# In[34]:
 
 
 df = pd.read_csv(data_file_name, dtype=str, sep="\t", encoding = "ISO-8859-1")
 #save the first line headers bc Python adds number to duplicate column names
 infile = open(data_file_name, 'r')
 original_headers = infile.readline().strip()
-original_headers = original_headers + "\t" + "Event Type" + "\n"
+if "Event Type" in original_headers:
+    #delete the Event Type column and so new one can be made
+    df.drop("Event Type", axis=1, inplace=True)
+else:
+    original_headers = original_headers + "\t" + "Event Type" + "\n"
 
 
-# In[33]:
+# In[36]:
 
 
 #find the columns that has Level() in names for mapFile. Assuming mapFile and dataFile has the same names
@@ -132,10 +137,4 @@ out_file.write(original_headers)
 out_file.close()
 with open(out_file_name, 'a', newline='') as f:
     df_combined.to_csv(f, sep='\t', index=False, header=False)
-
-
-# In[ ]:
-
-
-
 
