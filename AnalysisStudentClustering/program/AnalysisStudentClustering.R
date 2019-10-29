@@ -2,8 +2,6 @@
 echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 
-
-
 #=============================
 
 # parse commandline args
@@ -74,6 +72,13 @@ else if (args[i] == "-mean_or_median") {
     mean_or_median = args[i+1]
     i = i+1
   }
+else if (args[i] == "-useoptimalk") {
+    if (length(args) == i) {
+      stop("useoptimalk must be specified")
+    }
+    useoptimalk = args[i+1]
+    i = i+1
+  }
 else if (args[i] == "-lambda") {
     if (length(args) == i) {
       stop("lambda must be specified")
@@ -118,12 +123,14 @@ if (is.null(inputFile) || is.null(workingDirectory) || is.null(componentDirector
 
 # This dir contains the R program or any R helper scripts
 programLocation<- paste(componentDirectory, "/program/", sep="")
-kClusters <- as.numeric(kClusters)
 
 # Creates output log file
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
+library(fpc)
+library(pvclust)
+kClusters <- as.numeric(kClusters)
 
 #if data is not preprocessed
 if (dataformat == "long")
@@ -148,8 +155,6 @@ if (dataformat == "long")
 
   val[,3]<-as.numeric(val[,3])
   val[,4]<-as.numeric(val[,4])
-
-
 
  #Put between line 112 and 114; before aggregation
  # The following is about the "Duration" column, which I am not sure what it is called in line 112
@@ -257,11 +262,19 @@ if (dataformat == "wide")
   }
 }
 
+#paste output clusters string
+if (isduration=="true"){
+    isD="T"
+ }else { isD="F"}
+if (isoutcome=="true"){
+    isO="T"
+ }else {isO="F"}
 
 #clustering
 if (method == "hierarchical clustering"){
 
     d <- dist(mydata, method = "euclidean") # distance matrix
+    
     #jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
     switch(Sys.info()[['sysname']],
 
@@ -272,8 +285,9 @@ if (method == "hierarchical clustering"){
     fit <- hclust(d, method="ward.D2")
     plot(fit) # display dendogram
 
-    rect.hclust(fit, k=kClusters, border='red')
+    pFit<-rect.hclust(fit, k=kClusters, border='red')
     Clusters <- cutree(fit, k=kClusters)
+
     if (dataformat == "long")
     {
 
@@ -292,6 +306,8 @@ if (method == "hierarchical clustering"){
        res<-data.frame(origin_students,cluster)
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
+       
+       res_final$Clusters<-paste("hierarchical",res$cluster,isD,isO,mean_or_median,sep="")
 
        # Output data in lonfg format :
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
@@ -331,8 +347,15 @@ if (method == "kmeans"){
     set.seed(123)
 
    #Kmeans clustering
-    km <- kmeans(mydata, centers=kClusters)
+   #if useoptimalk is "true", kClusters use the optimal value from function pamk()
+    if(useoptimalk=="true"){
+        kClusterOptimal <- pamk(mydata,krange=1:10)
+        #kClusterOptimal <- pamk(mydata)
+        print(kClusterOptimal)
+        kClusters<-kClusterOptimal$nc
+    }
 
+    km <- kmeans(mydata, centers=kClusters)
     switch(Sys.info()[['sysname']],
 
     Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
@@ -364,9 +387,11 @@ if (method == "kmeans"){
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
 
+       #Add Clusters
+       res_final$Clusters<-paste(method,res$cluster,isD,isO,mean_or_median,sep="")
+
        #output in the long format:
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
-
        headers<-gsub("Unique[.]step","Unique-step",colnames(res_final))
        headers<-gsub("[.]1","",headers)
        headers<-gsub("[.]2","",headers)

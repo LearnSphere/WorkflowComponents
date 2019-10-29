@@ -13,13 +13,14 @@
     </connections>
     <options>
         <model>KC (Single-KC)</model>
+        <useoptimalk>false</useoptimalk>
         <numberOfClusters>4</numberOfClusters>
         <lambda>3.0</lambda>
         <!--kmeans, hierarchical clustering, dpmeans-->
-        <method>hierarchical clustering</method>
+        <method>dpmeans</method>
         <dataformat>long</dataformat>
         <isduration>true</isduration>
-        <isoutcome>true</isoutcome>
+        <isoutcome>false</isoutcome>
         <mean_or_median>mean</mean_or_median>
     </options>
     <inputs>
