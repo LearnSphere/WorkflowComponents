@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[94]:
 
 
 import os
@@ -12,7 +12,7 @@ import datetime as dt
 from dateutil.parser import parse
 
 
-# In[15]:
+# In[95]:
 
 
 def changeColumns(x):
@@ -43,7 +43,7 @@ def changeColumns(x):
     return x
 
 
-# In[16]:
+# In[96]:
 
 
 map_file_name = ""
@@ -61,13 +61,14 @@ if command_line_exe:
 else:
     map_file_name = 'ds2846_non_instructional_steps_map.txt'
     #data_file_name = 'ds2846_tx_test.txt'
-    data_file_name = 'new_aggr_sp_no_data_in_event_type_results/ds2846_tx_test_converted_with_event_type_no_data.txt'
+    #data_file_name = 'new_aggr_sp_no_data_in_event_type_results/ds2846_tx_test_converted_with_event_type_no_data.txt'
+    data_file_name = 'ds2846_tx_All_Data_4741_2019_0904_111928_opened_in_excel.txt'
 
 
-# In[17]:
+# In[97]:
 
 
-df_map = pd.read_csv(map_file_name, dtype=str, sep="\t")
+df_map = pd.read_csv(map_file_name, dtype=str, sep="\t", encoding='ISO-8859-1')
 new_columns = df_map.columns.tolist()
 new_columns.extend(['Choice', 'Correct Answer', 'Event Type'])
 df_map_new = pd.DataFrame(columns=new_columns)
@@ -95,7 +96,7 @@ for i in range(len(df_map.index)):
             df_map_new = df_map_new.append(new_row)
 
 
-# In[18]:
+# In[98]:
 
 
 df = pd.read_csv(data_file_name, dtype=str, sep="\t", encoding = "ISO-8859-1")
@@ -110,7 +111,7 @@ else:
     original_headers = original_headers + "\t" + "Event Type" + "\n"
 
 
-# In[19]:
+# In[99]:
 
 
 #find the columns that has Level() in names for mapFile. Assuming mapFile and dataFile has the same names
@@ -130,6 +131,7 @@ df_combined['Outcome'] = df_combined['Outcome'].fillna(value='')
 df_combined['Input'] = df_combined['Input'].astype(str)
 df_combined.apply(changeColumns, axis=1)
 df_combined.drop(['Selections', 'Correct Answers', 'Choice', 'Correct Answer'], axis=1, inplace=True)
+
 #make new output file name
 out_file_name = os.path.splitext(os.path.basename(data_file_name))[0] + "_converted" + os.path.splitext(os.path.basename(data_file_name))[1]
 #write the header
@@ -138,10 +140,4 @@ out_file.write(original_headers)
 out_file.close()
 with open(out_file_name, 'a', newline='') as f:
     df_combined.to_csv(f, sep='\t', index=False, header=False)
-
-
-# In[ ]:
-
-
-
 
