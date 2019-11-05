@@ -129,7 +129,6 @@ clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 library(fpc)
-library(pvclust)
 kClusters <- as.numeric(kClusters)
 
 #if data is not preprocessed
