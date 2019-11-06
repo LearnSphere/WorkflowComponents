@@ -143,11 +143,12 @@ if (dataformat == "long")
   #This dataset has been cleaned beforehand
 
   val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
+  val$Outcome<-toupper(val$Outcome)
   origin_data<-val
   val<-val[,c(header1,header2,header3,header4)]
 
   val[,header4] <- as.character(val[,header4])
-
+  
   val<-val[val[,header4]=="CORRECT" | val[,header4]=="INCORRECT",]
   val[,header4][val[,header4]=="CORRECT"] <-'1'
   val[,header4][val[,header4]=="INCORRECT"] <- '0'
@@ -294,13 +295,15 @@ if (method == "hierarchical clustering"){
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
-       origin_students<- origin_data[,4]
+       origin_students<- origin_data[,3]
        clstrs = list()
+
         for (i in origin_students)
         {
           c= my_data$Cluster[my_data$Student==i]
           clstrs <- c(clstrs,c)
        }
+
        cluster <- do.call(rbind, lapply(clstrs, as.numeric))
        res<-data.frame(origin_students,cluster)
        Clusters <-res$cluster
