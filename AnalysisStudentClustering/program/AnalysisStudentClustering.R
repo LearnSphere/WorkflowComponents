@@ -377,7 +377,7 @@ if (method == "kmeans"){
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
 
-       origin_students<- origin_data[,4]
+       origin_students<- origin_data[,3]
        clstrs = list()
         for (i in origin_students)
         {
