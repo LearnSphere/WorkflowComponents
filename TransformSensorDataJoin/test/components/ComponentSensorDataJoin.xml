@@ -1,8 +1,8 @@
 <component>
   <component_id>ComponentTestOutput</component_id>
-  <component_id_human>ComponentSensorDataJoin #1</component_id_human>
+  <component_id_human>ComponentSensorDataSegmentation #1</component_id_human>
   <workflow_id>16</workflow_id>
-  <component_name>ComponentSensorDataJoin</component_name>
+  <component_name>ComponentSensorDataSegmentation</component_name>
   <component_type>transform</component_type>
   <left>860</left>
   <connections>
@@ -14,11 +14,10 @@
     </connection>
   </connections>
   <top>178</top>
-  <options>
-      <!--<beginoffset>100000000</beginoffset>
-      <endoffset>10000000</endoffset>-->
-      <frequency>yes</frequency>   
-      
+ <options>
+      <beginoffset>100000000</beginoffset>
+      <endoffset>10000000</endoffset>
+      <frequency>no</frequency>                      
   </options>
   <inputs>
   <input0>
@@ -38,7 +37,7 @@
             <header>
               <id>header0</id>
               <index>0</index>
-              <name>EEG data</name>
+              <name>signal data</name>
             </header>
   
           </metadata>
