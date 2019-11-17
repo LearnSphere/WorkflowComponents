@@ -210,20 +210,20 @@ if ((length(FileInputData1[1])) > (length(OutputData2)+offsetSamp)) {
       if (maxSamp-(length(OutputData2)+offsetSamp) > 0) {
          OutputData2na <- 1:(maxSamp-(length(OutputData2)+offsetSamp))
          OutputData2na[] <- NA
-         OutputData2 <- c(OutputData2off, OutputData2, OutputData2na)
+         #OutputData2 <- c(OutputData2off, OutputData2, OutputData2na)
       } else {
          OutputData2 <- c(OutputData2off, OutputData2)
       }
    } else {
       OutputData2na <- 1:(maxSamp-(length(OutputData2)))
       OutputData2na[] <- NA
-      OutputData2 <- c(OutputData2, OutputData2na)
+      #OutputData2 <- c(OutputData2, OutputData2na)
    }
 } else {
    if (offsetSamp > 0) {   
       OutputData2off <- 1:offsetSamp
       OutputData2off[] <- NA
-      OutputData2 <- c(OutputData2off, OutputData2) 
+      #OutputData2 <- c(OutputData2off, OutputData2) 
    }
    maxSamp <- (length(OutputData2))
    diff<-maxSamp-length(FileInputData1[[1]])
@@ -244,11 +244,17 @@ time <- seq(0, (maxSamp-1)/SampOut, by=1/SampOut)
 if(generatetimevector)
 {
 # columns: Time, OutputData1, OutputData2
-OutputData <- cbind(time, OutputData1, OutputData2)
+
+ OutputData <- cbind(time, OutputData1, OutputData2)
+
+
+
 }else{
 # columns: OutputData1, OutputData2
 OutputData <- cbind(OutputData1, OutputData2)
 }
+
+
 
 
 # Export modified data frame for output
