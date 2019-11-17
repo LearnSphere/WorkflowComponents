@@ -15,9 +15,9 @@
   </connections>
   <top>178</top>
  <options>
-      <beginoffset>100000000</beginoffset>
-      <endoffset>10000000</endoffset>
-      <frequency>no</frequency>                      
+      <!--<beginoffset>100000000</beginoffset>
+      <endoffset>10000000</endoffset>-->
+      <frequency>yes</frequency>                      
   </options>
   <inputs>
   <input0>
@@ -37,7 +37,7 @@
             <header>
               <id>header0</id>
               <index>0</index>
-              <name>signal data</name>
+              <name>EEG data</name>
             </header>
   
           </metadata>
@@ -63,7 +63,7 @@
             <header>
               <id>header0</id>
               <index>0</index>
-              <name>EEG data</name>
+              <name>Signal data</name>
             </header>
             
           </metadata>
