@@ -74,20 +74,10 @@
   </xs:complexType>
 
 
-  <xs:simpleType name="interpolationType" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="spline" />
-      <xs:enumeration value="linear" />
-      <xs:enumeration value="constant" />
-    </xs:restriction>
-  </xs:simpleType>
-  
-
-  <xs:complexType name="OptionsType">
+ <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">  
-      <xs:element type="FileInputHeader" name="file2ColumnName" id="Signal_2_Column_Name" default=".*" />    
-      <xs:element type="xs:string" name="frequency" id="frequency" default="yes" />
-      <!--<xs:element type="xs:boolean" name="inputHeader" id="Input_Header" default="true" />-->
+      <!--<xs:element type="FileInputHeader" name="file2ColumnName" id="Signal_2_Column_Name" default=".*" />-->   
+      <xs:element type="xs:string" name="frequency" id="frequency" default="yes" />    
       
     </xs:choice>
   </xs:complexType>
