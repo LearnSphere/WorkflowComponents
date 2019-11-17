@@ -2,7 +2,6 @@ library(caTools)
 library(MuMIn)
 suppressPackageStartupMessages(library(pROC))
 suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(rms))
 suppressPackageStartupMessages(library(pscl))
 suppressPackageStartupMessages(library(games))
 library(optimx)
@@ -11,14 +10,13 @@ library(BB)
 library(nloptr)
 suppressPackageStartupMessages(library(lme4))
 library(RColorBrewer)
-suppressPackageStartupMessages(library(erer))
 library(XML)
 
 paper.=FALSE
 ######################################
 #define functions
 #cross-validation function
-mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL){
+mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL,dualfit=FALSE){
   if(is.null(cvSwitch)){print("cvSwitch input null - default is cross-validation."); cvSwitch = 1}
   if(is.null(makeFolds)){print("makeFolds input null - default is to make new folds."); makeFolds = 1}
   if(cvSwitch==1){#setting it up like this so this function can be explicitly run as not cross-val
@@ -53,11 +51,11 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
       F1 <- which(foldIDX[,i]==1)#fold 1
       F2 <- which(foldIDX[,i]==2)#fold 2
       trainfold1 = val[F1,]
-      modeloptim(plancomponents,prespecfeatures,trainfold1)
+      modeloptim(plancomponents,prespecfeatures,trainfold1,dualfit=dualfit,interc=interc)
       glm1=temp
       dat1 = glm1$data #test is val with columns for F1,F2 etc created inside modeloptim()
       trainfold2 = val[F2,]
-      modeloptim(plancomponents,prespecfeatures,trainfold2)
+      modeloptim(plancomponents,prespecfeatures,trainfold2,dualfit=dualfit,interc=interc)
       glm2=temp
       dat2 = glm2$data #test is val with columns for F1,F2 etc created inside modeloptim()
       for(j in 1:2){
@@ -67,7 +65,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
         t=t+1
         predfit <- predict(glmT,datTr, type = "response")
         predtest <- predict(glmT,newdata = datTe, re.form = NULL, type="response", allow.new.levels = TRUE)
-        results[t,1] = round(lrm(glmT)$stats[10],5)
+        results[t,1] = 1-(glmT$deviance/glmT$null.deviance)#McFadden's Pseudo R^2
         results[t,2] = round(auc(trainfoldTr$CF..ansbin.,predfit),5)
         results[t,3] = round(auc(trainfoldTe$CF..ansbin.,predtest),5)
         results[t,4] = round(sqrt(mean((predtest-trainfoldTe$CF..ansbin.)^2)),5)
@@ -139,7 +137,7 @@ right = function (string, char){
 # general cause to self
 countOutcome <-function(df,index,item) {
   df$temp<-ave(as.character(df$Outcome),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
-             df$temp[tolower(as.character(df$Outcome))==tolower(item)]<-
+  df$temp[tolower(as.character(df$Outcome))==tolower(item)]<-
   as.numeric(df$temp[tolower(as.character(df$Outcome))==tolower(item)])-1
   as.numeric(df$temp)}
 
@@ -204,7 +202,32 @@ y
 #countOutcomeDash(c(0,50,60),4)
 #d[,2]<-as.character(d[,2])
 #d[,3]<-as.character(d[,3])
+countOutcomeDifficulty1 <-function(df,index,r) {
+  temp<-df$pred
+  temp<-ifelse(df$Outcome==r,temp,0)
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
 
+countOutcomeDifficulty2 <-function(df,index,r) {
+  temp<-df$pred^2
+  temp<-ifelse(df$Outcome==r,temp,0)
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
+
+countOutcomeDifficultyAll1 <-function(df,index) {
+  temp<-df$pred
+
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
+countOutcomeDifficultyAll2 <-function(df,index) {
+  temp<-df$pred^2
+
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
 
 # specific cause to self
 # notation indexfactor%sourcefactor%sourcevalue
@@ -353,7 +376,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   if(feat=="powafm"){return((df$cor+df$icor)^par1)}
   if(feat=="recency"){
     eval(parse(text=paste("df$rec <- df$",fcomp,"spacing",sep="")))
-    return(ifelse(df$rec==0,0,df$rec^par1))}
+    return(ifelse(df$rec==0,0,df$rec^-par1))}
   if(feat=="expdecafm"){return(ave(rep(1,length(df$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="base"){
     df$mintime <- ave(df$CF..Time.,index, FUN=min)
@@ -396,6 +419,15 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
     h<-countOutcomeDashPerf(dfV,"CORRECT",par1)
     return(log(1+h))   }
   # single factor dynamic features
+  if(feat=="diffcor1"){return(countOutcomeDifficulty1(df,df$index,"CORRECT"))}
+  if(feat=="diffcor2"){return(countOutcomeDifficulty2(df,df$index,"CORRECT"))}
+  if(feat=="diffcorComp"){return(countOutcomeDifficulty1(df,df$index,"CORRECT")-countOutcomeDifficulty2(df,df$index,"CORRECT"))}
+  if(feat=="diffincorComp"){return(countOutcomeDifficulty1(df,df$index,"INCORRECT")-countOutcomeDifficulty2(df,df$index,"INCORRECT"))}
+  if(feat=="diffallComp"){return(countOutcomeDifficultyAll1(df,df$index)-countOutcomeDifficultyAll2(df,df$index))}
+  if(feat=="diffincor1"){return(countOutcomeDifficulty1(df,df$index,"INCORRECT"))}
+  if(feat=="diffincor2"){return(countOutcomeDifficulty2(df,df$index,"INCORRECT"))}
+  if(feat=="diffall1"){return(countOutcomeDifficulty1(df,df$index,"INCORRECT"))}
+  if(feat=="diffall2"){return(countOutcomeDifficulty2(df,df$index,"INCORRECT"))}
   if(feat=="logsuc"){return(log(1+df$cor))}
   if(feat=="linesuc"){return(df$cor)}
   if(feat=="logfail"){return(log(1+df$icor))}
@@ -437,7 +469,7 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
 }
 
 
-modeloptim <- function(comps,feats,df)
+modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE)
 {
   tempfun <- function(pars){
 
@@ -446,7 +478,7 @@ modeloptim <- function(comps,feats,df)
     optimparcount<-1
     fixedparcount<-1
     m<-1
-    eq<<-"1"
+    if (interc==TRUE){eq<<-"1"} else {eq<<-"0"}
     for(i in feats){
       k<-k+1
 
@@ -537,15 +569,42 @@ modeloptim <- function(comps,feats,df)
         # add the feature to the model with the same coefficient for all levels
         eval(parse(text=paste("eq<<-paste(\"F\",k,\"+\",eq,sep=\"\")")))
       }}
-    # save info for inspecection outside of function
-    if(any(grep("[@]",feats))){
-      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))} else
-      {
+    # save info for inspection outside of function
+    if(any(grep("[@]",feats)) & dualfit==FALSE){
+      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit))
+        fitstat<<-logLik(temp)
+        } else if(dualfit==FALSE){
         temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+        fitstat<<-logLik(temp)
       }
     #print("statnext")
     # compute model fit and report
-    fitstat<<-logLik(temp)
+    if(dualfit==TRUE){
+      if(any(grep("[@]",feats))){
+      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+      fitstat1<-cor(temp@frame$CF..ansbin.,predict(temp,type="response"))^2
+      }else{temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+      fitstat1<-cor(temp$data$CF..ansbin.,predict(temp,type="response"))^2
+      }
+      rt.pred=exp(1)^(-(predict(temp)[which(temp$data$CF..ansbin.==1)]))
+      #Detect and flatten outliers--------------------------------------------------------------------------
+      outVals = boxplot(temp$data$Duration..sec.,plot=FALSE)$out
+      outVals = which(temp$data$Duration..sec. %in% outVals)
+      temp$data$Duration..sec.=as.numeric(temp$data$Duration..sec.)
+      if(length(outVals)>0){
+        temp$data$Duration..sec.[outVals] = quantile(temp$data$Duration..sec.,.95) # Winsorize outliers
+      }
+      the.rt=temp$data$Duration..sec.[which(temp$data$CF..ansbin.==1)]
+
+      the.rt=the.rt
+      rt.pred=rt.pred
+      lm.rt<<-lm(the.rt~as.numeric(rt.pred))
+      fitstat2<-cor(the.rt,predict(lm.rt,type="response"))^2
+      print(paste("Correctness R2: ",fitstat1,"Latency R2: ",fitstat2),sep='')
+      
+      fitstat<<-sum(c(fitstat1,fitstat2))
+    }
+
 
     if(paper.==TRUE){
       log_modeloptim<-file(paste(Sys.info()[4],"log_modeloptim.txt",sep=""),open="a")
@@ -555,7 +614,7 @@ modeloptim <- function(comps,feats,df)
         cat(pars,sep=",", file = log_modeloptim) }
       close(log_modeloptim)} else {
         nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
-        cat(paste("   logLik = ",round(fitstat,8),"  ",sep=""))
+        cat(paste("   fitstat = ",round(fitstat,8),"  ",sep=""))
         #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
         if(length(pars)>0){cat(paste("  step par values ="))
           cat(pars,sep=",")
@@ -594,7 +653,6 @@ modeloptim <- function(comps,feats,df)
   # if not set seeds set to .5
   seeds[is.na(seeds)]<-.5
 
-
   # optimize the model
   if(parlength>0){
     if(paper.==TRUE){
@@ -629,7 +687,7 @@ modeloptim <- function(comps,feats,df)
       testsub<<- tempall$data$Anon.Student.Id[(tempall$data$Anon.Student.Id %in% foldlevels[[2]])]
       passpars<<-c(unlist(opars[1:length(seeds)]),temptrain$coefficients)}
     else {
-      pars<<- optimx(seeds,tempfun,method = c("spg"),lower = 0, upper = 1, control = list(maxit = 1000,kkt=FALSE))
+      pars<<- optim(seeds,tempfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
     }
 
   }   else
@@ -645,7 +703,6 @@ modeloptim <- function(comps,feats,df)
       tempfun(numeric(0))
       temptrain<<-temp
       passpars<<-c(temptrain$coefficients)
-
 
       df<-dfstore[(dfold$Anon.Student.Id %in% foldlevels[[2]]),]
       datvals<-tempall$x[(tempall$data$Anon.Student.Id %in% foldlevels[[2]]),]
@@ -669,10 +726,37 @@ modeloptim <- function(comps,feats,df)
     colnames(testvals)[2]<-"Anon.Student.Id"
     subdifs<<-sqrt(aggregate(testvals$difs,by=list(testvals$Anon.Student.Id),FUN=mean)$x) }  else {
       # report
+      if(dualfit==TRUE){
+        FaliureLatency<-mean(temp$data$Duration..sec.[which(temp$data$CF..ansbin.==0)])
+        print(paste("Failure latency: ",FaliureLatency))
+        Scalar<-coef(lm.rt)[2]
+        Intercept<-coef(lm.rt)[1]
+        cat(paste("\n","--------------------------","\n","Latency model params-> ","\n","Scalar: ",
+                  Scalar,"\n","Intercept: ",Intercept,"\n","--------------------------","\n",sep=''))}
       cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
       if(cvSwitch==0 & makeFolds==0){
         #Output text summary
+        #collect all the features except "intercept"
+        featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2","base4","ppe","dashafm","dashsuc","diffcor1","diffcor2","diffcorComp","diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2","logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
+        
+        #collect all parameters from prespecfeatures and plancomponents (input code)
+        #prespecfeatures<-gsub("[[:punct:]]","",prespecfeatures)
+
+        fNames<-list()
+        for (p in 1:length(prespecfeatures)){
+            if(prespecfeatures[p] %in% featsList){
+               fName<-gsub(" ","",(paste(prespecfeatures[p],plancomponents[p])))
+               fNames<-c(fNames,fName)
+            }
+        }
+
         print(summary(temp))
+        coeffRownames<-rownames(summary(temp)$coefficients)
+        if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){ 
+            DifcorComp<-coef(summary(temp))["F1","Estimate"]
+            Difincor1<-coef(summary(temp))["F2","Estimate"]
+        }
+        
         Nres<-length(df$Outcome)
         R1<-r.squaredLR(temp)
         pred<<-predict(temp,type="response")
@@ -685,6 +769,36 @@ modeloptim <- function(comps,feats,df)
         newXMLNode("AUC", round(auc(df$CF..ansbin.,pred),5), parent = top)
         newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
         newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
+
+        if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){
+            newXMLNode("DifcorComp",DifcorComp,parent = top)
+            newXMLNode("Difincor1",Difincor1,parent = top)
+            newXMLNode("LatencyCoef",Scalar,parent = top)
+            newXMLNode("LatencyIntercept",Intercept,parent = top)
+            newXMLNode("FailCost",FaliureLatency,parent = top)
+        }
+
+        #collect all the F#, Add into list
+        fNumNames<-list()
+        fNumNames1<-grep("[0-9]$",coeffRownames,value=T)
+        fNumNames2<-grep("^F",fNumNames1,value=T)
+        for(fNumNamesX in fNumNames2){
+            if (nchar(fNumNamesX)<= 3 && nchar(fNumNamesX)>= 2){
+                fNumNames<-c(fNumNames,fNumNamesX)
+            }
+        }
+        if(!length(fNumNames)==0){
+            for (c in coeffRownames){
+                cValues=coef(summary(temp))[c,"Estimate"]
+                for (loc in 1:length(rev(fNumNames))){
+                    if (toString(fNumNames[loc])==c){
+                        c=fNames[loc]
+                    }
+                }
+                c<-gsub("^F[0-9]","",c)
+                newXMLNode(c,cValues,parent = top)
+            }
+        }    
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
       }
     }

@@ -1,7 +1,5 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified">
     <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
-
     <xs:complexType name="InputDefinition0">
         <xs:complexContent>
             <xs:extension base="InputContainer">
@@ -42,13 +40,11 @@
         </xs:complexContent>
     </xs:complexType>
 
-
     <xs:complexType name="OutFileList0">
         <xs:choice>
             <xs:element ref="image" />
         </xs:choice>
     </xs:complexType>
-
 
     <xs:complexType name="OutputDefinition1">
         <xs:complexContent>
@@ -61,14 +57,13 @@
         </xs:complexContent>
     </xs:complexType>
 
-
     <xs:complexType name="OutFileList1">
         <xs:choice>
             <xs:element ref="tab-delimited" />
         </xs:choice>
     </xs:complexType>
 
-        <xs:complexType name="OutputDefinition2">
+    <xs:complexType name="OutputDefinition2">
             <xs:complexContent>
                 <xs:extension base="InputContainer">
                     <xs:sequence>
@@ -77,15 +72,13 @@
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
-        </xs:complexType>
-
-
-        <xs:complexType name="OutFileList2">
+    </xs:complexType>
+    
+    <xs:complexType name="OutFileList2">
             <xs:choice>
                 <xs:element ref="tab-delimited" />
             </xs:choice>
-        </xs:complexType>
-
+    </xs:complexType>
 
     <xs:complexType name="OutputType">
         <xs:sequence>
@@ -103,47 +96,38 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="dataformatCheck" final="restriction">
+    <xs:simpleType name="dataformatCheckType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="wide"/>
             <xs:enumeration value="long"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="durationCheck" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="yes"/>
-            <xs:enumeration value="no"/>
-        </xs:restriction>
-    </xs:simpleType>
 
-    <xs:simpleType name="outcomeCheck" final="restriction">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="yes"/>
-            <xs:enumeration value="no"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-     <xs:simpleType name="mean_or_median" final="restriction">
+     <xs:simpleType name="meanOrMedianType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="mean"/>
             <xs:enumeration value="median"/>
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:complexType name="option_dependency">
+        <xs:choice>
+           <xs:element type="disjunctive" name="dependency1" ls:dependentOption="lambda" ls:dependsOn="method" ls:constraint="matches(kmeans)" />
+           <xs:element type="disjunctive" name="dependency2" ls:dependentOption="useoptimalk" ls:dependsOn="method" ls:constraint="matches(kmeans)" />
+        </xs:choice>
+    </xs:complexType> 
+ 
        <xs:complexType name="OptionsType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
              <xs:element type="FileInputHeader" name="model" id="model_of_features" default=".*" />
+             <xs:element type="xs:boolean" name="useoptimalk" id="Use_Optimal_K" default="false"/> 
              <xs:element type="xs:string" name="numberOfClusters" id="number_of_clusters" default="4" />
              <xs:element type="methodType"  name="method"  id="type_of_Clustering" default="hierarchical clustering"/>
              <xs:element type="xs:string" name="lambda" id="lambda" default="3" />
-             <xs:element type="dataformatCheck"  name="dataformat"  id="input_data_format" default="wide"/>
-             <xs:element type="durationCheck"  name="isduration"  id="use_duration" default="yes"/>
-             <xs:element type="outcomeCheck"  name="isoutcome"  id="use_outcome" default="yes"/>
-             <xs:element type="mean_or_median"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
-
-
-
-
+             <xs:element type="dataformatCheckType"  name="dataformat"  id="input_data_format" default="wide"/>
+             <xs:element type="xs:boolean"  name="isduration"  id="use_duration" default="true"/>
+             <xs:element type="xs:boolean"  name="isoutcome"  id="use_outcome" default="true"/>
+             <xs:element type="meanOrMedianType"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
         </xs:choice>
     </xs:complexType>
 

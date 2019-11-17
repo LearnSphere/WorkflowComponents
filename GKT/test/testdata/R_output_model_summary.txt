@@ -1,0 +1,69 @@
+mode: best fit model 
+Include Latency Model: false 
+Use_Global_Intercept: false 
+prespecfeatures: intercept@ intercept@ linesuc$ linefail$ 
+plancomponents: KC..Textbook. KC..Textbook. KC..Textbook. KC..Textbook. 
+fixedpars: NA 
+seedpars: NA 
+
+   fitstat = -2601.97334144   intercept@ intercept@ linesuc$ linefail$  --- 0.0906 McFadden's R2
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: CF..ansbin. ~ F4:df$KC..Textbook. + F3:df$KC..Textbook. + (1 |      F2) + (1 | F1) + 0
+   Data: df
+
+     AIC      BIC   logLik deviance df.resid 
+  5255.9   5425.9  -2602.0   5203.9     5078 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.9746  0.1817  0.4023  0.5976  2.1762 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ F2     (Intercept) 0.7044   0.8393  
+ F1     (Intercept) 1.0510   1.0252  
+Number of obs: 5104, groups:  F2, 12; F1, 12
+
+Fixed effects:
+                                              Estimate Std. Error z value       Pr(>|z|)    
+F4:df$KC..Textbook.circle-area               -0.061835   0.040790  -1.516       0.129537    
+F4:df$KC..Textbook.circle-circumference      -0.137057   0.051690  -2.652       0.008013 ** 
+F4:df$KC..Textbook.circle-diameter           -0.084937   0.070029  -1.213       0.225175    
+F4:df$KC..Textbook.compose-by-addition       -0.071034   0.030675  -2.316       0.020574 *  
+F4:df$KC..Textbook.compose-by-multiplication  0.055535   0.068808   0.807       0.419609    
+F4:df$KC..Textbook.equi-tri-height?           1.509870   0.402447   3.752       0.000176 ***
+F4:df$KC..Textbook.parallelogram-area        -1.403835   0.619813  -2.265       0.023517 *  
+F4:df$KC..Textbook.pentagon-area             -0.031973   0.032788  -0.975       0.329486    
+F4:df$KC..Textbook.rectangle-area            -0.193202   0.070799  -2.729       0.006355 ** 
+F4:df$KC..Textbook.square-area               -0.104963   0.396945  -0.264       0.791451    
+F4:df$KC..Textbook.trapezoid-area            -0.041688   0.029224  -1.427       0.153720    
+F4:df$KC..Textbook.triangle-area             -0.124390   0.045841  -2.713       0.006658 ** 
+df$KC..Textbook.circle-area:F3                0.113788   0.021371   5.324 0.000000101291 ***
+df$KC..Textbook.circle-circumference:F3       0.199552   0.052538   3.798       0.000146 ***
+df$KC..Textbook.circle-diameter:F3            0.065522   0.041138   1.593       0.111218    
+df$KC..Textbook.compose-by-addition:F3        0.002604   0.020316   0.128       0.898000    
+df$KC..Textbook.compose-by-multiplication:F3  0.121762   0.028506   4.271 0.000019418045 ***
+df$KC..Textbook.equi-tri-height?:F3           0.429432   0.479213   0.896       0.370189    
+df$KC..Textbook.parallelogram-area:F3        -0.035883   0.372823  -0.096       0.923324    
+df$KC..Textbook.pentagon-area:F3              0.209394   0.033355   6.278 0.000000000344 ***
+df$KC..Textbook.rectangle-area:F3             0.088501   0.032090   2.758       0.005817 ** 
+df$KC..Textbook.square-area:F3                0.028742   0.055345   0.519       0.603543    
+df$KC..Textbook.trapezoid-area:F3             0.236027   0.043350   5.445 0.000000051907 ***
+df$KC..Textbook.triangle-area:F3              0.098123   0.033076   2.967       0.003011 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation matrix not shown by default, as p = 24 > 12.
+Use print(summary(temp), correlation=TRUE)  or
+    vcov(summary(temp))        if you need it
+
+convergence code: 0
+unable to evaluate scaled gradient
+Model failed to converge: degenerate  Hessian with 1 negative eigenvalues
+
+Warning messages:
+1: In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+  unable to evaluate scaled gradient
+2: In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+  Model failed to converge: degenerate  Hessian with 1 negative eigenvalues

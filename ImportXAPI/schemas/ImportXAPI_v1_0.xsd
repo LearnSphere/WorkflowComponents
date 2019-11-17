@@ -176,6 +176,7 @@
     <xs:element type="xs:string" name="queryPath30" id="queryPath30" default="null" />
         <xs:element type="xs:string" name="headers30" id="headers30" default="null" />    
     
+    <xs:element type="xs:string" name="outcome" id="outcome" default="null" />
     <xs:element type="xs:string" name="limit" id="limit" default="null" />
     </xs:choice>
   </xs:complexType>

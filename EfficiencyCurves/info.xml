@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/EfficiencyCurves</url>
+<date>August 20, 2019</date>
+<abstract>The <b>EfficiencyCurves</b> component is an example of a(n) R component.</abstract>
+<description>#User supplied parameters are numbers that would need to be given by the user via the GUI in the component
+#Currently just have placeholder values to show you how it can look - Luke August 14th 2019</description>
+
+<inputs>
+    <b>difcorComp</b>
+    <b>difincor1</b>
+    <b>latency_coef</b>
+    <b>latency_intercept</b>
+    <b>failcost</b>
+</inputs>
+
+<outputs>
+<b>image</b>
+</outputs>
+
+</info>

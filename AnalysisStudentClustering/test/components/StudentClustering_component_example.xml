@@ -12,16 +12,17 @@
         </connection>
     </connections>
     <options>
-        <model>KC (Default)</model>
+        <model>KC (Single-KC)</model>
+        <useoptimalk>false</useoptimalk>
         <numberOfClusters>4</numberOfClusters>
         <lambda>3.0</lambda>
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>dpmeans</method>
         <dataformat>long</dataformat>
-        <isduration>no</isduration>
-        <isoutcome>yes</isoutcome>
+        <isduration>true</isduration>
+        <isoutcome>false</isoutcome>
         <mean_or_median>mean</mean_or_median>
-  </options>
+    </options>
     <inputs>
     <input0>
       <component_id>analysisStudentClustering</component_id>
@@ -35,8 +36,8 @@
               <!-- ds1940_tx_All_Data_84_2016_1109_094411.txt-->
               <!--DPmeans_input.xlsx -->
               <!--input_wide.txt-->
-              <file_path>test/example_transactions/ds1940_tx_All_Data_84_2016_1109_094411.txt</file_path>
-              <file_name>ds1940_tx_All_Data_84_2016_1109_094411.txt</file_name>
+              <file_path>test/example_transactions/GKT.txt</file_path>
+              <file_name>GKT.txt</file_name>
               <index>0</index>
               <label>text</label>
           </text>

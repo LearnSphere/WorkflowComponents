@@ -53,10 +53,17 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="option_dependency">
+      <xs:choice>
+          <xs:element type="disjunctive" name="dependency1" ls:dependentOption="model" ls:dependsOn="Include_KC_Model" ls:constraint="matches(true)"/>
+      </xs:choice>
+  </xs:complexType>
+
  <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element type="xs:boolean" name="Include_KC_Model" id="Include_KC_Model" default="true" />
         <xs:element type="FileInputHeader" name="model" id="KC_model_to_use_to_compute_transaction_spacings_from_previous_trial" default="\s*KC\s*\((.*)\)\s*" />
-        <xs:element type="xs:string"  name="Number_of_Students"  id="Number_of_students" default="null"/>
+        <xs:element type="xs:string"  name="Number_of_Students"  id="Number_of_students" default="all"/>
     </xs:choice>
  </xs:complexType>
 

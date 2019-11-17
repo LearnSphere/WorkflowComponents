@@ -14,21 +14,22 @@
     <url>http://lrs.x-in-y.com/data/xAPI/</url>
     <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
     <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
-    <filter>filterByVerb_filterBySince</filter>
-    <filterValue>https://umiis.github.io/ITSProfile/System/matchAnswer,2019-06-04T20:24:26.931Z</filterValue>
+    <filter>filterByVerb</filter>
+    <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
     <limit>null</limit>
+    <outcome>0.5</outcome>
     <queryPath01>actor,name</queryPath01>
         <headers01>Student Name</headers01>
-    <queryPath02>verb,display,en-US</queryPath02>
-        <headers02>Action</headers02>
-    <queryPath03>context,extensions,http://autotutor.x-in-y.com/AT,timeTaken</queryPath03>
-        <headers03>Duration</headers03>
-    <queryPath04>id</queryPath04>
-        <headers04>Statement Id</headers04>
-    <queryPath05>timestamp</queryPath05>
-        <headers05>Time</headers05>
-    <queryPath06>null</queryPath06>
-        <headers06>null</headers06>
+    <queryPath02>result,extensions,https://umiis.github.io/ITSProfile/System/matchAnswer,input</queryPath02>
+        <headers02>Input</headers02>
+    <queryPath03>verb,display,en-US</queryPath03>
+        <headers03>Action</headers03>
+    <queryPath04>object,definition,name,en-US</queryPath04>
+        <headers04>Type</headers04>
+    <queryPath05>result,score,raw</queryPath05>
+        <headers05>Outcome</headers05>
+    <queryPath06>context,extensions,http://autotutor.x-in-y.com/AT,timeTaken</queryPath06>
+        <headers06>Duration (sec)</headers06>
     <queryPath07>null</queryPath07>
         <headers07>null</headers07>
     <queryPath08>null</queryPath08>

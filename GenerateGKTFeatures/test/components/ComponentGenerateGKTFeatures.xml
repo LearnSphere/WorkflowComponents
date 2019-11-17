@@ -23,16 +23,17 @@
         <files>
             <file>
             <index>0</index>
-            <file_path>test/testdata/EDMSummerSchool.txt</file_path>
+            <file_path>test/testdata/Student_Step.txt</file_path>
             <label>text</label>
-            <file_name>EDMSummerSchool.txt</file_name>
+            <file_name>Student_Step.txt</file_name>
             </file>
         </files>
     </input0>
 </inputs>
 <options>
-      <model>KC (Textbook)</model>
-      <Number_of_Students>null</Number_of_Students>
+    <Include_KC_Model>true</Include_KC_Model>
+    <model>KC (Decompose)</model>
+    <Number_of_Students>all</Number_of_Students>
 </options>
 
 </component>

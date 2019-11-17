@@ -14,9 +14,12 @@ import gov.adlnet.xapi.model.Actor;
 import gov.adlnet.xapi.model.Agent;
 import gov.adlnet.xapi.model.StatementResult;
 import gov.adlnet.xapi.model.*;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
         
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -134,6 +137,7 @@ public class ImportXAPImain extends AbstractComponent {
                 String queryPath30 = null;
                 String headers30 = null; 
                 String limit = null;
+                String threshold= null;
                 
                 queryPath01 = this.getOptionAsString("queryPath01");
                     headers01 = this.getOptionAsString("headers01");
@@ -197,6 +201,7 @@ public class ImportXAPImain extends AbstractComponent {
                     headers30 = this.getOptionAsString("headers30");  
                 
                 limit=this.getOptionAsString("limit");
+                threshold=this.getOptionAsString("outcome");
                 
 	    	StatementClient client = new StatementClient(url, username, password);
                 String jsonTxt = null;
@@ -455,8 +460,8 @@ public class ImportXAPImain extends AbstractComponent {
                     List<String> mainValueList = new ArrayList<String>();
                     String queryStringValue = null;
                     Object qvalue=null;
-
-                    //Query the specifc value follow the jsonpath.
+                    
+                    //Query the specifc value follow the jsonpath
                     if (queryPath00Leth > 1) {
                             for (int i=0; i<size;i++){
                                 JSONObject sts= jsonArray.getJSONObject(i);
@@ -513,10 +518,9 @@ public class ImportXAPImain extends AbstractComponent {
                             }
                         }
                     }
-
                     map.put(j+1,mainValueList);      
                 }
-
+                
                 int cSize=selectPathsList.size();
                 if (!limit.equals("null")){
                     int Limit = Integer.parseInt(limit);
@@ -532,7 +536,54 @@ public class ImportXAPImain extends AbstractComponent {
                         queryContent[crr][crf]=map.get(crf).get(crr);
                     }
                 }
-
+                
+                //Transform Time Format
+                if(headersList.contains("Time")){
+                    int tNum=headersList.indexOf("Time");
+                    for (int r=0; r<size;r++){
+                        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                        Date date = dt.parse(queryContent[r][tNum]);
+                        SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                        queryContent[r][tNum]=dt1.format(date);
+                    }
+                }
+                
+                //remove the "-" sign for "Statement Id"
+                if(headersList.contains("Statement Id")){
+                    int IdNum=headersList.indexOf("Statement Id");
+                    for (int r=0; r<size;r++){
+                        queryContent[r][IdNum]=queryContent[r][IdNum].replace("-","");
+                    }
+                }
+                
+                //Transfer Duration Format 
+                if(headersList.contains("Duration (sec)")){
+                    int IdNum=headersList.indexOf("Duration (sec)");
+                    for (int r=0; r<size;r++){
+                        if(!queryContent[r][IdNum].equals("null")){
+                            double duration=Double.parseDouble(queryContent[r][IdNum])/1000;
+                            BigDecimal b =new BigDecimal(duration);
+                            double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                            queryContent[r][IdNum]=Double.toString(f1);
+                        }else {
+                            queryContent[r][IdNum]="null";
+                        }
+                    }
+                }
+                
+                //Add new tag: "Outcome" based on result score: include"raw","max","min","scaled".
+                if(headersList.contains("Outcome")&(!threshold.equals("null"))){
+                   int IdNum=headersList.indexOf("Outcome");
+                   for (int r=0; r<size;r++){
+                    double threshold_use=Double.parseDouble(threshold);
+                    if (Double.parseDouble(queryContent[r][IdNum])>=threshold_use){
+                       queryContent[r][IdNum]="CORRECT";
+                   }else {
+                       queryContent[r][IdNum]="INCORRECT";
+                    }
+                   }
+                }
+                
                 //Print the query results
                 File jsonFile = this.createFile("xAPI_Query", ".txt");
                 FileWriter fw = new FileWriter(jsonFile.getAbsoluteFile());
@@ -554,7 +605,6 @@ public class ImportXAPImain extends AbstractComponent {
                 String fileType0 = "tab-delimited";
                 this.addOutputFile(jsonFile, nodeIndex0, fileIndex0, fileType0);
                 System.out.println(this.getOutput()); 
-
 	}
             
             private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){

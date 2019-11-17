@@ -5,7 +5,7 @@
       <xs:extension base="InputContainer">
         <xs:sequence>
           <xs:element name="files" type="InFileList0"/>
-          <xs:any maxOccurs="unbounded" minOccurs="1" processContents="skip"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -103,12 +103,17 @@
         <xs:element type="disjunctive" name="dependency8" ls:dependentOption="Term8" ls:dependsOn="Term7" ls:constraint="matches(null)" ls:negation="true"/>
 	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="Term9" ls:dependsOn="Term8" ls:constraint="matches(null)" ls:negation="true"/>
         <xs:element type="disjunctive" name="dependency10" ls:dependentOption="Term10" ls:dependsOn="Term9" ls:constraint="matches(null)" ls:negation="true"/>
+        
 	</xs:choice>
 </xs:complexType>
 
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
+        <xs:element type="xs:boolean" name="Include_Latency_Model" id="Include_Latency_Model" default="false" />
+        <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
+        <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
+        
         <xs:element type="xs:string" name="Term1" id="Term1" default="null" />
         <xs:element type="xs:string" name="Term2" id="Term2" default="null" />
         <xs:element type="xs:string" name="Term3" id="Term3" default="null" />
@@ -118,10 +123,10 @@
         <xs:element type="xs:string" name="Term7" id="Term7" default="null" />
         <xs:element type="xs:string" name="Term8" id="Term8" default="null" />
         <xs:element type="xs:string" name="Term9" id="Term9" default="null" />
-        <xs:element type="xs:string" name="Term10" id="Term10" default="null" />
-        
+        <xs:element type="xs:string" name="Term10" id="Term10" default="null" /> 
       </xs:choice>
   </xs:complexType>
+ 
  
   <xs:element name="component">
     <xs:complexType>

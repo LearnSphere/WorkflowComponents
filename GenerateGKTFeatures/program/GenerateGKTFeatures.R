@@ -26,7 +26,6 @@ if (args[i] == "-node") {
 		    if (fileIndexParam == "fileIndex") {
 		    	fileIndex <- args[i+3]
 		    }
-
 		    inputFile0 = args[i+4]
 		    i = i+4
 		} else if (args[i+1] == "1") { # The second input node
@@ -41,7 +40,15 @@ if (args[i] == "-node") {
 		} else {
 			i = i+1
 		}
-    } else if (args[i] == "-model") {
+    } else 
+if (args[i] == "-Include_KC_Model") {
+       if (length(args) == i) {
+          stop("Include_KC_Model name must be specified")
+       }
+       Include_KC_Model <- gsub("[ ()-]", ".", args[i+1])
+       i = i+1
+    }else
+if (args[i] == "-model") {
        if (length(args) == i) {
           stop("model name must be specified")
        }
@@ -96,6 +103,7 @@ library(caTools)
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "GKT.txt", sep="")
+outputFilePath1<- paste(workingDirectory, "GKT1.txt", sep="")
 
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
@@ -110,6 +118,7 @@ smallSet <- function(data,nSub){
   smalldata=droplevels(smalldata)
   return(smalldata)
 }
+
 # computes spacing from prior repetition for index (in seconds)
 compspacing <-function(df,index,times) {temp<-rep(0,length(df$CF..ansbin.))
 for (i in unique(index)){
@@ -136,8 +145,7 @@ for (i in unique(index)){
 }
 return(temp)}
 
-
-if(!Number_of_Students=="null"){
+if(!Number_of_Students=="all"){
     val<-smallSet(val,as.numeric(Number_of_Students))
 }
 
@@ -149,6 +157,28 @@ for (i in unique(df$Anon.Student.Id)){
       [1:(length(cumsum(df$Duration..sec.[df$Anon.Student.Id==i]))-1)])}
 return(temp)}
 
+#test the student-step, and transfer to transaction
+#Step.Start.Time->Time
+if(!"Time" %in% colnames(val)){
+    if("Step.Start.Time" %in% colnames(val)){
+        colnames(val)[colnames(val)=="Step.Start.Time"] <- "Time"
+    }
+}
+
+#First Attempt->Outcome
+if(!"Outcome" %in% colnames(val)){
+    if("First.Attempt" %in% colnames(val)){
+        colnames(val)[colnames(val)=="First.Attempt"] <- "Outcome"
+    }
+}
+
+#Step Duration sec->Duration
+if(!"Duration..sec." %in% colnames(val)){
+    if("Step.Duration..sec." %in% colnames(val)){
+        colnames(val)[colnames(val)=="Step.Duration..sec."] <- "Duration..sec."
+    }
+}
+
 val$Duration..sec.<-as.numeric(val$Duration..sec.)
 val$Duration..sec.[which(is.na(val$Duration..sec.))] = median(val$Duration..sec.,na.rm=TRUE)
 val$CF..Time. <- as.numeric(as.POSIXct(as.character(val$Time),format="%Y-%m-%d %H:%M:%OS"))
@@ -156,6 +186,14 @@ val<-val[order(val$Anon.Student.Id, val$CF..Time.),]
 val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
 val$CF..reltime. <- practiceTime(val)
 
+#Incorrects+Corrects->Attempt.At.Step
+#if 
+
+if(!"Attempt.At.Step" %in% colnames(val)){
+        val$Attempt.At.Step<-1
+}
+
+#Keep Function has some problem
 keep<-which(val$Attempt.At.Step==1 & 
           eval(parse(text=paste("val$",KCmodel,"!=\"\"",sep=""))) &
           (val$CF..ansbin==0 | val$CF..ansbin.==1)
@@ -165,21 +203,23 @@ val<-droplevels(val)
 
 options(scipen = 999)
 options(max.print=1000000)
+Include_KC_Model<-as.logical(Include_KC_Model)
 
+if(Include_KC_Model<-TRUE){
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"spacing <- compspacing(val,val$index,val$CF..Time.)",sep="")))
+      eval(parse(text=paste("val$",i,"relspacing <- compspacing(val,val$index,val$CF..reltime.)",sep="")))}
 
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"spacing <- compspacing(val,val$index,val$CF..Time.)",sep="")))
-  eval(parse(text=paste("val$",i,"relspacing <- compspacing(val,val$index,val$CF..reltime.)",sep="")))}
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"meanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))
+      eval(parse(text=paste("val$",i,"relmeanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))  }
 
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"meanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))
-  eval(parse(text=paste("val$",i,"relmeanspacing <- meanspacingf(val,val$index,val$",i,"spacing)",sep="")))  }
-
-for(i in c(KCmodel)){
-  val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
-  eval(parse(text=paste("val$",i,"spacinglagged <- laggedspacingf(val,val$index,val$",i,"spacing)",sep="")))
+    for(i in c(KCmodel)){
+      val$index<-paste(eval(parse(text=paste("val$",i,sep=""))),val$Anon.Student.Id,sep="")
+      eval(parse(text=paste("val$",i,"spacinglagged <- laggedspacingf(val,val$index,val$",i,"spacing)",sep="")))
+    }
 }
 
 # Export modified data frame for reimport after header attachment
