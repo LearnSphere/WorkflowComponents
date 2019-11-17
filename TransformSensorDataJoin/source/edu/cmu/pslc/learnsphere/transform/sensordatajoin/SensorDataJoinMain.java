@@ -61,7 +61,7 @@ public class SensorDataJoinMain extends AbstractComponent {
     
         //.. Attach the output files to the component output with addOutputFile...//
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsoluteFile() + "/SensorDataSegmentation.txt");
+            File file0 = new File(outputDirectory.getAbsoluteFile() + "/segmented_result.csv");
            // File file1 = new File(outputDirectory.getAbsoluteFile() + "/rplot.jpg");
             if (file0 != null && file0.exists() ) {
 
@@ -76,7 +76,7 @@ public class SensorDataJoinMain extends AbstractComponent {
                 this.addOutputFile(file0, nodeIndex, fileIndex, fileLabel);
                // this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
             } else {
-                this.addErrorMessage("An unknown error has occurred with the SensorDataSegmentation component.");
+                this.addErrorMessage("An unknown error has occurred with the SensorDatajoin component.");
             }
 
         }
