@@ -17,6 +17,7 @@ public class SensorDataJoinMain extends AbstractComponent {
         SensorDataJoinMain tool = new SensorDataJoinMain();
         tool.startComponent(args);
 
+
     }
 
     /**
@@ -32,8 +33,8 @@ public class SensorDataJoinMain extends AbstractComponent {
     protected void processOptions() {
         logger.info("Processing Options");
         // addMetaDataFromInput(String fileType, Integer inputNodeIndex, Integer outputNodeIndex, String name)
-        this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
-        this.addMetaDataFromInput("tab-delimited", 1, 0, ".*");
+        //this.addMetaDataFromInput("tab-delimited", 0, 0, ".*");
+        //this.addMetaDataFromInput("tab-delimited", 1, 0, ".*");
 
     }
 
@@ -55,30 +56,33 @@ public class SensorDataJoinMain extends AbstractComponent {
     
     @Override
     protected void runComponent() {  
-File outputDirectory = this.runExternal();
-String dir= this.getToolPath();
+ File outputDirectory = this.runExternal();
+        //String dir= this.getToolPath();
     
         //.. Attach the output files to the component output with addOutputFile...//
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-            File file0 = new File(outputDirectory.getAbsoluteFile() + "/SensorDataJoined.txt");
-            
+            File file0 = new File(outputDirectory.getAbsoluteFile() + "/SensorDataSegmentation.txt");
+           // File file1 = new File(outputDirectory.getAbsoluteFile() + "/rplot.jpg");
             if (file0 != null && file0.exists() ) {
 
                 Integer nodeIndex = 0;
                 Integer fileIndex = 0;      
                 String fileLabel = "tab-delimited";  
+                
+                 Integer nodeIndex1 = 1;
+                Integer fileIndex1 = 0;
+                String label1 = "image";
+                
                 this.addOutputFile(file0, nodeIndex, fileIndex, fileLabel);
-
+               // this.addOutputFile(file1, nodeIndex1, fileIndex1, label1);
             } else {
-                this.addErrorMessage("An unknown error has occurred with the SensordataJoin component.");
+                this.addErrorMessage("An unknown error has occurred with the SensorDataSegmentation component.");
             }
 
         }
 
         // Send the component output back to the workflow.
-        System.out.println(this.getOutput());
-        
-    }
+       System.out.println(this.getOutput());
 
 
 }

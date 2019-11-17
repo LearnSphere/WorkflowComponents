@@ -120,8 +120,8 @@
       <xs:element type="xs:string" name="signalpostendtime" id="Signal_post_end_time" default="0.0" /> 
       <xs:element type="xs:string" name="studenttest" id="Student_Test" default="suhaib.alrousan@gmail.com" /> 
       -->
-      <xs:element type="xs:string" name="beginoffset" id="beginoffset" default="0" />
-      <xs:element type="xs:string" name="endoffset" id="endoffset" default="0" />
+      <!--<xs:element type="xs:string" name="beginoffset" id="beginoffset" default="0" />
+      <xs:element type="xs:string" name="endoffset" id="endoffset" default="0" />-->
       <xs:element type="xs:string" name="frequency" id="frequency" default="yes" />
     </xs:choice>
   </xs:complexType>
