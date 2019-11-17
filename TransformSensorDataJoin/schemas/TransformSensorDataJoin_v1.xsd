@@ -99,7 +99,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">     
       <!--<xs:element type="xs:string" name="beginoffset" id="beginoffset" default="0" />
       <xs:element type="xs:string" name="endoffset" id="endoffset" default="0" />-->
-      <xs:element type="xs:string" name="frequency" id="frequency" default="yes" />
+      <xs:element type="xs:string" name="frequency" id="frequency" default="no" />
     </xs:choice>
   </xs:complexType>
 
