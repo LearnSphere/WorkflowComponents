@@ -1,8 +1,8 @@
 <component>
   <component_id>ComponentTestOutput</component_id>
-  <component_id_human>ComponentSensorDataSegmentation #1</component_id_human>
+  <component_id_human>ComponentSensorDataJoin #1</component_id_human>
   <workflow_id>16</workflow_id>
-  <component_name>ComponentSensorDataSegmentation</component_name>
+  <component_name>ComponentSensorDataJoin</component_name>
   <component_type>transform</component_type>
   <left>860</left>
   <connections>

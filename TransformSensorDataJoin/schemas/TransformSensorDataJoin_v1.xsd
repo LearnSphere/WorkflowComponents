@@ -95,31 +95,8 @@
     </xs:sequence>
   </xs:complexType>
 
- <!--
-
-
-
-    <xs:simpleType name="CahnnelType" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Ch1" />
-      <xs:enumeration value="Ch2" />
-      <xs:enumeration value="Ch3" />
-      <xs:enumeration value="Ch4" />
-    </xs:restriction>
-  </xs:simpleType>
-  
--->
   <xs:complexType name="OptionsType">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <!--<xs:element type="FileInputHeader" name="student" id="student_ID" default=".*"  />
-      <xs:element type="FileInputHeader" name="time" id="time" default=".*"  />
-      <xs:element type="FileInputHeader" name="response" id="response" default=".*" />
-      <xs:element type="CahnnelType" name="CahnnelType" id="Cahnnel_Type" default="Ch1" />
-      <xs:element type="xs:string" name="signalsamplingrate" id="Signal_sampling_rate" default="220.0" /> 
-      <xs:element type="xs:string" name="signalprestarttime" id="Signal_pre_start_time" default="0.0" /> 
-      <xs:element type="xs:string" name="signalpostendtime" id="Signal_post_end_time" default="0.0" /> 
-      <xs:element type="xs:string" name="studenttest" id="Student_Test" default="suhaib.alrousan@gmail.com" /> 
-      -->
+    <xs:choice minOccurs="0" maxOccurs="unbounded">     
       <!--<xs:element type="xs:string" name="beginoffset" id="beginoffset" default="0" />
       <xs:element type="xs:string" name="endoffset" id="endoffset" default="0" />-->
       <xs:element type="xs:string" name="frequency" id="frequency" default="yes" />
