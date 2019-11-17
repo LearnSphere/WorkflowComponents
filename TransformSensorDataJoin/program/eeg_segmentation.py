@@ -2,7 +2,7 @@
 
 
 import pandas as pd
-import datetime as dt
+
 from statistics import mean
 import os
 import argparse
@@ -48,7 +48,7 @@ signal_data= pd.read_table(inFile0)
 #students_data=pd.read_excel(inFile1)
 students_data=pd.read_table(inFile1)
 students_data=students_data.tail(3)
-
+pd.options.mode.chained_assignment = None
 searched_time=[]
 
 for item in signal_data['timestamp(ms)']:
@@ -61,8 +61,8 @@ def NumbersWithinRange(items, lower, upper):
 
 
 l=SortedList(searched_time)
-list_dfs=[]
 
+list_dfs=[]
 for index,row  in  students_data.iterrows():
     begin_time=row['Time']
     end_time = row['CF (Response Time)']
