@@ -109,6 +109,7 @@ if "Event Type" in original_headers:
     original_headers = original_headers + "\n"
 else:
     original_headers = original_headers + "\t" + "Event Type" + "\n"
+infile.close()
 
 
 # In[99]:
