@@ -110,7 +110,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="MultiFileInputHeader" name="featuresToExtract" id="Features_to_Extract" default=".*" />	
       <xs:element type="xs:integer" name="numberWeeks" id="Number_Of_Weeks_To_Extract" default="10"/>
-      <xs:element type="xs:string" name="startDate" id="Start_Date" default="yyyy-mm-dd"/>
+      <xs:element type="xs:date" name="startDate" id="Start_Date" default="1970-01-01"/>
     </xs:choice>
   </xs:complexType>
   
