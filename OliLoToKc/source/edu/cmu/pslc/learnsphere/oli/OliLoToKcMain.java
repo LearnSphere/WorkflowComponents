@@ -145,16 +145,25 @@ public class OliLoToKcMain extends AbstractComponent {
 		for (File inputFile : inputFiles) {
 			if (inputFile.exists() && inputFile.canRead()) {
 				String fileName = inputFile.getName();
+				boolean foundProblemsFile = false;
+				boolean foundLosFile = false;
+				boolean foundSkillsFile = false;
 				String fileNameWithoutExt = fileName.replaceFirst("[.][^.]+$", "");
                                 String fileNameLower = fileNameWithoutExt.toLowerCase();
 
                                 if (fileNameLower.endsWith(PROBLEMS)) {
                                     this.setOption("problemsFile", inputFile.getAbsolutePath());
+                                    foundProblemsFile = true;
                                 } else if (fileNameLower.endsWith(LOS)) {
                                     this.setOption("losFile", inputFile.getAbsolutePath());
+                                    foundLosFile = true;
                                 } else if (fileNameLower.endsWith(SKILLS)) {
                                     this.setOption("skillsFile", inputFile.getAbsolutePath());
-				}
+                                    foundSkillsFile = true;
+                                }
+                                if (!foundProblemsFile || !foundLosFile || !foundSkillsFile) {
+                                	errorMessages.add("Required input file not found.");
+                                }
 			} else {
 				logger.debug("Issue with input file: " + inputFile.getAbsolutePath());
 			}
