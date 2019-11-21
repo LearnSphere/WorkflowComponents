@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliToRISE</url>
+
+<date>2019-11-20</date>
+
+<abstract>This component will compute high- and low-stakes error rates for skills in a specified KC model in a given DataShop dataset.
+</abstract>
+
+<description></description>
+
+<inputs>
+<b>None</b> - The component only works for datasets already loaded into DataShop.
+</inputs>
+
+<outputs>
+<b>tab-delimited</b> - Generated output is a three-column, tab-delimited file. First column is a skill name, second is the average high-stakes error rate and the third column is the average low-stakes error rate.
+</outputs>
+
+<options>
+<b>Dataset</b> - DataShop dataset<br/>
+<b>KC model</b> - Name of the KC model
+</options>
+
+</info>

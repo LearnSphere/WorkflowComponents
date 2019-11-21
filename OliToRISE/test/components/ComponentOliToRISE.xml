@@ -1,0 +1,13 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>OliToRISE</component_name>
+  <component_type>analysis</component_type>
+  <left>695</left>
+  <top>106</top>
+  <options>
+    <dataset>17</dataset>
+    <kcModel>e_learning_dp-1_1-works</kcModel>
+  </options>
+</component>
