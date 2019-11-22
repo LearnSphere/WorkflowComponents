@@ -62,6 +62,7 @@
 		<Linear_Modeling />
 		<LSA />
 		<OLI_Resource_Use />
+		<OLI_to_RISE />
 		<Output_Comparator />
 		<Performance_Difference_Analysis />
 		<PFA />
