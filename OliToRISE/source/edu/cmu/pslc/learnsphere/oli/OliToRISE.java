@@ -289,7 +289,7 @@ public class OliToRISE extends AbstractComponent {
                 Double[] errorRates = errorRateMap.get(s);
                 outputStream.write(s.getBytes("UTF-8"));
                 outputStream.write(TAB_CHAR.getBytes("UTF-8"));
-                String errRateStr = "";
+                String errRateStr = "0.0";
                 if (errorRates[0] != null) {
                     errRateStr = decimalFormat.format(errorRates[0]);
                 }
@@ -298,7 +298,7 @@ public class OliToRISE extends AbstractComponent {
                 if (errorRates[1] != null) {
                     errRateStr = decimalFormat.format(errorRates[1]);
                 } else {
-                    errRateStr = "";
+                    errRateStr = "0.0";
                 }
                 outputStream.write(errRateStr.getBytes("UTF-8"));
                 outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));            
