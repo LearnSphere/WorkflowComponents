@@ -183,6 +183,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
               Scalar,"\n","Intercept: ",Intercept,"\n","--------------------------","\n",sep=''))}
   cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
   if(cvSwitch==0 & makeFolds==0){
+    
     #Output text summary
     #collect all the features except "intercept"
     featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2","base4","ppe","dashafm","dashsuc","diffcor1","diffcor2","diffcorComp","diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2","logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
@@ -200,9 +201,10 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
 
     print(summary(temp))
     coeffRownames<-rownames(summary(temp)$coefficients)
-    if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){
-      DifcorComp<-coef(summary(temp))["F1","Estimate"]
-      Difincor1<-coef(summary(temp))["F2","Estimate"]
+
+    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
+            DifcorComp<-coef(summary(temp))[toString(fNames[length(fNames)-1]),"Estimate"]
+            Difincor1<-coef(summary(temp))[toString(fNames[length(fNames)]),"Estimate"]
     }
 
     Nres<-length(df$Outcome)
@@ -218,40 +220,28 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
     newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
     newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
     #determine which are
-    if (is.element('F1', coeffRownames)&& is.element('F2', coeffRownames)){
+    
+    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
       newXMLNode("DifcorComp",DifcorComp,parent = top)
       newXMLNode("Difincor1",Difincor1,parent = top)
       newXMLNode("LatencyCoef",Scalar,parent = top)
       newXMLNode("LatencyIntercept",Intercept,parent = top)
       newXMLNode("FailCost",FaliureLatency,parent = top)
     }
-
     #collect all the F#, Add into list
-    fNumNames<-list()
-    fNumNames1<-grep("[0-9]$",coeffRownames,value=T)
-    fNumNames2<-grep("^F",fNumNames1,value=T)
-    for(fNumNamesX in fNumNames2){
-      if (nchar(fNumNamesX)<= 3 && nchar(fNumNamesX)>= 2){
-        fNumNames<-c(fNumNames,fNumNamesX)
-      }
-    }
-    if(!length(fNumNames)==0){
-      for (c in coeffRownames){
-        cValues=coef(summary(temp))[c,"Estimate"]
-        for (loc in 1:length(rev(fNumNames))){
-          if (toString(fNumNames[loc])==c){
-            c=fNames[loc]
-          }
+    if (is.element(fNames, coeffRownames) && (!is.element("diffcorComp", prespecfeatures)) && (!is.element("diffincor1", prespecfeatures))){
+        for (c in coeffRownames){
+            if(!(c=="null"||c=="Null")){
+                cValues=coef(summary(temp))[c,"Estimate"]
+            }
+            c<-gsub("/","",c)
+            c<-gsub("\\(|)","",c)
+            newXMLNode(c,cValues,parent = top)
         }
-        c<-gsub("^F[0-9]","",c)
-        newXMLNode(c,cValues,parent = top)
-      }
     }
     saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
   }
-
 }
-
 
 computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
   # fixed features
