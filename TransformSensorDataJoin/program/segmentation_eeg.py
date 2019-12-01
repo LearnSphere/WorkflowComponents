@@ -70,7 +70,10 @@ for index,row  in  students_data.iterrows():
     df_result=signal_data[signal_data['timestamps(ms)'].isin(subset)]
     df_result=df_result[['timestamps(ms)','eeg_1','eeg_2','eeg_3','eeg_4']]
     df_result['Time']=begin_time
-    list_dfs.append(df_result)
+    if df_result.empty:
+      pass
+    else:
+       list_dfs.append(df_result)
 
 
 if fft_frequency=="yes":
