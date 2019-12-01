@@ -17,7 +17,7 @@
  <options>
       <!--<beginoffset>100000000</beginoffset>
       <endoffset>10000000</endoffset>-->
-      <frequency>no</frequency>                      
+      <frequency>yes</frequency>                      
   </options>
   <inputs>
   <input0>

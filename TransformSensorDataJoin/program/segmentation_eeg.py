@@ -13,6 +13,7 @@ import scipy
 import csv
 
 import sys
+import warnings
 
 parser = argparse.ArgumentParser(description='Segmentation of sensor data')
 
@@ -120,23 +121,33 @@ if fft_frequency=="yes":
     for band in eeg_bands:
         freq_ix_1 = np.where((fft1_freq >= eeg_bands[band][0]) &
                              (fft1_freq <= eeg_bands[band][1]))[0]
-
-        eeg1_band_fft[band] = np.mean(fft1_vals[freq_ix_1])
+        
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            eeg1_band_fft[band] = np.nanmean(fft1_vals[freq_ix_1])
 
         freq_ix_2 = np.where((fft2_freq >= eeg_bands[band][0]) &
                              (fft2_freq <= eeg_bands[band][1]))[0]
 
-        eeg2_band_fft[band] = np.mean(fft2_vals[freq_ix_2])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            eeg2_band_fft[band] = np.nanmean(fft2_vals[freq_ix_2])
 
         freq_ix_3 = np.where((fft3_freq >= eeg_bands[band][0]) &
                              (fft3_freq <= eeg_bands[band][1]))[0]
 
-        eeg3_band_fft[band] = np.mean(fft3_vals[freq_ix_3])
+   
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            eeg3_band_fft[band] = np.nanmean(fft3_vals[freq_ix_3])
 
+        
         freq_ix_4 = np.where((fft4_freq >= eeg_bands[band][0]) &
                              (fft4_freq <= eeg_bands[band][1]))[0]
 
-        eeg4_band_fft[band] = np.mean(fft4_vals[freq_ix_4])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            eeg4_band_fft[band] = np.nanmean(fft4_vals[freq_ix_4])
 
     list1_1 = eeg1_band_fft['Delta']
     list1_2 = eeg1_band_fft['Theta']
