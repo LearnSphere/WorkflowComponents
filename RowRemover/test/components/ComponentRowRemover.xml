@@ -17,7 +17,7 @@
       <valueColumn>Problem Name,Step Name</valueColumn>
       <caseSensitive>No</caseSensitive>
       <removeNull>No</removeNull>
-      <removeValues>0, BUILDING_A_SIDEWALK, painting_the_wall, abc</removeValues>
+      <removeValue>BUILDING_A_SIDEWALK</removeValue>
   </options>
   <inputs>
     <input0>
