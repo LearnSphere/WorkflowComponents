@@ -327,10 +327,16 @@ public class AFMMain extends AbstractComponent {
                         outputStream.write(bytes);
                         colIndex++;
                     }
-                    if (replaceHeaderIndex == headerArray.length) {
-                        byte[] bytes = (TAB_CHAR + predictedValueString).getBytes("UTF-8");
+                    if (replaceHeaderIndex == headerArray.length || replaceHeaderIndex >= valueArray.length) {
+                    	//in this situation, the last few columns have empty values
+                    	int emptyColCnt = replaceHeaderIndex - (valueArray.length -1);
+                    	String padding = "";
+                    	for (int thisEmptyColInd = 0; thisEmptyColInd < emptyColCnt; thisEmptyColInd++) {
+                    		padding += TAB_CHAR;
+                    	}
+                    	byte[] bytes = (padding + predictedValueString).getBytes("UTF-8");
                         outputStream.write(bytes);
-                    }
+                    } 
 
                     outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
                     line = bufferedReader.readLine();
