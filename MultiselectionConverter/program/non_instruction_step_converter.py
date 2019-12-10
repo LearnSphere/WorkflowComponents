@@ -39,7 +39,7 @@ def changeColumns(x):
     elif (student_response_type and student_response_type == 'HINT_REQUEST'
          and tutor_response_type and tutor_response_type == 'HINT_MSG'
          and step_name):
-        x['Event Type'] = 'instruct'    
+        x['Event Type'] = 'instruct'
     return x
 
 
@@ -49,7 +49,7 @@ def changeColumns(x):
 map_file_name = ""
 data_file_name = ""
 command_line_exe = True
-#test command 
+#test command
 #Python non_instruction_step_converter.py -dataFile "ds2846_tx_test.txt" -mapFile "ds2846_non_instructional_steps_map.txt"
 if command_line_exe:
     parser = argparse.ArgumentParser(description='Convert multi-selection steps into multiple steps and adjust scoring')
@@ -139,6 +139,6 @@ out_file_name = os.path.splitext(os.path.basename(data_file_name))[0] + "_conver
 out_file = open(out_file_name, "w")
 out_file.write(original_headers)
 out_file.close()
-with open(out_file_name, 'a', newline='') as f:
+with open(out_file_name, 'a', newline='', encoding='utf-8') as f:
     df_combined.to_csv(f, sep='\t', index=False, header=False)
 
