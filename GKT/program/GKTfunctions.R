@@ -12,8 +12,6 @@ suppressPackageStartupMessages(library(lme4))
 library(RColorBrewer)
 library(XML)
 
-
-######################################
 #define functions
 
 modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
@@ -115,7 +113,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       fitstat1<-cor(temp$data$CF..ansbin.,predict(temp,type="response"))^2
       }
       rt.pred=exp(1)^(-(predict(temp)[which(temp$data$CF..ansbin.==1)]))
-      #Detect and flatten outliers--------------------------------------------------------------------------
+      
       outVals = boxplot(temp$data$Duration..sec.,plot=FALSE)$out
       outVals = which(temp$data$Duration..sec. %in% outVals)
       temp$data$Duration..sec.=as.numeric(temp$data$Duration..sec.)
@@ -127,7 +125,8 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
       fitstat2<-cor(the.rt,predict(lm.rt,type="response"))^2
       print(paste("Correctness R2: ",fitstat1,"Latency R2: ",fitstat2),sep='')
-      fitstat<<-sum(c(fitstat1,fitstat2))    }
+      fitstat<<-sum(c(fitstat1,fitstat2))   
+      }
       nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
       cat(paste("   fitstat = ",round(fitstat,8),"  ",sep=""))
       #cat(paste("   r-squaredc = ",cor(df$CF..ansbin.,predict(temp))^2,sep=""))
@@ -185,7 +184,10 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
   if(cvSwitch==0 & makeFolds==0){
     #Output text summary
     #collect all the features except "intercept"
-    featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2","base4","ppe","dashafm","dashsuc","diffcor1","diffcor2","diffcorComp","diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2","logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
+    featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2",
+                 "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
+                 "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
+                 "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
 
     #collect all parameters from prespecfeatures and plancomponents (input code)
     #prespecfeatures<-gsub("[[:punct:]]","",prespecfeatures)
@@ -305,6 +307,8 @@ computefeatures <- function(df,feat,par1,par2,index,index2,par3,par4,fcomp){
     h<-countOutcomeDashPerf(dfV,"CORRECT",par1)
     return(log(1+h))   }
   # single factor dynamic features
+  if(feat=="diffrelcor1"){return(countRelatedDifficulty1(df,df$index,"CORRECT"))}
+  if(feat=="diffrelcor2"){return(countRelatedDifficulty2(df,df$index,"CORRECT"))}
   if(feat=="diffcor1"){return(countOutcomeDifficulty1(df,df$index,"CORRECT"))}
   if(feat=="diffcor2"){return(countOutcomeDifficulty2(df,df$index,"CORRECT"))}
   if(feat=="diffcorComp"){return(countOutcomeDifficulty1(df,df$index,"CORRECT")-countOutcomeDifficulty2(df,df$index,"CORRECT"))}
@@ -541,8 +545,24 @@ y
 #countOutcomeDash(c(0,50,60),4)
 #d[,2]<-as.character(d[,2])
 #d[,3]<-as.character(d[,3])
+
+#count confusable outcome difficulty effect
 countOutcomeDifficulty1 <-function(df,index,r) {
   temp<-df$pred
+  temp<-ifelse(df$Outcome==r,temp,0)
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
+
+countRelatedDifficulty1 <-function(df,index,r) {
+  temp<-(df$contran)
+  temp<-ifelse(df$Outcome==r,temp,0)
+  df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
+  df$temp<- df$temp-temp
+  df$temp}
+
+countRelatedDifficulty2 <-function(df,index,r) {
+  temp<-(df$contran)^2
   temp<-ifelse(df$Outcome==r,temp,0)
   df$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   df$temp<- df$temp-temp
