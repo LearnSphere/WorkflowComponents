@@ -29,8 +29,8 @@
       <errors />
       <files>
           <tab-delimited>
-          <file_path>test/example_files/EEG_MUSE_Data_09_25_2019.txt</file_path>
-          <file_name>EEG_MUSE_Data_09_25_2019.txt</file_name>
+          <file_path>test/example_files/EEG_Data_Set2_Nov19.txt</file_path>
+          <file_name>EEG_Data_Set2_Nov19.txt</file_name>
           <index>0</index>
           <label>file</label>
           <metadata>
@@ -55,8 +55,8 @@
       <errors />
       <files>
         <tab-delimited>
-          <file_path>test/example_files/MOFACTS.txt</file_path>
-          <file_name>MOFACTS.txt</file_name>
+          <file_path>test/example_files/MOFACTS_Data_Set2_Nov18_Edited.txt</file_path>
+          <file_name>MOFACTS_Data_Set2_Nov18_Edited.txt</file_name>
           <index>1</index>
           <label>file</label>
           <metadata>
