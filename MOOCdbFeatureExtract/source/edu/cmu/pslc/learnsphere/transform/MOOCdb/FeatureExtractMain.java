@@ -100,7 +100,7 @@ public class FeatureExtractMain extends AbstractComponent {
         Date startDate = null;
         //correct format is yyyy-mm-dd
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        if(opStartDate != null && !opStartDate.equals("") && !opStartDate.equalsIgnoreCase("yyyy-mm-dd")) {
+        if(opStartDate != null && !opStartDate.equals("") && !opStartDate.equalsIgnoreCase("1970-01-01")) {
             try {
                 startDate = format.parse(opStartDate);
             } catch (ParseException ex) {

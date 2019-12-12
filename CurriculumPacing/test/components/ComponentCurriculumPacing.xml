@@ -40,6 +40,8 @@
 <RelMaxTimeUnit>52</RelMaxTimeUnit>
 <AbsMinTimeUnit>1900-01-01 00:00:00</AbsMinTimeUnit>
 <AbsMaxTimeUnit>3000-01-01 00:00:00</AbsMaxTimeUnit>
+<height>10</height>
+<width>10</width>
 </options>
 
 </component>

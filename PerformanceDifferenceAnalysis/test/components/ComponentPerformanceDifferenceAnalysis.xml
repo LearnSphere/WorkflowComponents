@@ -1,0 +1,65 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>Performance Difference Analysis</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x837470</from>
+    </connection>
+  </connections>
+  <top>218</top>
+ 
+<inputs>
+<input0>
+<component_id>Data-1-x837470</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <index>0</index>
+		<file_path>test/test_data/Sample_DataSet.csv</file_path>
+		<label>csv</label>
+          <file_name>Sample_DataSet.csv</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>FINAL GRADE</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>SEX</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>QPA</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>UNITS FACTORED</name>
+            </header>
+          </metadata>
+        </csv>
+</files>
+<inputmeta />
+</input0>
+</inputs>
+<options>
+    <finalGrade>Input 0 (0) - FINAL GRADE (column 0)</finalGrade>
+    <qpa>Input 0 (0) - QPA (column 2)</qpa>
+    <unitsFactor>Input 0 (0) - UNITS FACTORED (column 3)</unitsFactor>
+    <anormalyFactor>Input 0 (0) - SEX (column 1)</anormalyFactor>
+  </options>
+
+</component>

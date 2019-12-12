@@ -84,6 +84,13 @@ public class OliLoToKcMain extends AbstractComponent {
 
 	}
 
+    // Constants.
+    // Technically we should consider upper and lower case to handle locale
+    // funkiness but for us just one case comparison is sufficient.
+    private static final String PROBLEMS = "problems";
+    private static final String LOS = "los";
+    private static final String SKILLS = "skills";
+
 	@Override
 	protected void runComponent() {
 
@@ -135,22 +142,34 @@ public class OliLoToKcMain extends AbstractComponent {
 
 		// Add the paths to the three tsv files to the command line for the PHP script
 		File [] inputFiles = unzippedInputDir.listFiles();
+		boolean foundProblemsFile = false;
+		boolean foundLosFile = false;
+		boolean foundSkillsFile = false;
 		for (File inputFile : inputFiles) {
 			if (inputFile.exists() && inputFile.canRead()) {
 				String fileName = inputFile.getName();
 				String fileNameWithoutExt = fileName.replaceFirst("[.][^.]+$", "");
-
-				if (fileNameWithoutExt.endsWith("-problems")) {
-					this.setOption("problemsFile", inputFile.getAbsolutePath());
-				} else if (fileNameWithoutExt.endsWith("-los")) {
-					this.setOption("losFile", inputFile.getAbsolutePath());
-				} else if (fileNameWithoutExt.endsWith("-skills")) {
-					this.setOption("skillsFile", inputFile.getAbsolutePath());
-				}
+                                String fileNameLower = fileNameWithoutExt.toLowerCase();
+                                if (fileNameLower.endsWith(PROBLEMS)) {
+                                    this.setOption("problemsFile", inputFile.getAbsolutePath());
+                                    foundProblemsFile = true;
+                                } else if (fileNameLower.endsWith(LOS)) {
+                                    this.setOption("losFile", inputFile.getAbsolutePath());
+                                    foundLosFile = true;
+                                } else if (fileNameLower.endsWith(SKILLS)) {
+                                    this.setOption("skillsFile", inputFile.getAbsolutePath());
+                                    foundSkillsFile = true;
+                                }
 			} else {
 				logger.debug("Issue with input file: " + inputFile.getAbsolutePath());
 			}
 		}
+		if (!foundProblemsFile || !foundLosFile || !foundSkillsFile) {
+        	logger.info("Required input file not found.");
+        	errorMessages.add("Required input file not found.");
+        	System.out.println(this.getOutput());
+			return;
+        }
 
 		// Run the PHP script
 		File outputDirectory = this.runExternal();

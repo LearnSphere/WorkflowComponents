@@ -1,3 +1,5 @@
+ suppressMessages(suppressWarnings(library(logWarningsMessagesPkg)))
+ suppressMessages(suppressWarnings(library(rlang)))
 suppressMessages(suppressWarnings(library(tibble)))
 suppressMessages(suppressWarnings(library(readr)))
 suppressMessages(suppressWarnings(library(ggplot2)))
@@ -11,9 +13,10 @@ override <- FALSE
 # Rscript curriculumpacing.R -workingDir . -programDir . -node 0 -fileIndex 0 "student_data.txt" -Plot "Usage" -TimeScale "Relative" -TimeScaleRes "Month" -RelMinTimeUnit 1 -RelMaxTimeUnit 12 -AbsMinTimeUnit "1900-01-01 00:00:00" -AbsMaxTimeUnit "3000-01-01 00:00:00" -node 1 -fileIndex 0 order_data.csv
 # Rscript curriculumpacing.R -workingDir . -programDir . -node 0 -fileIndex 0 "student_data.txt" -Plot "Usage and performance" -TimeScale "Relative" -TimeScaleRes "Week" -RelMinTimeUnit 1 -RelMaxTimeUnit 52 -AbsMinTimeUnit "1900-01-01 00:00:00" -AbsMaxTimeUnit "3000-01-01 00:00:00" -node 1 -fileIndex 0 order_data.csv
 
-#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt -node 1 -fileIndex 0 order_data.csv
-#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt -node 1 -fileIndex 0 order_data.csv -height 10 -width 12
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -AbsMaxTimeUnit "1900-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScaleRes Week -TimeScale Relative -node 0 -fileIndex 0 student_data.txt -height 10 -width 12
 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" curriculumpacing.R -programDir . -workingDir . -userId hcheng -AbsMaxTimeUnit "3000-01-01 00:00:00" -AbsMinTimeUnit "1900-01-01 00:00:00" -Plot Usage -RelMaxTimeUnit 52 -RelMinTimeUnit 1 -TimeScale Relative -TimeScaleRes Week -height 10 -width 1, -node 0 -fileIndex 0 ds1258_student_problem_All_Data_4937_2019_0718_190606.txt
 # Curriculum pacing R code
 
 # input file that will contain student data
@@ -43,6 +46,10 @@ rel_max_time_unit <- NULL
 # minimum/maximum time unit for absolute time
 abs_min_time_unit <- NULL
 abs_max_time_unit <- NULL
+
+#size of graph
+graph_height = 10
+graph_width = 12
 
 # name of the problem hierarchy order file
 hierarchy_order <- NULL
@@ -202,7 +209,33 @@ if (override) {
       print(paste("Maximum absolute time unit:", abs_max_time_unit))
       i <- i + 1
       
+    }  else if (args[i] == "-height") {
+      # option 7: graph heigh
+      
+      if (length(args) == i) {
+        stop("Graph height must be specified")
+      }
+      
+      #graph_height <- as.numeric(args[i + 1])
+      graph_height <- logWarningsMessages(as.numeric(args[i + 1]), logFileName = "curriculum_pacing.wfl")
+        
+      print(paste("Graph height:", graph_height))
+      i <- i + 1
+      
+    } else if (args[i] == "-width") {
+      # option 7: graph width
+      
+      if (length(args) == i) {
+        stop("Graph width must be specified")
+      }
+      
+      #graph_width <- as.numeric(args[i + 1])
+      graph_width <- logWarningsMessages(as.numeric(args[i + 1]), logFileName = "curriculum_pacing.wfl")
+      print(paste("Graph width:", graph_width))
+      i <- i + 1
+      
     } 
+    
     
     i <- i + 1
   }
@@ -227,12 +260,14 @@ source(paste(make_plot_program_dir, "make_plot.R", sep=""))
 
 print("All options scanned...")
 
-rdf <- suppressMessages(suppressWarnings(read_tsv(input_file)))
+#rdf <- suppressMessages(suppressWarnings(read_tsv(input_file)))
+rdf <- logWarningsMessages(read_tsv(input_file), logFileName = "curriculum_pacing.wfl")
 
 ord_df <- if(is.null(hierarchy_order) || hierarchy_order == "") {
   NULL
 } else {
-  suppressMessages(suppressWarnings(read_csv(hierarchy_order)))
+  #suppressMessages(suppressWarnings(read_csv(hierarchy_order)))
+  logWarningsMessages(read_csv(hierarchy_order), logFileName = "curriculum_pacing.wfl")
 }
 
 plt <- make_plot(student_step_data = rdf,
@@ -245,7 +280,11 @@ plt <- make_plot(student_step_data = rdf,
                  max_datetime_unit = abs_max_time_unit,
                  plot_type = plot_type)
 
+plt <- plt + labs(caption = input_file)
+
 # save ggplot object
 # height and width are in inches
-ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = 10, width = 12)
+#ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = graph_height, width = graph_width)
+
+logWarningsMessages(ggsave(file.path(working_dir, "curriculumpacing.pdf"), plt, height = graph_height, width = graph_width), logFileName = "curriculum_pacing.wfl")
 

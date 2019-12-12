@@ -6,27 +6,27 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/CurriculumPacing</url>
 <date>March 14, 2019</date>
-<abstract>The <b>CurriculumPacing</b> component is an example of a(n) R component.</abstract>
+<abstract>The <b>Curriculum Pacing</b> component allows users to visualize and explore end-to-end curriculum data. To see what Curriculum Pacing is and what does it look like, please refer to <a href="https://link.springer.com/chapter/10.1007/978-3-319-91464-0_38">this paper</a>. To get more insight into the parameters of the component, please refer to <a href="https://www.researchgate.net/publication/331346120_Using_Curriculum_Pacing_in_LearnSphere_to_Visualize_Student_Learning_Trajectories">this paper</a>. In a nutshell, using this component, you will be able to see how students progress through the curriculum or problem hierarchy over time.</abstract>
 <description>Curriculum Pacing is a way to visualize student learning trajectories through curriculum units and sections. This visualization is suitable to quickly explore end-to-end curriculum data and see patterns of student learning. Try creating this visualization for different sub-samples of the data having different properties and it might reveal differences in student learning paths in the different cohorts.</description>
 
 <inputs><ul>
-<li>student-problem</li>
-<li>hierarchy-order</li></ul>
+<li>Input 1 - <b>student-problem</b>: This input is either data in the DataShop student-problem format or any TSV dataset with these columns: Anon Student Id (String), Problem Hierarchy (String), Problem Start Time (ISO Timestamp), Corrects (Number), Incorrects (Number)</li>
+<li>Input 2 (optional) - <b>hierarchy-order</b>: This optional input is a CSV file that gives the correct linear order of the values in the Problem Hierarchy column. This is a two column CSV file with these two column names: Problem Hierarchy (String), Problem Hierarchy Order (Number) </li></ul>
 </inputs>
 
 <outputs>
-<b>image</b>
+<b>PDF</b>
 </outputs>
 
 <options>
 <ul>
-<li>PlotType -- type Enum(Usage, Usage and performance)</li>
-<li>TimeScaleType -- type Enum(Relative, Absolute)</li>
-<li>TimeScaleRes -- type Enum(Day, Week, Month)</li>
-<li>RelMinTimeUnit -- type xs:integer</li>
-<li>RelMaxTimeUnit -- type xs:integer</li>
-<li>AbsMinTimeUnit -- type xs:string</li>
-<li>AbsMaxTimeUnit -- type xs:string</li>
+<li>PlotType - (1) Usage - Just show student usage over time (2) Usage and performance - Show both student usage and performance over time</li>
+<li>TimeScaleType -- Relative or Absolute</li>
+<li>TimeScaleRes -- Day, Week, or Month</li>
+<li>RelMinTimeUnit -- Integer, applies only to relative time scale. Used to filter the X axis of the plot. Sets the minimum time unit. For example, if time scale is relative, and time scale resolution is week, min time unit = 5 will start all students at their 5th week of usage.</li>
+<li>RelMaxTimeUnit -- Integer, similar to RelMinTimeUnit, sets maximum X axis limit.</li>
+<li>AbsMinTimeUnit -- ISO Timestamp, applies only to absolute time scale. Used to filter X axis of the plot. Sets the minimum time.</li>
+<li>AbsMaxTimeUnit -- ISO Timestamp, similar to AbsMaxTimeUnit, sets maximum X axis limit.</li>
 </ul>
 </options>
 

@@ -114,7 +114,7 @@ function buildReliablilityTable(data) {
     }
     jQuery('#reliabilityTableDiv').append(dataTable);
 
-    colorTable(parseFloat(data[0][1]));
+    colorTable(parseFloat(data[1][1]));
 }
 
 function formatNum(num) {
@@ -126,7 +126,7 @@ function formatNum(num) {
  */
 function colorTable(allItemAlpha) {
     // Loop through cells with alpha values
-    jQuery('#dataTable td:not(:first-of-type)').each(function() {
+    jQuery('#dataTable tr td:nth-child(2)').each(function() {
         let text = jQuery(this).text();
         if (text != null && text != "") {
             try {

@@ -35,6 +35,8 @@ import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import edu.cmu.tetrad.data.*;
 import edu.cmu.tetrad.regression.*;
@@ -167,6 +169,7 @@ public class TetradRegression {
 
             String regressionTableFile = workingDir + "RegressionTable.txt";
             String regressionGraphFile = workingDir + "RegressionGraph.html";
+            String regressionStatsFile = workingDir + "RegressionModelStatistics.txt";
 
             boolean multiLinRegr = false;
             if ( regrType.equals("Multiple_Linear_Regression") ) {
@@ -187,6 +190,9 @@ public class TetradRegression {
                 BufferedWriter bWriterGraph = null;
                 FileWriter fWriterGraph = null;
 
+                BufferedWriter bWriterStats = null;
+                FileWriter fWriterStats = null;
+
                 try {
 
                     fWriterTable = new FileWriter(regressionTableFile);
@@ -194,6 +200,9 @@ public class TetradRegression {
 
                     fWriterGraph = new FileWriter(regressionGraphFile);
                     bWriterGraph = new BufferedWriter(fWriterGraph);
+
+                    fWriterStats = new FileWriter(regressionStatsFile);
+                    bWriterStats = new BufferedWriter(fWriterStats);
 
                     char[] chars = fileToCharArray(inputFile);
 
@@ -228,6 +237,7 @@ public class TetradRegression {
 
                     String table;
                     Graph graph;
+                    String modelStats = "";
 
                     if ( multiLinRegr ) {
                         Regression rd = new RegressionDataset(data);
@@ -237,9 +247,11 @@ public class TetradRegression {
 
                         TextTable tt = result.getResultsTable();
                         tt.setTabDelimited( true );
-                        table = tt.toString();
+                        table = tt.toString().replaceAll("\n[\\s]*\n", "\n");
 
                         graph = rd.getGraph();
+
+                        modelStats = result.getPreamble();
                     } else {
                         LogisticRegression lr = new LogisticRegression( data );
                         lr.setAlpha( alpha );
@@ -248,7 +260,8 @@ public class TetradRegression {
                         table = "";
                         try {
                             result = lr.regress( new DiscreteVariable(target, 2), regr );
-                            table = result.toString();
+                            table = logisticRegressionTable(result, alpha);
+                            modelStats = result.toString();
                         } catch ( IllegalArgumentException e ) {
                             addToErrorMessages( "Exception thrown while in .regress(): " + e.toString() );
                         }
@@ -261,8 +274,9 @@ public class TetradRegression {
                     bWriterTable.append( table );
                     bWriterTable.close();
 
-                    //bWriterGraph.append( graph.toString() );
-                    //bWriterGraph.close();
+                    bWriterStats.append(modelStats);
+                    bWriterStats.close();
+
                     writeGraphToHtml(graph.toString(), programDir, bWriterGraph);
 
                 } catch (IOException e) {
@@ -284,6 +298,29 @@ public class TetradRegression {
         }
         System.setErr(sysErr);
 
+    }
+
+    private static String logisticRegressionTable(Result result, double alpha) {
+        String table = "";
+
+        NumberFormat nf = new DecimalFormat("0.0000");
+
+        table += "Var\tCoeff.\tStdErr\tprob.\tsig.";
+
+        List<String> regressorNames = result.getRegressorNames();
+        double[] coefs = result.getCoefs();
+        double[] stdErrs = result.getStdErrs();
+        double[] probs = result.getProbs();
+
+        for (int i = 0; i < regressorNames.size(); i++) {
+            table += "\n" + regressorNames.get(i) +
+                    "\t" + nf.format(coefs[i + 1]) +
+                    "\t" + nf.format(stdErrs[i + 1]) +
+                    "\t" + nf.format(probs[i + 1]) +
+                    "\t" + (probs[i + 1] < alpha ? "*" : "");
+        }
+
+        return table;
     }
 
     public static ArrayList<String> getMultiFileInputHeaders (String param, String [] args) {

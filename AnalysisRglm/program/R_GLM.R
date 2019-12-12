@@ -19,16 +19,21 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = identity)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -family "poisson (link = sqrt)" -fixedEffects "" -formula "First.Attempt ~  (1|Anon.Student.Id)" -modelingFunc glmer -randomEffects "1^|Anon Student Id" -response "First Attempt" -responseCol First.Attempt -node 0 -fileIndex 0 ds76_student_step_export.txt
 
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" R_GLM.R -programDir . -workingDir . -userId hcheng -family "binomial (link = logit)" -fixedEffects "tag_code:Opportunity" -formula "is_right ~ tag_code:Opportunity + (1|user_id)" -modelingFunc glmer -randomEffects "1^|user_id" -response_nodeIndex 0 -response_fileIndex 0 -response is_right -responseCol is_right -node 0 -fileIndex 0 math_record_cleaned_short.txt
+
 
 options(echo=FALSE)
 options(warn=-1)
 
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
+suppressMessages(library(logWarningsMessagesPkg))
+suppressMessages(library(rlang))
 suppressMessages(library(lme4))
 suppressMessages(library(data.table))
 suppressMessages(library(optimx))
 suppressMessages(library(speedglm))
+
 
 
 # initialize variables
@@ -225,12 +230,17 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
 	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 
-	}
-  eval(parse(text=modelingString))
+	 }
+  #suppressWarnings(suppressMessages(eval(parse(text=modelingString))))
+
+  logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
+
   modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
-	suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
-	suppressMessages(capture.output(params, file = summary.file, append = TRUE))
+	#suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
+	#suppressMessages(capture.output(params, file = summary.file, append = TRUE))
+	logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE), logFileName = "r_glm.wfl")
+	logWarningsMessages(capture.output(params, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
 
 	# sink(summary.file)
 	# print(modelSum, correlation=TRUE)
@@ -372,12 +382,15 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
     #modelingString = paste("fittedModel <-lm(", formula, ", data=ds)", sep="")
     modelingString = paste("fittedModel <-speedlm(", formula, ", data=ds)", sep="")
   }
-  eval(parse(text=modelingString))
+  #eval(parse(text=modelingString))
+  logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
   #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
 
 	modelSum <- summary(fittedModel)
 	#print(modelSum)
-	suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
+	#suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
+	logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE), logFileName = "r_glm.wfl")
+	
 	write("<parameters>",file=parameters.values.file,sep="",append=FALSE)
 	write("<model_values>",file=model.values.file,sep="",append=FALSE)
 	write("<model>",file=model.values.file,sep="",append=TRUE)

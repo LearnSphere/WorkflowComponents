@@ -1,9 +1,12 @@
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" iAFM.R -programDir . -workingDir . -model "KC (NewModel)" -node 0 -fileIndex 0 ds2174_student_step_All_Data_3991_2017_1128_123902.txt
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" iAFM.R -programDir . -workingDir . -userId hcheng -firstAttempt_nodeIndex 0 -firstAttempt_fileIndex 0 -firstAttempt "First Attempt" -model_nodeIndex 0 -model_fileIndex 0 -model "KC (Default)" -opportunity_nodeIndex 0 -opportunity_fileIndex 0 -opportunity "Opportunity (Default)" -student_nodeIndex 0 -student_fileIndex 0 -student "Anon Student Id" -node 0 -fileIndex 0 ds96_reordered_multiskill_converted.txt
 args <- commandArgs(trailingOnly = TRUE)
 
-suppressMessages(library(lme4))
-suppressMessages(library(data.table))
-suppressMessages(library(optimx))
+suppressWarnings(suppressMessages(library(logWarningsMessagesPkg)))
+suppressWarnings(suppressMessages(library(rlang)))
+suppressWarnings(suppressMessages(library(lme4)))
+suppressWarnings(suppressMessages(library(data.table)))
+suppressWarnings(suppressMessages(library(optimx)))
 
 preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   #kcm_index <- grep(kcm,names(origRollup))
@@ -14,11 +17,22 @@ preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   names(df)[which( colnames(df)==make.names(eval(opportunity)) )] <- "opportunity" #replace the opportunity name with "opportunity"
   names(df)[which( colnames(df)==make.names(eval(individual)) )] <- "individual" #replace the individualizing factor name with "individual"
   success <- ifelse(df$response=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
+  df$success <- success
   df$errorRate <- 1-success #add a success column
   rm(success)
   return(df)
 }
 
+replace_special_chars <- function(str) {
+ changedStr = gsub("<", " lt ", str)
+ changedStr = gsub(">", " gt ", changedStr)
+ changedStr = gsub("\"", " quot ", changedStr)
+ changedStr = gsub("'", " apos ", changedStr)
+ changedStr = gsub("&", " amp ", changedStr)
+ return(changedStr)
+}
+
+wfl_log_file = "iAFM.wfl"
 workingDir = "."
 
 if (length(args) == 2) {
@@ -78,15 +92,17 @@ if (length(args) == 2) {
   }
 }
 
-df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+#df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 
 ## fit iAFM - four params - individual intercept, individual slope, KC intercept, and KC slope
-iafm.model <- suppressWarnings(glmer(errorRate ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
+#iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
+iafm.model <- logWarningsMessages(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
 
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
 write("\t<model>",file=outputFile1,sep="",append=TRUE)
-write(paste("\t\t<name>",modelName,"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<name>",replace_special_chars(modelName),"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
 ## potential outputs
 write(paste("\t\t<AIC>",AIC(iafm.model),"</AIC>",sep=""),file=outputFile1,sep="",append=TRUE)
 write(paste("\t\t<BIC>",BIC(iafm.model),"</BIC>",sep=""),file=outputFile1,sep="",append=TRUE)
@@ -108,7 +124,7 @@ for (x in 1:length(rownames(kc.params))) {
   strBuilder <- paste(strBuilder,
       "\t<parameter>\n",
       "\t\t<type>Skill</type>\n",
-      "\t\t<name>",kc.params[x,2],"</name>\n",
+      "\t\t<name>",replace_special_chars(kc.params[x,2]),"</name>\n",
       "\t\t<intercept>",kc.params[x,3],"</intercept>\n",
       "\t\t<slope>",kc.params[x,4],"</slope>\n",
       "\t</parameter>\n",
@@ -138,7 +154,8 @@ write("</parameters>",file=outputFile2,sep="",append=TRUE)
 outputFile3 <- paste(workingDir, "/student-step.txt", sep="")
 
 # Make note of original header, including column ordering
-origFile <- suppressWarnings(fread(file=stuStepFileName,verbose = F))
+#origFile <- suppressWarnings(fread(file=stuStepFileName,verbose = F))
+origFile <- logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file)
 origCols <- colnames(origFile)
 
 # Add PER for the specified model. if it exists replaces, if it doesn't exist gets added to the end
@@ -148,11 +165,12 @@ KCname = paste("KC (",eval(actualModelName),")",sep="")
 PERname = paste("Predicted Error Rate (",eval(actualModelName),")",sep="")
 
 if(PERname%in%origCols){
-  origFile[,eval(PERname)] <- predict(iafm.model,df,type="response",allow.new.levels=TRUE) # replace the values in the column
+  origFile[,eval(PERname)] <- 1 - predict(iafm.model,df,type="response",allow.new.levels=TRUE) # replace the values in the column
 }else{
-  origFile$PredictedErrorRate <- predict(iafm.model,df,type="response",allow.new.levels=TRUE) # add the column
+  origFile$PredictedErrorRate <- 1 - predict(iafm.model,df,type="response",allow.new.levels=TRUE) # add the column
   names(origFile)[ncol(origFile)] <- PERname # Rename the column
 }
 
-suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""))
+#suppressWarnings(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""))
+logWarningsMessages(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""), logFileName = wfl_log_file)
 

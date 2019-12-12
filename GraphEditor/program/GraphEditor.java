@@ -121,8 +121,9 @@ public class GraphEditor {
             return;
         }
         if (inFile == null) {
-            addToErrorMessages("No input file found");
-            return;
+            addToDebugMessages("No input file found");
+            // return;
+            inFile = new File(cmdParams.get("-programDir") + "/program/tetradGraphVisualizationEditor.html");
         }
         /*if (inFile != null) {
           try {

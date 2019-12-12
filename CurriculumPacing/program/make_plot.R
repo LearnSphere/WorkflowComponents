@@ -25,13 +25,14 @@ make_plot <- function(student_step_data,
                       min_datetime_unit = "1900-01-01 00:00:00", 
                       max_datetime_unit = "3000-01-01 00:00:00",
                       plot_type = c("Usage", "Usage and performance")) {
-  
   suppressMessages(suppressWarnings(require(dplyr)))
   suppressMessages(suppressWarnings(require(ggplot2)))
   suppressMessages(suppressWarnings(require(stringr)))
   suppressMessages(suppressWarnings(require(ggthemes)))
   suppressMessages(suppressWarnings(require(gtools)))
   suppressMessages(suppressWarnings(require(lubridate)))
+  
+  
   
   #require(dplyr)
   #require(ggplot2)
@@ -123,7 +124,7 @@ make_plot <- function(student_step_data,
       geom_point(aes(color = pct_correct, size = n)) +
       scale_color_gradient2(low = "#d35400", mid = "#f1c40f", high = "#27ae60", midpoint = 50) +
       theme_bw() +
-      labs(x = "Time Unit",
+      labs(x = paste0("Time Unit (Binned by ", time_scale_resolution, ")"),
            y = "Problem Hierarchy",
            size = "Number of\nStudents",
            color = "Percent\nCorrect",
@@ -140,7 +141,7 @@ make_plot <- function(student_step_data,
       geom_tile(aes(fill = n)) +
       scale_fill_continuous(low = "gray90", high = "gray10") +
       theme_bw() +
-      labs(x = "Time Unit",
+      labs(x = paste0("Time Unit (Binned by ", time_scale_resolution, ")"),
            y = "Problem Hierarchy",
            fill = "Number of\nstudents",
            title = "Curriculum pacing plot")

@@ -9,8 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.json.CDL;
 import org.json.JSONArray;
@@ -25,14 +28,26 @@ public class TextConverterMain extends AbstractComponent {
     static private String TAB_DELIM_FILE_TYPE = "tab-delimited";
     static private String CSV_FILE_TYPE = "csv";
     static private String JS_FILE_TYPE = "json";
+    
+    static private String PATTERN_FOR_JSONARRAY = "\\s*\\[.*\\]\\s*";
+    static private String PATTERN_FOR_JSONOBJECT = "\\s*\\{.*\\}\\s*";
+    
+    private Set<String> headers;
+    private Hashtable<String, Integer> entityNameCount;
+    private Hashtable<String, Hashtable<String, String>> entities;
+    
     public static void main(String[] args) {
 
         TextConverterMain tool = new TextConverterMain();
         tool.startComponent(args);
+        
     }
 
     public TextConverterMain() {
         super();
+        headers = new HashSet<String>();
+        entityNameCount = new Hashtable<String, Integer>();
+        entities = new Hashtable<String, Hashtable<String, String>>();
     }
 
     @Override
@@ -41,7 +56,7 @@ public class TextConverterMain extends AbstractComponent {
         String oft = this.getOptionAsString("oft").toLowerCase();
         String inputFilePath = this.getAttachment(0, 0).getAbsolutePath();
         File inputFile = this.getAttachment(0, 0);
-
+        
         //output file
         File generatedFile = null;
 
@@ -49,38 +64,32 @@ public class TextConverterMain extends AbstractComponent {
         	generatedFile = new File(inputFilePath);
         } else if (ift.equals(JS_FILE_TYPE)) {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
-
-        		generatedFile = convertJsonToDelimited(inputFilePath, ift, oft);
+        	        generatedFile = convertJsonToDelimited(inputFilePath, ift, oft);
 
         	} else if (oft.equals(XML_FILE_TYPE)) {
-
-        		generatedFile = jsonToXmlFile(inputFilePath);
+        	        generatedFile = jsonToXmlFile(inputFilePath);
 
         	}
         } else if (ift.equals(XML_FILE_TYPE)) {
         	if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
-
-        		File jsonFile = xmlToJsonFile(inputFilePath);
+        	        File jsonFile = xmlToJsonFile(inputFilePath);
         		generatedFile = convertJsonToDelimited(
     				jsonFile.getAbsolutePath(), JS_FILE_TYPE, oft);
 
         	} else if (oft.equals(JS_FILE_TYPE)) {
-
-        		generatedFile = xmlToJsonFile(inputFilePath);
+        	        generatedFile = xmlToJsonFile(inputFilePath);
 
         	}
         } else if (ift.equals(CSV_FILE_TYPE) || ift.equals(TAB_DELIM_FILE_TYPE)) {
         	if (oft.equals(XML_FILE_TYPE)) { // -k \"Some Column Key\"
-
-        		File jsonFile = csvToJsonFile(inputFilePath, ift);
+        	        File jsonFile = csvToJsonFile(inputFilePath, ift);
         		generatedFile = jsonToXmlFile(jsonFile.getAbsolutePath());
 
         	} else if (oft.equals(JS_FILE_TYPE)) {
-
-        		generatedFile = csvToJsonFile(inputFilePath, ift);
+        	        generatedFile = csvToJsonFile(inputFilePath, ift);
 
         	} else if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
-        		generatedFile = convertTabAndCsv(inputFile, ift, oft);
+        	        generatedFile = convertTabAndCsv(inputFile, ift, oft);
         	}
         }
 
@@ -258,14 +267,14 @@ public class TextConverterMain extends AbstractComponent {
 								+ e.toString());
 					}
 				}
-
+				bw.write("<All>");
 				if (jsonArray != null) {
 					for (int i = 0; i < jsonArray.length(); i++) {
 					    try {
 					    	JSONObject jsonObj = jsonArray.getJSONObject(i);
 		                	String xmlOutput = org.json.XML.toString(jsonObj);
 		                	if (xmlOutput != null) {
-		                		bw.write(xmlOutput);
+		                		bw.write("<Row>" + xmlOutput + "</Row>");
 		    					if (br.ready()) {
 		    						bw.write("\n");
 		    					}
@@ -279,11 +288,12 @@ public class TextConverterMain extends AbstractComponent {
 		                    this.addErrorMessage("Error opening workflow.");
 		                }
 					}
+					
 				} else if (jsonObject != null) {
 					    try {
 		                	String xmlOutput = org.json.XML.toString(jsonObject);
 		                	if (xmlOutput != null) {
-		                		bw.write(xmlOutput);
+		                		bw.write("<Row>" + xmlOutput + "</Row>");
 		    					if (br.ready()) {
 		    						bw.write("\n");
 		    					}
@@ -297,7 +307,7 @@ public class TextConverterMain extends AbstractComponent {
 		                    this.addErrorMessage("Error opening workflow.");
 		                }
 				}
-
+				bw.write("</All>");
 
 				br.close();
 				bw.flush();
@@ -406,56 +416,77 @@ public class TextConverterMain extends AbstractComponent {
     }
 
     private File convertJsonToDelimited(String inputFilePathName, String ift, String oft) {
-        logger.info("Converting xml file: " + inputFilePathName);
-        String intermediateFile = null;
-        if (oft.equals(TAB_DELIM_FILE_TYPE)) {
-        	intermediateFile = "tempCsv";
-		} else if (oft.equals(CSV_FILE_TYPE)) {
-			intermediateFile = "convertedDelimited";
-		}
-
+        String intermediateFile = "convertedDelimited";
         File filePointer = null;
+        
+        String fieldSeparator = "";
+        if (oft.equals(TAB_DELIM_FILE_TYPE)) {
+                fieldSeparator = "\t";
+                filePointer = this.createFile(intermediateFile, ".txt");
+        } else {
+                fieldSeparator = ",";
+                filePointer = this.createFile(intermediateFile, ".csv");
+        }
+        
 
         if (!oft.equals(TAB_DELIM_FILE_TYPE) && !oft.equals(CSV_FILE_TYPE)) {
         	addErrorMessage("Output separator was not readable: " + oft);
         } else {
-        	File tempFile = this.createFile(intermediateFile, ".txt");
-	        BufferedReader br = null;
+        	BufferedReader br = null;
 	        BufferedWriter bw = null;
 
 	        File inputFile = new File(inputFilePathName);
 	        if (inputFile != null && inputFile.exists()) {
 				try {
 					br = new BufferedReader(new FileReader(inputFile));
-					bw = new BufferedWriter(new FileWriter(tempFile));
+					bw = new BufferedWriter(new FileWriter(filePointer));
 
 					StringBuffer sBuffer = new StringBuffer();
 					while (br.ready()) {
 						sBuffer.append(br.readLine());
 					}
-
-					JSONArray jsonArray = null;;
-
-					try {
-						if (!sBuffer.toString().matches("\\s*\\[.*\\]\\s*")) {
-							if (!sBuffer.toString().matches("\\s*\\{.*\\}\\s*")) {
-								this.addErrorMessage("Not a valid JSON Array or JSON Object."
-									+ sBuffer.toString());
-							} else {
-								jsonArray = new JSONArray("[ " + sBuffer.toString() + " ]");
-							}
-						} else {
-							jsonArray = new JSONArray(sBuffer.toString());
-						}
-
-					} catch (JSONException e) {
-						this.addErrorMessage("Could not convert XML to delimited: "
-							+ e.toString());
+					//if input file is Json array or Json object
+					if (sBuffer.toString().matches(PATTERN_FOR_JSONARRAY)) {
+					        handleJSonArray(new JSONArray(sBuffer.toString()), null);
+					} else if (sBuffer.toString().matches(PATTERN_FOR_JSONOBJECT)) {
+					        handleJSonObject(new JSONObject(sBuffer.toString()), null);
+					} else {
+					        this.addErrorMessage("Not a valid JSON Array or JSON Object."
+                                                                + sBuffer.toString());
 					}
-
-					if (jsonArray != null) {
-				        String csv = CDL.toString(denormArr(jsonArray, null));
-				        bw.write(csv);
+					StringBuffer sb = new StringBuffer();
+					if (entities.size() > 0) {
+					        String headersLine = "";
+					        for (String header : headers) {
+					                headersLine += fieldSeparator + header;  
+					        }
+					        headersLine += "\n";
+					        sb.append(headersLine);
+					        //process each entity
+					        Set<String> keys = entities.keySet();
+				                for(String entityName: keys){
+				                        Hashtable<String, String> entity = entities.get(entityName);
+				                        String entityLine = entityName;
+				                        boolean writeEntityLine = false;
+				                        if (entity != null && entity.size() > 0) {
+				                                for (String header : headers) {
+				                                        if (entity.containsKey(header)) {
+				                                                writeEntityLine = true;
+				                                                entityLine += fieldSeparator + entity.get(header);
+				                                        } else {
+				                                                entityLine += fieldSeparator; 
+				                                        }
+                	                                        }
+				                                
+				                        }
+				                        if (writeEntityLine) {
+				                                entityLine += "\n";
+	                                                        sb.append(entityLine); 
+				                        }
+				                        
+				                }
+					        
+					        bw.write(sb.toString());
 					}
 
 					bw.flush();
@@ -469,17 +500,64 @@ public class TextConverterMain extends AbstractComponent {
 							+ e.toString());
 				}
 
-
-				if (tempFile.exists()) {
-					if (oft.equals(TAB_DELIM_FILE_TYPE)) {
-						filePointer = convertTabAndCsv(tempFile, CSV_FILE_TYPE, oft);
-					} else if (oft.equals(CSV_FILE_TYPE)) {
-						filePointer = tempFile;
-					}
-				}
 	    	}
         }
         return filePointer;
+    }
+    
+    private void handleJSonArray(JSONArray jsonArray, String name) throws JSONException {
+            if(jsonArray!=null && jsonArray.length()>0){
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                            String entityName = getEntityName(name);
+                            Object curObj = jsonArray.get(i);
+                            if (curObj instanceof JSONArray) {
+                                    handleJSonArray((JSONArray)curObj, entityName);
+                            } else if (curObj instanceof JSONObject) {
+                                    handleJSonObject((JSONObject)curObj, entityName);
+                            } 
+                    }
+            }
+    }
+    
+    private void handleJSonObject(JSONObject jsonObject, String name) throws JSONException{
+            Iterator<String> keys = jsonObject.keys();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                if (jsonObject.get(key) instanceof JSONObject) {
+                      handleJSonObject((JSONObject)jsonObject.get(key), key);
+                } else if (jsonObject.get(key) instanceof JSONArray) {
+                        handleJSonArray((JSONArray)jsonObject.get(key), key);
+                } else {
+                        headers.add(key);
+                        String value = jsonObject.optString(key);
+                        Hashtable curEntity = entities.get(name);
+                        if (curEntity == null) {
+                                curEntity = new Hashtable<String, String>();
+                                entities.put(name, curEntity);
+                        }
+                        curEntity.put(key, value);
+                } 
+            }
+    }
+    
+    //check if a name already exist, if it does, add a number to it
+    //for example: {parameter:[{m1:1.1,m2:1.2}, {m1:2.1, m2:2.2}, {m1:3.1, m2:3.2}]}
+    //each object should be named parameter_1, parameter_2, parameter_3
+    private String getEntityName (String name) {
+            if (name == null)
+                    return null;
+            String entityName;
+            //check to see entityNameCount has this name
+            Integer entityCount = entityNameCount.get(name);
+            if (entityCount == null) {
+                    entityCount = 1;
+                    entityNameCount.put(name, entityCount);
+            } else {
+                    entityCount++;
+                    entityNameCount.put(name, entityCount);
+            }
+            entityName = name + "_" + entityCount;
+            return entityName;
     }
 
     private static JSONObject denorm(JSONObject normalized, JSONObject denormed) {

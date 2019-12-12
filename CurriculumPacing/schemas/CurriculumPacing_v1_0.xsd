@@ -91,7 +91,6 @@
 	<xs:choice>
 	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="RelMinTimeUnit" ls:dependsOn="TimeScale" ls:constraint="matches(Relative)" />
 	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="RelMaxTimeUnit" ls:dependsOn="TimeScale" ls:constraint="matches(Relative)" />
-	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="TimeScaleRes" ls:dependsOn="TimeScale" ls:constraint="matches(Relative)" />
 	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="AbsMinTimeUnit" ls:dependsOn="TimeScale" ls:constraint="matches(Absolute)" />
 	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="AbsMaxTimeUnit" ls:dependsOn="TimeScale" ls:constraint="matches(Absolute)" />
 	
@@ -107,6 +106,8 @@
       <xs:element default="52" id="Relative_Maximum_Time_Unit" name="RelMaxTimeUnit" type="xs:integer"/>
       <xs:element default="1900-01-01 00:00:00" id="Absolute_Minimum_Time_Unit" name="AbsMinTimeUnit" type="xs:string"/>
       <xs:element default="3000-01-01 00:00:00" id="Absolute_Maximum_Time_Unit" name="AbsMaxTimeUnit" type="xs:string"/>
+      <xs:element default="10" id="Graph_Height" name="height" type="xs:integer"/>
+      <xs:element default="12" id="Graph_Width" name="width" type="xs:integer"/>
           </xs:choice>
   </xs:complexType>
   

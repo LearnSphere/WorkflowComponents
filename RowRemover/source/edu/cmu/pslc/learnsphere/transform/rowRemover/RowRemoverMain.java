@@ -50,12 +50,12 @@ public class RowRemoverMain extends AbstractComponent {
 	            this.setOption("valueColumns", valueColumnsStr);
 	            String caseSensitive = this.getOptionAsString("caseSensitive");
 	            String removeNull = this.getOptionAsString("removeNull");
-	            String removeValues = this.getOptionAsString("removeValues");
+	            String removeValues = this.getOptionAsString("removeValue");
 	            logger.info("RowRemover, operation: " + operation);
 	            logger.info("RowRemover, valueColumns: " + valueColumns);
 	            logger.info("RowRemover, caseSensitive: " + caseSensitive);
 	            logger.info("RowRemover, RowNull: " + removeNull);
-	            logger.info("RowRemover, removeValues: " + removeValues);
+	            logger.info("RowRemover, removeValue: " + removeValues);
 	            String file0 = this.getAttachment(0, 0).getAbsolutePath();
 	            logger.info("RowRemover, file0: " + file0);
 	            if (removeValues.trim().equals("")) {

@@ -42,6 +42,7 @@
     <Missing_Values />
     <MOOCdb_Verifier />
     <MOOCdb_Feature_Extractor />
+    <Multiselection_Converter />
     <OLI_LO_to_KC />
     <Pivot />
     <Resource_Use />
@@ -64,13 +65,16 @@
     <Correlation />
     <Cronbachs_Alpha />
     <Entity_Set />
+    <Gaming_Detector />
     <GKT />
     <iAFM />
     <LFA_Search />
     <Linear_Modeling />
     <LSA />
     <OLI_Resource_Use />
+    <OLI_to_RISE />
     <Output_Comparator />
+    <Performance_Difference_Analysis />
     <PFA />
     <Python_AFM />
     <RISE />
@@ -99,6 +103,7 @@
     <Knowledge />
     <Regression />
     <Search />
+    <Simulation />
     <Tetrad_Graph_Editor />
   </Tetrad>
   <Contribute>

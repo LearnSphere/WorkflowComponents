@@ -1,0 +1,82 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:ls="http://learnsphere.org/ls" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
+ 
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="InFileList0"/>
+          <xs:any maxOccurs="unbounded" minOccurs="1" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element minOccurs="0" ref="file"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element default="csv" minOccurs="0" name="input0" type="xs:string"/>
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList0"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="pdf"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="OptionsType">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    	<xs:element type="FileInputHeader" name="finalGrade" id="Grade_for_Target_Course" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0" />
+      	<xs:element type="FileInputHeader" name="qpa" id="GPA_in_Other_Units" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
+      	<xs:element type="FileInputHeader" name="unitsFactor" id="Number_of_Units_Factored_into_GPA" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
+      	<xs:element type="FileInputHeader" name="anormalyFactor" id="Anormaly_Factor" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
+          </xs:choice>
+  </xs:complexType>
+ 
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
