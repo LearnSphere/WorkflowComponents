@@ -82,16 +82,22 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
           pard<-pars[fixedpars[m]]
         }else{pard<-fixedpars[m]        }}
         m<-m+1}
-      eval(parse(text=paste("df$",i,comps[k],"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
+      if (right(i,1)=="@"){
+        # add the feature to the model with a coefficient per level
+        eval(parse(text=paste("df$",comps[k],"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
+      } else{
+      eval(parse(text=paste("df$",gsub("\\$","",i),comps[k],"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
+    }
       print(paste(i,comps[k],if(exists("para")){para},if(exists("parb")){parb},if(exists("parc")){parc},if(exists("pard")){pard}))
       #create an EQ for lmer here
       if(right(i,1)=="$"){
         # add the feature to the model with a coefficient per level
-        eval(parse(text=paste("eq<<-paste(i,comps[k],\":df$\",comps[k],\"+\",eq,sep=\"\")")))
+        cleanfeat<-gsub("\\$","",i)
+        eval(parse(text=paste("eq<<-paste(cleanfeat,comps[k],\":df$\",comps[k],\"+\",eq,sep=\"\")")))
       }
       else if (right(i,1)=="@"){
         # add the feature to the model with a coefficient per level
-        eval(parse(text=paste("eq<<-paste(\"(1|\",i,comps[k],\")+\",eq,sep=\"\")")))
+        eval(parse(text=paste("eq<<-paste(\"(1|\",comps[k],\")+\",eq,sep=\"\")")))
       }
       else {
         # add the feature to the model with the same coefficient for all levels
