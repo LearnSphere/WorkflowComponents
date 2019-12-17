@@ -8,7 +8,7 @@ library(optimx)
 suppressPackageStartupMessages(library(Rcgmin))
 library(BB)
 library(nloptr)
-library(lme4)
+suppressPackageStartupMessages(library(lme4))
 library(RColorBrewer)
 library(XML)
 
@@ -45,7 +45,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
 
       rm(para,parb,parc,pard)
       # track parameters used
-      if(gsub("[$]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
+      if(gsub("[$@]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
                                  "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe")){
         if(is.na(fixedpars[m])){ # if not fixed them optimize it
           para<-pars[optimparcount]
@@ -82,6 +82,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
           pard<-pars[fixedpars[m]]
         }else{pard<-fixedpars[m]        }}
         m<-m+1}
+
       if (right(i,1)=="@"){
         # add the feature to the model with a coefficient per level
         eval(parse(text=paste("df$",comps[k],"<-computefeatures(df,i,para,parb,df$index,df$indexcomp,parc,pard,comps[k])",sep="")))
@@ -112,26 +113,24 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       fitstat<<-logLik(temp)}
     # compute model fit and report
     if(dualfit==TRUE){
-      if(any(grep("[@]",feats))){
-      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
-      fitstat1<-cor(temp@frame$CF..ansbin.,predict(temp,type="response"))^2
-      }else{
-      temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
-      fitstat1<-cor(temp$data$CF..ansbin.,predict(temp,type="response"))^2
-      }
-      rt.pred=exp(1)^(-(predict(temp)[which(temp$data$CF..ansbin.==1)]))  
-      outVals = boxplot(temp$data$Duration..sec.,plot=FALSE)$out
-      outVals = which(temp$data$Duration..sec. %in% outVals)
-      temp$data$Duration..sec.=as.numeric(temp$data$Duration..sec.)
+      if(any(grep("[@]",feats))){        temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)        }
+      else
+        {          temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)        }
+      fitstat1<-cor(df$CF..ansbin.,predict(temp,type="response"))^2
+      rt.pred=exp(1)^(-(predict(temp)[which(df$CF..ansbin.==1)]))
+
+      outVals = boxplot(df$Duration..sec.,plot=FALSE)$out
+      outVals = which(df$Duration..sec. %in% outVals)
+      df$Duration..sec.=as.numeric(df$Duration..sec.)
       if(length(outVals)>0){
-        temp$data$Duration..sec.[outVals] = quantile(temp$data$Duration..sec.,.95)}# Winsorize outliers
-      the.rt=temp$data$Duration..sec.[which(temp$data$CF..ansbin.==1)]
+        df$Duration..sec.[outVals] = quantile(df$Duration..sec.,.95)}# Winsorize outliers
+      the.rt=df$Duration..sec.[which(df$CF..ansbin.==1)]
       the.rt=the.rt
       rt.pred=rt.pred
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
       fitstat2<-cor(the.rt,predict(lm.rt,type="response"))^2
       print(paste("Correctness R2: ",fitstat1,"Latency R2: ",fitstat2),sep='')
-      fitstat<<-sum(c(fitstat1,fitstat2))  
+      fitstat<<-sum(c(fitstat1,fitstat2))
       }
       nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
       cat(paste("   fitstat = ",round(fitstat,8),"  ",sep=""))
@@ -180,15 +179,15 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
   }
   # report
   if(dualfit==TRUE){
-    FaliureLatency<-mean(temp$data$Duration..sec.[which(temp$data$CF..ansbin.==0)])
-    print(paste("Failure latency: ",FaliureLatency))
+    failureLatency<-mean(df$Duration..sec.[which(df$CF..ansbin.==0)])
+    print(paste("Failure latency: ",failureLatency))
     Scalar<-coef(lm.rt)[2]
     Intercept<-coef(lm.rt)[1]
     cat(paste("\n","--------------------------","\n","Latency model params-> ","\n","Scalar: ",
               Scalar,"\n","Intercept: ",Intercept,"\n","--------------------------","\n",sep=''))}
   cat(paste(cat(feats)," ---",round(1-fitstat[1]/nullfit[1],4), "McFadden's R2\n"))
   if(cvSwitch==0 & makeFolds==0){
-    
+
     #Output text summary
     #collect all the features except "intercept"
     featsList<-c("lineafm","logafm","powafm","recency","expdecafm","base","base2",
@@ -228,7 +227,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
     newXMLNode("r2LR", round(r.squaredLR(temp)[1],5), parent = top)
     newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
     #determine which are
-    
+
     if (is.element("diffcorComp", prespecfeats) && is.element("diffincor1", prespecfeats) ){
       newXMLNode("DifcorComp",DifcorComp,parent = top)
       newXMLNode("Difincor1",Difincor1,parent = top)
