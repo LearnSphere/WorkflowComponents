@@ -8,7 +8,7 @@ library(optimx)
 suppressPackageStartupMessages(library(Rcgmin))
 library(BB)
 library(nloptr)
-suppressPackageStartupMessages(library(lme4))
+library(lme4)
 library(RColorBrewer)
 library(XML)
 
@@ -113,13 +113,13 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
     # compute model fit and report
     if(dualfit==TRUE){
       if(any(grep("[@]",feats))){
-        temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
-        fitstat1<-cor(temp@frame$CF..ansbin.,predict(temp,type="response"))^2
-      }else{temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+      temp<<-glmer(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
+      fitstat1<-cor(temp@frame$CF..ansbin.,predict(temp,type="response"))^2
+      }else{
+      temp<<-glm(as.formula(paste(equation,eq,sep="")),data=df,family=binomial(logit),x=TRUE)
       fitstat1<-cor(temp$data$CF..ansbin.,predict(temp,type="response"))^2
       }
-      rt.pred=exp(1)^(-(predict(temp)[which(temp$data$CF..ansbin.==1)]))
-      
+      rt.pred=exp(1)^(-(predict(temp)[which(temp$data$CF..ansbin.==1)]))  
       outVals = boxplot(temp$data$Duration..sec.,plot=FALSE)$out
       outVals = which(temp$data$Duration..sec. %in% outVals)
       temp$data$Duration..sec.=as.numeric(temp$data$Duration..sec.)
@@ -131,7 +131,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       lm.rt<<-lm(the.rt~as.numeric(rt.pred))
       fitstat2<-cor(the.rt,predict(lm.rt,type="response"))^2
       print(paste("Correctness R2: ",fitstat1,"Latency R2: ",fitstat2),sep='')
-      fitstat<<-sum(c(fitstat1,fitstat2))   
+      fitstat<<-sum(c(fitstat1,fitstat2))  
       }
       nullfit<<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=df,family=binomial(logit)))
       cat(paste("   fitstat = ",round(fitstat,8),"  ",sep=""))
@@ -197,12 +197,12 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
                  "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
 
     #collect all parameters from prespecfeatures and plancomponents (input code)
-    #prespecfeatures<-gsub("[[:punct:]]","",prespecfeatures)
+    prespecfeats<-gsub("[[:punct:]]","",prespecfeatures)
 
     fNames<-list()
-    for (p in 1:length(prespecfeatures)){
-      if(prespecfeatures[p] %in% featsList){
-        fName<-gsub(" ","",(paste(prespecfeatures[p],plancomponents[p])))
+    for (p in 1:length(prespecfeats)){
+      if(prespecfeats[p] %in% featsList){
+        fName<-gsub(" ","",(paste(prespecfeats[p],plancomponents[p])))
         fNames<-c(fNames,fName)
       }
     }
@@ -210,7 +210,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
     print(summary(temp))
     coeffRownames<-rownames(summary(temp)$coefficients)
 
-    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
+    if (is.element("diffcorComp", prespecfeats) && is.element("diffincor1", prespecfeats) ){
             DifcorComp<-coef(summary(temp))[toString(fNames[length(fNames)-1]),"Estimate"]
             Difincor1<-coef(summary(temp))[toString(fNames[length(fNames)]),"Estimate"]
     }
@@ -229,7 +229,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
     newXMLNode("r2NG", round(attr(r.squaredLR(temp),"adj.r.squared"),5), parent = top)
     #determine which are
     
-    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
+    if (is.element("diffcorComp", prespecfeats) && is.element("diffincor1", prespecfeats) ){
       newXMLNode("DifcorComp",DifcorComp,parent = top)
       newXMLNode("Difincor1",Difincor1,parent = top)
       newXMLNode("LatencyCoef",Scalar,parent = top)
@@ -237,12 +237,13 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       newXMLNode("FailCost",FaliureLatency,parent = top)
     }
     #collect all the F#, Add into list
-    if (is.element(fNames, coeffRownames) && (!is.element("diffcorComp", prespecfeatures)) && (!is.element("diffincor1", prespecfeatures))){
+    if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", prespecfeats)) && (!is.element("diffincor1", prespecfeats)))||(length(grep("[[:punct:]]",prespecfeatures))>0)){
         for (c in coeffRownames){
             if(!(c=="null"||c=="Null")){
                 cValues=coef(summary(temp))[c,"Estimate"]
             }
             c<-gsub("/","",c)
+            c<-gsub(":","_",c)
             c<-gsub("\\(|)","",c)
             newXMLNode(c,cValues,parent = top)
         }
