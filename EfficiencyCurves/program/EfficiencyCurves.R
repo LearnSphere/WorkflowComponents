@@ -12,34 +12,19 @@ flags = NULL
 
 # parse commandline args
 i = 1
-
 while (i <= length(args)) {
-
 if (args[i] == "-node") {
        if (length(args) < i+4) {
           stop("input file name must be specified")
        }
-       if (args[i+1] == "0") { # the first input node
-	       	nodeIndex <- args[i+1]
-		    fileIndex = NULL
-		    fileIndexParam <- args[i+2]
-		    if (fileIndexParam == "fileIndex") {
-		    	fileIndex <- args[i+3]
-		    }
-		    inputFile0 = args[i+4]
-		    i = i+4
-		} else if (args[i+1] == "1") { # The second input node
-	       	fileIndex = NULL
-		    fileIndexParam <- args[i+2]
-		    if (fileIndexParam == "fileIndex") {
-		    	fileIndex <- args[i+3]
-		    }
-
-		    inputFile1 = args[i+4]
-		    i = i+4
-		} else {
-			i = i+1
-		}
+        nodeIndex <- args[i+1]
+	fileIndex = NULL
+	fileIndexParam <- args[i+2]
+        if (fileIndexParam == "fileIndex") {
+            fileIndex <- args[i+3]
+        }
+        inputFile = args[i+4]
+        i = i+4
     } else 
 
 if (args[i] == "-workingDir") {
@@ -48,6 +33,13 @@ if (args[i] == "-workingDir") {
        }
 # This dir is the working dir for the component instantiation.
        workingDirectory = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Use_input_file") {
+       if (length(args) == i) {
+          stop("Use_input_file must be specified")
+       }
+       Use_input_file = args[i+1]
        i = i+1
     } else
 if (args[i] == "-difcorComp") {
@@ -119,17 +111,20 @@ setwd(workingDirectory)
 #get data
 library(methods)
 library(XML)
+Use_input_file<-as.logical(Use_input_file)
 
-if(!exists("inputFile0")){
+if(Use_input_file==FALSE){
     difcorComp<-as.numeric(difcorComp)
     difincor1<-as.numeric(difincor1)
     latency.coef<-as.numeric(latency_coef)
     latency.intercept<-as.numeric(latency_intercept)
     failcost<-as.numeric(failcost)
 } else{
-    modelResultValuesXml <- xmlParse(inputFile0)
+   if (is.null(inputFile)) {
+      warning("Missing required input parameter: -file0")
+   }
+    modelResultValuesXml <- xmlParse(inputFile)
     xml_data <- xmlToList(modelResultValuesXml)
-    print(xml_data)
     difcorComp<-as.numeric(xml_data$DifcorComp)
     difincor1<-as.numeric(xml_data$Difincor1)
     latency.coef<-as.numeric(xml_data$LatencyCoef)

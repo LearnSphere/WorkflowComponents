@@ -13,6 +13,26 @@
   </connections>
   <top>218</top>
 
+<inputs>
+<input0>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<student-step>
+<index>0</index>
+<file_path>test/testdata/model_result_values.xml</file_path>
+<label>text</label>
+<file_name>model_result_values.xml</file_name>
+</student-step>
+</files>
+<inputmeta />
+</input0>
+</inputs>
+
 <options>
     <Use_input_file>true</Use_input_file>
     <difcorComp>2.5</difcorComp>
