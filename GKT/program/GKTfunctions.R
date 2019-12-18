@@ -233,7 +233,7 @@ modeloptim <- function(comps,feats,df,dualfit = FALSE,interc=FALSE){
       newXMLNode("Difincor1",Difincor1,parent = top)
       newXMLNode("LatencyCoef",Scalar,parent = top)
       newXMLNode("LatencyIntercept",Intercept,parent = top)
-      newXMLNode("FailCost",FaliureLatency,parent = top)
+      newXMLNode("FailCost",failureLatency,parent = top)
     }
     #collect all the F#, Add into list
     if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", prespecfeats)) && (!is.element("diffincor1", prespecfeats)))||(length(grep("[[:punct:]]",prespecfeatures))>0)){
