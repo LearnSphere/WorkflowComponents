@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.analysis.datalab;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -101,20 +103,21 @@ public class AssessmentMain extends AbstractComponent {
         //delete tempFile
         if (tempFile != null && tempFile.exists())
         	tempFile.delete();
-        
-        Double[] cronbachValues = getCronbachValues(data, summaryColPresent);
 
+        Double[] cronbachValues = getCronbachValues(data, summaryColPresent);
+        int[] itemOccurances = getItemOccurances(this.getAttachment(0, 0), summaryColPresent);
         // Write the output file.
-        File outputFile = populateAssessmentFile(data, cronbachValues);
+        File outputFile = populateAssessmentFile(data, cronbachValues, itemOccurances);
 
         // If we haven't seen any errors yet...
         if (this.errorMessages.size() == 0) {
-            if (outputFile == null) {
+        	//check if files Assessment.txt and AssessmentOutput.txt exist
+        	if (outputFile == null) {
                 this.addErrorMessage("Failed to create output Cronbach's alpha file.");
             } else {
                 // Add the correlation file to the HTML visualization of it
-                File htmlFile = addDataReferenceToHtmlFile(outputFile, summaryColPresent);
-
+            	File htmlFile = addDataReferenceToHtmlFile(outputFile, summaryColPresent);
+            	
                 if (htmlFile != null) {
                     Integer nodeIndex = 0;
                     Integer fileIndex = 0;
@@ -129,6 +132,7 @@ public class AssessmentMain extends AbstractComponent {
                     this.addErrorMessage("Could not create correlation html file");
                 }
             }
+            
         }
 
         System.out.println(this.getOutput());
@@ -168,24 +172,26 @@ public class AssessmentMain extends AbstractComponent {
     // Headers
     private static final String[] outputHeaders = new String[] {"Item (excluded)",
                                                                 "Cronbach's Alpha",
+                                                                "Bad Item Warning",
                                                                 "Correlation to Total Score",
                                                                 "Item Average",
-                                                                "Standard Deviation"};
+                                                                "Standard Deviation",
+                                                                "Number of Student Encounters"};
 
     /**
-     * Write the Assessment values to a file.
+     * Write the Assessment values to a file. 
      * @param data the matrix of data
      * @return the populated file
      */
-    private File populateAssessmentFile(Array2DRowRealMatrix data, Double[] cronbachValues) {
+    private File populateAssessmentFile(Array2DRowRealMatrix data, Double[] cronbachValues, int[] itemOccurances) {
 
         if (data == null) { return null; }
-
+        
         File outputFile = this.createFile("Assessment", ".txt");
 
         // Java try-with-resources
-        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-
+        try {
+        	OutputStream outputStream = new FileOutputStream(outputFile);
             int index = 0;
             // Write output headers
             for (String h : outputHeaders) {
@@ -194,8 +200,9 @@ public class AssessmentMain extends AbstractComponent {
                 index++;
             }
             outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
-
+            
             // Write values to export
+            Double allItemCronbachVal = null;
             for (int i = 0; i < numItems; i++) {
 
                 String label = "All items";
@@ -203,11 +210,21 @@ public class AssessmentMain extends AbstractComponent {
                     label = headers[i].trim();
                 }
                 outputStream.write(label.getBytes("UTF-8"));
-
                 outputStream.write(TAB_CHAR.getBytes("UTF-8"));
+                
+                Double cronbachVal = cronbachValues[i];
+                if (i == 0)
+                	allItemCronbachVal = cronbachVal;
                 outputStream.write(String.valueOf(cronbachValues[i]).getBytes("UTF-8"));
-
+                
                 if (i > 0) {
+                	//get bad item warning
+                	String badItemWarning = "Good";
+                	if (cronbachVal.doubleValue() >= allItemCronbachVal.doubleValue())
+                		badItemWarning = "Bad";
+                	outputStream.write(TAB_CHAR.getBytes("UTF-8"));
+                    outputStream.write(badItemWarning.getBytes("UTF-8"));
+                	
                     double[] columnData = data.getColumn(i-1);
                     double correlationValue = getPearsonsCorrelation(data.getColumn(numItems - 1),
                                                                      columnData);
@@ -221,6 +238,10 @@ public class AssessmentMain extends AbstractComponent {
                     double stdDeviationValue = getStdDeviationValue(columnData, averageValue);
                     outputStream.write(TAB_CHAR.getBytes("UTF-8"));
                     outputStream.write(String.valueOf(stdDeviationValue).getBytes("UTF-8"));
+                    
+                    int itemOccuranceValue = itemOccurances[i-1];
+                    outputStream.write(TAB_CHAR.getBytes("UTF-8"));
+                    outputStream.write(String.valueOf(itemOccuranceValue).getBytes("UTF-8"));
                 }
                 outputStream.write(NEW_LINE_CHAR.getBytes("UTF-8"));
             }
@@ -271,6 +292,64 @@ public class AssessmentMain extends AbstractComponent {
      */
     private double getStdDeviationValue(double[] columnData, double mean) {
         return Math.sqrt(StatUtils.variance(columnData, mean));
+    }
+    
+    private int[] getItemOccurances (File inputFile, Boolean summaryColPresent ) {
+    	int[] itemOccurances = null;
+    	FileInputStream inStream = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+            inStream = new FileInputStream(inputFile);
+            bufferedReader = new BufferedReader(new InputStreamReader(inStream));
+
+            // Get header
+            String headerLine = bufferedReader.readLine();
+            String delim = null;
+            if (headerLine.contains("\t")) {
+                delim = "\t";
+            } else if (headerLine.contains(",")) {
+            	delim = ",";
+            }
+            if (delim == null)
+            	return null;
+            
+            String[] headers = headerLine.split(delim);
+            int numItems = headers.length - 1;   // remove student id
+            if (summaryColPresent) {
+            	numItems = numItems - 1;
+            }
+            if (numItems <= 0)
+            	return null;
+            itemOccurances = new int[numItems];
+            String line = bufferedReader.readLine();
+            while (line != null) {
+            	String[] values = line.split(delim);
+            	for (int i = 1; i < values.length; i++) {
+            		try {
+            			Double.parseDouble(values[i]);
+            			if (i <= numItems) {
+            				itemOccurances[i-1]++;
+            			}
+            		} catch (NumberFormatException ex) {}
+            	}
+                line = bufferedReader.readLine();
+            }
+            
+        } catch (Exception e) {
+            logger.info("Exception: " + e);
+            return null;
+        } finally {
+
+            // Don't propagate the exception.
+            try {
+                if (inStream != null) { inStream.close(); }
+                if (bufferedReader != null) { bufferedReader.close(); }
+            } catch (Exception e) {
+                logger.info("Failed to close resources: " + e);
+            }
+        }
+    	return itemOccurances;
     }
 
     /**
@@ -493,7 +572,7 @@ public class AssessmentMain extends AbstractComponent {
                                    .replaceAll("\\\\", "/")
                                    .replaceAll("^.*/workflows/", "workflows/");
             String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + correlationFile.getName();
-
+            logger.info("dataFilePath: " + dataFilePath);
             BufferedReader bReader = null;
             FileReader fReader = null;
 
@@ -510,7 +589,7 @@ public class AssessmentMain extends AbstractComponent {
 
                 String line = null;
                 while ((line = bReader.readLine()) != null) {
-                    if (line.contains("${input0}")) {
+                	if (line.contains("${input0}")) {
                         line = line.replaceAll(Pattern.quote("${input0}"),
                                                dataFilePath); // name is data.txt
                     }
