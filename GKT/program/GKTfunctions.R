@@ -7,7 +7,7 @@ suppressPackageStartupMessages(library("glmnet"))
 suppressPackageStartupMessages(library("glmnetUtils"))
 
 #define functions
-modeloptim <- function(data,
+gkt <- function(data,
                        components,
                        features,
                        offsetvals,
@@ -20,7 +20,8 @@ modeloptim <- function(data,
   equation<-"CF..ansbin.~ "
   e<-new.env()
   e$data<-data
-  modelfun <- function(pars){
+  e$fixedpars<-fixedpars
+  modelfun <- function(seedparameters){
     # intialize counts and vars
     k<-0
     optimparcount<-1
@@ -50,40 +51,40 @@ modeloptim <- function(data,
       # track parameters used
       if(gsub("[$@]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
                                   "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe")){
-        if(is.na(fixedpars[m])){ # if not fixed them optimize it
-          para<-pars[optimparcount]
+        if(is.na(e$fixedpars[m])){ # if not fixed them optimize it
+          para<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
         else
-        { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) { # if fixed is set to 1 or more, interpret it as an indicator to use optimized parameter
-          para<-pars[fixedpars[m]]
-        }else{para<-fixedpars[m] }} #otherwise just use it
+        { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) { # if fixed is set to 1 or more, interpret it as an indicator to use optimized parameter
+          para<-seedparameters[e$fixedpars[m]]
+        }else{para<-e$fixedpars[m] }} #otherwise just use it
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base2","base4","base2suc","base2fail","ppe")){
-        if(is.na(fixedpars[m])){
-          parb<-pars[optimparcount]
+        if(is.na(e$fixedpars[m])){
+          parb<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
         else
-        { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
-          parb<-pars[fixedpars[m]]
-        }else{parb<-fixedpars[m]        }}
+        { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
+          parb<-seedparameters[e$fixedpars[m]]
+        }else{parb<-e$fixedpars[m]        }}
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base4","ppe")){
-        if(is.na(fixedpars[m])){
-          parc<-pars[optimparcount]
+        if(is.na(e$fixedpars[m])){
+          parc<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
         else
-        { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
-          parc<-pars[fixedpars[m]]
-        }else{parc<-fixedpars[m]        }}
+        { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
+          parc<-seedparameters[e$fixedpars[m]]
+        }else{parc<-e$fixedpars[m]        }}
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base4","ppe")){
-        if(is.na(fixedpars[m])){
+        if(is.na(e$fixedpars[m])){
           pard<-pars[optimparcount]
           optimparcount<-optimparcount+1}
         else
-        { if(fixedpars[m]>=1 & fixedpars[m]%%1==0) {
-          pard<-pars[fixedpars[m]]
-        }else{pard<-fixedpars[m]        }}
+        { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
+          pard<-seedparameters[e$fixedpars[m]]
+        }else{pard<-e$fixedpars[m]        }}
         m<-m+1}
       
       if (right(i,1)=="@"){
@@ -157,8 +158,10 @@ modeloptim <- function(data,
       e$mcfad<-round(1-fitstat[1]/e$nullfit[1],4)
       cat(paste("McFadden's R2 logistic:",e$mcfad,"\n"))
       cat(paste("LogLike logistic:",round(fitstat,8),"\n"))
-      if(length(pars)>0){cat(paste("step par values ="))
-        cat(pars,sep=",")}
+      if(length(seedparameters)>0)
+        {cat(paste("step par values ="))
+        cat(seedparameters,sep=",")
+        cat(paste("\n\n"))}
       -fitstat[1]} 
     else 
     {NULL}
@@ -186,15 +189,15 @@ modeloptim <- function(data,
     sum("dashafm" == gsub("[$]","",features))+
     sum("dashsuc" == gsub("[$]","",features))+
     sum("dashfail" == gsub("[$]","",features))-
-    sum(!is.na(fixedpars))
+    sum(!is.na(e$fixedpars))
   
   # number of seeds is just those pars specified and not fixed
-  seeds<- seedpars[is.na(fixedpars)]
+  seeds<- seedpars[is.na(e$fixedpars)]
   seeds[is.na(seeds)]<-.5  # if not set seeds set to .5
   
   # optimize the model
   if(parlength>0){
-    pars<- optim(seeds,modelfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
+    optimizedpars<- optim(seeds,modelfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
   }   else
     # no nolinear parameters
   {modelfun(numeric(0))  }
@@ -209,25 +212,24 @@ modeloptim <- function(data,
               "Latency Intercept: ",Intercept,"\n",sep=''))}
   
   if(elastic==FALSE){
-    prespecfeatures<-features
     #collect all the features except "intercept"
     featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
                     "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
                     "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
                     "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
     
-    #collect all parameters from prespecfeatures and plancomponents (input code)
-    prespecfeatures<-gsub("[[:punct:]]","",prespecfeatures)
+    #collect all parameters from features and plancomponents (input code)
+    features<-gsub("[[:punct:]]","",features)
     
     fNames<-list()
-    for (p in 1:length(prespecfeatures)){
-      if(prespecfeatures[p] %in% featuresList){
-        fName<-gsub(" ","",(paste(prespecfeatures[p],components[p])))
+    for (p in 1:length(features)){
+      if(features[p] %in% featuresList){
+        fName<-gsub(" ","",(paste(features[p],components[p])))
         fNames<-c(fNames,fName)
       }}
     
     coeffRownames<-rownames(summary(e$temp)$coefficients)
-    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
+    if (is.element("diffcorComp", features) && is.element("diffincor1", features) ){
       DifcorComp<-coef(summary(e$temp))[toString(fNames[length(fNames)-1]),"Estimate"]
       Difincor1<-coef(summary(e$temp))[toString(fNames[length(fNames)]),"Estimate"]}
     Nres<-length(data$Outcome)
@@ -240,7 +242,7 @@ modeloptim <- function(data,
     newXMLNode("Accuracy", round(sum(data$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
     newXMLNode("AUC", round(auc(data$CF..ansbin.,pred,quiet=TRUE),5), parent = top)
     newXMLNode("r2McFad",e$mcfad, parent = top)
-    if (is.element("diffcorComp", prespecfeatures) && is.element("diffincor1", prespecfeatures) ){
+    if (is.element("diffcorComp", features) && is.element("diffincor1", features) ){
       newXMLNode("DifcorComp",DifcorComp,parent = top)
       newXMLNode("Difincor1",Difincor1,parent = top)
       newXMLNode("LatencyCoef",Scalar,parent = top)
@@ -248,7 +250,7 @@ modeloptim <- function(data,
       newXMLNode("FailCost",failureLatency,parent = top)
     }
     #collect all the F#, Add into list
-    if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", prespecfeatures)) && (!is.element("diffincor1", prespecfeatures)))||(length(grep("[[:punct:]]",prespecfeatures))>0)){
+    if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", features)) && (!is.element("diffincor1", features)))||(length(grep("[[:punct:]]",features))>0)){
       for (c in coeffRownames){
         if(!(c=="null"||c=="Null")){
           cValues=coef(summary(e$temp))[c,"Estimate"]
@@ -265,7 +267,7 @@ modeloptim <- function(data,
                   "prediction" = if(exists("pred")){pred}, 
                   "nullfit"=e$nullfit,
                   "latencymodel"=if(exists("e$lm.rt")){e$lm.rt},
-                  "optimizedpars"=if(exists("pars")){pars})
+                  "optimizedpars"=if(exists("optimizedpars")){optimizedpars})
   return (results)
 }
 
@@ -753,40 +755,4 @@ av.sumll <- function(ans,mod,index){
 av.lls <- function(ans,mod,index){
   ll<-log(1-abs(ans-mod))
   aggregate(ll,by=list(index),FUN=mean)$V1
-}
-
-vuong.test<- function (pars1,pars2,LL1,LL2,n){
-  correction <- (pars1 - pars2)* (log(n)/2)
-  num <- sum(LL1) - sum(LL2) - correction
-  denom <- sd(LL1 - LL2) * sqrt((n - 1)/n)
-  num/(sqrt(n) * denom)
-}
-multi.ttestm <- function(mat, ...) {
-  mat <- as.matrix(mat)
-  n <- ncol(mat)
-  p.mat<- matrix(NA, n, n)
-  diag(p.mat) <- 1
-  for (i in 1:(n - 1)) {
-    for (j in (i + 1):n) {
-      test <- t.test(mat[, i], mat[, j], paired=TRUE)
-      p.mat[i, j] <- -test$statistic
-      p.mat[j, i] <- test$statistic
-    }
-  }
-  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
-  round(signif(p.mat,4),4)
-}
-multi.ttest <- function(mat, ...) {
-  mat <- as.matrix(mat)
-  n <- ncol(mat)
-  p.mat<- matrix(NA, n, n)
-  diag(p.mat) <- 1
-  for (i in 1:(n - 1)) {
-    for (j in (i + 1):n) {
-      test <- t.test(mat[, i], mat[, j], paired=TRUE)
-      p.mat[i, j] <- p.mat[j, i] <- test$p.value
-    }
-  }
-  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
-  round(signif(p.mat,4),4)
 }
