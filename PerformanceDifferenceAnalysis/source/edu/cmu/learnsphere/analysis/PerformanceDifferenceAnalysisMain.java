@@ -18,11 +18,11 @@ public class PerformanceDifferenceAnalysisMain extends AbstractComponent {
         private String finalGradeColName;
         private String qpaColName;
         private String unitsFactorColName;
-        private String anormalyFactorColName;
+        private String anomalyFactorColName;
         private int finalGradeColInd;
         private int qpaColInd;
         private int unitsFactorColInd;
-        private int anormalyFactorColInd; 
+        private int anomalyFactorColInd; 
         private static char delim = ',';
         private static String[] ACCEPTALE_LETTER_GRADES= {"A", "B", "C", "D", "F", "R", "W"};
 
@@ -56,7 +56,7 @@ public class PerformanceDifferenceAnalysisMain extends AbstractComponent {
         finalGradeColName = this.getOptionAsString("finalGrade");
         qpaColName = this.getOptionAsString("qpa");
         unitsFactorColName = this.getOptionAsString("unitsFactor");
-        anormalyFactorColName = this.getOptionAsString("anormalyFactor");
+        anomalyFactorColName = this.getOptionAsString("anomalyFactor");
     }
 
     /**
@@ -80,7 +80,7 @@ public class PerformanceDifferenceAnalysisMain extends AbstractComponent {
             finalGradeColInd = columnHeaders.get(finalGradeColName);
             qpaColInd = columnHeaders.get(qpaColName);
             unitsFactorColInd = columnHeaders.get(unitsFactorColName);
-            anormalyFactorColInd = columnHeaders.get(anormalyFactorColName);
+            anomalyFactorColInd = columnHeaders.get(anomalyFactorColName);
             try (BufferedReader bReader = new BufferedReader(new FileReader(dataFile));) {
                     //skip header line
                     String line = bReader.readLine();

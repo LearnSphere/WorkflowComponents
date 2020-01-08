@@ -21,7 +21,7 @@ wfl_log_file = "AGA_GPD2.wfl"
 #GPD is Gendered Performance Difference = AGA(female) – AGA(male)
 
 #run cmd to test: 
-#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" AGA_GPD2.R -programDir . -workingDir . -anormalyFactor_nodeIndex 0 -anormalyFactor_fileIndex 0 -anormalyFactor SEX -finalGrade_nodeIndex 0 -finalGrade_fileIndex 0 -finalGrade "FINAL GRADE" -qpa_nodeIndex 0 -qpa_fileIndex 0 -qpa QPA -unitsFactor_nodeIndex 0 -unitsFactor_fileIndex 0 -unitsFactor "UNITS FACTORED" -node 0 -fileIndex 0 "Sample_DataSet.csv"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" AGA_GPD2.R -programDir . -workingDir . -anomalyFactor_nodeIndex 0 -anomalyFactor_fileIndex 0 -anomalyFactor SEX -finalGrade_nodeIndex 0 -finalGrade_fileIndex 0 -finalGrade "FINAL GRADE" -qpa_nodeIndex 0 -qpa_fileIndex 0 -qpa QPA -unitsFactor_nodeIndex 0 -unitsFactor_fileIndex 0 -unitsFactor "UNITS FACTORED" -node 0 -fileIndex 0 "Sample_DataSet.csv"
 
 input_file <- NULL
 # working directory where we will put the output file
@@ -101,9 +101,9 @@ if (override) {
       print(paste("Program dir:", program_dir))
       i <- i + 1
       
-    } else if (args[i] == "-anormalyFactor") {
+    } else if (args[i] == "-anomalyFactor") {
       if (length(args) == i) {
-        stop("anormaly factor must be specified")
+        stop("anomaly factor must be specified")
       }
       
       analysis_factor_colname <- args[i + 1]
