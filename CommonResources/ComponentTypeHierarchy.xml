@@ -71,7 +71,7 @@
 		<RLM_Fitting />
 		<Student_Progress_Classification />
 		<TKT />
-		<Wheel_Spin_Detector />
+		<Wheelspin />
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
