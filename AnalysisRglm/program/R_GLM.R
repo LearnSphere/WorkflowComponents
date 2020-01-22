@@ -130,7 +130,8 @@ while (i <= length(args)) {
 #??? what to output
 #modelSummaryOutputFilePath<- paste(workingDir, "/R_output_model_summary.wfl", sep="")
 #ds<-read.table(inputFile,sep="\t", header=TRUE,quote="\"",comment.char = "",blank.lines.skip=TRUE)
-ds <- fread(file=inputFile,verbose = F)
+#ds <- fread(file=inputFile,verbose = F)
+ds <- logWarningsMessages(fread(file=inputFile,verbose = F), logFileName = "r_glm.wfl")
 names(ds) <- make.names(names(ds))
 
 #clean up ds
@@ -212,6 +213,7 @@ eval(parse(text=cleanString))
 summary.file <- paste(workingDir, "/R-summary.txt", sep="")
 model.values.file <- paste(workingDir, "/model-values.xml", sep="")
 parameters.values.file <- paste(workingDir, "/Parameter-estimate-values.xml", sep="")
+student.step.file <- paste(workingDir, "/student-step.txt", sep="")
 
 #Run the model
 if(modelingFunc == "glmer" || modelingFunc == "lmer"){
@@ -479,5 +481,15 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
 }
+
+origFile <- logWarningsMessages(fread(file=inputFile,verbose = F), logFileName = "r_glm.wfl")
+origCols <- colnames(origFile)
+
+origFile$PredictedErrorRate <- 1 - predict(fittedModel,ds,type="response",allow.new.levels=TRUE) # add the column
+names(origFile)[ncol(origFile)] <- 'Predicted Error Rate for Linear Modeling' # Rename the column
+
+logWarningsMessages(fwrite(origFile, file=student.step.file,sep="\t", quote=FALSE, na=""), logFileName = "r_glm.wfl")
+
+
 
 
