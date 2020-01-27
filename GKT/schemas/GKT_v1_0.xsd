@@ -35,13 +35,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="OutFileList0">
     <xs:choice>
       <xs:element ref="transaction"/>
     </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="OutputDefinition1">
         <xs:complexContent>
             <xs:extension base="InputContainer">
@@ -52,14 +52,14 @@
             </xs:extension>
         </xs:complexContent>
   </xs:complexType>
-    
+
   <xs:complexType name="OutFileList1">
         <xs:choice>
             <xs:element ref="text" />
         </xs:choice>
   </xs:complexType>
-  
-      <xs:complexType name="OutputDefinition2">
+
+    <xs:complexType name="OutputDefinition2">
         <xs:complexContent>
             <xs:extension base="InputContainer">
                 <xs:sequence>
@@ -75,7 +75,7 @@
             <xs:element ref="text" />
         </xs:choice>
     </xs:complexType>
-  
+
   <xs:complexType name="OutputType">
     <xs:all>
       <xs:element name="output0" type="OutputDefinition0"/>
@@ -83,7 +83,7 @@
       <xs:element name="output2" type="OutputDefinition2"/>
     </xs:all>
   </xs:complexType>
-  
+
   <xs:simpleType name="modeType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="best fit model"/>
@@ -91,19 +91,136 @@
             <xs:enumeration value="five times 2 fold crossvalidated read folds"/>
         </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="elastictestType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FALSE"/>
+            <xs:enumeration value="glmnet"/>
+            <xs:enumeration value="cv.glmnet"/>
+            <xs:enumeration value="cva.glmnet"/>
+        </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="plancomponent">
+        <xs:simpleContent>
+            <xs:extension base="FileInputHeader">
+                <xs:attribute name="type" type="FileInputHeader"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="featureType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="null" />
+      <xs:enumeration value="number" />
+      <xs:enumeration value="logafm" />
+      <xs:enumeration value="recency" />
+      <xs:enumeration value="expdecafm" />
+      <xs:enumeration value="base" />
+      <xs:enumeration value="base2" />
+      <xs:enumeration value="base4" />
+      <xs:enumeration value="ppe" />
+      <xs:enumeration value="dashafm" />
+      <xs:enumeration value="dashsuc" />
+      <xs:enumeration value="diffrelcor1" />
+      <xs:enumeration value="diffrelcor2" />
+      <xs:enumeration value="diffcor1" />
+      <xs:enumeration value="diffcor2" />
+      <xs:enumeration value="diffcorComp" />
+      <xs:enumeration value="diffincorComp" />
+      <xs:enumeration value="diffallComp" />
+      <xs:enumeration value="diffincor1" />
+      <xs:enumeration value="diffincor2" />
+      <xs:enumeration value="diffall1" />
+      <xs:enumeration value="diffall2" />
+      <xs:enumeration value="logsuc" />
+      <xs:enumeration value="linesuc" />
+      <xs:enumeration value="logfail" />
+      <xs:enumeration value="linefail" />
+      <xs:enumeration value="expdecsuc" />
+      <xs:enumeration value="expdecfail" />
+      <xs:enumeration value="basesuc" />
+      <xs:enumeration value="basefail" />
+      <xs:enumeration value="base2fail" />
+      <xs:enumeration value="base2suc" />
+      <xs:enumeration value="intercept"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="feature">
+        <xs:simpleContent>
+            <xs:extension base="featureType">
+                <xs:attribute name="type" type="featureType"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
   
+  <xs:complexType name="componentsArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="plancomponent" name="component0" default=".*" minOccurs="1" />
+      <xs:element type="plancomponent" name="component1" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component2" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component3" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component4" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component5" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component6" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component7" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component8" default=".*" minOccurs="0" />
+      <xs:element type="plancomponent" name="component9" default=".*" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="featureTypeArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="feature" name="feature0" default="number" minOccurs="1" />
+      <xs:element type="feature" name="feature1" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature2" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature3" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature4" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature5" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature6" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature7" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature8" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature9" default="null" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="option_dependency">
-	<xs:choice>		
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="Term2" ls:dependsOn="Term1" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="Term3" ls:dependsOn="Term2" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="Term4" ls:dependsOn="Term3" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="Term5" ls:dependsOn="Term4" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="Term6" ls:dependsOn="Term5" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="Term7" ls:dependsOn="Term6" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="Term8" ls:dependsOn="Term7" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="Term9" ls:dependsOn="Term8" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="Term10" ls:dependsOn="Term9" ls:constraint="matches(null)" ls:negation="true"/>
-        
+	<xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="Term1" ls:dependsOn="feature0" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="Term2" ls:dependsOn="feature1" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="Term3" ls:dependsOn="feature2" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="Term4" ls:dependsOn="feature3" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="Term5" ls:dependsOn="feature4" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="Term6" ls:dependsOn="feature5" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="Term7" ls:dependsOn="feature6" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="Term8" ls:dependsOn="feature7" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="Term9" ls:dependsOn="feature8" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency11" ls:dependentOption="Term10" ls:dependsOn="feature9" ls:constraint="matches(null)" ls:negation="true"/>
 	</xs:choice>
 </xs:complexType>
 
@@ -113,7 +230,10 @@
         <xs:element type="xs:boolean" name="Include_Latency_Model" id="Include_Latency_Model" default="false" />
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
-        
+        <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
+        <xs:element type="componentsArray" name="components" id="Components" />
+        <xs:element type="featureTypeArray" name="features" id="Features" />
+
         <xs:element type="xs:string" name="Term1" id="Term1" default="null" />
         <xs:element type="xs:string" name="Term2" id="Term2" default="null" />
         <xs:element type="xs:string" name="Term3" id="Term3" default="null" />
@@ -123,11 +243,10 @@
         <xs:element type="xs:string" name="Term7" id="Term7" default="null" />
         <xs:element type="xs:string" name="Term8" id="Term8" default="null" />
         <xs:element type="xs:string" name="Term9" id="Term9" default="null" />
-        <xs:element type="xs:string" name="Term10" id="Term10" default="null" /> 
+        <xs:element type="xs:string" name="Term10" id="Term10" default="null" />
       </xs:choice>
   </xs:complexType>
- 
- 
+
   <xs:element name="component">
     <xs:complexType>
       <xs:all>

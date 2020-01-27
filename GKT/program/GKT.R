@@ -4,13 +4,14 @@ ech<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 # Enable if debugging
 
-#print(args)
-
 # initialize variables
 inputFile0 = NULL
 workingDirectory = NULL
 componentDirectory = NULL
 flags = NULL
+
+Components<-list()
+Features<-list()
 
 # parse commandline args
 i = 1
@@ -26,7 +27,6 @@ if (args[i] == "-node") {
 		    if (fileIndexParam == "fileIndex") {
 		    	fileIndex <- args[i+3]
 		    }
-
 		    inputFile0 = args[i+4]
 		    i = i+4
 		} else if (args[i+1] == "1") { # The second input node
@@ -78,6 +78,43 @@ if (args[i] == "-Model_Name") {
        Model_Name = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Elastictest") {
+       if (length(args) == i) {
+          stop("Elastictest must be specified")
+       }
+       Elastictest = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-components") {
+       if (length(args) == i) {
+          stop("components must be specified")
+       }
+       components = args[i+1]
+       j=as.numeric(components[1])
+       m1=i+2
+       m2=i+1+j
+       for (m in m1:m2){
+            components=args[m]
+            Components=c(Components,components)
+            m=m+1
+       }
+       i = i+1
+    } else
+if (args[i] == "-features") {
+       if (length(args) == i) {
+          stop("features must be specified")
+       }
+       features = args[i+1]
+       j=as.numeric(features[1])
+       m1=i+2
+       m2=i+1+j
+       for (m in m1:m2){
+            features=args[m]
+            Features=c(Features,features)
+            m=m+1
+       }
+       i = i+1
+    }else
 if (args[i] == "-Term1") {
        if (length(args) == i) {
           stop("Characteristics Values of Term1 must be specified")
@@ -200,64 +237,42 @@ Term8<-unlist(strsplit(Term8,";"))
 Term9<-unlist(strsplit(Term9,";"))
 Term10<-unlist(strsplit(Term10,";"))
 
-prespecfeatures=list()
-plancomponents=list()
-fixedparsList=list()
-seedparsList=list()
-
 optList<-list(Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,Term9,Term10)
+fixedparsList<-vector()
+seedparsList<-vector()
+offsetvalsList<-vector()
 
-for(i in 1:10){
+for (i in 1:10){
+    if(trimws((optList[[i]])[1]=="null")){
+        seedparsList<-NA
+        fixedparsList<-NA
+        offsetvalsList<-array(NA,dim=j)
+    }else 
     if(lengths(optList[i])>1){
-        if(!trimws((optList[[i]])[1])=="NULL"){
-            prespecfeatures<-c(prespecfeatures,trimws((optList[[i]])[1]))
-        }
-        if(!trimws((optList[[i]])[2])=="NULL"){
-            plancomponents<-c(plancomponents,trimws((optList[[i]])[2]))
-        }
+        fixedparsList<-c(fixedparsList,trimws((optList[[i]])[1]))
         if(lengths(optList[i])>2){
-            if(!trimws((optList[[i]])[3])=="NULL"){
-                fixedparsList<-c(fixedparsList,trimws((optList[[i]])[3]))
-            }
-            if(lengths(optList[i])>3&!trimws((optList[[i]])[4])=="NULL"){
-                seedparsList<-c(seedparsList,trimws((optList[[i]])[4]))
-            }
-        }
+           seedparsList<-c(seedparsList,trimws((optList[[i]])[2]))
+        } 
+        offsetvalsList<-array(NA,dim=j)
     }
 }
 
-for(j in 1:length(fixedparsList)){
-    if(j>1){
-       fixedparsLi<-paste(fixedparsLi,fixedparsList[j],sep =',') 
-    }else{
-       fixedparsLi<-as.character(fixedparsList[1])
-    }
-}
+planComponents<-gsub("[ ()-]", ".",as.character(Components))
+prespecFeatures<-as.character(Features)
+fixedpars<-as.numeric(fixedparsList)
+seedpars<-as.numeric(seedparsList)
+offsetvals<-as.numeric(offsetvalsList)
 
-for(j in 1:length(seedparsList)){
-    if(j>1){
-       seedparsLi<-paste(seedparsLi,seedparsList[j],sep =',') 
-    }else{
-       seedparsLi<-as.character(seedparsList[1])
-    }
-}
-
-fixedpars<-trimws(unlist(strsplit(fixedparsLi,",")))
-seedpars<-trimws(unlist(strsplit(seedparsLi,",")))
-
-prespecfeatures<-as.character(prespecfeatures)
-plancomponents<-gsub("[ ()-]", ".",as.character(plancomponents))
-suppressWarnings(fixedpars<-as.numeric(fixedpars))
-suppressWarnings(seedpars<-as.numeric(seedpars))
-
-cat("prespecfeatures:",prespecfeatures,"\n")
-cat("plancomponents:",plancomponents,"\n")
+cat("prespecfeatures:",prespecFeatures,"\n")
+cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
-cat("seedpars:",seedpars,"\n\n")
+cat("seedpars:",seedpars,"\n")
+cat("offsetvals:",offsetvals,"\n")
+cat("Elastictest",Elastictest,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
-outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
+outputFilePath2<- paste(workingDirectory, "IESmodel_result_values.xml", sep="")
 
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
@@ -274,10 +289,28 @@ switch(mode,
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
 
-         modeloptim(plancomponents,prespecfeatures,val,dualfit,interc)
-         val$CF..modbin.= predict(temp,type="response")
+         #modeloptim(plancomponents,prespecfeatures,val,dualfit,interc)
          
-         pred<-predict(temp,type="response")
+         modelob<-gkt(data=val,
+               components=planComponents,
+               features=prespecFeatures,
+               offsetvals=offsetvals,
+               fixedpars=fixedpars,
+               seedpars=seedpars,
+               outputFilePath=outputFilePath2,
+               dualfit=TRUE,
+               interc=TRUE,
+               elastic=Elastictest)
+
+        if(Elastictest=="FALSE"){
+          val$pred <- modelob$prediction
+          datvec<-round(1-modelob$fitstat[1]/modelob$nullfit[1],4)
+          val$CF..modbin.<-val$pred}
+        else{
+          val$CF..modbin.= predict(temp,type="response")
+        }
+      
+         pred<-val$CF..modbin.
          pred<-as.data.frame(pred)
          data_pred<-cbind(val,pred)
          data_pred$CF..GraphName.=Model_Name

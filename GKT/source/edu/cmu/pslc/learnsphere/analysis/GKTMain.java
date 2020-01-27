@@ -3,6 +3,7 @@ package edu.cmu.pslc.learnsphere.analysis.GKT;
 import java.io.File;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
+import java.util.List;
 
 /**
  * Workflow component: template source for a component
@@ -53,7 +54,15 @@ public class GKTMain extends AbstractComponent {
     @SuppressWarnings("DeadBranch")
     protected void runComponent() {
 
-	// Run the program...
+        //get option from xsd and then add new option for R program
+        //List<String> Features = null;
+        //Features = this.getOptionAsList("features");
+        //this.setOption("features", Features.toString());
+       // List<String> Components = null;
+        //Components = this.getOptionAsList("components");
+        //this.setOption("components", Components.toString());
+        
+        // Run the program...
 	File outputDirectory = this.runExternal();
         
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {

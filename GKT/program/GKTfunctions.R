@@ -13,10 +13,10 @@ gkt <- function(data,
                        offsetvals,
                        fixedpars,
                        seedpars,
-                       outputFilePath="FALSE",
-                       dualfit = FALSE,
-                       interc=FALSE,
-                       elastic=FALSE){
+                       outputFilePath,
+                       dualfit,
+                       interc,
+                       elastic){
   equation<-"CF..ansbin.~ "
   e<-new.env()
   e$data<-data
@@ -145,6 +145,7 @@ gkt <- function(data,
       outVals = boxplot(e$data$Duration..sec.,plot=FALSE)$out
       outVals = which(e$data$Duration..sec. %in% outVals)
       e$data$Duration..sec.=as.numeric(e$data$Duration..sec.)
+      
       if(length(outVals)>0){
         e$data$Duration..sec.[outVals] = quantile(e$data$Duration..sec.,.95)}# Winsorize outliers
       the.rt=e$data$Duration..sec.[which(e$data$CF..ansbin.==1)]
