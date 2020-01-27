@@ -1,7 +1,8 @@
 #usage
 #"C:/Program Files/R/R-3.6.1/bin/Rscript.exe" predictive_wheelspinning_WF.R -programDir . -workingDir . -userId hcheng -model_nodeIndex 0 -model_fileIndex 0 -model "KC (LFASearchAICWholeModel3)" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" predictive_wheelspinning_WF.R -programDir . -workingDir . -userId hcheng -model_nodeIndex 0 -model_fileIndex 0 -model "KC (LFASearchAICWholeModel3)" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
-
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" predictive_wheelspinning_WF.R -programDir . -workingDir . -userId hcheng -model_nodeIndex 0 -model_fileIndex 0 -model "KC (Circle-Collapse)" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" predictive_wheelspinning_WF.R -programDir . -workingDir . -userId hcheng -model_nodeIndex 0 -model_fileIndex 0 -model "KC (Area)" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
 
 options(echo=FALSE)
 options(warn=-1)
@@ -68,7 +69,8 @@ while (i <= length(args)) {
 # model.name = "Default"
 # ds<-read.table("ds1943_Ran_paper/ds1943_student_step_All_Data_3691_2017_0522_203358_cleaned.txt", sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
-ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+ds<-logWarningsMessages(read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE), logFileName = "predictive_wheelspinning_WF.wfl")
+
 ### process dataset
 #str(ds)
 #colnames(ds)
@@ -89,9 +91,10 @@ if ('Problem.Hierarchy' %in% colnames(ds)) {
   ds$item.id <- paste(as.character(ds$Problem.Name), as.character(ds$Step.Name), sep=";")
 }
 
+escaped.model.name <- gsub("[ ()-]", ".", model.name)
 #change the specific column name to a generic one 
-kcColName = paste("KC..", model.name, ".", sep="")
-oppColName = paste("Opportunity..", model.name, ".", sep="")
+kcColName = paste("KC..", escaped.model.name, ".", sep="")
+oppColName = paste("Opportunity..", escaped.model.name, ".", sep="")
 kcColInd = match(kcColName , colnames(ds))
 oppColInd = match(oppColName , colnames(ds))
 if (is.na(kcColInd) | is.na(oppColInd))
@@ -129,16 +132,14 @@ colnames(agg_data_first_attempt_correct) = c("Anon.Student.Id", "KC.model.name",
 agg_data_first_attempt_incorrect = subset(agg_data_first_attempt, First.Attempt==0)[c(1,2,4)]
 colnames(agg_data_first_attempt_incorrect) = c("Anon.Student.Id", "KC.model.name", "First_attempt_incorrect_count")
 
-
 ##iAFM
 ### fit/predict hierarchical iAFM model: First.Attempt ~ opportunity + (opportunity|student) + (opportunity|KC)
-fitted.model<-glmer(First.Attempt~KC.model.opportunity+(KC.model.opportunity|Anon.Student.Id)+(KC.model.opportunity|KC.model.name),data=ds, family= binomial(link = logit))
-ds$predicted <- 1-predict(fitted.model, ds, allow.new.levels = TRUE, type="response")
+fitted.model<-logWarningsMessages(glmer(First.Attempt~KC.model.opportunity+(KC.model.opportunity|Anon.Student.Id)+(KC.model.opportunity|KC.model.name),data=ds, family= binomial(link = logit)), logFileName = "predictive_wheelspinning_WF.wfl")
+ds$predicted <- 1-logWarningsMessages(predict(fitted.model, ds, allow.new.levels = TRUE, type="response"), logFileName = "predictive_wheelspinning_WF.wfl")
 
 # ### AFM: First.Attempt ~ (1|student) + KC + KC:Opportunity
 # AFM.fitted.model<-glmer(First.Attempt~(1|Anon.Student.Id)+ KC.model.name + KC.model.name:KC.model.opportunity,data=ds, family= binomial(link = logit))
 # ds$AFM.predicted <- 1-predict(AFM.fitted.model, ds, allow.new.levels = TRUE, type="response")
-
 
 #summary(fitted.model)
 # extract the student parameters and KC parameters
