@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/temp_pred (6).txt</file_path>
+<file_path>test/testdata/GKT.txt</file_path>
 <label>text</label>
-<file_name>temp_pred (6).txt</file_name>
+<file_name>GKT.txt</file_name>
 </student-step>
 </files>
 <inputmeta />
@@ -35,16 +35,20 @@
 <options>
     <mode>best fit model</mode>
     <Model_Name>Diff</Model_Name>
-    <Term1>diffcorComp; KC (Textbook)</Term1>
-    <Term2>diffincor1; KC (Textbook)</Term2>
-    <Term3>logitdec; Anon Student Id; .9; NA</Term3>
-    <Term4>null</Term4>
-    <Term5>null</Term5>
-    <Term6>null</Term6>
-    <Term7>null</Term7>
-    <Term8>null</Term8>
-    <Term9>null</Term9>
-    <Term10>null</Term10>
+    <Elastictest>FALSE</Elastictest>
+    <plancomponents>
+        <component0 hidden="false">Anon Student Id</component0>
+        <component1 hidden="false">KC (Area)</component1>
+        <component2 hidden="false">KC (Area)</component2>
+        <component3 hidden="false">KC (Area)</component3>
+    </plancomponents>
+    
+    <planfeatures>
+      <feature0 hidden="false">intercept </feature0>
+      <feature1 hidden="false">intercept </feature1>
+      <feature2 hidden="false"> linesuc</feature2>
+      <feature3 hidden="false"> linefail ; .5; NA;NA</feature3>
+    </planfeatures>
     <Include_Latency_Model>true</Include_Latency_Model>
     <Use_Global_Intercept>true</Use_Global_Intercept>
 </options>

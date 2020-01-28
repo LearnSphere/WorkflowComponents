@@ -121,48 +121,10 @@
         </xs:simpleContent>
   </xs:complexType>
 
-  <xs:simpleType name="featureType" final="restriction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="null" />
-      <xs:enumeration value="number" />
-      <xs:enumeration value="logafm" />
-      <xs:enumeration value="recency" />
-      <xs:enumeration value="expdecafm" />
-      <xs:enumeration value="base" />
-      <xs:enumeration value="base2" />
-      <xs:enumeration value="base4" />
-      <xs:enumeration value="ppe" />
-      <xs:enumeration value="dashafm" />
-      <xs:enumeration value="dashsuc" />
-      <xs:enumeration value="diffrelcor1" />
-      <xs:enumeration value="diffrelcor2" />
-      <xs:enumeration value="diffcor1" />
-      <xs:enumeration value="diffcor2" />
-      <xs:enumeration value="diffcorComp" />
-      <xs:enumeration value="diffincorComp" />
-      <xs:enumeration value="diffallComp" />
-      <xs:enumeration value="diffincor1" />
-      <xs:enumeration value="diffincor2" />
-      <xs:enumeration value="diffall1" />
-      <xs:enumeration value="diffall2" />
-      <xs:enumeration value="logsuc" />
-      <xs:enumeration value="linesuc" />
-      <xs:enumeration value="logfail" />
-      <xs:enumeration value="linefail" />
-      <xs:enumeration value="expdecsuc" />
-      <xs:enumeration value="expdecfail" />
-      <xs:enumeration value="basesuc" />
-      <xs:enumeration value="basefail" />
-      <xs:enumeration value="base2fail" />
-      <xs:enumeration value="base2suc" />
-      <xs:enumeration value="intercept"/>
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:complexType name="feature">
         <xs:simpleContent>
-            <xs:extension base="featureType">
-                <xs:attribute name="type" type="featureType"/>
+            <xs:extension base="xs:string">
+                <xs:attribute name="type" type="xs:string"/>
                 <xs:attribute name="hidden">
 			        <xs:simpleType>
 			          <xs:restriction base="xs:boolean">
@@ -196,7 +158,7 @@
 
   <xs:complexType name="featureTypeArray">
     <xs:all minOccurs="0" >
-      <xs:element type="feature" name="feature0" default="number" minOccurs="1" />
+      <xs:element type="feature" name="feature0" default="null" minOccurs="1" />
       <xs:element type="feature" name="feature1" default="null" minOccurs="0" />
       <xs:element type="feature" name="feature2" default="null" minOccurs="0" />
       <xs:element type="feature" name="feature3" default="null" minOccurs="0" />
@@ -209,21 +171,6 @@
     </xs:all>
   </xs:complexType>
 
-  <xs:complexType name="option_dependency">
-	<xs:choice>
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="Term1" ls:dependsOn="feature0" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="Term2" ls:dependsOn="feature1" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="Term3" ls:dependsOn="feature2" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="Term4" ls:dependsOn="feature3" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="Term5" ls:dependsOn="feature4" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="Term6" ls:dependsOn="feature5" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="Term7" ls:dependsOn="feature6" ls:constraint="matches(null)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="Term8" ls:dependsOn="feature7" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="Term9" ls:dependsOn="feature8" ls:constraint="matches(null)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency11" ls:dependentOption="Term10" ls:dependsOn="feature9" ls:constraint="matches(null)" ls:negation="true"/>
-	</xs:choice>
-</xs:complexType>
-
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
@@ -231,19 +178,8 @@
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
         <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
-        <xs:element type="componentsArray" name="components" id="Components" />
-        <xs:element type="featureTypeArray" name="features" id="Features" />
-
-        <xs:element type="xs:string" name="Term1" id="Term1" default="null" />
-        <xs:element type="xs:string" name="Term2" id="Term2" default="null" />
-        <xs:element type="xs:string" name="Term3" id="Term3" default="null" />
-        <xs:element type="xs:string" name="Term4" id="Term4" default="null" />
-        <xs:element type="xs:string" name="Term5" id="Term5" default="null" />
-        <xs:element type="xs:string" name="Term6" id="Term6" default="null" />
-        <xs:element type="xs:string" name="Term7" id="Term7" default="null" />
-        <xs:element type="xs:string" name="Term8" id="Term8" default="null" />
-        <xs:element type="xs:string" name="Term9" id="Term9" default="null" />
-        <xs:element type="xs:string" name="Term10" id="Term10" default="null" />
+        <xs:element type="componentsArray" name="plancomponents" id="PlanComponents" />
+        <xs:element type="featureTypeArray" name="planfeatures" id="PlanFeatures" />
       </xs:choice>
   </xs:complexType>
 

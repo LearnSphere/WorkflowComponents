@@ -85,106 +85,36 @@ if (args[i] == "-Elastictest") {
        Elastictest = args[i+1]
        i = i+1
     } else
-if (args[i] == "-components") {
+if (args[i] == "-plancomponents") {
        if (length(args) == i) {
-          stop("components must be specified")
+          stop("plancomponents must be specified")
        }
-       components = args[i+1]
-       j=as.numeric(components[1])
+       plancomponents = args[i+1]
+       j=as.numeric(plancomponents[1])
        m1=i+2
        m2=i+1+j
        for (m in m1:m2){
-            components=args[m]
-            Components=c(Components,components)
+            plancomponents=args[m]
+            Components=c(Components,plancomponents)
             m=m+1
        }
        i = i+1
     } else
-if (args[i] == "-features") {
+if (args[i] == "-planfeatures") {
        if (length(args) == i) {
-          stop("features must be specified")
+          stop("planfeatures must be specified")
        }
-       features = args[i+1]
-       j=as.numeric(features[1])
+       planfeatures = args[i+1]
+       j=as.numeric(planfeatures[1])
        m1=i+2
        m2=i+1+j
        for (m in m1:m2){
-            features=args[m]
-            Features=c(Features,features)
+            planfeatures=args[m]
+            Features=c(Features,planfeatures)
             m=m+1
        }
        i = i+1
     }else
-if (args[i] == "-Term1") {
-       if (length(args) == i) {
-          stop("Characteristics Values of Term1 must be specified")
-       }
-       Term1 = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-Term2") {
-       if (length(args) == i) {
-          stop("Characteristics Values of Term2 name must be specified")
-       }
-       Term2 = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-Term3") {
-       if (length(args) == i) {
-          stop("Parameters' names of Term3 must be specified")
-       }
-       Term3 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term4") {
-       if (length(args) == i) {
-          stop("Term4 name must be specified")
-       }
-       Term4 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term5") {
-       if (length(args) == i) {
-          stop("Term5 name must be specified")
-       }
-       Term5 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term6") {
-       if (length(args) == i) {
-          stop("Term6 name must be specified")
-       }
-       Term6 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term7") {
-       if (length(args) == i) {
-          stop("Term7 name must be specified")
-       }
-       Term7 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term8") {
-       if (length(args) == i) {
-          stop("Term8 name must be specified")
-       }
-       Term8 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term9") {
-       if (length(args) == i) {
-          stop("Term9 name must be specified")
-       }
-       Term9 = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Term10") {
-       if (length(args) == i) {
-          stop("Term10 name must be specified")
-       }
-       Term10 = args[i+1]
-       i = i+1
-    } else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
@@ -226,42 +156,32 @@ cat("Use_Global_Intercept:",Use_Global_Intercept,"\n")
 dualfit<-as.logical(Include_Latency_Model)
 interc<-as.logical(Use_Global_Intercept)
 
-Term1<-unlist(strsplit(Term1,";"))
-Term2<-unlist(strsplit(Term2,";"))
-Term3<-unlist(strsplit(Term3,";"))
-Term4<-unlist(strsplit(Term4,";"))
-Term5<-unlist(strsplit(Term5,";"))
-Term6<-unlist(strsplit(Term6,";"))
-Term7<-unlist(strsplit(Term7,";"))
-Term8<-unlist(strsplit(Term8,";"))
-Term9<-unlist(strsplit(Term9,";"))
-Term10<-unlist(strsplit(Term10,";"))
-
-optList<-list(Term1,Term2,Term3,Term4,Term5,Term6,Term7,Term8,Term9,Term10)
+prespecfeaturesList<-vector()
 fixedparsList<-vector()
 seedparsList<-vector()
 offsetvalsList<-vector()
 
-for (i in 1:10){
-    if(trimws((optList[[i]])[1]=="null")){
-        seedparsList<-NA
-        fixedparsList<-NA
-        offsetvalsList<-array(NA,dim=j)
-    }else 
-    if(lengths(optList[i])>1){
-        fixedparsList<-c(fixedparsList,trimws((optList[[i]])[1]))
-        if(lengths(optList[i])>2){
-           seedparsList<-c(seedparsList,trimws((optList[[i]])[2]))
-        } 
-        offsetvalsList<-array(NA,dim=j)
+for(i in 1:length(Features)){
+    if(!grepl(";",unlist(Features[i]))){
+        prespecfeaturesList<-c(prespecfeaturesList,trimws(unlist(Features[i])))
+        offsetvalsList<-c(offsetvalsList,NA)
+    }else{
+        FeaturesList<-strsplit(unlist(Features[i]),";")
+        prespecfeaturesList<-c(prespecfeaturesList,trimws(FeaturesList[[1]][1]))
+        fixedparsList<-c(fixedparsList,trimws((FeaturesList[[1]])[2]))
+        if(length(FeaturesList[[1]])>2){
+            seedparsList<-c(seedparsList,trimws((FeaturesList[[1]])[3]))
+        }else(offsetvalsList<-c(offsetvalsList,NA))
+        if(length(FeaturesList[[1]])>3){
+            offsetvalsList<-c(offsetvalsList,trimws((FeaturesList[[1]])[4]))
+        }
     }
 }
-
 planComponents<-gsub("[ ()-]", ".",as.character(Components))
-prespecFeatures<-as.character(Features)
-fixedpars<-as.numeric(fixedparsList)
-seedpars<-as.numeric(seedparsList)
-offsetvals<-as.numeric(offsetvalsList)
+prespecFeatures<-as.character(prespecfeaturesList)
+suppressWarnings(fixedpars<-as.numeric(fixedparsList))
+suppressWarnings(seedpars<-as.numeric(seedparsList))
+suppressWarnings(offsetvals<-as.numeric(offsetvalsList))
 
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
