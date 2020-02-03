@@ -104,27 +104,7 @@
   <xs:complexType name="plancomponent">
         <xs:simpleContent>
             <xs:extension base="FileInputHeader">
-                <xs:attribute name="type" type="FileInputHeader"/>
-                <xs:attribute name="hidden">
-			        <xs:simpleType>
-			          <xs:restriction base="xs:boolean">
-			          </xs:restriction>
-			        </xs:simpleType>
-		      </xs:attribute>
-		      <xs:attribute name="optional">
-			        <xs:simpleType>
-			          <xs:restriction base="xs:boolean">
-			          </xs:restriction>
-			        </xs:simpleType>
-		      </xs:attribute>
-            </xs:extension>
-        </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="feature">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="type" type="xs:string"/>
+                <xs:attribute name="componenttype" type="FileInputHeader"/>
                 <xs:attribute name="hidden">
 			        <xs:simpleType>
 			          <xs:restriction base="xs:boolean">
@@ -141,7 +121,27 @@
         </xs:simpleContent>
   </xs:complexType>
   
-  <xs:complexType name="componentsArray">
+  <xs:complexType name="feature">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="featuretype" type="xs:string"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="myHeaderArray">
     <xs:all minOccurs="0" >
       <xs:element type="plancomponent" name="component0" default=".*" minOccurs="1" />
       <xs:element type="plancomponent" name="component1" default=".*" minOccurs="0" />
@@ -158,16 +158,16 @@
 
   <xs:complexType name="featureTypeArray">
     <xs:all minOccurs="0" >
-      <xs:element type="feature" name="feature0" default="null" minOccurs="1" />
-      <xs:element type="feature" name="feature1" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature2" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature3" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature4" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature5" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature6" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature7" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature8" default="null" minOccurs="0" />
-      <xs:element type="feature" name="feature9" default="null" minOccurs="0" />
+      <xs:element type="feature" name="feature0" default="number" minOccurs="1" />
+      <xs:element type="feature" name="feature1" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature2" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature3" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature4" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature5" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature6" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature7" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature8" default="number" minOccurs="0" />
+      <xs:element type="feature" name="feature9" default="number" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -178,7 +178,7 @@
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
         <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
-        <xs:element type="componentsArray" name="plancomponents" id="PlanComponents" />
+        <xs:element type="myHeaderArray" name="plancomponents" id="PlanComponents" />
         <xs:element type="featureTypeArray" name="planfeatures" id="PlanFeatures" />
       </xs:choice>
   </xs:complexType>
