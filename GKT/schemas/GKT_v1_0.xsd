@@ -156,7 +156,7 @@
     </xs:all>
   </xs:complexType>
 
-  <xs:complexType name="featureTypeArray">
+  <xs:complexType name="featuresArray">
     <xs:all minOccurs="0" >
       <xs:element type="feature" name="feature0" default="number" minOccurs="1" />
       <xs:element type="feature" name="feature1" default="number" minOccurs="0" />
@@ -179,7 +179,7 @@
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
         <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
         <xs:element type="myHeaderArray" name="plancomponents" id="PlanComponents" />
-        <xs:element type="featureTypeArray" name="planfeatures" id="PlanFeatures" />
+        <xs:element type="featuresArray" name="planfeatures" id="PlanFeatures" />
       </xs:choice>
   </xs:complexType>
 
