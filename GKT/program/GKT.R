@@ -100,21 +100,76 @@ if (args[i] == "-plancomponents") {
        }
        i = i+1
     } else
-if (args[i] == "-planfeatures") {
+if (args[i] == "-PlanFeature0") {
        if (length(args) == i) {
-          stop("planfeatures must be specified")
+          stop("PlanFeature0 must be specified")
        }
-       planfeatures = args[i+1]
-       j=as.numeric(planfeatures[1])
-       m1=i+2
-       m2=i+1+j
-       for (m in m1:m2){
-            planfeatures=args[m]
-            Features=c(Features,planfeatures)
-            m=m+1
-       }
+       PlanFeature0 = args[i+1]
        i = i+1
-    }else
+    } else 
+if (args[i] == "-PlanFeature1") {
+       if (length(args) == i) {
+          stop("PlanFeature1 name must be specified")
+       }
+       PlanFeature1 = args[i+1]
+       i = i+1
+    } else 
+if (args[i] == "-PlanFeature2") {
+       if (length(args) == i) {
+          stop("Parameters' names of PlanFeature2 must be specified")
+       }
+       PlanFeature2 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature3") {
+       if (length(args) == i) {
+          stop("PlanFeature3 name must be specified")
+       }
+       PlanFeature3 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature4") {
+       if (length(args) == i) {
+          stop("PlanFeature4 name must be specified")
+       }
+       PlanFeature4 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature5") {
+       if (length(args) == i) {
+          stop("PlanFeature5 name must be specified")
+       }
+       PlanFeature5 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature6") {
+       if (length(args) == i) {
+          stop("PlanFeature6 name must be specified")
+       }
+       PlanFeature6 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature7") {
+       if (length(args) == i) {
+          stop("PlanFeature7 name must be specified")
+       }
+       PlanFeature7 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature8") {
+       if (length(args) == i) {
+          stop("PlanFeature8 name must be specified")
+       }
+       PlanFeature8 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-PlanFeature9") {
+       if (length(args) == i) {
+          stop("PlanFeature9 name must be specified")
+       }
+       PlanFeature9 = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
@@ -161,22 +216,30 @@ fixedparsList<-vector()
 seedparsList<-vector()
 offsetvalsList<-vector()
 
-for(i in 1:length(Features)){
-    if(!grepl(";",unlist(Features[i]))){
-        prespecfeaturesList<-c(prespecfeaturesList,trimws(unlist(Features[i])))
+PlanFeature0<-unlist(strsplit(PlanFeature0,";"))
+PlanFeature1<-unlist(strsplit(PlanFeature1,";"))
+PlanFeature2<-unlist(strsplit(PlanFeature2,";"))
+PlanFeature3<-unlist(strsplit(PlanFeature3,";"))
+PlanFeature4<-unlist(strsplit(PlanFeature4,";"))
+PlanFeature5<-unlist(strsplit(PlanFeature5,";"))
+PlanFeature6<-unlist(strsplit(PlanFeature6,";"))
+PlanFeature7<-unlist(strsplit(PlanFeature7,";"))
+PlanFeature8<-unlist(strsplit(PlanFeature8,";"))
+PlanFeature9<-unlist(strsplit(PlanFeature9,";"))
+
+optList<-list(PlanFeature0,PlanFeature1,PlanFeature2,PlanFeature3,PlanFeature4,PlanFeature5,PlanFeature6,PlanFeature7,PlanFeature8,PlanFeature9)
+
+for(i in 1:10){
+    if(!trimws(optList[i])=="null"){
+        prespecfeaturesList<-c(prespecfeaturesList,trimws(optList[[i]][1]))
         offsetvalsList<-c(offsetvalsList,NA)
-    }else{
-        FeaturesList<-strsplit(unlist(Features[i]),";")
-        prespecfeaturesList<-c(prespecfeaturesList,trimws(FeaturesList[[1]][1]))
-        fixedparsList<-c(fixedparsList,trimws((FeaturesList[[1]])[2]))
-        if(length(FeaturesList[[1]])>2){
-            seedparsList<-c(seedparsList,trimws((FeaturesList[[1]])[3]))
-        }else(offsetvalsList<-c(offsetvalsList,NA))
-        if(length(FeaturesList[[1]])>3){
-            offsetvalsList<-c(offsetvalsList,trimws((FeaturesList[[1]])[4]))
+        if(lengths(optList[i])>1){
+           fixedparsList<-c(fixedparsList,trimws(optList[[i]][2]))
+           seedparsList<-c(seedparsList,trimws(optList[[i]][2]))
         }
     }
 }
+
 planComponents<-gsub("[ ()-]", ".",as.character(Components))
 prespecFeatures<-as.character(prespecfeaturesList)
 suppressWarnings(fixedpars<-as.numeric(fixedparsList))

@@ -37,18 +37,19 @@
     <Model_Name>Diff</Model_Name>
     <Elastictest>FALSE</Elastictest>
     <plancomponents>
-        <component0 hidden="false">Anon Student Id</component0>
-        <component1 hidden="false">KC (Area)</component1>
-        <component2 hidden="false">KC (Area)</component2>
-        <component3 hidden="false">KC (Area)</component3>
+        <component0 hidden="false">KC (Textbook)</component0>
     </plancomponents>
     
-    <planfeatures>
-      <feature0 hidden="false">intercept </feature0>
-      <feature1 hidden="false">intercept </feature1>
-      <feature2 hidden="false"> linesuc</feature2>
-      <feature3 hidden="false"> linefail ; .5; NA;NA</feature3>
-    </planfeatures>
+    <PlanFeature0>lineafm </PlanFeature0>
+    <PlanFeature1>null</PlanFeature1>
+    <PlanFeature2>null</PlanFeature2>
+    <PlanFeature3>null</PlanFeature3>
+    <PlanFeature4>null</PlanFeature4>
+    <PlanFeature5>null</PlanFeature5>
+    <PlanFeature6>null</PlanFeature6>
+    <PlanFeature7>null</PlanFeature7>
+    <PlanFeature8>null</PlanFeature8>
+    <PlanFeature9>null</PlanFeature9>
     <Include_Latency_Model>true</Include_Latency_Model>
     <Use_Global_Intercept>true</Use_Global_Intercept>
 </options>
