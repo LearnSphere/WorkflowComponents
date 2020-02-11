@@ -251,7 +251,7 @@ cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 cat("offsetvals:",offsetvals,"\n")
-cat("Elastictest",Elastictest,"\n\n")
+cat("Elastictest",Elastictest,"\n\n")  
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")

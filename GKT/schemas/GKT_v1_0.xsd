@@ -138,16 +138,15 @@
 
   <xs:complexType name="option_dependency">
 	<xs:choice>		
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="PlanFeature0" ls:dependsOn="component0" ls:constraint="matches(.*)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="PlanFeature1" ls:dependsOn="component1" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="PlanFeature2" ls:dependsOn="component2" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="PlanFeature3" ls:dependsOn="component3" ls:constraint="matches(.*)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="PlanFeature4" ls:dependsOn="component4" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="PlanFeature5" ls:dependsOn="component5" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="PlanFeature6" ls:dependsOn="component6" ls:constraint="matches(.*)" ls:negation="true"/>
-	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="PlanFeature7" ls:dependsOn="component7" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="PlanFeature8" ls:dependsOn="component8" ls:constraint="matches(.*)" ls:negation="true"/>
-        <xs:element type="disjunctive" name="dependency11" ls:dependentOption="PlanFeature9" ls:dependsOn="component9" ls:constraint="matches(.*)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="PlanFeature1" ls:dependsOn="PlanFeature0" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="PlanFeature2" ls:dependsOn="PlanFeature1" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency3" ls:dependentOption="PlanFeature3" ls:dependsOn="PlanFeature2" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency5" ls:dependentOption="PlanFeature4" ls:dependsOn="PlanFeature3" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="PlanFeature5" ls:dependsOn="PlanFeature4" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency7" ls:dependentOption="PlanFeature6" ls:dependsOn="PlanFeature5" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency8" ls:dependentOption="PlanFeature7" ls:dependsOn="PlanFeature6" ls:constraint="matches(null)" ls:negation="true"/>
+	<xs:element type="disjunctive" name="dependency9" ls:dependentOption="PlanFeature8" ls:dependsOn="PlanFeature7" ls:constraint="matches(null)" ls:negation="true"/>
+        <xs:element type="disjunctive" name="dependency10" ls:dependentOption="PlanFeature9" ls:dependsOn="PlanFeature8" ls:constraint="matches(null)" ls:negation="true"/>
 	</xs:choice>
 </xs:complexType>
 
