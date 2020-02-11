@@ -36,22 +36,53 @@
     <mode>best fit model</mode>
     <Model_Name>Diff</Model_Name>
     <Elastictest>FALSE</Elastictest>
+    <Include_Latency_Model>true</Include_Latency_Model>
+    <Use_Global_Intercept>true</Use_Global_Intercept>
+    <Num_of_Features>1</Num_of_Features>
     <plancomponents>
         <component0 hidden="false">KC (Textbook)</component0>
     </plancomponents>
     
-    <PlanFeature0>lineafm </PlanFeature0>
-    <PlanFeature1>null</PlanFeature1>
-    <PlanFeature2>null</PlanFeature2>
-    <PlanFeature3>null</PlanFeature3>
-    <PlanFeature4>null</PlanFeature4>
-    <PlanFeature5>null</PlanFeature5>
-    <PlanFeature6>null</PlanFeature6>
-    <PlanFeature7>null</PlanFeature7>
-    <PlanFeature8>null</PlanFeature8>
-    <PlanFeature9>null</PlanFeature9>
-    <Include_Latency_Model>true</Include_Latency_Model>
-    <Use_Global_Intercept>true</Use_Global_Intercept>
+    <Feature0>lineafm </Feature0>
+        <Fixedpars0>null</Fixedpars0>
+        <Seedpars0>null</Seedpars0>
+        <Offsetvals0>NA</Offsetvals0>
+    <Feature1>null</Feature1>
+        <Fixedpars1>null</Fixedpars1>
+        <Seedpars1>null</Seedpars1>
+        <Offsetvals1>NA</Offsetvals1>    
+    <Feature2>null</Feature2>
+        <Fixedpars2>null</Fixedpars2>
+        <Seedpars2>null</Seedpars2>
+        <Offsetvals2>NA</Offsetvals2>   
+    <Feature3>null</Feature3>
+        <Fixedpars3>null</Fixedpars3>
+        <Seedpars3>null</Seedpars3>
+        <Offsetvals3>NA</Offsetvals3>   
+    <Feature4>null</Feature4>
+        <Fixedpars4>null</Fixedpars4>
+        <Seedpars4>null</Seedpars4>
+        <Offsetvals4>NA</Offsetvals4>   
+    <Feature5>null</Feature5>
+        <Fixedpars5>null</Fixedpars5>
+        <Seedpars5>null</Seedpars5>
+        <Offsetvals5>NA</Offsetvals5>   
+    <Feature6>null</Feature6>
+        <Fixedpars6>null</Fixedpars6>
+        <Seedpars6>null</Seedpars6>
+        <Offsetvals6>NA</Offsetvals6>   
+    <Feature7>null</Feature7>
+        <Fixedpars7>null</Fixedpars7>
+        <Seedpars7>null</Seedpars7>
+        <Offsetvals7>NA</Offsetvals7>   
+    <Feature8>null</Feature8>
+        <Fixedpars8>null</Fixedpars8>
+        <Seedpars8>null</Seedpars8>
+        <Offsetvals8>NA</Offsetvals8>   
+    <Feature9>null</Feature9>
+        <Fixedpars9>null</Fixedpars9>
+        <Seedpars9>null</Seedpars9>
+        <Offsetvals9>NA</Offsetvals9>   
 </options>
 
 </component>

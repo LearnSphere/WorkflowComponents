@@ -100,76 +100,293 @@ if (args[i] == "-plancomponents") {
        }
        i = i+1
     } else
-if (args[i] == "-PlanFeature0") {
+if (args[i] == "-Num_of_Features") {
        if (length(args) == i) {
-          stop("PlanFeature0 must be specified")
+          stop("Num_of_Features must be specified")
        }
-       PlanFeature0 = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-PlanFeature1") {
-       if (length(args) == i) {
-          stop("PlanFeature1 name must be specified")
-       }
-       PlanFeature1 = args[i+1]
-       i = i+1
-    } else 
-if (args[i] == "-PlanFeature2") {
-       if (length(args) == i) {
-          stop("Parameters' names of PlanFeature2 must be specified")
-       }
-       PlanFeature2 = args[i+1]
+       Num_of_Features = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature3") {
+if (args[i] == "-Feature0") {
        if (length(args) == i) {
-          stop("PlanFeature3 name must be specified")
+          stop("Feature0 must be specified")
        }
-       PlanFeature3 = args[i+1]
+       Feature0 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature4") {
+if (args[i] == "-Fixedpars0") {
        if (length(args) == i) {
-          stop("PlanFeature4 name must be specified")
+          stop("Fixedpars0 must be specified")
        }
-       PlanFeature4 = args[i+1]
+       Fixedpars0 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars0") {
+       if (length(args) == i) {
+          stop("Seedpars0 must be specified")
+       }
+       Seedpars0 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals0") {
+       if (length(args) == i) {
+          stop("Offsetvals0 must be specified")
+       }
+       Offsetvals0 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Feature1") {
+       if (length(args) == i) {
+          stop("Feature1 name must be specified")
+       }
+       Feature1 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature5") {
+if (args[i] == "-Fixedpars1") {
        if (length(args) == i) {
-          stop("PlanFeature5 name must be specified")
+          stop("Fixedpars1 must be specified")
        }
-       PlanFeature5 = args[i+1]
+       Fixedpars1 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars1") {
+       if (length(args) == i) {
+          stop("Seedpars1 must be specified")
+       }
+       Seedpars1 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals1") {
+       if (length(args) == i) {
+          stop("Offsetvals1 must be specified")
+       }
+       Offsetvals1 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Feature2") {
+       if (length(args) == i) {
+          stop("Feature2 must be specified")
+       }
+       Feature2 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature6") {
+if (args[i] == "-Fixedpars2") {
        if (length(args) == i) {
-          stop("PlanFeature6 name must be specified")
+          stop("Fixedpars2 must be specified")
        }
-       PlanFeature6 = args[i+1]
+       Fixedpars2 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars2") {
+       if (length(args) == i) {
+          stop("Seedpars2 must be specified")
+       }
+       Seedpars2 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals2") {
+       if (length(args) == i) {
+          stop("Offsetvals2 must be specified")
+       }
+       Offsetvals2 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature3") {
+       if (length(args) == i) {
+          stop("Feature3 name must be specified")
+       }
+       Feature3 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature7") {
+if (args[i] == "-Fixedpars3") {
        if (length(args) == i) {
-          stop("PlanFeature7 name must be specified")
+          stop("Fixedpars3 must be specified")
        }
-       PlanFeature7 = args[i+1]
+       Fixedpars3 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars3") {
+       if (length(args) == i) {
+          stop("Seedpars3 must be specified")
+       }
+       Seedpars3 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals3") {
+       if (length(args) == i) {
+          stop("Offsetvals3 must be specified")
+       }
+       Offsetvals3 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature4") {
+       if (length(args) == i) {
+          stop("Feature4 name must be specified")
+       }
+       Feature4 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature8") {
+if (args[i] == "-Fixedpars4") {
        if (length(args) == i) {
-          stop("PlanFeature8 name must be specified")
+          stop("Fixedpars4 must be specified")
        }
-       PlanFeature8 = args[i+1]
+       Fixedpars4 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars4") {
+       if (length(args) == i) {
+          stop("Seedpars4 must be specified")
+       }
+       Seedpars4 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals4") {
+       if (length(args) == i) {
+          stop("Offsetvals4 must be specified")
+       }
+       Offsetvals4 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature5") {
+       if (length(args) == i) {
+          stop("Feature5 name must be specified")
+       }
+       Feature5 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-PlanFeature9") {
+if (args[i] == "-Fixedpars5") {
        if (length(args) == i) {
-          stop("PlanFeature9 name must be specified")
+          stop("Fixedpars5 must be specified")
        }
-       PlanFeature9 = args[i+1]
+       Fixedpars5 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars5") {
+       if (length(args) == i) {
+          stop("Seedpars5 must be specified")
+       }
+       Seedpars5 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals5") {
+       if (length(args) == i) {
+          stop("Offsetvals5 must be specified")
+       }
+       Offsetvals5 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature6") {
+       if (length(args) == i) {
+          stop("Feature6 name must be specified")
+       }
+       Feature6 = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Fixedpars6") {
+       if (length(args) == i) {
+          stop("Fixedpars6 must be specified")
+       }
+       Fixedpars6 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars6") {
+       if (length(args) == i) {
+          stop("Seedpars6 must be specified")
+       }
+       Seedpars6 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals6") {
+       if (length(args) == i) {
+          stop("Offsetvals6 must be specified")
+       }
+       Offsetvals6 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature7") {
+       if (length(args) == i) {
+          stop("Feature7 name must be specified")
+       }
+       Feature7 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Fixedpars7") {
+       if (length(args) == i) {
+          stop("Fixedpars7 must be specified")
+       }
+       Fixedpars7 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars7") {
+       if (length(args) == i) {
+          stop("Seedpars7 must be specified")
+       }
+       Seedpars7 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals7") {
+       if (length(args) == i) {
+          stop("Offsetvals7 must be specified")
+       }
+       Offsetvals7 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature8") {
+       if (length(args) == i) {
+          stop("Feature8 name must be specified")
+       }
+       Feature8 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Fixedpars8") {
+       if (length(args) == i) {
+          stop("Fixedpars8 must be specified")
+       }
+       Fixedpars8 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars8") {
+       if (length(args) == i) {
+          stop("Seedpars8 must be specified")
+       }
+       Seedpars8 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals8") {
+       if (length(args) == i) {
+          stop("Offsetvals8 must be specified")
+       }
+       Offsetvals8 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Feature9") {
+       if (length(args) == i) {
+          stop("Feature9 name must be specified")
+       }
+       Feature9 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Fixedpars9") {
+       if (length(args) == i) {
+          stop("Fixedpars9 must be specified")
+       }
+       Fixedpars9 = args[i+1]
+       i = i+1
+    }else 
+if (args[i] == "-Seedpars9") {
+       if (length(args) == i) {
+          stop("Seedpars9 must be specified")
+       }
+       Seedpars9 = args[i+1]
+       i = i+1
+    }else
+if (args[i] == "-Offsetvals9") {
+       if (length(args) == i) {
+          stop("Offsetvals9 must be specified")
+       }
+       Offsetvals9 = args[i+1]
+       i = i+1
+    }else
 if (args[i] == "-programDir") {
        if (length(args) == i) {
           stop("programDir name must be specified")
@@ -211,40 +428,42 @@ cat("Use_Global_Intercept:",Use_Global_Intercept,"\n")
 dualfit<-as.logical(Include_Latency_Model)
 interc<-as.logical(Use_Global_Intercept)
 
-prespecfeaturesList<-vector()
-fixedparsList<-vector()
-seedparsList<-vector()
-offsetvalsList<-vector()
+Num_of_Features<-as.numeric(Num_of_Features)
+prespecfeaturesLi<-vector()
+fixedparsLi<-vector()
+seedparsLi<-vector()
+offsetvalsLi<-vector()
 
-PlanFeature0<-unlist(strsplit(PlanFeature0,";"))
-PlanFeature1<-unlist(strsplit(PlanFeature1,";"))
-PlanFeature2<-unlist(strsplit(PlanFeature2,";"))
-PlanFeature3<-unlist(strsplit(PlanFeature3,";"))
-PlanFeature4<-unlist(strsplit(PlanFeature4,";"))
-PlanFeature5<-unlist(strsplit(PlanFeature5,";"))
-PlanFeature6<-unlist(strsplit(PlanFeature6,";"))
-PlanFeature7<-unlist(strsplit(PlanFeature7,";"))
-PlanFeature8<-unlist(strsplit(PlanFeature8,";"))
-PlanFeature9<-unlist(strsplit(PlanFeature9,";"))
+prespecfeaturesList<-list(Feature0,Feature1,Feature2,Feature3,Feature4,Feature5,Feature6,Feature7,Feature8,Feature9)
+fixedparsList<-list(Fixedpars0,Fixedpars1,Fixedpars2,Fixedpars3,Fixedpars4,Fixedpars5,Fixedpars6,Fixedpars7,Fixedpars8,Fixedpars9)
+seedparsList<-list(Seedpars0,Seedpars1,Seedpars2,Seedpars3,Seedpars4,Seedpars5,Seedpars6,Seedpars7,Seedpars8,Seedpars9)
+offsetvalsList<-list(Offsetvals0,Offsetvals1,Offsetvals2,Offsetvals3,Offsetvals4,Offsetvals5,Offsetvals6,Offsetvals7,Offsetvals8,Offsetvals9)
 
-optList<-list(PlanFeature0,PlanFeature1,PlanFeature2,PlanFeature3,PlanFeature4,PlanFeature5,PlanFeature6,PlanFeature7,PlanFeature8,PlanFeature9)
-
-for(i in 1:10){
-    if(!trimws(optList[i])=="null"){
-        prespecfeaturesList<-c(prespecfeaturesList,trimws(optList[[i]][1]))
-        offsetvalsList<-c(offsetvalsList,NA)
-        if(lengths(optList[i])>1){
-           fixedparsList<-c(fixedparsList,trimws(optList[[i]][2]))
-           seedparsList<-c(seedparsList,trimws(optList[[i]][2]))
+for(i in 1:Num_of_Features){
+    if(!prespecfeaturesList[i]=="null"){
+        prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
+        
+        if(!fixedparsList[i]=="null"){
+            print(fixedparsList[i])
+            fixedparsLi<-c(fixedparsLi,fixedparsList[i])
         }
+        if(!seedparsList[i]=="null"){
+            seedparsLi<-c(seedparsLi,seedparsList[i])
+        }
+        if(!offsetvalsList[i]=="null"){
+            offsetvalsLi<-c(offsetvalsLi,offsetvalsList[i])
+        }
+
     }
 }
 
+
+
 planComponents<-gsub("[ ()-]", ".",as.character(Components))
-prespecFeatures<-as.character(prespecfeaturesList)
-suppressWarnings(fixedpars<-as.numeric(fixedparsList))
-suppressWarnings(seedpars<-as.numeric(seedparsList))
-suppressWarnings(offsetvals<-as.numeric(offsetvalsList))
+prespecFeatures<-as.character(prespecfeaturesLi)
+suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
+suppressWarnings(seedpars<-as.numeric(seedparsLi))
+suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
