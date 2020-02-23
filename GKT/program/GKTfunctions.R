@@ -3,7 +3,6 @@ suppressPackageStartupMessages(library("MuMIn"))
 suppressPackageStartupMessages(library("pROC"))
 suppressPackageStartupMessages(library("lme4"))
 suppressPackageStartupMessages(library("XML"))
-suppressPackageStartupMessages(library("glmnet"))
 suppressPackageStartupMessages(library("glmnetUtils"))
 
 #define functions

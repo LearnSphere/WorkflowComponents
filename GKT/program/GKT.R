@@ -457,8 +457,6 @@ for(i in 1:Num_of_Features){
     }
 }
 
-
-
 planComponents<-gsub("[ ()-]", ".",as.character(Components))
 prespecFeatures<-as.character(prespecfeaturesLi)
 suppressWarnings(fixedpars<-as.numeric(fixedparsLi))

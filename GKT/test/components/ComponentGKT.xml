@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/GKT.txt</file_path>
+<file_path>test/testdata/GKT (9).txt</file_path>
 <label>text</label>
-<file_name>GKT.txt</file_name>
+<file_name>GKT (9).txt</file_name>
 </student-step>
 </files>
 <inputmeta />
@@ -38,7 +38,10 @@
     <Elastictest>FALSE</Elastictest>
     <Include_Latency_Model>true</Include_Latency_Model>
     <Use_Global_Intercept>true</Use_Global_Intercept>
-    <Num_of_Features>1</Num_of_Features>
+    <Num_of_Features>2</Num_of_Features>
+    <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
+    <Include_of_Seedpars>true</Include_of_Seedpars> 
+    <Include_of_Offsetvals>true</Include_of_Offsetvals>  
     <plancomponents>
         <component0 hidden="false">KC (Textbook)</component0>
     </plancomponents>
