@@ -483,7 +483,7 @@ cat("Elastictest",Elastictest,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
-outputFilePath2<- paste(workingDirectory, "IESmodel_result_values.xml", sep="")
+outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
 
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
