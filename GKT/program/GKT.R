@@ -456,7 +456,7 @@ for(i in 1:Num_of_Features){
     }
 }
 
-#Extract headername
+#Extract HeaderName from the "Input.0..0.....HeaderName..column.X."
 newComponents<-list()
 for (k in 1:length(Components)){
     #print(unlist(Components[k]))
