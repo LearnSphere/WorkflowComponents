@@ -444,7 +444,6 @@ for(i in 1:Num_of_Features){
         prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
         
         if(!fixedparsList[i]=="null"){
-            print(fixedparsList[i])
             fixedparsLi<-c(fixedparsLi,fixedparsList[i])
         }
         if(!seedparsList[i]=="null"){
@@ -457,7 +456,19 @@ for(i in 1:Num_of_Features){
     }
 }
 
-planComponents<-gsub("[ ()-]", ".",as.character(Components))
+#Extract headername
+newComponents<-list()
+for (k in 1:length(Components)){
+    #print(unlist(Components[k]))
+    KComponents<-(strsplit(unlist(Components[k]), "-"))[[1]][2]
+    KComponents<-gsub('\\([a-z]{6} [0-9]+\\)','',KComponents)
+    KComponents<-trimws(KComponents)
+    if (grepl("Row",KComponents)==FALSE) {   
+        newComponents<-c(newComponents,KComponents)
+    }
+}
+
+planComponents<-gsub("[ ()-]", ".",as.character(newComponents))
 prespecFeatures<-as.character(prespecfeaturesLi)
 suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))

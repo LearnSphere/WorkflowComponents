@@ -43,7 +43,9 @@
     <Include_of_Seedpars>true</Include_of_Seedpars> 
     <Include_of_Offsetvals>true</Include_of_Offsetvals>  
     <plancomponents>
-        <component0 hidden="false">KC (Textbook)</component0>
+        <component0 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component0>
+        <component1 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component1>
+        <component2 hidden="true">Input 0 (0) - Row (column 0)</component2>
     </plancomponents>
     
     <Feature0>lineafm </Feature0>
