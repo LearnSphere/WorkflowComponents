@@ -32,8 +32,3 @@ WorkflowComponent.log
 ##################################################
 staging
 *.zip
-
-
-### ignore mac folder properties files
-######################################
-**/.DS_store
