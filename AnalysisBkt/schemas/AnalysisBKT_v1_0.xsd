@@ -107,6 +107,8 @@
       <xs:enumeration value="Conjugate Gradient Descent, Polak-Ribiere" />
       <xs:enumeration value="Conjugate Gradient Descent, Fletcher-Reeves" />
       <xs:enumeration value="Conjugate Gradient Descent, Hestenes-Stiefel" />
+      <xs:enumeration value="Conjugate Gradient Descent, Dai-Yuan" />
+      <xs:enumeration value="Gradient Descent, Lagrangian stepping" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -117,6 +119,8 @@
       <xs:enumeration value="Polak-Ribiere" />
       <xs:enumeration value="Fletcher-Reeves" />
       <xs:enumeration value="Hestenes-Stiefel" />
+      <xs:enumeration value="Dai-Yuan" />
+      <xs:enumeration value="None" />
     </xs:restriction>
   </xs:simpleType> -->
 
@@ -132,7 +136,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="model" id="Model" default="\s*KC\s*\((.*)\)\s*" />
       <!-- <xs:element type="structureType" name="structure" id="Structure" default="bySkill" /> Yudelson obsolete -->
-      <xs:element type="solverType" name="solver" id="Solver" default="Gradient Descent" />
+      <xs:element type="solverType" name="solver" id="Solver" default="Baum-Welch" />
       <!-- <xs:element type="conjugateGradientDescentType" name="conjugateGradientDescentOption" id="Conjugate_Gradient_Descent_Type"
         minOccurs="0"  default="None" /> Yudelson: obsolete-->
       <!-- <xs:element type="xs:integer" name="hiddenStates" id="Hidden_States" default="2" />  Yudelson: too advanced -->
