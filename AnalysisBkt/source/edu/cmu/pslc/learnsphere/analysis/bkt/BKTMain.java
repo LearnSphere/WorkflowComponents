@@ -392,7 +392,17 @@ public class BKTMain extends AbstractComponent {
                     .equalsIgnoreCase(
                             SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL.toString())) {
                 analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_HESTENES_STIEFEL);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.CONJUGATE_GRADIENT_DESCENT_DAI_YUAN.toString())) {
+                analysisOptions.setSolver(SolverType.CONJUGATE_GRADIENT_DESCENT_DAI_YUAN);
+            } else if (solver
+                    .equalsIgnoreCase(
+                            SolverType.GRADIENT_DESCENT_LAGRANGIAN_STEPPING.toString())) {
+                analysisOptions.setSolver(SolverType.GRADIENT_DESCENT_LAGRANGIAN_STEPPING);
             }
+            
+            
 //             else if (solver
 //                     .equalsIgnoreCase(
 //                             SolverType.CONJUGATE_GRADIENT_DESCENT.toString())) {
