@@ -1,2 +1,2 @@
-component.interpreter.path=/usr/bin/python3.6
-component.program.path=program/src/main.py
+component.interpreter.path=
+component.program.path=program/src/run_dafm.sh

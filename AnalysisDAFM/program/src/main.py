@@ -1,14 +1,14 @@
 """
 Datasets :-
 Geometry
-1) /home/anant/datasets/Geometry96-97.txt (5,105)
-CognitiveTutor: /research/datasets/cognitive_tutor_2007_2009_kddcup
+1) Geometry96-97.txt (5,105)
+CognitiveTutor: cognitive_tutor_2007_2009_kddcup
 1)  algebra_2006_2007_train.txt (2,270,385) (1,808,571) (856, 549821, 6592)
 2)  algebra_2008_2009_train.txt (8,918,055) (4,419,705) (2105, 288169, 6650)
 3)  bridge_to_algebra_2006_2007_train.txt (3,679,199) (1817476) (732, 129263, 9766)
 4)  bridge_to_algebra_2008_2009_train.txt (20,012,499)
 
-ASSISTments: /research/datasets/
+ASSISTments:
 1)  assistments_2012_2013/2012-2013-data-with-predictions-4-final_with_free_lunch.csv (6,123,270)
 2)  assistments_2009_2010/assistments_2009_2010.csv (1,011,080)
 

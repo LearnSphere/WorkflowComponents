@@ -19,9 +19,6 @@
     <problem_id>problem_id</problem_id>
     <skill_name>skill_name</skill_name>
     <user_id>user_id</user_id>
-    <dataset>Example</dataset>
-    <dafm>fine-tuned No</dafm>
-    <save-model>True</save-model>
   </options>
   <inputs>
     <input0>
@@ -33,8 +30,8 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/example.txt</file_path>
-          <file_name>example.txt</file_name>
+          <file_path>test/example_student_step/example_1.txt</file_path>
+          <file_name>example_1.txt</file_name>
           <index>0</index>
           <label>Student Step</label>
           <metadata>
