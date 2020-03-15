@@ -78,6 +78,20 @@ if (args[i] == "-Model_Name") {
        Model_Name = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Dualfit") {
+       if (length(args) == i) {
+          stop("Dualfit name must be specified")
+       }
+       Dualfit = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Interc") {
+       if (length(args) == i) {
+          stop("Interc name must be specified")
+       }
+       Interc = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Elastictest") {
        if (length(args) == i) {
           stop("Elastictest must be specified")
@@ -425,8 +439,8 @@ source(sourceFunction)
 cat("mode:",mode,"\n")
 cat("Include Latency Model:",Include_Latency_Model,"\n")
 cat("Use_Global_Intercept:",Use_Global_Intercept,"\n")
-dualfit<-as.logical(Include_Latency_Model)
-interc<-as.logical(Use_Global_Intercept)
+Dualfit<-as.logical(Include_Latency_Model)
+Interc<-as.logical(Use_Global_Intercept)
 
 Num_of_Features<-as.numeric(Num_of_Features)
 prespecfeaturesLi<-vector()
@@ -479,7 +493,7 @@ cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 cat("offsetvals:",offsetvals,"\n")
-cat("Elastictest",Elastictest,"\n\n")  
+cat("Elastictest:",Elastictest,"\n\n")  
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
@@ -509,8 +523,8 @@ switch(mode,
                fixedpars=fixedpars,
                seedpars=seedpars,
                outputFilePath=outputFilePath2,
-               dualfit=TRUE,
-               interc=TRUE,
+               dualfit=Dualfit,
+               interc=Interc,
                elastic=Elastictest)
 
         if(Elastictest=="FALSE"){

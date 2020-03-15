@@ -36,27 +36,27 @@
     <mode>best fit model</mode>
     <Model_Name>Diff</Model_Name>
     <Elastictest>FALSE</Elastictest>
-    <Include_Latency_Model>true</Include_Latency_Model>
+    <Include_Latency_Model>false</Include_Latency_Model>
     <Use_Global_Intercept>true</Use_Global_Intercept>
-    <Num_of_Features>2</Num_of_Features>
+    <Num_of_Features>3</Num_of_Features>
     <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
     <Include_of_Seedpars>true</Include_of_Seedpars> 
     <Include_of_Offsetvals>true</Include_of_Offsetvals>  
     <plancomponents>
         <component0 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component0>
         <component1 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component1>
-        <component2 hidden="true">Input 0 (0) - Row (column 0)</component2>
+        <component2 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component2>
     </plancomponents>
     
-    <Feature0>lineafm </Feature0>
+    <Feature0>intercept@</Feature0>
         <Fixedpars0>null</Fixedpars0>
         <Seedpars0>null</Seedpars0>
         <Offsetvals0>NA</Offsetvals0>
-    <Feature1>null</Feature1>
+    <Feature1>linesuc$</Feature1>
         <Fixedpars1>null</Fixedpars1>
         <Seedpars1>null</Seedpars1>
         <Offsetvals1>NA</Offsetvals1>    
-    <Feature2>null</Feature2>
+    <Feature2>linefail$</Feature2>
         <Fixedpars2>null</Fixedpars2>
         <Seedpars2>null</Seedpars2>
         <Offsetvals2>NA</Offsetvals2>   

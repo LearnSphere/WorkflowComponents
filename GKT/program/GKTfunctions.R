@@ -110,6 +110,7 @@ gkt <- function(data,
         # add the random effect feature to the model with a coefficient per level
         eval(parse(text=paste("eq<-paste(\"(1|\",components[k],\")+\",eq,sep=\"\")")))
       }
+
       else {
         # add the fixed effect feature to the model with the same coefficient for all levels
         if(is.na( offsetvals[k])){
@@ -250,6 +251,8 @@ gkt <- function(data,
       newXMLNode("FailCost",failureLatency,parent = top)
     }
     #collect all the F#, Add into list
+
+while(is.list(fNames)==0){
     if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", features)) && (!is.element("diffincor1", features)))||(length(grep("[[:punct:]]",features))>0)){
       for (c in coeffRownames){
         if(!(c=="null"||c=="Null")){
@@ -261,6 +264,7 @@ gkt <- function(data,
         newXMLNode(c,cValues,parent = top)
       }
     }
+}
     saveXML(top, file=outputFilePath,compression=0,indent=TRUE)
   }
   results <- list("model" = e$temp, 
