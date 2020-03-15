@@ -78,20 +78,6 @@ if (args[i] == "-Model_Name") {
        Model_Name = args[i+1]
        i = i+1
     } else
-if (args[i] == "-Dualfit") {
-       if (length(args) == i) {
-          stop("Dualfit name must be specified")
-       }
-       Dualfit = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Interc") {
-       if (length(args) == i) {
-          stop("Interc name must be specified")
-       }
-       Interc = args[i+1]
-       i = i+1
-    } else
 if (args[i] == "-Elastictest") {
        if (length(args) == i) {
           stop("Elastictest must be specified")
