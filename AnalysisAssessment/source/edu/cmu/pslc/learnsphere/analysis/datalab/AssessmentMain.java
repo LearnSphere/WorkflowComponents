@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
@@ -69,6 +70,7 @@ public class AssessmentMain extends AbstractComponent {
             this.getOptionAsString("summary_column_present").equalsIgnoreCase("true");
         //replace all NA, NONE or NAN with empty string
         File tempFile = replaceNAStr(this.getAttachment(0, 0), "");
+        Array2DRowRealMatrix emptyCells = null;
         try {
             //Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
         	Gradebook gradebook = GradebookUtils.readFile(tempFile);
@@ -77,7 +79,9 @@ public class AssessmentMain extends AbstractComponent {
             students = gradebook.getStudents();
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
-
+            //mark which cell is empty
+            emptyCells = markEmptyCells(numStudents, numItems, tempFile);
+            
             /*
             if (summaryColPresent) {
                 // Remove summary column, this is calculated in the algorithm
@@ -107,7 +111,7 @@ public class AssessmentMain extends AbstractComponent {
         Double[] cronbachValues = getCronbachValues(data, summaryColPresent);
         int[] itemOccurances = getItemOccurances(this.getAttachment(0, 0), summaryColPresent);
         // Write the output file.
-        File outputFile = populateAssessmentFile(data, cronbachValues, itemOccurances);
+        File outputFile = populateAssessmentFile(data, cronbachValues, itemOccurances, emptyCells, summaryColPresent);
 
         // If we haven't seen any errors yet...
         if (this.errorMessages.size() == 0) {
@@ -183,9 +187,34 @@ public class AssessmentMain extends AbstractComponent {
      * @param data the matrix of data
      * @return the populated file
      */
-    private File populateAssessmentFile(Array2DRowRealMatrix data, Double[] cronbachValues, int[] itemOccurances) {
+    private File populateAssessmentFile(Array2DRowRealMatrix data, Double[] cronbachValues, int[] itemOccurances, Array2DRowRealMatrix emptyCellFlags, boolean summaryColPresent) {
 
         if (data == null) { return null; }
+        
+        //compute summary column
+        double[] sumCol = null;
+    	double[] emptyCellFlagsForSumCol = null;
+        if (summaryColPresent) {
+        	sumCol = data.getColumn(numItems - 1);
+        	emptyCellFlagsForSumCol = emptyCellFlags.getColumn(numItems - 1);
+        } else {
+        	//compute student summary columns
+        	sumCol = new double[numStudents];
+        	emptyCellFlagsForSumCol = new double[numStudents];
+        	for (int i = 0; i < numStudents; i++) {
+        		double[] dataRow = data.getRow(i);
+        		double[] emptyCellFlagsRow = emptyCellFlags.getRow(i);
+        		double[] cleanedDataRow = cleanNullValues(dataRow, emptyCellFlagsRow);
+        		if (cleanedDataRow != null && cleanedDataRow.length > 0) {
+        			sumCol[i] = getAverageValue(cleanedDataRow);
+        			emptyCellFlagsForSumCol[i] = 0;
+        		} else {
+        			sumCol[i] = 0;
+        			emptyCellFlagsForSumCol[i] = 1;
+        		}
+        	}
+        }
+        
         
         File outputFile = this.createFile("Assessment", ".txt");
 
@@ -203,9 +232,11 @@ public class AssessmentMain extends AbstractComponent {
             
             // Write values to export
             Double allItemCronbachVal = null;
-            for (int i = 0; i < numItems; i++) {
-
-                String label = "All items";
+            int outputRowCnt = numItems;
+            if (!summaryColPresent)
+            	outputRowCnt = numItems + 1;
+            for (int i = 0; i < outputRowCnt; i++) {
+            	String label = "All items";
                 if (i > 0) {
                     label = headers[i].trim();
                 }
@@ -226,16 +257,28 @@ public class AssessmentMain extends AbstractComponent {
                     outputStream.write(badItemWarning.getBytes("UTF-8"));
                 	
                     double[] columnData = data.getColumn(i-1);
-                    double correlationValue = getPearsonsCorrelation(data.getColumn(numItems - 1),
-                                                                     columnData);
+                    double[] emptyCellFlagsForColumn = emptyCellFlags.getColumn(i-1);
+                    double[] columnDataWithoutNull = cleanNullValues(columnData, emptyCellFlagsForColumn);
+                    
+                    ArrayList<double[]> cleanedData = cleanNullForCorrelation(sumCol, emptyCellFlagsForSumCol, columnData, emptyCellFlagsForColumn);
+                    double[] sumColWithoutNull = cleanedData.get(0);
+                    double[] dataColWithoutNull = cleanedData.get(1);
+                    
+                    //double correlationValue = getPearsonsCorrelation(data.getColumn(numItems - 1),
+                    //                                                 columnData);
+                    String correlationValueStr = "";
+                    if (sumColWithoutNull != null && dataColWithoutNull != null) {
+                    	double correlationValue = getPearsonsCorrelation(sumColWithoutNull, dataColWithoutNull);
+                    	correlationValueStr = String.valueOf(correlationValue);
+                    }
                     outputStream.write(TAB_CHAR.getBytes("UTF-8"));
-                    outputStream.write(String.valueOf(correlationValue).getBytes("UTF-8"));
+                    outputStream.write(correlationValueStr.getBytes("UTF-8"));
 
-                    double averageValue = getAverageValue(columnData);
+                    double averageValue = getAverageValue(columnDataWithoutNull);
                     outputStream.write(TAB_CHAR.getBytes("UTF-8"));
                     outputStream.write(String.valueOf(averageValue).getBytes("UTF-8"));
 
-                    double stdDeviationValue = getStdDeviationValue(columnData, averageValue);
+                    double stdDeviationValue = getStdDeviationValue(columnDataWithoutNull, averageValue);
                     outputStream.write(TAB_CHAR.getBytes("UTF-8"));
                     outputStream.write(String.valueOf(stdDeviationValue).getBytes("UTF-8"));
                     
@@ -265,6 +308,7 @@ public class AssessmentMain extends AbstractComponent {
         ArrayList<double[]> cleaned = GradebookUtils.cleanNullValue(var1, var2);
         double[] temp_var1 = cleaned.get(0);
         double[] temp_var2 = cleaned.get(1);
+        
         double correlationVal = Double.NaN;
         try {
             correlationVal = pc.correlation(temp_var1, temp_var2);
@@ -282,7 +326,7 @@ public class AssessmentMain extends AbstractComponent {
      * @return double the average
      */
     private double getAverageValue(double[] columnData) {
-        return StatUtils.mean(columnData);
+    	return StatUtils.mean(columnData);
     }
 
     /**
@@ -677,4 +721,103 @@ public class AssessmentMain extends AbstractComponent {
         }
     	return tempFile;
     }
+    
+    private Array2DRowRealMatrix markEmptyCells(int studentCnt, int itemCount, File tempFile) throws Exception {
+
+    	Array2DRowRealMatrix emptyCells = new Array2DRowRealMatrix(studentCnt, itemCount);;
+
+        FileInputStream inStream = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+        	inStream = new FileInputStream(tempFile);
+            bufferedReader = new BufferedReader(new InputStreamReader(inStream));
+            
+            String headerLine = bufferedReader.readLine();
+            String delim = null;
+            if (headerLine.contains("\t")) {
+                delim = "\t";
+            } else if (headerLine.contains(",")) {
+            	delim = ",";
+            }
+            if (delim == null)
+            	return null;
+           
+            ArrayList<String> lines = new ArrayList<String>();
+            int rowIndex = 0;
+            String line = bufferedReader.readLine();
+            while (line != null) {
+            	lines.add(line);
+                line = bufferedReader.readLine();
+            }
+            for (String s : lines) {
+                    String[] rowValues = s.split(delim);
+                    int colIndex = -1;
+                    for (String valueStr : rowValues) {
+                        if (colIndex == -1) {
+                            //don't do anything
+                        } else if (valueStr.trim().length() == 0) {
+                        	emptyCells.setEntry(rowIndex, colIndex, 1);
+                        } else {
+                        	emptyCells.setEntry(rowIndex, colIndex, 0);
+                        }
+                        colIndex++;
+                    }
+                    
+                    if (rowValues.length < itemCount + 1) {
+                    	for (int i = rowValues.length-1; i <itemCount ; i++)
+                    		emptyCells.setEntry(rowIndex, i, 1);
+                    }
+                    rowIndex++;
+                }
+
+            } catch (Exception e) {
+                logger.info("Exception: " + e);
+                throw e;
+            } finally {
+
+                // Don't propagate the exception.
+                try {
+                    if (inStream != null) { inStream.close(); }
+                    if (bufferedReader != null) { bufferedReader.close(); }
+                } catch (Exception e) {
+                    logger.info("Failed to close resources: " + e);
+                }
+            }
+
+            return emptyCells;
+        }
+    
+    private double[] cleanNullValues(double[] columnData, double[] emptyCellFlags) {
+    	if (emptyCellFlags == null)
+    		return columnData;
+    	List<Double> vals = new ArrayList<Double>();
+    	for (int i = 0; i < columnData.length; i++) {
+    		if (emptyCellFlags[i] == 0)
+    			vals.add(columnData[i]);
+    	}
+    	if (vals.size() == 0)
+    		return null;
+    	else {
+    		return ArrayUtils.toPrimitive(vals.toArray(new Double[vals.size()]));
+    	}
+    }
+    
+    private ArrayList<double[]> cleanNullForCorrelation(double[] values1, double[] emptyCellFlagsForValues1, 
+    													double[] values2, double[] emptyCellFlagsForValues2) {
+    	ArrayList<Double> al_goodValues1 = new ArrayList<Double>();
+        ArrayList<Double> al_goodValues2 = new ArrayList<Double>();
+        for (int i = 0; i < values1.length; i++) {
+        	if (emptyCellFlagsForValues1[i] == 0 && emptyCellFlagsForValues2[i] == 0){
+                al_goodValues1.add(values1[i]);
+                al_goodValues2.add(values2[i]);
+            }
+        }
+        ArrayList<double[]> toBeReturned = new ArrayList<double[]>();
+        toBeReturned.add(ArrayUtils.toPrimitive(al_goodValues1.toArray(new Double[0])));
+        toBeReturned.add(ArrayUtils.toPrimitive(al_goodValues2.toArray(new Double[0])));
+        return toBeReturned;
+    	
+    }
+	
 }
