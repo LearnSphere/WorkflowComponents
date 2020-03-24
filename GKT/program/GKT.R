@@ -85,26 +85,81 @@ if (args[i] == "-Elastictest") {
        Elastictest = args[i+1]
        i = i+1
     } else
-if (args[i] == "-plancomponents") {
+if (args[i] == "-component0") {
        if (length(args) == i) {
           stop("plancomponents must be specified")
        }
-       plancomponents = args[i+1]
-       j=as.numeric(plancomponents[1])
-       m1=i+2
-       m2=i+1+j
-       for (m in m1:m2){
-            plancomponents=args[m]
-            Components=c(Components,plancomponents)
-            m=m+1
-       }
+       component0 = args[i+1]
        i = i+1
     } else
-if (args[i] == "-Num_of_Features") {
+if (args[i] == "-component1") {
        if (length(args) == i) {
-          stop("Num_of_Features must be specified")
+          stop("plancomponents must be specified")
        }
-       Num_of_Features = args[i+1]
+       component1 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component2") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component2 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component3") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component3 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component4") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component4 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component5") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component5 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component6") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component6 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component7") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component7 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component8") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component8 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-component9") {
+       if (length(args) == i) {
+          stop("plancomponents must be specified")
+       }
+       component9 = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Num_of_PlanComponents") {
+       if (length(args) == i) {
+          stop("Num_of_PlanComponents must be specified")
+       }
+       Num_of_PlanComponents = args[i+1]
        i = i+1
     } else
 if (args[i] == "-Feature0") {
@@ -423,23 +478,26 @@ source(sourceFunction)
 
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
-cat("Include Latency Model:",Include_Latency_Model,"\n")
-cat("Use_Global_Intercept:",Use_Global_Intercept,"\n")
+cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
+cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
 Dualfit<-as.logical(Include_Latency_Model)
 Interc<-as.logical(Use_Global_Intercept)
 
-Num_of_Features<-as.numeric(Num_of_Features)
+Num_of_PlanComponents<-as.numeric(Num_of_PlanComponents)
+plancomponentsLi<-vector()
 prespecfeaturesLi<-vector()
 fixedparsLi<-vector()
 seedparsLi<-vector()
 offsetvalsLi<-vector()
 
+plancomponentsList<-list(component0,component1,component2,component3,component4,component5,component6,component7,component8,component9)
 prespecfeaturesList<-list(Feature0,Feature1,Feature2,Feature3,Feature4,Feature5,Feature6,Feature7,Feature8,Feature9)
 fixedparsList<-list(Fixedpars0,Fixedpars1,Fixedpars2,Fixedpars3,Fixedpars4,Fixedpars5,Fixedpars6,Fixedpars7,Fixedpars8,Fixedpars9)
 seedparsList<-list(Seedpars0,Seedpars1,Seedpars2,Seedpars3,Seedpars4,Seedpars5,Seedpars6,Seedpars7,Seedpars8,Seedpars9)
 offsetvalsList<-list(Offsetvals0,Offsetvals1,Offsetvals2,Offsetvals3,Offsetvals4,Offsetvals5,Offsetvals6,Offsetvals7,Offsetvals8,Offsetvals9)
 
-for(i in 1:Num_of_Features){
+for(i in 1:Num_of_PlanComponents){
+    plancomponentsLi<-c(plancomponentsLi,plancomponentsList[i])
     if(!prespecfeaturesList[i]=="null"){
         prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
         
@@ -456,19 +514,7 @@ for(i in 1:Num_of_Features){
     }
 }
 
-#Extract HeaderName from the "Input.0..0.....HeaderName..column.X."
-newComponents<-list()
-for (k in 1:length(Components)){
-    #print(unlist(Components[k]))
-    KComponents<-(strsplit(unlist(Components[k]), "-"))[[1]][2]
-    KComponents<-gsub('\\([a-z]{6} [0-9]+\\)','',KComponents)
-    KComponents<-trimws(KComponents)
-    if (grepl("Row",KComponents)==FALSE) {   
-        newComponents<-c(newComponents,KComponents)
-    }
-}
-
-planComponents<-gsub("[ ()-]", ".",as.character(newComponents))
+planComponents<-gsub("[ ()-]", ".",as.character(plancomponentsLi))
 prespecFeatures<-as.character(prespecfeaturesLi)
 suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))

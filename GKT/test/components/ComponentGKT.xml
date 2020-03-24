@@ -23,9 +23,9 @@
 <files>
 <student-step>
 <index>0</index>
-<file_path>test/testdata/GKT (9).txt</file_path>
+<file_path>test/testdata/GKT.txt</file_path>
 <label>text</label>
-<file_name>GKT (9).txt</file_name>
+<file_name>GKT.txt</file_name>
 </student-step>
 </files>
 <inputmeta />
@@ -37,16 +37,21 @@
     <Model_Name>Diff</Model_Name>
     <Elastictest>FALSE</Elastictest>
     <Include_Latency_Model>false</Include_Latency_Model>
-    <Use_Global_Intercept>true</Use_Global_Intercept>
-    <Num_of_Features>3</Num_of_Features>
-    <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
-    <Include_of_Seedpars>true</Include_of_Seedpars> 
-    <Include_of_Offsetvals>true</Include_of_Offsetvals>  
-    <plancomponents>
-        <component0 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component0>
-        <component1 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component1>
-        <component2 hidden="true">Input 0 (0) - KC (Textbook) (column 33)</component2>
-    </plancomponents>
+    <Use_Global_Intercept>false</Use_Global_Intercept>
+    <Num_of_PlanComponents>3</Num_of_PlanComponents>
+    <Inlcude_of_Fixedpars>false</Inlcude_of_Fixedpars>
+    <Include_of_Seedpars>false</Include_of_Seedpars> 
+    <Include_of_Offsetvals>false</Include_of_Offsetvals>
+    <component0>Input 0 (0) - KC (Textbook) (column 33)</component0>
+    <component1>Input 0 (0) - KC (Textbook) (column 33)</component1>
+    <component2>Input 0 (0) - KC (Textbook) (column 33)</component2>
+    <component3>Input 0 (0) - KC (Textbook) (column 33)</component3>
+    <component4>Input 0 (0) - KC (Textbook) (column 33)</component4>
+    <component5>Input 0 (0) - KC (Textbook) (column 33)</component5>
+    <component6>Input 0 (0) - KC (Textbook) (column 33)</component6>
+    <component7>Input 0 (0) - KC (Textbook) (column 33)</component7>
+    <component8>Input 0 (0) - KC (Textbook) (column 33)</component8>
+    <component9>Input 0 (0) - KC (Textbook) (column 33)</component9>
     
     <Feature0>intercept@</Feature0>
         <Fixedpars0>null</Fixedpars0>
