@@ -251,8 +251,7 @@ gkt <- function(data,
       newXMLNode("FailCost",failureLatency,parent = top)
     }
     #collect all the F#, Add into list
-
-while(is.list(fNames)==0){
+if(!length(fNames)==0){
     if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", features)) && (!is.element("diffincor1", features)))||(length(grep("[[:punct:]]",features))>0)){
       for (c in coeffRownames){
         if(!(c=="null"||c=="Null")){
