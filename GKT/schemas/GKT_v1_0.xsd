@@ -190,7 +190,7 @@
 
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element type="modeType"  name="mode"  id="Analysis mode?" default="best fit model"/>
+        <xs:element type="modeType"  name="mode"  id="Analysis_mode?" default="best fit model"/>
         <xs:element type="xs:boolean" name="Include_Latency_Model" id="Latency_model?" default="false" />
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept?" default="false" />
         <xs:element type="xs:string" name="Model_Name" id="Model_Name?" default="null" />
@@ -200,56 +200,56 @@
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs?" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients?" default="false"/>
 
-        <xs:element type="FileInputHeader" name="component0" id="PlanComponents0" default=".*" minOccurs="1"/>
-        <xs:element type="xs:string" name="Feature0" id="Feature0" default="null" />
-            <xs:element type="xs:string" name="Fixedpars0" id="Fixedpars0" default="null" />
-            <xs:element type="xs:string" name="Seedpars0" id="Seedpars0" default="null" />
-            <xs:element type="xs:string" name="Offsetvals0" id="Offsetvals0" default="NA" />
-        <xs:element type="FileInputHeader" name="component1" id="PlanComponents1" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature1" id="Feature1" default="null" />
-            <xs:element type="xs:string" name="Fixedpars1" id="Fixedpars1" default="null" />
-            <xs:element type="xs:string" name="Seedpars1" id="Seedpars1" default="null" />
-            <xs:element type="xs:string" name="Offsetvals1" id="Offsetvals1" default="NA" />
-        <xs:element type="FileInputHeader" name="component2" id="PlanComponents2" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature2" id="Feature2" default="null" />
-            <xs:element type="xs:string" name="Fixedpars2" id="Fixedpars2" default="null" />
-            <xs:element type="xs:string" name="Seedpars2" id="Seedpars2" default="null" />
-            <xs:element type="xs:string" name="Offsetvals2" id="Offsetvals2" default="NA" />
-        <xs:element type="FileInputHeader" name="component3" id="PlanComponents3" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature3" id="Feature3" default="null" />
-            <xs:element type="xs:string" name="Fixedpars3" id="Fixedpars3" default="null" />
-            <xs:element type="xs:string" name="Seedpars3" id="Seedpars3" default="null" />
-            <xs:element type="xs:string" name="Offsetvals3" id="Offsetvals3" default="NA" />
-        <xs:element type="FileInputHeader" name="component4" id="PlanComponents4" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature4" id="Feature4" default="null" />
-            <xs:element type="xs:string" name="Fixedpars4" id="Fixedpars4" default="null" />
-            <xs:element type="xs:string" name="Seedpars4" id="Seedpars4" default="null" />
-            <xs:element type="xs:string" name="Offsetvals4" id="Offsetvals4" default="NA" />
-        <xs:element type="FileInputHeader" name="component5" id="PlanComponents5" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature5" id="Feature5" default="null" />
-            <xs:element type="xs:string" name="Fixedpars5" id="Fixedpars5" default="null" />
-            <xs:element type="xs:string" name="Seedpars5" id="Seedpars5" default="null" />
-            <xs:element type="xs:string" name="Offsetvals5" id="Offsetvals5" default="NA" />
-        <xs:element type="FileInputHeader" name="component6" id="PlanComponents6" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature6" id="Feature6" default="null" />
-            <xs:element type="xs:string" name="Fixedpars6" id="Fixedpars6" default="null" />
-            <xs:element type="xs:string" name="Seedpars6" id="Seedpars6" default="null" />
-            <xs:element type="xs:string" name="Offsetvals6" id="Offsetvals6" default="NA" />
-        <xs:element type="FileInputHeader" name="component7" id="PlanComponents7" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature7" id="Feature7" default="null" />
-            <xs:element type="xs:string" name="Fixedpars7" id="Fixedpars7" default="null" />
-            <xs:element type="xs:string" name="Seedpars7" id="Seedpars7" default="null" />
-            <xs:element type="xs:string" name="Offsetvals7" id="Offsetvals7" default="NA" />
-        <xs:element type="FileInputHeader" name="component8" id="PlanComponents8" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature8" id="Feature8" default="null" />
-            <xs:element type="xs:string" name="Fixedpars8" id="Fixedpars8" default="null" />
-            <xs:element type="xs:string" name="Seedpars8" id="Seedpars8" default="null" />
-            <xs:element type="xs:string" name="Offsetvals8" id="Offsetvals8" default="NA" />
-        <xs:element type="FileInputHeader" name="component9" id="PlanComponents9" default=".*" minOccurs="0"/>
-        <xs:element type="xs:string" name="Feature9" id="Feature9" default="null" />
-            <xs:element type="xs:string" name="Fixedpars9" id="Fixedpars9" default="null" />
-            <xs:element type="xs:string" name="Seedpars9" id="Seedpars9" default="null" />
-            <xs:element type="xs:string" name="Offsetvals9" id="Offsetvals9" default="NA" />
+        <xs:element type="FileInputHeader" name="component0" id="KC_or_Factor_1" default=".*" minOccurs="1"/>
+        <xs:element type="xs:string" name="Feature0" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars0" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars0" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals0" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component1" id="KC_or_Factor_2" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature1" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars1" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars1" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals1" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component2" id="KC_or_Factor_3" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature2" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars2" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars2" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals2" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component3" id="KC_or_Factor_4" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature3" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars3" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars3" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals3" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component4" id="KC_or_Factor_5" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature4" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars4" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars4" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals4" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component5" id="KC_or_Factor_6" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature5" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars5" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars5" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals5" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component6" id="KC_or_Factor_7" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature6" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars6" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars6" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals6" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component7" id="KC_or_Factor_8" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature7" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars7" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars7" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals7" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component8" id="KC_or_Factor_9" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature8" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars8" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars8" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals8" id="Offset" default="NA" />
+        <xs:element type="FileInputHeader" name="component9" id="KC_or_Factor_10" default=".*" minOccurs="0"/>
+        <xs:element type="xs:string" name="Feature9" id="Feature_name" default="intercept" />
+            <xs:element type="xs:string" name="Fixedpars9" id="Fixed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Seedpars9" id="Seed_NLP" default="NA" />
+            <xs:element type="xs:string" name="Offsetvals9" id="Offset" default="NA" />
       </xs:choice>
   </xs:complexType>
 
