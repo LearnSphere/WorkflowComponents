@@ -100,105 +100,105 @@
             <xs:enumeration value="cva.glmnet"/>
         </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:complexType name="option_dependency">
 	<xs:choice>
-          <xs:element type="conjunctive" name="dependency0" ls:dependentOption="Feature1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>  
-          <xs:element type="conjunctive" name="dependency1" ls:dependentOption="Feature2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>   
-          <xs:element type="conjunctive" name="dependency2" ls:dependentOption="Feature3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>     
-          <xs:element type="conjunctive" name="dependency3" ls:dependentOption="Feature4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>  
-          <xs:element type="conjunctive" name="dependency4" ls:dependentOption="Feature5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>   
-          <xs:element type="conjunctive" name="dependency5" ls:dependentOption="Feature6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>   
-          <xs:element type="conjunctive" name="dependency6" ls:dependentOption="Feature7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>  
-          <xs:element type="conjunctive" name="dependency7" ls:dependentOption="Feature8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>   
-          <xs:element type="conjunctive" name="dependency8" ls:dependentOption="Feature9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>               
+          <xs:element type="conjunctive" name="dependency0" ls:dependentOption="Feature1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>
+          <xs:element type="conjunctive" name="dependency1" ls:dependentOption="Feature2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>
+          <xs:element type="conjunctive" name="dependency2" ls:dependentOption="Feature3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>
+          <xs:element type="conjunctive" name="dependency3" ls:dependentOption="Feature4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>
+          <xs:element type="conjunctive" name="dependency4" ls:dependentOption="Feature5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>
+          <xs:element type="conjunctive" name="dependency5" ls:dependentOption="Feature6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>
+          <xs:element type="conjunctive" name="dependency6" ls:dependentOption="Feature7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>
+          <xs:element type="conjunctive" name="dependency7" ls:dependentOption="Feature8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>
+          <xs:element type="conjunctive" name="dependency8" ls:dependentOption="Feature9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>
 
-          <xs:element type="conjunctive" name="dependency10" ls:dependentOption="Fixedpars1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>  
-          <xs:element type="conjunctive" name="dependency11" ls:dependentOption="Fixedpars2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>   
-          <xs:element type="conjunctive" name="dependency12" ls:dependentOption="Fixedpars3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>     
-          <xs:element type="conjunctive" name="dependency13" ls:dependentOption="Fixedpars4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>  
-          <xs:element type="conjunctive" name="dependency14" ls:dependentOption="Fixedpars5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>   
-          <xs:element type="conjunctive" name="dependency15" ls:dependentOption="Fixedpars6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>   
-          <xs:element type="conjunctive" name="dependency16" ls:dependentOption="Fixedpars7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>  
-          <xs:element type="conjunctive" name="dependency17" ls:dependentOption="Fixedpars8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>   
-          <xs:element type="conjunctive" name="dependency18" ls:dependentOption="Fixedpars9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/> 
-          
-          <xs:element type="conjunctive" name="dependency20" ls:dependentOption="Seedpars1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>  
-          <xs:element type="conjunctive" name="dependency21" ls:dependentOption="Seedpars2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>   
-          <xs:element type="conjunctive" name="dependency22" ls:dependentOption="Seedpars3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>     
-          <xs:element type="conjunctive" name="dependency23" ls:dependentOption="Seedpars4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>  
-          <xs:element type="conjunctive" name="dependency24" ls:dependentOption="Seedpars5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>   
-          <xs:element type="conjunctive" name="dependency25" ls:dependentOption="Seedpars6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>   
-          <xs:element type="conjunctive" name="dependency26" ls:dependentOption="Seedpars7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>  
-          <xs:element type="conjunctive" name="dependency27" ls:dependentOption="Seedpars8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>   
-          <xs:element type="conjunctive" name="dependency28" ls:dependentOption="Seedpars9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>           
+          <xs:element type="conjunctive" name="dependency10" ls:dependentOption="Fixedpars1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>
+          <xs:element type="conjunctive" name="dependency11" ls:dependentOption="Fixedpars2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>
+          <xs:element type="conjunctive" name="dependency12" ls:dependentOption="Fixedpars3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>
+          <xs:element type="conjunctive" name="dependency13" ls:dependentOption="Fixedpars4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>
+          <xs:element type="conjunctive" name="dependency14" ls:dependentOption="Fixedpars5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>
+          <xs:element type="conjunctive" name="dependency15" ls:dependentOption="Fixedpars6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>
+          <xs:element type="conjunctive" name="dependency16" ls:dependentOption="Fixedpars7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>
+          <xs:element type="conjunctive" name="dependency17" ls:dependentOption="Fixedpars8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>
+          <xs:element type="conjunctive" name="dependency18" ls:dependentOption="Fixedpars9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>
 
-          <xs:element type="conjunctive" name="dependency30" ls:dependentOption="Offsetvals1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>  
-          <xs:element type="conjunctive" name="dependency31" ls:dependentOption="Offsetvals2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>   
-          <xs:element type="conjunctive" name="dependency32" ls:dependentOption="Offsetvals3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>     
-          <xs:element type="conjunctive" name="dependency33" ls:dependentOption="Offsetvals4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>  
-          <xs:element type="conjunctive" name="dependency34" ls:dependentOption="Offsetvals5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>   
-          <xs:element type="conjunctive" name="dependency35" ls:dependentOption="Offsetvals6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>   
-          <xs:element type="conjunctive" name="dependency36" ls:dependentOption="Offsetvals7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>  
-          <xs:element type="conjunctive" name="dependency37" ls:dependentOption="Offsetvals8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>   
-          <xs:element type="conjunctive" name="dependency38" ls:dependentOption="Offsetvals9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>            
+          <xs:element type="conjunctive" name="dependency20" ls:dependentOption="Seedpars1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>
+          <xs:element type="conjunctive" name="dependency21" ls:dependentOption="Seedpars2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>
+          <xs:element type="conjunctive" name="dependency22" ls:dependentOption="Seedpars3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>
+          <xs:element type="conjunctive" name="dependency23" ls:dependentOption="Seedpars4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>
+          <xs:element type="conjunctive" name="dependency24" ls:dependentOption="Seedpars5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>
+          <xs:element type="conjunctive" name="dependency25" ls:dependentOption="Seedpars6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>
+          <xs:element type="conjunctive" name="dependency26" ls:dependentOption="Seedpars7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>
+          <xs:element type="conjunctive" name="dependency27" ls:dependentOption="Seedpars8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>
+          <xs:element type="conjunctive" name="dependency28" ls:dependentOption="Seedpars9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>
 
-          <xs:element type="conjunctive" name="dependency40" ls:dependentOption="Fixedpars0" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency41" ls:dependentOption="Fixedpars1" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency42" ls:dependentOption="Fixedpars2" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>     
-          <xs:element type="conjunctive" name="dependency43" ls:dependentOption="Fixedpars3" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency44" ls:dependentOption="Fixedpars4" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency45" ls:dependentOption="Fixedpars5" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency46" ls:dependentOption="Fixedpars6" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency47" ls:dependentOption="Fixedpars7" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency48" ls:dependentOption="Fixedpars8" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/> 
+          <xs:element type="conjunctive" name="dependency30" ls:dependentOption="Offsetvals1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>
+          <xs:element type="conjunctive" name="dependency31" ls:dependentOption="Offsetvals2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>
+          <xs:element type="conjunctive" name="dependency32" ls:dependentOption="Offsetvals3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>
+          <xs:element type="conjunctive" name="dependency33" ls:dependentOption="Offsetvals4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>
+          <xs:element type="conjunctive" name="dependency34" ls:dependentOption="Offsetvals5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>
+          <xs:element type="conjunctive" name="dependency35" ls:dependentOption="Offsetvals6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>
+          <xs:element type="conjunctive" name="dependency36" ls:dependentOption="Offsetvals7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>
+          <xs:element type="conjunctive" name="dependency37" ls:dependentOption="Offsetvals8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>
+          <xs:element type="conjunctive" name="dependency38" ls:dependentOption="Offsetvals9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>
+
+          <xs:element type="conjunctive" name="dependency40" ls:dependentOption="Fixedpars0" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency41" ls:dependentOption="Fixedpars1" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency42" ls:dependentOption="Fixedpars2" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency43" ls:dependentOption="Fixedpars3" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency44" ls:dependentOption="Fixedpars4" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency45" ls:dependentOption="Fixedpars5" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency46" ls:dependentOption="Fixedpars6" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency47" ls:dependentOption="Fixedpars7" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency48" ls:dependentOption="Fixedpars8" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
           <xs:element type="conjunctive" name="dependency49" ls:dependentOption="Fixedpars9" ls:dependsOn="Inlcude_of_Fixedpars" ls:constraint="matches(true)"/>
-          
-          <xs:element type="conjunctive" name="dependency50" ls:dependentOption="Seedpars0" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency51" ls:dependentOption="Seedpars1" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency52" ls:dependentOption="Seedpars2" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>     
-          <xs:element type="conjunctive" name="dependency53" ls:dependentOption="Seedpars3" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency54" ls:dependentOption="Seedpars4" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency55" ls:dependentOption="Seedpars5" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency56" ls:dependentOption="Seedpars6" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency57" ls:dependentOption="Seedpars7" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency58" ls:dependentOption="Seedpars8" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>           
-          <xs:element type="conjunctive" name="dependency59" ls:dependentOption="Seedpars9" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/> 
-                    
-          <xs:element type="conjunctive" name="dependency60" ls:dependentOption="Offsetvals0" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency61" ls:dependentOption="Offsetvals1" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency62" ls:dependentOption="Offsetvals2" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>     
-          <xs:element type="conjunctive" name="dependency63" ls:dependentOption="Offsetvals3" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency64" ls:dependentOption="Offsetvals4" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency65" ls:dependentOption="Offsetvals5" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency66" ls:dependentOption="Offsetvals6" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>  
-          <xs:element type="conjunctive" name="dependency67" ls:dependentOption="Offsetvals7" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>   
-          <xs:element type="conjunctive" name="dependency68" ls:dependentOption="Offsetvals8" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/> 
-          <xs:element type="conjunctive" name="dependency69" ls:dependentOption="Offsetvals9" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>  
-          
-          <xs:element type="conjunctive" name="dependency70" ls:dependentOption="component1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>  
-          <xs:element type="conjunctive" name="dependency71" ls:dependentOption="component2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>   
-          <xs:element type="conjunctive" name="dependency72" ls:dependentOption="component3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>     
-          <xs:element type="conjunctive" name="dependency73" ls:dependentOption="component4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>  
-          <xs:element type="conjunctive" name="dependency74" ls:dependentOption="component5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>   
-          <xs:element type="conjunctive" name="dependency75" ls:dependentOption="component6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>   
-          <xs:element type="conjunctive" name="dependency76" ls:dependentOption="component7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>  
-          <xs:element type="conjunctive" name="dependency77" ls:dependentOption="component8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>   
-          <xs:element type="conjunctive" name="dependency78" ls:dependentOption="component9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>            
+
+          <xs:element type="conjunctive" name="dependency50" ls:dependentOption="Seedpars0" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency51" ls:dependentOption="Seedpars1" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency52" ls:dependentOption="Seedpars2" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency53" ls:dependentOption="Seedpars3" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency54" ls:dependentOption="Seedpars4" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency55" ls:dependentOption="Seedpars5" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency56" ls:dependentOption="Seedpars6" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency57" ls:dependentOption="Seedpars7" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency58" ls:dependentOption="Seedpars8" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency59" ls:dependentOption="Seedpars9" ls:dependsOn="Include_of_Seedpars" ls:constraint="matches(true)"/>
+
+          <xs:element type="conjunctive" name="dependency60" ls:dependentOption="Offsetvals0" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency61" ls:dependentOption="Offsetvals1" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency62" ls:dependentOption="Offsetvals2" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency63" ls:dependentOption="Offsetvals3" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency64" ls:dependentOption="Offsetvals4" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency65" ls:dependentOption="Offsetvals5" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency66" ls:dependentOption="Offsetvals6" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency67" ls:dependentOption="Offsetvals7" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency68" ls:dependentOption="Offsetvals8" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+          <xs:element type="conjunctive" name="dependency69" ls:dependentOption="Offsetvals9" ls:dependsOn="Include_of_Offsetvals" ls:constraint="matches(true)"/>
+
+          <xs:element type="conjunctive" name="dependency70" ls:dependentOption="component1" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(1)"/>
+          <xs:element type="conjunctive" name="dependency71" ls:dependentOption="component2" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(2)"/>
+          <xs:element type="conjunctive" name="dependency72" ls:dependentOption="component3" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(3)"/>
+          <xs:element type="conjunctive" name="dependency73" ls:dependentOption="component4" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(4)"/>
+          <xs:element type="conjunctive" name="dependency74" ls:dependentOption="component5" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(5)"/>
+          <xs:element type="conjunctive" name="dependency75" ls:dependentOption="component6" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(6)"/>
+          <xs:element type="conjunctive" name="dependency76" ls:dependentOption="component7" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(7)"/>
+          <xs:element type="conjunctive" name="dependency77" ls:dependentOption="component8" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(8)"/>
+          <xs:element type="conjunctive" name="dependency78" ls:dependentOption="component9" ls:dependsOn="Num_of_PlanComponents" ls:constraint="gt(9)"/>
 	</xs:choice>
 </xs:complexType>
 
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element type="modeType"  name="mode"  id="Type_of_Analysis" default="best fit model"/>
-        <xs:element type="xs:boolean" name="Include_Latency_Model" id="Include_Latency_Model" default="false" />
-        <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Use_Global_Intercept" default="false" />
-        <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
-        <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
-        <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Num_of_PlanComponents" default="1"/>
-        <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Inlcude_of_Fixedpars" default="false"/>
-        <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Include_of_Seedpars" default="false"/>
-        <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Include_of_Offsetvals" default="false"/>
+        <xs:element type="modeType"  name="mode"  id="Analysis mode?" default="best fit model"/>
+        <xs:element type="xs:boolean" name="Latency_model?" id="Include_Latency_Model" default="false" />
+        <xs:element type="xs:boolean" name="Global_intercept?" id="Use_Global_Intercept" default="false" />
+        <xs:element type="xs:string" name="Model_Name?" id="Model_Name" default="null" />
+        <xs:element type="elastictestType" name="Elastictest?" id="Elastictest" default="FALSE"/>
+        <xs:element type="xs:integer" name="Model_terms?" id="Num_of_PlanComponents" default="1"/>
+        <xs:element type="xs:boolean" name="Fixed_NLPs?" id="Inlcude_of_Fixedpars" default="false"/>
+        <xs:element type="xs:boolean" name="Seed_NLPs?" id="Include_of_Seedpars" default="false"/>
+        <xs:element type="xs:boolean" name="Fixed_coefficients?" id="Include_of_Offsetvals" default="false"/>
 
         <xs:element type="FileInputHeader" name="component0" id="PlanComponents0" default=".*" minOccurs="1"/>
         <xs:element type="xs:string" name="Feature0" id="Feature0" default="null" />
@@ -209,7 +209,7 @@
         <xs:element type="xs:string" name="Feature1" id="Feature1" default="null" />
             <xs:element type="xs:string" name="Fixedpars1" id="Fixedpars1" default="null" />
             <xs:element type="xs:string" name="Seedpars1" id="Seedpars1" default="null" />
-            <xs:element type="xs:string" name="Offsetvals1" id="Offsetvals1" default="NA" /> 
+            <xs:element type="xs:string" name="Offsetvals1" id="Offsetvals1" default="NA" />
         <xs:element type="FileInputHeader" name="component2" id="PlanComponents2" default=".*" minOccurs="0"/>
         <xs:element type="xs:string" name="Feature2" id="Feature2" default="null" />
             <xs:element type="xs:string" name="Fixedpars2" id="Fixedpars2" default="null" />
@@ -229,27 +229,27 @@
         <xs:element type="xs:string" name="Feature5" id="Feature5" default="null" />
             <xs:element type="xs:string" name="Fixedpars5" id="Fixedpars5" default="null" />
             <xs:element type="xs:string" name="Seedpars5" id="Seedpars5" default="null" />
-            <xs:element type="xs:string" name="Offsetvals5" id="Offsetvals5" default="NA" />  
+            <xs:element type="xs:string" name="Offsetvals5" id="Offsetvals5" default="NA" />
         <xs:element type="FileInputHeader" name="component6" id="PlanComponents6" default=".*" minOccurs="0"/>
         <xs:element type="xs:string" name="Feature6" id="Feature6" default="null" />
             <xs:element type="xs:string" name="Fixedpars6" id="Fixedpars6" default="null" />
             <xs:element type="xs:string" name="Seedpars6" id="Seedpars6" default="null" />
-            <xs:element type="xs:string" name="Offsetvals6" id="Offsetvals6" default="NA" /> 
+            <xs:element type="xs:string" name="Offsetvals6" id="Offsetvals6" default="NA" />
         <xs:element type="FileInputHeader" name="component7" id="PlanComponents7" default=".*" minOccurs="0"/>
         <xs:element type="xs:string" name="Feature7" id="Feature7" default="null" />
             <xs:element type="xs:string" name="Fixedpars7" id="Fixedpars7" default="null" />
             <xs:element type="xs:string" name="Seedpars7" id="Seedpars7" default="null" />
-            <xs:element type="xs:string" name="Offsetvals7" id="Offsetvals7" default="NA" /> 
+            <xs:element type="xs:string" name="Offsetvals7" id="Offsetvals7" default="NA" />
         <xs:element type="FileInputHeader" name="component8" id="PlanComponents8" default=".*" minOccurs="0"/>
         <xs:element type="xs:string" name="Feature8" id="Feature8" default="null" />
             <xs:element type="xs:string" name="Fixedpars8" id="Fixedpars8" default="null" />
             <xs:element type="xs:string" name="Seedpars8" id="Seedpars8" default="null" />
-            <xs:element type="xs:string" name="Offsetvals8" id="Offsetvals8" default="NA" />  
+            <xs:element type="xs:string" name="Offsetvals8" id="Offsetvals8" default="NA" />
         <xs:element type="FileInputHeader" name="component9" id="PlanComponents9" default=".*" minOccurs="0"/>
         <xs:element type="xs:string" name="Feature9" id="Feature9" default="null" />
             <xs:element type="xs:string" name="Fixedpars9" id="Fixedpars9" default="null" />
             <xs:element type="xs:string" name="Seedpars9" id="Seedpars9" default="null" />
-            <xs:element type="xs:string" name="Offsetvals9" id="Offsetvals9" default="NA" />    
+            <xs:element type="xs:string" name="Offsetvals9" id="Offsetvals9" default="NA" />
       </xs:choice>
   </xs:complexType>
 
