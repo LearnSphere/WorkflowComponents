@@ -30,7 +30,7 @@ gkt <- function(data,
 {eq<-paste("0+offset(rep(",offsetvals[length(features)+1],",nrow(e$data)))",sep="")}
     for(i in features){
       k<-k+1
-      print(components)
+      #print(components)
       # count an effect only when counted factor is of specific type
       if(length(grep("%",components[k]))){
         KCs<-strsplit(components[k],"%")
@@ -96,7 +96,7 @@ gkt <- function(data,
           pare<-seedparameters[e$fixedpars[m]]
         }else{pare<-e$fixedpars[m]        }}
         m<-m+1}
-      
+
       if (right(i,1)=="@"){
         eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
       } else{
@@ -359,7 +359,7 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,par5,fcom
     return(ifelse(data$meanspace<=0,
                   par4*10*          (log((par5*10)+data$icor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1)),
                   data$meanspace2^par3*(log((par5*10)+data$icor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1))))}
-    
+
   if(feat=="dashafm"){
     data$x<-ave(data$CF..Time.,index,FUN=function(x) countOutcomeDash(x,par1))
     return(log(1+data$x))   }
