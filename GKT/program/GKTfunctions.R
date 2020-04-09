@@ -51,7 +51,7 @@ gkt <- function(data,
         e$data$icor<-countOutcome(e$data,e$data$index,"INCORRECT")}
       # track parameters used
       if(gsub("[$@]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
-                                  "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe")){
+                                  "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){ # if not fixed them optimize it
           para<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
@@ -87,21 +87,31 @@ gkt <- function(data,
           pard<-seedparameters[e$fixedpars[m]]
         }else{pard<-e$fixedpars[m]        }}
         m<-m+1}
-
+      if(gsub("[$]","",i) %in% c("base5suc","base5fail")){
+        if(is.na(e$fixedpars[m])){
+          pare<-pars[optimparcount]
+          optimparcount<-optimparcount+1}
+        else
+        { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
+          pare<-seedparameters[e$fixedpars[m]]
+        }else{pare<-e$fixedpars[m]        }}
+        m<-m+1}
+      
       if (right(i,1)=="@"){
-        eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,components[k])",sep="")))
+        eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
       } else{
-        eval(parse(text=paste("e$data$",gsub("\\$","",i),components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,components[k])",sep="")))
+        eval(parse(text=paste("e$data$",gsub("\\$","",i),components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
         if(!is.na(offsetvals[k]))
         {eval(parse(text=paste("e$data$offset_",gsub("\\$","",i),components[k],"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
         }}
       if(length(seedparameters)==0){
       cat(paste(i,components[k],if(exists("para")){para},if(exists("parb")){parb},
-                if(exists("parc")){parc},if(exists("pard")){pard},"\n"))}
+                if(exists("parc")){parc},if(exists("pard")){pard},if(exists("pare")){pare},"\n"))}
       if(exists("para")){rm(para)}
       if(exists("parb")){rm(parb)}
       if(exists("parc")){rm(parc)}
       if(exists("pard")){rm(pard)}
+      if(exists("pare")){rm(pare)}
 
       if(right(i,1)=="$"){
         # add the fixed effect feature to the model with a coefficient per level
@@ -190,7 +200,9 @@ gkt <- function(data,
     sum("base2fail" == gsub("[$]","",features))*2 +
     sum("dashafm" == gsub("[$]","",features))+
     sum("dashsuc" == gsub("[$]","",features))+
-    sum("dashfail" == gsub("[$]","",features))-
+    sum("dashfail" == gsub("[$]","",features))+
+    sum("base5suc" == gsub("[$]","",features))*5+
+    sum("base5fail" == gsub("[$]","",features))*5-
     sum(!is.na(e$fixedpars))
 
   # number of seeds is just those pars specified and not fixed
@@ -218,7 +230,8 @@ gkt <- function(data,
     featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
                     "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
                     "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
-                    "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
+                    "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail",
+                    "base2suc","base5suc","base5fail")
 
     #collect all parameters from features and plancomponents (input code)
     features<-gsub("[[:punct:]]","",features)
@@ -276,7 +289,7 @@ gkt <- function(data,
   return (results)
 }
 
-computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,fcomp){
+computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,par5,fcomp){
   # fixed features
   feat<-gsub("[$@]","",feat)
   if(feat=="intercept"){return(index2)}
@@ -322,6 +335,31 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,fcomp){
     data$space<-ifelse((data$cor+data$icor)<=1,0,data$space/(data$cor+data$icor-1))
     data$tw <- ave(data$Tn,index,FUN=function(x) slideppetw(x,par4))
     return( data$Nc*data$tw^-(par2+par3*data$space) )  }
+  if(feat=="base5suc"){
+    data$mintime <- ave(data$CF..Time.,index, FUN=min)
+    data$minreltime <- ave(data$CF..reltime.,index, FUN=min)
+    data$CF..trueage. <- data$CF..Time.-data$mintime
+    data$CF..intage. <- data$CF..reltime.-data$minreltime
+    data$CF..age.<-(data$CF..trueage.-data$CF..intage.)*par2+data$CF..intage.
+    eval(parse(text=paste("data$meanspace <- data$",fcomp,"meanspacing",sep="")))
+    eval(parse(text=paste("data$meanspacerel <- data$",fcomp,"relmeanspacing",sep="")))
+    data$meanspace2 <- par2*(data$meanspace-data$meanspacerel)+(data$meanspacerel)
+    return(ifelse(data$meanspace<=0,
+                  par4*10*          (log((par5*10)+data$cor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1)),
+                  data$meanspace2^par3*(log((par5*10)+data$cor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1))))}
+  if(feat=="base5fail"){
+    data$mintime <- ave(data$CF..Time.,index, FUN=min)
+    data$minreltime <- ave(data$CF..reltime.,index, FUN=min)
+    data$CF..trueage. <- data$CF..Time.-data$mintime
+    data$CF..intage. <- data$CF..reltime.-data$minreltime
+    data$CF..age.<-(data$CF..trueage.-data$CF..intage.)*par2+data$CF..intage.
+    eval(parse(text=paste("data$meanspace <- data$",fcomp,"meanspacing",sep="")))
+    eval(parse(text=paste("data$meanspacerel <- data$",fcomp,"relmeanspacing",sep="")))
+    data$meanspace2 <- par2*(data$meanspace-data$meanspacerel)+(data$meanspacerel)
+    return(ifelse(data$meanspace<=0,
+                  par4*10*          (log((par5*10)+data$icor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1)),
+                  data$meanspace2^par3*(log((par5*10)+data$icor))*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1))))}
+    
   if(feat=="dashafm"){
     data$x<-ave(data$CF..Time.,index,FUN=function(x) countOutcomeDash(x,par1))
     return(log(1+data$x))   }
@@ -722,11 +760,11 @@ slidelogitdec <- function(x, d) {
     v[i] <- logitdec(x[1:i],d)  }
   return(c(0,v[1:length(x)-1]))}
 
-#slidelogitdec <- function(x, d) {
-#  v <- c(rep(0, length(x)))
-#  for (i in 1:length(x) ) {
-#    v[i] <- logitdec(x[max(1,i-60):i],d)  }
-#  return(c(0,v[1:length(x)-1]))}
+slidelogitdec <- function(x, d) {
+  v <- c(rep(0, length(x)))
+  for (i in 1:length(x) ) {
+    v[i] <- logitdec(x[max(1,i-60):i],d)  }
+  return(c(0,v[1:length(x)-1]))}
 
 
 # PPE weights
@@ -753,6 +791,8 @@ slideppetw <- function(x, d) {
   for (i in 1:length(x) ) {
     v[i] <- ppetw(x[1:i],d)  }
   return(c(v[1:length(x)]))}
+
+
 
 # tkt main function
 baselevel <-  function(x, d) {
