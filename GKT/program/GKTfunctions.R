@@ -60,7 +60,7 @@ gkt <- function(data,
           para<-seedparameters[e$fixedpars[m]]
         }else{para<-e$fixedpars[m] }} #otherwise just use it
         m<-m+1}
-      if(gsub("[$]","",i) %in% c("base2","base4","base2suc","base2fail","ppe")){
+      if(gsub("[$]","",i) %in% c("base2","base4","base2suc","base2fail","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){
           parb<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
@@ -69,7 +69,7 @@ gkt <- function(data,
           parb<-seedparameters[e$fixedpars[m]]
         }else{parb<-e$fixedpars[m]        }}
         m<-m+1}
-      if(gsub("[$]","",i) %in% c("base4","ppe")){
+      if(gsub("[$]","",i) %in% c("base4","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){
           parc<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
@@ -78,7 +78,7 @@ gkt <- function(data,
           parc<-seedparameters[e$fixedpars[m]]
         }else{parc<-e$fixedpars[m]        }}
         m<-m+1}
-      if(gsub("[$]","",i) %in% c("base4","ppe")){
+      if(gsub("[$]","",i) %in% c("base4","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){
           pard<-pars[optimparcount]
           optimparcount<-optimparcount+1}
