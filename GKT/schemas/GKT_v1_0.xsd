@@ -196,7 +196,7 @@
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
         <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
         <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Model_terms" default="1"/>
-        <xs:element type="xs:boolean" name="Inlcude_of_Fixedpar" id="Fixed_NLPs" default="false"/>
+        <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Fixed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients" default="false"/>
 
