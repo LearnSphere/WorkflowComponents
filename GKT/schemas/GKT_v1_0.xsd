@@ -191,14 +191,14 @@
   <xs:complexType name="OptionsType">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="modeType"  name="mode"  id="Analysis_mode" default="best fit model"/>
-        <xs:element type="xs:boolean" name="Include_Latency_Model" id="Latency_model?" default="false" />
-        <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept?" default="false" />
-        <xs:element type="xs:string" name="Model_Name" id="Model_Name?" default="null" />
-        <xs:element type="elastictestType" name="Elastictest" id="Elastictest?" default="FALSE"/>
-        <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Model_terms?" default="1"/>
-        <xs:element type="xs:boolean" name="Inlcude_of_Fixedpar" id="Fixed_NLPs?" default="false"/>
-        <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs?" default="false"/>
-        <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients?" default="false"/>
+        <xs:element type="xs:boolean" name="Include_Latency_Model" id="Latency_model" default="false" />
+        <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept" default="false" />
+        <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="null" />
+        <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
+        <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Model_terms" default="1"/>
+        <xs:element type="xs:boolean" name="Inlcude_of_Fixedpar" id="Fixed_NLPs" default="false"/>
+        <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>
+        <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients" default="false"/>
 
         <xs:element type="FileInputHeader" name="component0" id="KC_or_Factor_1" default=".*" minOccurs="1"/>
         <xs:element type="xs:string" name="Feature0" id="Feature_1" default="intercept" />
