@@ -4,7 +4,6 @@ suppressPackageStartupMessages(library("pROC"))
 suppressPackageStartupMessages(library("lme4"))
 suppressPackageStartupMessages(library("XML"))
 suppressPackageStartupMessages(library("glmnetUtils"))
-
 #define functions
 gkt <- function(data,
                        components,
@@ -12,10 +11,10 @@ gkt <- function(data,
                        offsetvals,
                        fixedpars,
                        seedpars,
-                       outputFilePath,
-                       dualfit,
-                       interc,
-                       elastic){
+                       outputFilePath="FALSE",
+                       dualfit = FALSE,
+                       interc=FALSE,
+                       elastic=FALSE){
   equation<-"CF..ansbin.~ "
   e<-new.env()
   e$data<-data
@@ -27,8 +26,11 @@ gkt <- function(data,
     fixedparcount<-1
     m<-1
     if (interc==TRUE){eq<-"1"} else {eq<-"0"}
+    if(interc==TRUE & !is.na(offsetvals[length(features)+1]))
+{eq<-paste("0+offset(rep(",offsetvals[length(features)+1],",nrow(e$data)))",sep="")}
     for(i in features){
       k<-k+1
+      print(components)
       # count an effect only when counted factor is of specific type
       if(length(grep("%",components[k]))){
         KCs<-strsplit(components[k],"%")
@@ -85,22 +87,22 @@ gkt <- function(data,
           pard<-seedparameters[e$fixedpars[m]]
         }else{pard<-e$fixedpars[m]        }}
         m<-m+1}
-      
+
       if (right(i,1)=="@"){
         eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,components[k])",sep="")))
       } else{
         eval(parse(text=paste("e$data$",gsub("\\$","",i),components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,components[k])",sep="")))
         if(!is.na(offsetvals[k]))
-        {eval(parse(text=paste("e$data$",gsub("\\$","",i),components[k],"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
+        {eval(parse(text=paste("e$data$offset_",gsub("\\$","",i),components[k],"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
         }}
-      
+      if(length(seedparameters)==0){
       cat(paste(i,components[k],if(exists("para")){para},if(exists("parb")){parb},
-                if(exists("parc")){parc},if(exists("pard")){pard},"\n"))
+                if(exists("parc")){parc},if(exists("pard")){pard},"\n"))}
       if(exists("para")){rm(para)}
       if(exists("parb")){rm(parb)}
       if(exists("parc")){rm(parc)}
       if(exists("pard")){rm(pard)}
-      
+
       if(right(i,1)=="$"){
         # add the fixed effect feature to the model with a coefficient per level
         cleanfeat<-gsub("\\$","",i)
@@ -110,18 +112,17 @@ gkt <- function(data,
         # add the random effect feature to the model with a coefficient per level
         eval(parse(text=paste("eq<-paste(\"(1|\",components[k],\")+\",eq,sep=\"\")")))
       }
-
       else {
         # add the fixed effect feature to the model with the same coefficient for all levels
         if(is.na( offsetvals[k])){
           eval(parse(text=paste("eq<-paste(i,components[k],\"+\",eq,sep=\"\")")))} else {
             eval(parse(text=paste("eq<-paste(\"offset(",
-                                  paste(i,components[k],sep=""),
+                                  paste("offset_",i,components[k],sep=""),
                                   ")+\",eq,sep=\"\")",sep="")))
           }}}
     cat(paste(eq,"\n"))
     e$form<-as.formula(paste(equation,eq,sep=""))
-    
+
     if(any(grep("[@]",features)) & dualfit==FALSE){
       temp<-glmer(e$form,data=e$data,family=binomial(logit))
       fitstat<-logLik(temp)
@@ -137,15 +138,14 @@ gkt <- function(data,
             if(elastic=="cva.glmnet") {temp<-cva.glmnet(e$form,data=e$data,family="binomial")
             plot(temp)
             print(temp)} else
-            { temp<-glm(e$form,data=e$data,family=binomial(logit),x=TRUE)
+            { temp<-glm(e$form,data=e$data,family=binomial(logit),x=TRUE,)
             fitstat<-logLik(temp)}}
-    
+
     if(dualfit==TRUE && elastic=="FALSE"){
       rt.pred=exp(1)^(-(predict(temp)[which(e$data$CF..ansbin.==1)]))
       outVals = boxplot(e$data$Duration..sec.,plot=FALSE)$out
       outVals = which(e$data$Duration..sec. %in% outVals)
       e$data$Duration..sec.=as.numeric(e$data$Duration..sec.)
-      
       if(length(outVals)>0){
         e$data$Duration..sec.[outVals] = quantile(e$data$Duration..sec.,.95)}# Winsorize outliers
       the.rt=e$data$Duration..sec.[which(e$data$CF..ansbin.==1)]
@@ -155,7 +155,8 @@ gkt <- function(data,
     }
     e$temp<-temp
     if(elastic==FALSE){
-      e$nullfit<-logLik(glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=e$data,family=binomial(logit)))
+      e$nullmodel<-glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=e$data,family=binomial(logit))
+      e$nullfit<-logLik(e$nullmodel)
       e$mcfad<-round(1-fitstat[1]/e$nullfit[1],4)
       cat(paste("McFadden's R2 logistic:",e$mcfad,"\n"))
       cat(paste("LogLike logistic:",round(fitstat,8),"\n"))
@@ -163,11 +164,11 @@ gkt <- function(data,
         {cat(paste("step par values ="))
         cat(seedparameters,sep=",")
         cat(paste("\n\n"))}
-      -fitstat[1]} 
-    else 
+      -fitstat[1]}
+    else
     {NULL}
   }
-  
+
   # count # of parameters
   parlength<-
     sum("powafm" == gsub("[$]","",features))+
@@ -191,18 +192,18 @@ gkt <- function(data,
     sum("dashsuc" == gsub("[$]","",features))+
     sum("dashfail" == gsub("[$]","",features))-
     sum(!is.na(e$fixedpars))
-  
+
   # number of seeds is just those pars specified and not fixed
   seeds<- seedpars[is.na(e$fixedpars)]
   seeds[is.na(seeds)]<-.5  # if not set seeds set to .5
-  
+
   # optimize the model
   if(parlength>0){
-    optimizedpars<- optim(seeds,modelfun,method = c("L-BFGS-B"),lower = 0.0001, upper = .9999, control = list(maxit = 100))
+    optimizedpars<- optim(seeds,modelfun,method = c("L-BFGS-B"),lower = 0.00001, upper = .99999, control = list(maxit = 100))
   }   else
     # no nolinear parameters
   {modelfun(numeric(0))  }
-  
+
   # report
   if(dualfit==TRUE && elastic==FALSE){
     failureLatency<-mean(data$Duration..sec.[which(data$CF..ansbin.==0)])
@@ -211,31 +212,31 @@ gkt <- function(data,
     Intercept<-coef(e$lm.rt)[1]
     cat(paste("Latency Scalar: ",Scalar,"\n",
               "Latency Intercept: ",Intercept,"\n",sep=''))}
-  
+
   if(elastic==FALSE){
     #collect all the features except "intercept"
     featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
                     "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
                     "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
                     "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail","base2suc")
-    
+
     #collect all parameters from features and plancomponents (input code)
     features<-gsub("[[:punct:]]","",features)
-    
+
     fNames<-list()
     for (p in 1:length(features)){
       if(features[p] %in% featuresList){
         fName<-gsub(" ","",(paste(features[p],components[p])))
         fNames<-c(fNames,fName)
       }}
-    
+
     coeffRownames<-rownames(summary(e$temp)$coefficients)
     if (is.element("diffcorComp", features) && is.element("diffincor1", features) ){
       DifcorComp<-coef(summary(e$temp))[toString(fNames[length(fNames)-1]),"Estimate"]
       Difincor1<-coef(summary(e$temp))[toString(fNames[length(fNames)]),"Estimate"]}
     Nres<-length(data$Outcome)
     pred<-predict(e$temp,type="response")
-    
+
     top <- newXMLNode("model_output")
     newXMLNode("N", Nres, parent = top)
     newXMLNode("Loglikelihood", round(logLik(e$temp),5), parent = top)
@@ -251,7 +252,8 @@ gkt <- function(data,
       newXMLNode("FailCost",failureLatency,parent = top)
     }
     #collect all the F#, Add into list
-if(!length(fNames)==0){
+    if(!length(fNames)==0){
+
     if ((is.element(fNames, coeffRownames) && (!is.element("diffcorComp", features)) && (!is.element("diffincor1", features)))||(length(grep("[[:punct:]]",features))>0)){
       for (c in coeffRownames){
         if(!(c=="null"||c=="Null")){
@@ -263,12 +265,12 @@ if(!length(fNames)==0){
         newXMLNode(c,cValues,parent = top)
       }
     }
-}
+    }
     saveXML(top, file=outputFilePath,compression=0,indent=TRUE)
   }
-  results <- list("model" = e$temp, 
-                  "prediction" = if(exists("pred")){pred}, 
-                  "nullfit"=e$nullfit,
+  results <- list("model" = e$temp,
+                  "prediction" = if(exists("pred")){pred},
+                  "nullmodel"=e$nullmodel,
                   "latencymodel"=if(exists("e$lm.rt")){e$lm.rt},
                   "optimizedpars"=if(exists("optimizedpars")){optimizedpars})
   return (results)
@@ -369,7 +371,7 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,fcomp){
     data$CF..age.<-(data$CF..trueage.-data$CF..intage.)*par2+data$CF..intage.
     #print(c(par1,par2))
     return(log(1+data$cor)*ave(data$CF..age.,index,FUN=function(x) baselevel(x,par1)))}
-  
+
   # double factor dynamic features
   if(feat=="linecomp"){return((data$cor-data$icor))}
   if(feat=="logit"){return(log((.1+par1*30+data$cor)/(.1+par1*30+data$icor)))}
@@ -442,7 +444,7 @@ mocv <- function(plancomponents,prespecfeatures,val,cvSwitch=NULL,makeFolds=NULL
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.","<-999*rep(1,length(foldIDX[,i]))")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Ftr]","<-predatait")))
           eval(parse(text=paste(sep="","dat$CF..run",i,"fold",j,"modbin.[Fte]","<-predtest")))
-          
+
         }
         #Output text summary
         Nresfit<-length(datTr$Outcome)
@@ -523,14 +525,14 @@ countOutcomeDash <- function(times, scalev) {
 
 countOutcomeDashPerf <- function(datav, seeking, scalev) {
   temp<-rep(0,length(datav[,1]))
-  
+
   for(s in unique(datav[,3])){
     # print(s)
     l <- length(datav[, 1][datav[,3]==s])
     v1 <- c(rep(0, l))
     v2 <- c(rep(0, l))
     r <- as.character(datav[, 2][datav[,3]==s]) == seeking
-    
+
     # print(r)
     v1[1] <- 0
     v2[1] <- v1[1] + r[1]
@@ -598,13 +600,14 @@ countOutcomeDifficulty2 <-function(data,index,r) {
 
 countOutcomeDifficultyAll1 <-function(data,index) {
   temp<-data$pred
-  
+
   data$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   data$temp<- data$temp-temp
   data$temp}
+
 countOutcomeDifficultyAll2 <-function(data,index) {
   temp<-data$pred^2
-  
+
   data$temp<-ave(temp,index,FUN =function(x) as.numeric(cumsum(x)))
   data$temp<- data$temp-temp
   data$temp}
@@ -631,9 +634,10 @@ countOutcomeOther <-function(data,index,item,sourcecol,sourc,targetcol,target) {
 # computes practice times using trial durations only
 practiceTime <-function(data) {   temp<-rep(0,length(data$CF..ansbin.))
 for (i in unique(data$Anon.Student.Id)){
+  if(length(data$Duration..sec.[data$Anon.Student.Id==i])>1){
   temp[data$Anon.Student.Id==i]<-
     c(0,cumsum(data$Duration..sec.[data$Anon.Student.Id==i])
-      [1:(length(cumsum(data$Duration..sec.[data$Anon.Student.Id==i]))-1)])}
+      [1:(length(cumsum(data$Duration..sec.[data$Anon.Student.Id==i]))-1)])}}
 return(temp)}
 
 # adds spacings to compute age since first trial (in seconds)
@@ -718,6 +722,13 @@ slidelogitdec <- function(x, d) {
     v[i] <- logitdec(x[1:i],d)  }
   return(c(0,v[1:length(x)-1]))}
 
+#slidelogitdec <- function(x, d) {
+#  v <- c(rep(0, length(x)))
+#  for (i in 1:length(x) ) {
+#    v[i] <- logitdec(x[max(1,i-60):i],d)  }
+#  return(c(0,v[1:length(x)-1]))}
+
+
 # PPE weights
 ppew <-function(times,wpar){
   times^-wpar*
@@ -745,7 +756,8 @@ slideppetw <- function(x, d) {
 
 # tkt main function
 baselevel <-  function(x, d) {
-  return(c(0,x[2:length(x)]^-d))}
+  l<-length(x)
+  return(c(0,x[2:l]^-d)[1:l])}
 
 splittimes<- function(times){
   (match(max(rank(diff(times))),rank(diff(times))))
