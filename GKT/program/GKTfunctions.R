@@ -19,6 +19,7 @@ gkt <- function(data,
   e<-new.env()
   e$data<-data
   e$fixedpars<-fixedpars
+  e$seedpars<-seedpars
   modelfun <- function(seedparameters){
     # intialize counts and vars
     k<-0
@@ -80,7 +81,7 @@ gkt <- function(data,
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base4","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){
-          pard<-pars[optimparcount]
+          pard<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
         else
         { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
@@ -89,14 +90,13 @@ gkt <- function(data,
         m<-m+1}
       if(gsub("[$]","",i) %in% c("base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){
-          pare<-pars[optimparcount]
+          pare<-seedparameters[optimparcount]
           optimparcount<-optimparcount+1}
         else
         { if(e$fixedpars[m]>=1 & e$fixedpars[m]%%1==0) {
           pare<-seedparameters[e$fixedpars[m]]
         }else{pare<-e$fixedpars[m]        }}
         m<-m+1}
-
       if (right(i,1)=="@"){
         eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
       } else{
@@ -105,8 +105,7 @@ gkt <- function(data,
         {eval(parse(text=paste("e$data$offset_",gsub("\\$","",i),components[k],"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
         }}
       if(length(seedparameters)==0){
-      cat(paste(i,components[k],if(exists("para")){para},if(exists("parb")){parb},
-                if(exists("parc")){parc},if(exists("pard")){pard},if(exists("pare")){pare},"\n"))}
+      cat(paste(i,components[k],if(exists("para")){para},if(exists("parb")){parb},if(exists("parc")){parc},if(exists("pard")){pard},if(exists("pare")){pare},"\n"))}
       if(exists("para")){rm(para)}
       if(exists("parb")){rm(parb)}
       if(exists("parc")){rm(parc)}
@@ -148,7 +147,7 @@ gkt <- function(data,
             if(elastic=="cva.glmnet") {temp<-cva.glmnet(e$form,data=e$data,family="binomial")
             plot(temp)
             print(temp)} else
-            { temp<-glm(e$form,data=e$data,family=binomial(logit),x=TRUE,)
+            { temp<-glm(e$form,data=e$data,family=binomial(logit),x=TRUE)
             fitstat<-logLik(temp)}}
 
     if(dualfit==TRUE && elastic=="FALSE"){
@@ -206,7 +205,7 @@ gkt <- function(data,
     sum(!is.na(e$fixedpars))
 
   # number of seeds is just those pars specified and not fixed
-  seeds<- seedpars[is.na(e$fixedpars)]
+  seeds<- e$seedpars[is.na(e$fixedpars)]
   seeds[is.na(seeds)]<-.5  # if not set seeds set to .5
 
   # optimize the model
@@ -255,7 +254,7 @@ gkt <- function(data,
     newXMLNode("Loglikelihood", round(logLik(e$temp),5), parent = top)
     newXMLNode("RMSE", round(sqrt(mean((pred-data$CF..ansbin.)^2)),5), parent = top)
     newXMLNode("Accuracy", round(sum(data$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
-    newXMLNode("AUC", round(auc(data$CF..ansbin.,pred,quiet=TRUE),5), parent = top)
+#    newXMLNode("AUC", round(auc(data$CF..ansbin.,pred,quiet=TRUE),5), parent = top)
     newXMLNode("r2McFad",e$mcfad, parent = top)
     if (is.element("diffcorComp", features) && is.element("diffincor1", features) ){
       newXMLNode("DifcorComp",DifcorComp,parent = top)
