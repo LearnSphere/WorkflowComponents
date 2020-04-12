@@ -202,7 +202,10 @@ for(k in 1:models){
         thres2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=length)$x
         len2<-sum(thres2>(thres2[1]*freqthres))
 
-
+        axis(side=1,at=1:len2,labels=1:len2)
+        lenList<-append(lenList,len)
+        lenList<-append(lenList,len2)
+        lenMax<-max(unlist(lenList))
 
         par(mfg=c(1,1))
         plot(xlab="Trials session 1", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
