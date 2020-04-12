@@ -164,11 +164,11 @@ for(k in 1:models){
         plot1<-plot(xlab="Trials session 1", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
         axis(side=1,at=1:lenMax,labels=1:lenMax)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
-        lines(1:lenMax,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
+        lines(1:len,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
         plot2<-plot(xlab="Trials session 2", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
         axis(side=1,at=1:lenMax,labels=1:lenMax)
         lines(1:len2,vpred2[1:len2],col=cnum,lty=ltyp,lwd=2)
-        lines(1:lenMax,aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
+        lines(1:len2,aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
         #print(thres)
 
       } else {
