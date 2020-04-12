@@ -108,7 +108,7 @@ for(k in 1:models){
     temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
     #Transfer to numeric
     freqthres<-as.numeric(freqthres)
-  
+
     # Create Functions
     # general cause to self
 
@@ -122,7 +122,7 @@ for(k in 1:models){
     splittimes<- function(times){
       (match(max(rank(diff(times))),rank(diff(times))))
     }#end splittimes
-    
+
     #Create Function plotlearning
     plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthres){
       if(f==TRUE){
@@ -166,7 +166,7 @@ for(k in 1:models){
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
         lines(1:lenMax,aggregate(data$CF..ansbin.[data$tcor<data$sessend],by=list(data$tcor[data$tcor<data$sessend]),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
         plot2<-plot(xlab="Trials session 2", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:lenMax,labels=1:lenMax)    
+        axis(side=1,at=1:lenMax,labels=1:lenMax)
         lines(1:len2,vpred2[1:len2],col=cnum,lty=ltyp,lwd=2)
         lines(1:lenMax,aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x[1:lenMax],col=1,lty=1,lwd=2)
         #print(thres)
@@ -200,7 +200,7 @@ for(k in 1:models){
         dv2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=mean)$x
         vpred2<-aggregate(pred2,by=list(data2$tcor),FUN=mean)$x
         thres2<-aggregate(data2$CF..ansbin.,by=list(data2$tcor),FUN=length)$x
-        len2<-sum(thres>(thres[1]*freqthres))
+        len2<-sum(thres2>(thres2[1]*freqthres))
 
         axis(side=1,at=1:len2,labels=1:len2)
         lenList<-append(lenList,len)
