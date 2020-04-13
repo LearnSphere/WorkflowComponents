@@ -559,7 +559,8 @@ switch(mode,
                interc=Interc,
                elastic=Elastictest)
                t<-summary(modelob$model)
-               cat(paste(t,sep="\n"))
+               cat(paste(capture.output(t),collapse ="\n"))
+  cat("\n")
 
         if(Elastictest=="FALSE"){
           val$pred <- modelob$prediction
