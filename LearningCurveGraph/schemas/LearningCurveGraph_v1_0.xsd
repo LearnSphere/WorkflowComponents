@@ -75,7 +75,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element type="xs:string"  name="freqthres" id="freqThres" default="0.1"/>
-        <xs:element type="xs:string"  name="KC_Model" id="KC_Model" default="KC (Default)"/>
+        <xs:element type="FileInputHeader"  name="KC_Model" id="KC_Model" default=".*"/>
     </xs:choice>
   </xs:complexType>
 
