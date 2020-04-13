@@ -209,7 +209,7 @@ for(k in 1:models){
 
         par(mfg=c(1,1))
         plot(xlab="Trials session 1", ylab="Probability Correct",c(0,lenMax),c(min(dv[1:lenMax])-.1,max(dv[1:lenMax])+.1),type="n", xaxt="n")
-        axis(side=1,at=1:len,labels=1:lenMax)
+        axis(side=1,at=1:lenMax,labels=1:lenMax)
         lines(1:len,vpred[1:len],col=cnum,lty=ltyp,lwd=2)
 
         par(mfg=c(2,1))
