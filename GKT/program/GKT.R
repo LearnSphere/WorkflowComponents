@@ -41,7 +41,7 @@ if (args[i] == "-node") {
 		} else {
 			i = i+1
 		}
-    } else 
+    } else
 if (args[i] == "-workingDir") {
        if (length(args) == i) {
           stop("workingDir name must be specified")
@@ -56,7 +56,7 @@ if (args[i] == "-mode") {
        }
        mode = args[i+1]
        i = i+1
-    } else  
+    } else
 if (args[i] == "-Include_Latency_Model") {
        if (length(args) == i) {
           stop("Include_Latency_Model name must be specified")
@@ -175,7 +175,7 @@ if (args[i] == "-Fixedpars0") {
        }
        Fixedpars0 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars0") {
        if (length(args) == i) {
           stop("Seedpars0 must be specified")
@@ -189,7 +189,7 @@ if (args[i] == "-Offsetvals0") {
        }
        Offsetvals0 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Feature1") {
        if (length(args) == i) {
           stop("Feature1 name must be specified")
@@ -203,7 +203,7 @@ if (args[i] == "-Fixedpars1") {
        }
        Fixedpars1 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars1") {
        if (length(args) == i) {
           stop("Seedpars1 must be specified")
@@ -217,7 +217,7 @@ if (args[i] == "-Offsetvals1") {
        }
        Offsetvals1 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Feature2") {
        if (length(args) == i) {
           stop("Feature2 must be specified")
@@ -231,7 +231,7 @@ if (args[i] == "-Fixedpars2") {
        }
        Fixedpars2 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars2") {
        if (length(args) == i) {
           stop("Seedpars2 must be specified")
@@ -259,7 +259,7 @@ if (args[i] == "-Fixedpars3") {
        }
        Fixedpars3 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars3") {
        if (length(args) == i) {
           stop("Seedpars3 must be specified")
@@ -287,7 +287,7 @@ if (args[i] == "-Fixedpars4") {
        }
        Fixedpars4 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars4") {
        if (length(args) == i) {
           stop("Seedpars4 must be specified")
@@ -315,7 +315,7 @@ if (args[i] == "-Fixedpars5") {
        }
        Fixedpars5 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars5") {
        if (length(args) == i) {
           stop("Seedpars5 must be specified")
@@ -343,7 +343,7 @@ if (args[i] == "-Fixedpars6") {
        }
        Fixedpars6 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars6") {
        if (length(args) == i) {
           stop("Seedpars6 must be specified")
@@ -371,7 +371,7 @@ if (args[i] == "-Fixedpars7") {
        }
        Fixedpars7 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars7") {
        if (length(args) == i) {
           stop("Seedpars7 must be specified")
@@ -399,7 +399,7 @@ if (args[i] == "-Fixedpars8") {
        }
        Fixedpars8 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars8") {
        if (length(args) == i) {
           stop("Seedpars8 must be specified")
@@ -427,7 +427,7 @@ if (args[i] == "-Fixedpars9") {
        }
        Fixedpars9 = args[i+1]
        i = i+1
-    }else 
+    }else
 if (args[i] == "-Seedpars9") {
        if (length(args) == i) {
           stop("Seedpars9 must be specified")
@@ -448,10 +448,10 @@ if (args[i] == "-programDir") {
        }
        componentDirectory = args[i+1]
        i = i+1
-    } 
+    }
     i = i+1
 }
- 
+
 if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(inputFile0)) {
       warning("Missing required input parameter: -file0")
@@ -500,7 +500,7 @@ for(i in 1:Num_of_PlanComponents){
     plancomponentsLi<-c(plancomponentsLi,plancomponentsList[i])
     if(!prespecfeaturesList[i]=="null"){
         prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
-        
+
         if(!fixedparsList[i]=="null"){
             fixedparsLi<-c(fixedparsLi,fixedparsList[i])
         }
@@ -525,7 +525,7 @@ cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 cat("offsetvals:",offsetvals,"\n")
-cat("Elastictest:",Elastictest,"\n\n")  
+cat("Elastictest:",Elastictest,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
@@ -547,7 +547,7 @@ switch(mode,
          makeFolds=0 #if 0, using existing ones assumed to be on val
 
          #modeloptim(plancomponents,prespecfeatures,val,dualfit,interc)
-         
+
          modelob<-gkt(data=val,
                components=planComponents,
                features=prespecFeatures,
@@ -558,6 +558,8 @@ switch(mode,
                dualfit=Dualfit,
                interc=Interc,
                elastic=Elastictest)
+               t<-summary(modelob$model)
+               print(t)
 
         if(Elastictest=="FALSE"){
           val$pred <- modelob$prediction
@@ -566,7 +568,7 @@ switch(mode,
         else{
           val$CF..modbin.= predict(temp,type="response")
         }
-      
+
          pred<-val$CF..modbin.
          pred<-as.data.frame(pred)
          data_pred<-cbind(val,pred)
