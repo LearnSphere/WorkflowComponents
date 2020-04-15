@@ -971,12 +971,14 @@ if __name__ == '__main__':
             logger.debug(d.iloc[(k - 5):(k + 5)])
             logger.debug(tx[get_game_pcol(pcol)].iloc[(k - 5):(k + 5)])
         data[get_game_pcol(pcol)] = d
+        tx[get_game_pcol(pcol)] = data[get_game_pcol(pcol)]
         logger.info("Original number of gaming tx in pattern %i: %i\n\
                     Expanded with pattern of length %i to: %i" % (pcol, np.sum(tx[get_game_pcol(pcol)]),
                                                                  length, np.sum(data[get_game_pcol(pcol)])))
     # Regenerate labels of all gaming tx    
     pcols = [get_game_pcol(i) for i in range(1,14)]
     data[game_col] = data.apply(lambda x: any([x[col] for col in pcols]), axis=1)
+    tx[game_col] = data[game_col]
     logger.info("Original number of gaming tx in pattern %i: %i\n\
                 Expanded with pattern of length %i to: %i" % (pcol, np.sum(tx[game_col]),
                                                               length, np.sum(data[game_col])))
