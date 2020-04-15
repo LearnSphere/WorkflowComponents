@@ -100,9 +100,9 @@ gkt <- function(data,
       if (right(i,1)=="@"){
         eval(parse(text=paste("e$data$",components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
       } else{
-        eval(parse(text=paste("e$data$",gsub("\\$","",i),components[k],"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
+        eval(parse(text=paste("e$data$",gsub("\\$","",i),gsub("[%]","",components[k]),"<-computefeatures(e$data,i,para,parb,e$data$index,e$data$indexcomp,parc,pard,pare,components[k])",sep="")))
         if(!is.na(offsetvals[k]))
-        {eval(parse(text=paste("e$data$offset_",gsub("\\$","",i),components[k],"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
+        {eval(parse(text=paste("e$data$offset_",gsub("\\$","",i),gsub("[%]","",components[k]),"<-offsetvals[k]*e$data$",gsub("\\$","",i),components[k],sep="")))
         }}
       if(length(seedparameters)==0){
       cat(paste(i,components[k],if(exists("para")){para},if(exists("parb")){parb},if(exists("parc")){parc},if(exists("pard")){pard},if(exists("pare")){pare},"\n"))}
@@ -124,9 +124,9 @@ gkt <- function(data,
       else {
         # add the fixed effect feature to the model with the same coefficient for all levels
         if(is.na( offsetvals[k])){
-          eval(parse(text=paste("eq<-paste(i,components[k],\"+\",eq,sep=\"\")")))} else {
+          eval(parse(text=paste("eq<-paste(i,gsub("[%]","",components[k]),\"+\",eq,sep=\"\")")))} else {
             eval(parse(text=paste("eq<-paste(\"offset(",
-                                  paste("offset_",i,components[k],sep=""),
+                                  paste("offset_",i,gsub("[%]","",components[k]),sep=""),
                                   ")+\",eq,sep=\"\")",sep="")))
           }}}
     cat(paste(eq,"\n"))
