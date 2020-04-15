@@ -61,6 +61,37 @@ public class QAAllElementsMain extends AbstractComponent {
         }
         
         this.setOption("dbConnection", "" + canEstablishDb());
+        
+        //get the array type values
+        List<String> weights = null;
+        if (this.getOptionAsList("weights") != null) {
+        	weights = this.getOptionAsList("weights");
+        	logger.info("weights:: " + weights);
+        }
+		for (String weight : weights) {
+			try {
+				Double dbl = Double.parseDouble(weight);
+			} catch (NumberFormatException nfe) {
+				System.err.println("Invalid weight value: " + weight);
+			}
+		}
+		
+		//get the array type values
+        List<String> lineType = null;
+        if (this.getOptionAsList("lineType") != null) {
+        	lineType = this.getOptionAsList("lineType");
+        	logger.info("lineType:: " + lineType);
+        }
+        
+        //get the array columns
+        List<String> columns = null;
+        if (this.getOptionAsList("columns") != null) {
+        	columns = this.getOptionAsList("columns");
+        	logger.info("columns:: " + columns);
+        }
+		
+
+        
         if (reqsMet) {
                 File outputDirectory = this.runExternal();
                 if (outputDirectory.isDirectory() && outputDirectory.canRead()) {

@@ -244,6 +244,6 @@
     <!--  dropout,sum_observed_events_duration<MOOCdbName />-->
     <featuresToExtract>dropout</featuresToExtract>
     <numberWeeks>10</numberWeeks>
-    <startDate>yyyy-mm-dd</startDate>
+    <startDate>1970-01-01</startDate>
   </options>
 </component>

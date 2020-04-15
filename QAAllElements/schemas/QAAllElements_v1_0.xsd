@@ -44,7 +44,7 @@
 
 <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="file" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="file" minOccurs="0" />
     </xs:all>
   </xs:complexType>
@@ -116,7 +116,109 @@
 	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="shortSelect" ls:dependsOn="selectionType" ls:constraint="matches(Short)" />
 	</xs:choice>
 </xs:complexType>
+
+<!-- Simple Array Type -->
+<xs:complexType name="weight">
+        <xs:simpleContent>
+            <xs:extension base="xs:double">
+                <xs:attribute name="type" type="xs:double"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
   
+  <xs:complexType name="weightsArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="weight" name="weights0" default="0.1" minOccurs="1" />
+      <xs:element type="weight" name="weights1" default="0.3" minOccurs="1" />
+      <xs:element type="weight" name="weights2" default="0.5" minOccurs="0" />
+      <xs:element type="weight" name="weights3" default="0.7" minOccurs="0" />
+      <xs:element type="weight" name="weights4" default="0.9" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+  
+  <!-- Enumerated Array Type -->
+  <xs:simpleType name="lineType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="line chart" />
+      <xs:enumeration value="bar chart" />
+	  <xs:enumeration value="points" />
+    </xs:restriction>
+  </xs:simpleType>
+
+<xs:complexType name="lineStyle">
+        <xs:simpleContent>
+            <xs:extension base="lineType">
+                <xs:attribute name="type" type="lineType"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType> 
+  
+  
+<xs:complexType name="lineTypeArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="lineStyle" name="lineStyle0" default="line chart" minOccurs="1" />
+      <xs:element type="lineStyle" name="lineStyle1" default="bar chart" minOccurs="0" />
+      <xs:element type="lineStyle" name="lineStyle2" default="points" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+<!-- FileInputHeader Array Type -->  
+ <xs:complexType name="column">
+        <xs:simpleContent>
+            <xs:extension base="FileInputHeader">
+                <xs:attribute name="type" type="FileInputHeader"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="columnHeaderArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="column" name="column0" default="\s*KC\s*\((.*)\)\s*" minOccurs="1" />
+     <xs:element type="column" name="column1" default="\s*Opportunity\s*\((.*)\)\s*" minOccurs="1" />
+     <xs:element type="column" name="column2" default="\s*Predicted Error Rate\s*\((.*)\)\s*" minOccurs="1" />
+     <xs:element type="column" name="column3" default=".*" minOccurs="0" />
+     <xs:element type="column" name="column4" default=".*" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  
+
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -126,6 +228,9 @@
         <xs:element type="longOptionsType" name="longSelect" id="Long_Selection_List" default="LongOption1" />
         <xs:element type="shortOptionsType" name="shortSelect" id="Short_Selection_List" default="ShortOption1" />
         
+        <xs:element type="weightsArray" name="weights" id="Weights" />
+        <xs:element type="lineTypeArray" name="lineType" id="Line_Type" />
+        <xs:element type="columnHeaderArray" name="columns" id="Columns" />
           
           <xs:element type="FileInputHeader" name="singleFileSelect" id="Single_File_Selection_List" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0" />
           <xs:element type="MultiFileInputHeader" name="optionalFileSelect" id="Optional_File_Selection_List" default=".*" ls:inputNodeIndex="*" ls:inputFileIndex="*" />

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Hui Cheng
+  <email>hcheng@cs.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisWheelspin</url>
+<date>2020-01-15</date>
+<abstract>The <b>Wheelspin</b> component produces three kinds of prediction for wheelspin: iAFM predictive model prediction, Beck model prediction and local measurement prediction. To be specific:
+<ul>
+<li>iAFM Predictive Model Prediction: use iAFM statistical model to predict the probability of a student's progress. The formula that is used for glmer function is: First.Attempt ~ KC.model.opportunity + (KC.model.opportunity|Anon.Student.Id) + (KC.model.opportunity|KC.model.name). See more details for description of each output column.</li>
+<li>Beck Model Prediction: to define students' progress status, use method defined in J. Beck's <a href="https://pdfs.semanticscholar.org/0890/bd77b4615cbe9aa6be27b4c9aa6772f3d74f.pdf">paper</a> See more details for description of each output column.</li>
+<li>Local Measurement Prediction: run a general linear modeling for each student-KC combination using this formula: First.Attempt ~ KC.model.opportunity. See more details for description of each output column.</li>
+</ul>
+</abstract>
+<description>The Wheelspin component produces three kinds of prediction for wheelspin: iAFM predictive model prediction, Beck model prediction and local measurement prediction.</description>
+
+<inputs>
+<b>Student-Step</b>
+</inputs>
+
+<outputs>Output is a tab-delimited file. Each row represents a unique combination of student and KC skill. Here is description for each column in the output file
+<ul>
+<li>Anon Student Id: student ID</li>
+<li>KC (model_name): the KC model of interest</li>
+<li>Count of Cases: number of cases for the student-KC combination</li>
+<li>Count of Correct First Attempts: number of cases of correct first attempt for the student-KC</li>
+<li>Count of Incorrect First Attempts: number of cases of incorrect first attempt for the student-KC</li>
+<li>Count of Maximum Consecutive Correct First Attempts: the maximum number of consecutive correct first attempt for the student-KC</li>
+<li>Assistment Score: count of incorrect and hint first attempt for the student-KC</li>
+<li>iAFM Overall Slope: overall slope from iAFM model</li>
+<li>iAFM Overall Slope Std Error: standard error for the overall slope from iAFM model</li>
+<li>iAFM KC Slope: this KC's slope from iAFM model</li>
+<li>iAFM KC Slope Std Error: standard error for this KC's slope from iAFM model</li>
+<li>iAFM Student Slope: this student's slope from iAFM model</li>
+<li>iAFM Student Slope Std Error: stundard error for this student's slope from iAFM model</li>
+<li>iAFM Overall Intercept: overall intercept from iAFM model</li>
+<li>iAFM KC Intercept: this KC's intercept from iAFM model</li>
+<li>iAFM Student Intercept: this student's intercept from iAFM model</li>
+<li>Predictive Slope: the sum of slopes of overall, KC and student</li>
+<li>Predictive Slope Std Error: the sum of standard errors of overall, KC and student slopes</li>
+<li>Predictive Intercept: the sum of intercepts of overall, KC and student</li>
+<li>Predictive Slope CI Upper Bound: Predictive_Slope + 1.96*Predictive_Slope_Std_Error</li>
+<li>Predictive Slope CI Lower Bound: Predictive_Slope - 1.96*Predictive_Slope_Std_Error</li>
+<li>Predictive Model Prediction: when Predictive_Intercept &gt;= 1.5, student mastered this KC; 
+when Predictive_Slope_CI_Lower_Bound &gt;= 0, student-KC is progress; when Predictive_Slope_CI_Upper_Bound is &lt;= 0, student-KC is ws (wheelspin); 
+when Predictive_Slope_CI_Lower_Bound &lt; 0 and Predictive_Slope &gt; 0, student-KC is pp (possible progress); 
+when Predictive_Slope_CI_Upper_Bound &gt; 0 and Predictive_Slope &lt;= 0, student-KC is pws (possible wheelspin);</li>
+<li>Predictive Model Progress Probability: probability of progress for student-KC</li>
+<li>Beck Model Prediction: when student has 3 consecutive corrects for the KC, student-KC is progress; when after 10 opportunities, student hasn't got 3 consecutive correct, student-KC is ws (wheelspin);</li>
+<li>Local Measurement Slope: slope obtained from running glm for this student-KC</li>
+<li>Local Measurement Slope Std Error: standard error for the slope obtained from running glm for this student-KC</li>
+<li>Local Measurement Intercept: intercept obtained from running glm for this student-KC</li>
+<li>Local Measurement Slope CI upper Bound: Local_Measurement_Slope + 1.96*Local_Measurement_Slope_Std_Error</li>
+<li>Local Measurement Slope CI lower Bound: Local_Measurement_Slope - 1.96*Local_Measurement_Slope_Std_Error</li>
+<li>Local Measurement Prediction: when Local_Measurement_Intercept &gt;= 1.5, student mastered this KC; 
+when Local_Measurement_Slope_CI_Lower_Bound &gt;= 0, student-KC is progress; when Local_Measurement_Slope_CI_Upper_Bound is &lt;= 0, student-KC is ws (wheelspin); 
+when Local_Measurement_Slope_CI_Lower_Bound &lt; 0 and Local_Measurement_Slope &gt; 0, student-KC is pp (possible progress); 
+when Local_Measurement_Slope_CI_Upper_Bound &gt; 0 and Local_Measurement_Slope &lt;= 0, student-KC is pws (possible wheelspin);</li>
+<li>Local Measurement Progress Probability: probability of progress for student-KC by local measurement</li>
+</ul>
+</outputs>
+
+<options>
+<b>Model</b> - the column containing the Knowledge Component Model (KCM) data <br/>
+</options>
+
+</info>

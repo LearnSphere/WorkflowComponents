@@ -85,6 +85,8 @@
 <xs:attribute name="constraint" type="xs:string" />
 <xs:attribute name="negation" type="xs:boolean" />
 
+<xs:attribute name="arrayDefault" type="xs:string" />
+
 <xs:simpleType name="disjunctive">
   <xs:restriction base="xs:string" />
 </xs:simpleType>

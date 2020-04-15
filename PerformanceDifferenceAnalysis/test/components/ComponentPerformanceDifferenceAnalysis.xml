@@ -59,7 +59,7 @@
     <finalGrade>Input 0 (0) - FINAL GRADE (column 0)</finalGrade>
     <qpa>Input 0 (0) - QPA (column 2)</qpa>
     <unitsFactor>Input 0 (0) - UNITS FACTORED (column 3)</unitsFactor>
-    <anormalyFactor>Input 0 (0) - SEX (column 1)</anormalyFactor>
+    <anomalyFactor>Input 0 (0) - SEX (column 1)</anomalyFactor>
   </options>
 
 </component>

@@ -15,6 +15,7 @@ inputFileName = args[1]
 # Default to last week
 startDate <- as.Date(Sys.Date())-7
 endDate = NULL
+specifyRange = NULL
 
 if (length(args) > 2) {
   i = 1
@@ -35,7 +36,14 @@ if (length(args) > 2) {
       inputFileName <- args[i + 4]
       i = i + 4
       
-    } else if (args[i] == "-startDate") {
+    } else if (args[i] == "-specifyRange") {
+      if (length(args) == i) {
+        stop("specifyRange must be specified")
+      }
+      specifyRange = args[i+1]
+      i = i+1
+    } 
+    else if (args[i] == "-startDate") {
       if (length(args) == i) {
         stop("start date must be specified")
       }
@@ -45,9 +53,11 @@ if (length(args) > 2) {
       if (length(args) == i) {
         stop("end date must be specified")
       }
-      endDate = as.Date(args[i+1])
+      if (args[i+1] == "1970-01-01")
+        endDate = NULL
+      else
+        endDate = as.Date(args[i+1])
       i = i+1
-      
     } else if (args[i] == "-workingDir") {
       if (length(args) == i) {
         stop("workingDir name must be specified")
@@ -58,6 +68,11 @@ if (length(args) > 2) {
     i = i+1
   }
 }
+
+if (specifyRange == "No") {
+  endDate = NULL
+}
+
 
 outputFileName <- paste(workingDir, "/txn_rollup.csv", sep="")
 logFileName <- paste(workingDir, "/transform_component.wfl", sep="")

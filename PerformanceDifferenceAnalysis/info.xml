@@ -26,7 +26,7 @@ students in the target course. </abstract>
 <li>Grade for Target Course: allowed values are numbers or letter grades (A, B, C, D, F, R, W)</li>
 <li>GPA in Other Units: units-weighted GPA (may be cumulative, as in McKay, or single semester), must be numeric values</li>
 <li>Number of Units Factored into GPA, must be numeric values</li>
-<li>Anormaly Factor: for example, student's gender</li>
+<li>Anomaly Factor: for example, student's gender</li>
 </ul>
 </options>
 

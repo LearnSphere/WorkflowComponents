@@ -22,6 +22,16 @@ preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   rm(success)
   return(df)
 }
+
+replace_special_chars <- function(str) {
+ changedStr = gsub("<", " lt ", str)
+ changedStr = gsub(">", " gt ", changedStr)
+ changedStr = gsub("\"", " quot ", changedStr)
+ changedStr = gsub("'", " apos ", changedStr)
+ changedStr = gsub("&", " amp ", changedStr)
+ return(changedStr)
+}
+
 wfl_log_file = "iAFM.wfl"
 workingDir = "."
 
@@ -92,7 +102,7 @@ iafm.model <- logWarningsMessages(glmer(success ~ opportunity + (opportunity|ind
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
 write("\t<model>",file=outputFile1,sep="",append=TRUE)
-write(paste("\t\t<name>",modelName,"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<name>",replace_special_chars(modelName),"</name>",sep=""),file=outputFile1,sep="",append=TRUE)
 ## potential outputs
 write(paste("\t\t<AIC>",AIC(iafm.model),"</AIC>",sep=""),file=outputFile1,sep="",append=TRUE)
 write(paste("\t\t<BIC>",BIC(iafm.model),"</BIC>",sep=""),file=outputFile1,sep="",append=TRUE)
@@ -114,7 +124,7 @@ for (x in 1:length(rownames(kc.params))) {
   strBuilder <- paste(strBuilder,
       "\t<parameter>\n",
       "\t\t<type>Skill</type>\n",
-      "\t\t<name>",kc.params[x,2],"</name>\n",
+      "\t\t<name>",replace_special_chars(kc.params[x,2]),"</name>\n",
       "\t\t<intercept>",kc.params[x,3],"</intercept>\n",
       "\t\t<slope>",kc.params[x,4],"</slope>\n",
       "\t</parameter>\n",

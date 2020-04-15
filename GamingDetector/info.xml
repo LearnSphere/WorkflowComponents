@@ -28,7 +28,7 @@
   <b>step_column </b> -- columns with the unique label for the problem sub-step identifier<br/>
   <b>correct_labels </b> -- Values of outcome column corresponding to a correct input<br/>
   <b>incorrect_labels </b> -- Values of outcome column corresponding to an incorrect input<br/>
-  <b>hint_labels </b> -- Values of outcome column corresponding to a transaction that was a help request<br/>
+  <b>hint_labels </b> -- Values of outcome column corresponding to a transaction that was a help request<br/> 
   <b>bug_labels </b> -- Values of outcome column corresponding to a transaction  with an input that was identified as reflecting a well known misconception or mistake<br/> 
 </options>
 

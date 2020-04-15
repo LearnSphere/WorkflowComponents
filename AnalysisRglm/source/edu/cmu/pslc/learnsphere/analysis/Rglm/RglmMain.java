@@ -152,20 +152,24 @@ public class RglmMain extends AbstractComponent {
             File outputDirectory = this.runExternal();
             if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                     logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-                    File file0 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");
-                    File file1 = new File(outputDirectory.getAbsolutePath() + "/model-values.xml");
-                    File file2 = new File(outputDirectory.getAbsolutePath() + "/Parameter-estimate-values.xml");
+                    File file0 = new File(outputDirectory.getAbsolutePath() + "/student-step.txt");
+                    File file1 = new File(outputDirectory.getAbsolutePath() + "/R-summary.txt");
+                    File file2 = new File(outputDirectory.getAbsolutePath() + "/model-values.xml");
+                    File file3 = new File(outputDirectory.getAbsolutePath() + "/Parameter-estimate-values.xml");
                     if (file0 != null && file0.exists() && file1 != null && file1.exists() && file2 != null && file2.exists()) {
                             Integer nodeIndex = 0;
                             Integer fileIndex = 0;
-                            String label = "analysis-summary";
+                            String label = "student-step";
                             this.addOutputFile(file0, nodeIndex, fileIndex, label);
                             nodeIndex = 1;
-                            label = "model-values";
+                            label = "analysis-summary";
                             this.addOutputFile(file1, nodeIndex, fileIndex, label);
                             nodeIndex = 2;
-                            label = "parameters";
+                            label = "model-values";
                             this.addOutputFile(file2, nodeIndex, fileIndex, label);
+                            nodeIndex = 3;
+                            label = "parameters";
+                            this.addOutputFile(file3, nodeIndex, fileIndex, label);
                     } else {
                             this.addErrorMessage("Can't find expected output file.");
                     }

@@ -55,7 +55,7 @@
     	<xs:element type="FileInputHeader" name="finalGrade" id="Grade_for_Target_Course" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0" />
       	<xs:element type="FileInputHeader" name="qpa" id="GPA_in_Other_Units" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
       	<xs:element type="FileInputHeader" name="unitsFactor" id="Number_of_Units_Factored_into_GPA" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
-      	<xs:element type="FileInputHeader" name="anormalyFactor" id="Anormaly_Factor" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
+      	<xs:element type="FileInputHeader" name="anomalyFactor" id="Anomaly_Factor" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
           </xs:choice>
   </xs:complexType>
  

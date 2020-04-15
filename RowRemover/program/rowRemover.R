@@ -1,5 +1,6 @@
 #usage
-#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValues "ex: aWord, 0" -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Written Assignment 1: Design an Experiment" -valueColumns "Written Assignment 1: Design an Experiment" -node 0 -fileIndex 0 "OLI-Psych-Gradebook_modified.txt"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValue "ex: aWord, 0" -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Written Assignment 1: Design an Experiment" -valueColumns "Written Assignment 1: Design an Experiment" -node 0 -fileIndex 0 "OLI-Psych-Gradebook_modified.txt"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive No -i_operation "Keep selected rows and remove the rest" -operation keep -removeNull No -removeValue "0, BUILDING_A_SIDEWALK, painting_the_wall, abc" -valueColumn "Problem Name,Step Name" -valueColumns "Problem Name,Step Name" -node 0 -fileIndex 0 student_step_export.txt
 
 
 #load libraries and set optins
@@ -15,12 +16,12 @@ workingDir = NULL
 programDir = NULL
 #operation either remove or keep
 operation<-"remove"
-remove.values<-NULL
+remove.value<-NULL
+remove.values<-c()
 case.sensitive<-NULL
 remove.null<-NULL
 columns.var.name<-NULL
 column.var.name<-NULL
-
 
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
@@ -75,16 +76,18 @@ while (i <= length(args)) {
     }
     valueColumns = args[i+1]
     #replace all angle brackets, parenthses, space an ash with period
-    #valueColumns <- gsub("[ ()-]", ".", valueColumns)
-    valueColumns <- make.names(valueColumns)
+    valueColumns <- gsub("[ ()-]", ".", valueColumns)
+    #valueColumns <- make.names(valueColumns)
     columns.var.name = as.list(strsplit(valueColumns, ",")[[1]])
     i = i+1
-  } else if (args[i] == "-removeValues") {
-    #split by comma
-    remove.values = strsplit(args[i+1], "\\s*,\\s*")[[1]]
-    if (length(remove.values) == 0) {
-      stop("removeValues must be specified")
+  } else if (args[i] == "-removeValue") {
+    #split by comma -- wrong, should be one value at a time to allow , in searched value
+    #remove.value = strsplit(args[i+1], "\\s*,\\s*")[[1]]
+    remove.value = trimws(args[i+1])
+    if (length(args) == i || length(remove.value) == 0) {
+      stop("removeValue must be specified")
     }
+    remove.values = c(remove.values,remove.value)
     i = i+1
   } else if (args[i] == "-caseSensitive") {
     if (length(args) == i) {
@@ -119,6 +122,7 @@ while (i <= length(args)) {
   }
   i = i+1
 }
+
 # Load raw data
 ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
@@ -133,7 +137,6 @@ for (column.var.name in columns.var.name) {
   cmdString = paste("ds$", column.var.name, " <- as.character(ds$", column.var.name, ")", sep="")
   eval(parse(text=cmdString))
 }
-
 #if null is in remove.values, take it out
 #hasNull<-FALSE
 #null.ind<-grep('null', tolower(remove.values))
@@ -156,7 +159,7 @@ if (operation == "remove") {
         eval(parse(text=cmdString))
     }
   }
-  if (remove.null) {
+  if (!remove.null) {
     cmdString = paste("ds<-ds[!is.na(ds$", column.var.name, ") & ds$", column.var.name, " != \"\",]", sep="")
     eval(parse(text=cmdString))
   }
@@ -179,7 +182,7 @@ if (operation == "remove") {
         eval(parse(text=cmdString))
       }
     }
-    if (remove.null){
+    if (!remove.null){
       #ex: temp.ds.null<-ds[is.na(ds$Problem.Name) | ds$Problem.Name == "",]
       cmdString = paste("temp.ds.null<-ds[is.na(ds$", column.var.name, ") | ds$", column.var.name, "  == \"\",]", sep="")
       eval(parse(text=cmdString))

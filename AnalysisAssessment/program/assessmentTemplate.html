@@ -94,8 +94,8 @@ function buildReliablilityTable(data) {
     let headerTable = jQuery('<table id="headerTable"></table>');
 
     // Add Headers
-    headerTable.append(jQuery('<tr><th colspan=2></th><th colspan=3 style="text-align:center">Item</th></tr>'));
-    headerTable.append(jQuery("<tr><th>Item (excluded)</th><th>Cronbach's Alpha</th><th>Correlation to Total Score</th><th>Average</th><th>Standard Deviation</th></tr>"));
+    headerTable.append(jQuery('<tr><th colspan=3></th><th colspan=4 style="text-align:center">Item</th></tr>'));
+    headerTable.append(jQuery("<tr><th>Item (excluded)</th><th>Cronbach's Alpha</th><th>Bad Item Warning</th><th>Correlation to Total Score</th><th>Average</th><th>Standard Deviation</th><th>Number of Student Encounters</th></tr>"));
 
     jQuery('#reliabilityTableDiv').append(headerTable);
 
@@ -114,7 +114,7 @@ function buildReliablilityTable(data) {
     }
     jQuery('#reliabilityTableDiv').append(dataTable);
 
-    colorTable(parseFloat(data[0][1]));
+    colorTable(parseFloat(data[1][1]));
 }
 
 function formatNum(num) {
@@ -126,7 +126,7 @@ function formatNum(num) {
  */
 function colorTable(allItemAlpha) {
     // Loop through cells with alpha values
-    jQuery('#dataTable td:not(:first-of-type)').each(function() {
+    jQuery('#dataTable tr td:nth-child(2)').each(function() {
         let text = jQuery(this).text();
         if (text != null && text != "") {
             try {

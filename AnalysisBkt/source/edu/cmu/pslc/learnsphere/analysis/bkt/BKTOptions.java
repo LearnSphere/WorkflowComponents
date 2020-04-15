@@ -67,6 +67,18 @@ public class BKTOptions {
                 return "Conjugate Gradient Descent, Hestenes-Stiefel";
             }
 
+        },
+        CONJUGATE_GRADIENT_DESCENT_DAI_YUAN("1.3.4") {
+            public String toString() {
+                return "Conjugate Gradient Descent, Dai-Yuan";
+            }
+
+        },
+        GRADIENT_DESCENT_LAGRANGIAN_STEPPING("1.4") {
+            public String toString() {
+                return "Gradient Descent, Lagrangian stepping";
+            }
+
         };
 
         private String value;

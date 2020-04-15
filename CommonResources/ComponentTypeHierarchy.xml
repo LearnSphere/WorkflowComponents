@@ -38,6 +38,7 @@
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
+		<Multiselection_Converter />
 		<OLI_LO_to_KC />
 		<Pivot />
 		<Resource_Use />
@@ -55,11 +56,13 @@
 		<Correlation />
 		<Cronbachs_Alpha />
 		<Entity_Set />
+		<Gaming_Detector />
 		<iAFM />
 		<LFA_Search />
 		<Linear_Modeling />
 		<LSA />
 		<OLI_Resource_Use />
+		<OLI_to_RISE />
 		<Output_Comparator />
 		<Performance_Difference_Analysis />
 		<PFA />
@@ -68,7 +71,7 @@
 		<RLM_Fitting />
 		<Student_Progress_Classification />
 		<TKT />
-		<Wheel_Spin_Detector />
+		<Wheelspin />
 	</Analysis>
 	<Visualization>
 	    <Recently_Used />
