@@ -124,10 +124,10 @@ gkt <- function(data,
       else {
         # add the fixed effect feature to the model with the same coefficient for all levels
         if(is.na( offsetvals[k])){
-          eval(parse(text=paste("eq<-paste(i,gsub("[%]","",components[k]),\"+\",eq,sep=\"\")")))} else {
-            eval(parse(text=paste("eq<-paste(\"offset(",
-                                  paste("offset_",i,gsub("[%]","",components[k]),sep=""),
-                                  ")+\",eq,sep=\"\")",sep="")))
+        eval(parse(text=paste("eq<-paste(i,gsub('[%]','',components[k]),\"+\",eq,sep=\"\")")))} else {
+           eval(parse(text=paste("eq<-paste(\"offset(",
+                                 paste("offset_",i,gsub('[%]','',components[k]),sep=""),
+                                 ")+\",eq,sep=\"\")",sep="")))
           }}}
     cat(paste(eq,"\n"))
     e$form<-as.formula(paste(equation,eq,sep=""))
