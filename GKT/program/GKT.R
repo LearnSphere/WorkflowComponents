@@ -480,6 +480,7 @@ source(sourceFunction)
 cat("mode:",mode,"\n")
 cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
 cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
+print("line 483")
 Dualfit<-as.logical(Include_Latency_Model)
 Interc<-as.logical(Use_Global_Intercept)
 
@@ -490,6 +491,100 @@ fixedparsLi<-vector()
 seedparsLi<-vector()
 offsetvalsLi<-vector()
 
+if(!exists("Fixedpars0")){
+    Fixedpars0<-"null";
+}
+if(!exists("Fixedpars1")){
+    Fixedpars1<-"null";
+}
+if(!exists("Fixedpars2")){
+    Fixedpars2<-"null";
+}
+if(!exists("Fixedpars3")){
+    Fixedpars3<-"null";
+}
+if(!exists("Fixedpars4")){
+    Fixedpars4<-"null";
+}
+if(!exists("Fixedpars5")){
+    Fixedpars5<-"null";
+}
+if(!exists("Fixedpars6")){
+    Fixedpars6<-"null";
+}
+if(!exists("Fixedpars7")){
+    Fixedpars7<-"null";
+}
+if(!exists("Fixedpars8")){
+    Fixedpars8<-"null";
+}
+if(!exists("Fixedpars9")){
+    Fixedpars9<-"null";
+}
+
+if(!exists("Seedpars0")){
+    Seedpars0<-"null";
+}
+if(!exists("Seedpars1")){
+    Seedpars1<-"null";
+}
+if(!exists("Seedpars2")){
+    Seedpars2<-"null";
+}
+if(!exists("Seedpars3")){
+    Seedpars3<-"null";
+}
+if(!exists("Seedpars4")){
+    Seedpars4<-"null";
+}
+if(!exists("Seedpars5")){
+    Seedpars5<-"null";
+}
+if(!exists("Seedpars6")){
+    Seedpars6<-"null";
+}
+if(!exists("Seedpars7")){
+    Seedpars7<-"null";
+}
+if(!exists("Seedpars8")){
+    Seedpars8<-"null";
+}
+if(!exists("Seedpars9")){
+    Seedpars9<-"null";
+}
+
+if(!exists("Offsetvals0")){
+    Offsetvals0<-"NA";
+}
+if(!exists("Offsetvals1")){
+    Offsetvals1<-"NA";
+}
+if(!exists("Offsetvals2")){
+    Offsetvals2<-"NA";
+}
+if(!exists("Offsetvals3")){
+    Offsetvals3<-"NA";
+}
+if(!exists("Offsetvals4")){
+    Offsetvals4<-"NA";
+}
+if(!exists("Offsetvals5")){
+    Offsetvals5<-"NA";
+}
+if(!exists("Offsetvals6")){
+    Offsetvals6<-"NA";
+}
+if(!exists("Offsetvals7")){
+    Offsetvals7<-"NA";
+}
+if(!exists("Offsetvals8")){
+    Offsetvals8<-"NA";
+}
+if(!exists("Offsetvals9")){
+    Offsetvals9<-"NA";
+}
+
+print("line 587")
 plancomponentsList<-list(component0,component1,component2,component3,component4,component5,component6,component7,component8,component9)
 prespecfeaturesList<-list(Feature0,Feature1,Feature2,Feature3,Feature4,Feature5,Feature6,Feature7,Feature8,Feature9)
 fixedparsList<-list(Fixedpars0,Fixedpars1,Fixedpars2,Fixedpars3,Fixedpars4,Fixedpars5,Fixedpars6,Fixedpars7,Fixedpars8,Fixedpars9)
