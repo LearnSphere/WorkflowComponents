@@ -12,15 +12,13 @@
         </connection>
     </connections>
     <options>
-        <model>KC (Single-KC)</model>
-        <useoptimalk>false</useoptimalk>
-        <numberOfClusters>4</numberOfClusters>
-        <lambda>3.0</lambda>
+        <model>Input 0 (0) - Outcome (column 27)</model>
+        <numberOfClusters>2</numberOfClusters>
         <!--kmeans, hierarchical clustering, dpmeans-->
-        <method>dpmeans</method>
+        <method>hierarchical clustering</method>
         <dataformat>long</dataformat>
         <isduration>true</isduration>
-        <isoutcome>false</isoutcome>
+        <isoutcome>true</isoutcome>
         <mean_or_median>mean</mean_or_median>
     </options>
     <inputs>
@@ -36,8 +34,8 @@
               <!-- ds1940_tx_All_Data_84_2016_1109_094411.txt-->
               <!--DPmeans_input.xlsx -->
               <!--input_wide.txt-->
-              <file_path>test/example_transactions/GKT.txt</file_path>
-              <file_name>GKT.txt</file_name>
+              <file_path>test/example_transactions/testnow.txt</file_path>
+              <file_name>testnow.txt</file_name>
               <index>0</index>
               <label>text</label>
           </text>

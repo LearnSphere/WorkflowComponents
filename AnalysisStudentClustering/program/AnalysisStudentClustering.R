@@ -128,7 +128,7 @@ programLocation<- paste(componentDirectory, "/program/", sep="")
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
-library(fpc)
+suppressPackageStartupMessages(library(fpc))
 kClusters <- as.numeric(kClusters)
 
 #if data is not preprocessed
@@ -146,7 +146,6 @@ if (dataformat == "long")
   val$Outcome<-toupper(val$Outcome)
   origin_data<-val
   val<-val[,c(header1,header2,header3,header4)]
-
   val[,header4] <- as.character(val[,header4])
   
   val<-val[val[,header4]=="CORRECT" | val[,header4]=="INCORRECT",]
@@ -290,12 +289,12 @@ if (method == "hierarchical clustering"){
 
     if (dataformat == "long")
     {
-
        Student <-student_means[,1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
-       origin_students<- origin_data[,3]
+       #origin_students<- origin_data[,4]
+       origin_students<- origin_data$Anon.Student.Id
        clstrs = list()
 
         for (i in origin_students)
@@ -305,6 +304,7 @@ if (method == "hierarchical clustering"){
        }
 
        cluster <- do.call(rbind, lapply(clstrs, as.numeric))
+
        res<-data.frame(origin_students,cluster)
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
@@ -376,8 +376,8 @@ if (method == "kmeans"){
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
-
        origin_students<- origin_data[,3]
+       origin_students<-origin_data
        clstrs = list()
         for (i in origin_students)
         {
