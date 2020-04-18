@@ -480,7 +480,6 @@ source(sourceFunction)
 cat("mode:",mode,"\n")
 cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
 cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
-print("line 483")
 Dualfit<-as.logical(Include_Latency_Model)
 Interc<-as.logical(Use_Global_Intercept)
 
@@ -584,7 +583,6 @@ if(!exists("Offsetvals9")){
     Offsetvals9<-"NA";
 }
 
-print("line 587")
 plancomponentsList<-list(component0,component1,component2,component3,component4,component5,component6,component7,component8,component9)
 prespecfeaturesList<-list(Feature0,Feature1,Feature2,Feature3,Feature4,Feature5,Feature6,Feature7,Feature8,Feature9)
 fixedparsList<-list(Fixedpars0,Fixedpars1,Fixedpars2,Fixedpars3,Fixedpars4,Fixedpars5,Fixedpars6,Fixedpars7,Fixedpars8,Fixedpars9)
@@ -596,10 +594,10 @@ for(i in 1:Num_of_PlanComponents){
     if(!prespecfeaturesList[i]=="null"){
         prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
 
-        if(!fixedparsList[i]=="null"){
+        if(!fixedparsList[i]=="null" && !fixedparsList[i]=="NA"){
             fixedparsLi<-c(fixedparsLi,fixedparsList[i])
         }
-        if(!seedparsList[i]=="null"){
+        if(!seedparsList[i]=="null" && !seedparsList[i]=="NA"){
             seedparsLi<-c(seedparsLi,seedparsList[i])
         }
         if(!offsetvalsList[i]=="null"){
