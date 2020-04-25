@@ -152,8 +152,8 @@ if (dataformat == "long")
   val[,header4][val[,header4]=="CORRECT"] <-'1'
   val[,header4][val[,header4]=="INCORRECT"] <- '0'
 
-  val[,3]<-as.numeric(val[,3])
-  val[,4]<-as.numeric(val[,4])
+  val[,header3]<-as.numeric(val[,header3])
+  val[,header4]<-as.numeric(val[,header4])
 
  #Put between line 112 and 114; before aggregation
  # The following is about the "Duration" column, which I am not sure what it is called in line 112
@@ -164,7 +164,7 @@ if (dataformat == "long")
  upper <- Q3 + 1.5*IQR
  lower <- Q1 -1.5*IQR
  val<-val[val[,header3] >= lower & val[,header3] <= upper, ]
-
+ 
  #After this the outliers are removed, and aggregation can be done on the basis of the clean data
 
 #aggregation
@@ -246,7 +246,7 @@ if (dataformat == "wide")
   {
 
       mydata<-read.delim(inputFile)
-      students <-mydata[,1]
+      students <-mydata[,header1]
       mydata[,c("Cluster")] <- list(NULL)
       mydata<-mydata[,2:length(mydata)]
 
@@ -289,12 +289,11 @@ if (method == "hierarchical clustering"){
 
     if (dataformat == "long")
     {
-       Student <-student_means[,1]
+       Student <-student_means[,header1]
        Cluster <-Clusters
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
-       #origin_students<- origin_data[,4]
-       origin_students<- origin_data$Anon.Student.Id
+       origin_students<- origin_data[,header1]
        clstrs = list()
 
         for (i in origin_students)
@@ -372,11 +371,11 @@ if (method == "kmeans"){
 
     if (dataformat == "long")
     {
-       Student <-student_means[,1]
+       Student <-student_means[,header1]
        Cluster <-km$cluster
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
-       origin_students<- origin_data[,3]
+       origin_students<- origin_data[,header1]
        origin_students<-origin_data
        clstrs = list()
         for (i in origin_students)
