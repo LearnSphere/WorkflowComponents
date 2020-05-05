@@ -85,6 +85,27 @@ if (args[i] == "-Elastictest") {
        Elastictest = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Inlcude_of_Fixedpars") {
+       if (length(args) == i) {
+          stop("Inlcude_of_Fixedpars must be specified")
+       }
+       Inlcude_of_Fixedpars = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Include_of_Seedpars") {
+       if (length(args) == i) {
+          stop("Include_of_Seedpars must be specified")
+       }
+       Include_of_Seedpars = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Include_of_Offsetvals") {
+       if (length(args) == i) {
+          stop("Include_of_Offsetvals must be specified")
+       }
+       Include_of_Offsetvals = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-component0") {
        if (length(args) == i) {
           stop("plancomponents must be specified")
@@ -482,6 +503,9 @@ cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
 cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
 Dualfit<-as.logical(Include_Latency_Model)
 Interc<-as.logical(Use_Global_Intercept)
+Inlcude_of_Fixedpars<-as.logical(Inlcude_of_Fixedpars)
+Include_of_Seedpars<-as.logical(Include_of_Seedpars)
+Include_of_Offsetvals<-as.logical(Include_of_Offsetvals)
 
 Num_of_PlanComponents<-as.numeric(Num_of_PlanComponents)
 plancomponentsLi<-vector()
@@ -594,10 +618,10 @@ for(i in 1:Num_of_PlanComponents){
     if(!prespecfeaturesList[i]=="null"){
         prespecfeaturesLi<-c(prespecfeaturesLi,prespecfeaturesList[i])
 
-        if(!fixedparsList[i]=="null" && !fixedparsList[i]=="NA"){
+        if(isTRUE(Inlcude_of_Fixedpars) && !fixedparsList[i]=="null" && !fixedparsList[i]=="NA"){
             fixedparsLi<-c(fixedparsLi,fixedparsList[i])
         }
-        if(!seedparsList[i]=="null" && !seedparsList[i]=="NA"){
+        if(isTRUE(Include_of_Seedpars)&& !seedparsList[i]=="null" && !seedparsList[i]=="NA"){
             seedparsLi<-c(seedparsLi,seedparsList[i])
         }
         if(!offsetvalsList[i]=="null"){
