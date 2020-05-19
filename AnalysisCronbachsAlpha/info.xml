@@ -6,7 +6,8 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisCronbachsAlpha</url>
 <date>2016-10-08</date>
-<abstract>The <b>Cronbach's Alpha</b> calculates a reliability values for items (columns) in a gradebook.</abstract>
+<abstract>The <b>Cronbach's Alpha</b> calculates a reliability values for items (columns) in a gradebook. For missing data, we implement "partial" imputation: we ignore missing data 
+when computing items' variances; but we impute with student's average for missing data when we compute the variance for "total" column.</abstract>
 <description>The description goes here.</description>
 
 <inputs>
@@ -18,7 +19,7 @@
 </outputs>
 
 <options>
-<b>Summary column present</b> - flag indicating if last column is a summary column <br/>
+<b>Summary column present</b> - flag indicating if last column is a summary column. Summary data is ignored when Cronbach value is computed.<br/>
 </options>
 
 </info>

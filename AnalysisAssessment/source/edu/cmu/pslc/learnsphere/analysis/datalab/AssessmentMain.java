@@ -107,8 +107,8 @@ public class AssessmentMain extends AbstractComponent {
         //delete tempFile
         if (tempFile != null && tempFile.exists())
         	tempFile.delete();
-
-        Double[] cronbachValues = getCronbachValues(data, summaryColPresent);
+        
+        Double[] cronbachValues = getCronbachValues(data, emptyCells, summaryColPresent);
         int[] itemOccurances = getItemOccurances(this.getAttachment(0, 0), summaryColPresent);
         // Write the output file.
         File outputFile = populateAssessmentFile(data, cronbachValues, itemOccurances, emptyCells, summaryColPresent);
@@ -405,10 +405,10 @@ public class AssessmentMain extends AbstractComponent {
      *  The first value is for the whole set, the rest is for eliminating each column
      *
      */
-    private Double[] getCronbachValues (Array2DRowRealMatrix data,
+    private Double[] getCronbachValues (Array2DRowRealMatrix data, Array2DRowRealMatrix emptyCellFlags,
                                         Boolean summaryColPresent ) {
 
-        if (summaryColPresent) {
+    	if (summaryColPresent) {
             // Remove summary column, this is calculated in the algorithm
             String [] newHeaders = new String [headers.length - 1];
             for (int i = 0; i < headers.length - 1; i++) {
@@ -416,8 +416,17 @@ public class AssessmentMain extends AbstractComponent {
             }
             headers = newHeaders;
             data = removeSummaryColumn(data);
+            emptyCellFlags = removeSummaryColumn(emptyCellFlags);
         }
-
+    	
+    	//delete the values in the cells that are supposed to be empty
+    	for (int i = 0; i < data.getRowDimension(); i++) {
+    		for (int j = 0; j <data.getColumnDimension(); j++) {
+    			if (emptyCellFlags.getEntry(i, j) == 1.0)
+    				data.setEntry(i, j, Double.NaN);
+    		}
+    	}
+    	
         int allRowCnt = data.getRowDimension();
         int rowCnt = allRowCnt;
         int allColumnCnt = data.getColumnDimension();

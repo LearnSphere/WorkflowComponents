@@ -12,7 +12,7 @@
     </connection>
   </connections>
   <options>
-    <summary_column_present>false</summary_column_present>
+    <summary_column_present>true</summary_column_present>
   </options>
   <top>218</top>
   <inputs>

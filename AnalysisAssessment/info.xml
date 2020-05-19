@@ -7,7 +7,8 @@
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAssessment</url>
 <date>2016-10-08</date>
 <abstract>The <b>Assessment</b> calculates Cronbach's Alpha, reliability values, for items (columns) in a gradebook. The component also appends summary information, namely, the average and standard deviation for each item as well as it's correlation to the total score. 
-Column "Bad item Warning" marks an item with 1 when it has Cronbach's Alpha value larger than that of All Items. Column "Numer of Student Encounters" computes how many student instances exist for the item.</abstract>
+Column "Bad item Warning" marks an item with 1 when it has Cronbach's Alpha value larger than that of All Items. Column "Number of Student Encounters" computes how many student instances exist for the item. For missing data, we implement "partial" imputation: we ignore missing data 
+when computing items' variances; but we impute with student's average for missing data when we compute the variance for "total" column.</abstract>
 <description>The description goes here.</description>
 
 <inputs>

@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.analysis.datalab;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -65,6 +67,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
       
         //replace all NA, NONE or NAN with empty string
         File tempFile = replaceNAStr(this.getAttachment(0, 0), "");
+        Array2DRowRealMatrix emptyCells = null;
         try {
         	//Gradebook gradebook = GradebookUtils.readFile(this.getAttachment(0, 0));
         	Gradebook gradebook = GradebookUtils.readFile(tempFile);
@@ -74,6 +77,9 @@ public class CronbachsAlphaMain extends AbstractComponent {
             students = gradebook.getStudents();
             numItems = headers.length - 1;  // don't include student column
             numStudents = students.length;
+            //mark which cell is empty
+            emptyCells = markEmptyCells(numStudents, numItems, tempFile);
+            
 
             if (summaryColPresent) {
                 // Remove summary column, this is calculated in the algorithm
@@ -83,12 +89,8 @@ public class CronbachsAlphaMain extends AbstractComponent {
                 }
                 headers = newHeaders;
                 data = removeSummaryColumn(data);
-            } else {
-                // Not entirely sure why this is incremented, but this makes the results match
-                // DataLab
-                numItems += 1;
+                emptyCells = removeSummaryColumn(emptyCells);
             }
-
 
         } catch (Exception e) {
             String msg = "Failed to parse gradebook and compute Cronbach's Alpha. " + e;
@@ -100,7 +102,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
         	tempFile.delete();
         
         // Write the output file.
-        File outputFile = populateCronbachsAlphaFile(data);
+        File outputFile = populateCronbachsAlphaFile(data, emptyCells, summaryColPresent);
 
         // If we haven't seen any errors yet...
         if (this.errorMessages.size() == 0) {
@@ -153,6 +155,72 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
         return dataWithoutSummary;
     }
+    
+    private Array2DRowRealMatrix markEmptyCells(int studentCnt, int itemCount, File tempFile) throws Exception {
+
+    	Array2DRowRealMatrix emptyCells = new Array2DRowRealMatrix(studentCnt, itemCount);;
+
+        FileInputStream inStream = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+        	inStream = new FileInputStream(tempFile);
+            bufferedReader = new BufferedReader(new InputStreamReader(inStream));
+            
+            String headerLine = bufferedReader.readLine();
+            String delim = null;
+            if (headerLine.contains("\t")) {
+                delim = "\t";
+            } else if (headerLine.contains(",")) {
+            	delim = ",";
+            }
+            if (delim == null)
+            	return null;
+           
+            ArrayList<String> lines = new ArrayList<String>();
+            int rowIndex = 0;
+            String line = bufferedReader.readLine();
+            while (line != null) {
+            	lines.add(line);
+                line = bufferedReader.readLine();
+            }
+            for (String s : lines) {
+                    String[] rowValues = s.split(delim);
+                    int colIndex = -1;
+                    for (String valueStr : rowValues) {
+                        if (colIndex == -1) {
+                            //don't do anything
+                        } else if (valueStr.trim().length() == 0) {
+                        	emptyCells.setEntry(rowIndex, colIndex, 1);
+                        } else {
+                        	emptyCells.setEntry(rowIndex, colIndex, 0);
+                        }
+                        colIndex++;
+                    }
+                    
+                    if (rowValues.length < itemCount + 1) {
+                    	for (int i = rowValues.length-1; i <itemCount ; i++)
+                    		emptyCells.setEntry(rowIndex, i, 1);
+                    }
+                    rowIndex++;
+                }
+
+            } catch (Exception e) {
+                logger.info("Exception: " + e);
+                throw e;
+            } finally {
+
+                // Don't propagate the exception.
+                try {
+                    if (inStream != null) { inStream.close(); }
+                    if (bufferedReader != null) { bufferedReader.close(); }
+                } catch (Exception e) {
+                    logger.info("Failed to close resources: " + e);
+                }
+            }
+
+            return emptyCells;
+        }
 
     // Constant
     private static final String NEW_LINE_CHAR = "\n";
@@ -165,7 +233,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
      * @param data the matrix of data
      * @return the populated file
      */
-    private File populateCronbachsAlphaFile(Array2DRowRealMatrix data) {
+    private File populateCronbachsAlphaFile(Array2DRowRealMatrix data, Array2DRowRealMatrix emptyCellFlags, boolean summaryColPresent) {
 
         if (data == null) { return null; }
 
@@ -175,8 +243,11 @@ public class CronbachsAlphaMain extends AbstractComponent {
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
 
             // Write values to export
-            Double[] cronbachValues = getCronbachValues(data);
-            for (int i = 0; i < numItems; i++) {
+            Double[] cronbachValues = getCronbachValues(data, emptyCellFlags);
+            int iter = numItems;
+            if (!summaryColPresent)
+            	iter = numItems + 1;
+            for (int i = 0; i < iter; i++) {
                 String label = "All items";
                 if (i > 0) {
                     label = headers[i].trim() + " excluded";
@@ -203,8 +274,15 @@ public class CronbachsAlphaMain extends AbstractComponent {
      *  The first value is for the whole set, the rest is for eliminating each column
      *
      */
-    private Double[] getCronbachValues (Array2DRowRealMatrix data) {
-        int allRowCnt = data.getRowDimension();
+    private Double[] getCronbachValues (Array2DRowRealMatrix data, Array2DRowRealMatrix emptyCellFlags) {
+    	//delete the values in the cells that are supposed to be empty
+    	for (int i = 0; i < data.getRowDimension(); i++) {
+    		for (int j = 0; j <data.getColumnDimension(); j++) {
+    			if (emptyCellFlags.getEntry(i, j) == 1.0)
+    				data.setEntry(i, j, Double.NaN);
+    		}
+    	}
+    	int allRowCnt = data.getRowDimension();
         int rowCnt = allRowCnt;
         int allColumnCnt = data.getColumnDimension();
         int columnCnt = allColumnCnt;
@@ -289,6 +367,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
                 if (!Double.isNaN(rowAvgMultiByColumnCount[i]))
                     rowTotalAL.add(rowAvgMultiByColumnCount[i]);
             }
+            
             if (rowTotalAL.size() < 2) {
                 returnValues[0] = Double.NaN;
             } else {
@@ -389,7 +468,7 @@ public class CronbachsAlphaMain extends AbstractComponent {
 
     private double computeAlphaValue (double count,
                                       double sumOfItemVariance, double varianceOfTotal) {
-        return ((double)(count / (count - 1))) * (1 - sumOfItemVariance / varianceOfTotal);
+    	return ((double)(count / (count - 1))) * (1 - sumOfItemVariance / varianceOfTotal);
     }
 
     private File addDataReferenceToHtmlFile(File correlationFile, boolean summaryColPresent) {
