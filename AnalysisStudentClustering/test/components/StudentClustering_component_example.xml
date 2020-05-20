@@ -12,13 +12,14 @@
         </connection>
     </connections>
     <options>
-        <model>Input 0 (0) - Outcome (column 27)</model>
+        <model>Input 0 (0) - Step Name (column 6)</model>
         <numberOfClusters>2</numberOfClusters>
         <!--kmeans, hierarchical clustering, dpmeans-->
         <method>hierarchical clustering</method>
         <dataformat>long</dataformat>
         <isduration>true</isduration>
         <isoutcome>true</isoutcome>
+        <latencyIQR_multiplier>true</latencyIQR_multiplier>
         <mean_or_median>mean</mean_or_median>
     </options>
     <inputs>
@@ -34,8 +35,8 @@
               <!-- ds1940_tx_All_Data_84_2016_1109_094411.txt-->
               <!--DPmeans_input.xlsx -->
               <!--input_wide.txt-->
-              <file_path>test/example_transactions/testnow.txt</file_path>
-              <file_name>testnow.txt</file_name>
+              <file_path>test/example_transactions/ds1368_student_step_All_Data_14_2015_1005_174856.txt</file_path>
+              <file_name>ds1368_student_step_All_Data_14_2015_1005_174856.txt</file_name>
               <index>0</index>
               <label>text</label>
           </text>

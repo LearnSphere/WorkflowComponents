@@ -127,6 +127,7 @@
              <xs:element type="dataformatCheckType"  name="dataformat"  id="input_data_format" default="wide"/>
              <xs:element type="xs:boolean"  name="isduration"  id="use_duration" default="true"/>
              <xs:element type="xs:boolean"  name="isoutcome"  id="use_outcome" default="true"/>
+             <xs:element type="xs:boolean"  name="latencyIQR_multiplier" id="latencyIQR_multiplier" default="false"/>
              <xs:element type="meanOrMedianType"  name="mean_or_median"  id="use_mean_or_median" default="mean"/>
         </xs:choice>
     </xs:complexType>

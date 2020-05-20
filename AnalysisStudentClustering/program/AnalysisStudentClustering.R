@@ -57,12 +57,18 @@ while (i <= length(args)) {
     isduration = args[i+1]
     i = i+1
     }
-
 else if (args[i] == "-isoutcome") {
     if (length(args) == i) {
       stop("isoutcome method must be specified")
     }
     isoutcome = args[i+1]
+    i = i+1
+    }
+else if (args[i] == "-latencyIQR_multiplier") {
+    if (length(args) == i) {
+      stop("latencyIQR_multiplier method must be specified")
+    }
+    latencyIQR_multiplier = args[i+1]
     i = i+1
     }
 else if (args[i] == "-mean_or_median") {
@@ -141,31 +147,56 @@ if (dataformat == "long")
   header4 = gsub("[ ()-]", ".", outcome)
 
   #This dataset has been cleaned beforehand
-
   val<-read.table(inputFile,sep="\t", header=TRUE,quote="",comment.char = "")
-  val$Outcome<-toupper(val$Outcome)
+
+  #First Attempt->Outcome
+    if(!"Outcome" %in% colnames(val)){
+      if("First.Attempt" %in% colnames(val)){
+          colnames(val)[colnames(val)=="First.Attempt"] <- "Outcome"
+      }
+    }
+  
+  #Step Duration sec->Duration
+    if(!"Duration..sec." %in% colnames(val)){
+        if("Step.Duration..sec." %in% colnames(val)){
+            colnames(val)[colnames(val)=="Step.Duration..sec."] <- "Duration..sec."
+        }
+    }
+  
+  val$Outcome<-as.character(toupper(val$Outcome))
+  val$Duration..sec.<-as.numeric(val$Duration..sec.)
+  val$Anon.Student.Id<-as.character(val$Anon.Student.Id)
   origin_data<-val
   val<-val[,c(header1,header2,header3,header4)]
   val[,header4] <- as.character(val[,header4])
-  
+#  print(unique(val[,header1]))
+
   val<-val[val[,header4]=="CORRECT" | val[,header4]=="INCORRECT",]
   val[,header4][val[,header4]=="CORRECT"] <-'1'
   val[,header4][val[,header4]=="INCORRECT"] <- '0'
-
+  
   val[,header3]<-as.numeric(val[,header3])
   val[,header4]<-as.numeric(val[,header4])
-
+ #print(nrow(val))
  #Put between line 112 and 114; before aggregation
- # The following is about the "Duration" column, which I am not sure what it is called in line 112
+ #The following is about the "Duration" column, which I am not sure what it is called in line 112
  #IRQ rule is applied for removing outlier (this can be put in the introduction file)
- Q1 <- quantile(val[,header3], 0.25)
- Q3 <- quantile(val[,header3], 0.75)
- IQR <- Q3 - Q1
- upper <- Q3 + 1.5*IQR
- lower <- Q1 -1.5*IQR
- val<-val[val[,header3] >= lower & val[,header3] <= upper, ]
- 
- #After this the outliers are removed, and aggregation can be done on the basis of the clean data
+
+ allStudentIds<-unique(val[,header1])
+ valAll<-val
+ if(latencyIQR_multiplier=="true"){
+    Q1 <- quantile(val[,header3], 0.25)
+    Q3 <- quantile(val[,header3], 0.75)
+    IQR <- Q3 - Q1
+    upper <- Q3 + 1.5*IQR
+    lower <- Q1 -1.5*IQR
+    valRest<-valAll[valAll[,header3] >= lower & valAll[,header3] <= upper, ]
+    valClean<-valAll[valAll[,header3] < lower | valAll[,header3] > upper, ]
+    val<-valRest
+}
+
+#print(nrow(val))
+#After this the outliers are removed, and aggregation can be done on the basis of the clean data
 
 #aggregation
  if (isduration =="true" && isoutcome == "false")
@@ -222,17 +253,23 @@ if (isduration =="false" && isoutcome == "true")
 #aggregate data using z_scores
 if (isduration =="true" && isoutcome == "true")
 {
+
+    #produce headers:"Group.1","Group.2","Anon.Student.Id","Step.Name","Duration..sec.","Outcome"
     val<-aggregate(val,by=list(val[,header1],val[,header2]),FUN=mean)
     val<-val[,c(1,2,5,6)]
     colnames(val)<-c('Anon.Student.Id','KC','Duration','Correct')
     aggdata<-val[with(val,order(Anon.Student.Id,KC)),]
+    
     #change data form and replace missing data with column means
     student_means<-reshape(aggdata, idvar = "Anon.Student.Id", timevar = "KC", direction = "wide")
+
     for(i in 2:ncol(student_means)){
     student_means[is.na(student_means[,i]), i] <- mean(student_means[,i], na.rm = TRUE)}
+
     mydata<-student_means[,c(2:length(colnames(student_means)))]
     mydata<-scale(mydata)
     mydata[is.nan(mydata)] <-0
+
 }
 
 } #end of if dataformat = "long"
@@ -246,7 +283,7 @@ if (dataformat == "wide")
   {
 
       mydata<-read.delim(inputFile)
-      students <-mydata[,header1]
+      students<-mydata$Anon.Student.Id;
       mydata[,c("Cluster")] <- list(NULL)
       mydata<-mydata[,2:length(mydata)]
 
@@ -271,7 +308,6 @@ if (isoutcome=="true"){
 
 #clustering
 if (method == "hierarchical clustering"){
-
     d <- dist(mydata, method = "euclidean") # distance matrix
     
     #jpeg(file = paste(workingDirectory, "myplot.jpeg", sep=""))
@@ -291,6 +327,7 @@ if (method == "hierarchical clustering"){
     {
        Student <-student_means[,header1]
        Cluster <-Clusters
+
        my_data <-data.frame(Student,Cluster)
        my_data_wide <-cbind(my_data,mydata)
        origin_students<- origin_data[,header1]
@@ -298,13 +335,14 @@ if (method == "hierarchical clustering"){
 
         for (i in origin_students)
         {
-          c= my_data$Cluster[my_data$Student==i]
-          clstrs <- c(clstrs,c)
+          if(i %in% my_data$Student){
+            c= my_data$Cluster[my_data$Student==i]
+            clstrs <- c(clstrs,c)
+          }else (clstrs <- c(clstrs,NA))
        }
-
        cluster <- do.call(rbind, lapply(clstrs, as.numeric))
-
        res<-data.frame(origin_students,cluster)
+
        Clusters <-res$cluster
        res_final<-cbind(origin_data[,c(1:4)], Clusters , origin_data[,c(5:length(colnames(origin_data)))])
        
@@ -329,7 +367,6 @@ if (method == "hierarchical clustering"){
     }
     if(dataformat == "wide")
      {
-
        outputFilePath <- paste(workingDirectory,"Matrix.txt", sep="")
        df <- data.frame(students,Clusters)
        names(df) <- c("Student","Cluster")
@@ -352,7 +389,7 @@ if (method == "kmeans"){
     if(useoptimalk=="true"){
         kClusterOptimal <- pamk(mydata,krange=1:10)
         #kClusterOptimal <- pamk(mydata)
-        print(kClusterOptimal)
+        #print(kClusterOptimal)
         kClusters<-kClusterOptimal$nc
     }
 
