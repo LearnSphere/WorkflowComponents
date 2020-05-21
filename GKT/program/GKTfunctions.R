@@ -51,7 +51,7 @@ gkt <- function(data,
         e$data$cor<-countOutcome(e$data,e$data$index,"CORRECT")
         e$data$icor<-countOutcome(e$data,e$data$index,"INCORRECT")}
       # track parameters used
-      if(gsub("[$@]","",i) %in% c("powafm","recency","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
+      if(gsub("[$@]","",i) %in% c("powafm","recency","recencysuc","recencyfail","propdec","propdec2","logitdec","base","expdecafm","expdecsuc","expdecfail","dashafm","dashsuc","dashfail",
                                   "base2","base4","basesuc","basefail","logit","base2suc","base2fail","ppe","base5suc","base5fail")){
         if(is.na(e$fixedpars[m])){ # if not fixed them optimize it
           para<-seedparameters[optimparcount]
@@ -182,6 +182,8 @@ gkt <- function(data,
   parlength<-
     sum("powafm" == gsub("[$]","",features))+
     sum("recency" == gsub("[$]","",features))+
+    sum("recencysuc" == gsub("[$]","",features))+
+    sum("recencyfail" == gsub("[$]","",features))+
     sum("logit" == gsub("[$]","",features))+
     sum("propdec" == gsub("[$]","",features))+
     sum("propdec2" == gsub("[$]","",features))+
@@ -229,7 +231,7 @@ gkt <- function(data,
     featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
                     "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
                     "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
-                    "logsuc","linesuc","logfail","linefail","expdecsuc","expdecfail","basesuc","basefail","base2fail",
+                    "logsuc","linesuc","logfail","linefail","recencysuc","recencyfail","expdecsuc","expdecfail","basesuc","basefail","base2fail",
                     "base2suc","base5suc","base5fail")
 
     #collect all parameters from features and plancomponents (input code)
@@ -382,6 +384,14 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,par5,fcom
   if(feat=="linesuc"){return(data$cor)}
   if(feat=="logfail"){return(log(1+data$icor))}
   if(feat=="linefail"){return(data$icor)}
+  if(feat=="recencyfail"){
+    eval(parse(text=paste("data$rec <- data$",fcomp,"spacing",sep="")))
+    eval(parse(text=paste("data$prev <- data$",fcomp,"prev",sep="")))
+    return(ifelse(data$rec==0,0,(1-data$prev)*data$rec^-par1))}
+  if(feat=="recencysuc"){
+    eval(parse(text=paste("data$rec <- data$",fcomp,"spacing",sep="")))
+    eval(parse(text=paste("data$prev <- data$",fcomp,"prev",sep="")))
+    return(ifelse(data$rec==0,0,data$prev*data$rec^-par1))}
   if(feat=="expdecsuc"){return(ave(data$CF..ansbin.,index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="expdecfail"){return(ave(1-data$CF..ansbin.,index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="basesuc"){
@@ -654,8 +664,8 @@ countOutcomeDifficultyAll2 <-function(data,index) {
 countOutcomeGen <-function(data,index,item,sourcecol,sourc) {
   data$tempout<-paste(data$Outcome,sourcecol)
   item<-paste(item,sourc)
-  data$temp<-ave(as.character(data$tempout),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item))))
-  data$temp[tolower(as.character(data$tempout))==tolower(item)]<-as.numeric(data$temp[tolower(as.character(data$tempout))==tolower(item)])-1
+  data$temp<-as.numeric(ave(as.character(data$tempout),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(item)))))
+  data$temp<-data$temp-  as.numeric( tolower(as.character(data$tempout))==tolower(item))
   as.numeric(data$temp)}
 
 # notation targetcol?whichtarget?sourcecol?whichsource
@@ -690,6 +700,15 @@ for (i in unique(index)){
   lv<-length(data$CF..ansbin.[index==i])
   if (lv>1){
     temp[index==i]<-  c(0,times[index==i][2:(lv)] - times[index==i][1:(lv-1)])
+  }}
+return(temp)}
+
+componentprev <-function(data,index,answers) {
+  temp<-rep(0,length(data$CF..ansbin.))
+for (i in unique(index)){
+  lv<-length(data$CF..ansbin.[index==i])
+  if (lv>1){
+    temp[index==i]<-  c(0,answers[index==i][1:(lv-1)])
   }}
 return(temp)}
 
