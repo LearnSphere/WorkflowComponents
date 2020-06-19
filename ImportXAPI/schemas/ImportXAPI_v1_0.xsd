@@ -27,21 +27,51 @@
 
   <xs:simpleType name="filterType" final="restriction">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Null" />
-      <xs:enumeration value="filterByVerb" />
-      <xs:enumeration value="filterByActor" />
-      <xs:enumeration value="filterBySince" />
-      <xs:enumeration value="filterByUntil" />
-      <xs:enumeration value="filterByActivity" />
-      <xs:enumeration value="filterByRegistration" />
+      <xs:enumeration value="filterByActor"/>
+      <xs:enumeration value="filterByVerb"/>
+      <xs:enumeration value="filterBySince"/>
+      <xs:enumeration value="filterByUntil"/>
+      <xs:enumeration value="filterByActivity"/>
       <xs:enumeration value="filterByStatementId"/>
-      <xs:enumeration value="filterByVerb_filterBySince"/>
-      <xs:enumeration value="filterByVerb_filterByUntil"/>
-      <xs:enumeration value="filterByActor_filterBySince"/>
-      <xs:enumeration value="filterByActor_filterByUntil"/>
+      <xs:enumeration value="filterByCustomizedOption"/>
     </xs:restriction>
   </xs:simpleType>
   
+  <xs:complexType name="filterStyle">
+        <xs:simpleContent>
+            <xs:extension base="filterType">
+                <xs:attribute name="type" type="filterType"/>
+                <xs:attribute name="hidden">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+		      <xs:attribute name="optional">
+			        <xs:simpleType>
+			          <xs:restriction base="xs:boolean">
+			          </xs:restriction>
+			        </xs:simpleType>
+		      </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="filterArray">
+    <xs:all minOccurs="0" >
+      <xs:element type="filterType" name="filters0" default="filterByActor" minOccurs="1" />
+      <xs:element type="filterType" name="filters1" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters2" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters3" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters4" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters5" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters6" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters7" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters8" default="filterByActor" minOccurs="0" />
+      <xs:element type="filterType" name="filters9" default="filterByActor" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
   <xs:complexType name="option_dependency">
     <xs:choice>		
       <xs:element type="disjunctive" name="dependency1" ls:dependentOption="queryPath02" ls:dependsOn="queryPath01" ls:constraint="matches(null)" ls:negation="true"/>
@@ -103,18 +133,44 @@
       <xs:element type="disjunctive" name="dependency57" ls:dependentOption="headers27" ls:dependsOn="queryPath27" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="dependency58" ls:dependentOption="headers28" ls:dependsOn="queryPath28" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="dependency59" ls:dependentOption="headers29" ls:dependsOn="queryPath29" ls:constraint="matches(null)" ls:negation="true"/>
-      <xs:element type="disjunctive" name="dependency60" ls:dependentOption="headers30" ls:dependsOn="queryPath30" ls:constraint="matches(null)" ls:negation="true"/>      
+      <xs:element type="disjunctive" name="dependency60" ls:dependentOption="headers30" ls:dependsOn="queryPath30" ls:constraint="matches(null)" ls:negation="true"/> 
+      
+      <xs:element type="disjunctive" name="filterValue61" ls:dependentOption="filterValue02" ls:dependsOn="filterValue01" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue62" ls:dependentOption="filterValue03" ls:dependsOn="filterValue02" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue63" ls:dependentOption="filterValue04" ls:dependsOn="filterValue03" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue64" ls:dependentOption="filterValue05" ls:dependsOn="filterValue04" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue65" ls:dependentOption="filterValue06" ls:dependsOn="filterValue05" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue66" ls:dependentOption="filterValue07" ls:dependsOn="filterValue06" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue67" ls:dependentOption="filterValue08" ls:dependsOn="filterValue07" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue68" ls:dependentOption="filterValue09" ls:dependsOn="filterValue08" ls:constraint="matches(null)" ls:negation="true"/> 
+      <xs:element type="disjunctive" name="filterValue69" ls:dependentOption="filterValue10" ls:dependsOn="filterValue09" ls:constraint="matches(null)" ls:negation="true"/>    
+    
+      <xs:element type="disjunctive" name="UseCustom01" ls:dependentOption="filter" ls:dependsOn="Use_customfilter" ls:constraint="matches(false)"/>    
+      <xs:element type="disjunctive" name="UseCustom02" ls:dependentOption="filterValue01" ls:dependsOn="Use_customfilter" ls:constraint="matches(false)"/>
+      <xs:element type="disjunctive" name="UseCustom03" ls:dependentOption="customfilter_code" ls:dependsOn="Use_customfilter" ls:constraint="matches(true)"/>
+      
     </xs:choice>
 </xs:complexType>
        
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    <xs:element type="xs:string" name="url" id="url" default="http://lrs.x-in-y.com/data/xAPI/" />
+    <xs:element type="xs:string" name="url" id="url" default="null" />
     <xs:element type="xs:string" name="username" id="username" default="user" ls:privateOption="true" />
     <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
-    <xs:element type="filterType" name="filter" id="filter" default="Null" />
-    <xs:element type="xs:string" name="filterValue" id="filterValue" default="Null" />
-    
+    <xs:element type="xs:boolean" name="Use_customfilter" id="Use_customfilter" default="false" />
+    <xs:element type="xs:string" name="customfilter_code" id="customfilter_code" />
+    <xs:element type="filterArray" name="filter" id="filter" />
+    <xs:element type="xs:string" name="filterValue01" id="filterValue1" default="null" />
+    <xs:element type="xs:string" name="filterValue02" id="filterValue2" default="null" />
+    <xs:element type="xs:string" name="filterValue03" id="filterValue3" default="null" />
+    <xs:element type="xs:string" name="filterValue04" id="filterValue4" default="null" />
+    <xs:element type="xs:string" name="filterValue05" id="filterValue5" default="null" />
+    <xs:element type="xs:string" name="filterValue06" id="filterValue6" default="null" />
+    <xs:element type="xs:string" name="filterValue07" id="filterValue7" default="null" />
+    <xs:element type="xs:string" name="filterValue08" id="filterValue8" default="null" />
+    <xs:element type="xs:string" name="filterValue09" id="filterValue9" default="null" />
+    <xs:element type="xs:string" name="filterValue10" id="filterValue10" default="null" />
+
     <xs:element type="xs:string" name="queryPath01" id="queryPath01" default="null" />
         <xs:element type="xs:string" name="headers01" id="headers01" default="null" />
     <xs:element type="xs:string" name="queryPath02" id="queryPath02" default="null" />
@@ -192,7 +248,6 @@
         <xs:element type="xs:double" name="left" />
         <xs:element type="xs:double" name="top" />
         <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
-
         <xs:element name="options" type="OptionsType" minOccurs="0" />
         <xs:element name="outputs" type="OutputType" minOccurs="0" />
       </xs:all>

@@ -1,30 +1,18 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
-import com.google.gson.Gson;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;        
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
-import gov.adlnet.xapi.client.StatementClient;
-import gov.adlnet.xapi.model.Actor;
-import gov.adlnet.xapi.model.Agent;
-import gov.adlnet.xapi.model.StatementResult;
-import gov.adlnet.xapi.model.*;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-        
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class ImportXAPImain extends AbstractComponent {
 
@@ -40,627 +28,108 @@ public class ImportXAPImain extends AbstractComponent {
           
             @Override
 	    protected void runComponent() {
-	        // Parse arguments
-	        //File inputFile = null;
                 
-                String url = null;
-	        String username = null;
-	        String password = null;
-	        
-	        String filter = null;
-	        String filterValue = null;
-                String customfilter = null;
+                //Get the option parameters
+                String lrsUrl=this.getOptionAsString("url")+"statements/";
+                String lrsUsername=this.getOptionAsString("username");
+                String lrsPassword=this.getOptionAsString("password");
+                
+                //Get the use_customfilter infor.
+                JSONObject sqlUrlWithFilterNew = new JSONObject();
+                Boolean useCustomfilter=this.getOptionAsBoolean("Use_customfilter");
+               if(useCustomfilter){
+                   String customfilterCode=this.getOptionAsString("customfilter_code");
+                   
+                    try {
+                        sqlUrlWithFilterNew=new JSONObject(customfilterCode);
+                        //JSONObject json = JSONObject.fromObject(str);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                   //System.out.println(json);
+                   //System.out.println(sqlUrlWithFilterNew);
+               }else{
+                    //get the filters funcitons
+                    List<String> filters = null;
+                    if (this.getOptionAsList("filter") != null) {
+                            filters = this.getOptionAsList("filter");    
+                            logger.info("filters: " + filters);
+                    }
+
+                    //get the filter values from option paths
+                    List<String> filterValues=new ArrayList<String>();
+                    String filterValue01=this.getOptionAsString("filterValue01");
+
+                    if (!filterValue01.equals("null")){
+                            filterValues.add(filterValue01);}
+                    String filterValue02=this.getOptionAsString("filterValue02");
+                    if (!filterValue02.equals("null")){
+                            filterValues.add(filterValue02);}
+                    String filterValue03=this.getOptionAsString("filterValue03");
+                    if (!filterValue03.equals("null")){
+                            filterValues.add(filterValue03);}
+                    String filterValue04=this.getOptionAsString("filterValue04");
+                    if (!filterValue04.equals("null")){
+                            filterValues.add(filterValue04);}
+                    String filterValue05=this.getOptionAsString("filterValue05");
+                    if (!filterValue05.equals("null")){
+                            filterValues.add(filterValue05);}
+                    String filterValue06=this.getOptionAsString("filterValue06");
+                    if (!filterValue06.equals("null")){
+                            filterValues.add(filterValue06);}
+                    String filterValue07=this.getOptionAsString("filterValue07");
+                    if (!filterValue07.equals("null")){
+                            filterValues.add(filterValue07);}
+                    String filterValue08=this.getOptionAsString("filterValue08");
+                    if (!filterValue08.equals("null")){
+                            filterValues.add(filterValue08);}
+                    String filterValue09=this.getOptionAsString("filterValue09");
+                    if (!filterValue09.equals("null")){
+                            filterValues.add(filterValue09);}
+                    String filterValue10=this.getOptionAsString("filterValue10");
+                    if (!filterValue10.equals("null")){
+                            filterValues.add(filterValue10);}
+
+                    //Create one hashmap for storing the filterByActor, filterByVerb,filterBySince,filterByUntil,filterByActivity,filterByRegistration,filterByStatementId
+                    Map<String,String> filterOptionPathsMap = new HashMap<String,String>();
+                    filterOptionPathsMap.put("filterByActor","actor.mbox");
+                    filterOptionPathsMap.put("filterByVerb","verb.id");
+                    filterOptionPathsMap.put("filterBySince","timestamp");
+                    filterOptionPathsMap.put("filterByUntil","timestamp");
+                    filterOptionPathsMap.put("filterByActivity","context.contextActivities.category.definition.extensions.https://app*`*skoonline*`*org/ITSProfile/Extensions/category.SKOType\"");
+                    filterOptionPathsMap.put("filterByStatementId","id");
+
+                    filterValuesComb path= new filterValuesComb();
+                    
+                    try {
+                        sqlUrlWithFilterNew = path.sqlUrlWithFilter(filters,filterOptionPathsMap,filterValues);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+               }//end of using filter options
+                    //System.out.println(sqlUrlWithFilterNew);
+                    JSONArray sqlStatements=new JSONArray();
+                    StatementClientVeracity qrlByOptionSts =new StatementClientVeracity();
+
+                    try {
+                        sqlStatements=qrlByOptionSts.filterByOption(sqlUrlWithFilterNew, lrsUrl, lrsUsername, lrsPassword);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    //System.out.println(sqlStatements.length());
+                    //System.out.println(sqlStatements);
                
-	        username = this.getOptionAsString("username");
-	        password = this.getOptionAsString("password");
-	        url = this.getOptionAsString("url");
-	        filter = this.getOptionAsString("filter");
-	        //customfilter = this.getOptionAsString("customFilter");
-	        filterValue = this.getOptionAsString("filterValue");
-                
-	        //Generating required out
-	        try {
-	        	getXAPIdata(url, username, password, filter, customfilter, filterValue);
-
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }
-
-	        for (String err : this.errorMessages) {
-	            // These will also be picked up by the workflows platform and relayed to the user.
-	            System.err.println(err);
-	        }
 	    }
+      
             
-	    public void getXAPIdata(String url,String username,String password,String filter,String customfilter,String filterValue) throws Exception {
-                
-                //Get the values for query options
-                String queryPath01 = null;
-                String headers01 = null;
-                String queryPath02 = null;
-                String headers02 = null;
-                String queryPath03 = null;
-                String headers03 = null;
-                String queryPath04 = null;
-                String headers04 = null;
-                String queryPath05 = null;
-                String headers05 = null;
-                String queryPath06 = null;
-                String headers06 = null;
-                String queryPath07 = null;
-                String headers07 = null;
-                String queryPath08 = null;
-                String headers08 = null;                
-                String queryPath09 = null;
-                String headers09 = null;
-                String queryPath10 = null;
-                String headers10 = null;
-                String queryPath11 = null;
-                String headers11 = null;
-                String queryPath12 = null;
-                String headers12 = null;
-                String queryPath13 = null;
-                String headers13 = null;
-                String queryPath14 = null;
-                String headers14 = null;
-                String queryPath15 = null;
-                String headers15 = null;
-                String queryPath16 = null;
-                String headers16 = null;                
-                String queryPath17 = null;
-                String headers17 = null;
-                String queryPath18 = null;
-                String headers18 = null;
-                String queryPath19 = null;
-                String headers19 = null;
-                String queryPath20 = null;
-                String headers20 = null;
-                String queryPath21 = null;
-                String headers21 = null;
-                String queryPath22 = null;
-                String headers22 = null;
-                String queryPath23 = null;
-                String headers23 = null;
-                String queryPath24 = null;
-                String headers24 = null;                
-                String queryPath25 = null;
-                String headers25 = null;
-                String queryPath26 = null;
-                String headers26 = null;
-                String queryPath27 = null;
-                String headers27 = null;
-                String queryPath28 = null;
-                String headers28 = null;
-                String queryPath29 = null;
-                String headers29 = null;
-                String queryPath30 = null;
-                String headers30 = null; 
-                String limit = null;
-                String threshold= null;
-                
-                queryPath01 = this.getOptionAsString("queryPath01");
-                    headers01 = this.getOptionAsString("headers01");
-                queryPath02 = this.getOptionAsString("queryPath02");
-                    headers02 = this.getOptionAsString("headers02");                
-                queryPath03 = this.getOptionAsString("queryPath03");
-                    headers03 = this.getOptionAsString("headers03");                
-                queryPath04 = this.getOptionAsString("queryPath04");
-                    headers04 = this.getOptionAsString("headers04");                
-                queryPath05 = this.getOptionAsString("queryPath05");
-                    headers05 = this.getOptionAsString("headers05");
-                queryPath06 = this.getOptionAsString("queryPath06");
-                    headers06 = this.getOptionAsString("headers06");
-                queryPath07 = this.getOptionAsString("queryPath07");
-                    headers07 = this.getOptionAsString("headers07");
-                queryPath08 = this.getOptionAsString("queryPath08");
-                    headers08 = this.getOptionAsString("headers08");
-                queryPath09 = this.getOptionAsString("queryPath09");
-                    headers09 = this.getOptionAsString("headers09");
-                queryPath10 = this.getOptionAsString("queryPath10");
-                    headers10 = this.getOptionAsString("headers10");                
-                queryPath11 = this.getOptionAsString("queryPath11");
-                    headers11 = this.getOptionAsString("headers11");                
-                queryPath12 = this.getOptionAsString("queryPath12");
-                    headers12 = this.getOptionAsString("headers12");                
-                queryPath13 = this.getOptionAsString("queryPath13");
-                    headers13 = this.getOptionAsString("headers13");
-                queryPath14 = this.getOptionAsString("queryPath14");
-                    headers14 = this.getOptionAsString("headers14");
-                queryPath15 = this.getOptionAsString("queryPath15");
-                    headers15 = this.getOptionAsString("headers15");
-                queryPath16 = this.getOptionAsString("queryPath16");
-                    headers16 = this.getOptionAsString("headers16");
-                queryPath17 = this.getOptionAsString("queryPath17");
-                    headers17 = this.getOptionAsString("headers17");
-                queryPath18 = this.getOptionAsString("queryPath18");
-                    headers18 = this.getOptionAsString("headers18");
-                queryPath19 = this.getOptionAsString("queryPath19");
-                    headers19 = this.getOptionAsString("headers19");                
-                queryPath20 = this.getOptionAsString("queryPath20");
-                    headers20 = this.getOptionAsString("headers20");                
-                queryPath21 = this.getOptionAsString("queryPath21");
-                    headers21 = this.getOptionAsString("headers21");                
-                queryPath22 = this.getOptionAsString("queryPath22");
-                    headers22 = this.getOptionAsString("headers22");
-                queryPath23 = this.getOptionAsString("queryPath23");
-                    headers23 = this.getOptionAsString("headers23");
-                queryPath24 = this.getOptionAsString("queryPath24");
-                    headers24 = this.getOptionAsString("headers24");
-                queryPath25 = this.getOptionAsString("queryPath25");
-                    headers25 = this.getOptionAsString("headers25");               
-                queryPath26 = this.getOptionAsString("queryPath26");
-                    headers26 = this.getOptionAsString("headers26");
-                queryPath27 = this.getOptionAsString("queryPath27");
-                    headers27 = this.getOptionAsString("headers27");
-                queryPath28 = this.getOptionAsString("queryPath28");
-                    headers28 = this.getOptionAsString("headers28");
-                queryPath29 = this.getOptionAsString("queryPath29");
-                    headers29 = this.getOptionAsString("headers29");
-                queryPath30 = this.getOptionAsString("queryPath30");
-                    headers30 = this.getOptionAsString("headers30");  
-                
-                limit=this.getOptionAsString("limit");
-                threshold=this.getOptionAsString("outcome");
-                
-	    	StatementClient client = new StatementClient(url, username, password);
-                String jsonTxt = null;
-                
-        if (filter.equals("filterByStatementId")){
-            //Query by statement id
-                String jsonTxtSpr1 =null;
-                Statement result = client.getStatement(filterValue);
-                Object object1= result.serialize();
-                
-                Gson gson1 = new Gson();
-                jsonTxtSpr1= gson1.toJson(object1).toString();
-                String Str="[";
-                jsonTxt=new StringBuilder(Str).append(jsonTxtSpr1).toString();
-                jsonTxt=new StringBuilder(jsonTxt).append("]").toString();
-        }
+    //private getStatementClientWithFilter(String filter, String filterValue, String customfilter){
+    //    String outputClient = null;
         
-        else if (filter.equals("filterByVerb_filterBySince")){
-            //Query by the combined conditions: filterByVerb and filterBySince
-                List<String> queryCombList = Arrays.asList(filterValue.split(","));
-                StatementResult results = client.filterByVerb(queryCombList.get(0)).filterBySince(queryCombList.get(1)).getStatements();
-                String jsonTxtSpr;
-                try {
-                     StringBuilder sb = new StringBuilder();
-                     Object object= results.getStatements();
-                     Gson gson = new Gson();
-	             sb.append(gson.toJson(object));
-                     
-                     while(results.hasMore()){
-                        String moreString = results.getMore();
-                        moreString = moreString.replace("/data/xAPI", "");
-                        results = client.getStatements(moreString);
-                        Object obj = results.getStatements();
-                        sb.append(gson.toJson(obj));
-                     }
-                     jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }        
-        }
-        
-        else if (filter.equals("filterByVerb_filterByUntil")){
-            //Query by the combined conditions: filterByVerb and filterByUntil
-                List<String> queryCombList = Arrays.asList(filterValue.split(","));
-                StatementResult results = client.filterByVerb(queryCombList.get(0)).filterByUntil(queryCombList.get(1)).getStatements();
-                String jsonTxtSpr;
-                try {
-                     StringBuilder sb = new StringBuilder();
-                     Object object= results.getStatements();
-                     Gson gson = new Gson();
-	             sb.append(gson.toJson(object));
-                     
-                     while(results.hasMore()){
-                        String moreString = results.getMore();
-                        moreString = moreString.replace("/data/xAPI", "");
-                        results = client.getStatements(moreString);
-                        Object obj = results.getStatements();
-                        sb.append(gson.toJson(obj));
-                     }
-                     jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }        
-        }
-        
-        else if (filter.equals("filterByActor_filterBySince")){
-            //Query by the combined conditions: filterByActor and filterBySince
-                List<String> queryCombList = Arrays.asList(filterValue.split(","));
-                Actor actor = new Agent(null,queryCombList.get(0));
-                StatementResult results = client.filterByActor(actor).filterBySince(queryCombList.get(1)).getStatements();
-                String jsonTxtSpr;
-                try {
-                     StringBuilder sb = new StringBuilder();
-                     Object object= results.getStatements();
-                     Gson gson = new Gson();
-	             sb.append(gson.toJson(object));
-                     
-                     while(results.hasMore()){
-                        String moreString = results.getMore();
-                        moreString = moreString.replace("/data/xAPI", "");
-                        results = client.getStatements(moreString);
-                        Object obj = results.getStatements();
-                        sb.append(gson.toJson(obj));
-                     }
-                     jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }        
-        }     
-
-        else if (filter.equals("filterByActor_filterByUntil")){
-            //Query by the combined conditions: filterByActor and filterByUntil
-                List<String> queryCombList = Arrays.asList(filterValue.split(","));
-                Actor actor = new Agent(null,queryCombList.get(0));
-                StatementResult results = client.filterByActor(actor).filterByUntil(queryCombList.get(1)).getStatements();
-                String jsonTxtSpr;
-                try {
-                     StringBuilder sb = new StringBuilder();
-                     Object object= results.getStatements();
-                     Gson gson = new Gson();
-	             sb.append(gson.toJson(object));
-                     
-                     while(results.hasMore()){
-                        String moreString = results.getMore();
-                        moreString = moreString.replace("/data/xAPI", "");
-                        results = client.getStatements(moreString);
-                        Object obj = results.getStatements();
-                        sb.append(gson.toJson(obj));
-                     }
-                     jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }        
-        }   
-        
-        else {    
-            //Query by other functions    
-                String jsonTxtSpr;
-                client = getStatementClientWithFilter(filter,filterValue, client,customfilter);
-                StatementResult results = client.getStatements();
-                // Retrieving xAPI statements
-	        try {
-                     StringBuilder sb = new StringBuilder();
-                     Object object= results.getStatements();
-                     Gson gson = new Gson();
-	             sb.append(gson.toJson(object));
-                     
-                     while(results.hasMore()){
-                        String moreString = results.getMore();
-                        moreString = moreString.replace("/data/xAPI", "");
-                        results = client.getStatements(moreString);
-                        Object obj = results.getStatements();
-                        sb.append(gson.toJson(obj));
-                     }
-                     jsonTxtSpr= sb.toString();
-                     jsonTxt = jsonTxtSpr.replace("][",","); //case two stages of statements
-	        } catch (Exception e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }
-        }
-                
-                JSONArray jsonArray = new JSONArray(jsonTxt); 
-                int size = jsonArray.length();
-                //Collect all the queryPaths and headers
-                List<String> allPathsList=new ArrayList<String>();
-                List<String> allHeadersList=new ArrayList<String>();        
-
-                allPathsList.add(queryPath01);
-                allPathsList.add(queryPath02);
-                allPathsList.add(queryPath03);
-                allPathsList.add(queryPath04);
-                allPathsList.add(queryPath05);
-                allPathsList.add(queryPath06);
-                allPathsList.add(queryPath07);
-                allPathsList.add(queryPath08);
-                allPathsList.add(queryPath09);
-                allPathsList.add(queryPath10); 
-                allPathsList.add(queryPath11);
-                allPathsList.add(queryPath12);
-                allPathsList.add(queryPath13);
-                allPathsList.add(queryPath14);
-                allPathsList.add(queryPath15);
-                allPathsList.add(queryPath16);
-                allPathsList.add(queryPath17);
-                allPathsList.add(queryPath18);
-                allPathsList.add(queryPath19);
-                allPathsList.add(queryPath20);         
-                allPathsList.add(queryPath21); 
-                allPathsList.add(queryPath22);
-                allPathsList.add(queryPath23);
-                allPathsList.add(queryPath24);
-                allPathsList.add(queryPath25);
-                allPathsList.add(queryPath26);
-                allPathsList.add(queryPath27);
-                allPathsList.add(queryPath28);
-                allPathsList.add(queryPath29);
-                allPathsList.add(queryPath30);          
-
-                allHeadersList.add(headers01);
-                allHeadersList.add(headers02);
-                allHeadersList.add(headers03);
-                allHeadersList.add(headers04);
-                allHeadersList.add(headers05);
-                allHeadersList.add(headers06);
-                allHeadersList.add(headers07);
-                allHeadersList.add(headers08);        
-                allHeadersList.add(headers09);
-                allHeadersList.add(headers10);
-                allHeadersList.add(headers11);
-                allHeadersList.add(headers12);
-                allHeadersList.add(headers13);
-                allHeadersList.add(headers14);
-                allHeadersList.add(headers15);
-                allHeadersList.add(headers16);
-                allHeadersList.add(headers17);
-                allHeadersList.add(headers18);
-                allHeadersList.add(headers19);
-                allHeadersList.add(headers20);        
-                allHeadersList.add(headers21);
-                allHeadersList.add(headers22);
-                allHeadersList.add(headers23);
-                allHeadersList.add(headers24); 
-                allHeadersList.add(headers25);
-                allHeadersList.add(headers26);        
-                allHeadersList.add(headers27);
-                allHeadersList.add(headers28);
-                allHeadersList.add(headers29);
-                allHeadersList.add(headers30);               
-
-                //Add row count        
-                ArrayList<String> row=new ArrayList<String>();
-                int count=0;
-                for (int c=0;c<size;c++){
-                    count++;
-                    row.add(String.valueOf(count));
-                }
-
-                //Add tag:headers
-                //Add count row
-                List<String> headersList = new ArrayList<String>();
-                List<String> selectPathsList = new ArrayList<String>();
-                headersList.add("Row");
-
-                //Replace some header by specific header's name
-                for(int n=0;n<allHeadersList.size();n++){
-                    String queryPath00=allPathsList.get(n);
-                    String headers00=allHeadersList.get(n);
-                    if(!queryPath00.equals("null")){
-                        selectPathsList.add(queryPath00);
-                        if(!headers00.equals("null")){
-                            headersList.add(headers00);
-                        }else{
-                            headersList.add(queryPath00);
-                        }
-                    }
-                }
-
-                //Add query contents
-                Map<Integer , List<String>> map = new HashMap<Integer , List<String>>();
-                map.put(0,row);
-
-                for(int j=0;j<selectPathsList.size();j++){  
-                    
-                    //Split the comma-separated queryPath
-                    List<String> queryPath00List = Arrays.asList(selectPathsList.get(j).split(","));
-                    int queryPath00Leth = queryPath00List.size();
-                    List<String> mainValueList = new ArrayList<String>();
-                    String queryStringValue = null;
-                    Object qvalue=null;
-                    
-                    //Query the specifc value follow the jsonpath
-                    if (queryPath00Leth > 1) {
-                            for (int i=0; i<size;i++){
-                                JSONObject sts= jsonArray.getJSONObject(i);
-                                    String queryStringValue0=queryPath00List.get(0).trim();
-                                    if(sts.has(queryStringValue0)){
-                                        JSONObject node=sts.getJSONObject(queryStringValue0);
-                                        if(queryPath00Leth > 2){
-                                            for (int m=1;m<queryPath00Leth-1;m++){ 
-                                                queryStringValue=queryPath00List.get(m).trim();
-                                                if(!node.has(queryStringValue)){
-                                                    node=null;
-                                                    break;
-                                                }else{
-                                                    node = node.getJSONObject(queryStringValue);
-                                                }
-                                            }
-                                            if(node==null){
-                                                qvalue="null";
-                                            }else{
-                                                queryStringValue=queryPath00List.get(queryPath00Leth-1).trim();
-                                                //If qvalue !exists, make qvalue as NA
-                                                if(node.has(queryStringValue)){
-                                                    qvalue = node.get(queryStringValue);
-                                                }else{
-                                                    qvalue="null";
-                                                }
-                                            } 
-                                        }else{
-                                            queryStringValue=queryPath00List.get(1).trim();
-                                            //If qvalue !exists, make qvalue as NA
-                                            if(node.has(queryStringValue)){
-                                                qvalue= node.get(queryStringValue);
-                                            }else{
-                                                qvalue="null";
-                                            }
-                                        }
-                                    }else{
-                                        qvalue="null";
-                                        logger.info("Incorrect Path String from the first node");
-                                    }
-                                mainValueList.add(qvalue.toString());
-                            }
-                    } else {
-                        queryStringValue=queryPath00List.get(0).trim();
-                        for (int i=0; i<size;i++){
-                            JSONObject sts= jsonArray.getJSONObject(i);
-                            if (sts.has(queryStringValue)){
-                                qvalue= sts.get(queryStringValue);
-                                mainValueList.add(qvalue.toString());
-                            }else{
-                                qvalue=null;
-                            mainValueList.add("null");
-                            logger.info("Incorrect Path String");
-                            }
-                        }
-                    }
-                    map.put(j+1,mainValueList);      
-                }
-                
-                int cSize=selectPathsList.size();
-                if (!limit.equals("null")){
-                    int Limit = Integer.parseInt(limit);
-                    if (Limit<size){
-                        size=Limit;
-                    }
-                }
-                
-                String [][] queryContent=new String[size][cSize+1];
-                //Create matrix for query content
-                for (int crf=0;crf<cSize+1;crf++){
-                    for(int crr=0;crr<size;crr++){
-                        queryContent[crr][crf]=map.get(crf).get(crr);
-                    }
-                }
-                
-                //Transform Time Format
-                if(headersList.contains("Time")){
-                    int tNum=headersList.indexOf("Time");
-                    for (int r=0; r<size;r++){
-                        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                        Date date = dt.parse(queryContent[r][tNum]);
-                        SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                        queryContent[r][tNum]=dt1.format(date);
-                    }
-                }
-                
-                //remove the "-" sign for "Statement Id"
-                if(headersList.contains("Statement Id")){
-                    int IdNum=headersList.indexOf("Statement Id");
-                    for (int r=0; r<size;r++){
-                        queryContent[r][IdNum]=queryContent[r][IdNum].replace("-","");
-                    }
-                }
-                
-                //Transfer Duration Format 
-                if(headersList.contains("Duration (sec)")){
-                    int IdNum=headersList.indexOf("Duration (sec)");
-                    for (int r=0; r<size;r++){
-                        if(!queryContent[r][IdNum].equals("null")){
-                            double duration=Double.parseDouble(queryContent[r][IdNum])/1000;
-                            BigDecimal b =new BigDecimal(duration);
-                            double f1 = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-                            queryContent[r][IdNum]=Double.toString(f1);
-                        }else {
-                            queryContent[r][IdNum]="null";
-                        }
-                    }
-                }
-                
-                //Add new tag: "Outcome" based on result score: include"raw","max","min","scaled".
-                if(headersList.contains("Outcome")&(!threshold.equals("null"))){
-                   int IdNum=headersList.indexOf("Outcome");
-                   for (int r=0; r<size;r++){
-                    double threshold_use=Double.parseDouble(threshold);
-                    if (Double.parseDouble(queryContent[r][IdNum])>=threshold_use){
-                       queryContent[r][IdNum]="CORRECT";
-                   }else {
-                       queryContent[r][IdNum]="INCORRECT";
-                    }
-                   }
-                }
-                
-                //Print the query results
-                File jsonFile = this.createFile("xAPI_Query", ".txt");
-                FileWriter fw = new FileWriter(jsonFile.getAbsoluteFile());
-                BufferedWriter bw = new BufferedWriter(fw);
-                for(String h:headersList){
-                    bw.write(h+"\t");
-                }
-                bw.write("\n");
-                for(int crw=0;crw<size;crw++){
-                    for(String qc:queryContent[crw]){
-                        bw.write(qc+"\t");
-                    }
-                bw.write("\n");
-                }
-                bw.close();
-
-                Integer nodeIndex0 = 0;
-                Integer fileIndex0 = 0;
-                String fileType0 = "tab-delimited";
-                this.addOutputFile(jsonFile, nodeIndex0, fileIndex0, fileType0);
-                System.out.println(this.getOutput()); 
-	}
-            
-            private StatementClient getStatementClientWithFilter(String filter,String filterValue, StatementClient client,String customfilter){
-                StatementClient outputClient = null;
-                try{
-                    switch (filter) {
-                        case "Null":
-                                break;
-                        case "filterByVerb":
-                                outputClient=client.filterByVerb(filterValue);
-                                break;
-                        case "filterByActor":
-                                Actor actor = new Agent(null,filterValue);
-                                outputClient=client.filterByActor(actor);
-                                break;
-                        case "filterByActivity":
-                                outputClient=client.filterByActivity(filterValue);
-                                break;
-                        case "filterByRegistration":
-                                outputClient=client.filterByRegistration(filterValue);
-                                break;
-                        case "filterBySince":
-                                outputClient=client.filterBySince(filterValue);
-                                break;
-                        case "filterByUntil":
-                                outputClient=client.filterByUntil(filterValue);
-                                break;
-                        case "Custom":
-                                outputClient = client.addFilter(customfilter,filterValue);
-                                break;
-                        case "filterByStatementId":
-                                break;
-                        case "filterByVerb_filterBySince":
-                                break;
-                        case "filterByVerb_filterByUntil":
-                                break;
-                        case "filterByActor_filterBySince":
-                                break;
-                        case "filterByActor_filterByUntil":
-                                break;
-                        default:
-                            this.addErrorMessage("Invalid filter type");
-                    }
-                    return outputClient;
-                }catch(Exception e){
-                    logger.fatal(e.toString());
-                    return null;
-                }
-            }
-            
-            private Set<String> collectHeaders(List<Map<String, String>> flatJson) {
-                Set<String> headers = new TreeSet<String>();
-                for (Map<String, String> map : flatJson) {
-                     headers.addAll(map.keySet());
-                }
-            return headers;
-            }
+    //    return outputClient;
+    //}        
             
 }

@@ -11,25 +11,43 @@
         </connection>
     </connections>
   <options>
-    <url>http://lrs.x-in-y.com/data/xAPI/</url>
-    <username>17e055b6235655b9893e27fe877fa5f46ef3f6cd</username>
-    <password>0a0e8ad3df11b173b7eea1593f4ba3cea441429d</password>
-    <filter>filterByVerb</filter>
-    <filterValue>https://umiis.github.io/ITSProfile/verbs/SaveKCScore</filterValue>
+    <url>https://record.x-in-y.com/keith-s-pilot/xapi/</url>
+    <username>kshubeck</username>
+    <password>um38152um</password>
+    <filter>
+      <filters0>filterByActor</filters0>
+      <filters1>filterByVerb</filters1>
+      <filters2>filterByUntil</filters2>
+    </filter>
+    
+    <filterValue01>mailto:414a5a5b-3d66-4ae6-99ed-5552ffccfe47@author.x-in-y.com</filterValue01>
+    <filterValue02>https://app.skoonline.org/ITSProfile/System/Evaluate</filterValue02>
+    <filterValue03>2020-05-12T18:56:17.477Z</filterValue03>
+    <filterValue04>null</filterValue04> 
+    <filterValue05>null</filterValue05>
+    <filterValue06>null</filterValue06>
+    <filterValue07>null</filterValue07>
+    <filterValue08>null</filterValue08>   
+    <filterValue09>null</filterValue09>
+    <filterValue10>null</filterValue10>
+    
+    <Use_customfilter>true</Use_customfilter>
+    <customfilter_code>{"actor.mbox": "mailto:414a5a5b-3d66-4ae6-99ed-5552ffccfe47@author.x-in-y.com"}</customfilter_code>
+    
     <limit>null</limit>
     <outcome>0.5</outcome>
     <queryPath01>actor,name</queryPath01>
         <headers01>Student Name</headers01>
-    <queryPath02>result,extensions,https://umiis.github.io/ITSProfile/System/matchAnswer,input</queryPath02>
-        <headers02>Input</headers02>
-    <queryPath03>verb,display,en-US</queryPath03>
-        <headers03>Action</headers03>
-    <queryPath04>object,definition,name,en-US</queryPath04>
-        <headers04>Type</headers04>
-    <queryPath05>result,score,raw</queryPath05>
-        <headers05>Outcome</headers05>
-    <queryPath06>context,extensions,http://autotutor.x-in-y.com/AT,timeTaken</queryPath06>
-        <headers06>Duration (sec)</headers06>
+    <queryPath02>verb,display,en-US</queryPath02>
+        <headers02>Action</headers02>
+    <queryPath03>object,cc</queryPath03>
+        <headers03>Object</headers03>
+    <queryPath04>null</queryPath04>
+        <headers04>null</headers04>
+    <queryPath05>null</queryPath05>
+        <headers05>null</headers05>
+    <queryPath06>null</queryPath06>
+        <headers06>null</headers06>
     <queryPath07>null</queryPath07>
         <headers07>null</headers07>
     <queryPath08>null</queryPath08>
