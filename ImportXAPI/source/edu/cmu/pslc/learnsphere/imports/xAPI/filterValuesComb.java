@@ -20,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *This is 
+ *helps us do the request to LRS, and retrieve statements from LRS.
  * @author Liang Zhang
  */
 public class filterValuesComb {

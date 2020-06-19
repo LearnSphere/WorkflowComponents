@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ *make the logic realtions of filter options into query url.
  * @author Liang Zhang
  */
 public class StatementClientVeracity {

@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- *
+ *storing the basic query rules
  * @author Liang Zhang
  *
  * 
