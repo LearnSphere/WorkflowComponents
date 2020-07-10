@@ -378,8 +378,8 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,par5,fcom
   if(feat=="diffallComp"){return(countOutcomeDifficultyAll1(data,data$index)-countOutcomeDifficultyAll2(data,data$index))}
   if(feat=="diffincor1"){return(countOutcomeDifficulty1(data,data$index,"INCORRECT"))}
   if(feat=="diffincor2"){return(countOutcomeDifficulty2(data,data$index,"INCORRECT"))}
-  if(feat=="diffall1"){return(countOutcomeDifficulty1(data,data$index,"INCORRECT"))}
-  if(feat=="diffall2"){return(countOutcomeDifficulty2(data,data$index,"INCORRECT"))}
+  if(feat=="diffall1"){return(countOutcomeDifficultyAll1(data,data$index))}
+  if(feat=="diffall2"){return(countOutcomeDifficultyAll2(data,data$index))}
   if(feat=="logsuc"){return(log(1+data$cor))}
   if(feat=="linesuc"){return(data$cor)}
   if(feat=="logfail"){return(log(1+data$icor))}
