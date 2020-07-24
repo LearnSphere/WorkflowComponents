@@ -209,7 +209,7 @@ data.1 <- read.csv(inputFile0)
 data.2 <- read.csv(inputFile1)
 
 output <- trend.map(data.1, data.2)
-ggsave(filename = sprintf("%s/output%s.png",workingDirectory,0), plot = output[[2]], device = "png")
+ggsave(filename = sprintf("%s/output%s.pdf",workingDirectory,0), plot = output[[2]], device = "pdf")
 
 write.table(output[[1]],file=sprintf("%s/output%s.csv",workingDirectory,1),sep=",", quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
 

@@ -39,7 +39,7 @@ public class trendMAPMain extends AbstractComponent {
 	this.addMetaDataFromInput("csv", 0, 0, ".*");
 
 	// Add additional meta-data for each output file.
-	this.addMetaData("image", 0, META_DATA_LABEL, "label0", 0, null);
+	this.addMetaData("pdf", 0, META_DATA_LABEL, "label0", 0, null);
 	this.addMetaData("csv", 1, META_DATA_LABEL, "label1", 0, null);
 
     }
@@ -66,7 +66,7 @@ public class trendMAPMain extends AbstractComponent {
 	File outputFile0 = new File(outputDirectory.getAbsolutePath() + "/output0.png");
 	File outputFile1 = new File(outputDirectory.getAbsolutePath() + "/output1.csv");
 
-		this.addOutputFile(outputFile0, 0, 0, "image");
+		this.addOutputFile(outputFile0, 0, 0, "pdf");
 		this.addOutputFile(outputFile1, 1, 0, "csv");
 
 

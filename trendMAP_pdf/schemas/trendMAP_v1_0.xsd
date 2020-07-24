@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls">
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="InFileList0"/>
+          <xs:any minOccurs="1" processContents="skip" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="InFileList1"/>
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="input1" type="InputDefinition1" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="csv" minOccurs="0"/>
+      <xs:element name="input1" type="xs:string" default="csv" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList0"/>
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="pdf"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList1"/>
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="csv"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0"/>
+      <xs:element name="output1" type="OutputDefinition1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="discipline" id="discipline" type="xs:string" default="Mathematics"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="workflow_id" type="xs:integer"/>
+        <xs:element name="component_id" type="xs:string"/>
+        <xs:element name="component_id_human" type="xs:string"/>
+        <xs:element name="component_name" type="xs:string"/>
+        <xs:element name="component_type" type="xs:string"/>
+        <xs:element name="left" type="xs:double"/>
+        <xs:element name="top" type="xs:double"/>
+        <xs:element name="connections" minOccurs="0" maxOccurs="1" type="ConnectionType"/>
+        <xs:element name="inputs" type="InputType" minOccurs="0"/>
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0"/>
+        <xs:element name="options" type="OptionsType" minOccurs="0"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
