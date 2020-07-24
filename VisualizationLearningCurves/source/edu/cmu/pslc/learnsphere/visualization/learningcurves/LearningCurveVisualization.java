@@ -235,11 +235,13 @@ public class LearningCurveVisualization {
                     perSplit =
                         fields[headingMap.get(predictedErrorRateName)].split("~~", NO_PATTERN_LIMIT);
                 }
-
                 String anonStudentId = fields[headingMap.get("Anon Student Id")];
                 String stepName = fields[headingMap.get("Step Name")];
                 String problemName = fields[headingMap.get("Problem Name")];
-                String sampleName = fields[headingMap.get("Sample")];
+                String sampleName = "Sample";
+                if (headingMap.get("Sample") != null)
+                	sampleName = fields[headingMap.get("Sample")];
+                
                 Double incorrects = null;
                 Double hints = null;
                 Double stepDuration = null;
