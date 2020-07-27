@@ -6,21 +6,22 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/description</url>
 <date>July 22, 2020</date>
-<abstract>The <b>description</b> component is an example of a(n) R component.</abstract>
-<description>This is an auspicious component</description>
+<abstract>The <b> description</b>component generates one-click decription of students' distribution. By importing a CSV file that contains information about students' school, grade, gender and race <b>description</b> component is an example of a(n) R component.</abstract>
+<description>Component generates four graphs portraying the number of students for each school,grade, gender and race, normally datasets also have discipline </description>
 
 <inputs>
-<b>csv</b><br/>
+A csv file that contains columns pertaining to <b>student ID (Could be labled "studentid" or "pl2.id")</b>, <b>SchoolName</b>, <b>Grade</b>, <b>Gender</b> and <b>Race or Ethnicity</b>, discipline<br/>
 </inputs>
 
 <outputs>
-<b>image</b><br/>
-<b>image</b><br/>
-<b>image</b><br/>
-<b>image</b><br/>
+<b>image1: Describes the number of students in each school</b><br/>
+<b>image2: Race-wise distribution</b><br/>
+<b>image3: Gender-wise distribution</b><br/>
+<b>image4: Grade-wise distribution</b><br/>
 </outputs>
 
 <options>
+None
 </options>
 
 </info>
