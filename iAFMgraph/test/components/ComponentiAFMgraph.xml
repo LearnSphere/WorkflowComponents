@@ -1,0 +1,74 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>visualization #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>iAFMgraph</component_name>
+  <component_type>visualization</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+<input0>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<csv>
+<index>0</index>
+<file_path>test/test_data/sample1718.csv</file_path>
+<label>text</label>
+<file_name>sample1718.csv</file_name>
+</csv>
+</files>
+<inputmeta />
+</input0>
+<input1>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<csv>
+<index>1</index>
+<file_path>test/test_data/sample1819.csv</file_path>
+<label>text</label>
+<file_name>sample1819.csv</file_name>
+</csv>
+</files>
+<inputmeta />
+</input1>
+<input2>
+<component_id>Import-1-x995490</component_id>
+<component_id_human>Import #1</component_id_human>
+<component_type>import</component_type>
+<component_name>Dummy Import Name</component_name>
+<elapsed_seconds>0</elapsed_seconds>
+<errors />
+<files>
+<csv>
+<index>2</index>
+<file_path>test/test_data/wowzer_summer_2018.csv</file_path>
+<label>text</label>
+<file_name>wowzer_summer_2018.csv</file_name>
+</csv>
+</files>
+<inputmeta />
+</input2>
+</inputs>
+
+<options>
+<discipline>Mathematics</discipline>
+<choice>3</choice>
+</options>
+
+</component>
