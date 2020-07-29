@@ -1,10 +1,19 @@
 
+## takes in three files(any number of columns) for two years and intervention data, generates two graphs and a file for students growth and intercepts
+## input: student id in file shoule be under format(pl2, studentid, pl2.id)
+## input: column for rit score -"TestRITscore"
+## input: discipline by default is Mathematics, can be changed to any.
+## input: column for race with header Race or Ethnicity
+## input: list of students who got the intervention
+## three choices to choose from 1- only data from first year, 2- only data from second year, 3- data from both the years
+
 #read arguments
 args <- commandArgs(trailingOnly = TRUE)
 
 #library
 suppressWarnings(suppressMessages(library(tidyverse)))
 suppressWarnings(suppressMessages(library(lmerTest)))
+
 #initializing
 discipline = "Mathematics"
 choice  = 3
@@ -313,6 +322,8 @@ data.1819 <- read.csv(inputFile1)
 
 #intervention data- only those students who got the intervention-mentor or app
 intervention <- read.csv(inputFile2)
+
+#grepl
 intervention <- data.frame(intervention[,grepl("student.id|pl2|studentid", tolower(names(intervention)))])
 names(intervention)[1] <- "student"
 intervention$is.intervention <- 1
