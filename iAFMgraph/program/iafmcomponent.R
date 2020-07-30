@@ -210,264 +210,125 @@ prepare.map <- function(dataset1, dataset2){
 #allows to see how students measure before the intervention
 
 plot.iafm <- function(data, choice){
-  if(choice == 1){
-    data.all <- data
-    #model year 1
-    data <- data.all[data.all$term %in%c(1,2,3),]
-    model1 <- lmer(rit ~ term + (term|student), data= data)
-    
-    stud.params <- data.frame( cbind(row.names(ranef(model1)$student), ranef(model1)$student[,1], ranef(model1)$student[,2]) )
-    colnames(stud.params) <- c("student", "Intercept", "Slope")
-    stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
-    stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
-    
-    table1 <- stud.params
-    overall.intercept1 <- coef(summary(model1))[1]
-    overall.slope1 <- coef(summary(model1))[2]
-    
-    ## Analysing the difference between students before the intervention
-    
-    final.data1 <- merge(data, stud.params, by = "student")
-    
-    trial.data1 <- final.data1[final.data1$term == 1,]
-    trial.data1 <- trial.data1 %>% 
-      mutate(id = row_number())
-    
-    trial.data1$is.intervention <- as.factor(trial.data1$is.intervention)
-    avg.slope.year1 <- mean(trial.data1[trial.data1$is.intervention==1,]$Slope)
-    avg.incpt.year1 <- mean(trial.data1
-                            [trial.data1$is.intervention==1,]$Intercept)
-    
-    #model year 2
-    data <- data.all[data.all$term %in%c(4,5,6),]
-    data[data$term == 4,]$term <- 1
-    data[data$term == 5,]$term <- 2
-    data[data$term == 6,]$term <- 3
-    model2 <- lmer(rit ~ term + (term|student), data= data)
-    
-    stud.params <- data.frame( cbind(row.names(ranef(model2)$student), ranef(model2)$student[,1], ranef(model2)$student[,2]) )
-    colnames(stud.params) <- c("student", "Intercept", "Slope")
-    stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
-    stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
-    
-    table2 <- stud.params
-    overall.intercept2 <- coef(summary(model2))[1]
-    overall.slope2 <- coef(summary(model2))[2]
-    
-    
-    
-    ## Analysing the difference between students before the intervention
-    
-    final.data2 <- merge(data, stud.params, by = "student")
-    
-    trial.data2 <- final.data2[final.data2$term == 3,]
-    trial.data2 <- trial.data2 %>% 
-      mutate(id = row_number())
-    
-    trial.data2$is.intervention <- as.factor(trial.data2$is.intervention)
-    avg.slope.year2 <- mean(trial.data2[trial.data2$is.intervention==1,]$Slope)
-    avg.incpt.year2 <- mean(trial.data2
-                            [trial.data2$is.intervention==1,]$Intercept)
-    
-    trial.data1$year <- 1
-    trial.data2$year <- 2
-    
-    trial.data <- rbind(trial.data1, trial.data2)
-    
-    #trial.data <- trial.data[trial.data$is.intervention ==1,]
-    
-    
-    
-    graph1 <- ggplot()+
-      geom_abline(data = trial.data1[trial.data1$is.intervention ==1,],
-                  aes(intercept = (Intercept+overall.intercept1), 
-                      slope =(Slope+overall.slope1)),
-                  alpha = 0.05 , color = "red",show.legend = TRUE)+
-      
-      ylim(100,250)+
-      geom_abline( mapping = aes(slope= avg.slope.year1+overall.slope1,
-                                 intercept = avg.incpt.year1+overall.intercept1
-      ), 
-      size = 2 , linetype = "dashed", color = "red", 
-      show.legend  = TRUE)+
-      geom_abline(data = trial.data2[trial.data2$is.intervention ==1,],
-                  aes(intercept = (Intercept+overall.intercept2), 
-                      slope =(Slope+overall.slope2)),
-                  color = "darkgreen",alpha = 0.05,show.legend = TRUE)+
-      
-      geom_abline( mapping = aes(slope= avg.slope.year2+overall.slope2,
-                                 intercept = avg.incpt.year2+overall.intercept2
-      ), size = 2, color = "darkgreen",show.legend = TRUE )+
-      scale_x_continuous(breaks= 1:3, labels = c("Fall" , "Winter ", "Spring"), limits = c(1,3) ) +labs(y = "MAP (RIT Score)", x = NULL)+
-      ggtitle("iAFM: Score trend for both the years for STUDENTS WITH INTERVENTION", subtitle = "Year1 = RED, Year 2 = GREEN" )+ theme(axis.text.x = element_text(size = 12))
-    
-    trial.data$newslope <-0
-    trial.data[trial.data$year == 1,]$newslope <- 
-      trial.data[trial.data$year == 1,]$Slope+overall.slope1
-    trial.data[trial.data$year == 2,]$newslope <-
-      trial.data[trial.data$year == 2,]$Slope+overall.slope2
-    
-    table1 <- trial.data[,c("student", "Intercept", "Slope", "year")]
-    graph2 <- ggplot(trial.data, aes(x= id, y = newslope, group = is.intervention, color = is.intervention))+
-      geom_point(alpha =0.2)+
-      stat_smooth(method = "lm", formula = y ~ 1,se = FALSE, size = 2)+labs(y = "Slope(Learning Rate)", x = NULL)+
-      ggtitle("iAFM: Slopes for students in Year 1 and Year 2", subtitle = "For those with intervention and without intervention" )+guides(alpha = FALSE)+scale_color_discrete(name = "Is.Intervention?", labels = c("No", "Yes"))+scale_x_continuous(labels = NULL)+facet_wrap(.~year)
-    
-    return(list(graph1,graph2, table1))
-    
-  } else if ( choice == 2){
-    data.all <- data
-    #model year 1
-    data <- data.all[data.all$term %in%c(1,2,3),]
-    model1 <- lmer(rit ~ term + (term|student), data= data)
-    
-    stud.params <- data.frame( cbind(row.names(ranef(model1)$student), ranef(model1)$student[,1], ranef(model1)$student[,2]) )
-    colnames(stud.params) <- c("student", "Intercept", "Slope")
-    stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
-    stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
-    
-    table1 <- stud.params
-    overall.intercept1 <- coef(summary(model1))[1]
-    overall.slope1 <- coef(summary(model1))[2]
-    
-    ## Analysing the difference between students before the intervention
-    
-    final.data1 <- merge(data, stud.params, by = "student")
-    
-    trial.data1 <- final.data1[final.data1$term == 1,]
-    trial.data1 <- trial.data1 %>% 
-      mutate(id = row_number())
-    
-    trial.data1$is.intervention <- as.factor(trial.data1$is.intervention)
-    avg.slope.year1 <- mean(trial.data1[trial.data1$is.intervention==1,]$Slope)
-    avg.incpt.year1 <- mean(trial.data1
-                            [trial.data1$is.intervention==1,]$Intercept)
-    
-    #model year 2
-    data <- data.all[data.all$term %in%c(4,5,6),]
-    data[data$term == 4,]$term <- 1
-    data[data$term == 5,]$term <- 2
-    data[data$term == 6,]$term <- 3
-    model2 <- lmer(rit ~ term + (term|student), data= data)
-    
-    stud.params <- data.frame( cbind(row.names(ranef(model2)$student), ranef(model2)$student[,1], ranef(model2)$student[,2]) )
-    colnames(stud.params) <- c("student", "Intercept", "Slope")
-    stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
-    stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
-    
-    table2 <- stud.params
-    overall.intercept2 <- coef(summary(model2))[1]
-    overall.slope2 <- coef(summary(model2))[2]
-    
-    
-    
-    ## Analysing the difference between students before the intervention
-    
-    final.data2 <- merge(data, stud.params, by = "student")
-    
-    trial.data2 <- final.data2[final.data2$term == 3,]
-    trial.data2 <- trial.data2 %>% 
-      mutate(id = row_number())
-    
-    trial.data2$is.intervention <- as.factor(trial.data2$is.intervention)
-    avg.slope.year2 <- mean(trial.data2[trial.data2$is.intervention==1,]$Slope)
-    avg.incpt.year2 <- mean(trial.data2
-                            [trial.data2$is.intervention==1,]$Intercept)
-    
-    trial.data1$year <- 1
-    trial.data2$year <- 2
-    
-    trial.data <- rbind(trial.data1, trial.data2)
-    
-    #trial.data <- trial.data[trial.data$is.intervention ==1,]
-    
-    
-    
-    graph1 <- ggplot()+
-      geom_abline(data = trial.data1[trial.data1$is.intervention ==1,],
-                  aes(intercept = (Intercept+overall.intercept1), 
-                      slope =(Slope+overall.slope1)),
-                  alpha = 0.05 , color = "red",show.legend = TRUE)+
-      
-      ylim(100,250)+
-      geom_abline( mapping = aes(slope= avg.slope.year1+overall.slope1,
-                                 intercept = avg.incpt.year1+overall.intercept1
-      ), 
-      size = 2 , linetype = "dashed", color = "red", 
-      show.legend  = TRUE)+
-      geom_abline(data = trial.data2[trial.data2$is.intervention ==1,],
-                  aes(intercept = (Intercept+overall.intercept2), 
-                      slope =(Slope+overall.slope2)),
-                  color = "darkgreen",alpha = 0.05,show.legend = TRUE)+
-      
-      geom_abline( mapping = aes(slope= avg.slope.year2+overall.slope2,
-                                 intercept = avg.incpt.year2+overall.intercept2
-      ), size = 2, color = "darkgreen",show.legend = TRUE )+
-      scale_x_continuous(breaks= 1:3, labels = c("Fall" , "Winter ", "Spring"), limits = c(1,3) ) +labs(y = "MAP (RIT Score)", x = NULL)+
-      ggtitle("iAFM: Score trend for both the years for STUDENTS WITH INTERVENTION", subtitle = "Year1 = RED, Year 2 = GREEN" )+ theme(axis.text.x = element_text(size = 12))
-    
-    trial.data$newslope <-0
-    trial.data[trial.data$year == 1,]$newslope <- 
-      trial.data[trial.data$year == 1,]$Slope+overall.slope1
-    trial.data[trial.data$year == 2,]$newslope <-
-      trial.data[trial.data$year == 2,]$Slope+overall.slope2
-    
-    table1 <- trial.data[,c("student", "Intercept", "Slope", "year")]
-    
-    summary <- trial.data%>%
-      group_by(is.intervention, year) %>%
-      summarise( count = n(), avg.diff= mean(newslope), lower = t.test(newslope, mu =0)$conf.int[1], upper = t.test(newslope, mu =0)$conf.int[2] )
-    
-    
-    #summary$app <- as.factor(as.character(summary$app))
-    
-    graph2 <- summary %>%
-      ggplot(aes( x= is.intervention, y= avg.diff, fill = is.intervention)) +
-      geom_bar(stat = "identity") +
-      geom_errorbar(aes(ymin = lower, ymax = upper),
-                    width =0.4,
-                    position = position_dodge(0.9)) +
-      theme(axis.text.x = element_text(angle = 60, hjust =1, vjust =1))+ labs(y = "Slope (Learning Rate)", x = NULL)+
-      ggtitle("Slope(Learning Rate) difference", subtitle = "For those with intervention vs without intervention" )+
-      facet_wrap(.~year)+scale_x_discrete(labels = NULL)+ scale_fill_discrete(labels = c("No", "Yes"))
-    
-    
-    return(list(graph1,graph2, table1))
-    
-  }else if(choice == 3){
-    #data <- data[data$term %in%c(4,5,6),]
-    model <- lmer(rit ~ term + (term|student), data= data)
-    
-    stud.params <- data.frame( cbind(row.names(ranef(model)$student), ranef(model)$student[,1], ranef(model)$student[,2]) )
-    colnames(stud.params) <- c("student", "Intercept", "Slope")
-    stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
-    stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
-    
-    table1 <- stud.params
-    
-    ## Analysing the difference between students before the intervention
-    
-    final.data <- merge(data, stud.params, by = "student")
-    
-    trial.data <- final.data[final.data$term == 1,]
-    trial.data <- trial.data %>% 
-      mutate(id = row_number())
-    
-    trial.data$is.intervention <- as.factor(trial.data$is.intervention)
-    
-    #plotting
-    graph1 <- ggplot(trial.data, aes(x= id, y = Slope, group = is.intervention, color = is.intervention, alpha = 0.01))+
-      geom_point()+
-      stat_smooth(method = "lm", formula = y ~ 1,se = FALSE, size = 2)+labs(y = "Slope(Learning Rate)", x = NULL)+
-      ggtitle("iAFM: Slopes for each individual student", subtitle = "For those with intervention and without intervention" )+guides(alpha = FALSE)+scale_color_discrete(name = "Is.Intervention?", labels = c("No", "Yes"))+scale_x_continuous(labels = NULL)
-    
-    graph2 <-  graph2 <- ggplot(trial.data, aes(x= id, y = Intercept, group = is.intervention, color = is.intervention, alpha = 0.01))+
-      geom_point()+
-      stat_smooth(method = "lm", formula = y ~ 1,se = FALSE, size = 2)+labs(y = "Intercept(Previous Knowledge)", x = NULL)+
-      ggtitle("iAFM: Intercept for each individual student", subtitle = "For those with intervention and without intervention" )+guides(alpha = FALSE)+scale_color_discrete(name = "Is.Intervention?", labels = c("No", "Yes"))+scale_x_continuous(labels = NULL)
-    
-    return(list(graph1,graph2, table1))
-  }
+  data.all <- data
+  #model year 1
+  data <- data.all[data.all$term %in%c(1,2,3),]
+  model1 <- lmer(rit ~ term + (term|student), data= data)
+  
+  stud.params <- data.frame( cbind(row.names(ranef(model1)$student), ranef(model1)$student[,1], ranef(model1)$student[,2]) )
+  colnames(stud.params) <- c("student", "Intercept", "Slope")
+  stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
+  stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
+  
+  table1 <- stud.params
+  overall.intercept1 <- coef(summary(model1))[1]
+  overall.slope1 <- coef(summary(model1))[2]
+  
+  ## Analysing the difference between students before the intervention
+  
+  final.data1 <- merge(data, stud.params, by = "student")
+  
+  trial.data1 <- final.data1[final.data1$term == 1,]
+  trial.data1 <- trial.data1 %>% 
+    mutate(id = row_number())
+  
+  trial.data1$is.intervention <- as.factor(trial.data1$is.intervention)
+  avg.slope.year1 <- mean(trial.data1[trial.data1$is.intervention==1,]$Slope)
+  avg.incpt.year1 <- mean(trial.data1
+                          [trial.data1$is.intervention==1,]$Intercept)
+  
+  #model year 2
+  data <- data.all[data.all$term %in%c(4,5,6),]
+  data[data$term == 4,]$term <- 1
+  data[data$term == 5,]$term <- 2
+  data[data$term == 6,]$term <- 3
+  model2 <- lmer(rit ~ term + (term|student), data= data)
+  
+  stud.params <- data.frame( cbind(row.names(ranef(model2)$student), ranef(model2)$student[,1], ranef(model2)$student[,2]) )
+  colnames(stud.params) <- c("student", "Intercept", "Slope")
+  stud.params[,2] <- as.numeric(as.character(stud.params[,2]))
+  stud.params[,3] <- as.numeric(as.character(stud.params[,3]))
+  
+  table2 <- stud.params
+  overall.intercept2 <- coef(summary(model2))[1]
+  overall.slope2 <- coef(summary(model2))[2]
+  
+  
+  
+  ## Analysing the difference between students before the intervention
+  
+  final.data2 <- merge(data, stud.params, by = "student")
+  
+  trial.data2 <- final.data2[final.data2$term == 3,]
+  trial.data2 <- trial.data2 %>% 
+    mutate(id = row_number())
+  
+  trial.data2$is.intervention <- as.factor(trial.data2$is.intervention)
+  avg.slope.year2 <- mean(trial.data2[trial.data2$is.intervention==1,]$Slope)
+  avg.incpt.year2 <- mean(trial.data2
+                          [trial.data2$is.intervention==1,]$Intercept)
+  
+  trial.data1$year <- 1
+  trial.data2$year <- 2
+  
+  trial.data <- rbind(trial.data1, trial.data2)
+  
+  #trial.data <- trial.data[trial.data$is.intervention ==1,]
+  
+  
+  
+  graph1 <- ggplot()+
+    geom_abline(data = trial.data1[trial.data1$is.intervention ==1,],
+                aes(intercept = (Intercept+overall.intercept1), 
+                    slope =(Slope+overall.slope1)),
+                alpha = 0.05 , color = "red",show.legend = TRUE)+
+    
+    ylim(100,250)+
+    geom_abline( mapping = aes(slope= avg.slope.year1+overall.slope1,
+                               intercept = avg.incpt.year1+overall.intercept1
+    ), 
+    size = 2 , linetype = "dashed", color = "red", 
+    show.legend  = TRUE)+
+    geom_abline(data = trial.data2[trial.data2$is.intervention ==1,],
+                aes(intercept = (Intercept+overall.intercept2), 
+                    slope =(Slope+overall.slope2)),
+                color = "darkgreen",alpha = 0.05,show.legend = TRUE)+
+    
+    geom_abline( mapping = aes(slope= avg.slope.year2+overall.slope2,
+                               intercept = avg.incpt.year2+overall.intercept2
+    ), size = 2, color = "darkgreen",show.legend = TRUE )+
+    scale_x_continuous(breaks= 1:3, labels = c("Fall" , "Winter ", "Spring"), limits = c(1,3) ) +labs(y = "MAP (RIT Score)", x = NULL)+
+    ggtitle("iAFM: Score trend for both the years for STUDENTS WITH INTERVENTION", subtitle = "Year1 = RED, Year 2 = GREEN" )+ theme(axis.text.x = element_text(size = 12))
+  
+  trial.data$newslope <-0
+  trial.data[trial.data$year == 1,]$newslope <- 
+    trial.data[trial.data$year == 1,]$Slope+overall.slope1
+  trial.data[trial.data$year == 2,]$newslope <-
+    trial.data[trial.data$year == 2,]$Slope+overall.slope2
+  
+  table1 <- trial.data[,c("student", "Intercept", "Slope", "year")]
+  
+  summary <- trial.data%>%
+    group_by(is.intervention, year) %>%
+    summarise( count = n(), avg.diff= mean(newslope), lower = t.test(newslope, mu =0)$conf.int[1], upper = t.test(newslope, mu =0)$conf.int[2] )
+  
+  
+  #summary$app <- as.factor(as.character(summary$app))
+  
+  graph2 <- summary %>%
+    ggplot(aes( x= is.intervention, y= avg.diff, fill = is.intervention)) +
+    geom_bar(stat = "identity") +
+    geom_errorbar(aes(ymin = lower, ymax = upper),
+                  width =0.4,
+                  position = position_dodge(0.9)) +
+    theme(axis.text.x = element_text(angle = 60, hjust =1, vjust =1))+ labs(y = "Slope (Learning Rate)", x = NULL)+
+    ggtitle("Slope(Learning Rate) difference", subtitle = "For those with intervention vs without intervention" )+
+    facet_wrap(.~year)+scale_x_discrete(labels = NULL)+ scale_fill_discrete(labels = c("No", "Yes"))
+  
+  
+  return(list(graph1,graph2, table1))
+  
+  
 }
 
 # code main
