@@ -24,8 +24,8 @@ import org.json.JSONObject;
  * @author Liang Zhang
  */
 public class filterValuesComb {
-    
     public JSONObject sqlUrlWithFilter(List<String> filters, Map<String,String> filterOptionPathsMap,List<String> filterValues) throws JSONException{
+        
         JSONObject sqlUrlWithFilter= new JSONObject();
         Map<String, String> hmapSql = combineListsIntoOrderedMap(filters,filterValues);
         
@@ -86,6 +86,7 @@ public class filterValuesComb {
                //constitute the json object for querying
                filterByOptionSql.put("$in",valuesSplitList);
                dataSqlOption.put(filterOptionPath,filterByOptionSql);
+               
             }else{
                 if(filterByOption.equals("filterBySince")||filterByOption.equals("filterByUntil")){
                    String newTimeStamp = null;

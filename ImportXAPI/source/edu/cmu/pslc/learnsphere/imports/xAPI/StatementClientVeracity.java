@@ -5,7 +5,6 @@
  */
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
-import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,23 +14,36 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import javax.xml.bind.DatatypeConverter;
 import org.json.JSONArray;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *make the logic realtions of filter options into query url.
+ *make the logic relations of filter options into query url.
  * @author Liang Zhang
  */
 public class StatementClientVeracity {
-    public JSONArray filterByOption(JSONObject sqlUrlWithFilter,String lrsUrl, String username, String password) throws JSONException, MalformedURLException, IOException {    
+    public JSONObject sqlUrlWithFilter;
+    public String lrsUrl;
+    public String username;
+    public String password;
+    
+    public JSONArray filterByOption(JSONObject sqlUrlWithFilter,String lrsUrl, String username, String password,String queryMode) throws JSONException, MalformedURLException, IOException {    
         JSONArray stsArray=new JSONArray();  //Statements Array
         //create the query link
         String encodeDataSql=URLEncoder.encode(sqlUrlWithFilter.toString(), StandardCharsets.UTF_8.toString());
-        String getDataUrl=lrsUrl+"search?query="+encodeDataSql;
-        //set the authencation (basic)
+        String getDataUrl=null;
+        if(queryMode.equals("usingAggregate")){
+            getDataUrl=lrsUrl+"aggregate"+"search?"+"mode=v2"+"&query="+encodeDataSql;
+        }else{
+            getDataUrl=lrsUrl+"search?"+"mode=v2"+"&query="+encodeDataSql;
+        }
+        
+        //String getDataUrl=lrsUrl+"search?query="+encodeDataSql;
+        System.out.println("line 3888888");
+        System.out.println(getDataUrl);
+        System.out.println("line 3999999");
         String auth = username + ":" + password;
         byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));        
         String authHeaderValue = "Basic " + new String(encodedAuth);

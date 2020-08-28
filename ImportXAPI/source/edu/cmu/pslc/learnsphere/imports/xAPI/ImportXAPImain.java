@@ -1,7 +1,12 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
+import com.github.opendevl.JFlat;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;        
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +16,6 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class ImportXAPImain extends AbstractComponent {
 
@@ -21,6 +24,7 @@ public class ImportXAPImain extends AbstractComponent {
         tool.startComponent(args);
 		}
 
+                //Constructor
 		public ImportXAPImain() {
 		    super();
 
@@ -29,10 +33,13 @@ public class ImportXAPImain extends AbstractComponent {
             @Override
 	    protected void runComponent() {
                 
+                File outputDirectory = this.runExternal();
+                
                 //Get the option parameters
                 String lrsUrl=this.getOptionAsString("url")+"statements/";
                 String lrsUsername=this.getOptionAsString("username");
                 String lrsPassword=this.getOptionAsString("password");
+                String queryMode=null; //v2,aggregate
                 
                 //Get the use_customfilter infor.
                 JSONObject sqlUrlWithFilterNew = new JSONObject();
@@ -50,7 +57,19 @@ public class ImportXAPImain extends AbstractComponent {
                    //System.out.println(json);
                    //System.out.println(sqlUrlWithFilterNew);
                }else{
-                    //get the filters funcitons
+                    //If the All_statements=false (by default),it will help us query the specified values in the statements based on the json fields.
+                    Boolean All_statements=this.getOptionAsBoolean("All_statements");
+                    
+                    if(!All_statements){
+                        queryMode="usingAggregate";
+                        String filterByUntil=this.getOptionAsString("filterByUntil");
+                        String filterBySince=this.getOptionAsString("filterBySince");
+                        String group="$statement.verb.id";
+                        
+                        
+                    }
+                    
+                    //get the filters path funcitons
                     List<String> filters = null;
                     if (this.getOptionAsList("filter") != null) {
                             filters = this.getOptionAsList("filter");    
@@ -60,7 +79,6 @@ public class ImportXAPImain extends AbstractComponent {
                     //get the filter values from option paths
                     List<String> filterValues=new ArrayList<String>();
                     String filterValue01=this.getOptionAsString("filterValue01");
-
                     if (!filterValue01.equals("null")){
                             filterValues.add(filterValue01);}
                     String filterValue02=this.getOptionAsString("filterValue02");
@@ -93,13 +111,14 @@ public class ImportXAPImain extends AbstractComponent {
 
                     //Create one hashmap for storing the filterByActor, filterByVerb,filterBySince,filterByUntil,filterByActivity,filterByRegistration,filterByStatementId
                     Map<String,String> filterOptionPathsMap = new HashMap<String,String>();
-                    filterOptionPathsMap.put("filterByActor","actor.mbox");
-                    filterOptionPathsMap.put("filterByVerb","verb.id");
-                    filterOptionPathsMap.put("filterBySince","timestamp");
-                    filterOptionPathsMap.put("filterByUntil","timestamp");
-                    filterOptionPathsMap.put("filterByActivity","context.contextActivities.category.definition.extensions.https://app*`*skoonline*`*org/ITSProfile/Extensions/category.SKOType\"");
-                    filterOptionPathsMap.put("filterByStatementId","id");
-
+                    //filterOptionPathsMap.put("filterByActor","statement.actor.mbox");
+                    filterOptionPathsMap.put("filterByActor","statement.actor.name");
+                    filterOptionPathsMap.put("filterByVerb","statement.verb.id");
+                    filterOptionPathsMap.put("filterBySince","statement.timestamp");
+                    filterOptionPathsMap.put("filterByUntil","statement.timestamp");
+                    filterOptionPathsMap.put("filterByActivity","statement.context.contextActivities.category.definition.extensions.https://app*`*skoonline*`*org/ITSProfile/Extensions/category.SKOType\"");
+                    filterOptionPathsMap.put("filterByStatementId","statement.id");
+                    
                     filterValuesComb path= new filterValuesComb();
                     
                     try {
@@ -108,12 +127,12 @@ public class ImportXAPImain extends AbstractComponent {
                         Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                }//end of using filter options
-                    //System.out.println(sqlUrlWithFilterNew);
+                    System.out.println(sqlUrlWithFilterNew);
                     JSONArray sqlStatements=new JSONArray();
-                    StatementClientVeracity qrlByOptionSts =new StatementClientVeracity();
+                    StatementClientVeracity qrlByOptionSts =new StatementClientVeracity(); 
 
                     try {
-                        sqlStatements=qrlByOptionSts.filterByOption(sqlUrlWithFilterNew, lrsUrl, lrsUsername, lrsPassword);
+                        sqlStatements=qrlByOptionSts.filterByOption(sqlUrlWithFilterNew, lrsUrl, lrsUsername, lrsPassword, queryMode);
                     } catch (JSONException ex) {
                         Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -122,14 +141,20 @@ public class ImportXAPImain extends AbstractComponent {
 
                     //System.out.println(sqlStatements.length());
                     //System.out.println(sqlStatements);
-               
-	    }
-      
-            
-    //private getStatementClientWithFilter(String filter, String filterValue, String customfilter){
-    //    String outputClient = null;
-        
-    //    return outputClient;
-    //}        
+                    
+                    File resultFile=null;
+                    Json2table queryFile=new Json2table();
+                    try {
+                        resultFile=queryFile.nestedJson2csv(sqlStatements, outputDirectory);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    Integer nodeIndex0 = 0;
+                    Integer fileIndex0 = 0;
+                    String fileType0 = "tab-delimited";
+                    this.addOutputFile(resultFile, nodeIndex0, fileIndex0, fileType0);
+                    System.out.println(this.getOutput()); 
+	    } 
             
 }

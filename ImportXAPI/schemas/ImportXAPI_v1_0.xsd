@@ -29,8 +29,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="filterByActor"/>
       <xs:enumeration value="filterByVerb"/>
-      <xs:enumeration value="filterBySince"/>
-      <xs:enumeration value="filterByUntil"/>
       <xs:enumeration value="filterByActivity"/>
       <xs:enumeration value="filterByStatementId"/>
       <xs:enumeration value="filterByCustomizedOption"/>
@@ -159,6 +157,9 @@
     <xs:element type="xs:string" name="password" id="password" default="password" ls:privateOption="true" />
     <xs:element type="xs:boolean" name="Use_customfilter" id="Use_customfilter" default="false" />
     <xs:element type="xs:string" name="customfilter_code" id="customfilter_code" />
+    <xs:element type="xs:boolean" name="All_statements" id="All_statements" default="false" />
+    <xs:element type="xs:string" name="filterByUntil" id="filterByUntil" default="null" />
+    <xs:element type="xs:string" name="filterBySince" id="filterBySince" default="null" />
     <xs:element type="filterArray" name="filter" id="filter" />
     <xs:element type="xs:string" name="filterValue01" id="filterValue1" default="null" />
     <xs:element type="xs:string" name="filterValue02" id="filterValue2" default="null" />

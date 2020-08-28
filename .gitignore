@@ -36,3 +36,5 @@ staging
 
 ##### Atom control files for ant
 **/.build-tools.cson
+/build/
+/dist/

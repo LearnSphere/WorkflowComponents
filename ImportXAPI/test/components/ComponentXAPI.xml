@@ -14,16 +14,23 @@
     <url>https://record.x-in-y.com/keith-s-pilot/xapi/</url>
     <username>kshubeck</username>
     <password>um38152um</password>
+    
+    <Use_customfilter>false</Use_customfilter>
+    <customfilter_code></customfilter_code>
+    <All_statements>false</All_statements>
+    
+    <filterByUntil>2020-08-28T20:39:25.625Z</filterByUntil>
+    <filterBySince>2020-08-28T17:54:25.715Z</filterBySince>
+    
     <filter>
       <filters0>filterByActor</filters0>
       <filters1>filterByVerb</filters1>
-      <filters2>filterByUntil</filters2>
     </filter>
     
-    <filterValue01>mailto:414a5a5b-3d66-4ae6-99ed-5552ffccfe47@author.x-in-y.com</filterValue01>
-    <filterValue02>https://app.skoonline.org/ITSProfile/System/Evaluate</filterValue02>
-    <filterValue03>2020-05-12T18:56:17.477Z</filterValue03>
-    <filterValue04>null</filterValue04> 
+    <filterValue01>aug28test3@gmail.com</filterValue01>
+    <filterValue02>https://vocabulary.autotutor.org/Answer</filterValue02>
+    <filterValue03>null</filterValue03>
+    <filterValue04>null</filterValue04>
     <filterValue05>null</filterValue05>
     <filterValue06>null</filterValue06>
     <filterValue07>null</filterValue07>
@@ -31,17 +38,16 @@
     <filterValue09>null</filterValue09>
     <filterValue10>null</filterValue10>
     
-    <Use_customfilter>true</Use_customfilter>
-    <customfilter_code>{"actor.mbox": "mailto:414a5a5b-3d66-4ae6-99ed-5552ffccfe47@author.x-in-y.com"}</customfilter_code>
+
     
     <limit>null</limit>
-    <outcome>0.5</outcome>
+    <outcome>null</outcome>
     <queryPath01>actor,name</queryPath01>
         <headers01>Student Name</headers01>
     <queryPath02>verb,display,en-US</queryPath02>
         <headers02>Action</headers02>
-    <queryPath03>object,cc</queryPath03>
-        <headers03>Object</headers03>
+    <queryPath03>null</queryPath03>
+        <headers03>null</headers03>
     <queryPath04>null</queryPath04>
         <headers04>null</headers04>
     <queryPath05>null</queryPath05>
