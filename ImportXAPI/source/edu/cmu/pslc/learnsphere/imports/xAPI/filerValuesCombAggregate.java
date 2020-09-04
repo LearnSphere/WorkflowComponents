@@ -5,6 +5,14 @@
  */
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  *
  * @author Liang Zhang
@@ -25,6 +33,46 @@ public class filerValuesCombAggregate {
         this.group = group;
     }
     
-    
+    public JSONArray sqlUrlWithFilter(String filterByUntil, String filterBySince, String matchFilter, String groupingKey) throws ParseException, JSONException{
+        JSONArray dataSqlOptionArray = new JSONArray();
+        
+        ArrayList valuesSplitListAgrMa = new ArrayList(); //match list
+        //ArrayList valuesSplitListAgrGr = new ArrayList(); //group list
+        ArrayList valuesSplitListAgr = new ArrayList();
+        
+        //Transform the data format
+        String filterByUntilAgr = null;
+        String filterBySinceAgr = null;
+        
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date date = dt.parse(filterByUntil);
+        SimpleDateFormat dt1 = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zZ (zzzz)");
+        filterByUntilAgr=dt1.format(date);
+        
+        SimpleDateFormat dts = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dates = dts.parse(filterBySince);
+        SimpleDateFormat dts1 = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zZ (zzzz)");
+        filterBySinceAgr=dts1.format(dates);
+        
+        //Parse as query url
+        JSONObject filterByUntilAgrObj = new JSONObject().put(matchFilter,new JSONObject().put("$lt",new JSONObject().put("$parseDate",new JSONObject().put("date",filterByUntilAgr))));
+        JSONObject filterBySinceAgrObj = new JSONObject().put(matchFilter,new JSONObject().put("$gt",new JSONObject().put("$parseDate",new JSONObject().put("date",filterBySinceAgr))));
+        
+        valuesSplitListAgrMa.add(filterByUntilAgrObj);
+        valuesSplitListAgrMa.add(filterBySinceAgrObj);
+        
+        JSONObject filterByDate=new JSONObject().put("$match",new JSONObject().put("$and",valuesSplitListAgrMa));
+        
+        JSONObject filterByGroupObGr=new JSONObject();
+        filterByGroupObGr.put("_id",groupingKey);
+        filterByGroupObGr.put("count",new JSONObject().put("$sum",1));
+        
+        JSONObject filterByGroupAgr=new JSONObject().put("$group",filterByGroupObGr);
+        
+        dataSqlOptionArray.put(filterByDate);
+        dataSqlOptionArray.put(filterByGroupAgr);
+        
+        return dataSqlOptionArray;
+    }
     
 }

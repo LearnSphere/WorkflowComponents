@@ -6,8 +6,11 @@
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,9 +28,63 @@ import org.json.JSONObject;
  */
 public class StatementClientVeracity {
     public JSONObject sqlUrlWithFilter;
-    public String lrsUrl;
-    public String username;
-    public String password;
+    public JSONArray sqlUrlWithFilterAgr;
+    public String queryMode;
+    private String lrsUrl;
+    private String username;
+    private String password;
+    
+    public JSONArray filterByOptionAgr(JSONArray sqlUrlWithFilterAgr, String queryMode, String lrsUrl, String username, String password) throws UnsupportedEncodingException, MalformedURLException, IOException, JSONException{
+        JSONArray stsArray=new JSONArray();  //Statements Array
+        
+        String urlParameters=sqlUrlWithFilterAgr.toString();
+        byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
+        int postDataLength = postData.length;
+        
+        String request= lrsUrl+"aggregate/";
+        URL url= new URL( request );
+        
+        String auth1 = username + ":" + password;
+        String encoding = Base64.getEncoder().encodeToString((auth1.getBytes("UTF-8")));
+        HttpURLConnection conn= (HttpURLConnection) url.openConnection(); 
+        conn.setDoOutput(true);
+        conn.setInstanceFollowRedirects( false );
+        conn.setRequestMethod( "POST" );
+        conn.setRequestProperty("Connection", "keep-alive");
+        conn.setRequestProperty( "Content-Type", "application/json"); 
+        conn.setRequestProperty("Authorization", "Basic " + encoding);
+        conn.setRequestProperty( "charset", "utf-8");
+        conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+        conn.setUseCaches( false );
+        
+        try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+            wr.write( postData );
+            wr.flush();
+            wr.close();
+        }
+        
+        int responseCode = conn.getResponseCode();
+        
+        StringBuilder content = null;
+        if (responseCode == HttpURLConnection.HTTP_OK){
+            System.out.println("GET Response Code :: " + responseCode);
+            try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()))) {
+                    String line;
+                    content = new StringBuilder();
+                    while ((line = br.readLine()) != null) {
+                        content.append(line);
+                        content.append(System.lineSeparator());
+                    }
+            }
+            
+        }
+        
+        System.out.print(content.toString());
+        stsArray = new JSONArray(content.toString());
+        
+        return(stsArray);
+    }
     
     public JSONArray filterByOption(JSONObject sqlUrlWithFilter,String lrsUrl, String username, String password,String queryMode) throws JSONException, MalformedURLException, IOException {    
         JSONArray stsArray=new JSONArray();  //Statements Array
