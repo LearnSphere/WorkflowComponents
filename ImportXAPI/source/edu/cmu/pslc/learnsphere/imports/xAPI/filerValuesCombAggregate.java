@@ -33,6 +33,7 @@ public class filerValuesCombAggregate {
         this.group = group;
     }
     
+    //$match,$group,
     public JSONArray sqlUrlWithFilter(String filterByUntil, String filterBySince, String matchFilter, String groupingKey) throws ParseException, JSONException{
         JSONArray dataSqlOptionArray = new JSONArray();
         
@@ -55,22 +56,34 @@ public class filerValuesCombAggregate {
         filterBySinceAgr=dts1.format(dates);
         
         //Parse as query url
+        
         JSONObject filterByUntilAgrObj = new JSONObject().put(matchFilter,new JSONObject().put("$lt",new JSONObject().put("$parseDate",new JSONObject().put("date",filterByUntilAgr))));
         JSONObject filterBySinceAgrObj = new JSONObject().put(matchFilter,new JSONObject().put("$gt",new JSONObject().put("$parseDate",new JSONObject().put("date",filterBySinceAgr))));
         
         valuesSplitListAgrMa.add(filterByUntilAgrObj);
         valuesSplitListAgrMa.add(filterBySinceAgrObj);
         
-        JSONObject filterByDate=new JSONObject().put("$match",new JSONObject().put("$and",valuesSplitListAgrMa));
+        //JSONObject filterByMatch=new JSONObject().put("$match",new JSONObject().put("$and",valuesSplitListAgrMa));
+        JSONObject filterByMatch=new JSONObject().put("$match",new JSONObject().put(matchFilter, new JSONObject().put("$gte",0)));
         
         JSONObject filterByGroupObGr=new JSONObject();
         filterByGroupObGr.put("_id",groupingKey);
         filterByGroupObGr.put("count",new JSONObject().put("$sum",1));
+        //filterByGroupObGr.put("time","statement.timestamp");
+        filterByGroupObGr.put("score",new JSONObject().put("$avg","$statement.result.score.scaled"));
         
         JSONObject filterByGroupAgr=new JSONObject().put("$group",filterByGroupObGr);
         
-        dataSqlOptionArray.put(filterByDate);
+        JSONObject filterByProjAgr=new JSONObject();
+        filterByProjAgr.put("count","$count");
+        //filterByProjAgr.put("score","$score");
+        //filterByProjAgr.put("name","$_id.name");
+        //filterByProjAgr.put("_id",0);
+        JSONObject filterByProjectAgr=new JSONObject().put("$project",filterByProjAgr);
+                
+        //dataSqlOptionArray.put(filterByMatch);
         dataSqlOptionArray.put(filterByGroupAgr);
+        //dataSqlOptionArray.put(filterByProjectAgr);
         
         return dataSqlOptionArray;
     }

@@ -44,7 +44,6 @@ public class ImportXAPImain extends AbstractComponent {
                 String queryMode=null; //v2,aggregate
                 JSONArray sqlStatements=new JSONArray();
                 
-                
                 //Get the use_customfilter infor.
                 JSONObject sqlUrlWithFilterNew = new JSONObject();
                 Boolean useCustomfilter=this.getOptionAsBoolean("Use_customfilter");
@@ -71,9 +70,10 @@ public class ImportXAPImain extends AbstractComponent {
                         String filterByUntil=this.getOptionAsString("filterByUntil");
                         String filterBySince=this.getOptionAsString("filterBySince");
                         //String group="$statement.verb.id";
-                        String matchFilter="statement.timestamp";
+                        //String matchFilter="statement.timestamp";
+                        String matchFilter="statement.result.score.scaled";
                         String matchValue="";
-                        String groupingKey="$statement.verb.id";
+                        String groupingKey="$statement.context.contextActivities.other.definition.extensions";
                         String groupingOperatorValue="";
                         
                         try {
