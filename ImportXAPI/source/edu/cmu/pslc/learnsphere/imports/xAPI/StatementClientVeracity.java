@@ -42,6 +42,8 @@ public class StatementClientVeracity {
         int postDataLength = postData.length;
         
         String request= lrsUrl+"aggregate/";
+        //String request= lrsUrl+"analyze/";
+        
         URL url= new URL( request );
         
         String auth1 = username + ":" + password;
@@ -79,14 +81,59 @@ public class StatementClientVeracity {
             }
             
         }
-        
+
         System.out.print(content.toString());
+        System.out.print("line 499999999999");
         stsArray = new JSONArray(content.toString());
         
         return(stsArray);
     }
     
-    public JSONArray filterByOption(JSONObject sqlUrlWithFilter,String lrsUrl, String username, String password,String queryMode) throws JSONException, MalformedURLException, IOException {    
+   public JSONArray filterByOptionVQL(JSONObject sqlUrlWithFilterVQL, String queryMode, String lrsUrl, String username, String password) throws UnsupportedEncodingException, MalformedURLException, IOException, JSONException{
+        JSONArray stsArray=new JSONArray();  //Statements Array
+        
+        System.out.print(sqlUrlWithFilterVQL.toString());
+        
+        String encodeDataSql=URLEncoder.encode(sqlUrlWithFilterVQL.toString(), StandardCharsets.UTF_8.toString());
+        
+        String getDataUrl= lrsUrl+"analyze?query="+encodeDataSql;
+        
+        System.out.print(getDataUrl);
+        
+        String auth = username + ":" + password;
+        byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));        
+        String authHeaderValue = "Basic " + new String(encodedAuth);
+        
+        //set the request method and properties using HttpURLConnection
+        URL obj=new URL(getDataUrl);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Authorization", authHeaderValue);
+        
+        int responseCode=con.getResponseCode();
+        //System.out.print(responseCode);
+        
+        if (responseCode == HttpURLConnection.HTTP_OK){
+            System.out.println("GET Response Code :: " + responseCode);
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+					con.getInputStream()));
+            String inputLine;
+            StringBuffer sts = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                    sts.append(inputLine);
+            }
+            in.close();
+            stsArray = new JSONArray(sts.toString()); 
+        }else{
+            System.out.println("GET request not worked");
+        }
+        
+        return(stsArray);
+    }
+    
+    public JSONArray filterByOption(JSONObject sqlUrlWithFilter,String queryMode,String lrsUrl, String username, String password) throws JSONException, MalformedURLException, IOException {    
         JSONArray stsArray=new JSONArray();  //Statements Array
         //create the query link
         String encodeDataSql=URLEncoder.encode(sqlUrlWithFilter.toString(), StandardCharsets.UTF_8.toString());

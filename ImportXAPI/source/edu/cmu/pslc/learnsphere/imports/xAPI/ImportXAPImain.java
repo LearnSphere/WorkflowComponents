@@ -38,7 +38,8 @@ public class ImportXAPImain extends AbstractComponent {
                 File outputDirectory = this.runExternal();
                 
                 //Get the option parameters
-                String lrsUrl=this.getOptionAsString("url")+"statements/";
+                //String lrsUrl=this.getOptionAsString("url")+"statements/";
+                String lrsUrl=this.getOptionAsString("url");
                 String lrsUsername=this.getOptionAsString("username");
                 String lrsPassword=this.getOptionAsString("password");
                 String queryMode=null; //v2,aggregate
@@ -65,46 +66,79 @@ public class ImportXAPImain extends AbstractComponent {
                     
                     //Under aggregate mode
                     JSONArray sqlUrlWithFilterAgr = new JSONArray();
+                    JSONObject sqlUrlWithFilterVQL = new JSONObject();
                     if(!All_statements){
-                        queryMode="usingAggregate";
-                        String filterByUntil=this.getOptionAsString("filterByUntil");
-                        String filterBySince=this.getOptionAsString("filterBySince");
-                        //String group="$statement.verb.id";
-                        //String matchFilter="statement.timestamp";
-                        String matchFilter="statement.result.score.scaled";
-                        String matchValue="";
-                        String groupingKey="$statement.context.contextActivities.other.definition.extensions";
-                        String groupingOperatorValue="";
+                        queryMode="usingAnalytics";
                         
-                        try {
+                        if(queryMode.equals("usingAggregate")){
+                            String filterByUntil=this.getOptionAsString("filterByUntil");
+                            String filterBySince=this.getOptionAsString("filterBySince");
+                            //String group="$statement.verb.id";
+                            //String matchFilter="statement.timestamp";
+                            String matchFilter="statement.result.score.scaled";
+                            String matchValue="";
+                            String groupingKey="$statement.context.contextActivities.other.definition.extensions";
+                            String groupingOperatorValue="";
+
                             try {
-                                sqlUrlWithFilterAgr= new filerValuesCombAggregate().sqlUrlWithFilter(filterByUntil, filterBySince, matchFilter, groupingKey);
+                                try {
+                                    sqlUrlWithFilterAgr= new filerValuesCombAggregate().sqlUrlWithFilter(filterByUntil, filterBySince, matchFilter, groupingKey);
+                                } catch (JSONException ex) {
+                                    Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } catch (ParseException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                            System.out.print(sqlUrlWithFilterAgr);
+
+                            StatementClientVeracity qrlByOptionStsAgr =new StatementClientVeracity();
+
+                            try {
+                                sqlStatements=qrlByOptionStsAgr.filterByOptionAgr(sqlUrlWithFilterAgr, queryMode, lrsUrl, lrsUsername, lrsPassword);
+                            } catch (MalformedURLException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IOException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (JSONException ex) {
                                 Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } catch (ParseException ex) {
-                            Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         
-                        System.out.print(sqlUrlWithFilterAgr);
-                        
-                        StatementClientVeracity qrlByOptionStsAgr =new StatementClientVeracity();
-                        
-                        try {
-                            sqlStatements=qrlByOptionStsAgr.filterByOptionAgr(sqlUrlWithFilterAgr, queryMode, lrsUrl, lrsUsername, lrsPassword);
-                        } catch (MalformedURLException ex) {
-                            Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (JSONException ex) {
-                            Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                        if(queryMode.equals("usingAnalytics")){
+                            //This query has 2 parts, the filter and the process. A query with no process will return raw xAPI statements.
+                            String filterValue="";
+                            String filterFuntion="";
+                            String processValue="actor.mbox";
+                            System.out.print("LINE 1122222222222222");
+                            try {
+                                sqlUrlWithFilterVQL=new filterValuesCombVQL().sqlUrlWithFilter(filterValue,processValue);
+                            } catch (JSONException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            StatementClientVeracity qrlByOptionStsVQL =new StatementClientVeracity();
+                            
+                            try {
+                                sqlStatements=qrlByOptionStsVQL.filterByOptionVQL(sqlUrlWithFilterVQL, queryMode, lrsUrl, lrsUsername, lrsPassword);
+                            } catch (MalformedURLException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IOException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (JSONException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            System.out.print("LINE 136666666666666666");
+                            
+                            System.out.println(sqlStatements.toString());
+                            
                         }
-                        
                         
                     }
                     
                }//end of using filter options
-                    //System.out.println(sqlUrlWithFilterNew);
+                    //;
 
                     //System.out.println(sqlStatements.length());
                 //System.out.println(sqlStatements);
