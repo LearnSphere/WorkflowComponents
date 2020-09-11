@@ -109,11 +109,12 @@ public class ImportXAPImain extends AbstractComponent {
                             //This query has 2 parts, the filter and the process. A query with no process will return raw xAPI statements.
                             String filterValue="";
                             String filterFuntion="";
-                            String processValue="actor.mbox";
-                            System.out.print("LINE 1122222222222222");
+                            String processValue="actor.name";
                             try {
                                 sqlUrlWithFilterVQL=new filterValuesCombVQL().sqlUrlWithFilter(filterValue,processValue);
                             } catch (JSONException ex) {
+                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ParseException ex) {
                                 Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -128,8 +129,6 @@ public class ImportXAPImain extends AbstractComponent {
                             } catch (JSONException ex) {
                                 Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
-                            System.out.print("LINE 136666666666666666");
                             
                             System.out.println(sqlStatements.toString());
                             
