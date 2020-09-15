@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[94]:
+# In[14]:
 
 
 import os
@@ -12,7 +12,7 @@ import datetime as dt
 from dateutil.parser import parse
 
 
-# In[95]:
+# In[15]:
 
 
 def changeColumns(x):
@@ -39,17 +39,17 @@ def changeColumns(x):
     elif (student_response_type and student_response_type == 'HINT_REQUEST'
          and tutor_response_type and tutor_response_type == 'HINT_MSG'
          and step_name):
-        x['Event Type'] = 'instruct'
+        x['Event Type'] = 'instruct'    
     return x
 
 
-# In[96]:
+# In[16]:
 
 
 map_file_name = ""
 data_file_name = ""
 command_line_exe = True
-#test command
+#test command 
 #Python non_instruction_step_converter.py -dataFile "ds2846_tx_test.txt" -mapFile "ds2846_non_instructional_steps_map.txt"
 if command_line_exe:
     parser = argparse.ArgumentParser(description='Convert multi-selection steps into multiple steps and adjust scoring')
@@ -65,7 +65,7 @@ else:
     data_file_name = 'ds2846_tx_All_Data_4741_2019_0904_111928_opened_in_excel.txt'
 
 
-# In[97]:
+# In[17]:
 
 
 df_map = pd.read_csv(map_file_name, dtype=str, sep="\t", encoding='ISO-8859-1')
@@ -96,7 +96,7 @@ for i in range(len(df_map.index)):
             df_map_new = df_map_new.append(new_row)
 
 
-# In[98]:
+# In[18]:
 
 
 df = pd.read_csv(data_file_name, dtype=str, sep="\t", encoding = "ISO-8859-1")
@@ -112,7 +112,7 @@ else:
 infile.close()
 
 
-# In[99]:
+# In[19]:
 
 
 #find the columns that has Level() in names for mapFile. Assuming mapFile and dataFile has the same names
@@ -139,6 +139,16 @@ out_file_name = os.path.splitext(os.path.basename(data_file_name))[0] + "_conver
 out_file = open(out_file_name, "w")
 out_file.write(original_headers)
 out_file.close()
-with open(out_file_name, 'a', newline='', encoding='utf-8') as f:
-    df_combined.to_csv(f, sep='\t', index=False, header=False)
+#with open(out_file_name, 'a', newline='') as f:
+#    df_combined.to_csv(f, sep='\t', index=False, header=False)
+df_combined.to_csv(out_file_name, sep='\t', index=False, header=False, line_terminator='\n', mode='a')
+
+#if the file exists, delete it
+#if os.path.exists(out_file_name):
+#    os.remove(out_file_name)
+#write the header
+#out_file = open(out_file_name, "a")
+#out_file.write(original_headers)
+#df_combined.to_csv(out_file,  sep='\t', index=False, header = False, line_terminator='\n')
+#out_file.close()
 
