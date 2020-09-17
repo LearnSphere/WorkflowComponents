@@ -60,7 +60,7 @@
 
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
-        <javac srcdir="${source}" destdir="${build}" debug="on">
+           <javac srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
         </javac>
     </target>

@@ -45,24 +45,9 @@ public class filterValuesCombVQL {
         String filterByUntil = "2020-09-09T00:28:07.551Z";
         String filterBySince = "2020-09-08T22:29:52.104Z";
         
-        SimpleDateFormat dtByUntil = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        Date dateByUntil = dtByUntil.parse(filterByUntil);
-        long milsByUntil=dateByUntil.getTime();
-        Integer milsByUntilInt = (int) milsByUntil;
-        
-        SimpleDateFormat dt1 = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zZ (zzzz)");
-        String filterByUntilAgr=dt1.format(dateByUntil);
-        
-        SimpleDateFormat dtBySince = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        Date dateBySince = dtBySince.parse(filterBySince);
-        long milsBySince=dateBySince.getTime();
-        Integer milsBySinceInt = (int) milsByUntil;
-        SimpleDateFormat dts1 = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zZ (zzzz)");
-        String filterBySinceAgr=dts1.format(milsBySince);
-        
         JSONArray filterArrayTime = new JSONArray()
-                .put(new JSONObject().put("timestamp",new JSONObject().put("$lt",milsByUntil)))
-                .put(new JSONObject().put("timestamp",new JSONObject().put("$gt",milsBySince)));  
+                .put(new JSONObject().put("timestamp",new JSONObject().put("$lte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterByUntil)))))
+                .put(new JSONObject().put("timestamp",new JSONObject().put("$gte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterBySince)))));  
             
         dataSqlOptionObj = new JSONObject().put("filter",new JSONObject().put("$and",filterArrayTime));
         
