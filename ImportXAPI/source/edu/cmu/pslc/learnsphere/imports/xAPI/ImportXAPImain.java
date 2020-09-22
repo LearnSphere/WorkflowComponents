@@ -47,7 +47,7 @@ public class ImportXAPImain extends AbstractComponent {
                 
                 //Get the use_customfilter infor.
                 JSONObject sqlUrlWithFilterNew = new JSONObject();
-                Boolean useCustomfilter=this.getOptionAsBoolean("Use_customfilter");
+                Boolean useCustomfilter=this.getOptionAsBoolean("use_customfilter");
                if(useCustomfilter){
                    String customfilterCode=this.getOptionAsString("customfilter_code");
                    
@@ -61,86 +61,94 @@ public class ImportXAPImain extends AbstractComponent {
                    //System.out.println(json);
                    //System.out.println(sqlUrlWithFilterNew);
                }else{
-                    //If the All_statements=false (by default),it will help us query the specified values in the statements based on the json fields.
-                    Boolean All_statements=this.getOptionAsBoolean("All_statements");
+                    String FilterOperator=this.getOptionAsString("FilterOperator");
+                    String ProcessOperator=this.getOptionAsString("ProcessOperator");
                     
-                    //Under aggregate mode
-                    JSONArray sqlUrlWithFilterAgr = new JSONArray();
-                    JSONObject sqlUrlWithFilterVQL = new JSONObject();
-                    if(!All_statements){
-                        queryMode="usingAnalytics";
-                        
-                        if(queryMode.equals("usingAggregate")){
-                            String filterByUntil=this.getOptionAsString("filterByUntil");
-                            String filterBySince=this.getOptionAsString("filterBySince");
-                            //String group="$statement.verb.id";
-                            //String matchFilter="statement.timestamp";
-                            String matchFilter="statement.result.score.scaled";
-                            String matchValue="";
-                            String groupingKey="$statement.context.contextActivities.other.definition.extensions";
-                            String groupingOperatorValue="";
+                    ArrayList filterList = new ArrayList();
+                    String Filter01=this.getOptionAsString("Filter01");
+                    filterList.add(Filter01);
+                    String Filter02=this.getOptionAsString("Filter02");
+                    filterList.add(Filter02);
+                    String Filter03=this.getOptionAsString("Filter03");
+                    filterList.add(Filter03);
+                    String Filter04=this.getOptionAsString("Filter04");
+                    filterList.add(Filter04);
+                    String Filter05=this.getOptionAsString("Filter05");
+                    filterList.add(Filter05);
+                    String Filter06=this.getOptionAsString("Filter06");
+                    filterList.add(Filter06);
+                    String Filter07=this.getOptionAsString("Filter07");
+                    filterList.add(Filter07);
+                    String Filter08=this.getOptionAsString("Filter08");
+                    filterList.add(Filter08);
+                    String Filter09=this.getOptionAsString("Filter09");
+                    filterList.add(Filter09);
+                    String Filter10=this.getOptionAsString("Filter10");
+                    filterList.add(Filter10);
 
-                            try {
-                                try {
-                                    sqlUrlWithFilterAgr= new filerValuesCombAggregate().sqlUrlWithFilter(filterByUntil, filterBySince, matchFilter, groupingKey);
-                                } catch (JSONException ex) {
-                                    Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            } catch (ParseException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                            System.out.print(sqlUrlWithFilterAgr);
-
-                            StatementClientVeracity qrlByOptionStsAgr =new StatementClientVeracity();
-
-                            try {
-                                sqlStatements=qrlByOptionStsAgr.filterByOptionAgr(sqlUrlWithFilterAgr, queryMode, lrsUrl, lrsUsername, lrsPassword);
-                            } catch (MalformedURLException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IOException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (JSONException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                    ArrayList processList = new ArrayList();
+                    String Process01=this.getOptionAsString("Process01");
+                    processList.add(Process01);
+                    String Process02=this.getOptionAsString("Process02");
+                    processList.add(Process02);
+                    String Process03=this.getOptionAsString("Process03");
+                    processList.add(Process03);
+                    String Process04=this.getOptionAsString("Process04");
+                    processList.add(Process04);
+                    String Process05=this.getOptionAsString("Process05");
+                    processList.add(Process05);
+                    String Process06=this.getOptionAsString("Process06");
+                    processList.add(Process06);
+                    String Process07=this.getOptionAsString("Process07");
+                    processList.add(Process07);
+                    String Process08=this.getOptionAsString("Process08");
+                    processList.add(Process08);
+                    String Process09=this.getOptionAsString("Process09");
+                    processList.add(Process09);
+                    String Process10=this.getOptionAsString("Process10");
+                    processList.add(Process10);
+                    
+                    //store the filter values in the HashMap by key:value
+                    HashMap<String,String> filterMap = new HashMap<String,String>();
+                    for (int i=0; i<filterList.size(); i++) {
+                        if(!filterList.get(i).equals("null")){
+                            String[] filterSplit=filterList.get(i).toString().split(":");
+                            filterMap.put(filterSplit[0], filterSplit[1]);
                         }
-                        
-                        if(queryMode.equals("usingAnalytics")){
-                            //This query has 2 parts, the filter and the process. A query with no process will return raw xAPI statements.
-                            String filterValue="";
-                            String filterFuntion="";
-                            String processValue="actor.name";
-                            try {
-                                sqlUrlWithFilterVQL=new filterValuesCombVQL().sqlUrlWithFilter(filterValue,processValue);
-                            } catch (JSONException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (ParseException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            
-                            StatementClientVeracity qrlByOptionStsVQL =new StatementClientVeracity();
-                            
-                            try {
-                                sqlStatements=qrlByOptionStsVQL.filterByOptionVQL(sqlUrlWithFilterVQL, queryMode, lrsUrl, lrsUsername, lrsPassword);
-                            } catch (MalformedURLException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IOException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (JSONException ex) {
-                                Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            
-                            System.out.println(sqlStatements.toString());
-                            
-                        }
-                        
                     }
                     
+                    //store the process values in HashMap by key:value
+                    HashMap<String,String> processMap = new HashMap<String,String>();
+                    for (int i=0; i<processList.size(); i++) {
+                        if(!processList.get(i).equals("null")){
+                            String[] processSplit=processList.get(i).toString().split(":");
+                            processMap.put(processSplit[0], processSplit[1]);
+                        }
+                    }
+                    
+                    JSONObject sqlUrlVQL=new JSONObject();
+                    try {
+                        sqlUrlVQL=new filterValuesCombVQL().sqlUrlWithFilter(FilterOperator, filterMap, ProcessOperator, processMap);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    StatementClientVeracity qrlByOptionStsVQL =new StatementClientVeracity();
+                    try {
+                        sqlStatements=qrlByOptionStsVQL.filterByOptionVQL(sqlUrlVQL, queryMode, lrsUrl, lrsUsername, lrsPassword);
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+     
+                    System.out.println(sqlStatements.toString());
+                    
+                    
                }//end of using filter options
-                    //;
 
-                    //System.out.println(sqlStatements.length());
-                //System.out.println(sqlStatements);
                     
                 File resultFile=null;
                 Json2table queryFile=new Json2table();

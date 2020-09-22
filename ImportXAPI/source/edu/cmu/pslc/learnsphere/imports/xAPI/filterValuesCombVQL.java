@@ -7,7 +7,11 @@ package edu.cmu.pslc.learnsphere.imports.xAPI;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +25,34 @@ public class filterValuesCombVQL {
     String process;
 
     public filterValuesCombVQL() {
+    }
+    
+    public JSONObject sqlUrlWithFilter (String FilterOperator, HashMap<String,String> filterMap, String processOperator, HashMap<String,String> processMap) throws JSONException{
+        JSONObject dataSqlOptionObj = new JSONObject();
+        
+        JSONArray filterArray = new JSONArray();
+        JSONObject subFilterObj=new JSONObject();
+        
+        for(Entry<String,String> entry : filterMap.entrySet()){
+            filterArray.put(new JSONObject().put(entry.getKey(),entry.getValue()));
+        }
+        
+        if(FilterOperator.equals("null")){
+            dataSqlOptionObj.put("filter",filterArray);
+        }else{
+            dataSqlOptionObj.put("filter",new JSONObject().put(FilterOperator, filterArray));
+        }
+        
+        
+        JSONObject subProcessObj=new JSONObject();
+        for(Entry<String,String> entry : processMap.entrySet()){
+            subProcessObj.put(entry.getKey(),entry.getValue());
+        }       
+        
+        dataSqlOptionObj.put("process",new JSONObject().put(processOperator, subProcessObj));
+        
+        return dataSqlOptionObj;
+        //processMap
     }
     
     public JSONObject sqlUrlWithFilter (String filterValue,String processValue) throws JSONException, ParseException{
@@ -49,14 +81,14 @@ public class filterValuesCombVQL {
                 .put(new JSONObject().put("timestamp",new JSONObject().put("$lte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterByUntil)))))
                 .put(new JSONObject().put("timestamp",new JSONObject().put("$gte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterBySince)))));  
             
-        dataSqlOptionObj = new JSONObject().put("filter",new JSONObject().put("$and",filterArrayTime));
+        //dataSqlOptionObj.put("filter",new JSONObject().put("$and",filterArrayTime));
         
         JSONArray processArray = new JSONArray();
         JSONObject processObj=new JSONObject().put("$frequentValues",new JSONObject().put("path", processValue));
         processArray.put(processObj);
         dataSqlOptionObj.put("process",processArray);
         
-        //dataSqlOptionObj.put("filter",new JSONObject().put("actor.mbox","mailto:91ce1aad-07ec-42e9-93d1-0e8ae49abe71@author.x-in-y.com"));
+        dataSqlOptionObj.put("filter",new JSONObject().put("actor.mbox","mailto:91ce1aad-07ec-42e9-93d1-0e8ae49abe71@author.x-in-y.com"));
         //dataSqlOptionObj.put("process","");
         
         return dataSqlOptionObj;

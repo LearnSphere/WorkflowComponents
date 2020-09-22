@@ -15,93 +15,36 @@
     <username>kshubeck</username>
     <password>um38152um</password>
     
-    <Use_customfilter>false</Use_customfilter>
-    <customfilter_code></customfilter_code>
-    <All_statements>false</All_statements>
+    <use_customfilter>false</use_customfilter>
+    <customfilter_code>null</customfilter_code>
     
-    <filterByUntil>2020-09-03T15:01:11.955Z</filterByUntil>
-    <filterBySince>2020-09-01T23:06:46.311Z</filterBySince>
+    <FilterOperator>null</FilterOperator>
+    <Filter01>actor.box:aug28test3@gmail.com</Filter01>
+    <Filter02>null</Filter02> 
+    <Filter03>null</Filter03>
+    <Filter04>null</Filter04>
+    <Filter05>null</Filter05>
+    <Filter06>null</Filter06>
+    <Filter07>null</Filter07>
+    <Filter08>null</Filter08>   
+    <Filter09>null</Filter09>
+    <Filter10>null</Filter10>
     
-    <filter>
-      <filters0>filterByActor</filters0>
-      <filters1>filterByVerb</filters1>
-    </filter>
+    <ProcessOperator>$frequentValues</ProcessOperator>
+    <Process01>null</Process01>
+    <Process02>null</Process02>
+    <Process03>null</Process03>
+    <Process04>null</Process04>
+    <Process05>null</Process05>
+    <Process06>null</Process06>
+    <Process07>null</Process07>
+    <Process08>null</Process08>
+    <Process09>null</Process09>
+    <Process10>null</Process10>
     
-    <filterValue01>aug28test3@gmail.com</filterValue01>
-    <filterValue02>https://vocabulary.autotutor.org/Answer</filterValue02>
-    <filterValue03>null</filterValue03>
-    <filterValue04>null</filterValue04>
-    <filterValue05>null</filterValue05>
-    <filterValue06>null</filterValue06>
-    <filterValue07>null</filterValue07>
-    <filterValue08>null</filterValue08>   
-    <filterValue09>null</filterValue09>
-    <filterValue10>null</filterValue10>
-    
-
-    
+    <outcome>null</outcome> 
     <limit>null</limit>
-    <outcome>null</outcome>
-    <queryPath01>actor,name</queryPath01>
-        <headers01>Student Name</headers01>
-    <queryPath02>verb,display,en-US</queryPath02>
-        <headers02>Action</headers02>
-    <queryPath03>null</queryPath03>
-        <headers03>null</headers03>
-    <queryPath04>null</queryPath04>
-        <headers04>null</headers04>
-    <queryPath05>null</queryPath05>
-        <headers05>null</headers05>
-    <queryPath06>null</queryPath06>
-        <headers06>null</headers06>
-    <queryPath07>null</queryPath07>
-        <headers07>null</headers07>
-    <queryPath08>null</queryPath08>
-        <headers08>null</headers08>
-    <queryPath09>null</queryPath09>
-        <headers09>null</headers09>
-    <queryPath10>null</queryPath10>
-        <headers10>null</headers10>    
-    <queryPath11>null</queryPath11>
-        <headers11>null</headers11>
-    <queryPath12>null</queryPath12>
-        <headers12>null</headers12>
-    <queryPath13>null</queryPath13>
-        <headers13>null</headers13>
-    <queryPath14>null</queryPath14>
-        <headers14>null</headers14>
-    <queryPath15>null</queryPath15>
-        <headers15>null</headers15>
-    <queryPath16>null</queryPath16>
-        <headers16>null</headers16>
-     <queryPath17>null</queryPath17>
-        <headers17>null</headers17>
-    <queryPath18>null</queryPath18>
-        <headers18>null</headers18>
-    <queryPath19>null</queryPath19>
-        <headers19>null</headers19>
-    <queryPath20>null</queryPath20>
-        <headers20>null</headers20>    
-    <queryPath21>null</queryPath21>
-        <headers21>null</headers21>
-    <queryPath22>null</queryPath22>
-        <headers22>null</headers22>
-    <queryPath23>null</queryPath23>
-        <headers23>null</headers23>
-    <queryPath24>null</queryPath24>
-        <headers24>null</headers24>
-    <queryPath25>null</queryPath25>
-        <headers25>null</headers25>
-    <queryPath26>null</queryPath26>
-        <headers26>null</headers26>
-     <queryPath27>null</queryPath27>
-        <headers27>null</headers27>
-    <queryPath28>null</queryPath28>
-        <headers28>null</headers28>
-    <queryPath29>null</queryPath29>
-        <headers29>null</headers29>
-    <queryPath30>null</queryPath30>
-        <headers30>null</headers30>       
+      
   </options>
     <top>106</top>
 </component>
