@@ -37,6 +37,17 @@
       <xs:element type="disjunctive" name="filterDependency08" ls:dependentOption="Filter09" ls:dependsOn="Filter08" ls:constraint="matches(null)" ls:negation="true"/> 
       <xs:element type="disjunctive" name="filterDependency09" ls:dependentOption="Filter10" ls:dependsOn="Filter09" ls:constraint="matches(null)" ls:negation="true"/>
       
+      <xs:element type="disjunctive" name="filterValueDependency01" ls:dependentOption="FilterValue01" ls:dependsOn="Filter01" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency02" ls:dependentOption="FilterValue02" ls:dependsOn="Filter02" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency03" ls:dependentOption="FilterValue03" ls:dependsOn="Filter03" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency04" ls:dependentOption="FilterValue04" ls:dependsOn="Filter04" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency05" ls:dependentOption="FilterValue05" ls:dependsOn="Filter05" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency06" ls:dependentOption="FilterValue06" ls:dependsOn="Filter06" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency07" ls:dependentOption="FilterValue07" ls:dependsOn="Filter07" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency08" ls:dependentOption="FilterValue08" ls:dependsOn="Filter08" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency09" ls:dependentOption="FilterValue09" ls:dependsOn="Filter09" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="filterValueDependency10" ls:dependentOption="FilterValue10" ls:dependsOn="Filter10" ls:constraint="matches(null)" ls:negation="true"/>
+      
       <xs:element type="disjunctive" name="prosessDependency01" ls:dependentOption="Process02" ls:dependsOn="Process01" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="prosessDependency02" ls:dependentOption="Process03" ls:dependsOn="Process02" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="prosessDependency03" ls:dependentOption="Process04" ls:dependsOn="Process03" ls:constraint="matches(null)" ls:negation="true"/>
@@ -46,13 +57,24 @@
       <xs:element type="disjunctive" name="prosessDependency07" ls:dependentOption="Process08" ls:dependsOn="Process07" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="prosessDependency08" ls:dependentOption="Process09" ls:dependsOn="Process08" ls:constraint="matches(null)" ls:negation="true"/>
       <xs:element type="disjunctive" name="prosessDependency09" ls:dependentOption="Process10" ls:dependsOn="Process09" ls:constraint="matches(null)" ls:negation="true"/>
-       
+      
+      <xs:element type="disjunctive" name="processValueDependency01" ls:dependentOption="ProcessValue01" ls:dependsOn="Process01" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency02" ls:dependentOption="ProcessValue02" ls:dependsOn="Process02" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency03" ls:dependentOption="ProcessValue03" ls:dependsOn="Process03" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency04" ls:dependentOption="ProcessValue04" ls:dependsOn="Process04" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency05" ls:dependentOption="ProcessValue05" ls:dependsOn="Process05" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency06" ls:dependentOption="ProcessValue06" ls:dependsOn="Process06" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency07" ls:dependentOption="ProcessValue07" ls:dependsOn="Process07" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency08" ls:dependentOption="ProcessValue08" ls:dependsOn="Process08" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency09" ls:dependentOption="ProcessValue09" ls:dependsOn="Process09" ls:constraint="matches(null)" ls:negation="true"/>
+      <xs:element type="disjunctive" name="processValueDependency10" ls:dependentOption="ProcessValue10" ls:dependsOn="Process10" ls:constraint="matches(null)" ls:negation="true"/>
+      
       <xs:element type="disjunctive" name="useDependency01" ls:dependentOption="customfilter_code" ls:dependsOn="use_customfilter" ls:constraint="matches(true)"/>
       
     </xs:choice>
 </xs:complexType>
-
-  <xs:simpleType name="filterType" final="restriction">
+  
+  <xs:simpleType name="filteroperatorType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="null"/> 
       <xs:enumeration value="$and"/>
@@ -60,7 +82,7 @@
     </xs:restriction>
   </xs:simpleType>
   
-  <xs:simpleType name="processType" final="restriction">
+  <xs:simpleType name="processoperatorType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="$frequentValues"/>
       <xs:enumeration value="$timeSeries"/>
@@ -75,6 +97,18 @@
       <xs:enumeration value="$toCanonicalDisplay"/>
     </xs:restriction>
   </xs:simpleType>
+  
+    <xs:simpleType name="filterType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="null"/> 
+      <xs:enumeration value="actor.name"/>
+      <xs:enumeration value="actor.mbox"/>
+      <xs:enumeration value="verb.id"/>
+      <xs:enumeration value="object.mbox"/>
+      <xs:enumeration value="object.name"/>
+      <xs:enumeration value="timestamp"/>
+    </xs:restriction>
+  </xs:simpleType>
        
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -84,29 +118,49 @@
     <xs:element type="xs:boolean" name="use_customfilter" id="use_customfilter" default="false" />
     <xs:element type="xs:string" name="customfilter_code" id="customfilter_code" />
 
-    <xs:element type="filterType" name="FilterOperator" id="filter_operator" default="$and" />
+    <xs:element type="filteroperatorType" name="FilterOperator" id="filter_operator" default="$and" />
     <xs:element type="xs:string" name="Filter01" id="filter_01" default="null" />
+    <xs:element type="xs:string" name="FilterValue01" id="filterValue_01" default="null" />
     <xs:element type="xs:string" name="Filter02" id="filter_02" default="null" />
+    <xs:element type="xs:string" name="FilterValue02" id="filterValue_02" default="null" />
     <xs:element type="xs:string" name="Filter03" id="filter_03" default="null" />
+    <xs:element type="xs:string" name="FilterValue03" id="filterValue_03" default="null" />
     <xs:element type="xs:string" name="Filter04" id="filter_04" default="null" />
+    <xs:element type="xs:string" name="FilterValue04" id="filterValue_04" default="null" />
     <xs:element type="xs:string" name="Filter05" id="filter_05" default="null" />
+    <xs:element type="xs:string" name="FilterValue05" id="filterValue_05" default="null" />
     <xs:element type="xs:string" name="Filter06" id="filter_06" default="null" />
+    <xs:element type="xs:string" name="FilterValue06" id="filterValue_06" default="null" />
     <xs:element type="xs:string" name="Filter07" id="filter_07" default="null" />
+    <xs:element type="xs:string" name="FilterValue07" id="filterValue_07" default="null" />
     <xs:element type="xs:string" name="Filter08" id="filter_08" default="null" />
+    <xs:element type="xs:string" name="FilterValue08" id="filterValue_08" default="null" />
     <xs:element type="xs:string" name="Filter09" id="filter_09" default="null" />
+    <xs:element type="xs:string" name="FilterValue09" id="filterValue_09" default="null" />
     <xs:element type="xs:string" name="Filter10" id="filter_10" default="null" />
+    <xs:element type="xs:string" name="FilterValue10" id="filterValue_10" default="null" />
 
-    <xs:element type="processType" name="ProcessOperator" id="Process_operator" default="$frequentValues" />
+    <xs:element type="processoperatorType" name="ProcessOperator" id="Process_operator" default="$frequentValues" />
     <xs:element type="xs:string" name="Process01" id="process_01" default="null" />
+    <xs:element type="xs:string" name="ProcessValue01" id="processValue_01" default="null" />
     <xs:element type="xs:string" name="Process02" id="process_02" default="null" />
+    <xs:element type="xs:string" name="ProcessValue02" id="processValue_02" default="null" />
     <xs:element type="xs:string" name="Process03" id="process_03" default="null" />
+    <xs:element type="xs:string" name="ProcessValue03" id="processValue_03" default="null" />
     <xs:element type="xs:string" name="Process04" id="process_04" default="null" />
+    <xs:element type="xs:string" name="ProcessValue04" id="processValue_04" default="null" />
     <xs:element type="xs:string" name="Process05" id="process_05" default="null" />
+    <xs:element type="xs:string" name="ProcessValue05" id="processValue_05" default="null" />
     <xs:element type="xs:string" name="Process06" id="process_06" default="null" />
+    <xs:element type="xs:string" name="ProcessValue06" id="processValue_06" default="null" />
     <xs:element type="xs:string" name="Process07" id="process_07" default="null" />
+    <xs:element type="xs:string" name="ProcessValue07" id="processValue_07" default="null" />
     <xs:element type="xs:string" name="Process08" id="process_08" default="null" />
+    <xs:element type="xs:string" name="ProcessValue08" id="processValue_08" default="null" />
     <xs:element type="xs:string" name="Process09" id="process_09" default="null" />
+    <xs:element type="xs:string" name="ProcessValue09" id="processValue_09" default="null" />
     <xs:element type="xs:string" name="Process10" id="process_10" default="null" />
+    <xs:element type="xs:string" name="ProcessValue10" id="processValue_10" default="null" />
     
     <xs:element type="xs:string" name="outcome" id="outcome" default="null" />
     <xs:element type="xs:string" name="limit" id="limit" default="null" />

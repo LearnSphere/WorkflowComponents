@@ -18,29 +18,49 @@
     <use_customfilter>false</use_customfilter>
     <customfilter_code>null</customfilter_code>
     
-    <FilterOperator>null</FilterOperator>
-    <Filter01>actor.box:aug28test3@gmail.com</Filter01>
-    <Filter02>null</Filter02> 
-    <Filter03>null</Filter03>
+    <FilterOperator>$or</FilterOperator>
+    <Filter01>actor.mbox</Filter01>
+        <FilterValue01>mailto:39926e99-e7e9-480f-a9db-96b72935b51d@author.x-in-y.com</FilterValue01>
+    <Filter02>verb.id</Filter02>
+        <FilterValue02>https://vocab.autotutor.org/ITSProfile/System/speak</FilterValue02>
+    <Filter03>object.mbox</Filter03>
+        <FilterValue03>mailto:guest@autotutor.org</FilterValue03>
     <Filter04>null</Filter04>
+        <FilterValue04>null</FilterValue04>
     <Filter05>null</Filter05>
+        <FilterValue05>null</FilterValue05>
     <Filter06>null</Filter06>
+        <FilterValue06>null</FilterValue06>
     <Filter07>null</Filter07>
-    <Filter08>null</Filter08>   
+        <FilterValue07>null</FilterValue07>
+    <Filter08>null</Filter08> 
+        <FilterValue08>null</FilterValue08>  
     <Filter09>null</Filter09>
-    <Filter10>null</Filter10>
+    <FilterValue09>null</FilterValue09>
+        <Filter10>null</Filter10>
+    <FilterValue10>null</FilterValue10>
     
     <ProcessOperator>$frequentValues</ProcessOperator>
-    <Process01>null</Process01>
+    <Process01>path</Process01>
+        <ProcessValue01>actor.mbox</ProcessValue01>
     <Process02>null</Process02>
+        <ProcessValue02>null</ProcessValue02>
     <Process03>null</Process03>
+        <ProcessValue03>null</ProcessValue03>
     <Process04>null</Process04>
+        <ProcessValue04>null</ProcessValue04>
     <Process05>null</Process05>
+        <ProcessValue05>null</ProcessValue05>
     <Process06>null</Process06>
+        <ProcessValue06>null</ProcessValue06>
     <Process07>null</Process07>
+        <ProcessValue07>null</ProcessValue07>
     <Process08>null</Process08>
+        <ProcessValue08>null</ProcessValue08>
     <Process09>null</Process09>
+        <ProcessValue09>null</ProcessValue09>
     <Process10>null</Process10>
+        <ProcessValue10>null</ProcessValue10>
     
     <outcome>null</outcome> 
     <limit>null</limit>

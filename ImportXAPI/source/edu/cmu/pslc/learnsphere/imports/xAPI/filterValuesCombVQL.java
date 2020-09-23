@@ -27,29 +27,30 @@ public class filterValuesCombVQL {
     public filterValuesCombVQL() {
     }
     
-    public JSONObject sqlUrlWithFilter (String FilterOperator, HashMap<String,String> filterMap, String processOperator, HashMap<String,String> processMap) throws JSONException{
+    public JSONObject sqlUrlVQL (String FilterOperator, HashMap<String,String> filterMap, String processOperator, HashMap<String,String> processMap) throws JSONException{
         JSONObject dataSqlOptionObj = new JSONObject();
         
         JSONArray filterArray = new JSONArray();
         JSONObject subFilterObj=new JSONObject();
         
-        for(Entry<String,String> entry : filterMap.entrySet()){
-            filterArray.put(new JSONObject().put(entry.getKey(),entry.getValue()));
-        }
-        
         if(FilterOperator.equals("null")){
-            dataSqlOptionObj.put("filter",filterArray);
+            for(Entry<String,String> entry : filterMap.entrySet()){
+                subFilterObj.put(entry.getKey(),entry.getValue());
+            }
+            dataSqlOptionObj.put("filter",subFilterObj);
         }else{
+            for(Entry<String,String> entry : filterMap.entrySet()){
+                filterArray.put(new JSONObject().put(entry.getKey(),entry.getValue()));
+            }
             dataSqlOptionObj.put("filter",new JSONObject().put(FilterOperator, filterArray));
         }
-        
         
         JSONObject subProcessObj=new JSONObject();
         for(Entry<String,String> entry : processMap.entrySet()){
             subProcessObj.put(entry.getKey(),entry.getValue());
         }       
         
-        dataSqlOptionObj.put("process",new JSONObject().put(processOperator, subProcessObj));
+        dataSqlOptionObj.put("process",new JSONArray().put(new JSONObject().put(processOperator, subProcessObj)));
         
         return dataSqlOptionObj;
         //processMap
