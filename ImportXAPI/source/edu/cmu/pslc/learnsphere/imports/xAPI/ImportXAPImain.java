@@ -29,7 +29,6 @@ public class ImportXAPImain extends AbstractComponent {
         //Constructor
     public ImportXAPImain() {
         super();
-
     }
         
     @Override

@@ -39,6 +39,7 @@ public class Json2table {
         
         Builder csvSchemaBuilder = CsvSchema.builder();
         JsonNode firstObject = jsonTree.elements().next();
+        
         firstObject.fieldNames().forEachRemaining(fieldName -> {csvSchemaBuilder.addColumn(fieldName);});
         
         CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
