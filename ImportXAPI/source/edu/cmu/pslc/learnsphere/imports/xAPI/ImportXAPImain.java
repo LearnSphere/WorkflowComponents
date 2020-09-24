@@ -24,17 +24,29 @@ public class ImportXAPImain extends AbstractComponent {
     public static void main(String[] args) {
     	ImportXAPImain tool = new ImportXAPImain();
         tool.startComponent(args);
-		}
+    }
 
-                //Constructor
-		public ImportXAPImain() {
-		    super();
+        //Constructor
+    public ImportXAPImain() {
+        super();
 
-		}
-          
-            @Override
-	    protected void runComponent() {
-                
+    }
+        
+    @Override
+    protected void processOptions() {
+        logger.info("Processing Options");
+        // The addMetaData* methods make the meta data available to downstream components.
+    }
+
+    @Override
+    protected void parseOptions() {
+        logger.info("The value of the url option is " + this.getOptionAsString("url"));
+        logger.info("The value of the username option is " + this.getOptionAsString("username"));        
+    }
+
+    @Override
+    protected void runComponent() {
+        this.addComponentProgressMessage("Querying data based on xAPI now");
                 File outputDirectory = this.runExternal();
                 
                 //Get the option parameters
@@ -202,6 +214,6 @@ public class ImportXAPImain extends AbstractComponent {
                 String fileType0 = "tab-delimited";
                 this.addOutputFile(resultFile, nodeIndex0, fileIndex0, fileType0);
                 System.out.println(this.getOutput()); 
-	    } 
+    } 
             
 }

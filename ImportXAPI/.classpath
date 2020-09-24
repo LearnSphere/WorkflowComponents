@@ -37,5 +37,12 @@
 	<classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/statisticalCorrectnessModeling.jar"/>
 	<classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/weka3-4-9.jar"/>
 	<classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/xercesImpl.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/json2flat-1.0.3.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/json-path-2.2.0.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/json-smart-2.2.1.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-annotations-2.11.1.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-core-2.11.1.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-databind-2.11.1.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-dataformat-csv-2.11.2.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
