@@ -28,6 +28,7 @@ public class Json2table {
     
     public File nestedJson2csv(JSONArray sqlStatements,File outputDirectory) throws IOException, CsvMappingException, Exception{
         File tempFile= new File(outputDirectory.getAbsoluteFile() + "/xAPI_Query.txt");
+        
         JFlat flatMe = new JFlat(sqlStatements.toString());
         List<Object[]> json2csv = flatMe.json2Sheet().getJsonAsSheet();
         //flatMe.json2Sheet().headerSeparator("_").write2csv(outputDirectory.getAbsoluteFile() + "/xAPI_Query.txt");

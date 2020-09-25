@@ -203,11 +203,12 @@ public class ImportXAPImain extends AbstractComponent {
                 } catch (Exception ex) {
                     Logger.getLogger(ImportXAPImain.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
                 Integer nodeIndex0 = 0;
                 Integer fileIndex0 = 0;
                 String fileType0 = "tab-delimited";
                 this.addOutputFile(resultFile, nodeIndex0, fileIndex0, fileType0);
+                logger.info("Added file: " + resultFile.getAbsolutePath());
                 System.out.println(this.getOutput()); 
     } 
             
