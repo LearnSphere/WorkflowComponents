@@ -14,6 +14,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
 import com.github.opendevl.JFlat;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import org.json.JSONArray;
 
@@ -39,7 +40,12 @@ public class Json2table {
         
         Builder csvSchemaBuilder = CsvSchema.builder();
         JsonNode firstObject = jsonTree.elements().next();
-        firstObject.fieldNames().forEachRemaining(fieldName -> {csvSchemaBuilder.addColumn(fieldName);});
+        //firstObject.fieldNames().forEachRemaining(fieldName -> {csvSchemaBuilder.addColumn(fieldName);}); // Iterator forEachRemaining(Consumer action)
+        Iterator iterFiledNames=firstObject.fieldNames();
+        while(iterFiledNames.hasNext()){
+            String strFieldName=(String)iterFiledNames.next();
+            csvSchemaBuilder.addColumn(strFieldName);
+        }
         
         CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
         
