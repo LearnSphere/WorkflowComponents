@@ -44,5 +44,8 @@
         <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-core-2.11.1.jar"/>
         <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-databind-2.11.1.jar"/>
         <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jackson-dataformat-csv-2.11.2.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/jaxb-api-2.4.0-b180830.0359.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/javax.activation-api-1.2.0.jar"/>
+        <classpathentry kind="lib" path="/WorkflowComponents/CommonLibraries/commons-codec-1.7.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

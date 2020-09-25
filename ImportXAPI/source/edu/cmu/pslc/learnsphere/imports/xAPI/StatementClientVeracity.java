@@ -8,7 +8,6 @@ package edu.cmu.pslc.learnsphere.imports.xAPI;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -16,9 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,7 +45,9 @@ public class StatementClientVeracity {
         URL url= new URL( request );
         
         String auth1 = username + ":" + password;
-        String encoding = Base64.getEncoder().encodeToString((auth1.getBytes("UTF-8")));
+        //String encoding = Base64.getEncoder().encodeToString((auth1.getBytes("UTF-8")));
+        String encoding=new String(Base64.encodeBase64(auth1.getBytes()));
+        
         HttpURLConnection conn= (HttpURLConnection) url.openConnection(); 
         conn.setDoOutput(true);
         conn.setInstanceFollowRedirects( false );
@@ -82,8 +82,6 @@ public class StatementClientVeracity {
             
         }
 
-        System.out.print(content.toString());
-        System.out.print("line 499999999999");
         stsArray = new JSONArray(content.toString());
         
         return(stsArray);
@@ -101,7 +99,9 @@ public class StatementClientVeracity {
         //System.out.print(getDataUrl);
         
         String auth = username + ":" + password;
-        byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));        
+        //byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        Base64 base64 = new Base64();
+        String encodedAuth = new String(base64.encode(auth.getBytes()));
         String authHeaderValue = "Basic " + new String(encodedAuth);
         
         //set the request method and properties using HttpURLConnection
@@ -145,11 +145,10 @@ public class StatementClientVeracity {
         }
         
         //String getDataUrl=lrsUrl+"search?query="+encodeDataSql;
-        System.out.println("line 3888888");
-        System.out.println(getDataUrl);
-        System.out.println("line 3999999");
         String auth = username + ":" + password;
-        byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));        
+        //byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8)); 
+        Base64 base64 = new Base64();
+        String encodedAuth = new String(base64.encode(auth.getBytes()));
         String authHeaderValue = "Basic " + new String(encodedAuth);
         
         //set the request method and properties using HttpURLConnection

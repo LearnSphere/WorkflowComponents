@@ -5,16 +5,20 @@
  */
 package edu.cmu.pslc.learnsphere.imports.xAPI;
 
+import com.google.common.io.BaseEncoding;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
+import javax.xml.bind.DatatypeConverter;
+
 
 /**
  *storing the basic query rules
@@ -28,11 +32,11 @@ public class BaseClient {
     protected String password;
     protected String authString;
     
-    public BaseClient(String uri, String username, String password) throws MalformedURLException {
+    public BaseClient(String uri, String username, String password) throws MalformedURLException, UnsupportedEncodingException {
         init(new URL(uri), username, password);
     }
     
-    protected void init(URL uri, String user, String password) throws MalformedURLException{
+    protected void init(URL uri, String user, String password) throws MalformedURLException, UnsupportedEncodingException{
         String holder =uri.toString();
         if(holder.endsWith("/")){
             URL newUri=new URL(holder.substring(0,holder.length()-1));
@@ -45,7 +49,11 @@ public class BaseClient {
         
         //define the authencation (basic)
         String auth = username + ":" + password;
-        byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));    
+
+        //byte[] encodedAuth=Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        Base64 base64 = new Base64();
+        String encodedAuth = new String(base64.encode(auth.getBytes()));
+        
         this.authString="Basic "+new String(encodedAuth);
     }
     
