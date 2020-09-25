@@ -358,3 +358,138 @@ DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:40:2
 DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:40:29,856 - Evaluating path: $[8]['_id']
 DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:40:29,856 - Evaluating path: $[9]['count']
 DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:40:29,856 - Evaluating path: $[9]['_id']
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:35,857 - Command-line args: [-componentXmlFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml, -workflowDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/, -toolDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -schemaFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/schemas/ImportXAPI_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:35,857 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:48:35,937 - Reading C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:48:35,937 - File absolute path: C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI\test\components\ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:35,950 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:35,950 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,002 - The value of the url option is https://record.x-in-y.com/keith-s-pilot/xapi/
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,002 - The value of the username option is kshubeck
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,002 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,002 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,128 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,129 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,129 - %Progress::@2020-09-24 20:48:36@Querying data based on xAPI now
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:48:36,136 - Executing process: [C:/Program, Files/Java/jdk1.8.0_261/bin/java, , -Djava.util.prefs.systemRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -Djava.util.prefs.userRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -cp, /datashop/workflow_components/CommonLibraries/json2flat-1.0.3.jar, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/dist/ImportXAPI-1.0.jar, -programDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -workingDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test//ComponentTestOutput/output/, -Filter01, actor.mbox, -Filter02, verb.id, -Filter03, object.mbox, -Filter04, null, -Filter05, null, -Filter06, null, -Filter07, null, -Filter08, null, -Filter09, null, -Filter10, null, -FilterOperator, $or, -FilterValue01, mailto:39926e99-e7e9-480f-a9db-96b72935b51d@author.x-in-y.com, -FilterValue02, https://vocab.autotutor.org/ITSProfile/System/speak, -FilterValue03, mailto:guest@autotutor.org, -FilterValue04, null, -FilterValue05, null, -FilterValue06, null, -FilterValue07, null, -FilterValue08, null, -FilterValue09, null, -FilterValue10, null, -Process01, path, -Process02, null, -Process03, null, -Process04, null, -Process05, null, -Process06, null, -Process07, null, -Process08, null, -Process09, null, -Process10, null, -ProcessOperator, $frequentValues, -ProcessValue01, actor.mbox, -ProcessValue02, null, -ProcessValue03, null, -ProcessValue04, null, -ProcessValue05, null, -ProcessValue06, null, -ProcessValue07, null, -ProcessValue08, null, -ProcessValue09, null, -ProcessValue10, null, -customfilter_code, null, -limit, null, -outcome, null, -password, um38152um, -url, https://record.x-in-y.com/keith-s-pilot/xapi/, -use_customfilter, false, -username, kshubeck]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,977 - Evaluating path: $..[*]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,979 - Evaluating path: $[0]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,979 - Evaluating path: $[1]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[2]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[3]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[4]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[5]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[6]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[7]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[8]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[9]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[0]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,980 - Evaluating path: $[0]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[1]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[1]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[2]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[2]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[3]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[3]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[4]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,981 - Evaluating path: $[4]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,982 - Evaluating path: $[5]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,982 - Evaluating path: $[5]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[6]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[6]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[7]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[7]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[8]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[8]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[9]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:48:36,983 - Evaluating path: $[9]['_id']
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,086 - Command-line args: [-componentXmlFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml, -workflowDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/, -toolDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -schemaFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/schemas/ImportXAPI_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,086 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:51:41,167 - Reading C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:51:41,167 - File absolute path: C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI\test\components\ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,177 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,178 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,229 - The value of the url option is https://record.x-in-y.com/keith-s-pilot/xapi/
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,229 - The value of the username option is kshubeck
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,229 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,229 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,357 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,357 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,357 - %Progress::@2020-09-24 20:51:41@Querying data based on xAPI now
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:51:41,363 - Executing process: [C:/Program, Files/Java/jdk1.8.0_261/bin/java, , -Djava.util.prefs.systemRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -Djava.util.prefs.userRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -cp, /datashop/workflow_components/CommonLibraries/json2flat-1.0.3.jar, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/dist/ImportXAPI-1.0.jar, -programDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -workingDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test//ComponentTestOutput/output/, -Filter01, actor.mbox, -Filter02, verb.id, -Filter03, object.mbox, -Filter04, null, -Filter05, null, -Filter06, null, -Filter07, null, -Filter08, null, -Filter09, null, -Filter10, null, -FilterOperator, $or, -FilterValue01, mailto:39926e99-e7e9-480f-a9db-96b72935b51d@author.x-in-y.com, -FilterValue02, https://vocab.autotutor.org/ITSProfile/System/speak, -FilterValue03, mailto:guest@autotutor.org, -FilterValue04, null, -FilterValue05, null, -FilterValue06, null, -FilterValue07, null, -FilterValue08, null, -FilterValue09, null, -FilterValue10, null, -Process01, path, -Process02, null, -Process03, null, -Process04, null, -Process05, null, -Process06, null, -Process07, null, -Process08, null, -Process09, null, -Process10, null, -ProcessOperator, $frequentValues, -ProcessValue01, actor.mbox, -ProcessValue02, null, -ProcessValue03, null, -ProcessValue04, null, -ProcessValue05, null, -ProcessValue06, null, -ProcessValue07, null, -ProcessValue08, null, -ProcessValue09, null, -ProcessValue10, null, -customfilter_code, null, -limit, null, -outcome, null, -password, um38152um, -url, https://record.x-in-y.com/keith-s-pilot/xapi/, -use_customfilter, false, -username, kshubeck]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,175 - Evaluating path: $..[*]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,177 - Evaluating path: $[0]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[1]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[2]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[3]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[4]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[5]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[6]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[7]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[8]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[9]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,178 - Evaluating path: $[0]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[0]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[1]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[1]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[2]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[2]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[3]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[3]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[4]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[4]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,179 - Evaluating path: $[5]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[5]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[6]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[6]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[7]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[7]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[8]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[8]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[9]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:51:42,180 - Evaluating path: $[9]['_id']
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,445 - Command-line args: [-componentXmlFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml, -workflowDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/, -toolDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -schemaFile, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/schemas/ImportXAPI_v1_0.xsd]
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,446 - Initializing workflow component.
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:53:30,525 - Reading C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test/components/ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.datashop.servlet.workflows.WorkflowFileUtils 24 Sep 2020 20:53:30,525 - File absolute path: C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI\test\components\ComponentXAPI.xml
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,535 - Initializing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,535 - Using existing component options.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,585 - The value of the url option is https://record.x-in-y.com/keith-s-pilot/xapi/
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,585 - The value of the username option is kshubeck
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,585 - Processing Options
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,585 - Validating workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,713 - Testing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,713 - Executing workflow component.
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,713 - %Progress::@2020-09-24 20:53:30@Querying data based on xAPI now
+INFO: [main] edu.cmu.pslc.learnsphere.imports.xAPI.ImportXAPImain 24 Sep 2020 20:53:30,720 - Executing process: [C:/Program, Files/Java/jdk1.8.0_261/bin/java, , -Djava.util.prefs.systemRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -Djava.util.prefs.userRoot=C:/Program, Files/Java/jdk1.8.0_261/jre/, -cp, /datashop/workflow_components/CommonLibraries/json2flat-1.0.3.jar, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/dist/ImportXAPI-1.0.jar, -programDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/, -workingDir, C:\Users\Liang Zhang\Documents\NetBeansProjects\WorkflowComponents\ImportXAPI/test//ComponentTestOutput/output/, -Filter01, actor.mbox, -Filter02, verb.id, -Filter03, object.mbox, -Filter04, null, -Filter05, null, -Filter06, null, -Filter07, null, -Filter08, null, -Filter09, null, -Filter10, null, -FilterOperator, $or, -FilterValue01, mailto:39926e99-e7e9-480f-a9db-96b72935b51d@author.x-in-y.com, -FilterValue02, https://vocab.autotutor.org/ITSProfile/System/speak, -FilterValue03, mailto:guest@autotutor.org, -FilterValue04, null, -FilterValue05, null, -FilterValue06, null, -FilterValue07, null, -FilterValue08, null, -FilterValue09, null, -FilterValue10, null, -Process01, path, -Process02, null, -Process03, null, -Process04, null, -Process05, null, -Process06, null, -Process07, null, -Process08, null, -Process09, null, -Process10, null, -ProcessOperator, $frequentValues, -ProcessValue01, actor.mbox, -ProcessValue02, null, -ProcessValue03, null, -ProcessValue04, null, -ProcessValue05, null, -ProcessValue06, null, -ProcessValue07, null, -ProcessValue08, null, -ProcessValue09, null, -ProcessValue10, null, -customfilter_code, null, -limit, null, -outcome, null, -password, um38152um, -url, https://record.x-in-y.com/keith-s-pilot/xapi/, -use_customfilter, false, -username, kshubeck]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,583 - Evaluating path: $..[*]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,585 - Evaluating path: $[0]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[1]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[2]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[3]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[4]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[5]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[6]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[7]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[8]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[9]
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[0]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,586 - Evaluating path: $[0]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[1]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[1]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[2]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[2]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[3]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[3]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[4]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[4]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[5]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[5]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,587 - Evaluating path: $[6]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[6]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[7]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[7]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[8]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[8]['_id']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[9]['count']
+DEBUG: [main] com.jayway.jsonpath.internal.path.CompiledPath 24 Sep 2020 20:53:31,588 - Evaluating path: $[9]['_id']
