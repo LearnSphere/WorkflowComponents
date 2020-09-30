@@ -104,6 +104,7 @@ true.model.A = "plogis(b2[i]*log(1+j-1)+stu.ints[i]+item.ints[j])"
 #estimated model of learning using mean learning rate and mean student intercepts. How well will it do?
 pred.model.A = "plogis(mean(b2)*log(1+j-1)+mean(stu.ints)+item.ints[j])"
 
+#create the key-value pairs for storing the model name and model algorithm
 truemodel_col <-c("True_A_Model","True_B_Model","True_C_Model")
 truemodelalg_col<-c(true.model.A," "," ")
 truemodel_list<-setNames(as.list(truemodelalg_col), truemodel_col)
