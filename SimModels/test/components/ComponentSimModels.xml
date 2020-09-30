@@ -1,0 +1,23 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>SimModels</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+
+<options>
+    <truemodel>True A Model</truemodel>
+    <predmodel>Pred A Model</predmodel>
+    <nstu>100</nstu>
+    <ntrials>50</ntrials>
+    <item_id>KC_A</item_id>
+</options>
+<top>106</top>
+</component>
