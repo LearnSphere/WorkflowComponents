@@ -17,7 +17,7 @@
     <predmodel>Pred A Model</predmodel>
     <nstu>100</nstu>
     <ntrials>50</ntrials>
-    <item_id>KC_A</item_id>
+    <item_id>KC (Default)</item_id>
 </options>
 <top>106</top>
 </component>

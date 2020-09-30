@@ -34,13 +34,22 @@
             <xs:enumeration value="Pred C Mdoel"/>
         </xs:restriction>
   </xs:simpleType>
+  
+   <xs:simpleType name="kcType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="KC (Default)"/>
+            <xs:enumeration value="KC (Cluster)"/>
+            <xs:enumeration value="KC (Item Model)"/>
+        </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="OptionsType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element type="truemodelType"  name="truemodel"  id="True_model" default="True A Model"/>
       <xs:element type="predmodelType"  name="predmodel"  id="Pred_model" default="Pred A Model"/>
       <xs:element type="xs:integer" name="nstu" id="No_of_Student" default="100"/>
       <xs:element type="xs:integer" name="ntrials" id="No_of_Trials" default="50"/>
-      <xs:element type="xs:string" name="item_id" id="KC" default="KC_A"/>
+      <xs:element type="kcType" name="item_id" id="KC" default="KC (Default)"/>
     </xs:choice>
   </xs:complexType>
   <xs:element name="component">

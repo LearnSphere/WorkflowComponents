@@ -68,7 +68,7 @@ if (is.null(workingDirectory) || is.null(componentDirectory) ) {
    if (is.null(componentDirectory)) {
       warning("Missing required input parameter: -programDir")
    }
-   stop("Usage: -programDir component_directory -workingDir output_directory -file0 input_file0 -file1 input_file0")
+   stop("Usage: -programDir component_directory -workingDir output_directory")
 }
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
@@ -78,16 +78,19 @@ sink(clean,append=TRUE,type="message") # get error reports also
 
 # This dir contains the R program or any R helper functions
 programLocation<- paste(componentDirectory, "program/", sep="")
-sourceFunction=paste(programLocation,"GKTfunctions.R",sep="")
 
 #Simulating students with a simple model. Luke Eglington 9/28/2020
 # truncnorm ot required, just did this to make the data more consistent
 #Change rtruncnorm(..) to rnorm(..) below if you don't want another package
 library(truncnorm)
-print(nstu)
 
-nstu=100
-ntrials=50
+nstu=as.numeric(nstu)
+ntrials=as.numeric(ntrials)
+kc_type<-gsub("[ ()-]", ".",as.character(item_id))
+
+truemodel=gsub(" ", "_", truemodel, fixed=TRUE)
+predmodel=gsub(" ", "_", predmodel, fixed=TRUE)
+
 b2 = rtruncnorm(nstu, a=1, b=3, mean = 1.5, sd = 1)#student learning slopes
 stu.ints=rtruncnorm(nstu, a=-4, b=-2, mean = -3, sd = 1)#student intercepts
 
@@ -97,17 +100,43 @@ students=matrix(nrow=nstu,ncol=ntrials)
 pred1=matrix(nrow=nstu,ncol=ntrials)
 
 #Student model of learning, change this to adjust how prior practices influence future performance etc
-true.model = "plogis(b2[i]*log(1+j-1)+stu.ints[i]+item.ints[j])"
+true.model.A = "plogis(b2[i]*log(1+j-1)+stu.ints[i]+item.ints[j])"
 #estimated model of learning using mean learning rate and mean student intercepts. How well will it do?
-pred.model = "plogis(mean(b2)*log(1+j-1)+mean(stu.ints)+item.ints[j])"
+pred.model.A = "plogis(mean(b2)*log(1+j-1)+mean(stu.ints)+item.ints[j])"
+
+truemodel_col <-c("True_A_Model","True_B_Model","True_C_Model")
+truemodelalg_col<-c(true.model.A," "," ")
+truemodel_list<-setNames(as.list(truemodelalg_col), truemodel_col)
+
+predmodel_col <-c("Pred_A_Model","Pred_B_Model","Pred_C_Model")
+predmodelalg_col<-c(pred.model.A," "," ")
+predmodel_list<-setNames(as.list(predmodelalg_col), predmodel_col)
 
 for(i in 1:(nstu)){
   item.ints=sample(item.ints)
     for(j in 1:ntrials){
-     students[i,j] = eval(parse(text=true.model))
-     pred1[i,j] = eval(parse(text=pred.model))
+     students[i,j] = eval(parse(text=truemodel_list[[truemodel]]))
+     pred1[i,j] = eval(parse(text=predmodel_list[[predmodel]]))
     }
 }
+
+#Generate Anon.Student.Id by the random_id function of "ids" package
+library(ids)
+set.seed(nstu)
+simStuId<-paste("Stu_",random_id(nstu,use_openssl = FALSE),sep="")
+stu_colnames<-paste("KC..","No.",1:ntrials,sep="")
+
+students<-cbind(simStuId,students)
+colnames(students)<-c("Anon.Student.Id", stu_colnames)
+students<-as.data.frame(students)
+
+#From wide to long
+library(reshape2)
+students_long<-melt(students,id.vars=c("Anon.Student.Id"),measure.vars=stu_colnames,variable.name=kc_type,value.name="Outcome")
+students_long<-students_long[order(students_long$Anon.Student.Id), ]
+Row<-c(1:nstu)
+students_long<-cbind(Row,students_long)
+headers<-names(students_long)
 
 #students = round(students)
 #some plots to give you an idea of what the data looks like
@@ -115,9 +144,17 @@ matplot(t(students),xlab="Trial",ylab="p(correct)", type = "l",col="black",ylim=
 par(new = TRUE)
 matplot(t(pred1),xlab="",ylab="", type = "l",col="darkred",ylim=c(0,1),lwd=1.5,lty=1)#line per prediction
 
+students_long$Outcome<-ifelse(students_long$Outcome<=0.5,0,1)
+
 outputFilePath<- paste(workingDirectory, "tab-delimited_file with covariate.txt", sep="")
-#write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
-write.table(pred1,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+
+headers<-gsub("[.][.]"," (",headers)
+headers<-gsub("[.]$",")",headers)
+headers<-gsub("[.]"," ",headers)
+headers<-paste(headers,collapse="\t")
+
+write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(students_long,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 
 # Stop logging
 sink()
