@@ -126,10 +126,15 @@ library(ids)
 set.seed(nstu)
 simStuId<-paste("Stu_",random_id(nstu,use_openssl = FALSE),sep="")
 stu_colnames<-paste("KC..","No.",1:ntrials,sep="")
+pred1_colnames<-stu_colnames
 
 students<-cbind(simStuId,students)
 colnames(students)<-c("Anon.Student.Id", stu_colnames)
 students<-as.data.frame(students)
+
+pred1<-cbind(simStuId,pred1)
+colnames(pred1)<-c("Anon.Student.Id", pred1_colnames)
+pred1<-as.data.frame(pred1)
 
 #From wide to long
 library(reshape2)
@@ -139,15 +144,25 @@ Row<-c(1:nstu)
 students_long<-cbind(Row,students_long)
 headers<-names(students_long)
 
+pred1_long<-melt(pred1,id.vars=c("Anon.Student.Id"),measure.vars=pred1_colnames,variable.name=kc_type,value.name="Outcome")
+pred1_long<-pred1_long[order(pred1_long$Anon.Student.Id), ]
+pred1_long<-cbind(Row,pred1_long)
+headers_pred1<-names(pred1_long)
+
 #students = round(students)
 #some plots to give you an idea of what the data looks like
+
+switch(Sys.info()[['sysname']],
+Linux  = { bitmap(file = paste(workingDirectory, "myplot.png", sep=""),"png16m") },
+Windows= { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) },
+Darwin = { png(file = paste(workingDirectory, "myplot.png", sep=""), width=2000, height=2000, res=300) })
+
 matplot(t(students),xlab="Trial",ylab="p(correct)", type = "l",col="black",ylim=c(0,1),lwd=1.5,lty=1)#line per student
 par(new = TRUE)
 matplot(t(pred1),xlab="",ylab="", type = "l",col="darkred",ylim=c(0,1),lwd=1.5,lty=1)#line per prediction
 
 students_long$Outcome<-ifelse(students_long$Outcome<=0.5,0,1)
-
-outputFilePath<- paste(workingDirectory, "tab-delimited_file with covariate.txt", sep="")
+outputFilePath<- paste(workingDirectory, "Students.txt", sep="")
 
 headers<-gsub("[.][.]"," (",headers)
 headers<-gsub("[.]$",")",headers)
@@ -156,6 +171,11 @@ headers<-paste(headers,collapse="\t")
 
 write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
 write.table(students_long,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
+
+pred1_long$Outcome<-ifelse(pred1_long$Outcome<=0.5,0,1)
+outputFilePath<- paste(workingDirectory, "Predict1.txt", sep="")
+write.table(headers,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = FALSE)
+write.table(pred1_long,file=outputFilePath,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=TRUE,row.names = FALSE)
 
 # Stop logging
 sink()

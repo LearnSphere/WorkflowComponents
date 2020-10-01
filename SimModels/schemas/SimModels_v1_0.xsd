@@ -15,9 +15,28 @@
       <xs:element ref="text"/>
     </xs:choice>
   </xs:complexType>
+  
+    <xs:complexType name="OutputDefinition1">
+        <xs:complexContent>
+            <xs:extension base="InputContainer">
+                <xs:sequence>
+                    <xs:element type="OutFileList1" name="files" />
+                    <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList1">
+        <xs:choice>
+            <xs:element ref="image" />
+        </xs:choice>
+  </xs:complexType>
+  
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0"/>
+      <xs:element name="output1" type="OutputDefinition1"/>
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="truemodelType" final="restriction">
