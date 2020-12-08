@@ -1,0 +1,98 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>LKT</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+    <input0>
+        <component_id>Import-1-x995490</component_id>
+        <component_id_human>Import #1</component_id_human>
+        <component_type>import</component_type>
+        <component_name>Dummy Import Name</component_name>
+        <elapsed_seconds>0</elapsed_seconds>
+        <errors />
+        <files>
+        <student-step>
+        <index>0</index>
+        <file_path>test/testdata/GKT.txt</file_path>
+        <label>text</label>
+        <file_name>GKT.txt</file_name>
+        </student-step>
+        </files>
+        <inputmeta />
+    </input0>
+</inputs>
+
+<options>
+    <mode>best fit model</mode>
+    <Model_Name>Diff</Model_Name>
+    <Elastictest>FALSE</Elastictest>
+    <Include_Latency_Model>false</Include_Latency_Model>
+    <Use_Global_Intercept>false</Use_Global_Intercept>
+    <Num_of_PlanComponents>3</Num_of_PlanComponents>
+    <Inlcude_of_Fixedpars>false</Inlcude_of_Fixedpars>
+    <Include_of_Seedpars>false</Include_of_Seedpars> 
+    <Include_of_Offsetvals>false</Include_of_Offsetvals>
+    <component0>Input 0 (0) - KC (Textbook) (column 33)</component0>
+    <component1>Input 0 (0) - KC (Textbook) (column 33)</component1>
+    <component2>Input 0 (0) - KC (Textbook) (column 33)</component2>
+    <component3>Input 0 (0) - KC (Textbook) (column 33)</component3>
+    <component4>Input 0 (0) - KC (Textbook) (column 33)</component4>
+    <component5>Input 0 (0) - KC (Textbook) (column 33)</component5>
+    <component6>Input 0 (0) - KC (Textbook) (column 33)</component6>
+    <component7>Input 0 (0) - KC (Textbook) (column 33)</component7>
+    <component8>Input 0 (0) - KC (Textbook) (column 33)</component8>
+    <component9>Input 0 (0) - KC (Textbook) (column 33)</component9>
+    
+    <Feature0>intercept@</Feature0>
+        <Fixedpars0>null</Fixedpars0>
+        <Seedpars0>null</Seedpars0>
+        <Offsetvals0>NA</Offsetvals0>
+    <Feature1>linesuc$</Feature1>
+        <Fixedpars1>null</Fixedpars1>
+        <Seedpars1>null</Seedpars1>
+        <Offsetvals1>NA</Offsetvals1>    
+    <Feature2>linefail$</Feature2>
+        <Fixedpars2>null</Fixedpars2>
+        <Seedpars2>null</Seedpars2>
+        <Offsetvals2>NA</Offsetvals2>   
+    <Feature3>null</Feature3>
+        <Fixedpars3>null</Fixedpars3>
+        <Seedpars3>null</Seedpars3>
+        <Offsetvals3>NA</Offsetvals3>   
+    <Feature4>null</Feature4>
+        <Fixedpars4>null</Fixedpars4>
+        <Seedpars4>null</Seedpars4>
+        <Offsetvals4>NA</Offsetvals4>   
+    <Feature5>null</Feature5>
+        <Fixedpars5>null</Fixedpars5>
+        <Seedpars5>null</Seedpars5>
+        <Offsetvals5>NA</Offsetvals5>   
+    <Feature6>null</Feature6>
+        <Fixedpars6>null</Fixedpars6>
+        <Seedpars6>null</Seedpars6>
+        <Offsetvals6>NA</Offsetvals6>   
+    <Feature7>null</Feature7>
+        <Fixedpars7>null</Fixedpars7>
+        <Seedpars7>null</Seedpars7>
+        <Offsetvals7>NA</Offsetvals7>   
+    <Feature8>null</Feature8>
+        <Fixedpars8>null</Fixedpars8>
+        <Seedpars8>null</Seedpars8>
+        <Offsetvals8>NA</Offsetvals8>   
+    <Feature9>null</Feature9>
+        <Fixedpars9>null</Fixedpars9>
+        <Seedpars9>null</Seedpars9>
+        <Offsetvals9>NA</Offsetvals9>   
+</options>
+
+</component>
