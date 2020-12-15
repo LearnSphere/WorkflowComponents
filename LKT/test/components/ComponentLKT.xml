@@ -23,9 +23,9 @@
         <files>
         <student-step>
         <index>0</index>
-        <file_path>test/testdata/GKT.txt</file_path>
+        <file_path>test/testdata/ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_path>
         <label>text</label>
-        <file_name>GKT.txt</file_name>
+        <file_name>ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_name>
         </student-step>
         </files>
         <inputmeta />
@@ -39,12 +39,13 @@
     <Include_Latency_Model>false</Include_Latency_Model>
     <Use_Global_Intercept>false</Use_Global_Intercept>
     <Num_of_PlanComponents>3</Num_of_PlanComponents>
-    <Inlcude_of_Fixedpars>false</Inlcude_of_Fixedpars>
+    <Num_of_posKC>3</Num_of_posKC>
+    <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
     <Include_of_Seedpars>false</Include_of_Seedpars> 
     <Include_of_Offsetvals>false</Include_of_Offsetvals>
-    <component0>Input 0 (0) - KC (Textbook) (column 33)</component0>
-    <component1>Input 0 (0) - KC (Textbook) (column 33)</component1>
-    <component2>Input 0 (0) - KC (Textbook) (column 33)</component2>
+    <component0>Input 0 (0) - Anon Student Id (column 3)</component0>
+    <component1>Input 0 (0) - KC (Default) (column 36)</component1>
+    <component2>Input 0 (0) - KC (Default) (column 36)</component2>
     <component3>Input 0 (0) - KC (Textbook) (column 33)</component3>
     <component4>Input 0 (0) - KC (Textbook) (column 33)</component4>
     <component5>Input 0 (0) - KC (Textbook) (column 33)</component5>
@@ -53,16 +54,16 @@
     <component8>Input 0 (0) - KC (Textbook) (column 33)</component8>
     <component9>Input 0 (0) - KC (Textbook) (column 33)</component9>
     
-    <Feature0>intercept@</Feature0>
-        <Fixedpars0>null</Fixedpars0>
+    <Feature0>logitdec</Feature0>
+        <Fixedpars0>0.9</Fixedpars0>
         <Seedpars0>null</Seedpars0>
         <Offsetvals0>NA</Offsetvals0>
-    <Feature1>linesuc$</Feature1>
-        <Fixedpars1>null</Fixedpars1>
+    <Feature1>logitdec</Feature1>
+        <Fixedpars1>0.85</Fixedpars1>
         <Seedpars1>null</Seedpars1>
         <Offsetvals1>NA</Offsetvals1>    
-    <Feature2>linefail$</Feature2>
-        <Fixedpars2>null</Fixedpars2>
+    <Feature2>logafm</Feature2>
+        <Fixedpars2>0.85</Fixedpars2>
         <Seedpars2>null</Seedpars2>
         <Offsetvals2>NA</Offsetvals2>   
     <Feature3>null</Feature3>

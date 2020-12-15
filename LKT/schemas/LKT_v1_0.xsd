@@ -196,6 +196,7 @@
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept" default="true" />
         <xs:element type="modeType"  name="mode"  id="Analysis_mode" default="best fit model"/>
         <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
+        <xs:element type="xs:integer" name="Num_of_posKC" id="PosKC" default="0"/>
         <xs:element type="xs:boolean" name="Include_Latency_Model" id="Latency_model" default="false" />
         <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Fixed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>

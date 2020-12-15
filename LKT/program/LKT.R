@@ -71,6 +71,13 @@ if (args[i] == "-Use_Global_Intercept") {
        Use_Global_Intercept = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Num_of_posKC") {
+       if (length(args) == i) {
+          stop("Num_of_posKC must be specified")
+       }
+       posKC = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Model_Name") {
        if (length(args) == i) {
           stop("Model_Name must be specified")
@@ -487,12 +494,20 @@ if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirecto
 }
 
 #cite library
-suppressPackageStartupMessages(library("LKT"))
-suppressPackageStartupMessages(library("XML"))
+library(XML)
+library(LKT)
 library(Matrix)
 library(SparseM)
 library(dplyr)
 library(LiblineaR)
+library(reshape2)
+library(car)
+library(zoo)
+library(gplots)
+library(rsvd)
+library(e1071)
+library(Rgraphviz)
+
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
@@ -645,6 +660,14 @@ suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))
 suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
+usethresh<-FALSE
+KCthresh<-.2
+usethreshm<-TRUE
+KCthreshm<-.2
+RSVDcomp<-2
+
+posKC=as.numeric(posKC)
+cat("Num_of_posKC:",posKC,"\n")
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
@@ -659,11 +682,98 @@ outputFilePath2<- paste(workingDirectory, "model_result_values.xml", sep="")
 #Get data
 val<-read.table(inputFile0,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
 equation<-"CF..ansbin.~ ";temp<-NA;pars<-numeric(0);parlength<-0;termpars<-c();planfeatures<-c();i<-0;
+#Add from LKT function
+val$CF..ansbin.<-ifelse(tolower(val$Outcome)=="correct",1,ifelse(tolower(val$Outcome)=="incorrect",0,-1))
+val$CF..ansbin.<-as.numeric(val$CF..ansbin.)
+val<-val[val$CF..ansbin.!=-1,]   #remove -1
+val$KC..Default.<-as.numeric(regmatches(x =val$KC..Default.,regexpr("^[^-]*[^ -]",text = val$KC..Default.)))
+val$KC..Default.<-ifelse(val$KC..Default.>17,val$KC..Default.-18,val$KC..Default.)
+val$KC..Default.<-paste( val$KC..Default.,val$CF..Stimulus.Version.,gsub(" ","",val$CF..Correct.Answer.),sep="-")
+
+aggdata<-aggregate(val$CF..ansbin.,by=list(val$KC..Default.,val$Anon.Student.Id),FUN=mean)
+colnames(aggdata)<-c('KC..Default.','Anon.Student.Id','CF..ansbin.')
+
+aggdata<-aggdata[with(aggdata,order(KC..Default.)),]
+
+mydata<-dcast(aggdata, KC..Default. ~ Anon.Student.Id, value.var="CF..ansbin.") #reshape to wide data format
+
+rownames(mydata)<-mydata[,1]
+mydata<-mydata[,-1]
+mydata<-na.aggregate(mydata)   #Replace NA by column mean
+
+mydata<-apply(mydata,1:2,logit) # Q1 mean use the predict value？？？
+mydata[which(mydata>2)] <- 2
+mydata[which(mydata<(-2))] <- -2   # why set the threshold [-2,2]
+
+#==========================Feature matrix================================
+df<-data.frame()
+for (i in 1:ncol(mydata)){
+  disVector<-mydata[,i]-mean(mydata[,i])  #means for each subject
+  diagvectors<-disVector %*% t(disVector) #matrix for each subject
+  if(i>1){
+    df=df+diagvectors # sum of matrixes for all students _-> feature matrix
+  }else{
+    df=diagvectors
+  }
+}
+df<-df/nrow(df)
+
+rownames(df)<-1:nrow(mydata)
+colnames(df)<-rownames(mydata)
+
+#==========================Reduce matrix================================
+reducedmatrix<-rsvd(df,RSVDcomp)           # dimension reduce PCA can also be considered
+rownames(reducedmatrix$v)<-rownames(mydata)
+
+#==========================cluster matrix==============================
+cm <- (cmeans(reducedmatrix$v,centers=posKC))  # fuzzy clustering using the function cmeans()
+
+val3<-val
+#=================extrapolate KC model==============
+if(usethresh) {
+  KCmodel <-
+    as.data.frame(sapply(apply(cm$membership, 1, function(x)
+      which(x > KCthresh)), paste, collapse = " "))            
+} else{
+  KCmodel <-
+    as.data.frame(sapply(apply(cm$membership, 1, function(x)
+      which(x == max(x))), paste, collapse = " "))            
+}
+View(KCmodel)
+colnames(KCmodel)[1] <- "AC"
+val3<-merge(val3,
+            KCmodel,
+            by.y = 0,
+            by.x = 'KC..Default.',
+            sort = FALSE)
+CCKCs<-KCmodel
+
+if (usethreshm) {
+  KCmodelm <- ifelse(cm$membership > KCthreshm, 1, 0)           
+} else {
+  KCmodelm <- cm$membership
+}
+View(KCmodelm)
+colnames(KCmodelm)<-paste0("c", colnames(KCmodelm), sep = "")
+
+val3<-merge(val3,
+            KCmodelm,
+            by.y = 0,
+            by.x = 'KC..Default.',
+            sort = FALSE
+)
+
+val3<-val3[order(val3$Row),]
 options(scipen = 999)
 options(max.print=1000000)
 
 #Prepare to output the results in xml file.
 #top <- newXMLNode("model_output")
+
+if(posKC>0){
+    compKC<-paste(paste("c",1:posKC,sep=""),collapse="__")
+    planComponents=c(planComponents,compKC)
+}
 
 #switch mode
 switch(mode,
@@ -671,9 +781,9 @@ switch(mode,
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
          
-         modelob<-LKT(data=val,components=c("Anon.Student.Id","KC..Default.","KC..Default."),
-             features=c("logitdec","logitdec","logafm"),
-             fixedpars=c(.9,.85,.85),interc=TRUE,verbose=FALSE)
+         modelob<-LKT(data=val3,components=planComponents,  #use val3 or val
+             features=prespecFeatures, offsetvals=NA,fixedpars=fixedpars,seedpars=seedpars,covariates=NA,dualfit=Dualfit,
+             interc=Interc,elastic=Elastictest,verbose=FALSE,epsilon=1e-4,cost=512,type=0)
         
         top <- newXMLNode("model_output")
         newXMLNode("N", "", parent = top)
@@ -708,8 +818,10 @@ switch(mode,
        "five times 2 fold crossvalidated create folds"={
          cvSwitch=1
          makeFolds=1
+         
+         #LKT_cv(componentl=planComponents,featl=prespecFeatures,offsetl=NA,fixedl=fixedpars,seedl=seedpars,elastictest=Elastictest,
+         #       outputFilePath,val,cvSwitch=cvSwitch,makeFolds=makeFolds,dualfit=Dualfit,interc=FALSE)
 
-         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds,dualfit)
          val<<-dat
        },
 
@@ -717,7 +829,9 @@ switch(mode,
          cvSwitch=1
          makeFolds=0
 
-         mocv(plancomponents,prespecfeatures,val,cvSwitch,makeFolds,dualfit)
+        #LKT_cv(componentl=planComponents,featl=prespecFeatures,offsetl=NA,fixedl=fixedpars,seedl=seedpars,elastictest=Elastictest,
+        #       outputFilePath,val,cvSwitch=cvSwitch,makeFolds=makeFolds,dualfit=Dualfit,interc=FALSE)
+
          val<<-dat
        })
 # Export modified data frame for reimport after header attachment
