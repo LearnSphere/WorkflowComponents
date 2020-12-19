@@ -113,6 +113,41 @@ if (args[i] == "-Include_of_Offsetvals") {
        Include_of_Offsetvals = args[i+1]
        i = i+1
     } else
+if (args[i] == "-usethresh") {
+       if (length(args) == i) {
+          stop("usethresh must be specified")
+       }
+       usethresh = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-KCthresh") {
+       if (length(args) == i) {
+          stop("KCthresh must be specified")
+       }
+       KCthresh = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-usethreshm") {
+       if (length(args) == i) {
+          stop("usethreshm must be specified")
+       }
+       usethreshm = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-KCthreshm") {
+       if (length(args) == i) {
+          stop("KCthreshm must be specified")
+       }
+       KCthreshm = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-RSVDcomp") {
+       if (length(args) == i) {
+          stop("RSVDcomp must be specified")
+       }
+       RSVDcomp = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-component0") {
        if (length(args) == i) {
           stop("plancomponents must be specified")
@@ -530,6 +565,12 @@ Inlcude_of_Fixedpars<-as.logical(Inlcude_of_Fixedpars)
 Include_of_Seedpars<-as.logical(Include_of_Seedpars)
 Include_of_Offsetvals<-as.logical(Include_of_Offsetvals)
 
+usethresh<-as.logical(usethresh)
+KCthresh<-as.numeric(KCthresh)
+usethreshm<-as.logical(usethreshm)
+KCthreshm<-as.numeric(KCthreshm)
+RSVDcomp<-as.numeric(RSVDcomp)
+
 Num_of_PlanComponents<-as.numeric(Num_of_PlanComponents)
 plancomponentsLi<-vector()
 prespecfeaturesLi<-vector()
@@ -660,12 +701,6 @@ suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))
 suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
-usethresh<-FALSE
-KCthresh<-.2
-usethreshm<-TRUE
-KCthreshm<-.2
-RSVDcomp<-2
-
 posKC=as.numeric(posKC)
 cat("Num_of_posKC:",posKC,"\n")
 cat("prespecfeatures:",prespecFeatures,"\n")
@@ -673,7 +708,12 @@ cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 cat("offsetvals:",offsetvals,"\n")
-cat("Elastictest:",Elastictest,"\n\n")
+cat("Elastictest:",Elastictest,"\n")
+cat("usethresh:",usethresh,"\n")
+cat("KCthresh:",KCthresh,"\n")
+cat("usethreshm:",usethreshm,"\n")
+cat("KCthreshm:",KCthreshm,"\n")
+cat("RSVDcomp:",RSVDcomp,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
