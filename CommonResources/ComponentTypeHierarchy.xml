@@ -24,7 +24,6 @@
 		<AppendCF />
 		<Classify_with_Lightside />
 		<Column_Remover />
-		<Convert_Multiskill />
 		<Coursera_MOOCdb_Translator />
 		<Data_Conversion />
 		<DataShop_Txn_Rollup />
@@ -39,6 +38,7 @@
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
 		<Multiselection_Converter />
+		<Multiskill_Converter />
 		<OLI_LO_to_KC />
 		<Pivot />
 		<Resource_Use />

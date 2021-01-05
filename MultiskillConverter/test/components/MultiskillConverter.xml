@@ -1,0 +1,54 @@
+<component>
+  <component_id>Transform-1-x120781</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>2</workflow_id>
+  <component_name>Multiskill Converter</component_name>
+  <component_type>transform</component_type>
+  <left>360.00001525878906</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x780221</from>
+    </connection>
+  </connections>
+  <top>57</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x780221</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>0</index>
+          <file_path>test/test_data/test.txt</file_path>
+          <label>student-step</label>
+          <file_name>test.txt</file_name>
+          <metadata>
+          </metadata>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"test.txt","importFileType":"student-step","importFileNameTitle":"File: test.txt","fileTypeSelection":"student-step","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"16","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <!--for concatenate Split to Multiple Rows-->
+	<multiskillConversionMethod>Split to Multiple Rows</multiskillConversionMethod>
+    <kcModelToConvert>Input 0 (0) - KC (MATHia New) (column 21)</kcModelToConvert>
+    <valuesToBeSplit>Input 0 (0) - Step End Time (column 10)</valuesToBeSplit>
+    <valuesToBeSplit>Input 0 (0) - Step Duration (sec) (column 11)</valuesToBeSplit> 
+    <averageColumnValues>Yes</averageColumnValues>
+    
+	<!--for concatenate 
+	<multiskillConversionMethod>Concatenate</multiskillConversionMethod>
+    <kcModelsToConvert>Input 0 (0) - KC (CCSS) (column 18)</kcModelsToConvert>
+    <kcModelsToConvert>Input 0 (0) - KC (MATHia New) (column 24)</kcModelsToConvert>
+	-->
+  </options>
+</component>

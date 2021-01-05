@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/MultiskillConverter</url>
+<date>2021-01-05</date>
+<abstract><p>The <b>Multiskill Converter</b> component allows users to transform Datashop student-step rollup export with muitlskill KC into either with concatenated single skill KC or with multiple single skill KCs. 
+<p><b>The following is an example of transforming a multiskill KC to a concatenated single skill KC: </b>
+
+	<table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+			<td>Step Duration (sec)</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+            <td>KC (M2)</td>
+            <td>Opportunity (M2)</td>
+            <td>Predicted Error Rate (M2)</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+			<td>10</td>
+            <td>Type~~5</td>
+            <td>1~~1</td>
+            <td>0.2223~~0.9219</td>		
+            <td>Click~~Whole-num</td>
+            <td>1~~4</td>
+            <td>0.8626~~0.3732</td>
+        </tr>
+		
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+			<td>15</td>
+            <td>Type~~5</td>		
+            <td>2~~2</td>
+            <td>0.0814~~0.9215</td>		
+            <td>Type~~Whole-num</td>
+            <td>2~~5</td>
+            <td>0.623~~0.742</td>
+        </tr>
+    </table>
+    
+    <br></br>
+        If KC (M1) is selected to be converted, the following rows are the results of conversion of this component:
+    <br></br>
+    <table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+			<td>Step Duration (sec)</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+            <td>KC (M2)</td>
+            <td>Opportunity (M2)</td>
+            <td>Predicted Error Rate (M2)</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+			<td>10</td>
+            <td>Type+5</td>
+            <td>1</td>
+            <td></td>		
+            <td>Click~~Whole-num</td>
+            <td>1~~4</td>
+            <td>0.8626~~0.3732</td>
+        </tr>
+		<tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+			<td>15</td>
+            <td>Type+5</td>
+            <td>2</td>
+            <td></td>		
+            <td>Type~~Whole-num</td>
+            <td>2~~5</td>
+            <td>0.623~~0.742</td>
+			
+        </tr>
+    </table>
+    	
+  Notice the values are changed in columns: KC (M1), Opportunity (M1), Predicted Error Rate (M1). All the other columns remained the same.  
+	</p>
+	<br></br>
+
+<p><b>The following is an example of transforming a multiskill KC to multiple single skill KCs: </b>
+
+	<table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+			<td>Step Duration (sec)</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+			<td>10</td>
+            <td>Type~~5</td>
+            <td>1~~1</td>
+            <td>0.2223~~0.9219</td>	
+        </tr>
+		
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+			<td>15</td>
+            <td>Type~~5</td>		
+            <td>2~~2</td>
+            <td>0.0814~~0.9215</td>	
+        </tr>
+    </table>
+    
+    <br></br>
+        If KC (M1) is selected to be converted, the following rows are the results of conversion of this component:
+    <br></br>
+    <table border="1">
+        <tr>
+            <td>Row</td>
+            <td>Anon Student Id</td>
+            <td>.......</td>
+            <td>First Attempt</td>
+            <td>.......</td>
+			<td>Step Duration (sec)</td>
+            <td>KC (M1)</td>
+            <td>Opportunity (M1)</td>
+            <td>Predicted Error Rate (M1)</td>
+        </tr>
+		
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+			<td>5</td>
+            <td>Type</td>
+            <td>1</td>
+            <td>0.2223</td>	
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>incorrect</td>
+            <td>.......</td>
+			<td>5</td>
+            <td>5</td>
+            <td>1</td>
+            <td>0.9219</td>	
+        </tr>
+		
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+			<td>7.5</td>
+            <td>Type</td>		
+            <td>2</td>
+            <td>0.0814</td>	
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Stu_00534e69904177f44e6e707bdd26d217</td>
+            <td>.......</td>
+            <td>correct</td>
+            <td>.......</td>
+            <td>7.5</td>
+			<td>5</td>				
+            <td>2</td>
+            <td>0.9215</td>		
+        </tr>
+    </table>
+    	
+  Notice the values are changed in columns: KC (M1), Opportunity (M1), Predicted Error Rate (M1). 
+  If you select "Yes" to average the column "Step Duration (sec)"s value, "Step Duration (sec)" is changed too.
+  All the other columns remained the same.  
+	
+	</p>	
+	
+	</p>
+	</abstract>
+
+<description>This component allows you to convert multiskill KCs in Datashop student-step rollup export.</description>
+
+
+<inputs><ul>
+<li>Datashop student-step rollup export file</li>
+</ul></inputs>
+
+<outputs>
+<ul>
+<li>Modified Datashop student-step rollup export file</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Multiskill Conversion Method: two options: Concatenate or Split to Multiple Rows</li>
+<li>KC Model to Convert: if Concetenate is chosen, users can choose one or more KC models to convert. If Split to Multiple Rows is chosen, users can choose one KC model to convert.</li>
+<li>Average Column Values: if Split to Multiple Rows is selected, users can choose whether or not to split certain columns' values by averaging the existing values</li>
+<li>Values to Be Split: choose which columns' values to be averaged</li>
+</ul>
+</options>
+
+
+</info>
