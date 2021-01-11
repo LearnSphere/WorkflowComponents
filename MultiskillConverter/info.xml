@@ -236,8 +236,8 @@
  <ul>
 <li>Multiskill Conversion Method: two options: Concatenate or Split to Multiple Rows</li>
 <li>KC Model to Convert: if Concetenate is chosen, users can choose one or more KC models to convert. If Split to Multiple Rows is chosen, users can choose one KC model to convert.</li>
-<li>Average Column Values: if Split to Multiple Rows is selected, users can choose whether or not to split certain columns' values by averaging the existing values</li>
-<li>Values to Be Split: choose which columns' values to be averaged</li>
+<li>Divide Column Value Evenly: if Split to Multiple Rows is selected, users can choose whether or not to divide the existing values of certain columns evenly</li>
+<li>Values to Be Divide: choose which columns' values to be averaged</li>
 </ul>
 </options>
 

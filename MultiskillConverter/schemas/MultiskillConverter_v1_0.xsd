@@ -95,8 +95,8 @@
     	<xs:element type="conversionType" name="multiskillConversionMethod" id="Multiskill_Conversion_Method" default="Concatenate" />
       	<xs:element type="MultiFileInputHeader" name="kcModelsToConvert" id="KC_Models_to_Convert" default="\s*KC\s*\((.*)\)\s*" />
       	<xs:element type="FileInputHeader" name="kcModelToConvert" id="KC_Model_to_Convert" default="\s*KC\s*\((.*)\)\s*" />
-      	<xs:element type="averageColumnValueType" name="averageColumnValues" id="Average_Column_Values" default="No" />
-      	<xs:element type="MultiFileInputHeader" name="valuesToBeSplit" id="Values_to_Be_Split" default=".*" />
+      	<xs:element type="averageColumnValueType" name="averageColumnValues" id="Divide_Column_Value_Evenly" default="No" />
+      	<xs:element type="MultiFileInputHeader" name="valuesToBeSplit" id="Values_to_Be_Divide" default=".*" />
     </xs:choice>
   </xs:complexType>
 
