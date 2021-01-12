@@ -68,6 +68,7 @@
     <Gaming_Detector />
     <GKT />
     <LKT />
+    <CovarianceClustering />
     <SimModels />
     <iAFM />
     <LFA_Search />
