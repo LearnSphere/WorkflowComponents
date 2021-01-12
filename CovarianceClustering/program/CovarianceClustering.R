@@ -97,7 +97,7 @@ if (is.null(workingDirectory) || is.null(componentDirectory) ) {
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
-options(width=300)
+options(width=120)
 
 # This dir contains the R program or any R helper functions
 programLocation<- paste(componentDirectory, "program/", sep="")
