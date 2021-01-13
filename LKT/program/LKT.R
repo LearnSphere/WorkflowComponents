@@ -529,20 +529,20 @@ if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirecto
 }
 
 #cite library
-library(XML)
-library(LKT)
-library(Matrix)
-library(SparseM)
-library(dplyr)
-library(LiblineaR)
-library(reshape2)
-library(car)
-library(zoo)
-library(gplots)
-library(rsvd)
-library(e1071)
-library(Rgraphviz)
-
+suppressPackageStartupMessages(library(XML))
+#suppressPackageStartupMessages(library(LKT))
+suppressPackageStartupMessages(library(Matrix))
+suppressPackageStartupMessages(library(SparseM))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(LiblineaR))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(car))
+suppressPackageStartupMessages(library(zoo))
+suppressPackageStartupMessages(library(gplots))
+suppressPackageStartupMessages(library(rsvd))
+suppressPackageStartupMessages(library(e1071))
+suppressPackageStartupMessages(library(Rgraphviz))
+suppressPackageStartupMessages(library(data.table))
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
@@ -552,8 +552,11 @@ options(width=300)
 
 # This dir contains the R program or any R helper functions
 programLocation<- paste(componentDirectory, "program/", sep="")
-#sourceFunction=paste(programLocation,"GKTfunctions.R",sep="")
-#source(sourceFunction)
+
+#library(LKT)
+
+sourceFunction=paste(programLocation,"LKTfunctions.R",sep="")
+source(sourceFunction)
 
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
@@ -741,7 +744,7 @@ rownames(mydata)<-mydata[,1]
 mydata<-mydata[,-1]
 mydata<-na.aggregate(mydata)   #Replace NA by column mean
 
-mydata<-apply(mydata,1:2,logit) # Q1 mean use the predict value？？？
+mydata<-apply(mydata,1:2,logit) # Q1 mean use the predict value
 mydata[which(mydata>2)] <- 2
 mydata[which(mydata<(-2))] <- -2   # why set the threshold [-2,2]
 
@@ -821,7 +824,7 @@ switch(mode,
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
          
-         modelob<-LKT(data=val3,components=planComponents,  #use val3 or val
+         modelob<-LKT(data=setDT(val3),components=planComponents,  #use val3 or val
              features=prespecFeatures, offsetvals=NA,fixedpars=fixedpars,seedpars=seedpars,covariates=NA,dualfit=Dualfit,
              interc=Interc,elastic=Elastictest,verbose=FALSE,epsilon=1e-4,cost=512,type=0)
         
