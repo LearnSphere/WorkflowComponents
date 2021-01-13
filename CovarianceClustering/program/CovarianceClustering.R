@@ -123,12 +123,13 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(paramtest))
 
 #parameters
-posKC<-3
-usethresh<-FALSE
-KCthresh<-.2
-usethreshm<-TRUE
-KCthreshm<-.2
-RSVDcomp<-2
+posKC<-as.numeric(posKC)
+usethresh<-as.logical(usethresh)
+KCthresh<-as.numeric(KCthresh)
+usethreshm<-as.logical(usethreshm)
+KCthreshm<-as.numeric(KCthreshm)
+RSVDcomp<-as.numeric(RSVDcomp)
+
 #rm(posKC,KCthreshm,RSVDcomp)
 
 #==========================Data Preparation==============================
