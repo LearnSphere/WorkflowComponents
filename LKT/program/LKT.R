@@ -799,7 +799,7 @@ if (usethreshm) {
 } else {
   KCmodelm <- cm$membership
 }
-View(KCmodelm)
+
 colnames(KCmodelm)<-paste0("c", colnames(KCmodelm), sep = "")
 
 val3<-merge(val3,
