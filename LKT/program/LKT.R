@@ -556,10 +556,10 @@ programLocation<- paste(componentDirectory, "program/", sep="")
 
 #temp<-unzip(paste(programLocation,"LKT_functions.zip",sep=""),list = TRUE)
 
-sourceFunction=paste(programLocation,"LKTfunctions.R",sep="")
-source(sourceFunction)
+#sourceFunction=paste(programLocation,"LKTfunctions.R",sep="")
+#source(sourceFunction)
 
-#source('/usr/local/lib/R/site-library/LKT/R/LKTfunctions.R')
+source('/usr/local/lib/R/site-library/LKT/R/LKTfunctions.R')
 
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
