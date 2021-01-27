@@ -785,7 +785,7 @@ if(usethresh) {
     as.data.frame(sapply(apply(cm$membership, 1, function(x)
       which(x == max(x))), paste, collapse = " "))            
 }
-View(KCmodel)
+
 colnames(KCmodel)[1] <- "AC"
 val3<-merge(val3,
             KCmodel,
