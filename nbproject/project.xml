@@ -4,8 +4,11 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>WorkflowComponents</name>
+            <explicit-platform explicit-source-supported="true"/>
             <source-roots>
+                <root id="src.source2.dir"/>
                 <root id="src.dir"/>
+                <root id="src.source.dir"/>
                 <root id="source.dir"/>
                 <root id="source2.dir"/>
                 <root id="source3.dir"/>

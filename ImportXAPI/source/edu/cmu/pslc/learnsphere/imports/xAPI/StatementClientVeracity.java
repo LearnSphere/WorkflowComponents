@@ -90,7 +90,7 @@ public class StatementClientVeracity {
    public JSONArray filterByOptionVQL(JSONObject sqlUrlWithFilterVQL, String queryMode, String lrsUrl, String username, String password) throws UnsupportedEncodingException, MalformedURLException, IOException, JSONException{
         JSONArray stsArray=new JSONArray();  //Statements Array
         
-        //System.out.print(sqlUrlWithFilterVQL.toString());
+        System.out.print(sqlUrlWithFilterVQL.toString());
         
         String encodeDataSql=URLEncoder.encode(sqlUrlWithFilterVQL.toString(), StandardCharsets.UTF_8.toString());
         
@@ -103,6 +103,8 @@ public class StatementClientVeracity {
         Base64 base64 = new Base64();
         String encodedAuth = new String(base64.encode(auth.getBytes()));
         String authHeaderValue = "Basic " + new String(encodedAuth);
+        System.out.print(authHeaderValue);
+        System.out.print(getDataUrl);
         
         //set the request method and properties using HttpURLConnection
         URL obj=new URL(getDataUrl);

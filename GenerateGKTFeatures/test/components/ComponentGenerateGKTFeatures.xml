@@ -23,16 +23,16 @@
         <files>
             <file>
             <index>0</index>
-            <file_path>test/testdata/Student_Step.txt</file_path>
+            <file_path>test/testdata/ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_path>
             <label>text</label>
-            <file_name>Student_Step.txt</file_name>
+            <file_name>ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_name>
             </file>
         </files>
     </input0>
 </inputs>
 <options>
     <Include_KC_Model>true</Include_KC_Model>
-    <model>KC (Decompose)</model>
+    <model>KC (Default)</model>
     <Number_of_Students>all</Number_of_Students>
 </options>
 

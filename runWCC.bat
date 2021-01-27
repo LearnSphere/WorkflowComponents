@@ -41,5 +41,5 @@ set TEMPLATESDIR=%DIR%Templates
 set CLASSNAME=edu.cmu.pslc.datashop.extractors.workflows.WorkflowComponentCreator
 echo Classname is: %CLASSNAME%
 
-echo "C:/Program Files/Java/jdk1.8.0_144/bin/java.exe" -cp %TEMPLATESDIR%;%CP% %CLASSNAME% -file %PROPFILE% -dir %DIR%
-"C:/Program Files/Java/jdk1.8.0_144/bin/java.exe" -cp %TEMPLATESDIR%;%CP% %CLASSNAME% -file %PROPFILE% -dir %DIR%
+echo "C:/Program Files/Java/jdk1.8.0_261/bin/java.exe" -cp %TEMPLATESDIR%;%CP% %CLASSNAME% -file %PROPFILE% -dir %DIR%
+"C:/Program Files/Java/jdk1.8.0_261/bin/java.exe" -cp %TEMPLATESDIR%;%CP% %CLASSNAME% -file %PROPFILE% -dir %DIR%

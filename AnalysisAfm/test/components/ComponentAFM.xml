@@ -27,9 +27,9 @@
       <files>
         <student-step>
           <index>0</index>
-          <file_path>test/example_student_step/ds96_student_step_export.txt</file_path>
+          <file_path>test/example_student_step/LCA.txt</file_path>
           <label>student-step</label>
-          <file_name>ds96_student_step_export.txt</file_name>
+          <file_name>LCA.txt</file_name>
           <metadata>
             <header>
               <id>header0</id>

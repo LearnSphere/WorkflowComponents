@@ -78,6 +78,7 @@ public class filterValuesCombVQL {
         String filterByUntil = "2020-09-09T00:28:07.551Z";
         String filterBySince = "2020-09-08T22:29:52.104Z";
         
+        
         JSONArray filterArrayTime = new JSONArray()
                 .put(new JSONObject().put("timestamp",new JSONObject().put("$lte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterByUntil)))))
                 .put(new JSONObject().put("timestamp",new JSONObject().put("$gte",new JSONObject().put("$parseDate",new JSONObject().put("date",filterBySince)))));  

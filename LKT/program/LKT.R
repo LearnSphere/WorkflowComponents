@@ -531,6 +531,7 @@ if (is.null(inputFile0) || is.null(workingDirectory) || is.null(componentDirecto
 #cite library
 suppressPackageStartupMessages(library(XML))
 #suppressPackageStartupMessages(library(LKT))
+suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(Matrix))
 suppressPackageStartupMessages(library(SparseM))
 suppressPackageStartupMessages(library(dplyr))
@@ -542,7 +543,6 @@ suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library(rsvd))
 suppressPackageStartupMessages(library(e1071))
 suppressPackageStartupMessages(library(Rgraphviz))
-suppressPackageStartupMessages(library(data.table))
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
@@ -553,7 +553,7 @@ options(width=300)
 # This dir contains the R program or any R helper functions
 programLocation<- paste(componentDirectory, "program/", sep="")
 
-#library(LKT)
+#temp<-unzip(paste(programLocation,"LKT_functions.zip",sep=""),list = TRUE)
 
 sourceFunction=paste(programLocation,"LKTfunctions.R",sep="")
 source(sourceFunction)

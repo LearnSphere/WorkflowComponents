@@ -18,13 +18,13 @@
     <use_customfilter>false</use_customfilter>
     <customfilter_code>null</customfilter_code>
     
-    <FilterOperator>$or</FilterOperator>
+    <FilterOperator>null</FilterOperator>
     <Filter01>actor.mbox</Filter01>
         <FilterValue01>mailto:39926e99-e7e9-480f-a9db-96b72935b51d@author.x-in-y.com</FilterValue01>
-    <Filter02>verb.id</Filter02>
-        <FilterValue02>https://vocab.autotutor.org/ITSProfile/System/speak</FilterValue02>
-    <Filter03>object.mbox</Filter03>
-        <FilterValue03>mailto:guest@autotutor.org</FilterValue03>
+    <Filter02>null</Filter02>
+        <FilterValue02>null</FilterValue02>
+    <Filter03>null</Filter03>
+        <FilterValue03>null</FilterValue03>
     <Filter04>null</Filter04>
         <FilterValue04>null</FilterValue04>
     <Filter05>null</Filter05>
