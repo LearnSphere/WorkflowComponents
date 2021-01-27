@@ -558,6 +558,8 @@ programLocation<- paste(componentDirectory, "program/", sep="")
 sourceFunction=paste(programLocation,"LKTfunctions.R",sep="")
 source(sourceFunction)
 
+#source('/usr/local/lib/R/site-library/LKT/R/LKTfunctions.R')
+
 #Transfer of the Parameters' Format
 cat("mode:",mode,"\n")
 cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
