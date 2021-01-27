@@ -543,6 +543,7 @@ suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library(rsvd))
 suppressPackageStartupMessages(library(e1071))
 suppressPackageStartupMessages(library(Rgraphviz))
+suppressPackageStartupMessages(library(paramtest))
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
