@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/SparfaLite</url>
+<date>February 10, 2021</date>
+<abstract>The <b>SparfaLite</b> component is an example of a(n) R component.</abstract>
+<description>This component is used to apply the simulatation to help students model anaylsis.</description>
+
+<inputs>
+</inputs>
+
+<outputs>
+<b>image</b><br/>
+</outputs>
+
+<options>
+</options>
+
+</info>
