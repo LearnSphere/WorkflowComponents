@@ -59,7 +59,7 @@
 		<Entity_Set />
 		<Gaming_Detector />
 		<iAFM />
-                <LearningRateAnalysis />
+                <Learning_Rate_Analysis />
 		<LFA_Search />
 		<Linear_Modeling />
 		<LSA />
