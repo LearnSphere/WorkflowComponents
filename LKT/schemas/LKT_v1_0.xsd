@@ -196,7 +196,6 @@
         <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Fixed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients" default="false"/>
-        <xs:element type="xs:boolean" name="usethresh" id="Use_thresh" default="false"/>
         <xs:element type="FileInputHeader" name="component0" id="KC_or_Factor_1" default=".*" minOccurs="1"/>
         <xs:element type="xs:string" name="Feature0" id="Feature_1" default="intercept" />
             <xs:element type="xs:string" name="Fixedpars0" id="Fixed_NLP_1" default="" />
