@@ -50,20 +50,6 @@ if (args[i] == "-workingDir") {
        workingDirectory = args[i+1]
        i = i+1
     } else
-if (args[i] == "-Include_Latency_Model") {
-       if (length(args) == i) {
-          stop("Include_Latency_Model name must be specified")
-       }
-       Include_Latency_Model = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Use_Global_Intercept") {
-       if (length(args) == i) {
-          stop("Use_Global_Intercept name must be specified")
-       }
-       Use_Global_Intercept = args[i+1]
-       i = i+1
-    } else
 if (args[i] == "-Model_Name") {
        if (length(args) == i) {
           stop("Model_Name must be specified")
@@ -507,10 +493,6 @@ source(sourceFunction)
 #source('/usr/local/lib/R/site-library/LKT/R/LKTfunctions.R')
 #library(LKT)
 #Transfer of the Parameters' Format
-cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
-cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
-Dualfit<-as.logical(Include_Latency_Model)
-Interc<-as.logical(Use_Global_Intercept)
 Inlcude_of_Fixedpars<-as.logical(Inlcude_of_Fixedpars)
 Include_of_Seedpars<-as.logical(Include_of_Seedpars)
 Include_of_Offsetvals<-as.logical(Include_of_Offsetvals)

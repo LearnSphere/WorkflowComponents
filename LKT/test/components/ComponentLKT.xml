@@ -34,8 +34,6 @@
 
 <options>
     <Model_Name>Diff</Model_Name>
-    <Include_Latency_Model>false</Include_Latency_Model>
-    <Use_Global_Intercept>false</Use_Global_Intercept>
     <Num_of_PlanComponents>3</Num_of_PlanComponents>
     <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
     <Include_of_Seedpars>false</Include_of_Seedpars> 
