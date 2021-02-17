@@ -55,11 +55,10 @@
 		<BKT />
 		<Correlation />
 		<Cronbachs_Alpha />
-		<description_png />
 		<Entity_Set />
 		<Gaming_Detector />
 		<iAFM />
-                <Learning_Rate_Analysis />
+		<Learning_Rate />
 		<LFA_Search />
 		<Linear_Modeling />
 		<LSA />
@@ -71,9 +70,9 @@
 		<Python_AFM />
 		<RISE />
 		<RLM_Fitting />
+		<Student_Growth />
 		<Student_Progress_Classification />
 		<TKT />
-		<trendMAP_png />
 		<Wheelspin />
 	</Analysis>
 	<Visualization>
@@ -86,6 +85,7 @@
 		<Line_Graph />
 		<Scatter_Plot />
 		<Solution_Paths />
+		<Student_Demographics />
 	</Visualization>
 	<Tetrad>
 	    <Recently_Used />
