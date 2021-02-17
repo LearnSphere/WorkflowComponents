@@ -194,19 +194,11 @@
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="New Model" />
         <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Model_terms" default="3"/>
         <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept" default="true" />
-        <xs:element type="modeType"  name="mode"  id="Analysis_mode" default="best fit model"/>
-        <xs:element type="elastictestType" name="Elastictest" id="Elastictest" default="FALSE"/>
-        <xs:element type="xs:integer" name="Num_of_posKC" id="PosKC" default="3"/>
         <xs:element type="xs:boolean" name="Include_Latency_Model" id="Latency_model" default="false" />
         <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Fixed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients" default="false"/>
         <xs:element type="xs:boolean" name="usethresh" id="Use_thresh" default="false"/>
-        <xs:element type="xs:string" name="KCthresh" id="KC_thresh" default="0.2"/>
-        <xs:element type="xs:boolean" name="usethreshm" id="Use_threshm" default="true"/>
-        <xs:element type="xs:string" name="KCthreshm" id="KC_threshm" default="0.2"/>
-        <xs:element type="xs:string" name="RSVDcomp" id="RSV_Dcomp" default="2"/>
-        
         <xs:element type="FileInputHeader" name="component0" id="KC_or_Factor_1" default=".*" minOccurs="1"/>
         <xs:element type="xs:string" name="Feature0" id="Feature_1" default="intercept" />
             <xs:element type="xs:string" name="Fixedpars0" id="Fixed_NLP_1" default="" />

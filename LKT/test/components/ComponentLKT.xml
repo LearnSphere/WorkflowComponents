@@ -33,21 +33,13 @@
 </inputs>
 
 <options>
-    <mode>best fit model</mode>
     <Model_Name>Diff</Model_Name>
-    <Elastictest>FALSE</Elastictest>
     <Include_Latency_Model>false</Include_Latency_Model>
     <Use_Global_Intercept>false</Use_Global_Intercept>
     <Num_of_PlanComponents>3</Num_of_PlanComponents>
-    <Num_of_posKC>3</Num_of_posKC>
     <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
     <Include_of_Seedpars>false</Include_of_Seedpars> 
     <Include_of_Offsetvals>false</Include_of_Offsetvals>
-    <usethresh>false</usethresh>
-    <KCthresh>0.2</KCthresh>
-    <usethreshm>true</usethreshm>
-    <KCthreshm>0.2</KCthreshm>
-    <RSVDcomp>2</RSVDcomp>
     
     <component0>Input 0 (0) - Anon Student Id (column 3)</component0>
     <component1>Input 0 (0) - KC (Default) (column 36)</component1>

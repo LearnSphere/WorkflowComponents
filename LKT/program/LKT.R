@@ -50,13 +50,6 @@ if (args[i] == "-workingDir") {
        workingDirectory = args[i+1]
        i = i+1
     } else
-if (args[i] == "-mode") {
-       if (length(args) == i) {
-          stop("mode name must be specified")
-       }
-       mode = args[i+1]
-       i = i+1
-    } else
 if (args[i] == "-Include_Latency_Model") {
        if (length(args) == i) {
           stop("Include_Latency_Model name must be specified")
@@ -71,25 +64,11 @@ if (args[i] == "-Use_Global_Intercept") {
        Use_Global_Intercept = args[i+1]
        i = i+1
     } else
-if (args[i] == "-Num_of_posKC") {
-       if (length(args) == i) {
-          stop("Num_of_posKC must be specified")
-       }
-       posKC = args[i+1]
-       i = i+1
-    } else
 if (args[i] == "-Model_Name") {
        if (length(args) == i) {
           stop("Model_Name must be specified")
        }
        Model_Name = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-Elastictest") {
-       if (length(args) == i) {
-          stop("Elastictest must be specified")
-       }
-       Elastictest = args[i+1]
        i = i+1
     } else
 if (args[i] == "-Inlcude_of_Fixedpars") {
@@ -111,41 +90,6 @@ if (args[i] == "-Include_of_Offsetvals") {
           stop("Include_of_Offsetvals must be specified")
        }
        Include_of_Offsetvals = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-usethresh") {
-       if (length(args) == i) {
-          stop("usethresh must be specified")
-       }
-       usethresh = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-KCthresh") {
-       if (length(args) == i) {
-          stop("KCthresh must be specified")
-       }
-       KCthresh = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-usethreshm") {
-       if (length(args) == i) {
-          stop("usethreshm must be specified")
-       }
-       usethreshm = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-KCthreshm") {
-       if (length(args) == i) {
-          stop("KCthreshm must be specified")
-       }
-       KCthreshm = args[i+1]
-       i = i+1
-    } else
-if (args[i] == "-RSVDcomp") {
-       if (length(args) == i) {
-          stop("RSVDcomp must be specified")
-       }
-       RSVDcomp = args[i+1]
        i = i+1
     } else
 if (args[i] == "-component0") {
@@ -544,6 +488,7 @@ suppressPackageStartupMessages(library(rsvd))
 suppressPackageStartupMessages(library(e1071))
 suppressPackageStartupMessages(library(Rgraphviz))
 suppressPackageStartupMessages(library(paramtest))
+suppressPackageStartupMessages(library("pROC"))
 
 # Creates output log file (use .wfl extension if you want the file to be treated as a logging file and hide from user)
 clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
@@ -560,9 +505,8 @@ programLocation<- paste(componentDirectory, "program/", sep="")
 #source(sourceFunction)
 
 source('/usr/local/lib/R/site-library/LKT/R/LKTfunctions.R')
-
+#library(LKT)
 #Transfer of the Parameters' Format
-cat("mode:",mode,"\n")
 cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
 cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
 Dualfit<-as.logical(Include_Latency_Model)
@@ -570,12 +514,6 @@ Interc<-as.logical(Use_Global_Intercept)
 Inlcude_of_Fixedpars<-as.logical(Inlcude_of_Fixedpars)
 Include_of_Seedpars<-as.logical(Include_of_Seedpars)
 Include_of_Offsetvals<-as.logical(Include_of_Offsetvals)
-
-usethresh<-as.logical(usethresh)
-KCthresh<-as.numeric(KCthresh)
-usethreshm<-as.logical(usethreshm)
-KCthreshm<-as.numeric(KCthreshm)
-RSVDcomp<-as.numeric(RSVDcomp)
 
 Num_of_PlanComponents<-as.numeric(Num_of_PlanComponents)
 plancomponentsLi<-vector()
@@ -707,19 +645,10 @@ suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))
 suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
-posKC=as.numeric(posKC)
-cat("Num_of_posKC:",posKC,"\n")
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
-cat("offsetvals:",offsetvals,"\n")
-cat("Elastictest:",Elastictest,"\n")
-cat("usethresh:",usethresh,"\n")
-cat("KCthresh:",KCthresh,"\n")
-cat("usethreshm:",usethreshm,"\n")
-cat("KCthreshm:",KCthreshm,"\n")
-cat("RSVDcomp:",RSVDcomp,"\n\n")
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
@@ -736,109 +665,36 @@ val$KC..Default.<-as.numeric(regmatches(x =val$KC..Default.,regexpr("^[^-]*[^ -]
 val$KC..Default.<-ifelse(val$KC..Default.>17,val$KC..Default.-18,val$KC..Default.)
 val$KC..Default.<-paste( val$KC..Default.,val$CF..Stimulus.Version.,gsub(" ","",val$CF..Correct.Answer.),sep="-")
 
-aggdata<-aggregate(val$CF..ansbin.,by=list(val$KC..Default.,val$Anon.Student.Id),FUN=mean)
-colnames(aggdata)<-c('KC..Default.','Anon.Student.Id','CF..ansbin.')
-
-aggdata<-aggdata[with(aggdata,order(KC..Default.)),]
-
-mydata<-dcast(aggdata, KC..Default. ~ Anon.Student.Id, value.var="CF..ansbin.") #reshape to wide data format
-
-rownames(mydata)<-mydata[,1]
-mydata<-mydata[,-1]
-mydata<-na.aggregate(mydata)   #Replace NA by column mean
-
-mydata<-apply(mydata,1:2,logit) # Q1 mean use the predict value
-mydata[which(mydata>2)] <- 2
-mydata[which(mydata<(-2))] <- -2   # why set the threshold [-2,2]
-
-#==========================Feature matrix================================
-df<-data.frame()
-for (i in 1:ncol(mydata)){
-  disVector<-mydata[,i]-mean(mydata[,i])  #means for each subject
-  diagvectors<-disVector %*% t(disVector) #matrix for each subject
-  if(i>1){
-    df=df+diagvectors # sum of matrixes for all students _-> feature matrix
-  }else{
-    df=diagvectors
-  }
-}
-df<-df/nrow(df)
-
-rownames(df)<-1:nrow(mydata)
-colnames(df)<-rownames(mydata)
-
-#==========================Reduce matrix================================
-reducedmatrix<-rsvd(df,RSVDcomp)           # dimension reduce PCA can also be considered
-rownames(reducedmatrix$v)<-rownames(mydata)
-
-#==========================cluster matrix==============================
-cm <- (cmeans(reducedmatrix$v,centers=posKC))  # fuzzy clustering using the function cmeans()
-
-val3<-val
-#=================extrapolate KC model==============
-if(usethresh) {
-  KCmodel <-
-    as.data.frame(sapply(apply(cm$membership, 1, function(x)
-      which(x > KCthresh)), paste, collapse = " "))            
-} else{
-  KCmodel <-
-    as.data.frame(sapply(apply(cm$membership, 1, function(x)
-      which(x == max(x))), paste, collapse = " "))            
-}
-
-colnames(KCmodel)[1] <- "AC"
-val3<-merge(val3,
-            KCmodel,
-            by.y = 0,
-            by.x = 'KC..Default.',
-            sort = FALSE)
-CCKCs<-KCmodel
-
-if (usethreshm) {
-  KCmodelm <- ifelse(cm$membership > KCthreshm, 1, 0)           
-} else {
-  KCmodelm <- cm$membership
-}
-
-colnames(KCmodelm)<-paste0("c", colnames(KCmodelm), sep = "")
-
-val3<-merge(val3,
-            KCmodelm,
-            by.y = 0,
-            by.x = 'KC..Default.',
-            sort = FALSE
-)
-
-val3<-val3[order(val3$Row),]
-options(scipen = 999)
-options(max.print=1000000)
-
 #Prepare to output the results in xml file.
-#top <- newXMLNode("model_output")
-
-if(posKC>0){
-    compKC<-paste(paste("c",1:posKC,sep=""),collapse="__")
-    planComponents=c(planComponents,compKC)
-}
 
 #switch mode
+mode="best fit model"
+Elastictest=FALSE
+
 switch(mode,
        "best fit model"={
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
-         
-         modelob<-LKT(data=setDT(val3),components=planComponents,  #use val3 or val
-             features=prespecFeatures, offsetvals=NA,fixedpars=fixedpars,seedpars=seedpars,covariates=NA,dualfit=Dualfit,
-             interc=Interc,elastic=Elastictest,verbose=FALSE,epsilon=1e-4,cost=512,type=0)
-        
+         tval<-setDT(val)
+         modelob<-LKT(data=tval,components=planComponents,
+             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars)
+
+        Nres<-length(tval$Outcome)
+        pred<-modelob$prediction
+        pred<-as.data.frame(pred)
+        tval<-cbind(tval,pred)
+        RMSE<-round(sqrt(mean((tval$CF..ansbin.-tval$pred)^2)),5)
+        acc<-round(sum(tval$CF..ansbin.==(tval$pred>.5))/Nres,5)
+        auc<-round(auc(tval$CF..ansbin.,tval$pred,quiet=TRUE),5)
+
         top <- newXMLNode("model_output")
-        newXMLNode("N", "", parent = top)
-        newXMLNode("Loglikelihood", "", parent = top)
-        newXMLNode("RMSE", "", parent = top)
-        newXMLNode("Accuracy", "", parent = top)
-        newXMLNode("AUC", "", parent = top)
-        newXMLNode("r2McFad","", parent = top)
-        
+        newXMLNode("N", Nres, parent = top)
+        #newXMLNode("Loglikelihood", "", parent = top)
+        newXMLNode("RMSE", RMSE, parent = top)
+        newXMLNode("Accuracy", acc, parent = top)
+        newXMLNode("AUC", auc, parent = top)
+        newXMLNode("r2McFad",modelob$r2, parent = top)
+
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 
         t<-summary(modelob$model)
@@ -847,16 +703,16 @@ switch(mode,
 
         if(Elastictest=="FALSE"){
           val$pred <- modelob$prediction
-          datvec<-round(1-modelob$fitstat[1]/modelob$nullfit[1],4)
           val$CF..modbin.<-val$pred}
         else{
-          val$CF..modbin.= predict(temp,type="response")
+          val$CF..modbin.= predict(modelob$model,type="response")
         }
 
          pred<-val$CF..modbin.
          pred<-as.data.frame(pred)
          data_pred<-cbind(val,pred)
          data_pred$CF..GraphName.=Model_Name
+
          outputFilePath3<- paste(workingDirectory, "temp_pred.txt", sep="")
          write.table(data_pred,file=outputFilePath3,sep="\t",quote=FALSE,na = "",col.names=TRUE,append=FALSE,row.names = FALSE)
        },
