@@ -10,7 +10,7 @@
 <description>The Component generates four graphs portraying the number of students for each school, grade, gender, and race. </description>
 
 <inputs>
-A csv file that contains columns pertaining to <b>student ID (could be labled "studentid" or "pl2.id")</b>, <b>SchoolName</b>, <b>Grade</b>, <b>Gender</b> and <b>Race or Ethnicity</b>, discipline<br/>
+A csv file that contains columns pertaining to <b>student ID (could be labled "studentid" or "pl2.id")</b>, <b>SchoolName</b>, <b>Grade</b>, <b>Gender</b> and <b>Race or Ethnicity</b>, discipline (contains "Mathematics" or/and "Reading")<br/>
 </inputs>
 
 <outputs>
