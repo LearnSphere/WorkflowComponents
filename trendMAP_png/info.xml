@@ -10,7 +10,7 @@
 <description>The component takes in MAP data for two years and generates score trends for two years for a desired discipline for minoritized(non-white) and non-minoritized(Whites and Asians) students.</description>
 
 <inputs>
-1. Year 1 csv file with students <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race</b>  and <b>discipline</b> (contains "Mathematics" or/and "Reading")<br/>
+1. Year 1 csv file with students <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race </b> (col name should contain "race" or "ethnicity" or "studentethnicgroup") and <b>discipline</b> (contains "Mathematics" or/and "Reading")<br/>
 2. Year 2 csv file with students <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned,  and <b>discipline</b> (contains "Mathematics" or/and "Reading")<br/>
 <br/>
 </inputs>
