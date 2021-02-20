@@ -657,17 +657,17 @@ switch(mode,
        "best fit model"={
          cvSwitch=0  #if 0, no cross validation to be on val
          makeFolds=0 #if 0, using existing ones assumed to be on val
-         tval<-setDT(val)
-         modelob<-LKT(data=tval,components=planComponents,
+         val<-rlvl(setDT(val))
+         modelob<-LKT(data=val,components=planComponents,
              features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars)
 
-        Nres<-length(tval$Outcome)
+        Nres<-length(val$Outcome)
         pred<-modelob$prediction
         pred<-as.data.frame(pred)
-        tval<-cbind(tval,pred)
-        RMSE<-round(sqrt(mean((tval$CF..ansbin.-tval$pred)^2)),5)
-        acc<-round(sum(tval$CF..ansbin.==(tval$pred>.5))/Nres,5)
-        auc<-round(auc(tval$CF..ansbin.,tval$pred,quiet=TRUE),5)
+        val<-cbind(val,pred)
+        RMSE<-round(sqrt(mean((val$CF..ansbin.-val$pred)^2)),5)
+        acc<-round(sum(val$CF..ansbin.==(val$pred>.5))/Nres,5)
+        auc<-round(auc(val$CF..ansbin.,val$pred,quiet=TRUE),5)
 
         top <- newXMLNode("model_output")
         newXMLNode("N", Nres, parent = top)
@@ -679,7 +679,7 @@ switch(mode,
 
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 
-        t<-summary(modelob$model)
+        t<-modelob$coefs
         cat(paste(capture.output(t),collapse ="\n"))
         cat("\n")
 
@@ -702,7 +702,7 @@ switch(mode,
        "five times 2 fold crossvalidated create folds"={
          cvSwitch=1
          makeFolds=1
-         
+
          #LKT_cv(componentl=planComponents,featl=prespecFeatures,offsetl=NA,fixedl=fixedpars,seedl=seedpars,elastictest=Elastictest,
          #       outputFilePath,val,cvSwitch=cvSwitch,makeFolds=makeFolds,dualfit=Dualfit,interc=FALSE)
 
