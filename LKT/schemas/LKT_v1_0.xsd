@@ -193,6 +193,7 @@
 
         <xs:element type="xs:string" name="Model_Name" id="Model_Name" default="New Model" />
         <xs:element type="xs:integer" name="Num_of_PlanComponents" id="Model_terms" default="3"/>
+        <xs:element type="xs:boolean" name="Use_Global_Intercept" id="Global_intercept" default="true" />
         <xs:element type="xs:boolean" name="Inlcude_of_Fixedpars" id="Fixed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Seedpars" id="Seed_NLPs" default="false"/>
         <xs:element type="xs:boolean" name="Include_of_Offsetvals" id="Fixed_coefficients" default="false"/>

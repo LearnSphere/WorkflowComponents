@@ -57,6 +57,13 @@ if (args[i] == "-Model_Name") {
        Model_Name = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Use_Global_Intercept") {
+       if (length(args) == i) {
+          stop("Use_Global_Intercept name must be specified")
+       }
+       Use_Global_Intercept = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Inlcude_of_Fixedpars") {
        if (length(args) == i) {
           stop("Inlcude_of_Fixedpars must be specified")
@@ -627,10 +634,13 @@ suppressWarnings(fixedpars<-as.numeric(fixedparsLi))
 suppressWarnings(seedpars<-as.numeric(seedparsLi))
 suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
+cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
+
+Interc<-as.logical(Use_Global_Intercept)
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
@@ -659,7 +669,7 @@ switch(mode,
          makeFolds=0 #if 0, using existing ones assumed to be on val
          val<-rlvl(setDT(val))
          modelob<-LKT(data=val,components=planComponents,
-             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars)
+             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars,interc=FALSE)
 
         Nres<-length(val$Outcome)
         pred<-modelob$prediction
