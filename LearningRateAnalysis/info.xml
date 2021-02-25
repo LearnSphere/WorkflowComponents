@@ -6,24 +6,25 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/iAFMgraph</url>
 <date>July 28, 2020</date>
-<abstract>The <b>iAFMgraph</b> component uses iAFM to model growth for an individual student and displays students growth in year1 and year2, usin MAP data for those who reeived the intervention vs those who did not</abstract>
+<abstract>The <b>iAFMgraph</b> component uses iAFM to model growth for an individual student and displays students growth in year1 and year2 using MAP data for those who received the intervention vs those who did not</abstract>
 <description>The component takes in data for two years, and the data for the intervention(eg: Mentor or Tech). The component models the growth (learning rate) and the intercept(previous knowledge) for each student using iAFM and displays two graphs each for learning rate and previous knowledge along with the CSV file.</description>
 
 <inputs>
-Input 1: Year 1 csv file (MAP data) with students <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race</b>  and <b>discipline</b><br/>
-Input 2: Year 2 csv file(MAP data) with students <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race</b>  and <b>discipline</b><br/>
-Input 3: Intervention csv file, with studentids of those students who got interventionv<br/>
+Three inputs are REQUIRED for the component to function
+Input 1: Year 1 csv file (MAP data) with students' <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race</b> (col name should contain "race" or "ethnicity" or "studentethnicgroup")  and <b>discipline</b> (contains "Mathematics" or/and "Reading")<br/>
+Input 2: Year 2 csv file(MAP data) with students' <b>score </b> (labeled testRITScore), <b>studentID</b> (studentID or PL2.ID),<b> termname</b> with Fall, Spring and Summers mentioned(for grepl), <b>Race</b> (col name should contain "race" or "ethnicity" or "studentethnicgroup")  and <b>discipline</b> (contains "Mathematics" or/and "Reading")<br/>
+Input 3: Intervention csv file, with studentids of those students who got the intervention<br/>
 </inputs>
 
 <outputs>
 <b>1. image that plots the growth(learning rate) for students who received intervention for both the years.</b><br/>
-<b>2. image that plots the slope for students who received intervention vs those who did not receive the intervention for both years.</b><br/>
+<b>2. image that plots the slope for students who received intervention vs those who did not receive the intervention for both the years.</b><br/>
 <b>3. csv file containing slope and intercept for each student.</b><br/>
 </outputs>
 
 <options>
 <b>discipline -- type xs:string(eg: "Mathematics" or "Reading")</b><br/>
-<b>choice -- type xs:integer (1 by default, currently supports only one option</b><br/>
+<b>choice -- type xs:integer (1 by default, currently supports only one option)</b><br/>
 
 </options>
 

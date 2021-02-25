@@ -115,7 +115,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="discipline" id="discipline" type="xs:string" default="Mathematics"/>
-      <xs:element name="choice" id="choice" type="xs:integer" default="3"/>
+      <xs:element name="choice" id="choice" type="xs:integer" default="1"/>
     </xs:choice>
   </xs:complexType>
   <xs:element name="component">
