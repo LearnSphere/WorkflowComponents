@@ -35,7 +35,7 @@
 <options>
     <Model_Name>Diff</Model_Name>
     <Num_of_PlanComponents>3</Num_of_PlanComponents>
-    <Use_Global_Intercept>false</Use_Global_Intercept>
+    <Use_Global_Intercept>true</Use_Global_Intercept>
     <Inlcude_of_Fixedpars>true</Inlcude_of_Fixedpars>
     <Include_of_Seedpars>false</Include_of_Seedpars> 
     <Include_of_Offsetvals>false</Include_of_Offsetvals>

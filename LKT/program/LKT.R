@@ -669,7 +669,7 @@ switch(mode,
          makeFolds=0 #if 0, using existing ones assumed to be on val
          val<-rlvl(setDT(val))
          modelob<-LKT(data=val,components=planComponents,
-             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars,interc=FALSE)
+             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars,interc=Interc)
 
         Nres<-length(val$Outcome)
         pred<-modelob$prediction
