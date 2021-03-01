@@ -1,22 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Luke Eglington
-  <email>lgglngtn@memphis.edu</email>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/LKT</url>
-<date>December 07, 2020</date>
-<abstract>The <b>LKT</b> component is an example of a(n) R component.</abstract>
-<description>This component is used to apply the simulatation to help students model anaylsis.</description>
+<date>March 01, 2021</date>
+<abstract>The <b>LKT</b> component is implements generalized knowledge tracing.</abstract>
+<description>
+        This <b>LKT</b> component has best fit model, but crossvalidation has not been thouroughly tested and should be considered experimental (create mode CV works, but only saves the results, not the folds, so read mode CV can't be used). The user enters up to as many as 10 4 valued terms, where each of the 4 values defines a linear regression predictor term. Only the first 2 terms are used if it is a feature that is used directly int he linear equation (e.g. lineafm and logafm). Terms 3 and 4 represent the either fixed or seed parameters repectively, and should be comma seperated lists (except many non-linear features use only 1 parameter, so commas are unneeded then.) The $ operator computes coefficients for each level of the KC for the feature. The @ operator computes the feature as a random effect, and may only be used for random intercepts. Note: single-KC models should not be attempted, but using LKT, a feature that is computed per Anon Student Id level is equivalent to a single-KC model. 
+
+    Examples:
+
+    <p>To produce modified AFM with fixed-effect intercept for KC, propdec used to trace overall student learning, and only a single slope for learning. :
+      <ol>
+              <li>Term 1: propdec; Anon Student Id; .9; NA</li>
+              <li>Term 2: intercept; KC (Default)</li>
+              <li>Term 3: lineafm; KC (Default)</li></ol>
+    </p>
+
+  <p>To produce standard AFM with random-effect intercepts for student and KC and per KC lineafm learning (linear effect of opportunities):
+      <ol>
+              <li>Term 1: intercept@; Anon Student Id</li>
+              <li>Term 2: intercept@; KC (Default)</li>
+              <li>Term 3: lineafm$; KC (Default)</li></ol>
+</p>
+
+<p>To produce intercepts and some feature fits to clusters (ones that don't rely on timing factors). In the example, term 2 finds a coefficient for the log of prior success in cluster 1 only. :
+  <ol>
+          <li>Term 1: intercept; Clusters</li>
+          <li>Term 2: logsuc; KC (Default)%Clusters%1</li></ol>
+
+</p>
+      <p>To produce standard PFA with random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
+</p>
+      <p>To produce AFM with fixed-effect intercepts for student and KC and long-term forgetting:
+        <ol>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: base2$; KC (Default);  .3,.05; NA,NA</li></ol>
+</p>
+      <p>To produce AFM model with fixed-effect intercepts for student and KC, KC long-term forgetting, and item level PFA (simple hierarcical domain model)
+        <ol>
+                <li>Term 1: intercept; Anon Student Id</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: base2$; KC (Default); .3,.05; NA,NA</li>
+    <li>Term 4: linesuc$; KC (Item)</li>
+    <li>Term 5: linefail$; KC (Item)</li></ol>
+</p>
+      <p>To produce PFA with student ability tracing :
+        <ol>
+                <li>Term 1: propdec; Anon Student Id; NA; .9</li>
+    <li>Term 2: intercept; KC (Default)</li>
+    <li>Term 3: linesuc$; KC (Default)</li>
+    <li>Term 4: linefail$; KC (Default)</li></ol>
+</p>
+      <p>To produce PFA with long-term forgetting and random-effect intercepts for student and KC:
+        <ol>
+                <li>Term 1: intercept@; Anon Student Id</li>
+    <li>Term 2: intercept@; KC (Default)</li>
+    <li>Term 3: base2suc$; KC (Default); .3,.05; NA,NA</li>
+    <li>Term 4: base2fail$; KC (Default); .3,.05; NA,NA</li></ol>
+</p>
+</description>
 
 <inputs>
+    <b>Transaction export with LKT features including Global Intercept, Fixed NLPs,Seed NLPs,Fixed coefficients, KC or Factor, and Feature</b>
 </inputs>
 
 <outputs>
-<b>image</b><br/>
+    <b>Transaction export with model predictions attached, R model output with parameter values, R model fit statistics in xml</b>
 </outputs>
 
 <options>
+      <p>
+      <b>Type</b> - the user can select to find the best fitting model, only at the subject level (subject stratified) under the assumption that generalization to other subjects is what is desired. The user has the option to randomly create folds or to use the folds existing in a prior run of this component (i.e. if you feed the transaction file back into the analysis, you can choose read to use the exact same folds for a replication).</p>
+      <p>
+        <b>Term N</b> - The user can specify up to 10 terms. See details.</p>
 </options>
 
 </info>
