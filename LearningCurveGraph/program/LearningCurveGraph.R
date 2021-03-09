@@ -123,7 +123,6 @@ for(k in 1:models){
       (match(max(rank(diff(times))),rank(diff(times))))
     }#end splittimes
 
-print("line 126")
     #Create Function plotlearning
     plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthres){
       if(f==TRUE){
