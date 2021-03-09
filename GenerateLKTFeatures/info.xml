@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Philip Pavlik
+  <email>ppavlik@memphis.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GenerateLKTFeatures</url>
+<date>March 09, 2021</date>
+<abstract>The <b>Generate LKT Features</b> This component generates some needed values for the LKT analysis.</abstract>
+<details>This component does preprocessing for the dataset. This is necessary for the dataset overall. Additionally this must be run once for each KC used in features with spacing effects (i.e. ppe and base4).</details>
+
+<inputs>
+<b>transaction</b> - data to process.<br/>
+</inputs>
+
+<outputs>
+<b>transaction</b> - data with new columns for GKT.<br/>
+</outputs>
+
+<options>
+  <b>Model</b> - model to compute spacings for. This model must be supplied if spacing effects are used (ppe or base4 features in LKT). If not, this value must be input but is unused.<br/>
+  <b>Number of students</b> - null indicates sample full set, a number indicates a random sample of size n.<br/>
+</options>
+
+</info>

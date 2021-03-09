@@ -1,0 +1,40 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>GenerateLKTFeatures</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>218</top>
+<inputs>
+        <input0>
+        <component_id>Import-1-x995490</component_id>
+        <component_id_human>Import #1</component_id_human>
+        <component_type>import</component_type>
+        <component_name>File</component_name>
+        <elapsed_seconds>0</elapsed_seconds>
+        <errors />
+        <files>
+            <file>
+            <index>0</index>
+            <file_path>test/testdata/ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_path>
+            <label>text</label>
+            <file_name>ds1465_tx_All_Data_64_2016_0720_222352short.txt</file_name>
+            </file>
+        </files>
+    </input0>
+</inputs>
+
+<options>
+    <Include_KC_Model>true</Include_KC_Model>
+    <model>KC (Default)</model>
+    <Number_of_Students>all</Number_of_Students>
+</options>
+
+</component>
