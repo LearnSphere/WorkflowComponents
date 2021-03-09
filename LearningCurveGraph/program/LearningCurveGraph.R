@@ -98,7 +98,7 @@ ModelNamesList<-c()
 for(k in 1:models){
     inputFile=files[k]
     temp_pred<-read.table(inputFile,sep="\t", header=TRUE,na.strings="",quote="",comment.char = "")
-    Levels<-levels(temp_pred$CF..GraphName.)
+    Levels<-levels(as.factor(temp_pred$CF..GraphName.))
     ModelNamesList<-c(ModelNamesList,Levels)
 }
 
@@ -123,6 +123,7 @@ for(k in 1:models){
       (match(max(rank(diff(times))),rank(diff(times))))
     }#end splittimes
 
+print("line 126")
     #Create Function plotlearning
     plotlearning<-function(xmax,gnum,KC,cnum,ltyp,f,freqthres){
       if(f==TRUE){
