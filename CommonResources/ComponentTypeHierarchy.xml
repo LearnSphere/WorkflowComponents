@@ -35,6 +35,7 @@
     <Discretize />
     <Feature_Synthesis />
     <Generate_GKT_Features />
+    <Generate_LKT_Features />
     <Generate_PFA_Features />
     <Import_EDF />
     <Import_XAPI />
