@@ -64,6 +64,27 @@ if (args[i] == "-Use_Global_Intercept") {
        Use_Global_Intercept = args[i+1]
        i = i+1
     } else
+if (args[i] == "-Elastictest") {
+       if (length(args) == i) {
+          stop("Elastictest must be specified")
+       }
+       Elastictest = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Include_Latency_Model") {
+       if (length(args) == i) {
+          stop("Include_Latency_Model name must be specified")
+       }
+       Include_Latency_Model = args[i+1]
+       i = i+1
+    } else
+if (args[i] == "-Include_Verbose") {
+       if (length(args) == i) {
+          stop("Include_Verbose must be specified")
+       }
+       Include_Verbose = args[i+1]
+       i = i+1
+    } else
 if (args[i] == "-Inlcude_of_Fixedpars") {
        if (length(args) == i) {
           stop("Inlcude_of_Fixedpars must be specified")
@@ -624,7 +645,6 @@ for(i in 1:Num_of_PlanComponents){
         if(!offsetvalsList[i]=="null"){
             offsetvalsLi<-c(offsetvalsLi,offsetvalsList[i])
         }
-
     }
 }
 
@@ -635,12 +655,18 @@ suppressWarnings(seedpars<-as.numeric(seedparsLi))
 suppressWarnings(offsetvals<-as.numeric(offsetvalsLi))
 
 cat("Use_Global_Intercept:",toupper(Use_Global_Intercept),"\n")
+cat("Elastictest:",Elastictest,"\n")
+cat("Include Latency Model:",toupper(Include_Latency_Model),"\n")
+cat("Include_Verbose:",toupper(Include_Verbose),"\n")
 cat("prespecfeatures:",prespecFeatures,"\n")
 cat("plancomponents:",planComponents,"\n")
 cat("fixedpars:",fixedpars,"\n")
 cat("seedpars:",seedpars,"\n")
 
 Interc<-as.logical(Use_Global_Intercept)
+Dualfit<-as.logical(Include_Latency_Model)
+Elastictest<-as.logical(Elastictest)
+Verbose<-as.logical(Include_Verbose)
 
 setwd(workingDirectory)
 outputFilePath<- paste(workingDirectory, "transaction_file_output.txt", sep="")
@@ -661,7 +687,6 @@ val$KC..Default.<-paste( val$KC..Default.,val$CF..Stimulus.Version.,gsub(" ","",
 
 #switch mode
 mode="best fit model"
-Elastictest=FALSE
 
 switch(mode,
        "best fit model"={
@@ -669,7 +694,7 @@ switch(mode,
          makeFolds=0 #if 0, using existing ones assumed to be on val
          val<-rlvl(setDT(val))
          modelob<-LKT(data=val,components=planComponents,
-             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars,interc=Interc)
+             features=prespecFeatures,fixedpars=fixedpars,seedpars=seedpars,dualfit=Dualfit,interc=Interc,elastic=Elastictest,verbose=Verbose)
 
         Nres<-length(val$Outcome)
         pred<-modelob$prediction
@@ -686,6 +711,37 @@ switch(mode,
         newXMLNode("Accuracy", acc, parent = top)
         newXMLNode("AUC", auc, parent = top)
         newXMLNode("r2McFad",modelob$r2, parent = top)
+        
+        if(Dualfit==TRUE && Elastictest==FALSE){
+
+            Scalar<-coef(modelob$latencymodel[[1]])[2]
+            Intercept<-coef(modelob$latencymodel[[1]])[1]
+            failureLatency<-modelob$latencymodel[[2]]
+            if (is.element("diffcorComp", prespecFeatures) && is.element("diffincor1", prespecFeatures) ){
+            
+                featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
+                    "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
+                    "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
+                    "logsuc","linesuc","logfail","linefail","recencysuc","recencyfail","expdecsuc","expdecfail","basesuc","basefail","base2fail",
+                    "base2suc","base5suc","base5fail")
+                features<-gsub("[[:punct:]]","",prespecFeatures)
+                fNames<-list()
+                for (p in 1:length(features)){
+                  if(features[p] %in% featuresList){
+                    fName<-gsub(" ","",(paste(features[p],planComponents[p])))
+                    fNames<-c(fNames,fName)
+                  }}
+
+                DifcorComp<-modelob$coefs[toString(fNames[length(fNames)-1]),"coefficient"]
+                print(DifcorComp)
+                Difincor1<-modelob$coefs[toString(fNames[length(fNames)]),"coefficient"]
+                newXMLNode("DifcorComp",DifcorComp,parent = top)
+                newXMLNode("Difincor1",Difincor1,parent = top)
+            }
+            newXMLNode("LatencyCoef",Scalar,parent = top)
+            newXMLNode("LatencyIntercept",Intercept,parent = top)
+            newXMLNode("FailCost",failureLatency,parent = top)
+        }
 
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 

@@ -1,3 +1,6 @@
+
+library(dplyr)
+library(LiblineaR)
 #' @title computeSpacingPredictors
 #' @description Compute repetition spacing time based features from input data CF..Time. and/or CF..reltime.
 #' @description which will be automatically computed from Duration..sec. if not present themselves.
@@ -62,7 +65,7 @@ LKT <- function(data,
                 verbose=TRUE,
                 epsilon=1e-4,
                 cost=512,
-                type=0,maketimes=FALSE){
+                type=0,maketimes=FALSE,bias=0){
   if(maketimes){
     if (!("CF..reltime." %in% colnames(data))) {
       data$CF..reltime. <- practiceTime(data)  }
@@ -285,8 +288,8 @@ LKT <- function(data,
 
               #e$data<-e$data[order(-e$data$CF..ansbin.),]
 
-              predictset<-sparse.model.matrix(e$form,e$data%>%mutate_if(is.numeric,scale))
-
+              #predictset<-sparse.model.matrix(e$form,e$data%>%mutate_if(is.numeric,scale))
+              predictset<-sparse.model.matrix(e$form,e$data)
               predictset.csc <- new("matrix.csc", ra = predictset@x,
                                     ja = predictset@i + 1L,
                                     ia = predictset@p + 1L,
@@ -294,7 +297,7 @@ LKT <- function(data,
               predictset.csr <- as.matrix.csr(predictset.csc)
               predictset2<-predictset.csr
 
-              temp<-LiblineaR(predictset2,e$data$CF..ansbin.,bias=0,
+              temp<-LiblineaR(predictset2,e$data$CF..ansbin.,bias=bias,
                               cost=cost,epsilon=epsilon,type=type)
 
               modelvs<-data.frame(temp$W)
@@ -309,6 +312,7 @@ LKT <- function(data,
               e$data$pred<-predict(temp,predictset2,proba=TRUE)$probabilities[,1]
 
 
+
               fitstat<- sum(log(ifelse(e$data$CF..ansbin.==1,e$data$pred,1-e$data$pred)))
 
               # e$data<-e$data[order(e$data$Anon.Student.Id,e$data$CF..Time.),]
@@ -316,7 +320,7 @@ LKT <- function(data,
             }}
 
     if(dualfit==TRUE && elastic==FALSE){      #fix for Liblin
-      rt.pred=exp(1)^(-(predict(temp)[which(e$data$CF..ansbin.==1)]))
+      rt.pred=exp(-qlogis(e$data$pred[which(e$data$CF..ansbin.==1)]))
       outVals = boxplot(e$data$Duration..sec.,plot=FALSE)$out
       outVals = which(e$data$Duration..sec. %in% outVals)
       e$data$Duration..sec.=as.numeric(e$data$Duration..sec.)
@@ -324,6 +328,7 @@ LKT <- function(data,
         e$data$Duration..sec.[outVals] = quantile(e$data$Duration..sec.,.95)}# Winsorize outliers
       the.rt=e$data$Duration..sec.[which(e$data$CF..ansbin.==1)]
       e$lm.rt<-lm(the.rt~as.numeric(rt.pred))
+      #print(e$lm.rt)
       fitstat2<-cor(the.rt,predict(e$lm.rt,type="response"))^2
       if(verbose){cat(paste("R2 (cor squared) latency: ",fitstat2,"\n",sep=''))}
     }
@@ -331,7 +336,7 @@ LKT <- function(data,
     if(elastic==FALSE){
       e$nullmodel<-glm(as.formula(paste("CF..ansbin.~ 1",sep="")),data=e$data,family=binomial(logit))
       e$nullfit<-logLik(e$nullmodel)
-      e$mcfad<-round(1-fitstat[1]/e$nullfit[1],4)
+      e$mcfad<-round(1-fitstat[1]/e$nullfit[1],6)
       if(verbose){
         cat(paste("McFadden's R2 logistic:",e$mcfad,"\n"))
         cat(paste("LogLike logistic:",round(fitstat,8),"\n"))}
@@ -395,22 +400,17 @@ LKT <- function(data,
       cat(paste("Latency Scalar: ",Scalar,"\n",
                 "Latency Intercept: ",Intercept,"\n",sep=''))}}
 
-  #e$data$pred<-predict(e$temp,type="response")  #fix for Liblin
-
-
   results <- list("model" = e$temp,
                   "coefs" = e$modelvs,
                   "r2"=e$mcfad,
                   "prediction" = if ("pred" %in% colnames(e$data)) {e$data$pred},
                   "nullmodel"=e$nullmodel,
-                  "latencymodel"=if(exists("e$lm.rt")){e$lm.rt},
+                  "latencymodel"=if(dualfit==TRUE){list(e$lm.rt,failureLatency)},
                   "optimizedpars"=if(exists("optimizedpars")){optimizedpars},
                   "subjectrmse"= if ("pred" %in% colnames(e$data)) {aggregate((e$data$pred-e$data$CF..ansbin.)^2,
                                                                               by=list(e$data$Anon.Student.Id),FUN=mean)},
                   "newdata"= e$data)
-  return (results)
-}
-
+  return (results)}
 
 #' @title computefeatures
 #' @description Compute feature describing prior practice effect.
@@ -478,20 +478,22 @@ computefeatures <- function(data,feat,par1,par2,index,index2,par3,par4,par5,fcom
     #print(data$temp[1:100])
     return(data$temp)
   }
-
   if(feat=="recency"){
     eval(parse(text=paste("data$rec <- data$",fcomp,"spacing",sep="")))
-    #print(paste("data$rec <- data$",fcomp,"spacing",sep=""))
-    #print(data$rec[1:500])
-    #print(data$Anon.Student.Idspacing[1:500])
-    #print(ifelse(data$rec==0,0,as.integer(data$rec)^-par1)[1:500])
-    #print(data$rec)
-    data$rec[is.na(data$rec)]<-0
-    #print(data$rec)
-    data[,temp:=as.integer(rec)^-par1]
-    #print(data$temp)
-    #print(ifelse(is.infinite(data$temp),0,data$temp))
-    return(ifelse(is.infinite(data$temp),0,data$temp))}
+    return(ifelse(data$rec==0,0,data$rec^-par1))}
+  # if(feat=="recency"){
+  #   eval(parse(text=paste("data$rec <- data$",fcomp,"spacing",sep="")))
+  #   #print(paste("data$rec <- data$",fcomp,"spacing",sep=""))
+  #   #print(data$rec[1:500])
+  #   #print(data$Anon.Student.Idspacing[1:500])
+  #   #print(ifelse(data$rec==0,0,as.integer(data$rec)^-par1)[1:500])
+  #   #print(data$rec)
+  #   data$rec[is.na(data$rec)]<-0
+  #   #print(data$rec)
+  #   data[,temp:=rec^-par1]
+  #   #print(data$temp)
+  #   #print(ifelse(is.infinite(data$temp),0,data$temp))
+  #   return(ifelse(is.infinite(data$temp),0,data$temp))}
   if(feat=="expdecafm"){return(ave(rep(1,length(data$CF..ansbin.)),index,FUN=function(x) slideexpdec(x,par1)))}
   if(feat=="base"){
     data$mintime <- ave(data$CF..Time.,index, FUN=min)
