@@ -1,70 +1,67 @@
 <component>
-  <component_id>ComponentTestOutput</component_id>
+  <component_id>Transform-1-x028113</component_id>
   <component_id_human>Transform #1</component_id_human>
-  <workflow_id>16</workflow_id>
+  <workflow_id>3</workflow_id>
   <component_name>Join</component_name>
   <component_type>transform</component_type>
-  <left>860</left>
+  <left>441.00001525878906</left>
   <connections>
     <connection>
-      <from>Import-1-x581366</from>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x918909</from>
     </connection>
     <connection>
-      <from>Import-1-x352396</from>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Data-1-x466284</from>
     </connection>
   </connections>
-  <top>178</top>
-  <options>
-    <delimiterPattern>\t</delimiterPattern>
-    <caseSensitive>false</caseSensitive>
-    <file1ColumnName>Anon Student Id</file1ColumnName>
-    <file2ColumnName>Anon Student Id</file2ColumnName>
-    <join>inner</join>
-  </options>
+  <top>67</top>
   <inputs>
-  <input0>
-      <component_id>Import-1-x352396</component_id>
-      <component_id_human>Import #1</component_id_human>
-      <component_type>import</component_type>
-      <component_name>Tab Delimited</component_name>
+    <input0>
+      <component_id>Data-1-x918909</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
-        <student-step>
-          <file_path>test/example_files/generic_table_1.txt</file_path>
-          <file_name>generic_table_1.txt</file_name>
+        <tab-delimited>
           <index>0</index>
-          <label>student-step</label>
+          <file_path>test/example_files/generic_table_1.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>generic_table_1.txt</file_name>
           <metadata>
             <header>
               <id>header0</id>
-              <index>17</index>
-              <name>Corrects</name>
+              <index>0</index>
+              <name>Row</name>
             </header>
             <header>
               <id>header1</id>
-              <index>18</index>
-              <name>Condition</name>
+              <index>1</index>
+              <name>Sample</name>
             </header>
             <header>
               <id>header2</id>
-              <index>8</index>
-              <name>First Transaction Time</name>
+              <index>2</index>
+              <name>Anon Student Id</name>
             </header>
             <header>
               <id>header3</id>
-              <index>7</index>
-              <name>Step Start Time</name>
-            </header>
-            <header>
-              <id>header4</id>
               <index>3</index>
               <name>Problem Hierarchy</name>
             </header>
             <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
               <id>header5</id>
-              <index>12</index>
-              <name>Correct Step Duration (sec)</name>
+              <index>5</index>
+              <name>Problem View</name>
             </header>
             <header>
               <id>header6</id>
@@ -73,13 +70,13 @@
             </header>
             <header>
               <id>header7</id>
-              <index>5</index>
-              <name>Problem View</name>
+              <index>7</index>
+              <name>Step Start Time</name>
             </header>
             <header>
               <id>header8</id>
-              <index>10</index>
-              <name>Step End Time</name>
+              <index>8</index>
+              <name>First Transaction Time</name>
             </header>
             <header>
               <id>header9</id>
@@ -88,113 +85,115 @@
             </header>
             <header>
               <id>header10</id>
-              <index>20</index>
-              <name>Opportunity (Default)</name>
+              <index>10</index>
+              <name>Step End Time</name>
             </header>
             <header>
               <id>header11</id>
-              <index>22</index>
-              <name>KC (Single-KC)</name>
-            </header>
-            <header>
-              <id>header12</id>
               <index>11</index>
               <name>Step Duration (sec)</name>
             </header>
             <header>
-              <id>header13</id>
-              <index>26</index>
-              <name>Opportunity (Unique-step)</name>
+              <id>header12</id>
+              <index>12</index>
+              <name>Correct Step Duration (sec)</name>
             </header>
             <header>
-              <id>header14</id>
+              <id>header13</id>
               <index>13</index>
               <name>Error Step Duration (sec)</name>
             </header>
             <header>
-              <id>header15</id>
-              <index>21</index>
-              <name>Predicted Error Rate (Default)</name>
-            </header>
-            <header>
-              <id>header16</id>
-              <index>4</index>
-              <name>Problem Name</name>
-            </header>
-            <header>
-              <id>header17</id>
-              <index>24</index>
-              <name>Predicted Error Rate (Single-KC)</name>
-            </header>
-            <header>
-              <id>header18</id>
-              <index>2</index>
-              <name>Anon Student Id</name>
-            </header>
-            <header>
-              <id>header19</id>
-              <index>16</index>
-              <name>Hints</name>
-            </header>
-            <header>
-              <id>header20</id>
-              <index>1</index>
-              <name>Sample</name>
-            </header>
-            <header>
-              <id>header21</id>
-              <index>27</index>
-              <name>Predicted Error Rate (Unique-step)</name>
-            </header>
-            <header>
-              <id>header22</id>
-              <index>23</index>
-              <name>Opportunity (Single-KC)</name>
-            </header>
-            <header>
-              <id>header23</id>
-              <index>25</index>
-              <name>KC (Unique-step)</name>
-            </header>
-            <header>
-              <id>header24</id>
-              <index>15</index>
-              <name>Incorrects</name>
-            </header>
-            <header>
-              <id>header25</id>
-              <index>0</index>
-              <name>Row</name>
-            </header>
-            <header>
-              <id>header26</id>
+              <id>header14</id>
               <index>14</index>
               <name>First Attempt</name>
             </header>
             <header>
-              <id>header27</id>
+              <id>header15</id>
+              <index>15</index>
+              <name>Incorrects</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>16</index>
+              <name>Hints</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>17</index>
+              <name>Corrects</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>18</index>
+              <name>Condition</name>
+            </header>
+            <header>
+              <id>header19</id>
               <index>19</index>
               <name>KC (Default)</name>
             </header>
+            <header>
+              <id>header20</id>
+              <index>20</index>
+              <name>Opportunity (Default)</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>21</index>
+              <name>Predicted Error Rate (Default)</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>22</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>23</index>
+              <name>Opportunity (Single-KC)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>24</index>
+              <name>Predicted Error Rate (Single-KC)</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>25</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>26</index>
+              <name>Opportunity (Unique-step)</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>27</index>
+              <name>Predicted Error Rate (Unique-step)</name>
+            </header>
           </metadata>
-        </student-step>
+        </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <Import>{"fileName":"generic_table_1.txt","importFileType":"tab-delimited","importFileNameTitle":"File: generic_table_1.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"36","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
     </input0>
     <input1>
-      <component_id>Import-1-x581366</component_id>
-      <component_id_human>Import #2</component_id_human>
-      <component_type>import</component_type>
-      <component_name>Tab Delimited</component_name>
+      <component_id>Data-1-x466284</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
       <elapsed_seconds>0</elapsed_seconds>
       <errors />
       <files>
         <tab-delimited>
+          <index>0</index>
           <file_path>test/example_files/student_mapping.txt</file_path>
+          <label>tab-delimited</label>
           <file_name>student_mapping.txt</file_name>
-          <index>1</index>
-          <label>file</label>
           <metadata>
             <header>
               <id>header0</id>
@@ -210,8 +209,29 @@
         </tab-delimited>
       </files>
       <inputmeta />
-      <optionmeta />
+      <optionmeta>
+        <Import>{"fileName":"student_mapping.txt","importFileType":"tab-delimited","importFileNameTitle":"File: student_mapping.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"37","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
     </input1>
   </inputs>
+  <options>
+    <file1Delimiter>\t</file1Delimiter>
+    <file2Delimiter>\t</file2Delimiter>
+    <howToJoin>merge</howToJoin>
+	<!--<howToJoin>concatenate</howToJoin>-->
+    <howToConcatenate>vertical</howToConcatenate>
+	<!--<howToConcatenate>horizontal</howToConcatenate>-->
+    <howToMerge>inner</howToMerge>
+    <numColumnsToMerge>1</numColumnsToMerge>
+    <file1MatchColumns1>Input 0 (0) - Anon Student Id (column 2)</file1MatchColumns1>
+    <file2MatchColumns1>Input 1 (0) - Anon Student Id (column 0)</file2MatchColumns1>
+    <file1MatchColumns2>Input 0 (0) - Row (column 0)</file1MatchColumns2>
+    <file2MatchColumns2>Input 1 (0) - Actual Student Id (column 1)</file2MatchColumns2>
+    <file1MatchColumns3>Input 0 (0) - Row (column 0)</file1MatchColumns3>
+    <file2MatchColumns3>Input 1 (0) - Anon Student Id (column 0)</file2MatchColumns3>
+    <file1MatchColumns4>Input 0 (0) - Row (column 0)</file1MatchColumns4>
+    <file2MatchColumns4>Input 1 (0) - Anon Student Id (column 0)</file2MatchColumns4>
+    <file1MatchColumns5>Input 0 (0) - Row (column 0)</file1MatchColumns5>
+    <file2MatchColumns5>Input 1 (0) - Anon Student Id (column 0)</file2MatchColumns5>
+  </options>
 </component>
-
