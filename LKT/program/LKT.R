@@ -711,14 +711,14 @@ switch(mode,
         newXMLNode("Accuracy", acc, parent = top)
         newXMLNode("AUC", auc, parent = top)
         newXMLNode("r2McFad",modelob$r2, parent = top)
-        
+
         if(Dualfit==TRUE && Elastictest==FALSE){
 
             Scalar<-coef(modelob$latencymodel[[1]])[2]
             Intercept<-coef(modelob$latencymodel[[1]])[1]
             failureLatency<-modelob$latencymodel[[2]]
             if (is.element("diffcorComp", prespecFeatures) && is.element("diffincor1", prespecFeatures) ){
-            
+
                 featuresList<-c("numer","lineafm","logafm","powafm","recency","expdecafm","base","base2",
                     "base4","ppe","dashafm","dashsuc","diffrelcor1","diffrelcor2","diffcor1","diffcor2","diffcorComp",
                     "diffincorComp","diffallComp","diffincor1","diffincor2","diffall1","diffall2",
@@ -745,7 +745,8 @@ switch(mode,
 
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 
-        t<-modelob$coefs
+if(grep('@',prespecFeatures,value=TRUE)){
+        t<-modelob$coefs}else{t<-summary(modelob$model)}
         cat(paste(capture.output(t),collapse ="\n"))
         cat("\n")
 
