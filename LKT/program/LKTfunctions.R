@@ -1,5 +1,6 @@
 
 library(dplyr)
+library(lme4)
 library(LiblineaR)
 #' @title computeSpacingPredictors
 #' @description Compute repetition spacing time based features from input data CF..Time. and/or CF..reltime.
