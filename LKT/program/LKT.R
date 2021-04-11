@@ -745,7 +745,7 @@ switch(mode,
 
         saveXML(top, file=outputFilePath2,compression=0,indent=TRUE)
 
-if(grep('@',prespecFeatures,value=TRUE)){
+if(length(grep('@',prespecFeatures,value=TRUE))>0){
         t<-modelob$coefs}else{t<-summary(modelob$model)}
         cat(paste(capture.output(t),collapse ="\n"))
         cat("\n")
