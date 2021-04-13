@@ -39,7 +39,7 @@ public class ImportDiscourseDBjs extends AbstractComponent {
 	        }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			errorMessages.add("Error querying discoursedb as " + this.getUserId() + ":  " + e.getMessage());
+			errorMessages.add("Error querying discoursedb as " + this.getUserId() + ":  " + e.getMessage() + "This component cannot be run locally at this time. Contact rcmurray@andrew.cmu.edu for further help.");
 		}
 
         // Send the component output back to the workflow.
