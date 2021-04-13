@@ -5,6 +5,8 @@ import os
 import argparse
 import sys
 import shutil
+import warnings
+warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Entity Set')
