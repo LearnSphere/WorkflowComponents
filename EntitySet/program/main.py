@@ -5,8 +5,10 @@ import os
 import argparse
 import sys
 import shutil
+def warn(*args, **kwargs):
+    pass
 import warnings
-warnings.filterwarnings("ignore")
+warnings.warn = warn
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Entity Set')
