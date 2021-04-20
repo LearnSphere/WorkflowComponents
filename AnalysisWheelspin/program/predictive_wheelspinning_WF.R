@@ -19,6 +19,7 @@ suppressMessages(library(dplyr))
 # suppressMessages(library(robustHD))
 # suppressMessages(library(data.table))
 suppressMessages(library(arm))
+options(dplyr.summarise.inform = FALSE)
 
 # initialize variables
 inputFile = NULL
@@ -35,7 +36,7 @@ while (i <= length(args)) {
     if (i > length(args) - 4) {
       stop("node and fileIndex must be specified")
     }
-    
+
     inputFile <- args[i + 4]
     i = i + 4
   } else if (args[i] == "-workingDir") {
@@ -60,11 +61,11 @@ while (i <= length(args)) {
     model.name = args[i+1]
     model.name = substring(model.name, 5, nchar(model.name)-1)
     i = i+1
-  } 
+  }
   i = i+1
 }
 
-# 
+#
 # ds.name = "ds1943"
 # model.name = "Default"
 # ds<-read.table("ds1943_Ran_paper/ds1943_student_step_All_Data_3691_2017_0522_203358_cleaned.txt", sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
@@ -74,7 +75,7 @@ ds<-logWarningsMessages(read.table(inputFile, sep="\t", header=TRUE, quote="\"",
 ### process dataset
 #str(ds)
 #colnames(ds)
-#process response column 
+#process response column
 ds$First.Attempt <- as.character(ds$First.Attempt)
 ds$First.Attempt <- gsub("incorrect", 0, ds$First.Attempt, ignore.case = TRUE)
 ds$First.Attempt <- gsub("hint", 0, ds$First.Attempt, ignore.case = TRUE)
@@ -92,7 +93,7 @@ if ('Problem.Hierarchy' %in% colnames(ds)) {
 }
 
 escaped.model.name <- gsub("[ ()-]", ".", model.name)
-#change the specific column name to a generic one 
+#change the specific column name to a generic one
 kcColName = paste("KC..", escaped.model.name, ".", sep="")
 oppColName = paste("Opportunity..", escaped.model.name, ".", sep="")
 kcColInd = match(kcColName , colnames(ds))
@@ -111,17 +112,17 @@ ds <- ds %>% group_by(Anon.Student.Id, KC.model.name) %>% mutate(KC.model.opport
 #delete the rows that KC.model.name is NA or empty string
 ds = ds[!is.na(ds$KC.model.name) & ds$KC.model.name != "",]
 
-#aggregation for steps by student and KC 
-agg_data=ds %>% 
-  group_by(Anon.Student.Id, KC.model.name)%>% 
+#aggregation for steps by student and KC
+agg_data=ds %>%
+  group_by(Anon.Student.Id, KC.model.name)%>%
   summarise(count = n())
 
-agg_data_first_attempt=ds %>% 
-  group_by(Anon.Student.Id, KC.model.name, First.Attempt)%>% 
+agg_data_first_attempt=ds %>%
+  group_by(Anon.Student.Id, KC.model.name, First.Attempt)%>%
   summarise(count = n())
 
-agg_data_assisments=ds %>% 
-  group_by(Anon.Student.Id, KC.model.name)%>% 
+agg_data_assisments=ds %>%
+  group_by(Anon.Student.Id, KC.model.name)%>%
   summarise(incorrects = sum(Incorrects), hints = sum(Hints))
 
 agg_data_assisments$assisments = agg_data_assisments$incorrects + agg_data_assisments$hints
@@ -143,7 +144,7 @@ ds$predicted <- 1-logWarningsMessages(predict(fitted.model, ds, allow.new.levels
 
 #summary(fitted.model)
 # extract the student parameters and KC parameters
-#all students 
+#all students
 all.students = as.character(unique(ds$Anon.Student.Id))
 #all unique combinations of skills
 all.skills = as.character(unique(ds$KC.model.name))
@@ -151,7 +152,7 @@ all.skills = as.character(unique(ds$KC.model.name))
 #make a new dataframe with all comination of student with skill
 ds.new <- data.frame(id=character(),
                      kc=character(),
-                     stringsAsFactors=FALSE) 
+                     stringsAsFactors=FALSE)
 
 for (i in 1:length(all.students)) {
   for (j in 1:length(all.skills)) {
@@ -332,7 +333,7 @@ for (i in 1:length(all.students)) {
         }
       }
       lr.matrix$Max_consecutive_first_attempt_correct_count[lr.matrix$Anon.Student.Id == student & lr.matrix$KC.model.name == skill] = max_consecutive_first_attempt_correct
-      
+
     }
   }
 }
