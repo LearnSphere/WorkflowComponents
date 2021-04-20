@@ -56,19 +56,24 @@ public class RPivotMain extends AbstractComponent {
         } else {
         	Boolean reqsMet = true;
         	if (!aggMethodName.equalsIgnoreCase("length")) {
+        			int nonNumericCount = 0;
                     for (int i = 1; i < allCells.length; i++) {
                             for (int j = 0; j < measurementColInds.size(); j++) {
-                                try {
-                                        Double.parseDouble(allCells[i][measurementColInds.get(j)]);
+                            	try {
+                                	Double.parseDouble(allCells[i][measurementColInds.get(j)]);
                                 } catch (NumberFormatException e) {
-                                        //send error message
-                                        String err = "The measurement column contains data that is not number.";
-                                        addErrorMessage(err);
-                                        logger.info("RPivot is aborted: " + err);
-                                        reqsMet = false;
+                                	nonNumericCount++;
                                 }
                             }
                     }
+                    if (nonNumericCount == allCells.length -1) {
+	                    //send error message
+	                    String err = "The measurement column is a non-numeric column.";
+	                    addErrorMessage(err);
+	                    logger.info("RPivot is aborted: " + err);
+	                    reqsMet = false;
+                    }
+                    
         	}
 
             if (reqsMet) {

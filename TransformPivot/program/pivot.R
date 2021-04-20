@@ -10,7 +10,7 @@ library(reshape2)
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  return(read.table(filename,sep="\t" ,header=TRUE))
+  return(read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" )))
 }
 
 my.write <- function(x, file, header, f = write.table, ...){
@@ -113,6 +113,19 @@ while (i <= length(args)) {
   }
   i = i+1
 }
+
+#for test and dev
+# dataFileName="ds3093_student_step_Mot_control_5152_2020_0313_092108.txt"
+# meaColName="Error.Step.Duration..sec."
+# pivotOrigMeaName="Error Step Duration (sec)"
+# pivotRowName="Anon.Student.Id"
+# pivotOrigRowName="Anon Student Id"
+# pivotColName="Feature.Name,Date.Of.Extraction"
+# pivotOrigColName="Feature Name,Date Of Extraction"
+# aggMethod="sum"
+# moreFactors="No"
+# outputFileName = "pivot_result.txt"
+
 
 myData<-import.data(dataFileName)
 
