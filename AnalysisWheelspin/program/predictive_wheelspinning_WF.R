@@ -133,6 +133,11 @@ colnames(agg_data_first_attempt_correct) = c("Anon.Student.Id", "KC.model.name",
 agg_data_first_attempt_incorrect = subset(agg_data_first_attempt, First.Attempt==0)[c(1,2,4)]
 colnames(agg_data_first_attempt_incorrect) = c("Anon.Student.Id", "KC.model.name", "First_attempt_incorrect_count")
 
+if (nrow(ds) == 0) {
+  write("The selected KC model is empty!", file = "predictive_wheelspinning_WF.wfl", append=TRUE)
+  stop("The selected KC model is empty!")
+}
+
 ##iAFM
 ### fit/predict hierarchical iAFM model: First.Attempt ~ opportunity + (opportunity|student) + (opportunity|KC)
 fitted.model<-logWarningsMessages(glmer(First.Attempt~KC.model.opportunity+(KC.model.opportunity|Anon.Student.Id)+(KC.model.opportunity|KC.model.name),data=ds, family= binomial(link = logit)), logFileName = "predictive_wheelspinning_WF.wfl")
