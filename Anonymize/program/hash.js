@@ -24,7 +24,7 @@ workingDir = process.argv[process.argv.indexOf("-workingDir") + 1];
 
 'use strict';
 csvFilePath = null;
-for (let j = 0; j < process.argv.length; j++) {
+for (j = 0; j < process.argv.length; j++) {
     if (process.argv[j] == "-node") {
         if (process.argv[j + 1] == "0") {
             csvFilePath = process.argv[j + 4];
@@ -50,7 +50,7 @@ if (workingDir == null || workingDir == '') {
 
 var csvFile = fs.readFileSync(csvFilePath, { encoding: 'binary' });
 
-// Parse the csv file and 
+// Parse the csv file and
 Papa.parse(csvFile, {
     header: true,
     complete: function(results) {
@@ -64,7 +64,7 @@ Papa.parse(csvFile, {
 	        }
 
 	        for (var i = 0; i < results.data.length; i++) {
-	            // In case the .csv has extra blank rows being parsed somewhere in the file, 
+	            // In case the .csv has extra blank rows being parsed somewhere in the file,
 	            // ensure it won't hash cells with just spaces/tabs/etc.
 	            var username = results.data[i][column];
 	            if (username && username.trim()) {
@@ -79,7 +79,7 @@ Papa.parse(csvFile, {
 
         var newFile = Papa.unparse(results);
 
-        // Create output file in the output directory 
+        // Create output file in the output directory
         // (needs to match up with file in AnonymizeMain.java)
         var outputWriter = fs.createWriteStream(workingDir + "AnonymizedData.csv");
 
