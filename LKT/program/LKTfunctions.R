@@ -832,12 +832,8 @@ right = function (string, char){
 #' @return the vector of the lagged cumulative sum.
 #' @export
 countOutcome <-function(data,index,response) {
-  #data$temp<-ave(as.character(data$Outcome),index,FUN =function(x) as.numeric(cumsum(tolower(x)==tolower(response))))
   data[,temp:=cumsum(Outcome==response),by=index]
   data[Outcome==response,temp:=temp-1,by=index]
-  #data$temp[tolower(as.character(data$Outcome))==tolower(response)]<-
-  #  as.numeric(data$temp[tolower(as.character(data$Outcome))==tolower(response)])-1
-  #as.numeric(data$temp)
   data$temp
 }
 
