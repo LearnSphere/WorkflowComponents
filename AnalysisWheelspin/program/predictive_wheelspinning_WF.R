@@ -398,5 +398,5 @@ lr.matrix.output = lr.matrix[, c("Anon.Student.Id",	"KC.model.name",	"count", "F
 colnames(lr.matrix.output) = c("Anon Student Id", paste("KC (", model.name, ")", sep=""), "Count of Cases", "Count of Correct First Attempts", "Count of Incorrect First Attempts", "Count of Maximum Consecutive Correct First Attempts", "Assistment Score", "iAFM Overall Slope", "iAFM Overall Slope Std Error", "iAFM KC Slope",	"iAFM KC Slope Std Error", "iAFM Student Slope", "iAFM Student Slope Std Error", "iAFM Overall Intercept", "iAFM KC Intercept", "iAFM Student Intercept", "Predictive Slope", "Predictive Slope Std Error", "Predictive Intercept", "Predictive Slope CI Upper Bound", "Predictive Slope CI Lower Bound", "Predictive Model Prediction", "Predictive Model Progress Probability", "Beck Model Prediction", "Local Measurement Slope", "Local Measurement Slope Std Error", "Local Measurement Intercept", "Local Measurement Slope CI upper Bound", "Local Measurement Slope CI lower Bound", "Local Measurement Prediction", "Local Measurement Progress Probability")
 
 #output the lr_matrix result
-write.table(lr.matrix.output, file = "wheelspin_result.txt", sep = "\t",  row.names = FALSE, col.names = TRUE)
+write.table(lr.matrix.output, file = "wheelspin_result.txt", sep = "\t",  row.names = FALSE, col.names = TRUE, quote = FALSE)
 
