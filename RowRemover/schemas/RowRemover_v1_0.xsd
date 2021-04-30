@@ -72,7 +72,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="operationType" name="i_operation" id="What_to_Do_with_Rows" default="Remove selected rows" />
-        <xs:element type="MultiFileInputHeader" name="valueColumn" id="Column_to_Match" default=".*" />
+        <xs:element type="FileInputHeader" name="valueColumn" id="Column_to_Match" default=".*" />
   	<xs:element type="trueFalseType" name="caseSensitive" id="Case_Sensitive" default="Yes" />
         <xs:element type="trueFalseType" name="removeNull" id="Remove_Empty_Values" default="Yes" />
         <xs:element type="xs:string" name="removeValue" id="Value_to_Remove_or_Keep" default="ex: some words"/>

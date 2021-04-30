@@ -14,7 +14,7 @@
     
     <options>
       <i_operation>Keep selected rows and remove the rest</i_operation>
-      <valueColumn>Problem Name,Step Name</valueColumn>
+      <valueColumn>Problem Name</valueColumn>
       <caseSensitive>No</caseSensitive>
       <removeNull>No</removeNull>
       <removeValue>BUILDING_A_SIDEWALK</removeValue>

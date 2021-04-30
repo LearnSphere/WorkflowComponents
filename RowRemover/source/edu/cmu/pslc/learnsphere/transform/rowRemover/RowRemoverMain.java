@@ -58,11 +58,7 @@ public class RowRemoverMain extends AbstractComponent {
 	            logger.info("RowRemover, removeValue: " + removeValues);
 	            String file0 = this.getAttachment(0, 0).getAbsolutePath();
 	            logger.info("RowRemover, file0: " + file0);
-	            if (removeValues.trim().equals("")) {
-	                    String exErr = "Value to remove is required.";
-	                    addErrorMessage(exErr);
-	                    logger.info(exErr);
-	            } else {
+	            
 		            // Run the program and return its stdout to a file.
 		            //File output = this.runExternal();
 		            File outputDirectory = this.runExternal();
@@ -80,7 +76,7 @@ public class RowRemoverMain extends AbstractComponent {
                             logger.info(exErr);
 	                    }
 		            }
-	            }
+	            
             }
 
             // Send the component output back to the workflow.

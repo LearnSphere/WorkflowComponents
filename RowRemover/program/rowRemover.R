@@ -8,7 +8,6 @@ options(echo=FALSE)
 options(warn=-1)
 options(width=10000)
 
-
 #all variables
 inputFile<-NULL
 #ex: inputFile<-"ds76_student_step_export.txt"
@@ -27,6 +26,7 @@ column.var.name<-NULL
 args <- commandArgs(trailingOnly = TRUE)
 # parse commandline args
 i = 1
+
 while (i <= length(args)) {
   if (args[i] == "-node") {
        # Syntax follows: -node m -fileIndex n <infile>
@@ -67,7 +67,6 @@ while (i <= length(args)) {
     if (operation != "remove" & operation != "keep" ) {
       stop("operation must be remove or keep")
     }
-
     i = i+1
   }
   else if (args[i] == "-valueColumns") {
@@ -83,11 +82,15 @@ while (i <= length(args)) {
   } else if (args[i] == "-removeValue") {
     #split by comma -- wrong, should be one value at a time to allow , in searched value
     #remove.value = strsplit(args[i+1], "\\s*,\\s*")[[1]]
+    
     remove.value = trimws(args[i+1])
+    
     if (length(args) == i || length(remove.value) == 0) {
       stop("removeValue must be specified")
     }
     remove.values = c(remove.values,remove.value)
+    
+    
     i = i+1
   } else if (args[i] == "-caseSensitive") {
     if (length(args) == i) {
@@ -117,11 +120,20 @@ while (i <= length(args)) {
     } else {
       remove.null = FALSE
     }
-
     i = i+1
-  }
+  } 
   i = i+1
 }
+
+# inputFile = "wheelspin_result.txt"
+# operation = "remove"
+# columns.var.name = "Predictive.Model.Prediction"
+# remove.values="Progress,pP"
+# case.sensitive=TRUE
+# remove.null=TRUE
+
+
+
 
 # Load raw data
 ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
@@ -145,24 +157,33 @@ for (column.var.name in columns.var.name) {
 #  hasNull<-TRUE
 #}
 
-
 if (operation == "remove") {
   for (column.var.name in columns.var.name) {
-  if (length(remove.values) > 0) {
-    if (case.sensitive) {
-        #ex: ds<-ds[which(!(ds$Problem.Name %in% remove.values)),]
-        cmdString = paste("ds<-ds[which(!(ds$", column.var.name, " %in% remove.values)),]", sep="")
-        eval(parse(text=cmdString))
-    } else {
-        #ex: ds<-ds[which(!(tolower(ds$Problem.Name) %in% tolower(remove.values))),]
-        cmdString = paste("ds<-ds[which(!(tolower(ds$", column.var.name, ") %in% tolower(remove.values))),]", sep="")
-        eval(parse(text=cmdString))
+    #column.var.name = "Predictive.Model.Prediction"
+    
+    #change the colum name
+    colnames(ds)[which(names(ds) == column.var.name)] <- "work_column" 
+    if (length(remove.values) > 0) {
+      #turn remove.names into a list
+      remove.values = unlist(as.list(strsplit(remove.values, ",")[[1]]))
+      remove.values = trimws(remove.values)
+      if (case.sensitive) {
+          ds = ds[!ds$work_column %in% remove.values, ]
+          # cmdString = paste("ds<-ds[which(!(ds$", column.var.name, " %in% \"", remove.values, "\")),]", sep="")
+          # eval(parse(text=cmdString))
+      } else {
+          ds = ds[!tolower(ds$work_column) %in% tolower(remove.values), ]
+          #cmdString = paste("ds<-ds[which(!(tolower(ds$", column.var.name, ") %in% tolower(remove.values))),]", sep="")
+          #eval(parse(text=cmdString))
+      }
     }
-  }
-  if (!remove.null) {
-    cmdString = paste("ds<-ds[!is.na(ds$", column.var.name, ") & ds$", column.var.name, " != \"\",]", sep="")
-    eval(parse(text=cmdString))
-  }
+    if (remove.null) {
+      ds = ds[!is.na(ds$work_column) & ds$work_column != "",]
+      #cmdString = paste("ds<-ds[!is.na(ds$", column.var.name, ") & ds$", column.var.name, " != \"\",]", sep="")
+      # eval(parse(text=cmdString))
+    } 
+    #change column name back
+    colnames(ds)[which(names(ds) == "work_column")] <- column.var.name
   }
 } else {
   temp.ds<-NULL
@@ -171,21 +192,37 @@ if (operation == "remove") {
   final.temp.ds.null<-NULL
   cnt = 0
   for (column.var.name in columns.var.name) {
+    
+    #column.var.name = "Predictive.Model.Prediction"
+    
+    #change the colum name
+    colnames(ds)[which(names(ds) == column.var.name)] <- "work_column"
     if (length(remove.values) > 0) {
+      #turn remove.names into a list
+      remove.values = unlist(as.list(strsplit(remove.values, ",")[[1]]))
+      remove.values = trimws(remove.values)
       if (case.sensitive) {
+        temp.ds = ds[ds$work_column %in% remove.values, ]
         #ex: temp.ds<-ds[which(ds$Problem.Name %in% remove.values),]
-        cmdString = paste("temp.ds<-ds[which(ds$", column.var.name, " %in% remove.values),]", sep="")
-        eval(parse(text=cmdString))
+        # cmdString = paste("temp.ds<-ds[which(ds$", column.var.name, " %in% remove.values),]", sep="")
+        # eval(parse(text=cmdString))
       } else {
+        remove.values = tolower(remove.values)
+        temp.ds = ds[tolower(ds$work_column) %in% remove.values, ]
         #ex: temp.ds<-ds[which(tolower(ds$Problem.Name) %in% tolower(remove.values)),]
-        cmdString = paste("temp.ds<-ds[which(tolower(ds$", column.var.name, ") %in% tolower(remove.values)),]", sep="")
-        eval(parse(text=cmdString))
+        # cmdString = paste("temp.ds<-ds[which(tolower(ds$", column.var.name, ") %in% tolower(remove.values)),]", sep="")
+        # eval(parse(text=cmdString))
       }
+      #change the colum name for temp.ds
+      colnames(temp.ds)[which(names(temp.ds) == "work_column")] <- column.var.name
     }
     if (!remove.null){
+      temp.ds.null = ds[is.na(ds$work_column) | ds$work_column == "",]
       #ex: temp.ds.null<-ds[is.na(ds$Problem.Name) | ds$Problem.Name == "",]
-      cmdString = paste("temp.ds.null<-ds[is.na(ds$", column.var.name, ") | ds$", column.var.name, "  == \"\",]", sep="")
-      eval(parse(text=cmdString))
+      # cmdString = paste("temp.ds.null<-ds[is.na(ds$", column.var.name, ") | ds$", column.var.name, "  == \"\",]", sep="")
+      # eval(parse(text=cmdString))
+      #change column name back for temp.ds.null
+      colnames(temp.ds.null)[which(names(temp.ds.null) == "work_column")] <- column.var.name
     }
     if (cnt == 0) {
       final.temp.ds = temp.ds
@@ -196,25 +233,25 @@ if (operation == "remove") {
     }
     cnt = cnt + 1
   }
-
   if (length(final.temp.ds) == 0 && length(final.temp.ds.null) == 0) {
-    ds <- names(ds)
+    #ds <- names(ds)
+    ds <- read.table(text = "", col.names = origCols)
   } else if (length(final.temp.ds) != 0 && length(final.temp.ds.null) != 0) {
     ds<-rbind(final.temp.ds, final.temp.ds.null)
     rn<-rownames(ds)
     ds<-ds[order(as.numeric(rn)), ]
+    colnames(ds) <- origCols
   } else if (length(final.temp.ds) != 0 && length(final.temp.ds.null) == 0) {
     ds<-final.temp.ds
+    colnames(ds) <- origCols
   } else if (length(final.temp.ds) == 0 && length(final.temp.ds.null) != 0) {
     ds<-final.temp.ds.null
+    colnames(ds) <- origCols
   }
 }
 
-#change ds column names back to original names
-colnames(ds) <- origCols
-
 outputFile <- paste(workingDir, "/modified_file.txt", sep="")
-write.table(ds, file=outputFile, sep="\t", quote=FALSE, na="", col.names=TRUE, append=FALSE, row.names=FALSE)
+write.table(ds, file=outputFile, sep="\t", quote=FALSE, na="NA", col.names=TRUE, append=FALSE, row.names=FALSE)
 
 
 
