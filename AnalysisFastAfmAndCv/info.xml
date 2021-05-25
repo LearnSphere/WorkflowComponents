@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisFastAfmAndCv</url>
+<date>2018-01-14</date>
+<abstract>The <b>Fast AFM and CV</b> component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.</abstract>
+<description>This component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.</description>
+
+<inputs><ul>
+<li>A tab-delimited file in Datashop student-step file format </li>
+</ul></inputs>
+
+<outputs>
+<ul>
+<li>A analysis-summary.txt, mimicing Datashop model values export report </li>
+<li>A student-step file with the predicted error rate of the selected KC model replaced by the newly computed prediction</li>
+<li>An XML file with the coefficients of the logistic regression model</li>
+<li>An XML file with the skills' and students' parameters computed by the logistic regression model</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>KC model</li>
+<li>Compute cross validation: yes or no, whether to compute cross validation RMSE</li>
+<li>What type of cross valication: item blocked, student blocked or both, default is both</li>
+<li>Cross validation fold: maxium allowed is 10, default is 3</li>
+</ul>
+</options>
+
+</info>

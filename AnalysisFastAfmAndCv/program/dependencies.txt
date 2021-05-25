@@ -1,0 +1,7 @@
+Needs: scipy, sklearn, RegscorePy
+
+Might need to install tensorboardX for scipy separately: 
+1. download file tensorboardX-2.2.tar.gz from https://pypi.org/project/tensorboardX/#files
+2. extract the tar file from tensorboardX-2.2.tar.gz
+3. pip install your_path_to_the_tar_file\tensorboardX-2.2.tar 
+4. confirmed tensorboardX is in c:\ProgramData\Anconda3\Lib\site-packages
