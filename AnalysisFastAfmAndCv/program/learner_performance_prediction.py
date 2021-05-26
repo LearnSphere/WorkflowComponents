@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[33]:
+# In[8]:
 
 
 from datetime import datetime
@@ -20,7 +20,6 @@ from sklearn.linear_model import LogisticRegression
 from math import sqrt
 
 from sklearn.metrics import roc_auc_score, accuracy_score, log_loss, brier_score_loss, mean_squared_error
-from RegscorePy import *
 
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -28,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[2]:
+# In[10]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -212,7 +211,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[3]:
+# In[11]:
 
 
 def phi(x):
@@ -224,7 +223,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[4]:
+# In[12]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -540,7 +539,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[5]:
+# In[13]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -699,7 +698,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[6]:
+# In[14]:
 
 
 def compute_metrics(y, y_pred):
@@ -739,7 +738,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[7]:
+# In[15]:
 
 
 def logToWfl(msg):
@@ -756,7 +755,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[50]:
+# In[16]:
 
 
 #test command from WF component:

@@ -1,4 +1,4 @@
-Needs: scipy, sklearn, RegscorePy
+Needs: scipy, sklearn
 
 Might need to install tensorboardX for scipy separately: 
 1. download file tensorboardX-2.2.tar.gz from https://pypi.org/project/tensorboardX/#files
