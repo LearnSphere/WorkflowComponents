@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[8]:
+# In[14]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[10]:
+# In[41]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -52,7 +52,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
     df = pd.read_csv(data_file, delimiter='\t')
     df = df.rename(columns={'Anon Student Id': 'user_id',
                             'First Attempt': 'correct'})
-
+    
     # Create item from problem and step
     df["item_id"] = df["Problem Hierarchy"] + ";" + df["Problem Name"] + ";" + df["Step Name"]
 
@@ -72,10 +72,10 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
         df = df[~df[kc_col_name].isnull()]
     else:
         df.ix[df[kc_col_name].isnull(), kc_col_name] = 'NaN'
-
+    
     # Drop duplicates
     df.drop_duplicates(subset=["user_id", "item_id", "timestamp"], inplace=True)
-
+    
     # Filter too short sequences
     df = df.groupby("user_id").filter(lambda x: len(x) >= min_interactions_per_user)
     df[kc_col_name] = df[kc_col_name].astype('str')
@@ -211,7 +211,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[11]:
+# In[42]:
 
 
 def phi(x):
@@ -223,7 +223,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[12]:
+# In[43]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -539,7 +539,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[13]:
+# In[44]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -698,7 +698,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[14]:
+# In[45]:
 
 
 def compute_metrics(y, y_pred):
@@ -738,7 +738,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[15]:
+# In[46]:
 
 
 def logToWfl(msg):
@@ -755,7 +755,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[16]:
+# In[50]:
 
 
 #test command from WF component:
@@ -840,6 +840,15 @@ df, Q_mat, kc2idx, user2idx, item2idx = prepare_data(data_file=file_name,
                                                      cv_fold=cv_fold)
 skill_df = pd.DataFrame(list(kc2idx.items()), columns =['skill_name', 'skill_id'])
 student_df = pd.DataFrame(list(user2idx.items()), columns =['student_name', 'student_id'])
+
+#numbers of skill and student have to be >= cv_fold
+if cv_student and student_df.shape[0] < cv_fold:
+    cv_student = False
+    logToWfl("Can't run student-blocked CV because there are less students ({}) than CV fold ({})".format(student_df.shape[0], cv_fold))  
+if cv_item and skill_df.shape[0] < cv_fold:
+    cv_item = False
+    logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
+
 logToWfl("Finished prepare_data.")  
 #approximate % of time
 logProgressToWfl("45%")
