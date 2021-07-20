@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[1]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[41]:
+# In[23]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -54,6 +54,9 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
                             'First Attempt': 'correct'})
     
     # Create item from problem and step
+    df["Problem Hierarchy"] = df["Problem Hierarchy"].astype(str)
+    df["Problem Name"] = df["Problem Name"].astype(str)
+    df["Step Name"] = df["Step Name"].astype(str)
     df["item_id"] = df["Problem Hierarchy"] + ";" + df["Problem Name"] + ";" + df["Step Name"]
 
     # Add timestamp
@@ -211,7 +214,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[42]:
+# In[24]:
 
 
 def phi(x):
@@ -223,7 +226,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[43]:
+# In[25]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -539,7 +542,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[44]:
+# In[26]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -698,7 +701,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[45]:
+# In[27]:
 
 
 def compute_metrics(y, y_pred):
@@ -738,7 +741,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[46]:
+# In[28]:
 
 
 def logToWfl(msg):
@@ -755,7 +758,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[50]:
+# In[33]:
 
 
 #test command from WF component:
@@ -796,14 +799,18 @@ if command_line:
         cv_fold = args.numFold
 else:
     #student_step file
+    file_name = "studentStepRollup2.txt"
     #file_name = "ds1943_student_step_All_Data_3691_2017_0522_203358.txt"
-    file_name = "ds76_student_step_All_Data_74_2020_0926_034727.txt"
+    #file_name = "ds76_student_step_All_Data_74_2020_0926_034727.txt"
+    #file_name = "fast_afm_cv_ds_7_kcm_122.txt"
     #file_name = "./data/algebra05/data_DS_format.txt"
     #kc mode
-    #kc_col_name="KC (Default)"
-    kc_col_name="KC (Circle-Collapse)"
+    kc_col_name="KC (Matrix)"
+    #kc_col_name="KC (DecompArithDiam)"
+    #kc_col_name="KC (Lasso Model)"
     #kc_col_name="KC (Item Model)"
     #kc_col_name="KC(Default)"
+    #kc_col_name="KC (Default)"
     #working_dir
     working_dir = "."
     #working_dir = "./data/algebra05"
@@ -909,7 +916,8 @@ df_original = pd.read_csv(file_name, delimiter='\t')
 if remove_nan_skills:
     df_original = df_original[~df_original[kc_col_name].isnull()]
 #error rate prediction!
-df_original[f"Predicted Error Rate ({kc_name})"] = 1-y_all_pred
+#df_original[f"Predicted Error Rate ({kc_name})"] = 1-y_all_pred
+df_original["Predicted Error Rate (" + str(kc_name) + ")"] = 1-y_all_pred
 df_original.to_csv(os.path.join(working_dir, "student_step_with_prediction.txt"), sep="\t", index=False)
 
 #get ll, aic, bic
