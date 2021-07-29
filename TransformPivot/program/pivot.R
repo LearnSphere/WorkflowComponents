@@ -10,7 +10,7 @@ library(reshape2)
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  return(read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" )))
+  return(read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = ""))
 }
 
 my.write <- function(x, file, header, f = write.table, ...){
