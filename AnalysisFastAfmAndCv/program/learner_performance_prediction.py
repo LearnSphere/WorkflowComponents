@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[25]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[23]:
+# In[26]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -214,7 +214,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[24]:
+# In[27]:
 
 
 def phi(x):
@@ -226,7 +226,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[25]:
+# In[28]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -542,7 +542,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[26]:
+# In[29]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -701,7 +701,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[27]:
+# In[30]:
 
 
 def compute_metrics(y, y_pred):
@@ -741,7 +741,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[28]:
+# In[31]:
 
 
 def logToWfl(msg):
@@ -758,7 +758,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[33]:
+# In[52]:
 
 
 #test command from WF component:
@@ -770,6 +770,8 @@ logFile.close();
 
 #command line
 command_line = True
+cv_student_number_error = False
+cv_item_number_error = False
 if command_line:
     parser = argparse.ArgumentParser(description='Python program to compute logistic regression.')
     parser.add_argument('-programDir', type=str, help='the component program directory')
@@ -851,9 +853,11 @@ student_df = pd.DataFrame(list(user2idx.items()), columns =['student_name', 'stu
 #numbers of skill and student have to be >= cv_fold
 if cv_student and student_df.shape[0] < cv_fold:
     cv_student = False
+    cv_student_number_error = True
     logToWfl("Can't run student-blocked CV because there are less students ({}) than CV fold ({})".format(student_df.shape[0], cv_fold))  
 if cv_item and skill_df.shape[0] < cv_fold:
     cv_item = False
+    cv_item_number_error = True
     logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
 
 logToWfl("Finished prepare_data.")  
@@ -1056,24 +1060,56 @@ model_values_content = model_values_content + "<AIC>{:.8f}</AIC>\n".format(aic)
 model_values_content = model_values_content + "<BIC>{:.8f}</BIC>\n".format(bic)
 model_values_content = model_values_content + "<log_likelihood>{:.8f}</log_likelihood>\n".format(ll)
 
-
 #write CV to analysis-summary
-if cv_item or cv_student:
+if cv_item and cv_student:
     analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-    if cv_item and cv_student:
+    analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+    analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\n\n".format(student_cv_rmse, item_cv_rmse)
+    model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
+    model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
+if cv_item and not cv_student:
+    if cv_student_number_error:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
         analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\n\n".format(student_cv_rmse, item_cv_rmse)
-        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
+        analysis_summary_content = analysis_summary_content + "NA*\t{:.8}\n".format(item_cv_rmse)
+        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
         model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
-    elif cv_item:
+    else:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
         analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
         analysis_summary_content = analysis_summary_content + "{:.8}\n\n".format(item_cv_rmse)
         model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
-    elif cv_student:
+elif cv_student and not cv_item:
+    if cv_item_number_error:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+        analysis_summary_content = analysis_summary_content + "{:.8f}\tNA*\n".format(student_cv_rmse)
+        analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
+        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
+    else:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
         analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
         analysis_summary_content = analysis_summary_content + "{:.8f}\n\n".format(student_cv_rmse)
-        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
-
+        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)        
+else:
+    if cv_item_number_error and cv_student_number_error:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+        analysis_summary_content = analysis_summary_content + "NA*\tNA**\n"
+        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n"
+        analysis_summary_content = analysis_summary_content + "**Number of skills is less than that of CV folds\n\n"
+    elif cv_student_number_error:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
+        analysis_summary_content = analysis_summary_content + "NA*\n"
+        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
+    elif cv_item_number_error:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
+        analysis_summary_content = analysis_summary_content + "NA*\n"
+        analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
+            
+        
 model_values_content = model_values_content + "</model>\n</model_values>\n"
 model_values = open(model_values_file_name, "w")
 model_values.write(model_values_content)        
