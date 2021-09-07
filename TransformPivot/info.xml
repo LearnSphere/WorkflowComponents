@@ -6,7 +6,8 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformPivot</url>
 <date>2018-01-14</date>
-<abstract>The <b>Pivot</b> component mimics the Excel pivot function to allow users to aggregate and transform data.</abstract>
+<abstract>The <b>Pivot</b> component mimics the Excel pivot function to allow users to aggregate and transform data.
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2348" target="_blank">demo</a> workflow.</p></abstract>
 <description>This component allows you to aggregate and transform data. The functionality that it provides is very similiar to the one used in Excel.</description>
 
 <inputs><ul>
@@ -25,6 +26,38 @@ Tab-delimited file contains pivoted result.
 <li>More Factors: yes or no. Selecting yes will make the next option, Columns in Pivot Table, appear. </li>
 <li>Columns in Pivot Table: the columns to be included in the pivot result table. This provides more specific measurement for the subgroups of the chosen columns. Multiple selection is allowed.</li>
 </ul>
+
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2348" target="_blank">demo</a> workflow</b></p>
+
+<p><b>For student's overall time spent:</b>
+<ol>
+<li>Choose sum for Aggregation Method</li>  
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose Step Duration (sec) for Measurement</li>
+<li>Choose No for More Factors</li>
+</ol>
+</p>
+
+<p><b>For student's time spent for each problem:</b>
+<ol>
+<li>Choose sum for Aggregation Method</li>  
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose Step Duration (sec) for Measurement</li>
+<li>Choose Yes for More Factors</li>
+<li>Choose Problem Name for Columns in Pivot Table</li>
+</ol>
+</p>
+
+<p><b>For student's time spent for each problem per problem view:</b>
+<ol>
+<li>Choose sum for Aggregation Method</li>  
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose Step Duration (sec) for Measurement</li>
+<li>Choose Yes for More Factors</li>
+<li>Choose Problem Name and Problem View (by holding down ctrl key on Windows or cmd key on Mac) for Columns in Pivot Table</li>
+</ol>
+</p>
+
 </options>
 
 </info>

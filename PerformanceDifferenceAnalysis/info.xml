@@ -6,19 +6,19 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/PerformanceDifferenceAnalysis</url>
 <date>July 11, 2019</date>
-<abstract>This workflow calculates performance differences for an individual course, following <a href="https://arxiv.org/abs/1608.07565">Koester, Grom, &amp; McKay (2016)</a> and <a href="https://journals.sagepub.com/doi/full/10.1177/2332858417743754">Matz et al. (2017)</a>
+<abstract>This workflow component calculates performance differences for an individual course, following <a href="https://arxiv.org/abs/1608.07565">Koester, Grom, &amp; McKay (2016)</a> and <a href="https://journals.sagepub.com/doi/full/10.1177/2332858417743754">Matz et al. (2017)</a>
 The target use case is calculating gendered differences (or other factor) in final grade for a target course (e.g., intro physics), esp relative to grades in other courses taken by
-students in the target course. </abstract>
+students in the target course. 
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2344" target="_blank">demo</a> workflow.</p>
+</abstract>
 <description>
 </description>
 
-<inputs><ul>
-<li>CSV file</li>
-</ul>
+<inputs>A CSV file, including at least 4 columns (Ref to the Options section): Grade for Target Course, GPA in Other Units, Number of Units Factored into GPA and Anomaly Factor.
 </inputs>
 
 <outputs>
-<b>image</b>
+<b>A PDF file containing analysis graphs</b>
 </outputs>
 
 <options>

@@ -6,12 +6,24 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisFastAfmAndCv</url>
 <date>2018-01-14</date>
-<abstract>The <b>Fast AFM and CV</b> component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.</abstract>
+<abstract>The <b>Fast AFM and CV</b> component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2349" target="_blank">demo</a> workflow.</p></abstract>
 <description>This component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.</description>
 
-<inputs><ul>
-<li>A tab-delimited file in Datashop student-step file format </li>
-</ul></inputs>
+<inputs>
+<p>A tab-delimited file. Although ideally this component uses the Datashop Student-step export file, it can also run with the following minimum columns (column headers have to match exactly, see <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2349" target="_blank">demo</a> workflow for details):</p>
+<ol>
+<li>Anon Student Id</li>
+<li>Problem Hierarchy, can be empty as long as either Problem Name or Step Name has value</li>
+<li>Problem Name, can be empty as long as either Problem Hierarchy or Step Name has value</li>
+<li>Step Name, can be empty as long as either Problem Hierarchy or Problem Name has value</li>
+<li>First Transaction Time, can't be empty</li>
+<li>First Attempt, acceptable values are correct/incorrect/hint</li>
+<li>KC (A Model)</li>
+</ol>
+<p>Other requirement for the input file: data needs to be ordered by Anon Student Id and then by First Transaction Time</p>
+
+</inputs>
 
 <outputs>
 <ul>
