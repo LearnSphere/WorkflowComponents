@@ -30,12 +30,9 @@ args <- commandArgs(trailingOnly = TRUE)
 suppressMessages(library(logWarningsMessagesPkg))
 suppressMessages(library(rlang))
 suppressMessages(library(lme4))
-#suppressMessages(library(lmerTest))
 suppressMessages(library(data.table))
 suppressMessages(library(optimx))
 suppressMessages(library(speedglm))
-
-
 
 # initialize variables
 inputFile = NULL
@@ -223,31 +220,36 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	 
 	  if (family == "gaussian (link = identity)") {
       modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ")", sep="")
+      
 	  } else {
 	    #optimx doesn't work when formula has 1|....
 	    #modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"optimx\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 	    modelingString = paste("fittedModel <-glmer(", formula, ", data=ds, family=", family, ",control = glmerControl(optimizer = \"nloptwrap\", calc.derivs = FALSE,optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	    
 	  }
+	  logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
+	  modelSum <- summary(fittedModel)
 	 } else {
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds, family=", family, ")", sep="")
 	  #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds )", sep="")
-	  modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
-
+	   #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
+	   suppressMessages(library(lmerTest))
+	   modelingString = paste("fittedModel <-lmer(", formula, ", data=ds)", sep="")
+	   logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
+	   step.fittedModel<- step(fittedModel)
+	    modelSum <- summary(fittedModel)
 	 }
   #suppressWarnings(suppressMessages(eval(parse(text=modelingString))))
-
-  logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
-
-  modelSum <- summary(fittedModel)
+  # logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
+  # modelSum <- summary(fittedModel)
 	params <- ranef(fittedModel)
 	#suppressMessages(capture.output(modelSum, file = summary.file, append = FALSE))
 	#suppressMessages(capture.output(params, file = summary.file, append = TRUE))
 	logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE), logFileName = "r_glm.wfl")
 	logWarningsMessages(capture.output(params, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
-	# if (modelingFunc == "lmer") {
-	#   step.model<- step(fittedModel)
-	#   logWarningsMessages(capture.output(step.model, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
-	# }
+	if (modelingFunc == "lmer") {
+	  logWarningsMessages(capture.output(step.fittedModel, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
+	}
 	# sink(summary.file)
 	# print(modelSum, correlation=TRUE)
 	# sink()  # returns output to the console
