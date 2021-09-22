@@ -28,7 +28,8 @@ public class RPivotMain extends AbstractComponent {
         logger.info("RPivot inputFile: " + inputFile.getAbsolutePath());
         this.componentOptions.addContent(0, new Element("f").setText(inputFile.getAbsolutePath()));
         
-        String moreFactors = this.getOptionAsString("moreFactors");
+        String hasColumns = this.getOptionAsString("hasColumns");
+        String hasRows = this.getOptionAsString("hasRows");
         String aggMethodName = this.getOptionAsString("aWF");
         if (aggMethodName == null)
                 aggMethodName = "length";
@@ -91,19 +92,12 @@ public class RPivotMain extends AbstractComponent {
                     
 	            this.componentOptions.addContent(0, new Element("m").setText(mStr));
 	            this.componentOptions.addContent(0, new Element("origm").setText(origMeaNames));
-	            
-	            
 	            this.componentOptions.addContent(0, new Element("a").setText(aggMethodName));
+	            
 	            List<String> pivotColNames = this.getMultiOptionAsString("cWF");
-	            if (pivotColNames == null) {
-                    // send error message
-                    String err = "Column for pivot can't be null.";
-                    addErrorMessage(err);
-                    logger.info("RPivot is aborted: " + err);
-	            } else {
-	            	// else continue with processing
-                    String colNames = "";
-                    String origColNames = "";
+	            String colNames = "";
+                String origColNames = "";
+	            if (pivotColNames != null && pivotColNames.size() > 0) {
                     for (int i = 0; i < pivotColNames.size(); i++) {
                             if (i < pivotColNames.size()-1) {
                                     origColNames += pivotColNames.get(i)  + ",";
@@ -113,60 +107,56 @@ public class RPivotMain extends AbstractComponent {
                                     colNames += removeSpace(pivotColNames.get(i));
                             }
                     }
-                    if (moreFactors.equalsIgnoreCase("no"))
-                            colNames = "";
-                    this.componentOptions.addContent(0, new Element("c").setText(colNames));
-                    this.componentOptions.addContent(0, new Element("origc").setText(origColNames));
-                    
-		            List<String> pivotRowNames = this.getMultiOptionAsString("rWF");
-
-		            if (pivotRowNames == null) {
-	                    //send error message
-	                    String err = "Row for pivot can't be null.";
-	                    addErrorMessage(err);
-	                    logger.info("RPivot is aborted: " + err);
-	                    reqsMet = false;
-		            } else {
-	                    String rowNames = "";
-	                    String origRowNames = "";
-	                    for (int i = 0; i < pivotRowNames.size(); i++) {
-	                        if (i < pivotRowNames.size()-1) {
-	                            origRowNames += pivotRowNames.get(i)  + ",";
-	                            rowNames += removeSpace(pivotRowNames.get(i)) + ",";
-	                        } else {
-	                                origRowNames += pivotRowNames.get(i);
-	                            rowNames += removeSpace(pivotRowNames.get(i));
-	                        }
-	                    }
-
-	                    this.componentOptions.addContent(0, new Element("r").setText(rowNames));
-	                    this.componentOptions.addContent(0, new Element("origr").setText(origRowNames));
-	                    
-		            }
-
-		            if (reqsMet) {
-				        // Run the program and return its stdout to a file.
-			            File outputDirectory = this.runExternal();
-				        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
-			                logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-			                File file0 = new File(outputDirectory.getAbsolutePath() + "/pivot_result.txt");
-			                if (file0 != null && file0.exists()) {
-		                        Integer nodeIndex0 = 0;
-		                        Integer fileIndex0 = 0;
-		                        String label0 = "tab-delimited";
-		                        this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
-			                } else {
-		                        addErrorMessage("An unknown error has occurred with the RPivot component.");
-			                }
-				        }
-		            }
 	            }
-            }
+                if (hasColumns.equalsIgnoreCase("no")) {
+                	colNames = "";
+                	origColNames = "";
+                }
+                this.componentOptions.addContent(0, new Element("c").setText(colNames));
+                this.componentOptions.addContent(0, new Element("origc").setText(origColNames));
+                    
+		        List<String> pivotRowNames = this.getMultiOptionAsString("rWF");
+		        String rowNames = "";
+                String origRowNames = "";
+		        if (pivotRowNames != null && pivotRowNames.size() > 0) {
+		        	for (int i = 0; i < pivotRowNames.size(); i++) {
+	                	if (i < pivotRowNames.size()-1) {
+	                    	origRowNames += pivotRowNames.get(i)  + ",";
+	                       	rowNames += removeSpace(pivotRowNames.get(i)) + ",";
+	                    } else {
+	                    	origRowNames += pivotRowNames.get(i);
+	                        rowNames += removeSpace(pivotRowNames.get(i));
+	                    }
+		        	}
+		        }
+		        if (hasRows.equalsIgnoreCase("no")) {
+                	rowNames = "";
+                	origRowNames = "";
+                }
+	            this.componentOptions.addContent(0, new Element("r").setText(rowNames));
+	            this.componentOptions.addContent(0, new Element("origr").setText(origRowNames));
+            
+	            // Run the program and return its stdout to a file.
+	            File outputDirectory = this.runExternal();
+		        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+	                logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+	                File file0 = new File(outputDirectory.getAbsolutePath() + "/pivot_result.txt");
+	                if (file0 != null && file0.exists()) {
+                        Integer nodeIndex0 = 0;
+                        Integer fileIndex0 = 0;
+                        String label0 = "tab-delimited";
+                        this.addOutputFile(file0, nodeIndex0, fileIndex0, label0);
+	                } else {
+                        addErrorMessage("An unknown error has occurred with the RPivot component.");
+	                }
+		        }
+            }               
         }
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
 
     }
+    
     //in r col name with space should replace space with a "."
     private String removeSpace(String aColName) {
             //return aColName.replaceAll("\\s+",".");

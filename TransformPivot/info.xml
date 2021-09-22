@@ -21,9 +21,10 @@ Tab-delimited file contains pivoted result.
 <options>
  <ul>
 <li>Aggregation Method: functions to be used in aggregation, e.g., count, sum, min, max, sd and median</li>
-<li>Rows in Pivot Table: rows that would appear as rows in the pivot result table. Multiple selection is allowed.</li>
 <li>Measurement: the original columns that would be used for measurement of pivoting. Multiple selection is allowed.</li>
-<li>More Factors: yes or no. Selecting yes will make the next option, Columns in Pivot Table, appear. </li>
+<li>Define Rows: yes or no. Selecting yes will make option "Rows in Pivot Table" appear. </li>
+<li>Rows in Pivot Table: rows that would appear as rows in the pivot result table. Multiple selection is allowed.</li>
+<li>Define Columns: yes or no. Selecting yes will make option "Columns in Pivot Table" appear. </li>
 <li>Columns in Pivot Table: the columns to be included in the pivot result table. This provides more specific measurement for the subgroups of the chosen columns. Multiple selection is allowed.</li>
 </ul>
 
@@ -32,18 +33,20 @@ Tab-delimited file contains pivoted result.
 <p><b>For student's overall time spent:</b>
 <ol>
 <li>Choose sum for Aggregation Method</li>  
-<li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
-<li>Choose No for More Factors</li>
+<li>Choose Yes for Define Rows</li>
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose No for Define Columns</li>
 </ol>
 </p>
 
 <p><b>For student's time spent for each problem:</b>
 <ol>
 <li>Choose sum for Aggregation Method</li>  
-<li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
-<li>Choose Yes for More Factors</li>
+<li>Choose Yes for Define Rows</li>
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose Yes for Define Columns</li>
 <li>Choose Problem Name for Columns in Pivot Table</li>
 </ol>
 </p>
@@ -51,10 +54,20 @@ Tab-delimited file contains pivoted result.
 <p><b>For student's time spent for each problem per problem view:</b>
 <ol>
 <li>Choose sum for Aggregation Method</li>  
-<li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
-<li>Choose Yes for More Factors</li>
+<li>Choose Yes for Define Rows</li>
+<li>Choose Anon Student Id for Rows in Pivot Table</li>  
+<li>Choose Yes for Define Columns</li>
 <li>Choose Problem Name and Problem View (by holding down ctrl key on Windows or cmd key on Mac) for Columns in Pivot Table</li>
+</ol>
+</p>
+
+<p><b>For sum of time spent for all students in the dataset</b>
+<ol>
+<li>Choose sum for Aggregation Method</li>  
+<li>Choose Step Duration (sec) for Measurement</li>
+<li>Choose No for Define Rows</li>
+<li>Choose No for Define Columns</li>
 </ol>
 </p>
 

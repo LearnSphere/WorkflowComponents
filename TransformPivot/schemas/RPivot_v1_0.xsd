@@ -77,7 +77,8 @@
   
   <xs:complexType name="option_dependency">
 	<xs:choice>
-	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="cWF" ls:dependsOn="moreFactors" ls:constraint="matches(Yes)" />
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="rWF" ls:dependsOn="hasRows" ls:constraint="matches(Yes)" />
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="cWF" ls:dependsOn="hasColumns" ls:constraint="matches(Yes)" />
 	</xs:choice>
 </xs:complexType>
 
@@ -85,9 +86,10 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
     	<xs:element type="analysisType" name="aWF" id="Aggregation_Method" default="sum" />
-    	<xs:element type="MultiFileInputHeader" name="rWF" id="Rows_in_Pivot_Table" default=".*" />
     	<xs:element type="MultiFileInputHeader" name="mWF" id="Measurement" default=".*" />
-    	<xs:element type="trueFalseType" name="moreFactors" id="More_Factors" default="No" />
+    	<xs:element type="trueFalseType" name="hasRows" id="Define_Rows" default="No" />
+      	<xs:element type="MultiFileInputHeader" name="rWF" id="Rows_in_Pivot_Table" default=".*" />
+    	<xs:element type="trueFalseType" name="hasColumns" id="Define_Columns" default="No" />
       	<xs:element type="MultiFileInputHeader" name="cWF" id="Columns_in_Pivot_Table" default=".*" />
       	
     </xs:choice>

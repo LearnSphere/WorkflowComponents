@@ -1,4 +1,4 @@
-#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" pivot.R -programDir . -workingDir . -userId 1 -a sum -aWF median -moreFactors No -c "Feature.Name,Date.Of.Extraction" -cWF_nodeIndex 0 -cWF_fileIndex 0 -cWF "Feature Name" -cWF_nodeIndex 0 -cWF_fileIndex 0 -cWF "Date Of Extraction" -f "moocdb_features_subset.txt" -m "Longitudinal.Feature.Week,Longitudinal.Feature.Value" -mWF_nodeIndex 0 -mWF_fileIndex 0 -mWF "Longitudinal Feature Week" -mWF_nodeIndex 0 -mWF_fileIndex 0 -mWF "Longitudinal Feature Value" -origc "Feature Name,Date Of Extraction" -origr "User ID" -r "User.ID" -origm "Longitudinal Feature Week,Longitudinal Feature Value" -rWF_nodeIndex 0 -rWF_fileIndex 0 -rWF "User ID" -node 0 -fileIndex 0 "moocdb_features_subset.txt"
+#"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" pivot.R -programDir . -workingDir . -userId 1 -a sum -aWF median -hasRows No -hasColumns No -c "Feature.Name,Date.Of.Extraction" -cWF_nodeIndex 0 -cWF_fileIndex 0 -cWF "Feature Name" -cWF_nodeIndex 0 -cWF_fileIndex 0 -cWF "Date Of Extraction" -f "moocdb_features_subset.txt" -m "Longitudinal.Feature.Week,Longitudinal.Feature.Value" -mWF_nodeIndex 0 -mWF_fileIndex 0 -mWF "Longitudinal Feature Week" -mWF_nodeIndex 0 -mWF_fileIndex 0 -mWF "Longitudinal Feature Value" -origc "Feature Name,Date Of Extraction" -origr "User ID" -r "User.ID" -origm "Longitudinal Feature Week,Longitudinal Feature Value" -rWF_nodeIndex 0 -rWF_fileIndex 0 -rWF "User ID" -node 0 -fileIndex 0 "moocdb_features_subset.txt"
 
 options(scipen=999)
 
@@ -6,11 +6,18 @@ options(scipen=999)
 options(warn = -1)
 library(reshape2)
 
+
+
 #options(warn = oldw)
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  return(read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = ""))
+  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+  #if only one col is retrieved, try again with ,
+  if (ncol(ds_file) == 1) {
+    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+  }
+  return(ds_file)
 }
 
 my.write <- function(x, file, header, f = write.table, ...){
@@ -94,12 +101,21 @@ while (i <= length(args)) {
     i = i+1
   }
   
-  # moreFactors 
-  else if (args[i] == "-moreFactors") {
+  # columns 
+  else if (args[i] == "-hasColumns") {
     if (length(args) == i) {
-      stop("aggregation measure only must be specified")
+      stop("hasColumns must be specified")
     }
-    moreFactors = args[i+1]
+    hasColumns = args[i+1]
+    i = i+1
+  }
+  
+  # rows 
+  else if (args[i] == "-hasRows") {
+    if (length(args) == i) {
+      stop("hasRows must be specified")
+    }
+    hasRows = args[i+1]
     i = i+1
   }
   
@@ -123,19 +139,52 @@ while (i <= length(args)) {
 # pivotColName="Feature.Name,Date.Of.Extraction"
 # pivotOrigColName="Feature Name,Date Of Extraction"
 # aggMethod="sum"
-# moreFactors="No"
+# hasColumns="No"
+# hasRows="No"
 # outputFileName = "pivot_result.txt"
 
+# 
+# dataFileName="cleaned_data_long.txt"
+# meaColName="exam"
+# pivotOrigMeaName="exam"
+# pivotRowName="condition"
+# pivotOrigRowName="condition"
+# pivotColName="condition"
+# pivotOrigColName="condition"
+# aggMethod="sum"
+# hasColumns="Yes"
+# hasRows="No"
+# outputFileName = "pivot_result.txt"
 
 myData<-import.data(dataFileName)
 
-#change , to +
-pivotRowName<-gsub(",", "\\+", pivotRowName)
-if (moreFactors != "No")
-  pivotColName<-gsub(",", "\\+", pivotColName)
-
+#get lists
+pivotRowList = c()
+if (hasRows != "No")
+  pivotRowList = unlist(strsplit(pivotRowName, split=","))
+pivotCOlList = c()
+if (hasColumns != "No")
+  pivotCOlList = unlist(strsplit(pivotColName, split=","))
 measureColAsList = unlist(strsplit(meaColName, split=","))
-  
+
+#change , to +
+if (hasRows != "No") {
+  pivotRowName<-gsub(",", "\\+", pivotRowName)
+} else {
+  pivotRowName = "."
+}
+if (hasColumns != "No") {
+  pivotColName<-gsub(",", "\\+", pivotColName)
+} else {
+  pivotColName = "."
+}
+
+neededColList = c(pivotRowList, pivotCOlList, measureColAsList)
+#get only columns that are needed
+myData = subset(myData, select=neededColList)
+#convert factor columns to character
+i <- sapply(myData, is.factor)
+myData[i] <- lapply(myData[i], as.character)
 m_myData <- melt(myData, measure.vars = measureColAsList)
 
 # if (aggMethod  %in% c("length", "min", "max")) {
@@ -160,17 +209,21 @@ if (aggMethod == "median") {
 
 
 if (aggMethod  %in% c("length", "min", "max")) {
-  if (moreFactors == "No") {
-    comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
-  } else {
-    comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
-  } 
+  comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  
+  # if (hasColumns == "No") {
+  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  # } else {
+  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  # } 
 } else {
-  if (moreFactors == "No") {
-    comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
-  } else {
-    comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
-  } 
+  comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  # 
+  # if (hasColumns == "No") {
+  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  # } else {
+  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  # } 
   
 }
 
@@ -179,21 +232,24 @@ if (aggMethod  %in% c("length", "min", "max")) {
 #m_myData <- melt(myData, measure.vars = c("Longitudinal.Feature.Value", "Longitudinal.Feature.Week"))
 #agg_data<-dcast(m_myData, User.ID~Date.Of.Extraction+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
 #agg_data<-dcast(m_myData, User.ID~.+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
-
 eval(parse(text=comd))
+
+
 #replace the R-changed name with original names
-pivotOrigRowName = as.list(strsplit(pivotOrigRowName, ",")[[1]])
-for(origRowName in pivotOrigRowName){
-  origRowNameTemp = gsub("[ ()-]", ".", origRowName)
-  for (i in 1:length(colnames(agg_data))) {
-    if (colnames(agg_data)[i] == origRowNameTemp) {
-      colnames(agg_data)[i] = origRowName
-      break
+if (hasRows != "No") {
+  pivotOrigRowName = as.list(strsplit(pivotOrigRowName, ",")[[1]])
+  for(origRowName in pivotOrigRowName){
+    origRowNameTemp = gsub("[ ()-]", ".", origRowName)
+    for (i in 1:length(colnames(agg_data))) {
+      if (colnames(agg_data)[i] == origRowNameTemp) {
+        colnames(agg_data)[i] = origRowName
+        break
+      }
     }
   }
 }
 
-if (moreFactors != "No") {
+if (hasColumns != "No") {
   pivotOrigColName = as.list(strsplit(pivotOrigColName, ",")[[1]])
   for(origColName in pivotOrigColName){
     origColNameTemp = gsub("[ ()-]", ".", origColName)
@@ -217,6 +273,13 @@ for(origMeaName in pivotOrigMeaName){
   }
 }
 
+#when hasRows=No, htere will be column with "." as headers and values. make sure it is deleted
+if (colnames(agg_data)[1] == ".") {
+  if (length(unique(agg_data[1])) == 1 & unique(agg_data[1])[1] == ".") {
+    agg_data = subset(agg_data, select=-c(.))
+  }
+}
+
 my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote = F)
 
 #dcast(myData, User.ID+Longitudinal.Feature.Week ~ Feature.Name, value.var="values", fun.aggregate = sum)
@@ -227,4 +290,3 @@ my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote =
 
 #or
 #Rscript.exe pivot.R -programDir C:/WPIDevelopment/dev06_dev/WorkflowComponents/TransformPivot/ -workingDir C:\WPIDevelopment\dev06_dev\WorkflowComponents\TransformPivot/test/Transform-1-x869321/output/ -userId 1 -a length -aWF count -c Feature.Name -cWF "Feature Name" -f, C:\WPIDevelopment\dev06_dev\WorkflowComponents\TransformPivot\test\test_data\moocdb_features_subset.txt -m Longitudinal.Feature.Value -mWF "Longitudinal Feature Value" -r User.ID -rWF "User ID" -f "C:/WPIDevelopment/dev06_dev/WorkflowComponents/TransformPivot/test/test_data/moocdb_features_subset.txt"
-

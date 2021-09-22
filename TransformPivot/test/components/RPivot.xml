@@ -70,7 +70,8 @@
   <options>
     <aWF>sum</aWF>
     <rWF>Input 0 (0) - User ID (column 2)</rWF>
-    <moreFactors>No</moreFactors>
+    <hasRows>Yes</hasRows>
+    <hasColumns>Yes</hasColumns>
     <cWF>Input 0 (0) - Feature Name (column 1)</cWF>
     <cWF>Input 0 (0) - Date Of Extraction (column 5)</cWF>
     <mWF>Input 0 (0) - Longitudinal Feature Week (column 3)</mWF>

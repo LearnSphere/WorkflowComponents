@@ -30,6 +30,7 @@ args <- commandArgs(trailingOnly = TRUE)
 suppressMessages(library(logWarningsMessagesPkg))
 suppressMessages(library(rlang))
 suppressMessages(library(lme4))
+#suppressMessages(library(lmerTest))
 suppressMessages(library(data.table))
 suppressMessages(library(optimx))
 suppressMessages(library(speedglm))
@@ -243,7 +244,10 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	#suppressMessages(capture.output(params, file = summary.file, append = TRUE))
 	logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE), logFileName = "r_glm.wfl")
 	logWarningsMessages(capture.output(params, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
-
+	# if (modelingFunc == "lmer") {
+	#   step.model<- step(fittedModel)
+	#   logWarningsMessages(capture.output(step.model, file = summary.file, append = TRUE), logFileName = "r_glm.wfl")
+	# }
 	# sink(summary.file)
 	# print(modelSum, correlation=TRUE)
 	# sink()  # returns output to the console

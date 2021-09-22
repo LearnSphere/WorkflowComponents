@@ -109,7 +109,7 @@ public class RglmMain extends AbstractComponent {
             //delete randomEffects content bc | in the option can choke the command line
             if (this.componentOptions!= null && this.componentOptions.getChildren() != null) {
                     for (Element optionElementInner : (List<Element>) this.componentOptions.getChildren()) {
-                            logger.info(optionElementInner.getName());
+                            //logger.info(optionElementInner.getName());
                             if (optionElementInner.getName().equals("randomEffects")) {
                                     String text = optionElementInner.getText();
                                     String validPattern =  "\\s*\\|\\s*";
@@ -187,6 +187,12 @@ public class RglmMain extends AbstractComponent {
     private int getColInd(String filePathName, String colName) {
             String[][] fContent = IOUtil.read2DStringArray(filePathName);
             String[] headers = fContent[0];
+            //headers should be length of more than 1
+            //if length is 1, assume it's CSV
+            if (headers != null && headers.length < 2) {
+            	fContent = IOUtil.read2DStringArray(filePathName, ",");
+            	headers = fContent[0];
+            }
             int colInd = 0;
             for (String colHeader : headers) {
                     if (colName.equals(colHeader))
@@ -198,6 +204,12 @@ public class RglmMain extends AbstractComponent {
 
     private boolean isColNumeric(String filePathName, int colInd) {
             String[][] fContent = IOUtil.read2DStringArray(filePathName);
+            String[] headers = fContent[0];
+            //headers should be length of more than 1
+            //if length is 1, assume it's CSV
+            if (headers != null && headers.length < 2) {
+            	fContent = IOUtil.read2DStringArray(filePathName, ",");
+            }
             for (int rowCnt = 1; rowCnt < fContent.length; rowCnt++) {
                     String[] row = fContent[rowCnt];
                     if (colInd >= row.length)
@@ -212,6 +224,12 @@ public class RglmMain extends AbstractComponent {
     //return null of other values
     private boolean getColBinaryConvertible(String filePathName, int colInd) {
             String[][] fContent = IOUtil.read2DStringArray(filePathName);
+            String[] headers = fContent[0];
+            //headers should be length of more than 1
+            //if length is 1, assume it's CSV
+            if (headers != null && headers.length < 2) {
+            	fContent = IOUtil.read2DStringArray(filePathName, ",");
+            }
             for (int rowCnt = 1; rowCnt < fContent.length; rowCnt++) {
                     String[] row = fContent[rowCnt];
                     if (colInd >= row.length)
