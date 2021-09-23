@@ -195,9 +195,11 @@ public class RglmMain extends AbstractComponent {
             }
             int colInd = 0;
             for (String colHeader : headers) {
-                    if (colName.equals(colHeader))
-                            return colInd;
-                    colInd++;
+            	//take off the flanking double quote
+            	String colHeaderMod = cleanFlankingDoubleQuotes(colHeader);
+            	if (colName.equals(colHeaderMod))
+            		return colInd;
+                colInd++;
             }
             return -1;
     }
@@ -214,7 +216,9 @@ public class RglmMain extends AbstractComponent {
                     String[] row = fContent[rowCnt];
                     if (colInd >= row.length)
                             continue;
-                    if (!NumberUtils.isNumber(row[colInd]))
+                    String cellContent = cleanFlankingDoubleQuotes(row[colInd]);
+                    //delete flanking double quote
+                    if (!NumberUtils.isNumber(cellContent))
                             return false;
             }
             return true;
@@ -234,7 +238,7 @@ public class RglmMain extends AbstractComponent {
                     String[] row = fContent[rowCnt];
                     if (colInd >= row.length)
                             return false;
-                    String colValue = row[colInd];
+                    String colValue = cleanFlankingDoubleQuotes(row[colInd]);
                     boolean colNeedConvert = false;
                     if (!colValue.equals("0") && !colValue.equals("1") &&
                                     !colValue.equalsIgnoreCase("hint") && !colValue.equalsIgnoreCase("correct") && !colValue.equalsIgnoreCase("incorrect") &&
@@ -243,5 +247,12 @@ public class RglmMain extends AbstractComponent {
                     }
             }
             return true;
+    }
+    
+    private String cleanFlankingDoubleQuotes (String str) {
+    	if (str.length() >= 2 && str.charAt(0) == '"' && str.charAt(str.length() - 1) == '"') {
+    		return str.substring(1, str.length() - 1);
+    	}
+    	return str;
     }
 }
