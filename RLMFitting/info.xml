@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RLMFitting</url>
+<abstract>
+<p>The <b>RLMFitting</b> component allows users to conduct R 
+    <a href="https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/lm">lm</a> functions on a dataset.</p>
+<p>Users can choose a column for dependent variable and column(s) for independent variables to carry out regression analysis.</p>
+
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=1017" target="_blank">demo</a> to see how this component is used in the Doer Effect analysis.</p>
+</abstract>
+<description></description>
+
+<inputs>
+<ul><li>A tab-delimited data file.</li></ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>Student-Step</li>
+<li>Parameter estimate values</li>
+<li>Model values</li>
+</ul>
+</outputs>
+
+
+<options>
+<ul>
+<li>Independent variables.</li>
+<li>Dependent variables.</li></ul>
+
+</options>
+
+</info>

@@ -147,6 +147,9 @@ Output file: <table border="1">
 		</tr>
         </table>		
 </p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=1943" target="_blank">demo</a> workflow.</p>
+<p>See <a href="https://www.youtube.com/embed/kojUXZxGdrg" target="_blank">tutorial</a> video.</p>
+	
 </abstract>
 <description>This component converts a multi-selection row into multiple rows of single step and modify outcome of accordingly.
 </description>
