@@ -24,7 +24,7 @@
       <errors />
       <files>
         <student-step>
-          <file_path>test/test_data/cheese.txt</file_path>
+          <file_path>test/test_data/pivot_result.txt</file_path>
           <file_name>cheese.txt</file_name>
           <index>0</index>
           <label>student-step</label>

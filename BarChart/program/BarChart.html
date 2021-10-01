@@ -112,12 +112,16 @@
                         Variable:
                         <select class="variableSelect"></select>
                     </div>
+                    <div class="hasRowNameInputDiv">
+                        <input type="checkbox" class="hasRowNameInput" checked>
+  							<label for="hasRowNameLabel">Has Row Name</label><br>
+                    </div>
                     <div class="sortByDiv">
                         Sort by:
                         <select id="sortBy">
                             <option value="alphabetical">Alphabetical</option>
-                            <option value="countDesc" selected>Count (descending)</option>
-                            <option value="countAsc">Count (ascending)</option>
+                            <option value="measureDesc" selected>y-axis (descending)</option>
+                            <option value="measureAsc">y-axis (ascending)</option>
                         </select>
                     </div>
                     <div class="downloadGraphButton">
@@ -166,13 +170,14 @@
     var svg = null;
     var variable = null;
     var tip = null;
+    var hasRowName = null;
+    var headers = null;
 
     jQuery(document).ready(function() {
         initiateInterface();
 
         d3.tsv("${input0}", function(error, data) {
             if (error) throw error;
-
             d3TsvData = data;
             populateHeaderSelect(data);
             createAdvancedOptions();
@@ -183,8 +188,7 @@
     });
 
     function initiateInterface() {
-        allowSaveableImage();
-
+        allowSaveableImage();        
         // Open Advanced Options when clicking "show advanced options"
         jQuery('#toggleAdvOpt').click(function() {
             jQuery('.advancedOptions').toggle();
@@ -210,8 +214,16 @@
             } else if (jQuery(this).attr('id') === 'yVarSelect') {
                 jQuery('input[name="yLabel"]').val(jQuery('#yVarSelect').val());
             } else if (jQuery(this).hasClass('variableSelect')) {
-                jQuery('input[name="xLabel"]').val(jQuery('.variableSelect').val());
+                //jQuery('input[name="xLabel"]').val(jQuery('.variableSelect').val());
+            	jQuery('input[name="yLabel"]').val(jQuery('.variableSelect').val());
+            	if (headers != null && headers.length >0) { 
+            		jQuery('input[name="xLabel"]').val(defaultLabel = headers[0]);
+            	} else {
+            		jQuery('input[name="xLabel"]').val("");
+            	}
             }
+            
+            
 
             advancedOptionsToObject();
 
@@ -225,8 +237,9 @@
         clearMessageBox();
 
         loading(true);
-
+        hasRowName = jQuery('.hasRowNameInput').prop("checked");
         variable = jQuery('.variableSelect').val();
+        
 
         // Get the data in a json format based on the selected variable
         let data = formatDataBarChart(d3TsvData);
@@ -288,8 +301,8 @@
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>" + variable + ": </strong> <span style='color:red'>" + d.string + "</span><br/>" +
-                    "<strong>Count:</strong> <span style='color:red'>" + d.count + "</span>";
+                return "<strong>" + headers[0] + ": </strong> <span style='color:red'>" + d.string + "</span><br/>" +
+                    "<strong>" + variable + ":</strong> <span style='color:red'>" + d.measure + "</span>";
             })
         svg.call(tip);
 
@@ -303,7 +316,7 @@
 
         // Scale the range of the data in the domains
         x.domain(data.map(function(d) { return d.string; }));
-        y.domain([0, d3.max(data, function(d) { return d.count; })]);
+        y.domain([0, d3.max(data, function(d) { return d.measure; })]);
 
         // append the rectangles for the bar chart
         svg.selectAll("rect")
@@ -314,8 +327,8 @@
             .on('mouseout', tip.hide)
             .attr("x", function(d) { return x(d.string); })
             .attr("width", x.bandwidth())
-            .attr("y", function(d) { return y(d.count); })
-            .attr("height", function(d) { return height - y(d.count); });
+            .attr("y", function(d) { return y(d.measure); })
+            .attr("height", function(d) { return height - y(d.measure); });
 
         // add the x Axis
         svg.append("g")
@@ -363,23 +376,29 @@
 
 
     function formatDataBarChart(originalData) {
-        let data = JSON.parse(JSON.stringify(originalData));
+    	let data = JSON.parse(JSON.stringify(originalData));
         let jsonData = [];
-
-        // Get each unique string and it's count in the data
         let stringData = [];
+        let rowNameData = [];
+        //this will always use the first row of data as column headers
+        headers = Object.keys(data[0])
+        //if it has row name, use it for x-axis 
+        if (hasRowName) {
+        	for (let i = 0; i < data.length; i++) {
+        		rowNameData.push(data[i][headers[0]]);
+        	}
+        } else {
+        	for (let i = 0; i < data.length; i++) {
+        		rowNameData.push("" + (i+1));
+        	}
+        }
+        // make data
         for (let i = 0; i < data.length; i++) {
             let val = {};
-            val.string = data[i][variable];
-            val.count = countInArray(data, data[i][variable]);
+            val.string = rowNameData[i];
+            val.measure = data[i][variable];
             stringData.push(val);
-
-            for (var j = data.length - 1; j--;) {
-                if (data[j][variable] === val.string) {
-                    data.splice(j, 1);
-
-                }
-            }
+            
         }
 
         // Sort this data
@@ -395,15 +414,15 @@
                     }
                     return (a1 > b1) ? 1 : ((b1 > a1) ? -1 : 0);
                 });
-        } else if (sortBy === "countAsc") {
+        } else if (sortBy === "measureAsc") {
             stringData.sort(
                 function(a, b) {
-                    return (a.count > b.count) ? 1 : ((b.count > a.count) ? -1 : 0);
+                    return (a.measure > b.measure) ? 1 : ((b.measure > a.measure) ? -1 : 0);
                 });
-        } else if (sortBy === "countDesc") {
+        } else if (sortBy === "measureDesc") {
             stringData.sort(
                 function(a, b) {
-                    return (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
+                    return (a.measure < b.measure) ? 1 : ((b.measure < a.measure) ? -1 : 0);
                 });
         }
 
@@ -437,8 +456,15 @@
             advOptHtml += '<tr id="' + v + 'Label">';
 
             let defaultLabel = jQuery('.variableSelect').val();
-            if (v == 'y') {
+            /*if (v == 'y') {
                 defaultLabel = 'Count';
+            }*/
+            if (v == 'x') {
+            	if (headers != null && headers.length >0) { 
+                	defaultLabel = headers[0];
+            	} else {
+            		defaultLabel = '';
+            	}
             }
             advOptHtml += '<td>' + v + ' Label:</td><td><input type="text" name="' +
                 v + 'Label" value="' + defaultLabel + '"></td></tr>';

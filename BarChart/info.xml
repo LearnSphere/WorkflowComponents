@@ -6,10 +6,20 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/BarChart</url>
 <date>2018-9-14</date>
-<abstract>The <b>Bar Chart</b> component creates a bar chart of the input data.  Use a tab-delimited file with column headers as input.  The options are contained in the html output file.</abstract>
+<abstract>The <b>Bar Chart</b> component creates a bar chart of the input data.  Use a tab-delimited file with column headers as input.  
+The html output page contains options that you can use to adjust the bar chart to fit your need. The options are:
+
+<ul>
+<li>Variable: allows to select the column to be used in the bar chart.</li>
+<li>Has Row Name: allows to specify if your data contains row names. If row names are not present, natural numbers are used for the x-axis labels.</li>
+<li>Sort by: allows different ways to order the bars.</li>
+<li>Download graph: allows to download graph as png file.</li>
+<li>Show Advanced Options: allows finer tweak of the bar chart</li>
+</ul>
+</abstract>
 
 <inputs>
-<b>tab-delimited</b> - Must have column headers in the first row.
+<b>tab-delimited</b> - Must have column headers in the first row. Row names are optional.
 </inputs>
 
 <outputs>
@@ -18,7 +28,7 @@
 </outputs>
 
 <options>
-<b>Options are in the output</b><br/>
+<b>Options are in the output html. </b>See the Abstract section above.<br/>
 </options>
 
 </info>

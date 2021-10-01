@@ -47,7 +47,6 @@ public class BarChartMain extends AbstractComponent {
                                    .replaceAll("\\\\", "/")
                                    .replaceAll("^.*/workflows/", "workflows/");
             String dataFilePath = "LearnSphere?htmlPath=" + outputSubpath + "data.txt";
-
             BufferedReader bReader = null;
             FileReader fReader = null;
 

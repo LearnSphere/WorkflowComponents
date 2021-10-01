@@ -1,0 +1,3 @@
+condition	exam
+control	6583.67
+experimental	6810.24
