@@ -8,7 +8,6 @@
 <date>2018-9-14</date>
 <abstract>The <b>Bar Chart</b> component creates a bar chart of the input data.  Use a tab-delimited file with column headers as input.  
 The html output page contains options that you can use to adjust the bar chart to fit your need. The options are:
-
 <ul>
 <li>Variable: allows to select the column to be used in the bar chart.</li>
 <li>Has Row Name: allows to specify if your data contains row names. If row names are not present, natural numbers are used for the x-axis labels.</li>
@@ -16,6 +15,7 @@ The html output page contains options that you can use to adjust the bar chart t
 <li>Download graph: allows to download graph as png file.</li>
 <li>Show Advanced Options: allows finer tweak of the bar chart</li>
 </ul>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2363" target="_blank">demo</a> workflow.</p>
 </abstract>
 
 <inputs>
@@ -29,6 +29,14 @@ The html output page contains options that you can use to adjust the bar chart t
 
 <options>
 <b>Options are in the output html. </b>See the Abstract section above.<br/>
+
+<p><b>Example: (see <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2363" target="_blank">demo</a> workflow)</b></p>
+
+<p>In the example, the Bar Chart works as a downstream component of the Pivot component. The Pivot component computes the average exam for two conditions: control and experimental. 
+In the Bar Chart component, you can choose "exam" as Variable to see the comparison of average exam between the two conditions.
+</p>
+
 </options>
+
 
 </info>
