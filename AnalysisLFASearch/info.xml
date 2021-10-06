@@ -12,7 +12,7 @@
 	<li>when stop repetition count is met (see options section for explanation of stop repetition count)</li>
 	<li>when maximum iteration number is reached</li>
 	</ul>
-	<p>Since LFA search is a very computational expensive process, we limit input data to contain less than 10,000 rows, less than 100 students and less than 100 difficulty factors.
+	<p>Since LFA search is a very computational expensive process, we limit input data to contain less than 20,000 rows.
 	If you have data larger than these limits, we recommend you to do following:
 	<ul><li>Include less students in your dataset</li>
 	<li>Break dataset up by unit so there are less difficulty factors to search through</li>
@@ -30,18 +30,17 @@
 <options>
 <ul>
 <li>Search Heuristic: AIC or BIC</li>
-<li>KC Models to be Used for Difficulty Factors: at least two models should be selected, and multi-skill models are not allowed, and models should have the same number of observations. We limit the max number of difficulty factors to 100.</li>
+<li>KC Models to be Used for Difficulty Factors: multi-skill models are not allowed; and models should have the same number of observations.</li>
 <li>Maximum Search Iteration: search stops after reaching this number of iterations; max allowed is 200.</li>
 <li>Stop Search When Heuristic is Repeated This Many Times: for example, when set to 3, if current search iteration produces the best model with BIC or AIC value that matches the last two iterations, the search will end. When set to 0, this feature is ignored.</li>
-<li>Number of Top Models to be Outputed: number of the top models to be included in the output</li>
+<li>Number of Top Models to be Output: number of the top models to be included in the output</li>
 </ul>
 </options>
 
 <outputs><ul>
-<li>allModels.txt: contains the top best models' Log Likelihood, AIC and BIC; and student and skill parameters</li>
-<li>all.txt: Q matrix to start the search. Basically, it's the Q matrix in which all steps contain one skill.</li>
-<li>MultiModelCombinedPMatrix.txt: the difficulty factor matrix (a.k.a PMatrix) made from the KC models selected. Any repeated skills from different models are eliminated; and any repeated skill names from different models are renamed by prefixing with model name to skill name</li>
-<li>allModels.zip: zipped together for all top models Q matrices</li>
+<li>Summary.txt: contains the top best models' Log Likelihood, AIC and BIC; and student and skill parameters</li>
+<li>PMatrix.txt: the difficulty factor matrix (a.k.a PMatrix) made from the KC models selected. Same skills from different models are eliminated; and different skills with same name are renamed by prefixing model name to skill name</li>
+<li>ResultFiles.zip: zipped together are top models' stats result, Q matrices, and Q matrices in Datashop import ready format.</li>
 </ul>
 </outputs>
 
