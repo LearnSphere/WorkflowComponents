@@ -1,0 +1,51 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>SkillModelImport</component_name>
+  <component_type>transform</component_type>
+  <left>695</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+  <top>106</top>
+  <options>
+    <!-- Assumes the use of dataset 2303 on QA -->
+    <datasetId>18</datasetId>
+  </options>
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>KCM Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/resources/ds18_kcm.txt</file_path>
+          <label>kcm</label>
+          <file_name>ds18_kcm.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Step ID</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>KC (foo)</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta />
+    </input0>
+  </inputs>
+</component>
