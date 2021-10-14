@@ -30,9 +30,17 @@ Tab-delimited file contains pivoted result.
 
 <p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2348" target="_blank">demo</a> workflow</b></p>
 
-<p><b>For student's overall time spent:</b>
+<p><b>For the average time spent on step for the entire dataset:</b>
 <ol>
-<li>Choose sum for Aggregation Method</li>  
+<li>Choose mean for Aggregation Method</li>  
+<li>Choose Step Duration (sec) for Measurement</li>
+<li>Choose No for Define Rows</li>
+<li>Choose No for Define Columns</li>
+</ol>
+</p>
+<p><b>For the average time spent on step per student:</b>
+<ol>
+<li>Choose mean for Aggregation Method</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
 <li>Choose Yes for Define Rows</li>
 <li>Choose Anon Student Id for Rows in Pivot Table</li>  
@@ -40,9 +48,9 @@ Tab-delimited file contains pivoted result.
 </ol>
 </p>
 
-<p><b>For student's time spent for each problem:</b>
+<p><b>For the average time spent on step for each problem per student:</b>
 <ol>
-<li>Choose sum for Aggregation Method</li>  
+<li>Choose mean for Aggregation Method</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
 <li>Choose Yes for Define Rows</li>
 <li>Choose Anon Student Id for Rows in Pivot Table</li>  
@@ -51,7 +59,7 @@ Tab-delimited file contains pivoted result.
 </ol>
 </p>
 
-<p><b>For student's time spent for each problem per problem view:</b>
+<p><b>For the average time spent on step for each problem and each problem view per student:</b>
 <ol>
 <li>Choose sum for Aggregation Method</li>  
 <li>Choose Step Duration (sec) for Measurement</li>
@@ -62,14 +70,6 @@ Tab-delimited file contains pivoted result.
 </ol>
 </p>
 
-<p><b>For sum of time spent for all students in the dataset</b>
-<ol>
-<li>Choose sum for Aggregation Method</li>  
-<li>Choose Step Duration (sec) for Measurement</li>
-<li>Choose No for Define Rows</li>
-<li>Choose No for Define Columns</li>
-</ol>
-</p>
 
 </options>
 

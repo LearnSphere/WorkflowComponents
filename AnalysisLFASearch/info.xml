@@ -12,7 +12,7 @@
 	<li>when stop repetition count is met (see options section for explanation of stop repetition count)</li>
 	<li>when maximum iteration number is reached</li>
 	</ul>
-	<p>Since LFA search is a very computational expensive process, we limit input data to contain less than 10,000 rows, less than 100 students and less than 100 difficulty factors.
+	<p>Since LFA search is a very computational expensive process, we limit input data to contain less than 20,000 rows.
 	If you have data larger than these limits, we recommend you to do following:
 	<ul><li>Include less students in your dataset</li>
 	<li>Break dataset up by unit so there are less difficulty factors to search through</li>
@@ -20,30 +20,45 @@
 	<li>Contact Datashop <a href="mailto:datashop-help@lists.andrew.cmu.edu">datashop-help@lists.andrew.cmu.edu</a> to have us run LFA search offline for you</li>
 	</ul>
 	</p>
+	<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2365" target="_blank">demo</a> workflow.</p>
+	
 </abstract>
 <description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>
 
 <inputs><ul>
-<li>Datashop Student-Step Rollup export file. We limit the max number of rows to 10,000, 100 students and 100 difficult factors.</li>
+<li>Datashop Student-Step Rollup export file. We limit the max number of rows to 20,000.</li>
 </ul></inputs>
+
+<outputs><ul>
+<li><b>Summary.txt</b>: contains the top best models' Log Likelihood, AIC and BIC; and student and skill parameters</li>
+<li><b>PMatrix.txt</b>: the difficulty factor matrix (a.k.a PMatrix) made from the KC models selected. Same skills from different models are eliminated; and different skills with same name are renamed by prefixing model name to skill name</li>
+<li><b>ResultFiles.zip</b>: zipped together are top models' stats result, Q matrices, and Q matrices in Datashop import ready format.</li>
+</ul>
+</outputs>
 
 <options>
 <ul>
 <li>Search Heuristic: AIC or BIC</li>
-<li>KC Models to be Used for Difficulty Factors: at least two models should be selected, and multi-skill models are not allowed, and models should have the same number of observations. We limit the max number of difficulty factors to 100.</li>
+<li>KC Models to be Used for Difficulty Factors: multi-skill models are not allowed; and models should have the same number of observations.</li>
 <li>Maximum Search Iteration: search stops after reaching this number of iterations; max allowed is 200.</li>
 <li>Stop Search When Heuristic is Repeated This Many Times: for example, when set to 3, if current search iteration produces the best model with BIC or AIC value that matches the last two iterations, the search will end. When set to 0, this feature is ignored.</li>
-<li>Number of Top Models to be Outputed: number of the top models to be included in the output</li>
+<li>Number of Top Models to be Output: number of the top models to be included in the output</li>
 </ul>
+
+<p><b>Demo <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2365" target="_blank">workflow</a></b></p>
+After LFA Search is completed, you can use the Summary.txt to decide which models are worth keeping and importing back to Datashop.
+ For example, in this demo Workflow, we want to keep the best model: QMatrix_1. To import this model into Datashop, follow these steps:
+<ol>
+<li>Download ResultFiles.zip from the LFA Search workflow. Extract file QMatrix_1_import.txt</li>
+<li>Export any existing KC model from the same dataset on Datashop.</li>
+<li>Insert a new column to the KC model export by concatenating 3 columns: Problem Hierarchy, Problem Name, and Step Name separated by ";". We use Excel's substitute and concatenate functions to achieve this. Make sure the new column's value matches the "Hierarchy Problem Step" column of file QMatrix_1_import.txt</li>
+<li>Use the Join workflow component to merge the two files.</li>
+<li>Use the new merged file to import the new KC model back to Datashop. The two required columns for KC model import are: "Step ID" and "KC Model (LFA_search_QMatrix_1)". You can rename the new model by changing the text between parentheses.</li>
+
+</ol> 
 </options>
 
-<outputs><ul>
-<li>allModels.txt: contains the top best models' Log Likelihood, AIC and BIC; and student and skill parameters</li>
-<li>all.txt: Q matrix to start the search. Basically, it's the Q matrix in which all steps contain one skill.</li>
-<li>MultiModelCombinedPMatrix.txt: the difficulty factor matrix (a.k.a PMatrix) made from the KC models selected. Any repeated skills from different models are eliminated; and any repeated skill names from different models are renamed by prefixing with model name to skill name</li>
-<li>allModels.zip: zipped together for all top models Q matrices</li>
-</ul>
-</outputs>
+
 
 
 

@@ -42,9 +42,9 @@ public class LFASearchMain extends AbstractComponent {
         private static final Integer unEXPANDED_STATE_SIZE = 1000;
         private static final boolean MULTI_CORE = false;
         private static final Integer NUMBER_OF_CORE = 1;
-        private static final int MAX_ROW_NUMBER = 10000;
-        private static final int MAX_STUDENT_NUMBER = 100;
-        private static final int MAX_P_SKILL_NUMBER = 100;
+        private static final int MAX_ROW_NUMBER = 20000;
+        //private static final int MAX_STUDENT_NUMBER = 100;
+        //private static final int MAX_P_SKILL_NUMBER = 100;
         
 
     /**
@@ -77,7 +77,7 @@ public class LFASearchMain extends AbstractComponent {
         String heuristic = this.getOptionAsString("heuristic");
         //Maximum Search Iteration: search stops after reaching this number of iterations; max allowed is 200.
         int maxIter = this.getOptionAsInteger("maxIter");
-        if (maxIter >= 200) {
+        if (maxIter > 200) {
                 String errMsgForUI = "Maximum iteration can't be over 200.";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
@@ -90,7 +90,7 @@ public class LFASearchMain extends AbstractComponent {
         }
         //Number of Top Models to be Outputed, 
         int numOfOutputModels  = this.getOptionAsInteger("numOfOutputModels");
-        if (numOfOutputModels >= 200 ) {
+        if (numOfOutputModels > 200 ) {
                 String errMsgForUI = "Number of top models to be output can't be over 200.";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
@@ -116,15 +116,16 @@ public class LFASearchMain extends AbstractComponent {
         }
         File inputFile = this.getAttachments(nodeIndex).get(0);
         logger.info("inputFile: " + inputFile.getAbsolutePath());
+        /*this logic is not correct
         //at least two models should be selected
         if (modelsForPMat.size()<2) {
                 String errMsgForUI = "At least two models must be selected for difficulty factors.";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
                 return;
-        }
+        }*/
         //and multi-skill models are not allowed
-        //models should have the same number of observations
+        //models picked should have the same number of observations
         String delim = "\t";
         String[] headers = null;
         List<Integer> modelColIndices = new ArrayList<Integer>();
@@ -180,7 +181,7 @@ public class LFASearchMain extends AbstractComponent {
                         if (obsNum == 0)
                                 obsNum = modelObsNumber;
                         else if (obsNum != modelObsNumber) {
-                                String errMsgForUI = "Models picked for difficulty factor can not have different number of observations.";
+                                String errMsgForUI = "Models picked as difficulty factors can not have different number of observations.";
                                 String errMsgForLog = errMsgForUI;
                                 handleAbortingError (errMsgForUI, errMsgForLog);
                                 bReader.close();
@@ -269,20 +270,22 @@ public class LFASearchMain extends AbstractComponent {
                 handleAbortingError (errMsgForUI, errMsgForLog);
                 return;
         }
+        /*
         if (initModel.getStudentParameters() != null && initModel.getStudentParameters().length > MAX_STUDENT_NUMBER) {
                 String errMsgForUI = "Number of students exceeds limit. Allowed: " + MAX_STUDENT_NUMBER + ", found: " + initModel.getStudentParameters().length + ".";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
                 return;
-        }
+        }*/
         //p matrix can't have more than MAX_P_SKILL_NUMBER skills
         NamedMatrix pMat = new NamedMatrix(IOUtil.read2DStringArray(componentOutputDir + "MultiModelCombinedPMatrix.txt"));
+        /*
         if (pMat.columns() > MAX_P_SKILL_NUMBER) {
                 String errMsgForUI = "Number of skills in P matrix exceeds limit. Allowed: " + MAX_P_SKILL_NUMBER + ", found: " + pMat.columns() + ".";
                 String errMsgForLog = errMsgForUI;
                 handleAbortingError (errMsgForUI, errMsgForLog);
                 return;
-        }
+        }*/
         Heuristic h = null;
         if (heuristic != null && heuristic.equalsIgnoreCase("BIC"))
                 h = new BICHeuristic();
@@ -311,17 +314,16 @@ public class LFASearchMain extends AbstractComponent {
                 return;
         }
         
-        File allFile = this.createFile("all", ".txt");
-        File multiModelCombinedPMatrixFile = this.createFile("MultiModelCombinedPMatrix", ".txt");
-        File allModelsTxtFile = this.createFile("allModels", ".txt");
-        File allModelsZipFile = this.createFile("allModels", ".zip");
+        File summaryFile = this.createFile("Summary", ".txt");
+        File pMatrixFile = this.createFile("PMatrix", ".txt");
+        File allResultFiles = this.createFile("ResultFiles", ".zip");
         String finalResultFolder = componentOutputDir + File.separator + "final";
          
         //copy the allModels.txt from final folder to top working folder
         File fileIn = new File(finalResultFolder + File.separator + "allModels.txt");
         if (fileIn != null && fileIn.exists()) {
                 try {
-                        org.apache.commons.io.FileUtils.copyFile(fileIn, allModelsTxtFile);
+                        org.apache.commons.io.FileUtils.copyFile(fileIn, summaryFile);
                 } catch (IOException ioe) {
                         String errMsgForUI = "Error coping allModels.txt file " + componentOutputDir;
                         String errMsgForLog = errMsgForUI;
@@ -329,9 +331,43 @@ public class LFASearchMain extends AbstractComponent {
                         return;
                 }
         }
-        //zip final folder into allModels.zip
+        
+        //copy MultiModelCombinedPMatrix.txt into PMatrixFile.txt
+        fileIn = new File(componentOutputDir + File.separator + "MultiModelCombinedPMatrix.txt");
+        if (fileIn != null && fileIn.exists()) {
+                try {
+                        org.apache.commons.io.FileUtils.copyFile(fileIn, pMatrixFile);
+                } catch (IOException ioe) {
+                        String errMsgForUI = "Error coping PMatrix.txt file " + componentOutputDir;
+                        String errMsgForLog = errMsgForUI;
+                        handleAbortingError (errMsgForUI, errMsgForLog);
+                        return;
+                }
+        }
+        //make the import-ready Q matrix files, and then zip final folder into ResultFiles.zip
         try {
-                compress(finalResultFolder, componentOutputDir + File.separator + "allModels.zip");
+        	File path = new File(finalResultFolder);
+            File [] files = path.listFiles();
+            for (int i = 0; i < files.length; i++){
+                if (files[i].isFile()){
+                    String thisFileName = files[i].getName();
+                    String thisFileNameNoExt = thisFileName.substring(0, thisFileName.indexOf(".txt"));
+                    String newModelName = "LFA_search_" + thisFileNameNoExt;
+                    String newFileName = finalResultFolder + File.separator + thisFileNameNoExt + "_import.txt";
+                    if (thisFileName.indexOf("QMatrix_") != -1) {
+                    	String[][] Q = IOUtil.read2DStringArray(finalResultFolder + File.separator + thisFileName);
+                        NamedMatrix mat = new NamedMatrix(Q);
+                        ArrayList<String[]> pairs = mat.getNonZeroRowColNamePair();
+                        IOUtil.appendString("Hierarchy Problem Step\tKC Model (" + newModelName + ")", newFileName);
+                        for (int j = 0; j < pairs.size(); j++) {
+                            String[] thisPair = pairs.get(j);
+                            IOUtil.appendString(thisPair[0] + "\t" + thisPair[1], newFileName);
+                        }
+                    }
+                }
+            }    
+        	
+        	compress(finalResultFolder, componentOutputDir + File.separator + "ResultFiles.zip");
                 
         } catch (IOException ioe) {
                 String errMsgForUI = "Error zipping files in final folder for folder: " + componentOutputDir;
@@ -348,15 +384,13 @@ public class LFASearchMain extends AbstractComponent {
         nodeIndex = 0;
         Integer fileIndex = 0;
         String label = "analysis-summary";
-        this.addOutputFile(allModelsTxtFile, nodeIndex, fileIndex, label);
+        this.addOutputFile(summaryFile, nodeIndex, fileIndex, label);
         label = "tab-delimited";
         nodeIndex = 1;
-        this.addOutputFile(allFile, nodeIndex, fileIndex, label);
-        nodeIndex = 2;
-        this.addOutputFile(multiModelCombinedPMatrixFile, nodeIndex, fileIndex, label);
-        nodeIndex = 3;
+        this.addOutputFile(pMatrixFile, nodeIndex, fileIndex, label);
         label = "zip";
-        this.addOutputFile(allModelsZipFile, nodeIndex, fileIndex, label);
+        nodeIndex = 2;
+        this.addOutputFile(allResultFiles, nodeIndex, fileIndex, label);
         
         System.out.println(this.getOutput());
     }

@@ -66,6 +66,7 @@
     </xs:choice>
   </xs:complexType>
   
+  
   <xs:complexType name="OutputDefinition2">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -80,24 +81,6 @@
 
   <xs:complexType name="OutFileList2">
     <xs:choice>
-      <xs:element ref="tab-delimited" />
-    </xs:choice>
-  </xs:complexType>
-  
-  <xs:complexType name="OutputDefinition3">
-    <xs:complexContent>
-      <xs:extension base="InputContainer">
-        <xs:sequence>
-          <xs:element type="OutFileList3" name="files" />
-          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-
-  <xs:complexType name="OutFileList3">
-    <xs:choice>
       <xs:element ref="zip" />
     </xs:choice>
   </xs:complexType>
@@ -107,7 +90,6 @@
       <xs:element name="output0" type="OutputDefinition0" />
       <xs:element name="output1" type="OutputDefinition1" />
       <xs:element name="output2" type="OutputDefinition2" />
-      <xs:element name="output3" type="OutputDefinition3" />
     </xs:sequence>
   </xs:complexType>
   
