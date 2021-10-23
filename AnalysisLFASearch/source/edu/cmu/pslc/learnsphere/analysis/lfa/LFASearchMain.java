@@ -42,7 +42,7 @@ public class LFASearchMain extends AbstractComponent {
         private static final Integer unEXPANDED_STATE_SIZE = 1000;
         private static final boolean MULTI_CORE = false;
         private static final Integer NUMBER_OF_CORE = 1;
-        private static final int MAX_ROW_NUMBER = 20000;
+        private static final int MAX_ROW_NUMBER = 100000;
         //private static final int MAX_STUDENT_NUMBER = 100;
         //private static final int MAX_P_SKILL_NUMBER = 100;
         
