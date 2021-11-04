@@ -3,10 +3,11 @@ options(warn=-1)
 args <- commandArgs(trailingOnly = TRUE)
 
 ## enter your libraries
+suppressMessages(library(logWarningsMessagesPkg))
+suppressMessages(library(rlang))
 suppressMessages(library(lme4))
 suppressMessages(library(readr))
 suppressMessages(library(plyr))
-
 
 print(1)
 # parse commandline args
@@ -256,11 +257,15 @@ if(memmodel == "Last Retention Time"){
 #Last Retention Time models
 if(memmodel == "Last Retention Time"){
     if(memfactor == "Memory - fixed effect"){
-        finalmodel <- glmer(correct ~ (1|student) + (1+opp|skill) + mem,
-                data=dfz, family=binomial())
+        # finalmodel <- suppressWarnings(glmer(correct ~ (1|student) + (1+opp|skill) + mem,
+        #         data=dfz, family=binomial()))
+        finalmodel <- logWarningsMessages(glmer(correct ~ (1|student) + (1+opp|skill) + mem,
+                                  data=dfz, family=binomial()), logFileName = "analysis_dash.wfl")
     } else if(memfactor == "Memory - random slope on KC"){
-        finalmodel <- glmer(correct ~ (1|student) + (1+opp|skill) + (1+mem|skill),
-                data=dfz, family=binomial())
+        # finalmodel <- suppressWarnings(glmer(correct ~ (1|student) + (1+opp|skill) + (1+mem|skill),
+        #         data=dfz, family=binomial()))
+        finalmodel <- logWarningsMessages(glmer(correct ~ (1|student) + (1+opp|skill) + (1+mem|skill),
+            data=dfz, family=binomial()), logFileName = "analysis_dash.wfl")
 
     }
 }
@@ -301,11 +306,15 @@ dash_dashmcm <- function(par, finaldf, modelfactortype, fitorrun){
     names(finaldf) = c("student","correct","skill","mem")
 
     if(modelfactortype == "Memory - fixed effect" && fitorrun != "data"){
-        model.dash <- glmer(correct ~ (1|student) + (1|skill) + mem,
-                data=finaldf, family=binomial())
+        # model.dash <- suppressWarnings(glmer(correct ~ (1|student) + (1|skill) + mem,
+        #         data=finaldf, family=binomial()))
+        model.dash <- logWarningsMessages(glmer(correct ~ (1|student) + (1|skill) + mem,
+                data=finaldf, family=binomial()), logFileName = "analysis_dash.wfl")
     } else if(modelfactortype == "Memory - random slope on KC" && fitorrun != "data"){
-        model.dash <- glmer(correct ~ (1|student) + (1+mem|skill),
-                data=finaldf, family=binomial())
+        # model.dash <- suppressWarnings(glmer(correct ~ (1|student) + (1+mem|skill),
+        #         data=finaldf, family=binomial()))
+        model.dash <- logWarningsMessages(glmer(correct ~ (1|student) + (1+mem|skill),
+                data=finaldf, family=binomial()), logFileName = "analysis_dash.wfl")
     }
 
     if(fitorrun == "fit"){
@@ -369,11 +378,15 @@ actr_single <- function(par, dfz, modelName, modelfactortype, fitorrun){
 
 
     if(modelfactortype == "Memory - fixed effect" && fitorrun != "data"){
-        model.actr <- glmer(correct ~ (1|student) + (1|skill) + mem,
-                data=finaldf, family=binomial())
+        # model.actr <- suppressWarnings(glmer(correct ~ (1|student) + (1|skill) + mem,
+        #         data=finaldf, family=binomial()))
+        model.actr <- logWarningsMessages(glmer(correct ~ (1|student) + (1|skill) + mem,
+                data=finaldf, family=binomial()), logFileName = "analysis_dash.wfl")
     } else if(modelfactortype == "Memory - random slope on KC" && fitorrun != "data"){
-        model.actr <- glmer(correct ~ (1|student) + (1+mem|skill),
-                data=finaldf, family=binomial())
+        # model.actr <- suppressWarnings(glmer(correct ~ (1|student) + (1+mem|skill),
+        #         data=finaldf, family=binomial()))
+        model.actr <- logWarningsMessages(glmer(correct ~ (1|student) + (1+mem|skill),
+                data=finaldf, family=binomial()), logFileName = "analysis_dash.wfl")
     }
 
     if(fitorrun == "fit"){
