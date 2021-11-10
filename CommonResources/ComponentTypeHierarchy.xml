@@ -23,6 +23,7 @@
 		<Anonymize_Standalone />
 		<AppendCF />
 		<Classify_with_Lightside />
+		<Column_Munging />
 		<Column_Remover />
 		<Coursera_MOOCdb_Translator />
 		<Data_Conversion />

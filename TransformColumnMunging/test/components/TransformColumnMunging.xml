@@ -1,0 +1,114 @@
+<component>
+  <component_id>Transform-1-x873549</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>274</workflow_id>
+  <component_name>Column Munging</component_name>
+  <component_type>transform</component_type>
+  <left>422.99998474121094</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x932165</from>
+    </connection>
+  </connections>
+  <top>43</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x932165</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/test_data/test_data.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>test_data.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Feature ID</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>Feature Name</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>User ID</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Longitudinal Feature Week</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Longitudinal Feature Value</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>Date Of Extraction</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"test_data.txt","importFileType":"tab-delimited","importFileNameTitle":"File: test_data.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"2116","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <columnOperation>Add a column</columnOperation>
+    <newColumnName>new column</newColumnName>
+    <colValType1>A constant</colValType1>
+    <factorConst1>wen</factorConst1>
+    <factorCol1>Input 0 (0) - Feature ID (column 0)</factorCol1>
+    <addFactor2>Yes</addFactor2>
+    <operation1>Concatenate</operation1>
+    <colValType2>A constant</colValType2>
+    <factorConst2>#</factorConst2>
+    <factorCol2>Input 0 (0) - Feature Name (column 1)</factorCol2>
+    <addFactor3>Yes</addFactor3>
+    <operation2>Concatenate</operation2>
+    <colValType3>Value from column</colValType3>
+    <factorConst3 />
+    <factorCol3>Input 0 (0) - Feature Name (column 1)</factorCol3>
+    <nOfColNamesToChange>1</nOfColNamesToChange>
+    <column1ToChange>Input 0 (0) - Feature ID (column 0)</column1ToChange>
+    <column1NewName />
+    <column2ToChange>Input 0 (0) - Feature ID (column 0)</column2ToChange>
+    <column2NewName />
+    <column3ToChange>Input 0 (0) - Feature ID (column 0)</column3ToChange>
+    <column3NewName />
+    <column4ToChange>Input 0 (0) - Feature ID (column 0)</column4ToChange>
+    <column4NewName />
+    <column5ToChange>Input 0 (0) - Feature ID (column 0)</column5ToChange>
+    <column5NewName />
+    <column6ToChange>Input 0 (0) - Feature ID (column 0)</column6ToChange>
+    <column6NewName />
+    <column7ToChange>Input 0 (0) - Feature ID (column 0)</column7ToChange>
+    <column7NewName />
+    <column8ToChange>Input 0 (0) - Feature ID (column 0)</column8ToChange>
+    <column8NewName />
+    <cumsumName />
+    <cumsumVal>Count within group</cumsumVal>
+    <cumsumCol>Input 0 (0) - Feature ID (column 0)</cumsumCol>
+    <nOfLevelsToSort>1</nOfLevelsToSort>
+    <level1ToSort>Input 0 (0) - Feature ID (column 0)</level1ToSort>
+    <level1SortOrder>Ascending</level1SortOrder>
+    <level2ToSort>Input 0 (0) - Feature ID (column 0)</level2ToSort>
+    <level2SortOrder>Ascending</level2SortOrder>
+    <level3ToSort>Input 0 (0) - Feature ID (column 0)</level3ToSort>
+    <level3SortOrder>Ascending</level3SortOrder>
+  </options>
+</component>

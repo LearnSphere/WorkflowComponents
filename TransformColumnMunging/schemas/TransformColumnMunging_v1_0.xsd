@@ -1,0 +1,304 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+  
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="columnOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Add a column" />
+      <xs:enumeration value="Change column names" />
+      <xs:enumeration value="Cumulative sum" />
+      <xs:enumeration value="Remove columns" />
+      <xs:enumeration value="Sort" />
+      <xs:enumeration value="Unique value" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="valueWithEmptyType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Empty" />
+      <xs:enumeration value="A constant" />
+      <xs:enumeration value="Value from column" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="valueWithNoEmptyType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A constant" />
+      <xs:enumeration value="Value from column" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="cumsumValueType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Count within group" />
+      <xs:enumeration value="Column cumulative sum within group" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="operationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Add" />
+      <xs:enumeration value="Subtract" />
+      <xs:enumeration value="Multiply" />
+      <xs:enumeration value="Divide" />
+      <xs:enumeration value="Concatenate" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="sortOrderType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ascending" />
+      <xs:enumeration value="Descending" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element id="Column_Operation" name="columnOperation" type="columnOperationType" default="Add a column" />
+    	
+    	
+    	<xs:element id="New_Column_Name" name="newColumnName" type="xs:string" default=""/>
+    	<xs:element id="Factor_1_Type" name="colValType1" type="valueWithEmptyType" default="Empty" />
+   		<xs:element id="Factor_1_Value" name="factorConst1" type="xs:string" default="" />
+      	<xs:element id="Factor_1_Column" name="factorCol1" type="FileInputHeader" default=".*" />
+      	<xs:element id="Add_Factor_2" name="addFactor2" type="trueFalseType" default="No" />
+      	<xs:element id="Operation_for_Factor_1_and_Factor_2" name="operation1" type="operationType" default="Add" />
+   		<xs:element id="Factor_2_Type" name="colValType2" type="valueWithNoEmptyType" default="A constant" />
+   		<xs:element id="Factor_2_Value" name="factorConst2" type="xs:string" default="" />
+      	<xs:element id="Facotr_2_Column" name="factorCol2" type="FileInputHeader" default=".*" />
+      	<xs:element id="Add_Factor_3" name="addFactor3" type="trueFalseType" default="No" />
+      	<xs:element id="Operation_for_Factor_2_and_Factor_3" name="operation2" type="operationType" default="Add" />
+   		<xs:element id="Factor_3_Type" name="colValType3" type="valueWithNoEmptyType" default="A constant" />
+   		<xs:element id="Factor_3_Value" name="factorConst3" type="xs:string" default="" />
+      	<xs:element id="Factor_3_Column" name="factorCol3" type="FileInputHeader" default=".*" />
+      	
+    	<xs:element id="Number_of_Columns_to_Change" name="nOfColNamesToChange" type="xs:integer" default="1" />
+    	<xs:element id="Column_1_to_Change" name="column1ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_1_New_Name" name="column1NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_2_to_Change" name="column2ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_2_New_Name" name="column2NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_3_to_Change" name="column3ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_3_New_Name" name="column3NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_4_to_Change" name="column4ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_4_New_Name" name="column4NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_5_to_Change" name="column5ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_5_New_Name" name="column5NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_6_to_Change" name="column6ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_6_New_Name" name="column6NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_7_to_Change" name="column7ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_7_New_Name" name="column7NewName" type="xs:string" default=""/>
+  		<xs:element id="Column_8_to_Change" name="column8ToChange" type="FileInputHeader" default=".*" />
+    	<xs:element id="Column_8_New_Name" name="column8NewName" type="xs:string" default=""/>
+    	
+  		<xs:element id="Column_Name_for_Cumulative_Sum" name="cumsumName" type="xs:string" default=""/>
+    	<xs:element id="Group_by" name="groupBy" type="MultiFileInputHeader" default=".*" />
+    	<xs:element id="Cumulative_Sum_Value" name="cumsumVal" type="cumsumValueType" default="Count within group" />
+      	<xs:element id="Cumulative_Sum_Column" name="cumsumCol" type="FileInputHeader" default=".*" />
+      	
+    	<xs:element id="Columns_to_Remove" name="columnsToRemove" type="MultiFileInputHeader" default=".*" />
+    	
+    	<xs:element id="Number_of_Levels" name="nOfLevelsToSort" type="xs:integer" default="1" />
+    	<xs:element id="Level_1" name="level1ToSort" type="FileInputHeader" default=".*" />
+    	<xs:element id="Level_1_Order" name="level1SortOrder" type="sortOrderType" default="Ascending"/>
+  		<xs:element id="Level_2" name="level2ToSort" type="FileInputHeader" default=".*" />
+    	<xs:element id="Level_2_Order" name="level2SortOrder" type="sortOrderType" default="Ascending"/>
+  		<xs:element id="Level_3" name="level3ToSort" type="FileInputHeader" default=".*" />
+    	<xs:element id="Level_3_Order" name="level3SortOrder" type="sortOrderType" default="Ascending"/>
+  		
+    	<xs:element id="Unique_Value" name="uniqueValue" type="MultiFileInputHeader" default=".*" />
+    	
+    </xs:choice>
+  </xs:complexType>
+   
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	 
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="uniqueValue" ls:dependsOn="columnOperation" ls:constraint="matches(Unique value)" />
+	
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="columnsToRemove" ls:dependsOn="columnOperation" ls:constraint="matches(Remove columns)" />
+	
+	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="groupBy" ls:dependsOn="columnOperation" ls:constraint="matches(Cumulative sum)" />
+	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="cumsumName" ls:dependsOn="columnOperation" ls:constraint="matches(Cumulative sum)" />
+	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="cumsumVal" ls:dependsOn="columnOperation" ls:constraint="matches(Cumulative sum)" />
+	<xs:element type="conjunctive" name="dependency6" ls:dependentOption="cumsumCol" ls:dependsOn="columnOperation" ls:constraint="matches(Cumulative sum)" />
+	<xs:element type="conjunctive" name="dependency7" ls:dependentOption="cumsumCol" ls:dependsOn="cumsumVal" ls:constraint="matches(Column cumulative sum within group)" />
+	
+	
+	<xs:element type="disjunctive" name="dependency8" ls:dependentOption="nOfColNamesToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency9" ls:dependentOption="column1ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="column1ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(1)" />
+	<xs:element type="conjunctive" name="dependency11" ls:dependentOption="column1NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency12" ls:dependentOption="column1NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(1)" />
+	<xs:element type="conjunctive" name="dependency13" ls:dependentOption="column2ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency14" ls:dependentOption="column2ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(2)" />
+	<xs:element type="conjunctive" name="dependency15" ls:dependentOption="column2NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency16" ls:dependentOption="column2NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(2)" />
+	<xs:element type="conjunctive" name="dependency17" ls:dependentOption="column3ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency18" ls:dependentOption="column3ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(3)" />
+	<xs:element type="conjunctive" name="dependency19" ls:dependentOption="column3NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency20" ls:dependentOption="column3NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(3)" />
+	<xs:element type="conjunctive" name="dependency21" ls:dependentOption="column4ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency22" ls:dependentOption="column4ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(4)" />
+	<xs:element type="conjunctive" name="dependency23" ls:dependentOption="column4NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency24" ls:dependentOption="column4NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(4)" />
+	<xs:element type="conjunctive" name="dependency25" ls:dependentOption="column5ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency26" ls:dependentOption="column5ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(5)" />
+	<xs:element type="conjunctive" name="dependency27" ls:dependentOption="column5NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency28" ls:dependentOption="column5NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(5)" />
+	<xs:element type="conjunctive" name="dependency29" ls:dependentOption="column6ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency30" ls:dependentOption="column6ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(6)" />
+	<xs:element type="conjunctive" name="dependency31" ls:dependentOption="column6NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency32" ls:dependentOption="column6NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(6)" />
+	<xs:element type="conjunctive" name="dependency33" ls:dependentOption="column7ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency34" ls:dependentOption="column7ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(7)" />
+	<xs:element type="conjunctive" name="dependency35" ls:dependentOption="column7NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency36" ls:dependentOption="column7NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(7)" />
+	<xs:element type="conjunctive" name="dependency37" ls:dependentOption="column8ToChange" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency38" ls:dependentOption="column8ToChange" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(8)" />
+	<xs:element type="conjunctive" name="dependency39" ls:dependentOption="column8NewName" ls:dependsOn="columnOperation" ls:constraint="matches(Change column names)" />
+	<xs:element type="conjunctive" name="dependency40" ls:dependentOption="column8NewName" ls:dependsOn="nOfColNamesToChange" ls:constraint="gte(8)" />
+   		
+	<xs:element type="disjunctive" name="dependency41" ls:dependentOption="newColumnName" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="disjunctive" name="dependency42" ls:dependentOption="colValType1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency43" ls:dependentOption="factorConst1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency44" ls:dependentOption="factorConst1" ls:dependsOn="colValType1" ls:constraint="matches(A constant)" />
+	<xs:element type="conjunctive" name="dependency45" ls:dependentOption="factorCol1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency46" ls:dependentOption="factorCol1" ls:dependsOn="colValType1" ls:constraint="matches(Value from column)" />
+	<xs:element type="conjunctive" name="dependency47" ls:dependentOption="addFactor2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency48" ls:dependentOption="addFactor2" ls:dependsOn="colValType1" ls:constraint="matches(Empty)" ls:negation="true" />
+	
+	<xs:element type="conjunctive" name="dependency49" ls:dependentOption="operation1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency50" ls:dependentOption="operation1" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency51" ls:dependentOption="colValType2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency52" ls:dependentOption="colValType2" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency53" ls:dependentOption="factorConst2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency54" ls:dependentOption="factorConst2" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency55" ls:dependentOption="factorConst2" ls:dependsOn="colValType2" ls:constraint="matches(A constant)" />
+	<xs:element type="conjunctive" name="dependency56" ls:dependentOption="factorCol2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency57" ls:dependentOption="factorCol2" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency58" ls:dependentOption="factorCol2" ls:dependsOn="colValType2" ls:constraint="matches(Value from column)" />
+	<xs:element type="conjunctive" name="dependency59" ls:dependentOption="addFactor3" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency60" ls:dependentOption="addFactor3" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	
+	<xs:element type="conjunctive" name="dependency61" ls:dependentOption="operation2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency62" ls:dependentOption="operation2" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency63" ls:dependentOption="operation2" ls:dependsOn="addFactor3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency64" ls:dependentOption="colValType3" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency65" ls:dependentOption="colValType3" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency66" ls:dependentOption="colValType3" ls:dependsOn="addFactor3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency67" ls:dependentOption="factorConst3" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency68" ls:dependentOption="factorConst3" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency69" ls:dependentOption="factorConst3" ls:dependsOn="addFactor3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency70" ls:dependentOption="factorConst3" ls:dependsOn="colValType3" ls:constraint="matches(A constant)" />
+	<xs:element type="conjunctive" name="dependency71" ls:dependentOption="factorCol3" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
+	<xs:element type="conjunctive" name="dependency72" ls:dependentOption="factorCol3" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency73" ls:dependentOption="factorCol3" ls:dependsOn="addFactor3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency74" ls:dependentOption="factorCol3" ls:dependsOn="colValType3" ls:constraint="matches(Value from column)" />
+	
+	<xs:element type="disjunctive" name="dependency75" ls:dependentOption="nOfLevelsToSort" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency76" ls:dependentOption="level1ToSort" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency77" ls:dependentOption="level1ToSort" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(1)" />
+	<xs:element type="conjunctive" name="dependency78" ls:dependentOption="level1SortOrder" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency79" ls:dependentOption="level1SortOrder" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(1)" />
+	<xs:element type="conjunctive" name="dependency80" ls:dependentOption="level2ToSort" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency81" ls:dependentOption="level2ToSort" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(2)" />
+	<xs:element type="conjunctive" name="dependency82" ls:dependentOption="level2SortOrder" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency83" ls:dependentOption="level2SortOrder" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(2)" />
+	<xs:element type="conjunctive" name="dependency84" ls:dependentOption="level3ToSort" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency85" ls:dependentOption="level3ToSort" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(3)" />
+	<xs:element type="conjunctive" name="dependency86" ls:dependentOption="level3SortOrder" ls:dependsOn="columnOperation" ls:constraint="matches(Sort)" />
+	<xs:element type="conjunctive" name="dependency87" ls:dependentOption="level3SortOrder" ls:dependsOn="nOfLevelsToSort" ls:constraint="gte(3)" />
+	
+	</xs:choice>
+</xs:complexType>
+
+
+
+
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all >
+        <xs:element type="xs:integer" name="workflow_id"  />
+        <xs:element type="xs:string" name="component_id"  />
+        <xs:element type="xs:string" name="component_id_human"  />
+        <xs:element type="xs:string" name="component_name"  />
+        <xs:element type="xs:string" name="component_type"  />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="options" type="OptionsType"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformColumnMunging</url>
+<date>2018-01-14</date>
+<abstract>The <b>Column Munging</b> component provides various column operations for data manipulation. It allows you to add a column, change column names, compute cumulative sum by groups, remove columns, sort data by columns, and obtain unique values of columns.
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component allows you to manipulate data at column level. It allows you to add a column, change column names, compute cumulative sum by groups, remove columns, sort data by columns, and obtain unique values of columns.</description>
+
+<inputs>
+A tab-delimited or comma-separated text file: contains data to be modified.
+</inputs>
+
+<outputs>
+A tab-delimited file containing column munging result.
+</outputs>
+
+<options>
+<b>To add a column:</b>
+ <ul>
+<li>New Column Name: required field.</li>
+<li>Factor 1 Type: can be empty, a constant, or value from another column.</li>
+<li>Factor 1 Value: when Factor 1 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 1 Column: when Factor 1 Type is defined to be value from another column, this field shows.</li>
+<li>Add Factor 2: choose Yes when you want the new column to equal to computed value.</li>
+<li>Operation for Factor 1 and Factor 2: can be add, subtract, multiply, divide or concatenate. Factor 1 and 2 have to be numeric when a numeric operation is chosen.</li>
+<li>Factor 2 Type: can be a constant, or value from another column.</li>
+<li>Factor 2 Value: when Factor 2 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 2 Column: when Factor 2 Type is defined to be value from another column, this field shows.</li>
+<li>Add Factor 3: choose Yes when you want the new column to equal to computed value from 3 factors.</li>
+<li>Operation for Factor 2 and Factor 3: can be add, subtract, multiply, divide or concatenate. Factor 1, 2 and 3 have to be numeric when a numeric operation is chosen.</li>
+<li>Factor 3 Type: can be a constant, or value from another column.</li>
+<li>Factor 3 Value: when Factor 3 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 3 Column: when Factor 3 Type is defined to be value from another column, this field shows.</li>
+</ul>
+
+<b>To change column names (can change up to 8 columns' name at once):</b>
+<ul>
+<li>Number of Columns to Change: required field. The max value is 8.</li>
+<li>Column 1 to Change: pick a column to change its name.</li>
+<li>Column 1 New Name: new name for the column to change to.</li>
+<li>Column 2 to Change: pick a column to change its name.</li>
+<li>Column 2 New Name: new name for the column to change to.</li>
+<li>....</li>
+</ul>
+
+<b>To compute cumulative sum among group:</b>
+<ul>
+<li>Column Name for Cumulative Sum: column name for the cumulative sum, required.</li>
+<li>Group by: define group by which the cumulative sum is computed. One or more columns can be used for grouping.</li>
+<li>Cumulative Sum Value: can be "Count within group" for row count within group, or "Column cumulative sum within group" for the cumulative sum of a column within group</li>
+<li>Cumulative Sum Column: when "Column cumulative sum within group" is selected for Cumulative Sum Value, you can choose a numeric column to compute the cumulative sum within group.</li>
+</ul>
+
+<b>To remove columns:</b>
+<ul>
+<li>Columns to Remove: choose one or more columns to remove from data</li>
+</ul>
+
+<b>To sort (can sort data up to 3 levels):</b>
+<ul>
+<li>Number of Levels: specify how many levels of ordering to apply. Max is 3 levels.</li>
+<li>Level 1: choose a column to be the first sorting level.</li>
+<li>Level 1 Order: choose to sort in ascending or descending order</li>
+<li>Level 2: choose a column to be the second sorting level.</li>
+<li>Level 2 Order: choose to sort in ascending or descending order</li>
+<li>Level 3: choose a column to be the third sorting level.</li>
+<li>Level 3 Order: choose to sort in ascending or descending order</li>
+</ul>
+
+<b>To get unique value:</b>
+<ul>
+<li>Unique Value: choose one or more columns to get unique value from.</li>
+</ul>
+
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow</b></p>
+
+<p><b>To add a new column that computes the daily "Longitudinal Feature Value":</b>
+<ol>
+<li>Column Operation: choose "Add a column"</li>
+<li>New Column Name: enter "Longitudinal Feature Daily Value"</li>
+<li>Factor 1 Type: choose "Value from column".</li>
+<li>Factor 1 Column: choose "Longitudinal Feature Value"</li>
+<li>Add Factor 2: choose "Yes"</li>
+<li>Operation for Factor 1 and Factor 2: choose "divide"".</li>
+<li>Factor 2 Type: choose "A constant".</li>
+<li>Factor 2 Value: enter 7.</li>
+</ol>
+</p>
+<p><b>To order data by "User ID" and then "Feature Name", and then compute cumulative sum of "Longitudinal Feature Value" for each "User ID" and "Feature Name". We need two Column Munging compoents.</b>
+<p>First Column Munging component:
+<ol>
+<li>Column Operation: choose "Sort".</li>  
+<li>Number of Levels: enter 2.</li>
+<li>Level 1: choose "User ID" as the first sorting level.</li>
+<li>Level 1 Order: choose "Ascending"</li>
+<li>Level 2: choose "Feature Name" as second sorting level.</li>
+<li>Level 2 Order: choose "Ascending"</li>
+</ol>
+</p>
+<p>Second Column Munging component:
+<ol>
+<li>Column Operation: choose Cumulative sum.</li>  
+<li>Column Name for Cumulative Sum: enter "cum_sum for feature value".</li>
+<li>Group by: choose "User ID" and "Feature Name"</li>
+<li>Cumulative Sum Value: choose "Column cumulative sum within group" </li>
+<li>Cumulative Sum Column: "Longitudinal Feature Value".</li>
+</ol>
+</p>
+</p>
+</options>
+
+</info>
