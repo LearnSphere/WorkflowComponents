@@ -1,0 +1,212 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+  
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="rowOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Remove rows" />
+      <xs:enumeration value="Keep rows" />
+      <xs:enumeration value="Reset row values" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="comparisonOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Equal to" />
+      <xs:enumeration value="Greater than" />
+      <xs:enumeration value="Greater than or equal to" />
+      <xs:enumeration value="Less than" />
+      <xs:enumeration value="Less than or equal to" />
+      <xs:enumeration value="Contain" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="valueWithEmptyType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="Constants" />
+      <xs:enumeration value="Value from column" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="valueSingularType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="Constant" />
+      <xs:enumeration value="Value from column" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="logicalOperationType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="And" />
+      <xs:enumeration value="Or" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element id="Row_Operation" name="rowOperation" type="rowOperationType" default="Remove rows" />
+    	
+    	<xs:element id="Condition_1_Column" name="condition1" type="FileInputHeader" default=".*" />
+   		<xs:element id="Condition_1_Comparison_Operator" name="condCompOper1" type="comparisonOperationType" default="Equal to" />
+      	<xs:element id="Condition_1_Compare_to_Value_Type" name="condType1" type="valueWithEmptyType" default="NA" />
+      	<xs:element id="Condition_1_Compare_to_Value" name="condConst1" type="xs:string" default="" />
+      	<xs:element id="Condition_1_Compare_to_Column" name="condCol1" type="FileInputHeader" default=".*" />
+      	<xs:element id="Add_Condition_2" name="addCond2" type="trueFalseType" default="No" />
+      	<xs:element id="Logical_Operator_for_Condition_1_and_2" name="logicalOper1" type="logicalOperationType" default="And" />
+   		
+   		<xs:element id="Condition_2_Column" name="condition2" type="FileInputHeader" default=".*" />
+   		<xs:element id="Condition_2_Comparison_Operator" name="condCompOper2" type="comparisonOperationType" default="Equal to" />
+      	<xs:element id="Condition_2_Compare_to_Value_Type" name="condType2" type="valueWithEmptyType" default="NA" />
+      	<xs:element id="Condition_2_Compare_to_Value" name="condConst2" type="xs:string" default="" />
+      	<xs:element id="Condition_2_Compare_to_Column" name="condCol2" type="FileInputHeader" default=".*" />
+      	<xs:element id="Add_Condition_3" name="addCond3" type="trueFalseType" default="No" />
+      	<xs:element id="Logical_Operator_for_Condition_2_and_3" name="logicalOper2" type="logicalOperationType" default="And" />
+   		
+   		<xs:element id="Condition_3_Column" name="condition3" type="FileInputHeader" default=".*" />
+   		<xs:element id="Condition_3_Comparison_Operator" name="condCompOper3" type="comparisonOperationType" default="Equal to" />
+      	<xs:element id="Condition_3_Compare_to_Value_Type" name="condType3" type="valueWithEmptyType" default="NA" />
+      	<xs:element id="Condition_3_Compare_to_Value" name="condConst3" type="xs:string" default="" />
+      	<xs:element id="Condition_3_Compare_to_Column" name="condCol3" type="FileInputHeader" default=".*" />
+      	
+      	<xs:element id="Reset_Column" name="resetColumn" type="FileInputHeader" default=".*" />
+   		<xs:element id="Reset_Value_Type" name="resetValueType" type="valueSingularType" default="NA" />
+   		<xs:element id="Reset_Value_to" name="resetValueToConst" type="xs:string" default="" />
+   		<xs:element id="Reset_Value_to_Column" name="resetValueToCol" type="FileInputHeader" default=".*" />
+   		
+    </xs:choice>
+  </xs:complexType>
+   
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	 
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="condConst1" ls:dependsOn="condType1" ls:constraint="matches(Constants)" />
+	<xs:element type="disjunctive" name="dependency2" ls:dependentOption="condCol1" ls:dependsOn="condType1" ls:constraint="matches(Value from column)" />
+	
+	
+	<xs:element type="disjunctive" name="dependency3" ls:dependentOption="logicalOper1" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="disjunctive" name="dependency4" ls:dependentOption="condition2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="disjunctive" name="dependency5" ls:dependentOption="condCompOper2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="disjunctive" name="dependency6" ls:dependentOption="condType2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency7" ls:dependentOption="addCond3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	
+	<xs:element type="conjunctive" name="dependency8" ls:dependentOption="condConst2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency9" ls:dependentOption="condConst2" ls:dependsOn="condType2" ls:constraint="matches(Constants)" />
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="condCol2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency11" ls:dependentOption="condCol2" ls:dependsOn="condType2" ls:constraint="matches(Value from column)" />
+	
+	<xs:element type="conjunctive" name="dependency12" ls:dependentOption="logicalOper2" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency13" ls:dependentOption="logicalOper2" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency14" ls:dependentOption="condition3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency15" ls:dependentOption="condition3" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency16" ls:dependentOption="condCompOper3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency17" ls:dependentOption="condCompOper3" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency18" ls:dependentOption="condType3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency19" ls:dependentOption="condType3" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	
+	<xs:element type="conjunctive" name="dependency20" ls:dependentOption="condConst3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency21" ls:dependentOption="condConst3" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency22" ls:dependentOption="condConst3" ls:dependsOn="condType3" ls:constraint="matches(Constants)" />
+	<xs:element type="conjunctive" name="dependency23" ls:dependentOption="condCol3" ls:dependsOn="addCond2" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency24" ls:dependentOption="condCol3" ls:dependsOn="addCond3" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency25" ls:dependentOption="condCol3" ls:dependsOn="condType3" ls:constraint="matches(Value from column)" />
+	
+	<xs:element type="disjunctive" name="dependency26" ls:dependentOption="resetColumn" ls:dependsOn="rowOperation" ls:constraint="matches(Reset row values)" />
+	<xs:element type="disjunctive" name="dependency27" ls:dependentOption="resetValueType" ls:dependsOn="rowOperation" ls:constraint="matches(Reset row values)" />
+	<xs:element type="conjunctive" name="dependency28" ls:dependentOption="resetValueToConst" ls:dependsOn="rowOperation" ls:constraint="matches(Reset row values)" />
+	<xs:element type="conjunctive" name="dependency29" ls:dependentOption="resetValueToConst" ls:dependsOn="resetValueType" ls:constraint="matches(Constant)" />
+	<xs:element type="conjunctive" name="dependency30" ls:dependentOption="resetValueToCol" ls:dependsOn="rowOperation" ls:constraint="matches(Reset row values)" />
+	<xs:element type="conjunctive" name="dependency31" ls:dependentOption="resetValueToCol" ls:dependsOn="resetValueType" ls:constraint="matches(Value from column)" />
+	
+	</xs:choice>
+</xs:complexType>
+
+
+
+
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all >
+        <xs:element type="xs:integer" name="workflow_id"  />
+        <xs:element type="xs:string" name="component_id"  />
+        <xs:element type="xs:string" name="component_id_human"  />
+        <xs:element type="xs:string" name="component_name"  />
+        <xs:element type="xs:string" name="component_type"  />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="options" type="OptionsType"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

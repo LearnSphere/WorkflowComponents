@@ -1,0 +1,96 @@
+<component>
+  <component_id>Transform-1-x714939</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>278</workflow_id>
+  <component_name>Row Munging</component_name>
+  <component_type>transform</component_type>
+  <left>515.9999847412109</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x055734</from>
+    </connection>
+  </connections>
+  <top>60</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x055734</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+		  <file_path>test/test_data/test_data.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>test_data.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Feature ID</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>Feature Name</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>User ID</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Longitudinal Feature Week</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Longitudinal Feature Value</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>Date Of Extraction</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"test_data.txt","importFileType":"tab-delimited","importFileNameTitle":"File: test_data.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"2145","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <rowOperation>Remove rows</rowOperation>
+    <condition1>Input 0 (0) - Feature ID (column 0)</condition1>
+    <condCompOper1>Equal to</condCompOper1>
+    <condType1>Constants</condType1>
+    <condConst1>20,16</condConst1>
+    <condCol1>Input 0 (0) - Feature ID (column 0)</condCol1>
+    <addCond2>No</addCond2>
+    <logicalOper1>And</logicalOper1>
+    <condition2>Input 0 (0) - Feature ID (column 0)</condition2>
+    <condCompOper2>Equal to</condCompOper2>
+    <condType2>NA</condType2>
+    <condConst2 />
+    <condCol2>Input 0 (0) - Feature ID (column 0)</condCol2>
+    <addCond3>No</addCond3>
+    <logicalOper2>And</logicalOper2>
+    <condition3>Input 0 (0) - Feature ID (column 0)</condition3>
+    <condCompOper3>Equal to</condCompOper3>
+    <condType3>NA</condType3>
+    <condConst3 />
+    <condCol3>Input 0 (0) - Feature ID (column 0)</condCol3>
+    <resetColumn>Input 0 (0) - Feature ID (column 0)</resetColumn>
+    <resetValueType>Constant</resetValueType>
+    <resetValueToConst>1111</resetValueToConst>
+    <resetValueToCol>Input 0 (0) - Feature ID (column 0)</resetValueToCol>
+  </options>
+</component>
