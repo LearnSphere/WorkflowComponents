@@ -69,7 +69,7 @@
   
   <xs:simpleType name="valueWithEmptyType" final="restriction">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Empty" />
+      <xs:enumeration value="NA" />
       <xs:enumeration value="A constant" />
       <xs:enumeration value="Value from column" />
     </xs:restriction>
@@ -121,16 +121,16 @@
     	
     	
     	<xs:element id="New_Column_Name" name="newColumnName" type="xs:string" default=""/>
-    	<xs:element id="Factor_1_Type" name="colValType1" type="valueWithEmptyType" default="Empty" />
+    	<xs:element id="Factor_1_Type" name="colValType1" type="valueWithEmptyType" default="NA" />
    		<xs:element id="Factor_1_Value" name="factorConst1" type="xs:string" default="" />
       	<xs:element id="Factor_1_Column" name="factorCol1" type="FileInputHeader" default=".*" />
       	<xs:element id="Add_Factor_2" name="addFactor2" type="trueFalseType" default="No" />
-      	<xs:element id="Operation_for_Factor_1_and_Factor_2" name="operation1" type="operationType" default="Add" />
+      	<xs:element id="Operator_for_Factor_1_and_2" name="operation1" type="operationType" default="Add" />
    		<xs:element id="Factor_2_Type" name="colValType2" type="valueWithNoEmptyType" default="A constant" />
    		<xs:element id="Factor_2_Value" name="factorConst2" type="xs:string" default="" />
-      	<xs:element id="Facotr_2_Column" name="factorCol2" type="FileInputHeader" default=".*" />
+      	<xs:element id="Factor_2_Column" name="factorCol2" type="FileInputHeader" default=".*" />
       	<xs:element id="Add_Factor_3" name="addFactor3" type="trueFalseType" default="No" />
-      	<xs:element id="Operation_for_Factor_2_and_Factor_3" name="operation2" type="operationType" default="Add" />
+      	<xs:element id="Operator_for_Factor_2_and_3" name="operation2" type="operationType" default="Add" />
    		<xs:element id="Factor_3_Type" name="colValType3" type="valueWithNoEmptyType" default="A constant" />
    		<xs:element id="Factor_3_Value" name="factorConst3" type="xs:string" default="" />
       	<xs:element id="Factor_3_Column" name="factorCol3" type="FileInputHeader" default=".*" />
@@ -228,7 +228,7 @@
 	<xs:element type="conjunctive" name="dependency45" ls:dependentOption="factorCol1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
 	<xs:element type="conjunctive" name="dependency46" ls:dependentOption="factorCol1" ls:dependsOn="colValType1" ls:constraint="matches(Value from column)" />
 	<xs:element type="conjunctive" name="dependency47" ls:dependentOption="addFactor2" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
-	<xs:element type="conjunctive" name="dependency48" ls:dependentOption="addFactor2" ls:dependsOn="colValType1" ls:constraint="matches(Empty)" ls:negation="true" />
+	<xs:element type="conjunctive" name="dependency48" ls:dependentOption="addFactor2" ls:dependsOn="colValType1" ls:constraint="matches(NA)" ls:negation="true" />
 	
 	<xs:element type="conjunctive" name="dependency49" ls:dependentOption="operation1" ls:dependsOn="columnOperation" ls:constraint="matches(Add a column)" />
 	<xs:element type="conjunctive" name="dependency50" ls:dependentOption="operation1" ls:dependsOn="addFactor2" ls:constraint="matches(Yes)" />

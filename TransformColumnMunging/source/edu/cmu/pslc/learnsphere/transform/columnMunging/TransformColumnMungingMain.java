@@ -41,8 +41,6 @@ public class TransformColumnMungingMain extends AbstractComponent {
         	//when cumsumVal = "Column cumulative sum within group", cumsumCol must be numeric
         	String cumsumVal = this.getOptionAsString("cumsumVal");
         	String cumsumCol = this.getOptionAsString("cumsumCol");
-        	logger.info("cumsumVal: " + cumsumVal);
-        	logger.info("cumsumCol: " + cumsumCol);
         	if (cumsumVal != null && cumsumVal.equals("Column cumulative sum within group")) {
         		if (!isColumnNumeric(inputFile.getAbsolutePath(), cumsumCol)) {
         			//send error message
@@ -79,26 +77,26 @@ public class TransformColumnMungingMain extends AbstractComponent {
         	//if colValType1 = "A constant", factorConst1 is required
         	String colValType1 = this.getOptionAsString("colValType1");
         	String factorConst1 = this.getOptionAsString("factorConst1");
-        	if (colValType1.equals("A constant") && 
+        	/*if (colValType1.equals("A constant") && 
         			(factorConst1 == null || factorConst1.trim().equals(""))) {
         		String err = "Factor 1 Value is a required field.";
                 addErrorMessage(err);
                 logger.info("TransformColumnMunging is aborted: " + err);
                 reqsMet = false;
-        	}
+        	}*/
         	//if colValType2 = "A constant", factorConst2 is required
         	//if addFactor2 = "Yes" and operation1 != "Concatenate", factorConst1, factorConst2, factorCol1 and factorCol2 have to be numeric
         	String addFactor2 = this.getOptionAsString("addFactor2");
         	if (addFactor2.equals("Yes")) {
         		String colValType2 = this.getOptionAsString("colValType2");
             	String factorConst2 = this.getOptionAsString("factorConst2");
-            	if (colValType2.equals("A constant") && 
+            	/*if (colValType2.equals("A constant") && 
             			(factorConst2 == null || factorConst2.trim().equals(""))) {
             		String err = "Factor 2 Value is a required field.";
                     addErrorMessage(err);
                     logger.info("TransformColumnMunging is aborted: " + err);
                     reqsMet = false;
-            	}
+            	}*/
             	String operation1 = this.getOptionAsString("operation1");
             	if (!operation1.equals("Concatenate")) {
             		//check factorConst1
@@ -149,13 +147,13 @@ public class TransformColumnMungingMain extends AbstractComponent {
             	String factorConst2 = this.getOptionAsString("factorConst2");
         		String colValType3 = this.getOptionAsString("colValType3");
             	String factorConst3 = this.getOptionAsString("factorConst3");
-            	if (colValType3.equals("A constant") && 
+            	/*if (colValType3.equals("A constant") && 
             			(factorConst3 == null || factorConst3.trim().equals(""))) {
             		String err = "Factor 3 Value is a required field.";
                     addErrorMessage(err);
                     logger.info("TransformColumnMunging is aborted: " + err);
                     reqsMet = false;
-            	}
+            	}*/
             	String operation2 = this.getOptionAsString("operation2");
             	if (!operation2.equals("Concatenate")) {
             		//check factorConst2

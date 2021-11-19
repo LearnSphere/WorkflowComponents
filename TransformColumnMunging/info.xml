@@ -22,18 +22,18 @@ A tab-delimited file containing column munging result.
 <b>To add a column:</b>
  <ul>
 <li>New Column Name: required field.</li>
-<li>Factor 1 Type: can be empty, a constant, or value from another column.</li>
-<li>Factor 1 Value: when Factor 1 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 1 Type: can be NA, a constant, or value from another column.</li>
+<li>Factor 1 Value: when Factor 1 Type is defined to be a constant, this field shows.</li>
 <li>Factor 1 Column: when Factor 1 Type is defined to be value from another column, this field shows.</li>
 <li>Add Factor 2: choose Yes when you want the new column to equal to computed value.</li>
 <li>Operation for Factor 1 and Factor 2: can be add, subtract, multiply, divide or concatenate. Factor 1 and 2 have to be numeric when a numeric operation is chosen.</li>
 <li>Factor 2 Type: can be a constant, or value from another column.</li>
-<li>Factor 2 Value: when Factor 2 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 2 Value: when Factor 2 Type is defined to be a constant, this field shows.</li>
 <li>Factor 2 Column: when Factor 2 Type is defined to be value from another column, this field shows.</li>
 <li>Add Factor 3: choose Yes when you want the new column to equal to computed value from 3 factors.</li>
 <li>Operation for Factor 2 and Factor 3: can be add, subtract, multiply, divide or concatenate. Factor 1, 2 and 3 have to be numeric when a numeric operation is chosen.</li>
 <li>Factor 3 Type: can be a constant, or value from another column.</li>
-<li>Factor 3 Value: when Factor 3 Type is defined to be a constant, this field shows and is required.</li>
+<li>Factor 3 Value: when Factor 3 Type is defined to be a constant, this field shows.</li>
 <li>Factor 3 Column: when Factor 3 Type is defined to be value from another column, this field shows.</li>
 </ul>
 

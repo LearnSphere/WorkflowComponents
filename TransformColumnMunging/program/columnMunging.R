@@ -452,7 +452,7 @@ while (i <= length(args)) {
 
 # columnOperation = "Add a column"
 # newColumnName = "new column"
-# colValType1 = "Empty"
+# colValType1 = "NA"
 # colValType1 = "A constant"
 # factorConst1 = "wen"
 # colValType1 = "Value from column"
@@ -531,8 +531,8 @@ if (columnOperation == "Unique value") {
   
 } else if (columnOperation == "Add a column") {
   resultDS <- copy(myData)
-  if (colValType1 == "Empty") {
-    resultDS = resultDS %>% mutate(col_munging_temp_newColumn = "")
+  if (colValType1 == "NA") {
+    resultDS = resultDS %>% mutate(col_munging_temp_newColumn = NA)
   } else if (colValType1 == "A constant" & addFactor2 == "No") {
     resultDS = resultDS %>% mutate(col_munging_temp_newColumn = factorConst1)
   } else if (colValType1 == "Value from column" & addFactor2 == "No") {
