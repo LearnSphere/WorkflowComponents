@@ -9,7 +9,6 @@ suppressMessages(library(lme4))
 suppressMessages(library(readr))
 suppressMessages(library(plyr))
 
-print(1)
 # parse commandline args
 i = 1
 while (i <= length(args)) {
@@ -63,7 +62,6 @@ while (i <= length(args)) {
     i = i+1
 }
 
-
 if (is.null(stuStepFileName) || is.null(workingDir) || is.null(componentDirectory)) {
     if (is.null(stuStepFileName)) {
         warning("Missing required input parameter(s): -node m -fileIndex n")
@@ -78,11 +76,11 @@ if (is.null(stuStepFileName) || is.null(workingDir) || is.null(componentDirector
 }
 
 
-df <- read_delim(stuStepFileName,"\t", escape_double = FALSE, col_types = cols(`Correct Transaction Time` = col_datetime(format = "%Y-%m-%d %H:%M:%S"),
+df <- logWarningsMessages(read_delim(stuStepFileName,"\t", escape_double = FALSE, col_types = cols(`Correct Transaction Time` = col_datetime(format = "%Y-%m-%d %H:%M:%S"),
                 `First Transaction Time` = col_datetime(format = "%Y-%m-%d %H:%M:%S"),
                 `Step End Time` = col_datetime(format = "%Y-%m-%d %H:%M:%S"),
                 `Step Start Time` = col_datetime(format = "%Y-%m-%d %H:%M:%S")),
-        trim_ws = TRUE)
+        trim_ws = TRUE), logFileName = "analysis_dash.wfl")
 
 
 #preprocessing functions------------------------------------
@@ -116,8 +114,6 @@ lrtfunc <- function(student, skills ,modelName){
 
 
 
-
-
 #preprocessing data-----------------------------------------------------------------------------------------
 df <- df[complete.cases(df[[modelName]]),]
 df <- df[complete.cases(df$`Step End Time`),]
@@ -133,6 +129,7 @@ dfz$`First Attempt` <- gsub("correct", 1, dfz$`First Attempt`)
 #NAs in time really mess things up
 dfz$`First Attempt` = as.numeric(dfz$`First Attempt`)
 dfz$mem = 0
+
 
 names <- unique(dfz$`Anon Student Id`)
 skills <- unique(dfz[[modelName]])
@@ -158,7 +155,7 @@ if(memmodel=="DASH-MCM" || memmodel=="DASH"){
 
     #This is a MCM only set of fixed parameters. The exponential spacing of time windows. Assumes that the data falls roughly in these windows
     taus = c(.0301,.2434,1.9739,16.0090,129.8426)
-
+    
     finaldf <- data.frame()
 
     for (i in 1:length(names)){
@@ -235,8 +232,6 @@ if(memmodel=="DASH-MCM" || memmodel=="DASH"){
 }
 
 
-
-
 #lrt data setup
 if(memmodel == "Last Retention Time"){
     for (i in 1:length(names)){
@@ -248,7 +243,6 @@ if(memmodel == "Last Retention Time"){
     dfz <- ldply(finallist, data.frame)
     dfz$mem <- log(1+dfz$mem)
 }
-
 
 
 
@@ -269,7 +263,6 @@ if(memmodel == "Last Retention Time"){
 
     }
 }
-
 
 
 #The memory models need to fit parameters - dash and dashmcm are similar
@@ -401,8 +394,6 @@ actr_single <- function(par, dfz, modelName, modelfactortype, fitorrun){
 
 
 
-
-
 #DASH models - both types handled with memfactor in the dash function
 if(memmodel == "DASH" || memmodel == "DASH-MCM"){
     dashresult = optim(c(.5,.5,.5,.5,.5,.5,.5,.5,.5,.5), dash_dashmcm, finaldf=dfz, modelfactortype=memfactor, fitorrun = "fit")
@@ -421,8 +412,6 @@ if(memmodel == "DASH-ACTR"){
     dfz = actr_single(dashresult$par, dfz, modelName,memfactor, "data")
 
 }
-
-
 
 
 outputFile1 <- paste(workingDir, "/model-values.txt", sep="")
