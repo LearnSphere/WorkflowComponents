@@ -231,15 +231,23 @@ public class TransformColumnMungingMain extends AbstractComponent {
     }
     
     private boolean isColumnNumeric(String filePath, String colName) {
-    	String[][] allCells = IOUtil.read2DRuggedStringArray(filePath, false);
+    	String[][] allCells = IOUtil.read2DStringArray(filePath, "\t");
         String[] headers = allCells[0];
+        if (headers.length < 2) {
+        	allCells = IOUtil.read2DStringArray(filePath, ",");
+            headers = allCells[0];
+        }
         int cumsumColInd = -1;
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
+            header = header.trim();
+            //also delete the quotes if there is 
+            header = header.replaceAll("^\"|\"$", "");
             if (header.equals(colName)) {
             	cumsumColInd = i;
             }
         }
+        
         if (cumsumColInd == -1)
         	return false;
         for (int i = 1; i < allCells.length; i++) {
