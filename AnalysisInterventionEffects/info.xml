@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisInterventionEffects</url>
+<date>2018-01-14</date>
+<abstract>The <b>Intervention Effects</b> component helps you analyze data for the intervention effects.
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component allows you to analyze data for the intervention effects.</description>
+
+<inputs>
+A tab-delimited or comma-separated text file: contains data to be analyzed.
+</inputs>
+
+<outputs>
+<ul>
+<li>A text file with data summary and linear modeling result</li>
+<li>A pdf file with analysis result plots</li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><b>Student Column:</b> choose the column with student ID.</li>
+<li><b>Had Intervention Column:</b> choose the column that depicts if the student is in the intervention group. The allowed values are 0 and 1: 0 for control group and 1 for intervention group.</li>
+<li><b>Pre Post Intervention Column:</b> choose the column that depicts if data in the row happened pre or post intervention. The allowed values are 0 and 1: 0 for pre-intervention and 1 for post-intervention.</li>  
+<li><b>Number of Measurements:</b> how many measurements you want to analyze. Enter integer 1 to 5.</li>  
+<li><b>Measurement N Column:</b> choose the column for measurement. Only numeric data is allowed in the column.</li>  
+<li><b>Faceting Group for Measurement N:</b> choose "Had intervention" or "Pre and post intervention". "Had intervention" plots comparison of pre- and post-intervention with control and intervention condition as faceting groups. "Pre and post intervention" plots comparison of control and intervention condition with pre- and post-intervention as faceting groups.</li>  
+</ul>
+
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow</b></p>
+
+<p><b>To analyze the effect of intervention on number of infractions and miscondtions:</b>
+<ol>
+<li>Student Column: choose "StudentRandomID" column.</li>
+<li>Had Intervention Column: choose "hadIntervention" column.</li>
+<li>Pre Post Intervention Column: choose "postIntervention" column.</li>
+<li>Number of Measurements: enter 2.</li>
+<li>Measurement 1 Column: choose "totalInfraction" column.</li>
+<li>Faceting Group for Measurement 1: choose "Pre and post intervention".</li>
+<li>Measurement 2 Column: choose "totalMisconduct" column.</li>
+<li>Faceting Group for Measurement 2: choose "Pre and post intervention".</li>
+</ol>
+</p>
+
+</options>
+
+</info>

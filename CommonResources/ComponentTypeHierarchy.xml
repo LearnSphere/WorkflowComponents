@@ -23,7 +23,7 @@
 		<Anonymize_Standalone />
 		<AppendCF />
 		<Classify_with_Lightside />
-		<Column_Munging />
+		<Column_Operations />
 		<Column_Remover />
 		<Coursera_MOOCdb_Translator />
 		<Data_Conversion />
@@ -43,8 +43,8 @@
 		<OLI_LO_to_KC />
 		<Pivot />
 		<Resource_Use />
-		<Row_Munging />
 		<Row_Operations />
+		<Tetrad_Row_Operations />
 		<Row_Remover />
 		<Text_Converter />
 		<Transaction_Aggregator />
@@ -61,6 +61,7 @@
 		<Entity_Set />
 		<Fast_AFM_and_CV />
 		<Gaming_Detector />
+		<Intervention_Effects />
 		<iAFM />
 		<Learning_Rate />
 		<LFA_Search />
