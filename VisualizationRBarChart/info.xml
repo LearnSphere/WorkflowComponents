@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationRBarChart</url>
+<date>2018-01-14</date>
+<abstract>The <b>Bar Chart</b> component allows you to visualize data using bar chart.
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component allows you to visualize data using bar chart.</description>
+
+<inputs>
+A tab-delimited or comma-separated text file: contains data to be visualized.
+</inputs>
+
+<outputs>
+<ul>
+<li>A pdf file with bar chart plot</li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><b>X Axis:</b> choose the column for the x-axis of your bar chart.</li>
+<li><b>Y Axis:</b> choose the column for the y-axis of your bar chart. The values in this column have to numeric.</li>
+<li><b>Title for Bar Chart:</b> enter a title for your bar chart.</li>  
+<li><b>Include Faceting Group:</b> choose Yes or No to include facet group for your bar chart.</li>  
+<li><b>Faceting Group:</b> choose the column as faceting group.</li>  
+<li><b>Include Standard Error Bar:</b> choose Yes or No to add error bar to your bar chart.</li>  
+<li><b>Standard Deviation:</b> choose the column for standard deviation. The component will compute the standard error based on formular: standard-deviation/square_root(sample_size). Learnsphere's Pivot Workflow component provides an easy way to compute standard deviation.</li>  
+<li><b>Sample Size:</b> choose the column for sample size. The component will compute the standard error based on formular: standard-deviation/square_root(sample_size). Learnsphere's Pivot Eorkflow component provides an easy way to compute sample size.</li>  
+</ul>
+
+<p><b>Example in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow</b></p>
+
+<p><b>This example shows how to summarize data using Pivot component and visualize the summary data using Bar Chart component.</b>
+<ol>
+<li>Use 3 Pivot components to compute sd (standard deviation), count (sample size), and mean for column "exam", separately. All three pivot components use "condition" and "Group" for rows.</li>
+<li>Use 2 Join components to join the results of the Pivot components.</li>
+<li>Use a Column Operations component to change column names for the result of the Join components.</li>
+<li>Finally use a Bar Chart component to visualize the summary result: 
+	<ul>
+	<li>X Axis: choose "Group" column.</li>
+	<li>Y Axis: choose "mean" column.</li>
+	<li>Title for Bar Chart: enter "Exam mean for A/B group under control and experimental conditions".</li>
+	<li>Include Faceting Group: choose "Yes".</li>
+	<li>Faceting Group: choose "condition".</li>
+	<li>Include Standard Error Bar: choose "Yes".</li>
+	<li>Standard Deviation: choose "sd".</li>
+	<li>Sample Size: choose "count".</li>
+	</ul>
+</li>
+</ol>
+</p>
+
+</options>
+
+</info>

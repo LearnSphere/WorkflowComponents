@@ -1,0 +1,7 @@
+hadIntervention	postIntervention	Count	Mean	stdev
+no	0	22454	0.591208693	0.1
+no	1	20433	0.012626633	0.005
+low	0	72	1.722222222	0.5
+low	1	66	0.045454545	0.02
+high	0	72	0.722222222	0.5
+high	1	66	0.004545455	0.001

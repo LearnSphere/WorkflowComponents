@@ -1,0 +1,75 @@
+<component>
+  <component_id>Visualization-1-x144421</component_id>
+  <component_id_human>Visualization #1</component_id_human>
+  <workflow_id>282</workflow_id>
+  <component_name>Bar Chart</component_name>
+  <component_type>visualization</component_type>
+  <left>509.00001525878906</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x271711</from>
+    </connection>
+  </connections>
+  <top>65</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x271711</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/test_data/test_data.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>test_data.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>hadIntervention</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>postIntervention</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>Count</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Mean</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>stdev</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"test_data_1.txt","importFileType":"tab-delimited","importFileNameTitle":"File: test_data_1.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"2211","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <xAxisColumn>Input 0 (0) - hadIntervention (column 0)</xAxisColumn>
+    <yAxisColumn>Input 0 (0) - Mean (column 3)</yAxisColumn>
+    <graphTitle>my chart</graphTitle>
+    <hasFaceting>Yes</hasFaceting>
+    <facetingColumn>Input 0 (0) - postIntervention (column 1)</facetingColumn>
+    <hasStdErr>Yes</hasStdErr>
+    <stdevColumn>Input 0 (0) - stdev (column 4)</stdevColumn>
+    <lengthColumn>Input 0 (0) - Count (column 2)</lengthColumn>
+  </options>
+</component>
