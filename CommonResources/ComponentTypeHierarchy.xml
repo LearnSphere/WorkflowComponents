@@ -84,6 +84,7 @@
 	<Visualization>
 	    <Recently_Used />
 		<Bar_Chart />
+		<Bar_Chart_Deprecated />
 		<Curriculum_Pacing />
 		<D3_Force_Layout />
 		<Histogram />
