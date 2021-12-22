@@ -554,8 +554,8 @@ if (columnOperation == "Unique value") {
     }
     #ensure numerice type
     if (operation1 != "Concatenate") {
-      resultDS$xcol_munging_temp_newColumn1 = as.numeric(as.character(resultDS$col_munging_temp_newColumn1))
-      resultDS$xcol_munging_temp_newColumn2 = as.numeric(as.character(resultDS$col_munging_temp_newColumn2))
+      resultDS$col_munging_temp_newColumn1 = as.numeric(as.character(resultDS$col_munging_temp_newColumn1))
+      resultDS$col_munging_temp_newColumn2 = as.numeric(as.character(resultDS$col_munging_temp_newColumn2))
     }
     if (operation1 == "Add") {
       resultDS = resultDS %>% mutate(col_munging_temp_newColumn = col_munging_temp_newColumn1 + col_munging_temp_newColumn2)

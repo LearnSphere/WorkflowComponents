@@ -7,7 +7,7 @@
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformRowMunging</url>
 <date>2018-01-14</date>
 <abstract>The <b>Row Munging</b> component provides various row operations for data manipulation. It allows you to keep rows, remove rows, and reset row values using column values.
-<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2425" target="_blank">demo</a> workflow.</p></abstract>
 <description>This component allows you to manipulate data at row level. It allows you to keep rows, remove rows, and reset row values using column values.</description>
 
 <inputs>
@@ -43,9 +43,9 @@ A tab-delimited file containing row munging result.
 </ul>
 
 
-<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow</b></p>
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2425" target="_blank">demo</a> workflow</b></p>
 
-<p><b>To choose rows that contains "number_of_attempt" or "number_of_lecture" in column "Feature Name":</b>
+<p>Choose rows that contains "number_of_attempt" or "number_of_lecture" in column "Feature Name":
 <ol>
 <li>Row Operation: choose "Keep rows"</li>
 <li>Condition 1 Column: choose "Feature Name"</li>
@@ -55,7 +55,7 @@ A tab-delimited file containing row munging result.
 <li>Add Condition 2: choose "No"</li>
 </ol>
 </p>
-<p><b>To choose rows that contains "number_of_attempt" or "number_of_lecture" in column "Feature Name", and only keep "Longitudinal Feature Week" after the fourth week:</b>
+<p>Choose rows that contains "number_of_attempt" or "number_of_lecture" in column "Feature Name", and only keep "Longitudinal Feature Week" after the fourth week:
 <ol>
 <li>Row Operation: choose "Keep rows"</li>
 <li>Condition 1 Column: choose "Feature Name"</li>
@@ -63,6 +63,7 @@ A tab-delimited file containing row munging result.
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
 <li>Condition 1 Compare to Value: enter "number_of_attempt, number_of_lecture".</li>
 <li>Add Condition 2: choose "Yes"</li>
+<li>Logical Operator for Condition 1 and 2: choose "And".</li>
 <li>Condition 2 Column: choose "Longitudinal Feature Week"</li>
 <li>Condition 2 Comparison Operator: choose "Greater than".</li>
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
@@ -70,7 +71,7 @@ A tab-delimited file containing row munging result.
 <li>Add Condition 3: choose "No"</li>
 </ol>
 </p>
-</p>
+
 </options>
 
 </info>

@@ -7,7 +7,7 @@
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationRBarChart</url>
 <date>2018-01-14</date>
 <abstract>The <b>Bar Chart</b> component allows you to visualize data using bar chart.
-<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2423" target="_blank">demo</a> workflow.</p></abstract>
 <description>This component allows you to visualize data using bar chart.</description>
 
 <inputs>
@@ -32,7 +32,7 @@ A tab-delimited or comma-separated text file: contains data to be visualized.
 <li><b>Sample Size:</b> choose the column for sample size. The component will compute the standard error based on formular: standard-deviation/square_root(sample_size). Learnsphere's Pivot Eorkflow component provides an easy way to compute sample size.</li>  
 </ul>
 
-<p><b>Example in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow</b></p>
+<p><b>Example in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2423" target="_blank">demo</a> workflow</b></p>
 
 <p><b>This example shows how to summarize data using Pivot component and visualize the summary data using Bar Chart component.</b>
 <ol>
