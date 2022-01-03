@@ -40,12 +40,21 @@ populate_maps <- function(originalName, changedName){
     if (!changedName %in% keys(map_changed_original_col_names)) {
       map_changed_original_col_names[[changedName]] = originalName
     }
-  }
+}
 
 #e.g.: final is this: myData = myData %>% filter(condition1_Col=="45" | condition1_Col=="105"), but for now: condition1_Col=="45" | condition1_Col=="105"
 #e.g. for contain: myData = myData %>% filter(grepl("4",`Longitudinal Feature Week`, ignore.case=TRUE)|grepl("5",`Longitudinal Feature Week`, ignore.case=TRUE))
 make_constants_filterContent <- function(condConsts, conditionCol, condCompOper){
   filterContent = ""
+  if (length(condConsts)==0) {
+    if (condCompOper == "Equal to") {
+      filterContent = "tolower(condition1_Col)==tolower(\"\")"
+      return(filterContent)
+    } else if (condCompOper == "Contain") {
+      filterConten = "grepl(\"\", condition1_Col,ignore.case=TRUE)"
+      return(filterContent)
+    }
+  }
   for (condConst in condConsts) {
     if (condCompOper == "Contain") {
       if (filterContent == "") {
@@ -340,9 +349,10 @@ while (i <= length(args)) {
 # outputFileName = "row_munging_result.txt"
 # rowOperation = "Remove rows"
 # condition1 = "User ID"
+# condition1 = "TestName"
 # condCompOper1 = "Equal to"
 # condType1 = "Constants"
-# condConst1 = "45, 105"
+# condConst1 = ""
 # condCol1 = "User ID"
 # 
 # addCond2 = "Yes"
@@ -433,7 +443,8 @@ if (condCompOper1 == "Greater than") {
 currCondition1Name = get_current_colname(condition1)
 if (condType1 == "Constants") {
   #break condConst1 if it's to compare to constants
-  condConst1 = unlist(strsplit(condConst1, "\\s*,\\s*"))
+  #condConst1 = unlist(strsplit(condConst1, "\\s*,\\s*"))
+  condConst1 = unlist(strsplit(condConst1, ","))
   filter1Content = make_constants_filterContent(condConst1, currCondition1Name, condCompOper1)
 } else if (condType1 == "Value from column") {
   #it's possible condCol1 has already changed name
@@ -463,7 +474,8 @@ if (addCond2 == "Yes") {
   currCondition2Name = get_current_colname(condition2)
   if (condType2 == "Constants") {
     #break condConst2 if it's to compare to constants
-    condConst2 = unlist(strsplit(condConst2, "\\s*,\\s*"))
+    #condConst2 = unlist(strsplit(condConst2, "\\s*,\\s*"))
+    condConst2 = unlist(strsplit(condConst2, ","))
     filter2Content = make_constants_filterContent(condConst2, currCondition2Name, condCompOper2)
   } else if (condType2 == "Value from column") {
     #it's possible condCol2 has already changed name
@@ -475,7 +487,6 @@ if (addCond2 == "Yes") {
   filter2Content = paste("(", filter2Content, ")", sep="")
   # print(filter2Content)
 }  
-
 #make filter3Content for condition2
 filter3Content = ""
 if (addCond2 == "Yes" & addCond3 == "Yes") {
@@ -494,7 +505,8 @@ if (addCond2 == "Yes" & addCond3 == "Yes") {
   currCondition3Name = get_current_colname(condition3)
   if (condType3 == "Constants") {
     #break condConst3 if it's to compare to constants
-    condConst3 = unlist(strsplit(condConst3, "\\s*,\\s*"))
+    #condConst3 = unlist(strsplit(condConst3, "\\s*,\\s*"))
+    condConst3 = unlist(strsplit(condConst3, ","))
     filter3Content = make_constants_filterContent(condConst3, currCondition3Name, condCompOper3)
   } else if (condType3 == "Value from column") {
     #it's possible condCol3 has already changed name
@@ -506,7 +518,6 @@ if (addCond2 == "Yes" & addCond3 == "Yes") {
   filter3Content = paste("(", filter3Content, ")", sep="")
   # print(filter3Content)
 } 
-
 #combine all filter
 filterContent = filter1Content
 if (filter2Content != "" & addCond2 == "Yes") {
@@ -524,7 +535,7 @@ if (filter3Content != "" & addCond2 == "Yes" & addCond3 == "Yes") {
     filterContent = paste(filterContent, " | ", filter3Content, sep = "")
   }
 }
-
+# print(filterContent)
 if (rowOperation == "Keep rows") {
   filter_com = paste("resultData = myData %>% filter(", filterContent, ")", sep="")
   # print(filter_com)

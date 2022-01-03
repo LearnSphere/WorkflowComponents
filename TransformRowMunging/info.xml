@@ -24,21 +24,21 @@ A tab-delimited file containing row munging result.
 <li><b>Condition 1 Column:</b> define the column to compare.</li>
 <li><b>Condition 1 Comparison Operator:</b> can be equal to, greater than (for numeric data), greater than or equal to (for numeric data), less than (for numeric data), less than or equal to (for numeric data), or contain (doesn't work when the compared-to value is a column).</li>  
 <li><b>Condition 1 Compare to Value Type:</b> define the value type for the compared-to variable of the first comparison condition. It can be NA, constants, or value from another column.</li>  
-<li><b>Condition 1 Compare to Value:</b> when Condition 1 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. Comparison is case insensitive. </li>  
+<li><b>Condition 1 Compare to Value:</b> when Condition 1 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. NOTE: don't leave space before or after comma otherwise the space will be included in searching. Comparison is case insensitive. You can use quotes to define values precisely. For example, when you enter [abc, def] in this field, two values are used for searching: [abc] and [ def]; when you enter ["abc", "def"] in this field, [abc] and [def] are used for searching.</li>  
 <li><b>Condition 1 Compare to Column:</b> when Condition 1 Compare to Value Type is defined to be value from column, this field shows. Operator contain doesn't work for this situation.</li>  
 <li><b>Add Condition 2:</b> choose Yes when you want to add a second condition to the row choosing rule.</li>
 <li><b>Logical Operator for Condition 1 and 2:</b> choose a logical operator, and or or, to use between condition 1 and condition 2.</li>
 <li><b>Condition 2 Column:</b> define a second column to compare</li>
 <li><b>Condition 2 Comparison Operator:</b> can be equal to, greater than (for numeric data), greater than or equal to (for numeric data), less than (for numeric data), less than or equal to (for numeric data), or contain (doesn't work when the compared-to value is a column).</li>  
 <li><b>Condition 2 Compare to Value Type:</b> define the value type for the compared-to variable of the second comparison condition. It can be NA, constants, or value from another column.</li>
-<li><b>Condition 2 Compare to Value:</b> when Condition 2 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. Comparison is case insensitive. </li>  
+<li><b>Condition 2 Compare to Value:</b> when Condition 2 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. NOTE: don't leave space before or after comma otherwise the space will be included in searching. Comparison is case insensitive. You can use quotes to define values precisely. For example, when you enter [abc, def] in this field, two values are used for searching: [abc] and [ def]; when you enter ["abc", "def"] in this field, [abc] and [def] are used for searching.</li>  
 <li><b>Condition 2 Compare to Column:</b> when Condition 2 Compare to Value Type is defined to be value from column, this field shows. Operator contain doesn't work for this situation.</li>  
 <li><b>Add Condition 3:</b> choose Yes when you want to add a third condition to the row choosing rule.</li>
 <li><b>Logical Operator for Condition 2 and 3:</b> choose a logical operator, and or or, to use between condition 2 and condition 3.</li>
 <li><b>Condition 3 Column:</b> define a third column to compare</li>
 <li><b>Condition 3 Comparison Operator:</b> can be equal to, greater than (for numeric data), greater than or equal to (for numeric data), less than (for numeric data), less than or equal to (for numeric data), or contain (doesn't work when the compared-to value is a column).</li>  
 <li><b>Condition 3 Compare to Value Type:</b> define the value type for the compared-to variable of the third comparison condition. It can be NA, constants, or value from another column.</li>
-<li><b>Condition 3 Compare to Value:</b> when Condition 3 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. Comparison is case insensitive. </li>  
+<li><b>Condition 3 Compare to Value:</b> when Condition 3 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. NOTE: don't leave space before or after comma otherwise the space will be included in searching. Comparison is case insensitive. You can use quotes to define values precisely. For example, when you enter [abc, def] in this field, two values are used for searching: [abc] and [ def]; when you enter ["abc", "def"] in this field, [abc] and [def] are used for searching.</li>  
 <li><b>Condition 3 Compare to Column:</b> when Condition 3 Compare to Value Type is defined to be value from column, this field shows. Operator contain doesn't work for this situation.</li>  
 </ul>
 
@@ -51,7 +51,7 @@ A tab-delimited file containing row munging result.
 <li>Condition 1 Column: choose "Feature Name"</li>
 <li>Condition 1 Comparison Operator: choose "Contain".</li>
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
-<li>Condition 1 Compare to Value: enter "number_of_attempt, number_of_lecture".</li>
+<li>Condition 1 Compare to Value: enter "number_of_attempt,number_of_lecture".</li>
 <li>Add Condition 2: choose "No"</li>
 </ol>
 </p>
@@ -61,7 +61,7 @@ A tab-delimited file containing row munging result.
 <li>Condition 1 Column: choose "Feature Name"</li>
 <li>Condition 1 Comparison Operator: choose "Contain".</li>
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
-<li>Condition 1 Compare to Value: enter "number_of_attempt, number_of_lecture".</li>
+<li>Condition 1 Compare to Value: enter "number_of_attempt,number_of_lecture".</li>
 <li>Add Condition 2: choose "Yes"</li>
 <li>Logical Operator for Condition 1 and 2: choose "And".</li>
 <li>Condition 2 Column: choose "Longitudinal Feature Week"</li>

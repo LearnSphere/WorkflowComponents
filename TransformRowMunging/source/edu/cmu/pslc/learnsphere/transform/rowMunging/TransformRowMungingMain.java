@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jdom.Element;
 
@@ -32,12 +34,19 @@ public class TransformRowMungingMain extends AbstractComponent {
         String condType1 = this.getOptionAsString("condType1");
         String condCompOper1 = this.getOptionAsString("condCompOper1");
         String condConst1 = this.getOptionAsString("condConst1");
-        //replace all quotes
         if (condType1.equals("Constants")) {
-			//delete all quotes
-			condConst1 = condConst1.replaceAll("'", "");
-			condConst1 = condConst1.replaceAll("\"", "");
-			this.setOption("condConst1", condConst1);
+			//remove quotes
+        	String modCondConst1 = modConstantString(condConst1);
+        	logger.info("modified condConst1 is:" + modCondConst1);
+        	this.setOption("condConst1", modCondConst1);
+        	//"" can't be in contain
+        	if (condCompOper1.equals("Contain") && cotainEmptyString(modCondConst1)) {
+        		//send error message
+                String err = "Condition 1 Comparison has an empty string for Contain operation.";
+                addErrorMessage(err);
+                logger.info("TransformRowMunging is aborted: " + err); 
+                reqsMet = false;
+        	}
         }
         //NA value can only be equal
         if (condType1.equals("NA")
@@ -107,10 +116,17 @@ public class TransformRowMungingMain extends AbstractComponent {
 	        String condConst2 = this.getOptionAsString("condConst2");
 	        //replace all quotes
 	        if (condType2.equals("Constants")) {
-				//delete all quotes
-				condConst2 = condConst2.replaceAll("'", "");
-				condConst2 = condConst2.replaceAll("\"", "");
-				this.setOption("condConst2", condConst2);
+	        	String modCondConst2 = modConstantString(condConst2);
+	        	logger.info("modified condConst2 is:" + modCondConst2);
+	        	this.setOption("condConst2", modCondConst2);
+	        	//"" can't be in contain
+	        	if (condCompOper2.equals("Contain") && cotainEmptyString(modCondConst2)) {
+	        		//send error message
+	                String err = "Condition 2 Comparison has an empty string for Contain operation.";
+	                addErrorMessage(err);
+	                logger.info("TransformRowMunging is aborted: " + err); 
+	                reqsMet = false;
+	        	}
 	        }
 	        //NA value can only be equal
 	        if (condType2.equals("NA")
@@ -180,10 +196,17 @@ public class TransformRowMungingMain extends AbstractComponent {
 	        String condConst3 = this.getOptionAsString("condConst3");
 	        //replace all quotes
 	        if (condType3.equals("Constants")) {
-				//delete all quotes
-				condConst3 = condConst3.replaceAll("'", "");
-				condConst3 = condConst3.replaceAll("\"", "");
-				this.setOption("condConst3", condConst3);
+	        	String modCondConst3 = modConstantString(condConst3);
+	        	this.setOption("condConst3", modCondConst3);
+	        	logger.info("modified condConst2 is:" + modCondConst3);
+	        	//"" can't be in contain
+	        	if (condCompOper3.equals("Contain") && cotainEmptyString(modCondConst3)) {
+	        		//send error message
+	                String err = "Condition 3 Comparison has an empty string for Contain operation.";
+	                addErrorMessage(err);
+	                logger.info("TransformRowMunging is aborted: " + err); 
+	                reqsMet = false;
+	        	}
 	        }
 	        //NA value can only be equal
 	        if (condType3.equals("NA")
@@ -303,5 +326,45 @@ public class TransformRowMungingMain extends AbstractComponent {
         	return valIsNumber;
         }
     }
+    
+    //remove double quote or single quote, and the spaces before and after them
+    private String modConstantString(String strVal) {
+    	String newStrVal = "";
+    	boolean started = false;
+    	List<String> tempWds = Arrays.asList(strVal.split(","));
+    	for (String tempWd : tempWds) {
+    		if (tempWd.matches("\\s*\".*\"\\s*") || tempWd.matches("\\s*'.*'\\s*")) {
+    			tempWd = tempWd.trim();
+    			tempWd = tempWd.substring(1, tempWd.length()-1);
+    		}
+    		if (!started) {
+    			newStrVal = tempWd;
+    			started = true;
+    		} else {
+    			newStrVal += "," + tempWd;
+    		}
+    	}
+    	return newStrVal;
+    }
+    
+    //check if a comma separate string contains an empty string
+    private boolean cotainEmptyString(String strVal) {
+    	boolean containEmptyString = false;
+    	//if strVal is empty
+    	if (strVal.length() == 0)
+    		return true;
+    	//if last char is a comma, it contains an empty string
+    	if (strVal.substring(strVal.length() - 1).equals(","))
+    		return true;
+    	List<String> tempWds = Arrays.asList(strVal.split(","));
+    	for (String tempWd : tempWds) {
+    		if (tempWd.equals("")) {
+    			containEmptyString = true;
+    			break;
+    		}
+    	}
+    	return containEmptyString;
+    }
+    
     
 }
