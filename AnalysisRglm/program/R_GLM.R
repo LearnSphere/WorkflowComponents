@@ -276,8 +276,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write(paste("<residual.max>", max(modelSum$residuals), "</residual.max>", sep=""),file=model.values.file,sep="",append=TRUE)
 	residual.stderr <- sqrt(deviance(fittedModel)/df.residual(fittedModel))
 	write(paste("<residual.Std.Error>", residual.stderr, "</residual.Std.Error>", sep=""),file=model.values.file,sep="",append=TRUE)
-
-	#fixed effects
+  #fixed effects
 	for (x in 1:length(rownames(modelSum$coefficients))) {
 	  #write to parameters file
 	  if (x==1) {
@@ -322,9 +321,8 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write(paste("<", tag.name, ">", tval, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
 	    write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
 	  }
-
 	}
-	#write model_values for random effect
+  #write model_values for random effect
 	ranef.vars=as.data.frame(VarCorr(fittedModel))
 	for (x in 1:length(rownames(ranef.vars))) {
 	  name = ranef.vars[x,"grp"]
@@ -351,33 +349,44 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	    write(paste("<", tag.name, ">", tag.value, "</", tag.name, ">", sep=""),file=model.values.file,sep="",append=TRUE)
 	  }
 	}
-
-	#write parameters for random effect
-	for (x in 1:length(ranef(fittedModel))){
+  
+  for (x in 1:length(ranef(fittedModel))){
 	  par.type = names(ranef(fittedModel)[x])
-	  for (y in 1:nrow(ranef(fittedModel)[x][[1]])){
-	    write("<parameter>",file=parameters.values.file,sep="",append=TRUE)
-	    write(paste("<type>", paste("Random.effects.", par.type, sep=""), "</type>", sep=""),file=parameters.values.file,sep="",append=TRUE)
-	    write(paste("<name>", rownames(ranef(fittedModel)[x][[1]])[y], "</name>", sep=""),file=parameters.values.file,sep="",append=TRUE)
-	    for (z in 1:ncol(ranef(fittedModel)[x][[1]])) {
-	      tag.name = colnames(ranef(fittedModel)[x][[1]])[z]
+	  model_ranef = ranef(fittedModel)[x][[1]]
+	  num_row = nrow(model_ranef)
+	  num_col = ncol(model_ranef)
+	  col_names = colnames(model_ranef)
+	  row_names = rownames(model_ranef)
+	  for (y in 1:num_row){
+	    #write("<parameter>",file=parameters.values.file,sep="",append=TRUE)
+	    str_to_write = "<parameter>\n"
+	    #write(paste("<type>", paste("Random.effects.", par.type, sep=""), "</type>", sep=""),file=parameters.values.file,sep="",append=TRUE)
+	    str_to_write = paste(str_to_write, "<type>", paste("Random.effects.", par.type, sep=""), "</type>", sep="")
+	    str_to_write = paste(str_to_write, "\n", sep="")
+	    #write(paste("<name>", rownames(ranef(fittedModel)[x][[1]])[y], "</name>", sep=""),file=parameters.values.file,sep="",append=TRUE)
+	    str_to_write = paste(str_to_write, "<name>", row_names[y], "</name>", sep="")
+	    str_to_write = paste(str_to_write, "\n", sep="")
+	    for (z in 1:num_col) {
+	      tag.name = col_names[z]
 	      if (tag.name == "(Intercept)")
 	        tag.name = "intercept"
 	      else {
 	        #tag.name = tolower(tag.name)
 	        tag.name = "slope"
 	      }
-	      write(paste("<", tag.name, ">", ranef(fittedModel)[x][[1]][y, z], "</", tag.name, ">", sep=""),file=parameters.values.file,sep="",append=TRUE)
-	    }
-	    write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
+	      #write(paste("<", tag.name, ">", ranef(fittedModel)[x][[1]][y, z], "</", tag.name, ">", sep=""),file=parameters.values.file,sep="",append=TRUE)
+	      str_to_write = paste(str_to_write, "<", tag.name, ">", model_ranef[y, z], "</", tag.name, ">", sep="")
+	      str_to_write = paste(str_to_write, "\n", sep="")
+	   }
+	    #write("</parameter>",file=parameters.values.file,sep="",append=TRUE)
+	    str_to_write = paste(str_to_write, "</parameter>", sep="")
+	    write(str_to_write,file=parameters.values.file,sep="",append=TRUE)
 	  }
 	}
 
 	write("</model>",file=model.values.file,sep="",append=TRUE)
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
-
-
 
 } else if (modelingFunc == "glm" || modelingFunc == "lm") {
   modelingString = ""
@@ -482,20 +491,15 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	write(paste("<f.Statistic.numdf>", modelSum$fstatistic["numdf"][[1]], "</f.Statistic.numdf>", sep=""),file=model.values.file,sep="",append=TRUE)
 	write(paste("<f.Statistic.dendf>", modelSum$fstatistic["dendf"][[1]], "</f.Statistic.dendf>", sep=""),file=model.values.file,sep="",append=TRUE)
 
-
 	write("</model>",file=model.values.file,sep="",append=TRUE)
 	write("</model_values>",file=model.values.file,sep="",append=TRUE)
 	write("</parameters>",file=parameters.values.file,sep="",append=TRUE)
 }
-
 origFile <- logWarningsMessages(fread(file=inputFile,verbose = F), logFileName = "r_glm.wfl")
 origCols <- colnames(origFile)
-
 origFile$PredictedErrorRate <- 1 - predict(fittedModel,ds,type="response",allow.new.levels=TRUE) # add the column
 names(origFile)[ncol(origFile)] <- 'Predicted Error Rate for Linear Modeling' # Rename the column
-
 logWarningsMessages(fwrite(origFile, file=student.step.file,sep="\t", quote=FALSE, na=""), logFileName = "r_glm.wfl")
-
 
 
 
