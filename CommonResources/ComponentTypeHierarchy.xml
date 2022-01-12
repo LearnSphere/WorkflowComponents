@@ -44,7 +44,6 @@
 		<Pivot />
 		<Resource_Use />
 		<Row_Operations />
-		<Tetrad_Row_Operations />
 		<Row_Remover />
 		<Text_Converter />
 		<Transaction_Aggregator />
@@ -103,6 +102,7 @@
 	    <Search />
 	    <Simulation />
 	    <Tetrad_Graph_Editor />
+		<Tetrad_Row_Operations />
 	</Tetrad>
 	<Contribute>
 		<Component_Creator />
