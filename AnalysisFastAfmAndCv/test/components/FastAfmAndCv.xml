@@ -854,8 +854,9 @@
   </inputs>
   <options>
     <kcModel>Input 0 (0) - KC (Circle-Collapse) (column 22)</kcModel>
+    <kcModel>Input 0 (0) - KC (Concepts) (column 25)</kcModel>
     <includeCv>Yes</includeCv>
-    <tpCV>item blocked</tpCV>
+    <tpCV>both student and item blocked</tpCV>
     <numFold>3</numFold>
   </options>
 </component>

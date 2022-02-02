@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[25]:
+# In[9]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[26]:
+# In[10]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -214,7 +214,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[27]:
+# In[11]:
 
 
 def phi(x):
@@ -226,7 +226,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[28]:
+# In[12]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -542,7 +542,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[29]:
+# In[13]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -701,7 +701,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[30]:
+# In[14]:
 
 
 def compute_metrics(y, y_pred):
@@ -741,7 +741,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[31]:
+# In[15]:
 
 
 def logToWfl(msg):
@@ -758,11 +758,13 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[52]:
+# In[38]:
 
 
 #test command from WF component:
-#C:/ProgramData/Anaconda3/Python learner_performance_prediction.py -programDir . -workingDir . -userId 1 -includeCv Yes -kcModel_nodeIndex 0 -kcModel_fileIndex 0 -kcModel "KC (Circle-Collapse)" -numFold 3 -tpCV "item blocked" -node 0 -fileIndex 0 "C:\WPIDevelopment\dev06_dev\WorkflowComponents\AnalysisPythonLogisticRegression\test\test_data\ds76_student_step_export.txt" -f "ds76_student_step_export.txt"
+#C:/ProgramData/Anaconda3/Python learner_performance_prediction.py -programDir . -workingDir . -userId 1 -includeCv Yes -kcModel_nodeIndex 0 -kcModel_fileIndex 0 -kcModel "KC (Circle-Collapse)" -numFold 3 -tpCV "item blocked" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
+#C:/ProgramData/Anaconda3/Python learner_performance_prediction.py -programDir . -workingDir . -userId 1 -includeCv Yes -kcModel_nodeIndex 0 -kcModel_fileIndex 0 -kcModel "KC (Circle-Collapse)" -kcModel_nodeIndex 0 -kcModel_fileIndex 0 -kcModel "KC (Concepts)" -kcModel_nodeIndex 0 -kcModel_fileIndex 0 -kcModel "KC (DecompArithDiam)" -numFold 3 -tpCV "both student and item blocked" -node 0 -fileIndex 0 "ds76_student_step_export.txt"
+
 warnings.filterwarnings("ignore")
 #fresh new log file
 logFile = open("learner_performnce_prediction.wfl", "w")
@@ -779,7 +781,7 @@ if command_line:
     parser.add_argument("-node", nargs=1, action='append')
     parser.add_argument("-fileIndex", nargs=2, action='append')
     parser.add_argument("-includeCv", type=str, choices=["Yes", "No"], default="No")
-    parser.add_argument("-kcModel", type=str)
+    parser.add_argument("-kcModel", type=str, action='append')
     parser.add_argument("-numFold", type=int, default=3)
     parser.add_argument("-tpCV", type=str, choices=["student blocked", "item blocked", "both student and item blocked" ], default='item blocked')
     parser.add_argument('-userId', type=str,  help='placeholder for WF', default='')
@@ -789,7 +791,7 @@ if command_line:
     train_split_type = None
     train_split = None
     file_name = args.fileIndex[0][1]
-    kc_col_name = args.kcModel
+    kc_col_names = args.kcModel
     cv_student = False
     cv_item = False
     cv_fold = 3
@@ -801,13 +803,13 @@ if command_line:
         cv_fold = args.numFold
 else:
     #student_step file
-    file_name = "studentStepRollup2.txt"
-    #file_name = "ds1943_student_step_All_Data_3691_2017_0522_203358.txt"
+    file_name = "ds76_student_step_export.txt"
+    #file_name = "C:/WPIDevelopment/dev06_dev/test/AFM_improved_optimization/runFastAFM/ds392_student_step_All_Data_1310_2019_0802_022703.txt"
     #file_name = "ds76_student_step_All_Data_74_2020_0926_034727.txt"
     #file_name = "fast_afm_cv_ds_7_kcm_122.txt"
     #file_name = "./data/algebra05/data_DS_format.txt"
     #kc mode
-    kc_col_name="KC (Matrix)"
+    kc_col_names=['KC (Circle-Collapse)', 'KC (Concepts)', 'KC (DecompArithDiam)']
     #kc_col_name="KC (DecompArithDiam)"
     #kc_col_name="KC (Lasso Model)"
     #kc_col_name="KC (Item Model)"
@@ -833,11 +835,30 @@ min_interactions_per_user = 1
 remove_nan_skills = True
 
 #get kc_name
-kc_name = re.search(r'\((.*?)\)',kc_col_name).group(1)
+kc_names = []
+for kc_col_name in kc_col_names:
+    kc_name = re.search(r'\((.*?)\)',kc_col_name).group(1)
+    kc_names.append(kc_name)
 
 logToWfl("Calling prepare_data.")  
 logProgressToWfl("0%")
-df, Q_mat, kc2idx, user2idx, item2idx = prepare_data(data_file=file_name, 
+kc_count = 0
+prog = 0
+analysis_summary_content = ""
+model_values_content = ""
+parameters_content = ""
+#analysis-summary file
+analysis_summary_file_name = os.path.join(working_dir, "analysis_summary.txt")
+#model-values file
+model_values_file_name = os.path.join(working_dir, "model_values.xml")
+#parameters file
+parameters_file_name = os.path.join(working_dir, "parameters.xml")
+#prediction file
+prediction_file_name = os.path.join(working_dir, "student_step_with_prediction.txt")
+for kc_col_name in kc_col_names:
+    kc_name = kc_names[kc_count]
+    kc_count = kc_count + 1
+    df, Q_mat, kc2idx, user2idx, item2idx = prepare_data(data_file=file_name, 
                                                      working_dir=working_dir,
                                                      min_interactions_per_user=min_interactions_per_user,
                                                      kc_col_name=kc_col_name,
@@ -847,314 +868,318 @@ df, Q_mat, kc2idx, user2idx, item2idx = prepare_data(data_file=file_name,
                                                      cv_student=cv_student, 
                                                      cv_item=cv_item,
                                                      cv_fold=cv_fold)
-skill_df = pd.DataFrame(list(kc2idx.items()), columns =['skill_name', 'skill_id'])
-student_df = pd.DataFrame(list(user2idx.items()), columns =['student_name', 'student_id'])
+    skill_df = pd.DataFrame(list(kc2idx.items()), columns =['skill_name', 'skill_id'])
+    student_df = pd.DataFrame(list(user2idx.items()), columns =['student_name', 'student_id'])
 
-#numbers of skill and student have to be >= cv_fold
-if cv_student and student_df.shape[0] < cv_fold:
-    cv_student = False
-    cv_student_number_error = True
-    logToWfl("Can't run student-blocked CV because there are less students ({}) than CV fold ({})".format(student_df.shape[0], cv_fold))  
-if cv_item and skill_df.shape[0] < cv_fold:
-    cv_item = False
-    cv_item_number_error = True
-    logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
-
-logToWfl("Finished prepare_data.")  
-#approximate % of time
-logProgressToWfl("45%")
-
-logToWfl("Calling df_to_sparse_afm to encode data.")  
-#df = pd.read_csv('preprocessed_data.txt', sep="\t")
-df = df[["user_id", "item_id", "timestamp", "correct", "skill_id"]]
-X = df_to_sparse_afm(df, Q_mat)
-sparse.save_npz(f"X-afm", X)
-logToWfl("Finished df_to_sparse_afm to encode data.")
-#approximate % of time
-logProgressToWfl("50%")
-
-logToWfl("Starting training data.")  
-iter = 1000
-#do model on all data and get AIC, BIC
-X_all, y_all = X[:, 5:], X[:, 3].toarray().flatten()
-# Train
-#solver{‘newton-cg’, ‘lbfgs’, ‘liblinear’, ‘sag’, ‘saga’}, default=’lbfgs’
-#https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
-model = LogisticRegression(solver="lbfgs", max_iter=iter)
-model.fit(X_all, y_all)
-if cv_student or cv_item: 
+    #numbers of skill and student have to be >= cv_fold
+    if cv_student and student_df.shape[0] < cv_fold:
+        cv_student = False
+        cv_student_number_error = True
+        logToWfl("Can't run student-blocked CV because there are less students ({}) than CV fold ({})".format(student_df.shape[0], cv_fold))  
+    if cv_item and skill_df.shape[0] < cv_fold:
+        cv_item = False
+        cv_item_number_error = True
+        logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
+    
+    logToWfl("Finished prepare_data.")  
     #approximate % of time
-    logProgressToWfl("75%")
-
-
-#get params
-params = model.coef_[0]
-num_params = len(params)
-#attach to student_name and skill_name
-student_param = params[:student_df.shape[0]]
-student_df["intercept"] = student_param
-student_df = student_df[['student_name', 'intercept']]
-#print(student_df)
-end_ind_student = student_df.shape[0]
-end_ind_skill_intercept = end_ind_student+skill_df.shape[0]
-skill_intercept_param = params[end_ind_student:end_ind_skill_intercept]
-skill_slope_param = params[end_ind_skill_intercept:]
-skill_df["intercept"] = skill_intercept_param
-skill_df["slope"] = skill_slope_param
-skill_df = skill_df[['skill_id', 'skill_name', 'intercept', 'slope']]
-skill_df = skill_df.sort_values(by=['skill_name'])
-pd.set_option("display.max_rows", None, "display.max_columns", None)
-#print(skill_df)
-skill_df['intercept_exp'] = np.exp(skill_df['intercept'])
-skill_df['intercept_probability'] = skill_df['intercept_exp']/(1+skill_df['intercept_exp'])
-skill_df = skill_df.drop(['skill_id', 'intercept_exp'], axis=1)
-skill_df = skill_df[['skill_name', 'intercept', 'intercept_probability', 'slope']]
-
-#get prediction
-y_all_pred = pd.DataFrame(model.predict_proba(X_all))
-#use only the prediction to success
-y_all_pred = y_all_pred[y_all_pred.columns[1]]
-df["prediction"] = y_all_pred
-#get prediction and attached to original file
-df_original = pd.read_csv(file_name, delimiter='\t')
-if remove_nan_skills:
-    df_original = df_original[~df_original[kc_col_name].isnull()]
-#error rate prediction!
-#df_original[f"Predicted Error Rate ({kc_name})"] = 1-y_all_pred
-df_original["Predicted Error Rate (" + str(kc_name) + ")"] = 1-y_all_pred
-df_original.to_csv(os.path.join(working_dir, "student_step_with_prediction.txt"), sep="\t", index=False)
-
-#get ll, aic, bic
-ll = calculate_ll(y_all, y_all_pred)
-aic = calculate_aic_by_ll(ll, num_params)
-bic = calculate_bic_by_ll(ll, len(y_all), num_params)
-# print('LL: %.3f' % ll)
-# print('AIC: %.3f' % aic)
-# print('BIC: %.3f' % bic)
-#get other measures
-# acc, auc, nll, mse = compute_metrics(y_all, y_all_pred)
-# print('ACC: %.3f' % acc)
-# print('AUC: %.3f' % auc)
-# print('MSE: %.3f' % mse)
-logToWfl("After training data.")
-
-#handle train split
-if train_split_type is not None:
-    train_df = pd.read_csv(os.path.join(working_dir, "preprocessed_data_train.txt"), sep="\t")
-    test_df = pd.read_csv(os.path.join(working_dir, "preprocessed_data_test.txt"), sep="\t")
-    if train_split_type == 'item':
-        item_ids = X[:, 1].toarray().flatten()
-        items_train = train_df["item_id"].unique()
-        items_test = test_df["item_id"].unique()
-        #np.isin(item_ids, items_train) gives True and False for all rows
-        #np.where(np.isin(item_ids, items_train)) gives row id for all True
-        #train is all X in train
-        train = X[np.where(np.isin(item_ids, items_train))]
-        test = X[np.where(np.isin(item_ids, items_test))]
-    else:
-        # Student-wise train-test split
-        user_ids = X[:, 0].toarray().flatten()
-        users_train = train_df["user_id"].unique()
-        users_test = test_df["user_id"].unique()
-        #np.isin(user_ids, users_train) gives True and False for all rows
-        #np.where(np.isin(user_ids, users_train)) gives row id for all True
-        #train is all X in train
-        train = X[np.where(np.isin(user_ids, users_train))]
-        test = X[np.where(np.isin(user_ids, users_test))]
-    X_train, y_train = train[:, 5:], train[:, 3].toarray().flatten()
-    X_test, y_test = test[:, 5:], test[:, 3].toarray().flatten()
+    prog = prog + 0.45/len(kc_col_names)
+    logProgressToWfl( "{:.0%}".format(prog))
+    
+    logToWfl("Calling df_to_sparse_afm to encode data.")  
+    #df = pd.read_csv('preprocessed_data.txt', sep="\t")
+    df = df[["user_id", "item_id", "timestamp", "correct", "skill_id"]]
+    X = df_to_sparse_afm(df, Q_mat)
+    sparse.save_npz(f"X-afm", X)
+    logToWfl("Finished df_to_sparse_afm to encode data.")
+    #approximate % of time
+    prog = prog + 0.05/len(kc_col_names)
+    logProgressToWfl( "{:.0%}".format(prog))
+    
+    logToWfl("Starting training data.")  
+    iter = 1000
+    #do model on all data and get AIC, BIC
+    X_all, y_all = X[:, 5:], X[:, 3].toarray().flatten()
+    # Train
+    #solver{‘newton-cg’, ‘lbfgs’, ‘liblinear’, ‘sag’, ‘saga’}, default=’lbfgs’
+    #https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
     model = LogisticRegression(solver="lbfgs", max_iter=iter)
-    model.fit(X_train, y_train)
-    y_pred_train = model.predict_proba(X_train)[:, 1]
-    y_pred_test = model.predict_proba(X_test)[:, 1]
-    acc_train, auc_train, nll_train, mse_train = compute_metrics(y_train, y_pred_train)
-    acc_test, auc_test, nll_test, mse_test = compute_metrics(y_test, y_pred_test)
-#     print('ACC for training set: %.3f' % acc_train)
-#     print('AUC for training set: %.3f' % auc_train)
-#     print('MSE for training set: %.3f' % mse_train)
-#     print('ACC for testing set: %.3f' % acc_test)
-#     print('AUC for testing set: %.3f' % auc_test)
-#     print('MSE for testing set: %.3f' % mse_test)
+    model.fit(X_all, y_all)
+    if cv_student or cv_item: 
+        #approximate % of time
+        prog = prog + 0.5/len(kc_col_names)
+        logProgressToWfl( "{:.0%}".format(prog))
+    
+    #get params
+    params = model.coef_[0]
+    num_params = len(params)
+    #attach to student_name and skill_name
+    student_param = params[:student_df.shape[0]]
+    student_df["intercept"] = student_param
+    student_df = student_df[['student_name', 'intercept']]
+    #print(student_df)
+    end_ind_student = student_df.shape[0]
+    end_ind_skill_intercept = end_ind_student+skill_df.shape[0]
+    skill_intercept_param = params[end_ind_student:end_ind_skill_intercept]
+    skill_slope_param = params[end_ind_skill_intercept:]
+    skill_df["intercept"] = skill_intercept_param
+    skill_df["slope"] = skill_slope_param
+    skill_df = skill_df[['skill_id', 'skill_name', 'intercept', 'slope']]
+    skill_df = skill_df.sort_values(by=['skill_name'])
+    pd.set_option("display.max_rows", None, "display.max_columns", None)
+    #print(skill_df)
+    skill_df['intercept_exp'] = np.exp(skill_df['intercept'])
+    skill_df['intercept_probability'] = skill_df['intercept_exp']/(1+skill_df['intercept_exp'])
+    skill_df = skill_df.drop(['skill_id', 'intercept_exp'], axis=1)
+    skill_df = skill_df[['skill_name', 'intercept', 'intercept_probability', 'slope']]
 
-#handle student CV
-if cv_student:
-    logToWfl("Start student blocked cross validation.")
-    y_all = None
-    y_pred_all = None
-    for i in range(1, cv_fold+1):
-        train_file_name = f"preprocessed_data_cv_student_train_fold_{i}.txt"
-        test_file_name = f"preprocessed_data_cv_student_test_fold_{i}.txt"
-        train_df = pd.read_csv(os.path.join(working_dir, train_file_name), sep="\t")
-        test_df = pd.read_csv(os.path.join(working_dir, test_file_name), sep="\t")
-        user_ids = X[:, 0].toarray().flatten()
-        users_train = train_df["user_id"].unique()
-        users_test = test_df["user_id"].unique()
-        #np.isin(user_ids, users_train) gives True and False for all rows
-        #np.where(np.isin(user_ids, users_train)) gives row id for all True
-        #train is all X in train
-        train = X[np.where(np.isin(user_ids, users_train))]
-        test = X[np.where(np.isin(user_ids, users_test))]
+    #get prediction
+    y_all_pred = pd.DataFrame(model.predict_proba(X_all))
+    #use only the prediction to success
+    y_all_pred = y_all_pred[y_all_pred.columns[1]]
+    df["prediction"] = y_all_pred
+    #get prediction and attached to original file
+    df_original = pd.read_csv(file_name, delimiter='\t')
+    #if the original file has already been modified for prediction
+    if kc_count > 1:
+        df_original = pd.read_csv(prediction_file_name, delimiter='\t')
+    if remove_nan_skills:
+        df_original = df_original[~df_original[kc_col_name].isnull()]
+    #error rate prediction!
+    #df_original[f"Predicted Error Rate ({kc_name})"] = 1-y_all_pred
+    df_original["Predicted Error Rate (" + str(kc_name) + ")"] = 1-y_all_pred
+    df_original.to_csv(prediction_file_name, sep="\t", index=False)
+
+    #get ll, aic, bic
+    ll = calculate_ll(y_all, y_all_pred)
+    aic = calculate_aic_by_ll(ll, num_params)
+    bic = calculate_bic_by_ll(ll, len(y_all), num_params)
+    # print('LL: %.3f' % ll)
+    # print('AIC: %.3f' % aic)
+    # print('BIC: %.3f' % bic)
+    #get other measures
+    # acc, auc, nll, mse = compute_metrics(y_all, y_all_pred)
+    # print('ACC: %.3f' % acc)
+    # print('AUC: %.3f' % auc)
+    # print('MSE: %.3f' % mse)
+    logToWfl("After training data.")
+    
+    #handle train split
+    if train_split_type is not None:
+        train_df = pd.read_csv(os.path.join(working_dir, "preprocessed_data_train.txt"), sep="\t")
+        test_df = pd.read_csv(os.path.join(working_dir, "preprocessed_data_test.txt"), sep="\t")
+        if train_split_type == 'item':
+            item_ids = X[:, 1].toarray().flatten()
+            items_train = train_df["item_id"].unique()
+            items_test = test_df["item_id"].unique()
+            #np.isin(item_ids, items_train) gives True and False for all rows
+            #np.where(np.isin(item_ids, items_train)) gives row id for all True
+            #train is all X in train
+            train = X[np.where(np.isin(item_ids, items_train))]
+            test = X[np.where(np.isin(item_ids, items_test))]
+        else:
+            # Student-wise train-test split
+            user_ids = X[:, 0].toarray().flatten()
+            users_train = train_df["user_id"].unique()
+            users_test = test_df["user_id"].unique()
+            #np.isin(user_ids, users_train) gives True and False for all rows
+            #np.where(np.isin(user_ids, users_train)) gives row id for all True
+            #train is all X in train
+            train = X[np.where(np.isin(user_ids, users_train))]
+            test = X[np.where(np.isin(user_ids, users_test))]
         X_train, y_train = train[:, 5:], train[:, 3].toarray().flatten()
         X_test, y_test = test[:, 5:], test[:, 3].toarray().flatten()
         model = LogisticRegression(solver="lbfgs", max_iter=iter)
         model.fit(X_train, y_train)
+        y_pred_train = model.predict_proba(X_train)[:, 1]
         y_pred_test = model.predict_proba(X_test)[:, 1]
-        if i == 1:
-            y_all = y_test
-            y_pred_all = y_pred_test
-        else:
-            y_all = np.concatenate((y_all,y_test), axis=0)
-            y_pred_all = np.concatenate((y_pred_all,y_pred_test), axis=0)
-    student_cv_rmse = compute_rmse(y_all, y_pred_all)
-    logToWfl("Finished student blocked cross validation.")
-    
-    
-if cv_item:
-    logToWfl("Start item blocked cross validation.")
-    y_all = None
-    y_pred_all = None
-    for i in range(1, cv_fold+1):
-        train_file_name = f"preprocessed_data_cv_item_train_fold_{i}.txt"
-        test_file_name = f"preprocessed_data_cv_item_test_fold_{i}.txt"
-        train_df = pd.read_csv(os.path.join(working_dir, train_file_name), sep="\t")
-        test_df = pd.read_csv(os.path.join(working_dir, test_file_name), sep="\t")
-        item_ids = X[:, 1].toarray().flatten()
-        items_train = train_df["item_id"].unique()
-        items_test = test_df["item_id"].unique()
-        #np.isin(item_ids, items_train) gives True and False for all rows
-        #np.where(np.isin(item_ids, items_train)) gives row id for all True
-        #train is all X in train
-        train = X[np.where(np.isin(item_ids, items_train))]
-        test = X[np.where(np.isin(item_ids, items_test))]
-        X_train, y_train = train[:, 5:], train[:, 3].toarray().flatten()
-        X_test, y_test = test[:, 5:], test[:, 3].toarray().flatten()
-        model = LogisticRegression(solver="lbfgs", max_iter=iter)
-        model.fit(X_train, y_train)
-        y_pred_test = model.predict_proba(X_test)[:, 1]
-        if i == 1:
-            y_all = y_test
-            y_pred_all = y_pred_test
-        else:
-            y_all = np.concatenate((y_all,y_test), axis=0)
-            y_pred_all = np.concatenate((y_pred_all,y_pred_test), axis=0)
-    item_cv_rmse = compute_rmse(y_all, y_pred_all)
-    logToWfl("Finished item blocked cross validation.")
+        acc_train, auc_train, nll_train, mse_train = compute_metrics(y_train, y_pred_train)
+        acc_test, auc_test, nll_test, mse_test = compute_metrics(y_test, y_pred_test)
+    #     print('ACC for training set: %.3f' % acc_train)
+    #     print('AUC for training set: %.3f' % auc_train)
+    #     print('MSE for training set: %.3f' % mse_train)
+    #     print('ACC for testing set: %.3f' % acc_test)
+    #     print('AUC for testing set: %.3f' % auc_test)
+    #     print('MSE for testing set: %.3f' % mse_test)
 
-#write values to analysis-summary
-analysis_summary_file_name = os.path.join(working_dir, "analysis_summary.txt")
-analysis_summary_content = ""
-#write values to model-values.xml
-model_values_file_name = os.path.join(working_dir, "model_values.xml")
-model_values_content = ""
-#write values to parameters.xml
-parameters_file_name = os.path.join(working_dir, "parameters.xml")
-parameters_content = ""
+    #handle student CV
+    if cv_student:
+        logToWfl("Start student blocked cross validation.")
+        y_all = None
+        y_pred_all = None
+        for i in range(1, cv_fold+1):
+            train_file_name = f"preprocessed_data_cv_student_train_fold_{i}.txt"
+            test_file_name = f"preprocessed_data_cv_student_test_fold_{i}.txt"
+            train_df = pd.read_csv(os.path.join(working_dir, train_file_name), sep="\t")
+            test_df = pd.read_csv(os.path.join(working_dir, test_file_name), sep="\t")
+            user_ids = X[:, 0].toarray().flatten()
+            users_train = train_df["user_id"].unique()
+            users_test = test_df["user_id"].unique()
+            #np.isin(user_ids, users_train) gives True and False for all rows
+            #np.where(np.isin(user_ids, users_train)) gives row id for all True
+            #train is all X in train
+            train = X[np.where(np.isin(user_ids, users_train))]
+            test = X[np.where(np.isin(user_ids, users_test))]
+            X_train, y_train = train[:, 5:], train[:, 3].toarray().flatten()
+            X_test, y_test = test[:, 5:], test[:, 3].toarray().flatten()
+            model = LogisticRegression(solver="lbfgs", max_iter=iter)
+            model.fit(X_train, y_train)
+            y_pred_test = model.predict_proba(X_test)[:, 1]
+            if i == 1:
+                y_all = y_test
+                y_pred_all = y_pred_test
+            else:
+                y_all = np.concatenate((y_all,y_test), axis=0)
+                y_pred_all = np.concatenate((y_pred_all,y_pred_test), axis=0)
+        student_cv_rmse = compute_rmse(y_all, y_pred_all)
+        logToWfl("Finished student blocked cross validation.")
 
-analysis_summary_content = analysis_summary_content + "KC Model Values for {} model\n".format(kc_name)
-analysis_summary_content = analysis_summary_content + "AIC\tBIC\tLog Likelihood\tNumber of Parameters\tNumber of Observations\n"
-analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\t{:.8f}\t{}\t{}\n\n".format(aic, bic, ll, num_params, len(y_all))
 
-model_values_content = model_values_content + "<model_values>\n<model>\n"
-model_values_content = model_values_content + "<name>{}</name>\n".format(kc_col_name)
-model_values_content = model_values_content + "<AIC>{:.8f}</AIC>\n".format(aic)
-model_values_content = model_values_content + "<BIC>{:.8f}</BIC>\n".format(bic)
-model_values_content = model_values_content + "<log_likelihood>{:.8f}</log_likelihood>\n".format(ll)
-
-#write CV to analysis-summary
-if cv_item and cv_student:
-    analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-    analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
-    analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\n\n".format(student_cv_rmse, item_cv_rmse)
-    model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
-    model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
-if cv_item and not cv_student:
-    if cv_student_number_error:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "NA*\t{:.8}\n".format(item_cv_rmse)
-        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
-        model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
-    else:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "{:.8}\n\n".format(item_cv_rmse)
-        model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
-elif cv_student and not cv_item:
-    if cv_item_number_error:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "{:.8f}\tNA*\n".format(student_cv_rmse)
-        analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
-        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
-    else:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
-        analysis_summary_content = analysis_summary_content + "{:.8f}\n\n".format(student_cv_rmse)
-        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)        
-else:
-    if cv_item_number_error and cv_student_number_error:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "NA*\tNA**\n"
-        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n"
-        analysis_summary_content = analysis_summary_content + "**Number of skills is less than that of CV folds\n\n"
-    elif cv_student_number_error:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
-        analysis_summary_content = analysis_summary_content + "NA*\n"
-        analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
-    elif cv_item_number_error:
-        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
-        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
-        analysis_summary_content = analysis_summary_content + "NA*\n"
-        analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
-            
+    if cv_item:
+        logToWfl("Start item blocked cross validation.")
+        y_all = None
+        y_pred_all = None
+        for i in range(1, cv_fold+1):
+            train_file_name = f"preprocessed_data_cv_item_train_fold_{i}.txt"
+            test_file_name = f"preprocessed_data_cv_item_test_fold_{i}.txt"
+            train_df = pd.read_csv(os.path.join(working_dir, train_file_name), sep="\t")
+            test_df = pd.read_csv(os.path.join(working_dir, test_file_name), sep="\t")
+            item_ids = X[:, 1].toarray().flatten()
+            items_train = train_df["item_id"].unique()
+            items_test = test_df["item_id"].unique()
+            #np.isin(item_ids, items_train) gives True and False for all rows
+            #np.where(np.isin(item_ids, items_train)) gives row id for all True
+            #train is all X in train
+            train = X[np.where(np.isin(item_ids, items_train))]
+            test = X[np.where(np.isin(item_ids, items_test))]
+            X_train, y_train = train[:, 5:], train[:, 3].toarray().flatten()
+            X_test, y_test = test[:, 5:], test[:, 3].toarray().flatten()
+            model = LogisticRegression(solver="lbfgs", max_iter=iter)
+            model.fit(X_train, y_train)
+            y_pred_test = model.predict_proba(X_test)[:, 1]
+            if i == 1:
+                y_all = y_test
+                y_pred_all = y_pred_test
+            else:
+                y_all = np.concatenate((y_all,y_test), axis=0)
+                y_pred_all = np.concatenate((y_pred_all,y_pred_test), axis=0)
+        item_cv_rmse = compute_rmse(y_all, y_pred_all)
+        logToWfl("Finished item blocked cross validation.")
         
-model_values_content = model_values_content + "</model>\n</model_values>\n"
-model_values = open(model_values_file_name, "w")
-model_values.write(model_values_content)        
-model_values.close();
+    
+    #write analysis_summary, model_values content
+    if kc_count > 1:
+        analysis_summary_content = analysis_summary_content + "\n\n\n"
+    analysis_summary_content = analysis_summary_content + "KC Model Values for {} model\n".format(kc_name)
+    analysis_summary_content = analysis_summary_content + "AIC\tBIC\tLog Likelihood\tNumber of Parameters\tNumber of Observations\n"
+    analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\t{:.8f}\t{}\t{}\n\n".format(aic, bic, ll, num_params, len(y_all))
 
-#write kc values to analysis-summary
-analysis_summary_content = analysis_summary_content + "KC Values for {} model\n".format(kc_name)
-analysis_summary_content = analysis_summary_content + "KC Name\tIntercept (logit)\tIntercept (probability)\tSlope\n"
+    if kc_count == 1:
+        model_values_content = model_values_content + "<model_values>\n"
+    model_values_content = model_values_content + "<model>\n"
+    model_values_content = model_values_content + "<name>{}</name>\n".format(kc_col_name)
+    model_values_content = model_values_content + "<AIC>{:.8f}</AIC>\n".format(aic)
+    model_values_content = model_values_content + "<BIC>{:.8f}</BIC>\n".format(bic)
+    model_values_content = model_values_content + "<log_likelihood>{:.8f}</log_likelihood>\n".format(ll)
 
-analysis_summary = open(analysis_summary_file_name, "w")
-analysis_summary.write(analysis_summary_content)
-analysis_summary.close()
-skill_df.to_csv(analysis_summary_file_name, mode='a', sep = "\t", header=False, index = False)
-#write student values to analysis-suumary
-analysis_summary = open(analysis_summary_file_name, "a")
-analysis_summary.write("\nStudent Values for {} model\n".format(kc_name))
-analysis_summary.write('A student intercept value of "N/A" means the student did not perform any steps associated with any of the KCs in the selected KC model.\n')
-analysis_summary.write('Anon Student Id\tIntercept\n')
-analysis_summary.close()
-student_df.to_csv(analysis_summary_file_name, mode='a', sep = "\t", header=False, index = False)
+    #write CV to analysis-summary
+    if cv_item and cv_student:
+        analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+        analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+        analysis_summary_content = analysis_summary_content + "{:.8f}\t{:.8f}\n\n".format(student_cv_rmse, item_cv_rmse)
+        model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
+        model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
+    if cv_item and not cv_student:
+        if cv_student_number_error:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+            analysis_summary_content = analysis_summary_content + "NA*\t{:.8}\n".format(item_cv_rmse)
+            analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
+            model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
+        else:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
+            analysis_summary_content = analysis_summary_content + "{:.8}\n\n".format(item_cv_rmse)
+            model_values_content = model_values_content + "<item_blocked_cv>{:.8f}</item_blocked_cv>\n".format(item_cv_rmse)
+    elif cv_student and not cv_item:
+        if cv_item_number_error:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+            analysis_summary_content = analysis_summary_content + "{:.8f}\tNA*\n".format(student_cv_rmse)
+            analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
+            model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)
+        else:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
+            analysis_summary_content = analysis_summary_content + "{:.8f}\n\n".format(student_cv_rmse)
+            model_values_content = model_values_content + "<student_blocked_cv>{:.8f}</student_blocked_cv>\n".format(student_cv_rmse)        
+    else:
+        if cv_item_number_error and cv_student_number_error:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\tCross Validation RMSE (item blocked)\n"
+            analysis_summary_content = analysis_summary_content + "NA*\tNA**\n"
+            analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n"
+            analysis_summary_content = analysis_summary_content + "**Number of skills is less than that of CV folds\n\n"
+        elif cv_student_number_error:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (student blocked)\n"
+            analysis_summary_content = analysis_summary_content + "NA*\n"
+            analysis_summary_content = analysis_summary_content + "*Number of students is less than that of CV folds\n\n"
+        elif cv_item_number_error:
+            analysis_summary_content = analysis_summary_content + "Cross Validation Values (Blocked)\n"
+            analysis_summary_content = analysis_summary_content + "Cross Validation RMSE (item blocked)\n"
+            analysis_summary_content = analysis_summary_content + "NA*\n"
+            analysis_summary_content = analysis_summary_content + "*Number of skills is less than that of CV folds\n\n"
 
 
-#write parameters.xml
-parameters_content = parameters_content + "<parameters>\n"
-#loop through skills
-for index, row in skill_df.iterrows():
-    parameters_content = parameters_content + "<parameter>\n<type>Skill</type>\n"
-    parameters_content = parameters_content + "<name>{}</name>\n".format(row['skill_name'])
-    parameters_content = parameters_content + "<intercept>{:.8f}</intercept>\n".format(row['intercept'])
-    parameters_content = parameters_content + "<slope>{:.8f}</slope>\n".format(row['slope'])
-    parameters_content = parameters_content + "</parameter>\n"
-for index, row in student_df.iterrows():
-    parameters_content = parameters_content + "<parameter>\n<type>Student</type>\n"
-    parameters_content = parameters_content + "<name>{}</name>\n".format(row['student_name'])
-    parameters_content = parameters_content + "<intercept>{:.8f}</intercept>\n".format(row['intercept'])
-    parameters_content = parameters_content + "<slope></slope>\n"
-    parameters_content = parameters_content + "</parameter>\n"
-parameters_content = parameters_content + "</parameters>\n"
-parameters = open(parameters_file_name, "w")
-parameters.write(parameters_content) 
-parameters.close();
+    model_values_content = model_values_content + "</model>\n"
+    if kc_count == len(kc_col_names):
+        model_values_content = model_values_content + "</model_values>\n"
+    model_values = open(model_values_file_name, "w")
+    model_values.write(model_values_content)        
+    model_values.close();
 
-
-# In[ ]:
-
-
-
+    #write kc values to analysis-summary
+    analysis_summary_content = analysis_summary_content + "KC Values for {} model\n".format(kc_name)
+    analysis_summary_content = analysis_summary_content + "KC Name\tIntercept (logit)\tIntercept (probability)\tSlope\n"
+    for index, row in skill_df.iterrows():
+        #skill_df columns are: 'skill_name', 'intercept', 'intercept_probability', 'slope'
+        analysis_summary_content = analysis_summary_content + str(row['skill_name']) + "\t" + str(row['intercept']) + "\t" + str(row['intercept_probability']) + "\t" + str(row['slope']) + "\n"
+    #write student values to analysis-summary
+    analysis_summary_content = analysis_summary_content + "\nStudent Values for {} model\n".format(kc_name)
+    analysis_summary_content = analysis_summary_content + 'A student intercept value of "N/A" means the student did not perform any steps associated with any of the KCs in the selected KC model.\n'
+    analysis_summary_content = analysis_summary_content + 'Anon Student Id\tIntercept\n'
+    for index, row in student_df.iterrows():
+        #student_df columns are: 'student_name', 'intercept'
+        analysis_summary_content = analysis_summary_content + str(row['student_name']) + "\t" + str(row['intercept']) + "\n"
+    
+    analysis_summary = open(analysis_summary_file_name, "w")
+    analysis_summary.write(analysis_summary_content)
+    analysis_summary.close()
+    
+    #write parameters.xml content
+    if kc_count == 1:
+        parameters_content = parameters_content + "<parameters>\n"
+    if len(kc_col_names) > 1:
+        parameters_content = parameters_content + "<model>\n<name>" + str(kc_name) + "</name>\n"
+    #loop through skills
+    for index, row in skill_df.iterrows():
+        parameters_content = parameters_content + "<parameter>\n<type>Skill</type>\n"
+        parameters_content = parameters_content + "<name>{}</name>\n".format(row['skill_name'])
+        parameters_content = parameters_content + "<intercept>{:.8f}</intercept>\n".format(row['intercept'])
+        parameters_content = parameters_content + "<slope>{:.8f}</slope>\n".format(row['slope'])
+        parameters_content = parameters_content + "</parameter>\n"
+    for index, row in student_df.iterrows():
+        parameters_content = parameters_content + "<parameter>\n<type>Student</type>\n"
+        parameters_content = parameters_content + "<name>{}</name>\n".format(row['student_name'])
+        parameters_content = parameters_content + "<intercept>{:.8f}</intercept>\n".format(row['intercept'])
+        parameters_content = parameters_content + "<slope></slope>\n"
+        parameters_content = parameters_content + "</parameter>\n"
+    if len(kc_col_names) > 1:
+        parameters_content = parameters_content + "</model>\n"
+    if kc_count == len(kc_col_names):
+        parameters_content = parameters_content + "</parameters>\n"
+    parameters = open(parameters_file_name, "w")
+    parameters.write(parameters_content) 
+    parameters.close();
 

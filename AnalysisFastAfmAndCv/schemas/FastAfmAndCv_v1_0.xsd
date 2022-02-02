@@ -137,7 +137,7 @@
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    	<xs:element type="FileInputHeader" name="kcModel" id="KC_Model" default="\s*KC\s*\((.*)\)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
+    	<xs:element type="MultiFileInputHeader" name="kcModel" id="KC_Model" default="\s*KC\s*\((.*)\)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="0"  />
     	<xs:element type="trueFalseType" name="includeCv" id="Compute_Cross_Validation" default="No" />
       	<xs:element type="cvType" name="tpCV" id="Cross_Validation_By" default="both student and item blocked" />
       	<xs:element type="xs:integer" name="numFold" id="Cross_Validation_Fold" default="3" />
