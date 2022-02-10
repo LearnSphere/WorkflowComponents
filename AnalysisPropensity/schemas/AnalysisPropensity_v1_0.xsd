@@ -1,0 +1,200 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+  
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="tab-delimited" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="analysis-summary" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="pdf" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList2" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList2">
+    <xs:choice>
+      <xs:element ref="match-data" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputDefinition3">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList3" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList3">
+    <xs:choice>
+      <xs:element ref="file" />
+    </xs:choice>
+  </xs:complexType>
+  
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
+      <xs:element name="output2" type="OutputDefinition2" />
+      <xs:element name="output3" type="OutputDefinition3" />
+    </xs:sequence>
+  </xs:complexType>
+ 
+  
+  <xs:simpleType name="methodType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Null" />
+      <xs:enumeration value="Full" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="distanceType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="glm" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    	<xs:element id="Treatment" name="treatment" type="FileInputHeader" default=".*" />
+    	<xs:element id="Covariates" name="covariates" type="MultiFileInputHeader" default=".*" />
+    	<xs:element id="Method" name="method" type="methodType" default="Full" />
+    	<xs:element id="Distance" name="distance" type="distanceType" default="glm" />
+    	<xs:element id="Include_Exact_Argument" name="includeExact" type="trueFalseType" default="Yes" />
+    	<xs:element id="Exact" name="exact" type="MultiFileInputHeader" default=".*" />
+    	<xs:element id="Include_Mahvars_Argument" name="includeMahvars" type="trueFalseType" default="Yes" />
+    	<xs:element id="Mahvars" name="mahvars" type="MultiFileInputHeader" default=".*" />
+    	<xs:element id="Caliper" name="caliper" type="xs:double" default="0.01" />
+    	<xs:element id="Columns_to_Join_Match_Data_with_Original" name="joinColumns" type="MultiFileInputHeader" default=".*" />
+    	<xs:element id="Run_t_Test_for_Match_Data" name="runT" type="trueFalseType" default="No" />
+    	<xs:element id="Variable_for_t_Test" name="varT" type="FileInputHeader" default=".*" />
+    </xs:choice>
+  </xs:complexType>
+   
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+		<xs:element type="conjunctive" name="dependency1" ls:dependentOption="includeExact" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency2" ls:dependentOption="exact" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency3" ls:dependentOption="exact" ls:dependsOn="includeExact" ls:constraint="matches(Yes)" />
+		<xs:element type="disjunctive" name="dependency4" ls:dependentOption="includeMahvars" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency5" ls:dependentOption="mahvars" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency6" ls:dependentOption="mahvars" ls:dependsOn="includeMahvars" ls:constraint="matches(Yes)" />
+		<xs:element type="disjunctive" name="dependency7" ls:dependentOption="caliper" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="disjunctive" name="dependency8" ls:dependentOption="joinColumns" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="disjunctive" name="dependency9" ls:dependentOption="runT" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency10" ls:dependentOption="varT" ls:dependsOn="method" ls:negation="true" ls:constraint="matches(Null)" />
+		<xs:element type="conjunctive" name="dependency11" ls:dependentOption="varT" ls:dependsOn="runT" ls:constraint="matches(Yes)" />
+	
+	</xs:choice>
+	</xs:complexType>
+
+
+
+
+
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all >
+        <xs:element type="xs:integer" name="workflow_id"  />
+        <xs:element type="xs:string" name="component_id"  />
+        <xs:element type="xs:string" name="component_id_human"  />
+        <xs:element type="xs:string" name="component_name"  />
+        <xs:element type="xs:string" name="component_type"  />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="options" type="OptionsType"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

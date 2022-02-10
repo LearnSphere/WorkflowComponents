@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisPropensity</url>
+<date>2018-01-14</date>
+<abstract>The <b>Propensity Matching</b> component helps to select matched samples of the original treated and
+ control groups with similar covariate distributions. It conducts matching with propensity scores, using R's <a href="https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf" target="_blank">MatchIt</a> package. 
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2447" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component helps to select matched samples of the original treated and control groups with similar covariate distributions. It uses propensity scores to conduct matching.</description>
+
+<inputs>
+A tab-delimited or comma-separated text file: contains data to be analyzed.
+</inputs>
+
+<outputs>
+<ul>
+<li>The analysis-summary file: a text file containing the matching analysis result</li>
+<li>The pdf file: a pdf file containing analysis result plots</li>
+<li>The match-data file (not included for Null method): a tab-delimited text file containging the matched data with their matching parameters: distance, weights and subclass.</li>
+<li>The file (not included for Null method): a tab-delimited text file containing the original data (matched and un-matched) with an additional column, matched, to indicate if a row is matched or not.</li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><b>Treatment:</b> choose the column that indicates if a row is in treatment or not. Values in this column can only be 0 or 1.</li>
+<li><b>Covariates:</b> choose one or more columns to be used in creating the distance measure used in the matching.</li>
+<li><b>Method:</b> Full (default) or Null. When method = NULL, no matching will occur. The output with no matching can be used to examine balance prior to matching on any of the included covariates.</li>  
+<li><b>Distance:</b> only glm is available currently, meaning that propensity scores are estimated with logistic regression using glm().</li>  
+<li><b>Include Exact Argument:</b> choose Yes or No.</li>  
+<li><b>Exact:</b> choose one or more columns for which variables exact matching should take place.</li>  
+<li><b>Include Mahvars Argument:</b> choose Yes or No.</li>  
+<li><b>Mahvars:</b> choose one or more columns to specify the variable(s) used to compute the Mahalanobis distance.</li>  
+<li><b>Caliper:</b> the width of the caliper to use in matching. Default is set to 0.01.</li>  
+<li><b>Columns to Join Match Data with Original:</b> choose one or more columns to use to identify the original data rows that are matched, i.e. these column(s) are used to join matched and original data.</li>  
+<li><b>Run t Test for Match Data:</b> choose Yes or No.</li>  
+<li><b>Variable for t Test:</b> choose one column to run t-test against the Treatment column within the matched data.</li>  
+</ul>
+
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2447" target="_blank">demo</a> workflow</b></p>
+
+<p><b>Initial balance checking:</b>
+<ol>
+<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Covariates: choose Gender, Race, ELLStatus, FreeorReducedLunch, IEPGroup, RITMean and TotalAbsences</li>
+<li>Method: choose Null.</li>
+<li>Distance: glm</li>
+</ol>
+</p>
+
+<p><b>Use all covariates in matching:</b>
+<ol>
+<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Covariates: choose Gender, Race, ELLStatus, FreeorReducedLunch, IEPGroup, RITMean and TotalAbsences</li>
+<li>Method: choose Full.</li>
+<li>Distance: glm</li>
+<li>Include Exact Argument: choose Yes.</li>  
+<li>Exact: choose GradeCode as exact matching parameters. </li>  
+<li>Include Mahvars Argument: choose Yes.</li>  
+<li>Mahvars: choose RITMean to compute the Mahalanobis distance.</li>  
+<li>Caliper: 0.01.</li>  
+<li>Columns to Join Match Data with Original: choose StudentRandomID to identify the original data rows that are matched.</li>  
+<li>Run t Test for Match Data: choose Yes.</li>  
+<li>Variable for t Test: RITMean, i.e. t-test is run with formula: RITMean ~ Treatment</li>  
+</ol>
+</p>
+
+<p><b>Optimized model using Race, ELLStatus, RITMean as Covariates in matching:</b>
+<ol>
+<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Covariates: choose Race, ELLStatus and RITMean</li>
+<li>Method: choose Full.</li>
+<li>Distance: glm</li>
+<li>Include Exact Argument: choose Yes.</li>  
+<li>Exact: choose GradeCode as exact matching parameters. </li>  
+<li>Include Mahvars Argument: choose Yes.</li>  
+<li>Mahvars: choose RITMean to compute the Mahalanobis distance.</li>  
+<li>Caliper: 0.005.</li>  
+<li>Columns to Join Match Data with Original: choose StudentRandomID to identify the original data rows that are matched.</li>  
+<li>Run t Test for Match Data: choose Yes.</li>  
+<li>Variable for t Test: RITMean, i.e. t-test is run with formula: RITMean ~ Treatment</li>  
+
+</ol>
+</p>
+
+
+
+</options>
+
+</info>

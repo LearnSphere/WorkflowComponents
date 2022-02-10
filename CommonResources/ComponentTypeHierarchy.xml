@@ -71,6 +71,7 @@
 		<Output_Comparator />
 		<Performance_Difference_Analysis />
 		<PFA />
+		<Propensity_Matching />
 		<Python_AFM />
 		<RISE />
 		<RLM_Fitting />
