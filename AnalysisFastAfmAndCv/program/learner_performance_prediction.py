@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[1]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[10]:
+# In[2]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -214,7 +214,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[11]:
+# In[3]:
 
 
 def phi(x):
@@ -226,7 +226,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[12]:
+# In[4]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -542,7 +542,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[13]:
+# In[5]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -701,7 +701,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[14]:
+# In[6]:
 
 
 def compute_metrics(y, y_pred):
@@ -741,7 +741,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[15]:
+# In[7]:
 
 
 def logToWfl(msg):
@@ -758,7 +758,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[38]:
+# In[15]:
 
 
 #test command from WF component:
@@ -881,10 +881,15 @@ for kc_col_name in kc_col_names:
         cv_item_number_error = True
         logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
     
-    logToWfl("Finished prepare_data.")  
+    logToWfl("Finished prepare data.")
     #approximate % of time
-    prog = prog + 0.45/len(kc_col_names)
-    logProgressToWfl( "{:.0%}".format(prog))
+    if cv_student or cv_item: 
+        #approximate % of time
+        prog = prog + 1/(3*len(kc_col_names))
+        logProgressToWfl( "{:.0%}".format(prog))
+    else:
+        prog = prog + 1/(2*len(kc_col_names))
+        logProgressToWfl( "{:.0%}".format(prog))
     
     logToWfl("Calling df_to_sparse_afm to encode data.")  
     #df = pd.read_csv('preprocessed_data.txt', sep="\t")
@@ -892,9 +897,6 @@ for kc_col_name in kc_col_names:
     X = df_to_sparse_afm(df, Q_mat)
     sparse.save_npz(f"X-afm", X)
     logToWfl("Finished df_to_sparse_afm to encode data.")
-    #approximate % of time
-    prog = prog + 0.05/len(kc_col_names)
-    logProgressToWfl( "{:.0%}".format(prog))
     
     logToWfl("Starting training data.")  
     iter = 1000
@@ -905,10 +907,6 @@ for kc_col_name in kc_col_names:
     #https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
     model = LogisticRegression(solver="lbfgs", max_iter=iter)
     model.fit(X_all, y_all)
-    if cv_student or cv_item: 
-        #approximate % of time
-        prog = prog + 0.5/len(kc_col_names)
-        logProgressToWfl( "{:.0%}".format(prog))
     
     #get params
     params = model.coef_[0]
@@ -963,6 +961,15 @@ for kc_col_name in kc_col_names:
     # print('AUC: %.3f' % auc)
     # print('MSE: %.3f' % mse)
     logToWfl("After training data.")
+    #approximate % of time
+    if cv_student or cv_item: 
+        #approximate % of time
+        prog = prog + 1/(3*len(kc_col_names))
+        logProgressToWfl( "{:.0%}".format(prog))
+    else:
+        prog = prog + 1/(2*len(kc_col_names))
+        logProgressToWfl( "{:.0%}".format(prog))
+    
     
     #handle train split
     if train_split_type is not None:
@@ -1182,4 +1189,16 @@ for kc_col_name in kc_col_names:
     parameters = open(parameters_file_name, "w")
     parameters.write(parameters_content) 
     parameters.close();
+    #approximate % of time
+    if cv_student or cv_item: 
+        logToWfl("After cross validation.")
+        #approximate % of time
+        prog = prog + 1/(3*len(kc_col_names))
+        logProgressToWfl( "{:.0%}".format(prog))
+
+
+# In[ ]:
+
+
+
 
