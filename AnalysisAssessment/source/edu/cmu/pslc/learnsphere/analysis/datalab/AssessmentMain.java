@@ -251,8 +251,12 @@ public class AssessmentMain extends AbstractComponent {
                 if (i > 0) {
                 	//get bad item warning
                 	String badItemWarning = "0";
-                	if (cronbachVal.doubleValue() >= allItemCronbachVal.doubleValue())
-                		badItemWarning = "1";
+                	try {
+	                	if (cronbachVal.doubleValue() >= allItemCronbachVal.doubleValue())
+	                		badItemWarning = "1";
+                	} catch (Exception ex) {
+                		badItemWarning = "NA";
+                	}
                 	outputStream.write(TAB_CHAR.getBytes("UTF-8"));
                     outputStream.write(badItemWarning.getBytes("UTF-8"));
                 	
