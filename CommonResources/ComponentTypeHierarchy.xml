@@ -66,6 +66,8 @@
 		<LFA_Search />
 		<Linear_Modeling />
 		<LSA />
+		<OLI_Demographic />
+		<OLI_Performance />
 		<OLI_Resource_Use />
 		<OLI_to_RISE />
 		<Output_Comparator />

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliDemographic</url>
+<date>2022-06-14</date>
+<abstract><p>The <b>OliDemographic</b> component can transform problem and transaction data into a Datashop formatted csv file with student performance on oli courses.</p>
+<p>The required input fields are a string that is the problem name of demographic survey questions and a string that is the problem name of confidence survey questions.
+</p>
+<p>There is one type of output: a csv file called Demographic_and_Confidence_Survey. This csv file contains student answers for every demographic and confidence survey
+  question in the oli course that the input files represent. These are organized every row by student id and every column by question id. The csv file also contains
+  student response time to the confidence survey.
+  To get the problem content for the column headers of the output: go to the dataset in Datashop and click on Problem List. The problem content will
+  be available for the problems that are underlined. Click on these to view the problem content. The only datasets that will have problem content available
+  will be the ones with a "lego icon" next to transactions when on the "My Datasets" page.
+ <a href="https://pslcdatashop.web.cmu.edu/help?page=export#table-by-student-step" target="_blank">Datashop help</a>
+</p>
+</abstract>
+<description>This component allows you to transform student problem data and transaction data into a Datashop formatted csv file.</description>
+
+<inputs>
+Tab-delimited problem file and transaction file. See Abstract section for required fields.
+</inputs>
+
+<outputs>
+Tab-delimited csv file containing student performance data on demographic and confidence survey questions.
+</outputs>
+
+<options>
+ <ul>
+<li>Problem Name of demographic survey questions.</li>
+<li>Problem Name of confidence survey questions.</li>
+</ul>
+</options>
+
+</info>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliPerformance</url>
+<date>2022-06-14</date>
+<abstract><p>The <b>OliPerformance</b> component can transform problem data into a Datashop formatted csv file with student performance on oli courses.</p>
+<p>The required input fields are three checkboxes for if the user wants to include the specified csv file in the output zip file.
+</p>
+<p>There is one type of output: a zip file called ResultFiles. The zip file contains three csvs: activities_per_module.csv, student_quiz.csv, and student_act.csv.
+  The first csv (activities_per_module) sorts oli questions from each module into "Did I get this" and "Learn By Doing". The second csv (student_quiz) shows
+  student performance relative to attempts, final score, quiz score, first attempt correct, and quiz steps by problem heirarchy. The third csv (student_act) shows
+  student performance relative to incorrect attempts, correct attemps, first attempts, problems, and ls by problem heirarchy on activities.
+ <a href="https://pslcdatashop.web.cmu.edu/help?page=export#table-by-student-step" target="_blank">Datashop help</a>
+</p>
+</abstract>
+<description>This component allows you to transform student problem data into a Datashop formatted zip file.</description>
+
+<inputs><ul>
+<li>Tab-delimited problem file. See Abstract section for required fields.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited csv file containing student performance data on oli questions and activities.
+</outputs>
+
+<options>
+ <ul>
+<li>Checkbox for if user wants to include the activities_per_module csv.</li>
+<li>Checkbox for if user wants to include the student_quiz csv.</li>
+<li>Checkbox for if user wants to include the student_act csv.</li>
+</ul>
+</options>
+
+</info>
