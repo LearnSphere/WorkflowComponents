@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import pandas as pd
@@ -17,7 +17,7 @@ import argparse
 import sys
 
 
-# In[7]:
+# In[2]:
 
 
 command_line = True #false for jupyter notebook
@@ -33,8 +33,8 @@ if command_line:
     parser.add_argument("-fileIndex", nargs=2, action='append')
     args, option_file_index_args = parser.parse_known_args()
     print(args.fileIndex)
-#     transaction_file = args.fileIndex[0][1]
-    problem_file = args.fileIndex[0][1]
+    transaction_file = args.fileIndex[0][1]
+    problem_file = args.fileIndex[1][1]
     workingDir = args.workingDir
 #     print(transaction_file)
     print(problem_file)
@@ -43,7 +43,7 @@ else:
     problem_file = "problem.txt"
 
 #     #transactions file
-#     transaction_file = "trans.txt"
+    transaction_file = "trans.txt"
     workingDir = "."
 
 
@@ -56,7 +56,7 @@ if not os.path.exists(outputPath):
 # ## Number of Learn By Doing (LBD) and Did I Get This (DIGT) Activities per Module
 # #### Last Updated 05-25-2022 3:44 pm EST
 
-# In[8]:
+# In[3]:
 
 
 
@@ -69,18 +69,33 @@ modules = {}
 #Create a dataframe of the problem file we read in
 df = pd.read_csv(problem_file,delimiter="\t", index_col='Row')
 
+#get transaction file
+tx = pd.read_csv(transaction_file,delimiter="\t", index_col='Row')
+
+#get the first occurence of each problem name ---correspond to oli:purpose
+
 #Grab every unique module in the course and initialize a dictionary based on them.
 #The key is the module name
 #The value is a list, where the first index into the list will be a dictionary of "Did I Get This" acitivites
 #The second index into the list is a dictionary of "Learn by Doing" activities
 mods = df['Problem Hierarchy'].unique()
+
 for mod in mods:
-    modules[mod] = [{},{}]
+    modules[mod] = [{},{},{}]
 
 #We iterate over each row in the dataframe (akin to going down each row in a CSV file)
 for i, j in df.iterrows():
     #problem name in each row
     problem_name = j['Problem Name']
+    
+    #first occurence of the problem name in transaction file
+    prob_index = (tx['Problem Name'] == str(problem_name)).idxmax()
+    
+    #get type
+    #prob_type = tx.loc[i]['CF (oli:purpose)']
+    #prob_type = tx.iloc[prob_index].loc['CF (oli:purpose)']
+    prob_type = tx['CF (oli:purpose)'].iloc[prob_index]
+    #print(problem_name)
 
     #module name in each row
     module_name = j['Problem Hierarchy']
@@ -88,20 +103,27 @@ for i, j in df.iterrows():
     #Grab the Did I Get This and Learn By Doing dictionaries
     digt = modules[module_name][0]
     lbd = modules[module_name][1]
+    none = modules[module_name][2]
 
     #If the problem name does not mention 'quiz', meaning it's a formative (DIGT or LBD) activity
-    if 'quiz' not in problem_name:
-        if 'digt' in problem_name:
+#     if 'quiz' not in str(prob_type):
+        
+    if 'didigetthis' in str(prob_type):
+        #If we have not come across this DIGT problem in the module before, we add it to the dictionary
+        if problem_name not in digt.keys():
+            digt[problem_name] = 1
+            modules[module_name][0] = digt
 
-            #If we have not come across this DIGT problem in the module before, we add it to the dictionary
-            if problem_name not in digt.keys():
-                digt[problem_name] = 1
-                modules[module_name][0] = digt
-        else:
-            #If we have not come across this LBD problem in the module before, we add it to the dictionary
-            if problem_name not in lbd.keys():
-                lbd[problem_name] = 1
-                modules[module_name][1] = lbd
+    elif 'learnbydoing' in str(prob_type):
+        #If we have not come across this LBD problem in the module before, we add it to the dictionary
+        if problem_name not in lbd.keys():
+            lbd[problem_name] = 1
+            modules[module_name][1] = lbd
+    else:
+        if problem_name not in none.keys():
+            none[problem_name] = 1
+            modules[module_name][2] = none
+            
 
 #This code just loops over our modules dictionary, creates a list of the module name, # of DIGT, # of LBDs and then
 #converts it to a dataframe so we can save it as a .csv file
@@ -110,15 +132,16 @@ for key, value in modules.items():
     current_mod = key
     digts = len(modules[current_mod][0])
     lbds = len(modules[current_mod][1])
-    results.append([current_mod.split('module ')[1], digts, lbds])
+    none = len(modules[current_mod][2])
+    results.append([current_mod.split('module ')[1], digts, lbds, none])
 
-df = pd.DataFrame(results, columns =['Module', 'Did I Get This', 'Learn By Doing'])
+df = pd.DataFrame(results, columns =['Module', 'Did I Get This', 'Learn By Doing', 'Uncategorized'])
 df.to_csv(outputPath + "/activities_per_module.csv")
 
 
 # ## Student Quiz Data per Module
 
-# In[9]:
+# In[4]:
 
 
 #The below call can be used to load multiple files, but it's fine to load a single problem file like this
@@ -217,12 +240,12 @@ for k,v in dfquiz.items():
 #                   'attempts-m', 'final-m', 'grade-m', 'first-m', 'steps-m',
 #                   'attempts-as', 'final-as', 'grade-as', 'first-as', 'steps-as',
 #                   'attempts-rs', 'final-rs', 'grade-rs', 'first-rs', 'steps-rs']
-df_quiz2.to_csv(outputPath + "/student_quiz.csv")
+df_quiz2.to_csv(outputPath + "/s_student_quiz.csv")
 
 
 # ## Student Performance on the Formative Assessments per Module
 
-# In[10]:
+# In[5]:
 
 
 #Formative Assessments for Chemistry

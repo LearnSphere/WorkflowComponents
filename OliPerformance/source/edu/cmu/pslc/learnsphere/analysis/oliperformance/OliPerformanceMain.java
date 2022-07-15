@@ -47,10 +47,11 @@ public class OliPerformanceMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         //get/set -f option
-        File inputFile0 = getAttachment(0, 0);
+        File inputFile0 = getAttachment(0, 0); //trans.txt
+        File inputFile1 = getAttachment(1, 0); //problem.txt
 
-        logger.info("OliPerformance inputFile0: " + inputFile0.getAbsolutePath());
-
+        logger.info("OliDemographicMain inputFile0: " + inputFile0.getAbsolutePath());
+        logger.info("OliDemographicMain inputFile1: " + inputFile1.getAbsolutePath());
 
         File outputDirectory = this.runExternal();
         String finalResultFolder = componentOutputDir + File.separator + "final";

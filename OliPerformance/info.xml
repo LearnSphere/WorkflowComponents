@@ -18,9 +18,9 @@
 </abstract>
 <description>This component allows you to transform student problem data into a Datashop formatted zip file.</description>
 
-<inputs><ul>
-<li>Tab-delimited problem file. See Abstract section for required fields.</li>
-</ul></inputs>
+<inputs>
+Tab-delimited problem file. See Abstract section for required fields.
+</inputs>
 
 <outputs>
 Tab-delimited csv file containing student performance data on oli questions and activities.

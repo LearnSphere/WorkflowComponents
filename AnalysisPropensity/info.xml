@@ -44,7 +44,7 @@ A tab-delimited or comma-separated text file: contains data to be analyzed.
 
 <p><b>Initial balance checking:</b>
 <ol>
-<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Treatment: choose "Treatment" column.</li>
 <li>Covariates: choose Gender, Race, ELLStatus, FreeorReducedLunch, IEPGroup, RITMean and TotalAbsences</li>
 <li>Method: choose Null.</li>
 <li>Distance: glm</li>
@@ -53,7 +53,7 @@ A tab-delimited or comma-separated text file: contains data to be analyzed.
 
 <p><b>Use all covariates in matching:</b>
 <ol>
-<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Treatment: choose "Treatment" column.</li>
 <li>Covariates: choose Gender, Race, ELLStatus, FreeorReducedLunch, IEPGroup, RITMean and TotalAbsences</li>
 <li>Method: choose Full.</li>
 <li>Distance: glm</li>
@@ -70,7 +70,7 @@ A tab-delimited or comma-separated text file: contains data to be analyzed.
 
 <p><b>Optimized model using Race, ELLStatus, RITMean as Covariates in matching:</b>
 <ol>
-<li>Treatment: choose "StudentRandomID" column.</li>
+<li>Treatment: choose "Treatment" column.</li>
 <li>Covariates: choose Race, ELLStatus and RITMean</li>
 <li>Method: choose Full.</li>
 <li>Distance: glm</li>
