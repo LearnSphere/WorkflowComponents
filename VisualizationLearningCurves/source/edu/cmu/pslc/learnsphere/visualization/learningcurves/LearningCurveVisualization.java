@@ -750,7 +750,7 @@ public class LearningCurveVisualization {
             // "A consistency proof for [any sufficiently powerful] system ...
             // can be carried out only by means of modes of inference that are not formalized in the system ... itself." --Noam Chomsky
             logger.error("Failed to read Student-Step data: " + stepRollupFile.getAbsolutePath());
-        }
+	}
         return lcData;
     }
 
@@ -781,6 +781,9 @@ public class LearningCurveVisualization {
         return category;
     }
 
+    // File prefix must be at least 3 characters. Pad if necessary.
+    private static final String FILE_PREFIX_PAD = "_";
+
     /** Call this immediately after calling checkEmpty(), and before calling anything else. */
     public Map<String, List<File>> init(Hashtable<String, Vector<LearningCurvePoint>> lcData,
                                         LearningCurveVisualizationOptions lcOptions,
@@ -807,6 +810,9 @@ public class LearningCurveVisualization {
             // Guard against slashes and spaces in the skill name, otherwise, allow whatever 
             // characters are there... too much cleaning is an issue with Chinese characters.
             String filePrefix = key.replaceAll("\\\\", "_").replaceAll("/", "_").replaceAll(" ", "_");
+	    while (filePrefix.length() < 3) {
+		filePrefix += FILE_PREFIX_PAD;
+	    }
 
             String fileSuffix = ".png";
 
@@ -814,6 +820,7 @@ public class LearningCurveVisualization {
             try {
 
                 imageFile = File.createTempFile(filePrefix, fileSuffix, new File(componentWorkingDir));
+		logger.debug("imageFile = " + imageFile);
                 String fullFilePath = imageFile.getAbsolutePath().replaceAll("\\\\", "/");
 
                 logger.debug("LC Graph Image filePath: " + fullFilePath);
@@ -847,7 +854,9 @@ public class LearningCurveVisualization {
 
             } catch (IOException e) {
                 logger.error("Could not create file for key, " + key);
-            }
+            } catch (Exception e) {
+		logger.error("Problem creating img file: " + e);
+	    }
         }
 
         return imageFiles;
