@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliContentExtractor</url>
+<date>2022-06-14</date>
+<abstract><p>The <b>OliContentExtractor</b> component can transform xml files from oli workbook and inline assessments into a Datashop formatted csv file
+with unit, module, title, activity id, question content, choice content, and feedback content. </p>
+<p>The required field is a zip file named "input" that contains two directories: "content" and organizations". The "content" directory must contain a folder with workbook xml files ("x-oli-workbook_page")
+  and a folder with inline-assessments xml files ("x-oli-inline-assessment"). The "organizations" directory must contain a folder called "default" that has a file called "organization.xml".
+</p>
+<p>There is one type of output: a csv file called oli_content.csv. This csv file contains unit, module, title, activity id, question content, choice content, and feedback content.
+  These are organized in rows by unit name. Each workbook page is searched for activities. Each activity found has question content as well as choice content. The feedback
+  content shows the user which choice is correct/incorrect and the explanation for it.
+ <a href="https://pslcdatashop.web.cmu.edu/help?page=export#table-by-student-step" target="_blank">Datashop help</a>
+</p>
+</abstract>
+<description>This component allows you to transform xml files from oli workbook and inline assessments into a Datashop formatted csv file.</description>
+
+<inputs>
+Zip file (named "input") containing "content" directory (which contains "x-oli-workbook_page" and "x-oli-inline-assessment") and "organizations" directory (which contains a "default" folder with "organizations.xml").
+See Abstract section for required fields.
+</inputs>
+
+<outputs>
+Tab-delimited csv file containing unit, module, title, activity id, question content, choice content, and feedback content
+</outputs>
+
+<options>
+</options>
+
+</info>

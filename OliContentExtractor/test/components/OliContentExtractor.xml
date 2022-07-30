@@ -1,0 +1,66 @@
+<component>
+  <component_id>Transform-1-x450929</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>10</workflow_id>
+  <component_name>OliContentExtractor</component_name>
+  <component_type>analysis</component_type>
+  <left>474</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x918909</from>
+    </connection>
+    <!-- <connection>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Data-1-x466284</from>
+    </connection> -->
+  </connections>
+
+  <top>124</top>
+
+  <options/>
+
+  <inputs>
+    <input0>
+      <component_id>Data-1-x918909</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <index>0</index>
+          <file_path>test/test_data/input.zip</file_path>
+          <label>zip</label>
+          <file_name>input.zip</file_name>
+        </csv>
+      </files>
+      <inputmeta />
+
+    </input0>
+    <!-- <input1>
+      <component_id>Data-1-x466284</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-problem>
+          <index>0</index>
+          <file_path>test/test_data/problem.txt</file_path>
+          <label>student-problem</label>
+          <file_name>problem.txt</file_name>
+
+        </student-problem>
+      </files>
+      <inputmeta />
+
+    </input1> -->
+  </inputs>
+
+
+</component>

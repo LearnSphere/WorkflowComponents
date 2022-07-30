@@ -1,0 +1,66 @@
+<component>
+  <component_id>Transform-1-x450929</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>10</workflow_id>
+  <component_name>OliErrorReport</component_name>
+  <component_type>analysis</component_type>
+  <left>474</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x918909</from>
+    </connection>
+    <connection>
+      <index>0</index>
+      <tindex>1</tindex>
+      <from>Data-1-x466284</from>
+    </connection>
+  </connections>
+
+  <top>124</top>
+
+  <options/>
+
+  <inputs>
+    <input0>
+      <component_id>Data-1-x918909</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <index>0</index>
+          <file_path>test/test_data/oli_content.csv</file_path>
+          <label>csv</label>
+          <file_name>oli_content.csv</file_name>
+        </csv>
+      </files>
+      <inputmeta />
+
+    </input0>
+    <input1>
+      <component_id>Data-1-x466284</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <transaction>
+          <index>0</index>
+          <file_path>test/test_data/trans.txt</file_path>
+          <label>transaction</label>
+          <file_name>trans.txt</file_name>
+
+        </transaction>
+      </files>
+      <inputmeta />
+
+    </input1>
+  </inputs>
+
+
+</component>
