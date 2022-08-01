@@ -3,7 +3,7 @@
 
 # # OLI Content Extraction
 
-# In[13]:
+# In[1]:
 
 
 import pandas as pd
@@ -18,7 +18,7 @@ import sys
 import shutil
 
 
-# In[14]:
+# In[2]:
 
 
 command_line = True #false for jupyter notebook
@@ -43,7 +43,7 @@ else:
     workingDir = "."
 
 
-# In[15]:
+# In[3]:
 
 
 inputPath = "input"
@@ -52,7 +52,7 @@ if os.path.exists(inputPath):
 os.makedirs(inputPath)
 
 
-# In[16]:
+# In[4]:
 
 
 with zipfile.ZipFile(input_files, 'r') as zip_ref:
@@ -63,16 +63,16 @@ print("base file: " + basefile)
 print("base name: " + basename)
 
 
-# In[17]:
+# In[5]:
 
 
 # SEMESTER = "f19"
 #oli_org = open(f'{SEMESTER}/organizations/default/organization.xml', "r").read()
 oli_org = open(basefile + '/' + basename + '/organizations/default/organization.xml', "r").read()
-oli_org_soup = BeautifulSoup(oli_org, "lxml")
+oli_org_soup = BeautifulSoup(oli_org, "xml")
 
 
-# In[18]:
+# In[6]:
 
 
 def get_module_unit_from_org(page_id):
@@ -96,7 +96,7 @@ def is_header(p):
 
 def get_file_content(filename):
     with open(basefile + '/' + basename + '/content/x-oli-workbook_page/' + filename ) as file:
-        soup = BeautifulSoup(file.read(), 'lxml')
+        soup = BeautifulSoup(file.read(), 'xml')
     page_id = soup.find('workbook_page')['id']
     curr_module, curr_unit = get_module_unit_from_org(page_id)
     title = soup.find("title").get_text().strip()   
@@ -174,7 +174,7 @@ def get_problems(inline_id):
             file = filename
             break
     with open(basefile + '/' + basename + '/content/x-oli-inline-assessment/' + file ) as file:
-        soup = BeautifulSoup(file.read(), 'lxml')
+        soup = BeautifulSoup(file.read(), 'xml')
     title = soup.find("title").get_text().strip()
     #feedback = soup.find("feedback").get_text().strip()
     question_all = soup.find("body").get_text().strip()
@@ -209,7 +209,7 @@ def get_problems(inline_id):
     return question, choices, feedback, question_ids
 
 
-# In[19]:
+# In[7]:
 
 
 # curr_unit, curr_module, title, inline_id, question_content, choices_content = [],[],[],[],[],[]
@@ -249,6 +249,12 @@ df_oli.to_csv("oli_content.csv",  mode='w', index = False)
 #display(df_oli)
 # print(df_oli.head())
 #pd.set_option('display.max_rows', None)
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
