@@ -215,8 +215,8 @@ lr.matrix["overall_slope_se"] <- overall_slope_se
 lr.matrix["overall_intercept_se"] <- overall_intercept_se
 lr.matrix["predictive_slope"] <- lr.matrix$KC.slope+lr.matrix$stu.slope + overall_slope
 lr.matrix["predictive_intercept"] <- lr.matrix$KC.intercept+lr.matrix$stu.intercept + overall_intercept
-lr.matrix["predictive_slope_se"] <- lr.matrix$KC.slope.se+lr.matrix$stu.slope.se + overall_slope_se
-lr.matrix["predictive_intercept_se"] <- lr.matrix$KC.intercept.se+lr.matrix$stu.intercept.se + overall_intercept_se
+lr.matrix["predictive_slope_se"] <- sqrt(lr.matrix$KC.slope.se^2 + lr.matrix$stu.slope.se^2 + overall_slope_se^2)
+lr.matrix["predictive_intercept_se"] <- sqrt(lr.matrix$KC.intercept.se^2 + lr.matrix$stu.intercept.se^2 + overall_intercept_se^2)
 
 #compute the lower bound of CI for slope
 #CI_lower <- value - 1.96*std_error
