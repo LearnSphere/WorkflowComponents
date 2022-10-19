@@ -1,0 +1,863 @@
+<component>
+  <component_id>Visualization</component_id>
+  <component_id_human>Visualization #1</component_id_human>
+  <workflow_id>6</workflow_id>
+  <component_name>Learning Rate Plot</component_name>
+  <component_type>visualization</component_type>
+  <left>446.00001525878906</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x520284</from>
+    </connection>
+  </connections>
+  <top>37</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x520284</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <index>0</index>
+          <file_path>test/test_data/ds76_student_step_export.txt</file_path>
+          <label>student-step</label>
+          <file_name>ds76_student_step_export.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>Row</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>Sample</name>
+            </header>
+            <header>
+              <id>header2</id>
+              <index>2</index>
+              <name>Anon Student Id</name>
+            </header>
+            <header>
+              <id>header3</id>
+              <index>3</index>
+              <name>Problem Hierarchy</name>
+            </header>
+            <header>
+              <id>header4</id>
+              <index>4</index>
+              <name>Problem Name</name>
+            </header>
+            <header>
+              <id>header5</id>
+              <index>5</index>
+              <name>Problem View</name>
+            </header>
+            <header>
+              <id>header6</id>
+              <index>6</index>
+              <name>Step Name</name>
+            </header>
+            <header>
+              <id>header7</id>
+              <index>7</index>
+              <name>Step Start Time</name>
+            </header>
+            <header>
+              <id>header8</id>
+              <index>8</index>
+              <name>First Transaction Time</name>
+            </header>
+            <header>
+              <id>header9</id>
+              <index>9</index>
+              <name>Correct Transaction Time</name>
+            </header>
+            <header>
+              <id>header10</id>
+              <index>10</index>
+              <name>Step End Time</name>
+            </header>
+            <header>
+              <id>header11</id>
+              <index>11</index>
+              <name>Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header12</id>
+              <index>12</index>
+              <name>Correct Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header13</id>
+              <index>13</index>
+              <name>Error Step Duration (sec)</name>
+            </header>
+            <header>
+              <id>header14</id>
+              <index>14</index>
+              <name>First Attempt</name>
+            </header>
+            <header>
+              <id>header15</id>
+              <index>15</index>
+              <name>Incorrects</name>
+            </header>
+            <header>
+              <id>header16</id>
+              <index>16</index>
+              <name>Hints</name>
+            </header>
+            <header>
+              <id>header17</id>
+              <index>17</index>
+              <name>Corrects</name>
+            </header>
+            <header>
+              <id>header18</id>
+              <index>18</index>
+              <name>Condition</name>
+            </header>
+            <header>
+              <id>header19</id>
+              <index>19</index>
+              <name>KC (Area)</name>
+            </header>
+            <header>
+              <id>header20</id>
+              <index>20</index>
+              <name>Opportunity (Area)</name>
+            </header>
+            <header>
+              <id>header21</id>
+              <index>21</index>
+              <name>Predicted Error Rate (Area)</name>
+            </header>
+            <header>
+              <id>header22</id>
+              <index>22</index>
+              <name>KC (Circle-Collapse)</name>
+            </header>
+            <header>
+              <id>header23</id>
+              <index>23</index>
+              <name>Opportunity (Circle-Collapse)</name>
+            </header>
+            <header>
+              <id>header24</id>
+              <index>24</index>
+              <name>Predicted Error Rate (Circle-Collapse)</name>
+            </header>
+            <header>
+              <id>header25</id>
+              <index>25</index>
+              <name>KC (Concepts)</name>
+            </header>
+            <header>
+              <id>header26</id>
+              <index>26</index>
+              <name>Opportunity (Concepts)</name>
+            </header>
+            <header>
+              <id>header27</id>
+              <index>27</index>
+              <name>Predicted Error Rate (Concepts)</name>
+            </header>
+            <header>
+              <id>header28</id>
+              <index>28</index>
+              <name>KC (DecompArithDiam)</name>
+            </header>
+            <header>
+              <id>header29</id>
+              <index>29</index>
+              <name>Opportunity (DecompArithDiam)</name>
+            </header>
+            <header>
+              <id>header30</id>
+              <index>30</index>
+              <name>Predicted Error Rate (DecompArithDiam)</name>
+            </header>
+            <header>
+              <id>header31</id>
+              <index>31</index>
+              <name>KC (DecompArithDiam2)</name>
+            </header>
+            <header>
+              <id>header32</id>
+              <index>32</index>
+              <name>Opportunity (DecompArithDiam2)</name>
+            </header>
+            <header>
+              <id>header33</id>
+              <index>33</index>
+              <name>Predicted Error Rate (DecompArithDiam2)</name>
+            </header>
+            <header>
+              <id>header34</id>
+              <index>34</index>
+              <name>KC (Decompose)</name>
+            </header>
+            <header>
+              <id>header35</id>
+              <index>35</index>
+              <name>Opportunity (Decompose)</name>
+            </header>
+            <header>
+              <id>header36</id>
+              <index>36</index>
+              <name>Predicted Error Rate (Decompose)</name>
+            </header>
+            <header>
+              <id>header37</id>
+              <index>37</index>
+              <name>KC (DecomposeArith)</name>
+            </header>
+            <header>
+              <id>header38</id>
+              <index>38</index>
+              <name>Opportunity (DecomposeArith)</name>
+            </header>
+            <header>
+              <id>header39</id>
+              <index>39</index>
+              <name>Predicted Error Rate (DecomposeArith)</name>
+            </header>
+            <header>
+              <id>header40</id>
+              <index>40</index>
+              <name>KC (Decompose_height)</name>
+            </header>
+            <header>
+              <id>header41</id>
+              <index>41</index>
+              <name>Opportunity (Decompose_height)</name>
+            </header>
+            <header>
+              <id>header42</id>
+              <index>42</index>
+              <name>Predicted Error Rate (Decompose_height)</name>
+            </header>
+            <header>
+              <id>header43</id>
+              <index>43</index>
+              <name>KC (Geometry)</name>
+            </header>
+            <header>
+              <id>header44</id>
+              <index>44</index>
+              <name>Opportunity (Geometry)</name>
+            </header>
+            <header>
+              <id>header45</id>
+              <index>45</index>
+              <name>Predicted Error Rate (Geometry)</name>
+            </header>
+            <header>
+              <id>header46</id>
+              <index>46</index>
+              <name>KC (Item)</name>
+            </header>
+            <header>
+              <id>header47</id>
+              <index>47</index>
+              <name>Opportunity (Item)</name>
+            </header>
+            <header>
+              <id>header48</id>
+              <index>48</index>
+              <name>Predicted Error Rate (Item)</name>
+            </header>
+            <header>
+              <id>header49</id>
+              <index>49</index>
+              <name>KC (Item Model)</name>
+            </header>
+            <header>
+              <id>header50</id>
+              <index>50</index>
+              <name>Opportunity (Item Model)</name>
+            </header>
+            <header>
+              <id>header51</id>
+              <index>51</index>
+              <name>Predicted Error Rate (Item Model)</name>
+            </header>
+            <header>
+              <id>header52</id>
+              <index>52</index>
+              <name>KC (JohnsNewModel)</name>
+            </header>
+            <header>
+              <id>header53</id>
+              <index>53</index>
+              <name>Opportunity (JohnsNewModel)</name>
+            </header>
+            <header>
+              <id>header54</id>
+              <index>54</index>
+              <name>Predicted Error Rate (JohnsNewModel)</name>
+            </header>
+            <header>
+              <id>header55</id>
+              <index>55</index>
+              <name>KC (LFASearchAIC1_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header56</id>
+              <index>56</index>
+              <name>Opportunity (LFASearchAIC1_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header57</id>
+              <index>57</index>
+              <name>Predicted Error Rate (LFASearchAIC1_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header58</id>
+              <index>58</index>
+              <name>KC (LFASearchAIC1_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header59</id>
+              <index>59</index>
+              <name>Opportunity (LFASearchAIC1_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header60</id>
+              <index>60</index>
+              <name>Predicted Error Rate (LFASearchAIC1_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header61</id>
+              <index>61</index>
+              <name>KC (LFASearchAIC2_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header62</id>
+              <index>62</index>
+              <name>Opportunity (LFASearchAIC2_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header63</id>
+              <index>63</index>
+              <name>Predicted Error Rate (LFASearchAIC2_no_textbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header64</id>
+              <index>64</index>
+              <name>KC (LFASearchAIC2_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header65</id>
+              <index>65</index>
+              <name>Opportunity (LFASearchAIC2_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header66</id>
+              <index>66</index>
+              <name>Predicted Error Rate (LFASearchAIC2_with_texkbook_new_decompose)</name>
+            </header>
+            <header>
+              <id>header67</id>
+              <index>67</index>
+              <name>KC (LFASearchAICWholeModel2)</name>
+            </header>
+            <header>
+              <id>header68</id>
+              <index>68</index>
+              <name>Opportunity (LFASearchAICWholeModel2)</name>
+            </header>
+            <header>
+              <id>header69</id>
+              <index>69</index>
+              <name>Predicted Error Rate (LFASearchAICWholeModel2)</name>
+            </header>
+            <header>
+              <id>header70</id>
+              <index>70</index>
+              <name>KC (LFASearchAICWholeModel3)</name>
+            </header>
+            <header>
+              <id>header71</id>
+              <index>71</index>
+              <name>Opportunity (LFASearchAICWholeModel3)</name>
+            </header>
+            <header>
+              <id>header72</id>
+              <index>72</index>
+              <name>Predicted Error Rate (LFASearchAICWholeModel3)</name>
+            </header>
+            <header>
+              <id>header73</id>
+              <index>73</index>
+              <name>KC (Lasso Model)</name>
+            </header>
+            <header>
+              <id>header74</id>
+              <index>74</index>
+              <name>Opportunity (Lasso Model)</name>
+            </header>
+            <header>
+              <id>header75</id>
+              <index>75</index>
+              <name>Predicted Error Rate (Lasso Model)</name>
+            </header>
+            <header>
+              <id>header76</id>
+              <index>76</index>
+              <name>KC (Merge-Trap)</name>
+            </header>
+            <header>
+              <id>header77</id>
+              <index>77</index>
+              <name>Opportunity (Merge-Trap)</name>
+            </header>
+            <header>
+              <id>header78</id>
+              <index>78</index>
+              <name>Predicted Error Rate (Merge-Trap)</name>
+            </header>
+            <header>
+              <id>header79</id>
+              <index>79</index>
+              <name>KC (Orig-trap-merge)</name>
+            </header>
+            <header>
+              <id>header80</id>
+              <index>80</index>
+              <name>Opportunity (Orig-trap-merge)</name>
+            </header>
+            <header>
+              <id>header81</id>
+              <index>81</index>
+              <name>Predicted Error Rate (Orig-trap-merge)</name>
+            </header>
+            <header>
+              <id>header82</id>
+              <index>82</index>
+              <name>KC (Orige-trap-merge)</name>
+            </header>
+            <header>
+              <id>header83</id>
+              <index>83</index>
+              <name>Opportunity (Orige-trap-merge)</name>
+            </header>
+            <header>
+              <id>header84</id>
+              <index>84</index>
+              <name>Predicted Error Rate (Orige-trap-merge)</name>
+            </header>
+            <header>
+              <id>header85</id>
+              <index>85</index>
+              <name>KC (Original)</name>
+            </header>
+            <header>
+              <id>header86</id>
+              <index>86</index>
+              <name>Opportunity (Original)</name>
+            </header>
+            <header>
+              <id>header87</id>
+              <index>87</index>
+              <name>Predicted Error Rate (Original)</name>
+            </header>
+            <header>
+              <id>header88</id>
+              <index>88</index>
+              <name>KC (Original-test)</name>
+            </header>
+            <header>
+              <id>header89</id>
+              <index>89</index>
+              <name>Opportunity (Original-test)</name>
+            </header>
+            <header>
+              <id>header90</id>
+              <index>90</index>
+              <name>Predicted Error Rate (Original-test)</name>
+            </header>
+            <header>
+              <id>header91</id>
+              <index>91</index>
+              <name>KC (Single-KC)</name>
+            </header>
+            <header>
+              <id>header92</id>
+              <index>92</index>
+              <name>Opportunity (Single-KC)</name>
+            </header>
+            <header>
+              <id>header93</id>
+              <index>93</index>
+              <name>Predicted Error Rate (Single-KC)</name>
+            </header>
+            <header>
+              <id>header94</id>
+              <index>94</index>
+              <name>KC (Single_Plus_Unique)</name>
+            </header>
+            <header>
+              <id>header95</id>
+              <index>95</index>
+              <name>Opportunity (Single_Plus_Unique)</name>
+            </header>
+            <header>
+              <id>header96</id>
+              <index>96</index>
+              <name>Predicted Error Rate (Single_Plus_Unique)</name>
+            </header>
+            <header>
+              <id>header97</id>
+              <index>97</index>
+              <name>KC (Textbook)</name>
+            </header>
+            <header>
+              <id>header98</id>
+              <index>98</index>
+              <name>Opportunity (Textbook)</name>
+            </header>
+            <header>
+              <id>header99</id>
+              <index>99</index>
+              <name>Predicted Error Rate (Textbook)</name>
+            </header>
+            <header>
+              <id>header100</id>
+              <index>100</index>
+              <name>KC (Textbook New)</name>
+            </header>
+            <header>
+              <id>header101</id>
+              <index>101</index>
+              <name>Opportunity (Textbook New)</name>
+            </header>
+            <header>
+              <id>header102</id>
+              <index>102</index>
+              <name>Predicted Error Rate (Textbook New)</name>
+            </header>
+            <header>
+              <id>header103</id>
+              <index>103</index>
+              <name>KC (Textbook_New_Decompose)</name>
+            </header>
+            <header>
+              <id>header104</id>
+              <index>104</index>
+              <name>Opportunity (Textbook_New_Decompose)</name>
+            </header>
+            <header>
+              <id>header105</id>
+              <index>105</index>
+              <name>Predicted Error Rate (Textbook_New_Decompose)</name>
+            </header>
+            <header>
+              <id>header106</id>
+              <index>106</index>
+              <name>KC (Unique-step)</name>
+            </header>
+            <header>
+              <id>header107</id>
+              <index>107</index>
+              <name>Opportunity (Unique-step)</name>
+            </header>
+            <header>
+              <id>header108</id>
+              <index>108</index>
+              <name>Predicted Error Rate (Unique-step)</name>
+            </header>
+            <header>
+              <id>header109</id>
+              <index>109</index>
+              <name>KC (WESST)</name>
+            </header>
+            <header>
+              <id>header110</id>
+              <index>110</index>
+              <name>Opportunity (WESST)</name>
+            </header>
+            <header>
+              <id>header111</id>
+              <index>111</index>
+              <name>Predicted Error Rate (WESST)</name>
+            </header>
+            <header>
+              <id>header112</id>
+              <index>112</index>
+              <name>KC (hLFASearchAICWholeModel3arith)</name>
+            </header>
+            <header>
+              <id>header113</id>
+              <index>113</index>
+              <name>Opportunity (hLFASearchAICWholeModel3arith)</name>
+            </header>
+            <header>
+              <id>header114</id>
+              <index>114</index>
+              <name>Predicted Error Rate (hLFASearchAICWholeModel3arith)</name>
+            </header>
+            <header>
+              <id>header115</id>
+              <index>115</index>
+              <name>KC (hLFASearchAICWholeModel3arith0)</name>
+            </header>
+            <header>
+              <id>header116</id>
+              <index>116</index>
+              <name>Opportunity (hLFASearchAICWholeModel3arith0)</name>
+            </header>
+            <header>
+              <id>header117</id>
+              <index>117</index>
+              <name>Predicted Error Rate (hLFASearchAICWholeModel3arith0)</name>
+            </header>
+            <header>
+              <id>header118</id>
+              <index>118</index>
+              <name>KC (hLFASearchAICWholeModel3arith2)</name>
+            </header>
+            <header>
+              <id>header119</id>
+              <index>119</index>
+              <name>Opportunity (hLFASearchAICWholeModel3arith2)</name>
+            </header>
+            <header>
+              <id>header120</id>
+              <index>120</index>
+              <name>Predicted Error Rate (hLFASearchAICWholeModel3arith2)</name>
+            </header>
+            <header>
+              <id>header121</id>
+              <index>121</index>
+              <name>KC (hLFASearchModel1-back-context)</name>
+            </header>
+            <header>
+              <id>header122</id>
+              <index>122</index>
+              <name>Opportunity (hLFASearchModel1-back-context)</name>
+            </header>
+            <header>
+              <id>header123</id>
+              <index>123</index>
+              <name>Predicted Error Rate (hLFASearchModel1-back-context)</name>
+            </header>
+            <header>
+              <id>header124</id>
+              <index>124</index>
+              <name>KC (hLFASearchModel1-backward)</name>
+            </header>
+            <header>
+              <id>header125</id>
+              <index>125</index>
+              <name>Opportunity (hLFASearchModel1-backward)</name>
+            </header>
+            <header>
+              <id>header126</id>
+              <index>126</index>
+              <name>Predicted Error Rate (hLFASearchModel1-backward)</name>
+            </header>
+            <header>
+              <id>header127</id>
+              <index>127</index>
+              <name>KC (hLFASearchModel1-context)</name>
+            </header>
+            <header>
+              <id>header128</id>
+              <index>128</index>
+              <name>Opportunity (hLFASearchModel1-context)</name>
+            </header>
+            <header>
+              <id>header129</id>
+              <index>129</index>
+              <name>Predicted Error Rate (hLFASearchModel1-context)</name>
+            </header>
+            <header>
+              <id>header130</id>
+              <index>130</index>
+              <name>KC (hLFASearchModel1-renamed)</name>
+            </header>
+            <header>
+              <id>header131</id>
+              <index>131</index>
+              <name>Opportunity (hLFASearchModel1-renamed)</name>
+            </header>
+            <header>
+              <id>header132</id>
+              <index>132</index>
+              <name>Predicted Error Rate (hLFASearchModel1-renamed)</name>
+            </header>
+            <header>
+              <id>header133</id>
+              <index>133</index>
+              <name>KC (hLFASearchModel1-renamed-chgd)</name>
+            </header>
+            <header>
+              <id>header134</id>
+              <index>134</index>
+              <name>Opportunity (hLFASearchModel1-renamed-chgd)</name>
+            </header>
+            <header>
+              <id>header135</id>
+              <index>135</index>
+              <name>Predicted Error Rate (hLFASearchModel1-renamed-chgd)</name>
+            </header>
+            <header>
+              <id>header136</id>
+              <index>136</index>
+              <name>KC (hLFASearchModel1-renamed-chgd2)</name>
+            </header>
+            <header>
+              <id>header137</id>
+              <index>137</index>
+              <name>Opportunity (hLFASearchModel1-renamed-chgd2)</name>
+            </header>
+            <header>
+              <id>header138</id>
+              <index>138</index>
+              <name>Predicted Error Rate (hLFASearchModel1-renamed-chgd2)</name>
+            </header>
+            <header>
+              <id>header139</id>
+              <index>139</index>
+              <name>KC (hLFASearchModel1-renamed-chgd3)</name>
+            </header>
+            <header>
+              <id>header140</id>
+              <index>140</index>
+              <name>Opportunity (hLFASearchModel1-renamed-chgd3)</name>
+            </header>
+            <header>
+              <id>header141</id>
+              <index>141</index>
+              <name>Predicted Error Rate (hLFASearchModel1-renamed-chgd3)</name>
+            </header>
+            <header>
+              <id>header142</id>
+              <index>142</index>
+              <name>KC (hLFASearchModel1_context-single)</name>
+            </header>
+            <header>
+              <id>header143</id>
+              <index>143</index>
+              <name>Opportunity (hLFASearchModel1_context-single)</name>
+            </header>
+            <header>
+              <id>header144</id>
+              <index>144</index>
+              <name>Predicted Error Rate (hLFASearchModel1_context-single)</name>
+            </header>
+            <header>
+              <id>header145</id>
+              <index>145</index>
+              <name>KC (importTest1)</name>
+            </header>
+            <header>
+              <id>header146</id>
+              <index>146</index>
+              <name>Opportunity (importTest1)</name>
+            </header>
+            <header>
+              <id>header147</id>
+              <index>147</index>
+              <name>Predicted Error Rate (importTest1)</name>
+            </header>
+            <header>
+              <id>header148</id>
+              <index>148</index>
+              <name>KC (new KC model name)</name>
+            </header>
+            <header>
+              <id>header149</id>
+              <index>149</index>
+              <name>Opportunity (new KC model name)</name>
+            </header>
+            <header>
+              <id>header150</id>
+              <index>150</index>
+              <name>Predicted Error Rate (new KC model name)</name>
+            </header>
+            <header>
+              <id>header151</id>
+              <index>151</index>
+              <name>KC (new trap merge)</name>
+            </header>
+            <header>
+              <id>header152</id>
+              <index>152</index>
+              <name>Opportunity (new trap merge)</name>
+            </header>
+            <header>
+              <id>header153</id>
+              <index>153</index>
+              <name>Predicted Error Rate (new trap merge)</name>
+            </header>
+            <header>
+              <id>header154</id>
+              <index>154</index>
+              <name>KC (original_geometryConcept)</name>
+            </header>
+            <header>
+              <id>header155</id>
+              <index>155</index>
+              <name>Opportunity (original_geometryConcept)</name>
+            </header>
+            <header>
+              <id>header156</id>
+              <index>156</index>
+              <name>Predicted Error Rate (original_geometryConcept)</name>
+            </header>
+            <header>
+              <id>header157</id>
+              <index>157</index>
+              <name>KC (textbook2)</name>
+            </header>
+            <header>
+              <id>header158</id>
+              <index>158</index>
+              <name>Opportunity (textbook2)</name>
+            </header>
+            <header>
+              <id>header159</id>
+              <index>159</index>
+              <name>Predicted Error Rate (textbook2)</name>
+            </header>
+            <header>
+              <id>header160</id>
+              <index>160</index>
+              <name>KC (xDecmpTrapCheat)</name>
+            </header>
+            <header>
+              <id>header161</id>
+              <index>161</index>
+              <name>Opportunity (xDecmpTrapCheat)</name>
+            </header>
+            <header>
+              <id>header162</id>
+              <index>162</index>
+              <name>Predicted Error Rate (xDecmpTrapCheat)</name>
+            </header>
+          </metadata>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"ds76_student_step_export.txt","importFileType":"student-step","importFileNameTitle":"File: ds76_student_step_export.txt","fileTypeSelection":"student-step","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"25","userAgreedToIRB":"true"}</Import>
+        <left>141</left>
+        <top>50</top>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <model>Input 0 (0) - KC (Area) (column 19)</model>
+    <model>Input 0 (0) - KC (Circle-Collapse) (column 22)</model>
+    <modelingMethod>iAFM</modelingMethod>
+    <learningCurve>KC</learningCurve>
+  </options>
+</component>

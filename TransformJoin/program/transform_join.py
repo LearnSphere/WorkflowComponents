@@ -79,10 +79,22 @@ try:
     file_encoding = 'utf8'        # set file_encoding to the file encoding (utf8, latin1, etc.)
     # input_fd1 = open(file_1, encoding=file_encoding, errors = 'backslashreplace')
     # df1 = pd.read_csv(input_fd1, sep=file_1_delimiter, error_bad_lines=False, low_memory=False)
-    df1 = pd.read_csv(file_1,sep=file_1_delimiter,encoding='utf8',dtype=object, engine='python') 
+    df1 = pd.read_csv(file_1,sep=file_1_delimiter,encoding='utf8',dtype=object, engine='python')
+    #in case delimiter isn't set correctly, try comma and tab-delimited
+    if df1.shape[1] == 1:
+        df1 = pd.read_csv(file_1,encoding='utf8',dtype=object, engine='python')
+    if df1.shape[1] == 1:
+        df1 = pd.read_csv(file_1,sep="\t",encoding='utf8',dtype=object, engine='python')
+        
     # input_fd2 = open(file_2, encoding=file_encoding, errors = 'backslashreplace')
     # df2 = pd.read_csv(input_fd2, sep=file_2_delimiter, error_bad_lines=False, low_memory=False)
     df2 = pd.read_csv(file_2,sep=file_2_delimiter,encoding='utf8',dtype=object, engine='python') 
+    #in case delimiter isn't set correctly, try comma and tab-delimited
+    if df2.shape[1] == 1:
+        df2 = pd.read_csv(file_2,encoding='utf8',dtype=object, engine='python')
+    if df2.shape[1] == 1:
+        df2 = pd.read_csv(file_2,sep="\t",encoding='utf8',dtype=object, engine='python')
+    
 except Warning as e:
     logToWfl(e)
     

@@ -32,6 +32,7 @@
 		<Deidentify />
 		<Discretize />
 		<Feature_Synthesis />
+		<Fuzzy_Match />
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
 		<Join />
@@ -93,6 +94,7 @@
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
+		<Learning_Rate_Plot />
 		<Line_Graph />
 		<Scatter_Plot />
 		<Solution_Paths />

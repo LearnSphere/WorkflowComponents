@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/FuzzyMatching</url>
+<date>2022-10-19</date>
+<abstract><p>The <b>Fuzzy Match</b> component uses Levenshtein Distance Ratio to determine the similarity between two character sequences. It suggests if there is a match based on the difference between Levenshtein Distance Ratio and the threshold that the user specified.</p>
+<p>The component offers two matching modes:
+<ol>
+<li>File to File: fuzzy-match columns from two separate files</li>
+<li>File to String: fuzzy-match a column of a file to a string</li>
+</ol></p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2771" target="_blank">demo</a> workflow.</p>
+</abstract>
+<description>This component uses Levenshtein Distance Ratio to determine the similarity between two character sequences. It suggests if there is a match based on the difference between Levenshtein Distance Ratio and the threshold that the user specified.
+The component accepts two matching modes: File to File and File to String.</description>
+
+<inputs>
+<p>For File to File mode: Two text files (CSV or tab-delimited) are required.</p>
+<p>For File to String mode: One text file (CSV or tab-delimited) is required.</p>
+</inputs>
+
+<outputs>
+Tab-delimited file containing matching result
+</outputs>
+
+<options>
+<p>For File to File mode:
+<ol>
+<li>Threshold: an integer between 40 and 95.</li>
+<li>Number of Columns to Match: integer 1 to 4.</li>
+<li>File 1 Column X (1-4) to Match: pick a column from the first input file for matching</li>
+<li>File 2 Column X (1-4) to Match: pick a column from the second input file for matching</li>
+</ol>
+</p>
+<p>For File to String mode:
+<ol>
+<li>Threshold: an integer between 40 and 95.</li>
+<li>Column to Match: pick a column from the input file for matching</li>
+<li>String to Match: non-empty string for matching</li>
+</ol>
+</p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2771" target="_blank">demo</a> workflow for a File to File match and a File to String match. </p>
+
+</options>
+
+
+</info>

@@ -24,7 +24,7 @@ public class FastAfmAndCvMain extends AbstractComponent {
     }
     
     /**
-     * PyAFM only outputs KC columns that are the model that is selected in the options.
+     * make the output file headers available to the downstream component
      */
     @Override
     protected void processOptions() {
