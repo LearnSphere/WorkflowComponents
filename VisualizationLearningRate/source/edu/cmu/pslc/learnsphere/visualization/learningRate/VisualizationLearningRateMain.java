@@ -48,7 +48,7 @@ public class VisualizationLearningRateMain extends AbstractComponent {
         	allCells = IOUtil.read2DStringArray(inputFile.getAbsolutePath(), ",");
             headers = allCells[0];
         }
-        String modelingType = this.getOptionAsString("modelingType");
+        String modelingMethod = this.getOptionAsString("modelingMethod");
         //check "First Attempt", "Anon Student Id", "Opportunity (...)", 'First Transaction Time'
         boolean foundFirstAttempt = false;
         boolean foundAnonStu = false;
@@ -88,7 +88,7 @@ public class VisualizationLearningRateMain extends AbstractComponent {
             logger.info("VisualizationLearningRatePlot is aborted: " + err); 
             reqsMet = false;
         }
-        if (modelingType.equals("tAFM") && !foundFirstTxnTime) {
+        if (modelingMethod.equals("tAFM") && !foundFirstTxnTime) {
         	//send error message
             String err = "Input file is missing First Transaction Time column.";
             addErrorMessage(err);

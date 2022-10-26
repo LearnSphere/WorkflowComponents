@@ -16,7 +16,7 @@ import sys
 import csv
 
 
-# In[31]:
+# In[5]:
 
 
 """
@@ -60,7 +60,7 @@ def levenshteinRatioAndDistance(str1, str2):
     # Computation of the Levenshtein Distance Ratio, in percentage (integer), eg. 70
     Ratio = int((((len(str1)+len(str2)) - distance[row][col]) / (len(str1)+len(str2))) * 100)
     return Ratio;
-#print(levenshteinRatioAndDistance("Adrian S.", "Aidan Smith"))
+#print(levenshteinRatioAndDistance("Adrian S. student", "Anne Feorini student"))
 
 
 # In[3]:
@@ -97,6 +97,7 @@ def isMatch(str1, str2, threshold=62):
     elif Ratio >= threshold:
         logFile = open("fuzzy.log", 'w')
         logFile.write(" '{}' and '{}' are not the same, but maybe a match, with matching score {}\n".format(str1, str2, Ratio))
+        logFile.close()
         return True
     else:
         # insertions and/or substitutions
