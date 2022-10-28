@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformJoin</url>
+<date>2018-01-14</date>
+<abstract>The <b>Join</b> component is incredibly useful when you have two data files and want to aggregate them into a larger, singular data set. The component allows merging or concatenating of two data files, where merging is to combine two data files based on values in shared columns and concatenating is to stack two data files together vertically or horizontally
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2779" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component allows you to join two data files.</description>
+
+<inputs><ul>
+<li>First text file: contains data to be joined.</li>
+<li>Second text file: contains data to be joined.</li>
+</ul></inputs>
+
+<outputs>
+Tab-delimited file contains join result.
+</outputs>
+
+<options>
+<p><b>Join by concatenation</b>
+ <ul>
+<li>File 1 Column Delimiter: tab, comma, period or pipe</li>
+<li>File 2 Column Delimiter: tab, comma, period or pipe</li>
+<li>Join type: choose concatenate</li>
+<li>How to Concetenate: choose vertically or horizontally</li>
+</ul>
+</p>
+<p><b>Join by merge</b>
+ <ul>
+<li>File 1 Column Delimiter: tab, comma, period or pipe</li>
+<li>File 2 Column Delimiter: tab, comma, period or pipe</li>
+<li>Join type: choose merge</li>
+<li>How to Merge: choose inner, left, right or outer</li>
+<li>Number of Merging Conditions: enter an integer 1 to 5</li>
+<li>File 1 Column to Match X: select a column for matching</li>
+<li>File 2 Column to Match X: select a column for matching</li>
+</ul>
+</p>
+<p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2779" target="_blank">demo</a> workflow</b></p>
+
+
+</options>
+
+</info>
