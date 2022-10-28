@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>Ran Liu
-  <email>ranliu@andrew.cmu.edu</email>
+<author>Paulo Carvolho
+  <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisIAfm</url>
-<date>2017-02-28</date>
-<abstract>The <b>Individualized Additive Factor Model</b> (iAFM) performs a logistic regression over the "error rate" learning curve data. In addition to slope per KC, you also get slope per student. To make glmer runs fast and efficiently, we apply glmerControl with optimx as optimizer</abstract>
-<description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationLearningRate</url>
+<date>2022-10-28</date>
+<abstract>This component fits one of three student models (AFM, iAFM, or t-AFM) and returns student or KC learning curve fits represented graphically with one line in log-odds scale for each student/KC and numerically with learning rate and initial knowledge parameters for each student/KC.
+<p>The component offers three student models:
+<ol>
+<li>AFM is the Additive Factors Model and considers a slope and intercept for each KC, and an intercept for each student.</li>
+<li>iAFM is the Individualized Additive Factors Model and considers a slope and intercept for each KC and for each student.</li>
+<li>t-AFM is similar to iAFM but instead of considering opportunity count as the measure of progression over which slope is calculated, it uses total calendar time spent on practice.</li>
+</ol></p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2778" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component fits one of three student models (AFM, iAFM, or t-AFM) and returns student or KC learning curve fits represented graphically with one line in log-odds scale for each student/KC and numerically with learning rate and initial knowledge parameters for each student/KC.</description>
+
 
 <inputs>
-<b>Student-Step</b>
+Student-Step
 </inputs>
 
 <outputs>
-<b>Student-Step</b>
-<b>Parameter estimate values</b>
-<b>Model values</b>
+<ol>
+<li>pdf: containing plots</li>
+<li>Analysis summary: tab-delimited file containing models' parameters</li>
+<li>Predictions: tab-delimited file containing predictions used for ploting</li>
+</ol>
 </outputs>
 
 <options>
-<b>Model</b> - the column containing the Knowledge Component Model (KCM) data <br/>
+<ol>
+<li>Models: select one or more models</li>
+<li>Modeling method: select from AFM, iAFM or tAFM.</li>
+<li>Plot type: KC or Student</li>
+</ol>
+
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2778" target="_blank">demo</a> workflow. </p>
 </options>
+
 
 </info>
