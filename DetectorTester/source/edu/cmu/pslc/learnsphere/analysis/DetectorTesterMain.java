@@ -21,7 +21,9 @@ import edu.cmu.pslc.datashop.util.SpringContext;
 import edu.cmu.pslc.datashop.util.DataShopInstance;
 
 public class DetectorTesterMain extends AbstractComponent {
-
+	private static final String[] publicDetectors = new String[]{"critical_struggle.js",
+			"idle.js", "struggle__moving_average.js", "student_doing_well__moving_average.js", "system_misuse.js"};
+	
     public static void main(String[] args) {
 
         DetectorTesterMain tool = new DetectorTesterMain();
@@ -59,13 +61,18 @@ public class DetectorTesterMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         Boolean runTheScript = true;
-
+        
         Boolean usingDetectorInput = false;
         if (this.getOptionAsString("useDetectorInput").equals("Yes")) {
           usingDetectorInput = true;
         }
-
-        Boolean access = hasAccess();
+        
+        Boolean access = true;
+        		
+        String detector = this.getOptionAsString("detectorFromList");
+        if (!isPublicDetector(detector)) {
+        	access = hasAccess();
+        }
 
         if (usingDetectorInput) {
 	        if (!access) {
@@ -241,6 +248,14 @@ public class DetectorTesterMain extends AbstractComponent {
         logger.error("Couldn't get authorizationProject from build properties. " + e.toString());
       }
       return null;
+    }
+    
+    private boolean isPublicDetector(String detector) {
+    	for (String def : publicDetectors) {
+    		if (def.equals(detector))
+    			return true;
+    	}
+    	return false;
     }
 
 }
