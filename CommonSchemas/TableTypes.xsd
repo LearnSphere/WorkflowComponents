@@ -29,9 +29,6 @@
   <xs:element name="audio" substitutionGroup="file" />
   <xs:element name="video" substitutionGroup="file" />
   <xs:element name="application" substitutionGroup="file" />
-  
-  <xs:element name="doc" substitutionGroup="application" />
-  <xs:element name="docx" substitutionGroup="application" />
 
   <xs:element name="pdf" substitutionGroup="application" />
 
