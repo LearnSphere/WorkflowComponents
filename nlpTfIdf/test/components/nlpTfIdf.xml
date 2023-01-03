@@ -1,0 +1,65 @@
+<component>
+  <component_id>Nlp-1-x192780</component_id>
+  <component_id_human>Nlp #1</component_id_human>
+  <workflow_id>9</workflow_id>
+  <component_name>TF IDF</component_name>
+  <component_type>nlp</component_type>
+  <left>365.00001525878906</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x997076</from>
+    </connection>
+  </connections>
+  <top>137</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x997076</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/test_data/user_comment.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>user_comment.txt</file_name>
+          <metadata>
+            <header>
+              <id>header0</id>
+              <index>0</index>
+              <name>user_id</name>
+            </header>
+            <header>
+              <id>header1</id>
+              <index>1</index>
+              <name>answer</name>
+            </header>
+			<header>
+              <id>header2</id>
+              <index>2</index>
+              <name>answer_2</name>
+            </header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"user_comment.txt","importFileType":"tab-delimited","importFileNameTitle":"File: user_comment.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"78","userAgreedToIRB":"true"}</Import>
+        <left>79</left>
+        <top>49</top>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <text_corpus>Columns in a file</text_corpus>
+    <text_column>Input 0 (0) - answer (column 1)</text_column>
+    <text_column>Input 0 (0) - answer_2 (column 2)</text_column>
+    <term_type>Phrase</term_type>
+    <exclude_stopwords>Yes</exclude_stopwords>
+    <term>good job</term>
+  </options>
+</component>

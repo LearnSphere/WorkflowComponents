@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/nlpTfIdf</url>
+<date>2022-12-31</date>
+<abstract><p>The <b>TF IDF</b> component helps compute the TF-IDF value of a word or phrase for a collection of files or for rows of column(s) of a tab-delimited file. TF-IDF stands for "Term Frequency - Inverse Document Frequency".</p>
+
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2831" target="_blank">demo</a> workflow.</p>
+</abstract>
+<description>This component computes the TF-IDF value of a search word or phrase for a collection of files or for rows of column(s) of a tab-delimited file.</description>
+
+<inputs>
+<p>For Columns in a file: a tab-delimited file is required.</p>
+<p>For Files: a zip file that contains PDF, Words and/or plain text files is required.</p>
+</inputs>
+
+<outputs>
+<p>
+Tab-delimited file: TF-IDF result
+</p>
+</outputs>
+
+<options>
+<p>For Columns in a file (tab-delimited file):
+<ol>
+<li>Text Column: select one or more columns to compute TF-IDF values on.</li>
+<li>Term Type: select from Word or Phrase.</li>
+<li>Exclude Stop Words: select yes to no for excluding stop words from the TF-IDF result.</li>
+<li>Term: the search term for computing TF-IDF. Note: search term should be consistent with the Term Type and Exclude Stop Words options. For example, if you select Phrase and Yes to Exclude Stop Word, "the word" is not a good term. </li>
+</ol>
+</p>
+<p>For Files (zip file that contains PDF, Words and/or plain text files):
+<ol>
+<li>Term Type: select from Word or Phrase.</li>
+<li>Exclude Stop Words: select yes to no for excluding stop words from the TF-IDF result.</li>
+<li>Term: the search term for computing TF-IDF. Note: search term should be consistent with the Term Type and Exclude Stop Words options. For example, if you select Phrase and Yes to Exclude Stop Word, "the word" is not a good term. </li>
+</ol>
+</p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2831" target="_blank">demo</a> workflow. </p>
+
+</options>
+
+
+</info>

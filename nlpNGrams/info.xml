@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/nlpNGrams</url>
+<date>2022-12-31</date>
+<abstract><p>The <b>N Grams</b> component helps compute the frequency of contiguous sequence of n items from a text file or a column of a tab-delimited file.</p>
+
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2831" target="_blank">demo</a> workflow.</p>
+</abstract>
+<description>This component computes the frequency of contiguous sequence of n items from a text file or a column of a tab-delimited file.</description>
+
+<inputs>
+<p>For Column in a file: a tab-delimited file is required.</p>
+<p>For File: a PDF or a text file is required.</p>
+</inputs>
+
+<outputs>
+<p>
+<ol>
+<li>Tab-delimited file: n-grams result</li>
+<li>PDF file: contains plot that depicts the n-grams result</li>
+</ol>
+</p>
+</outputs>
+
+<options>
+<p>For Column in a file:
+<ol>
+<li>Text Column: select a column to get n-grams result.</li>
+<li>N Grams: select from 1, 2, 3 or 4.</li>
+<li>Exclude Stop Words: select yes to no for excluding stop words from the n-grams result.</li>
+<li>Plot type: select plot type from Bar chart, Donut chart, Treemap or Circle packing</li>
+<li>Plot Top Term: only plot the terms that have frequency higher than or equal to the threshold. Must be integer between 0 and 200.</li>
+</ol>
+</p>
+<p>For File: (only accept PDF or plain text)
+<ol>
+<li>N Grams: select from 1, 2, 3 or 4.</li>
+<li>Exclude Stop Words: select yes to no for excluding stop words from the n-grams result.</li>
+<li>Plot type: select plot type from Bar chart, Donut chart, Treemap or Circle packing</li>
+<li>Plot Top Term: only plot the terms that have frequency higher than or equal to the threshold. Must be integer between 0 and 200.</li>
+</ol>
+</p>
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2831" target="_blank">demo</a> workflow. </p>
+
+</options>
+
+
+</info>

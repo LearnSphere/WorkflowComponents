@@ -100,6 +100,11 @@
 		<Solution_Paths />
 		<Student_Demographics />
 	</Visualization>
+	<NLP>
+	    <Recently_Used />
+		<N_Grams />
+		<TF_IDF />
+	</NLP>
 	<Tetrad>
 	    <Recently_Used />
 	    <Classifier />

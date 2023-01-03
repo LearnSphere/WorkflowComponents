@@ -1,0 +1,30 @@
+user_id	answer
+1	you did a great job on that problem. well done.
+2	"Kevin, great job!   You are understanding the math strategies and are learning when and how to apply them.  You just need more practice, and soon you will be able to solve any problems of this type."
+3	"It was difficult but you persevered and succeeded.  Such grit is an important life skill and I'm proud of what you accomplished and you should be proud, too."
+4	I appreciate your effort and willingness to work hard to get to the answer. 
+5	Very good!  Do you feel comfortable with how we solved this problem?  Would you like to work on another one together?
+6	Nice job! Trying different approaches was a good strategy. It can be tricky to find the right one.
+7	"I can see that you understand the subject better than you think, I hope this success gives you more confidence going forward"
+8	"This takes practice.  You are learning at every step, even when you make a mistake "
+9	"I know that this was difficult for you to do, but you did a great job pushing through it! I think if we try a couple more of these, you'll really start to get the hang of this!"
+10	Great! You have made a fantastic job and mastered this skill. Keep going!
+11	"Kevin, you're really doing a great job. Even if you don't get it the first time, I see you when you try a couple different approaches you are acing it!"
+12	"Way to go, Kevin! Let's try the next one."
+13	"See, when you stuck with it and didn't give up, you succeeded!"
+14	That's right! Good work!
+15	I am really impressed by your perseverance .You did a great job on solving this question using different approaches that is how we learn math or anything for that matter by keep trying so do not give up next time when you did not get the correct answer the first time   
+16	You are doing great and let’s go over the problem one step at a time.
+17	Excellent.   That's not an easy problem.   I think you are developing an understanding of the material.
+18	"You got it! There are many ways to solve math problems and learn math. Now that we have connected, let's solve some more problems."
+19	"Kevin, you didn't give up and you managed to learn, congratulations! Let's finish your math homework together so you can still get a good grade and learn how this kind of homework will be easier sooner."
+20	"Woohoo, that's fantastic!  That was really incredible the way that you kept working on that problem and didn't give up!  That's when you know you are really learning -- if you just get it the first try then you didn't learn much since you already knew it, but if you work to get it, and then you get it, that's when you know that what you are doing matters!  "
+21	"Great job! I knew you could do it!  Sometimes it takes a few tries, but we eventually get there."
+22	"Great job, Kevin! Can you use that same approach to complete any other problems for your assignment?"
+23	Nice. I like that you pushed through and continued trying until you found the right answer. Building that skill will help you tackle other challenging exercises.
+24	"I'm proud of you for sticking with that problem! Are you ready to try another one? I think you're really getting it now, and this one will go more quickly."
+25	"Would probably depend on the details of the interaction, but probably something along the lines of: It took effort, but you got it right. It will get easier with additional practice. "
+26	You did it!  Let's try another.  You can do this.
+27	Good job! Why don't we try solving few more problems so that you feel confident about these questions?
+28	"Notes: I suspect the title of the lesson ""Giving Effective Praise"" hints that you should praise a student"
+29	"persevered, grit, persevere, took effort, didn't give up, you are learning at every step, took effort, learning, succeeded, was difficult, grit, proud of, you accomplished, you should be proud, willingness to work, work hard, good strategy, pushing through it, didn't give up, takes practice, trying different approaches, do not give up, perseverance, work to get it, what you are doing matters, pushed through, continued trying, building skill, tackling challenges,     "
