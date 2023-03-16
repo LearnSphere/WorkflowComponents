@@ -97,6 +97,13 @@
     </xs:restriction>
   </xs:simpleType>
   
+  <xs:simpleType name="useMedianMaxOppType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:simpleType name="modelingType" final="restriction">
     <xs:restriction base="xs:string">
     	<xs:enumeration value="AFM" />
@@ -117,6 +124,7 @@
       <xs:element type="MultiFileInputHeader" name="model" id="Models" default="\s*KC\s*\((.*)\)\s*" />
       <xs:element type="modelingType" name="modelingMethod" id="Modeling_Method" default="iAFM" />
       <xs:element type="learningRateCurveType" name="learningCurve" id="Plot_Type" default="KC" />
+      <xs:element type="useMedianMaxOppType" name="useMedianMaxOpp" id="Plot_with_Median_of_Max_Opportunities" default="Yes" />
       	
     </xs:choice>
   </xs:complexType>

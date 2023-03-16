@@ -859,5 +859,6 @@
     <model>Input 0 (0) - KC (Circle-Collapse) (column 22)</model>
     <modelingMethod>iAFM</modelingMethod>
     <learningCurve>KC</learningCurve>
+    <useMedianMaxOpp>Yes</useMedianMaxOpp>
   </options>
 </component>

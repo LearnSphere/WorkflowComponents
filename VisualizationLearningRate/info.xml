@@ -34,6 +34,7 @@ Student-Step
 <li>Models: select one or more models</li>
 <li>Modeling method: select from AFM, iAFM or tAFM.</li>
 <li>Plot type: KC or Student</li>
+<li>Plot with Median of Max Opportunities: when ploting, use the median of max opportunities as the end point of learning rate</li>
 </ol>
 
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2778" target="_blank">demo</a> workflow. </p>

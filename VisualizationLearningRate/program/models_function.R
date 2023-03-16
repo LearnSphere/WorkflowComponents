@@ -1,5 +1,5 @@
 #functions to run iAFM and itAFM and iAFM_full for datasets and export a) slope parameters, b) intercept parameters.
-
+options(warn = -1)
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(lme4)))
 suppressWarnings(suppressMessages(library(optimx)))
