@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[13]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[2]:
+# In[14]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -214,7 +214,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[3]:
+# In[15]:
 
 
 def phi(x):
@@ -226,7 +226,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[4]:
+# In[16]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -542,7 +542,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[5]:
+# In[17]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -701,7 +701,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[6]:
+# In[18]:
 
 
 def compute_metrics(y, y_pred):
@@ -741,7 +741,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[7]:
+# In[19]:
 
 
 def logToWfl(msg):
@@ -758,7 +758,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[15]:
+# In[22]:
 
 
 #test command from WF component:
@@ -805,15 +805,18 @@ else:
     #student_step file
     file_name = "ds76_student_step_export.txt"
     #file_name = "C:/WPIDevelopment/dev06_dev/test/AFM_improved_optimization/runFastAFM/ds392_student_step_All_Data_1310_2019_0802_022703.txt"
-    #file_name = "ds76_student_step_All_Data_74_2020_0926_034727.txt"
-    #file_name = "fast_afm_cv_ds_7_kcm_122.txt"
+    #file_name = "ds76_student_step_All_Data_test_fastAFM.txt"
+    #file_name = "C:/WPIDevelopment/dev06_dev/LFA/testData/search/input/DS 76 Geometry Area (1996-97)/Lasso ModelSSSVTS2.txt"
+    #file_name = "C:/WPIDevelopment/dev06_dev/LFA/testData/search/input/DS 613 Hopewell 2011-2012/multiskill_converted_All_Data_1884_2013_0215_193821.txt"
+    #file_name = "fast_afm_cv_ds_7_kcm_50_same_time.txt"
     #file_name = "./data/algebra05/data_DS_format.txt"
     #kc mode
-    kc_col_names=['KC (Circle-Collapse)', 'KC (Concepts)', 'KC (DecompArithDiam)']
+    #kc_col_names=['KC (Circle-Collapse)', 'KC (Concepts)', 'KC (Lasso Model)']
+    #kc_col_names=['KC (Lasso Model)']
+    #kc_col_names=['KC(KTracedSkills)']
     #kc_col_name="KC (DecompArithDiam)"
     #kc_col_name="KC (Lasso Model)"
-    #kc_col_name="KC (Item Model)"
-    #kc_col_name="KC(Default)"
+    kc_col_names=["KC (Single-KC)"]
     #kc_col_name="KC (Default)"
     #working_dir
     working_dir = "."
@@ -825,7 +828,9 @@ else:
 
     #for cv
     cv_student = True
+    #cv_student = False
     cv_item = True
+    #cv_item = False
     cv_fold = 3
     
 #min_interactions_per_user
@@ -870,17 +875,17 @@ for kc_col_name in kc_col_names:
                                                      cv_fold=cv_fold)
     skill_df = pd.DataFrame(list(kc2idx.items()), columns =['skill_name', 'skill_id'])
     student_df = pd.DataFrame(list(user2idx.items()), columns =['student_name', 'student_id'])
-
+    item_cnt = df['item_id'].nunique()
     #numbers of skill and student have to be >= cv_fold
     if cv_student and student_df.shape[0] < cv_fold:
         cv_student = False
         cv_student_number_error = True
         logToWfl("Can't run student-blocked CV because there are less students ({}) than CV fold ({})".format(student_df.shape[0], cv_fold))  
-    if cv_item and skill_df.shape[0] < cv_fold:
+    if cv_item and item_cnt < cv_fold:
         cv_item = False
         cv_item_number_error = True
-        logToWfl("Can't run item-blocked CV because there are less skills ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
-    
+        logToWfl("Can't run item-blocked CV because there are less items ({}) than CV fold ({})".format(skill_df.shape[0], cv_fold))  
+
     logToWfl("Finished prepare data.")
     #approximate % of time
     if cv_student or cv_item: 
