@@ -36,6 +36,8 @@
 		<Generate_PFA_Features />
 		<Generate_TKT_Features />
 		<Join />
+		<KC_Export />
+		<KC_Import />
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
