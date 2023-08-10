@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Gillian Gold
+  <email>gillian.gold@yale.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/KCExport</url>
+<date>August 02, 2023</date>
+<abstract>The <b>KC Export</b> component creates an export of an existing model or template for creating a new KC model.
+<br></br>
+<p>This function takes the student-step roll-up exported from DataShop and exports the KC model. One or more existing KC models can be selected to use as a template for the new one or it will just be a blank template if nothing is selected </p><br></br>
+<br></br>
+<p>After running the component:</p> 
+<ul>
+<li> Edit the KC model file output in Excel or other text-file/spreadsheet editor. </li>
+<li>Define the KC model by filling in the cells in the column KC (new KC model name), replacing “new KC model name” with a name for your model. </li>
+<li> Assign multiple KCs to a step by adding additional KC (model name) columns, placing one KC in each column. Replace "model name" with the same model name you used for your new model; you will have multiple columns with the same header. </li>
+<li> Add additional KC models by creating a new KC (model name) column for each KC model, replacing "model name" with the name of your new model. </li>
+<li> Import the new KC models with the KC Import component. </li> 
+</ul>
+</abstract>
+
+<inputs>
+Student-step export from DataShop<br/>
+</inputs>
+
+<outputs>
+Tab-delimited file containing KC model export <br/>
+</outputs>
+
+<options>
+KC Models -- Select the columns containing the KC models in the student step that will be used as a template. Multiple selection is allowed. Select nothing for a blank template.<br/>
+</options>
+
+</info>

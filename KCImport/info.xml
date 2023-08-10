@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Gillian Gold
+  <email>gillian.gold@yale.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/KCImport</url>
+<date>August 06, 2023</date>
+<abstract>The <b> KC Import </b> component creates new KC models in the student-step roll up (exported from DataShop).
+<br></br>
+After editing the KC export file (from the KC Export component), select one or more new KC models. They must have unique names and not already exist in the student-step roll up. Do not change any of the values or headers in either files.
+</abstract>
+
+<inputs>
+Student-step export from DataShop<br/>
+KC Import file (edited output file from KC Export component)<br/>
+</inputs>
+
+<outputs>
+Student-step roll up containing the new KC models<br/>
+</outputs>
+
+<options>
+KC Models -- Select new KC models from the KC Import that have unique names and do not already exist in the student-step. Multiple selection is allowed.
+<br></br>
+</options>
+
+</info>
