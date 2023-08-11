@@ -35,6 +35,7 @@ public class TextConverterMain extends AbstractComponent {
     private Set<String> headers;
     private Hashtable<String, Integer> entityNameCount;
     private Hashtable<String, Hashtable<String, String>> entities;
+    private String curEntityName;
     
     public static void main(String[] args) {
 
@@ -507,26 +508,51 @@ public class TextConverterMain extends AbstractComponent {
     
     private void handleJSonArray(JSONArray jsonArray, String name) throws JSONException {
             if(jsonArray!=null && jsonArray.length()>0){
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                            String entityName = getEntityName(name);
-                            Object curObj = jsonArray.get(i);
-                            if (curObj instanceof JSONArray) {
-                                    handleJSonArray((JSONArray)curObj, entityName);
-                            } else if (curObj instanceof JSONObject) {
-                                    handleJSonObject((JSONObject)curObj, entityName);
-                            } 
-                    }
+            	for (int i = 0; i < jsonArray.length(); i++) {
+            		Object curObj = jsonArray.get(i);
+            		String entityName = getEntityName(name);
+            		curEntityName = entityName;
+            		if (curObj instanceof JSONArray) {
+            			handleJSonArray((JSONArray)curObj, entityName);
+            		} else if (curObj instanceof JSONObject) {
+            			handleJSonObject((JSONObject)curObj, entityName);
+            		}
+            	}
             }
     }
     
     private void handleJSonObject(JSONObject jsonObject, String name) throws JSONException{
+            String entityName = getEntityName(name);
+            curEntityName = entityName;
             Iterator<String> keys = jsonObject.keys();
             while(keys.hasNext()) {
                 String key = keys.next();
-                if (jsonObject.get(key) instanceof JSONObject) {
-                      handleJSonObject((JSONObject)jsonObject.get(key), key);
-                } else if (jsonObject.get(key) instanceof JSONArray) {
-                        handleJSonArray((JSONArray)jsonObject.get(key), key);
+                Object thisJSObj = jsonObject.get(key);
+                if (thisJSObj instanceof JSONObject) {
+                	handleJSonObject((JSONObject)thisJSObj, key);
+                } else if (thisJSObj instanceof JSONArray) {
+                	if (isValueLevelJSonArray((JSONArray)thisJSObj)) {
+                		String values[] = new String[((JSONArray)thisJSObj).length()];
+                		for (int i = 0; i < values.length; i++) {
+                			values[i] = (String)((JSONArray)thisJSObj).get(i);
+                		}
+                		Hashtable curEntity = entities.get(name);
+                		if (curEntity == null) {
+                            curEntity = new Hashtable<String, String>();
+                            entities.put(name, curEntity);
+                		}
+                		String headerName = key;
+                		for (int i = 0; i < ((JSONArray)thisJSObj).length(); i++) {
+                			if (i > 0)
+                				headerName = key + "_" + i;
+                			if (!existInHeaders(headerName)) {
+                				headers.add(headerName);
+                			}
+                			curEntity.put(headerName, values[i]);
+                		}
+                	} else {
+                		handleJSonArray((JSONArray)thisJSObj, key);
+                	}
                 } else {
                         headers.add(key);
                         String value = jsonObject.optString(key);
@@ -540,6 +566,28 @@ public class TextConverterMain extends AbstractComponent {
             }
     }
     
+    private boolean existInHeaders (String headerStr) {
+    	for (String currHeader : headers) {
+    	    if (currHeader.equals(headerStr)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private boolean isValueLevelJSonArray(JSONArray jsonArray) throws JSONException {
+    	boolean returnVal = false;
+    	if(jsonArray!=null && jsonArray.length()>0) {
+    		for (int i = 0; i < jsonArray.length(); i++) {
+    			Object curObj = jsonArray.get(i);
+    			if (curObj != null && !curObj.toString().equals("") && !(curObj instanceof JSONArray) && !(curObj instanceof JSONObject)) {
+                	returnVal = true;
+               	} 
+    		}
+        }
+    	return returnVal;
+    }
+
     //check if a name already exist, if it does, add a number to it
     //for example: {parameter:[{m1:1.1,m2:1.2}, {m1:2.1, m2:2.2}, {m1:3.1, m2:3.2}]}
     //each object should be named parameter_1, parameter_2, parameter_3
