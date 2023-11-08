@@ -162,6 +162,7 @@
         <xs:element type="FileInputHeader" name="response" id="Response" default=".*" />
         <xs:element type="FixedEffectsPanel" name="fixedEffects" id="Fixed_effects" minOccurs="0" default=".*" />
         <xs:element type="RandomEffectsPanel" name="randomEffects" id="Random_effects" minOccurs="0" default=".*"/>
+        <xs:element type="xs:string" name="predictionColName" id="Prediction_Column_Name" minOccurs="0" default="Predicted Error Rate (Linear Model)"/>
     </xs:choice>
   </xs:complexType>
 

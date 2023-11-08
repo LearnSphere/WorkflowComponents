@@ -45,6 +45,8 @@ programLocation = NULL
 fittedModel = NULL
 isBinomial = FALSE
 randomEffects = NULL
+predictionColName = NULL
+
 
 # parse commandline args
 i = 1
@@ -94,15 +96,39 @@ while (i <= length(args)) {
           stop("family must be specified")
        }
        family = args[i+1]
-	 if (grepl("binomial", family) == TRUE)
-		isBinomial = TRUE
-       i = i+1
+       #needs to add quote to link name
+       if (family == "binomial (link = logit)") {
+         family = "binomial (link = \"logit\")"
+       } else if (family == "binomial (link = probit)") {
+         family = "binomial (link = \"probit\")"
+       } else if (family == "binomial (link = cloglog)") {
+         family = "binomial (link = \"cloglog\")"
+       } else if (family == "gaussian (link = identity)") {
+         family = "gaussian (link = \"identity\")"
+       } else if (family == "Gamma (link = inverse)") {
+         family = "Gamma (link = \"inverse\")"
+       } else if (family == "Gamma (link = identity)") {
+         family = "Gamma (link = \"identity\")"
+       } else if (family == "Gamma (link = \"log\")") {
+         family = "Gamma (link = \"log\")"
+       } else if (family == "inverse.gaussian (link = 1/mu^2)") {
+         family = "inverse.gaussian (link = \"1/mu^2\")"
+       } else if (family == "poisson (link = log)") {
+         family = "poisson (link = \"log\")"
+       } else if (family == "poisson (link = identity)") {
+         family = "poisson (link = \"identity\")"
+       } else if (family == "poisson (link = sqrt)") {
+         family = "poisson (link = \"sqrt\")"
+       } 
+  	 if (grepl("binomial", family) == TRUE)
+  		isBinomial = TRUE
+      i = i+1
     } else if (args[i] == "-modelingFunc") {
        if (length(args) == i) {
           stop("modeling type must be specified")
        }
        modelingFunc = args[i+1]
-	 if (modelingFunc != "glm" && modelingFunc != "glmer" && modelingFunc != "lm" && modelingFunc != "lmer") {
+	    if (modelingFunc != "glm" && modelingFunc != "glmer" && modelingFunc != "lm" && modelingFunc != "lmer") {
           stop("modeling type must be lm, lmer, glm or glmer")
        }
 
@@ -119,9 +145,32 @@ while (i <= length(args)) {
       }
       randomEffects= args[i+1]
       i = i+1
+    } else if (args[i] == "-predictionColName") {
+      if (length(args) == i) {
+        stop("predictionColName must be specified")
+      }
+      predictionColName= trimws(args[i+1])
+      if (predictionColName == "")
+        predictionColName = "Predicted Error Rate (Linear Model)"
+      i = i+1
     }
     i = i+1
 }
+
+#for testing
+# inputFile = "ds76_stu_step_with_null_skills.txt"
+# modelingFunc = "glmer"
+# formula = "First.Attempt ~ (Opportunity..Area.|Anon.Student.Id) + (Opportunity..Area.|KC..Area.) + Opportunity..Area."
+# family = "binomial (link = \"logit\")"
+# isBinomial = TRUE
+# responseCol = "First.Attempt"
+# workingDir = "."
+# programDir = "."
+# programLocation = "."
+# fittedModel = NULL
+# randomEffects = "Opportunity (Area)|Anon Student Id,Opportunity (Area)|KC (Area)"
+# fixedEffects = "Opportunity (Area)"
+# predictionColName = "Predicted Error Rate (Linear Modeling)"
 
 
 # output datas
@@ -235,6 +284,7 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 	   #modelingString = paste("fittedModel <-lmer(", formula, ", data=ds ,control = lmerControl(optimizer = \"optimx\", calc.derivs = FALSE, optCtrl = list(method = \"nlminb\", starttests = FALSE, kkt = FALSE)))", sep="")
 	   suppressMessages(library(lmerTest))
 	   modelingString = paste("fittedModel <-lmer(", formula, ", data=ds)", sep="")
+	   
 	   logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
 	   step.fittedModel<- step(fittedModel)
 	    modelSum <- summary(fittedModel)
@@ -498,7 +548,13 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
 origFile <- logWarningsMessages(fread(file=inputFile,verbose = F), logFileName = "r_glm.wfl")
 origCols <- colnames(origFile)
 origFile$PredictedErrorRate <- 1 - predict(fittedModel,ds,type="response",allow.new.levels=TRUE) # add the column
-names(origFile)[ncol(origFile)] <- 'Predicted Error Rate for Linear Modeling' # Rename the column
+if (predictionColName %in% origCols) {
+  origFile[,c(which(origCols == predictionColName))] = origFile$PredictedErrorRate
+  #delete the PredictedErrorRate column (the last one)
+  origFile <- subset(origFile, select = -c(PredictedErrorRate))
+} else {
+  names(origFile)[ncol(origFile)] <- predictionColName # Rename the column
+}
 logWarningsMessages(fwrite(origFile, file=student.step.file,sep="\t", quote=FALSE, na=""), logFileName = "r_glm.wfl")
 
 

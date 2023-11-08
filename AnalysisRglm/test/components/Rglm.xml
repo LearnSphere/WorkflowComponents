@@ -18,6 +18,7 @@
       <!-- <randomEffects>1|id,1+Non Activities_Reading|Pretest</randomEffects>-->
       <family>binomial (link = logit)</family> <!--gaussian (link = identity) -->
       <modelingFunc>glm</modelingFunc>
+      <predictionColName>Predicted Error Rate (Linear Model)</predictionColName>
   </options>
   <inputs>
     <input0>

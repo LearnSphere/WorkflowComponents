@@ -39,6 +39,7 @@
 <li>Fixed effects: can choose one or more factors at a time. Use the arrow buttons to edit the final fixed effects. If interaction type "*" is selected, all possible fixed factors will be added to the final list, thus the final formula. For example, KC*KC-opportunity results in three items KC, KC-opportunity and KC:KC-opportunity to be added to the final formula.</li>
 <li>Random effects: grouping/random factor is required while nesting and independent/fixed factors are optional. For examples: choosing "student" as grouping/random factor alone results in (1+student) added to the final list; choosing "student" as grouping/random factor, "class" as nesting factor and "KC-opportunity" as independent/fixed factor results in (KC-opportunity|class/student) added to the final list. If "no" intercept is selected, (0+KC-opportunity|class/student) is added.</li>
 <li>Formula: uneditable field. Content is constructed by what are selected in fixed effect and random effect fields.</li>
+<li>Prediction Column Name: default is Predicted Error Rate (Linear Model)</li>
 </ul>
 
 <p><b>Examples: (see <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2347" target="_blank">demo</a> workflow)</b></p>
@@ -49,6 +50,7 @@
 <li><b>Opportunity (A Model):</b> In Fixed Effects, choose Opportunity (A Model) for Fixed factor</li>  
 <li><b>Opportunity (A Model)|Anon Student Id:</b> In Random Effects, choose Anon Student Id for Grouping/Random factor, and choose Opportunity (A Model) for Independent/Fixed factor</li>
 <li><b>Opportunity (A Model)|KC (A Model):</b> In Random Effects, choose KC (A Model) for Grouping/Random factor, and choose Opportunity (A Model) for Independent/Fixed factor</li>
+<li><b>Prediction Column Name:</b> Predicted Error Rate (A Model)</li>
 </ol>
 </p>
 
@@ -58,6 +60,7 @@
 <li><b>1|Anon Student Id:</b> In Random Effects, choose Anon Student Id for Grouping/Random factor</li>
 <li><b>KC (A Model):</b> In Fixed Effects, choose KC (A Model) for Fixed factor</li>  
 <li><b>KC (A Model):Opportunity (A Model):</b> In Fixed Effects, choose KC (A Model) and Opportunity (A Model) for Fixed factor, and choose ":" for interaction</li>  
+<li><b>Prediction Column Name:</b> Predicted Error Rate (A Model)</li>
 </ol>
 </p>
 
@@ -67,6 +70,7 @@
 <li><b>1|Anon Student Id:</b> In Random Effects, choose Anon Student Id for Grouping/Random factor</li>
 <li><b>1|KC (A Model)/KC (Item Model):</b> In Random Effects, choose KC (Item Model) for Grouping/Random factor, and choose KC (A Model) for Nesting factor</li>
 <li><b>KC (A Model):Opportunity (A Model):</b> In Fixed Effects, choose KC (A Model) and Opprotunity (A Model) for Fixed factor; and choose ":" for interaction</li>  
+<li><b>Prediction Column Name:</b> Predicted Error Rate (A Model)</li>
 </ol>
 </p>
 
