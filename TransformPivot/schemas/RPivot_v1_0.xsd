@@ -75,6 +75,16 @@
     </xs:restriction>
   </xs:simpleType>
   
+  <xs:simpleType name="nullType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="blank" />
+      <xs:enumeration value="." />
+	  <xs:enumeration value="NA" />
+	  <xs:enumeration value="NONE" />
+	  <xs:enumeration value="NULL" />
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="option_dependency">
 	<xs:choice>
 	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="rWF" ls:dependsOn="hasRows" ls:constraint="matches(Yes)" />
@@ -91,6 +101,7 @@
       	<xs:element type="MultiFileInputHeader" name="rWF" id="Rows_in_Pivot_Table" default=".*" />
     	<xs:element type="trueFalseType" name="hasColumns" id="Define_Columns" default="No" />
       	<xs:element type="MultiFileInputHeader" name="cWF" id="Columns_in_Pivot_Table" default=".*" />
+		<xs:element id="Set_Null_Value_to" name="naValue" type="nullType" default="blank" />
       	
     </xs:choice>
   </xs:complexType>

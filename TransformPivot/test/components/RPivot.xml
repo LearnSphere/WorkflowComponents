@@ -76,6 +76,7 @@
     <cWF>Input 0 (0) - Date Of Extraction (column 5)</cWF>
     <mWF>Input 0 (0) - Longitudinal Feature Week (column 3)</mWF>
     <mWF>Input 0 (0) - Longitudinal Feature Value (column 4)</mWF>
+	<naValue>blank</naValue>
 	<!--
 	<aWF>sum</aWF>
     <rWF>Input 0 (0) - User ID (column 2)</rWF>
@@ -84,6 +85,7 @@
     <cWF>Input 0 (0) - Date Of Extraction (column 5)</cWF>
     <mWF>Input 0 (0) - Longitudinal Feature Week (column 3)</mWF>
     <mWF>Input 0 (0) - Longitudinal Feature Value (column 4)</mWF>
+	<naValue>.</naValue>
 	-->
   </options>
 </component>

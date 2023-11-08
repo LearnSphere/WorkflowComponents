@@ -11,7 +11,7 @@
 <description>This component allows you to manipulate data at column level. It allows you to add a column, change column names, compute cumulative sum by groups, remove columns, sort data by columns, and obtain unique values of columns.</description>
 
 <inputs>
-A tab-delimited or comma-separated text file: contains data to be modified.
+A tab-delimited or comma-separated text file: contains data to be modified. Enclosing quotes for values are not allowed.
 </inputs>
 
 <outputs>
@@ -35,6 +35,7 @@ A tab-delimited file containing column operation result.
 <li>Factor 3 Type: can be a constant, or value from another column.</li>
 <li>Factor 3 Value: when Factor 3 Type is defined to be a constant, this field shows.</li>
 <li>Factor 3 Column: when Factor 3 Type is defined to be value from another column, this field shows.</li>
+<li>Set Null Value to: you can choose to use blank (default), ., NA, NULL or NONE for null values in the output file </li>
 </ul>
 
 <b>To change column names (can change up to 8 columns' name at once):</b>
@@ -45,6 +46,7 @@ A tab-delimited file containing column operation result.
 <li>Column 2 to Change: pick a column to change its name.</li>
 <li>Column 2 New Name: new name for the column to change to.</li>
 <li>....</li>
+<li>Choose blank for Set Null Value to</li>
 </ul>
 
 <b>To compute cumulative sum among group:</b>
@@ -53,11 +55,13 @@ A tab-delimited file containing column operation result.
 <li>Group by: define group by which the cumulative sum is computed. One or more columns can be used for grouping.</li>
 <li>Cumulative Sum Value: can be "Count within group" for row count within group, or "Column cumulative sum within group" for the cumulative sum of a column within group</li>
 <li>Cumulative Sum Column: when "Column cumulative sum within group" is selected for Cumulative Sum Value, you can choose a numeric column to compute the cumulative sum within group.</li>
+<li>Choose blank for Set Null Value to</li>
 </ul>
 
 <b>To remove columns:</b>
 <ul>
 <li>Columns to Remove: choose one or more columns to remove from data</li>
+<li>Choose blank for Set Null Value to</li>
 </ul>
 
 <b>To sort (can sort data up to 3 levels):</b>
@@ -69,11 +73,13 @@ A tab-delimited file containing column operation result.
 <li>Level 2 Order: choose to sort in ascending or descending order</li>
 <li>Level 3: choose a column to be the third sorting level.</li>
 <li>Level 3 Order: choose to sort in ascending or descending order</li>
+<li>Choose blank for Set Null Value to</li>
 </ul>
 
 <b>To get unique value:</b>
 <ul>
 <li>Unique Value: choose one or more columns to get unique value from.</li>
+<li>Choose blank for Set Null Value to</li>
 </ul>
 
 <p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2424" target="_blank">demo</a> workflow</b></p>
@@ -89,6 +95,7 @@ A tab-delimited file containing column operation result.
 <li>Factor 2 Type: choose "A constant".</li>
 <li>Factor 2 Value: enter 7.</li>
 <li>Add Factor 3: choose "No".</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p><b>Demo 2 and 3: order data by "User ID" and then "Feature Name", and then compute cumulative sum of "Longitudinal Feature Value" for each "User ID" and "Feature Name". We need two Column operation compoents.</b>
@@ -100,6 +107,7 @@ A tab-delimited file containing column operation result.
 <li>Level 1 Order: choose "Ascending"</li>
 <li>Level 2: choose "Feature Name" as second sorting level.</li>
 <li>Level 2 Order: choose "Ascending"</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Second Column operation component:
@@ -109,6 +117,7 @@ A tab-delimited file containing column operation result.
 <li>Group by: choose "User ID" and "Feature Name"</li>
 <li>Cumulative Sum Value: choose "Column cumulative sum within group" </li>
 <li>Cumulative Sum Column: "Longitudinal Feature Value".</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 </p>
@@ -123,6 +132,7 @@ A tab-delimited file containing column operation result.
 <li>Level 2 Order: choose "Ascending"</li>
 <li>Level 3: choose "Longitudinal Feature Week" as third sorting level.</li>
 <li>Level 3 Order: choose "Ascending"</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Second Column operation component:
@@ -131,6 +141,7 @@ A tab-delimited file containing column operation result.
 <li>Column Name for Cumulative Sum: enter "count_of_opp".</li>
 <li>Group by: choose "User ID" and "Feature ID"</li>
 <li>Cumulative Sum Value: choose "Countm within group" </li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Pivot component: get the max count_of_opp (cumulative count within User ID and Feature ID)
@@ -139,6 +150,7 @@ A tab-delimited file containing column operation result.
 <li>Measurement: choose "count_of_opp".</li>
 <li>Define Rows: Yes</li>
 <li>Rows in Pivot: choose Feature ID and User ID </li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Join component: add other columns data by joining the output of the second Column Operation component and the Pivot component.
@@ -154,12 +166,14 @@ A tab-delimited file containing column operation result.
 <li>File 2 Column to Match Second: User ID</li>
 <li>File 1 Column to Match Third: count_of_opp</li>
 <li>File 2 Column to Match Third: count_of_opp</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Third Column operation component: clean up extra column
 <ol>
 <li>Column Operation: choose Remove columns.</li>  
 <li>Columns to Remove: choose "count_of_opp".</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 </p>

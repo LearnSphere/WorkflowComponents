@@ -92,5 +92,6 @@
     <resetValueType>Constant</resetValueType>
     <resetValueToConst>1111</resetValueToConst>
     <resetValueToCol>Input 0 (0) - Feature ID (column 0)</resetValueToCol>
+	<naValue>.</naValue>
   </options>
 </component>

@@ -110,5 +110,6 @@
     <level2SortOrder>Ascending</level2SortOrder>
     <level3ToSort>Input 0 (0) - Feature ID (column 0)</level3ToSort>
     <level3SortOrder>Ascending</level3SortOrder>
+	<naValue>.</naValue>
   </options>
 </component>

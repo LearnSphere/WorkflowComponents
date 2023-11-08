@@ -104,6 +104,16 @@
       <xs:enumeration value="Yes" />
     </xs:restriction>
   </xs:simpleType>
+  
+  <xs:simpleType name="nullType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="blank" />
+      <xs:enumeration value="." />
+	  <xs:enumeration value="NA" />
+	  <xs:enumeration value="NONE" />
+	  <xs:enumeration value="NULL" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -135,6 +145,8 @@
    		<xs:element id="Reset_Value_Type" name="resetValueType" type="valueSingularType" default="NA" />
    		<xs:element id="Reset_Value_to" name="resetValueToConst" type="xs:string" default="" />
    		<xs:element id="Reset_Value_to_Column" name="resetValueToCol" type="FileInputHeader" default=".*" />
+		
+		<xs:element id="Set_Null_Value_to" name="naValue" type="nullType" default="blank" />
    		
     </xs:choice>
   </xs:complexType>

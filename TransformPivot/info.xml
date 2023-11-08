@@ -11,7 +11,7 @@
 <description>This component allows you to aggregate and transform data. The functionality that it provides is very similiar to the one used in Excel.</description>
 
 <inputs><ul>
-<li>tab-delimited file: contains data to be modified.</li>
+<li>tab-delimited file: contains data to be modified. Enclosing quotes for values are not allowed. </li>
 </ul></inputs>
 
 <outputs>
@@ -26,6 +26,7 @@ Tab-delimited file contains pivoted result.
 <li>Rows in Pivot Table: rows that would appear as rows in the pivot result table. Multiple selection is allowed.</li>
 <li>Define Columns: yes or no. Selecting yes will make option "Columns in Pivot Table" appear. </li>
 <li>Columns in Pivot Table: the columns to be included in the pivot result table. This provides more specific measurement for the subgroups of the chosen columns. Multiple selection is allowed.</li>
+<li>Set Null Value to: you can choose to use blank (default), ., NA, NULL or NONE for null values in the output file </li>
 </ul>
 
 <p><b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2348" target="_blank">demo</a> workflow</b></p>
@@ -36,6 +37,7 @@ Tab-delimited file contains pivoted result.
 <li>Choose Step Duration (sec) for Measurement</li>
 <li>Choose No for Define Rows</li>
 <li>Choose No for Define Columns</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p><b>For the average time spent on step per student:</b>
@@ -45,6 +47,7 @@ Tab-delimited file contains pivoted result.
 <li>Choose Yes for Define Rows</li>
 <li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose No for Define Columns</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 
@@ -56,6 +59,7 @@ Tab-delimited file contains pivoted result.
 <li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose Yes for Define Columns</li>
 <li>Choose Problem Name for Columns in Pivot Table</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 
@@ -67,6 +71,7 @@ Tab-delimited file contains pivoted result.
 <li>Choose Anon Student Id for Rows in Pivot Table</li>  
 <li>Choose Yes for Define Columns</li>
 <li>Choose Problem Name and Problem View (by holding down ctrl key on Windows or cmd key on Mac) for Columns in Pivot Table</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 

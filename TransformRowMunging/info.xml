@@ -11,7 +11,7 @@
 <description>This component allows you to manipulate data at row level. It allows you to keep rows, remove rows, and reset row values using column values.</description>
 
 <inputs>
-A tab-delimited or comma-separated text file: contains data to be modified.
+A tab-delimited or comma-separated text file: contains data to be modified. Enclosing quotes for values are not allowed. 
 </inputs>
 
 <outputs>
@@ -40,6 +40,7 @@ A tab-delimited file containing row munging result.
 <li><b>Condition 3 Compare to Value Type:</b> define the value type for the compared-to variable of the third comparison condition. It can be NA, constants, or value from another column.</li>
 <li><b>Condition 3 Compare to Value:</b> when Condition 3 Compare to Value Type is defined to be constants, this field shows. Multiple values are allowed but should be separated by comma. NOTE: don't leave space before or after comma otherwise the space will be included in searching. Comparison is case insensitive. You can use quotes to define values precisely. For example, when you enter [abc, def] in this field, two values are used for searching: [abc] and [ def]; when you enter ["abc", "def"] in this field, [abc] and [def] are used for searching.</li>  
 <li><b>Condition 3 Compare to Column:</b> when Condition 3 Compare to Value Type is defined to be value from column, this field shows. Operator contain doesn't work for this situation.</li>  
+<li><b>Set Null Value to:</b> you can choose to use blank (default), ., NA, NULL or NONE for null values in the output file </li>
 </ul>
 
 
@@ -53,6 +54,7 @@ A tab-delimited file containing row munging result.
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
 <li>Condition 1 Compare to Value: enter "number_of_attempt,number_of_lecture".</li>
 <li>Add Condition 2: choose "No"</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 <p>Choose rows that contains "number_of_attempt" or "number_of_lecture" in column "Feature Name", and only keep "Longitudinal Feature Week" after the fourth week:
@@ -69,6 +71,7 @@ A tab-delimited file containing row munging result.
 <li>Condition 1 Compare to Value Type: choose "Constants".</li>
 <li>Condition 1 Compare to Value: enter "4".</li>
 <li>Add Condition 3: choose "No"</li>
+<li>Choose blank for Set Null Value to</li>
 </ol>
 </p>
 

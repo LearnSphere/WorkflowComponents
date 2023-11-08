@@ -113,6 +113,16 @@
     </xs:restriction>
   </xs:simpleType>
   
+  <xs:simpleType name="nullType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="blank" />
+      <xs:enumeration value="." />
+	  <xs:enumeration value="NA" />
+	  <xs:enumeration value="NONE" />
+	  <xs:enumeration value="NULL" />
+    </xs:restriction>
+  </xs:simpleType>
+  
   
 
   <xs:complexType name="OptionsType">
@@ -169,6 +179,8 @@
     	<xs:element id="Level_3_Order" name="level3SortOrder" type="sortOrderType" default="Ascending"/>
   		
     	<xs:element id="Unique_Value" name="uniqueValue" type="MultiFileInputHeader" default=".*" />
+		
+		<xs:element id="Set_Null_Value_to" name="naValue" type="nullType" default="blank" />
     	
     </xs:choice>
   </xs:complexType>

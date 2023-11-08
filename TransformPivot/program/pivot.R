@@ -12,10 +12,12 @@ library(reshape2)
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE)
   #if only one col is retrieved, try again with ,
   if (ncol(ds_file) == 1) {
-    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+    #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
+    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE)
   }
   return(ds_file)
 }
@@ -126,7 +128,13 @@ while (i <= length(args)) {
     }
     outputFileName = paste(args[i+1],"/pivot_result.txt", sep="")
     i = i+1
-  }
+  } else if (args[i] == "-naValue") {
+    if (length(args) == i) {
+      stop("naValue name must be specified")
+    }
+    naValue = args[i+1]
+    i = i+1
+  } 
   i = i+1
 }
 
@@ -279,8 +287,10 @@ if (colnames(agg_data)[1] == ".") {
     agg_data = subset(agg_data, select=-c(.))
   }
 }
-
-my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote = F)
+if (naValue == "blank") {
+  naValue = ""
+}
+my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote = F, na = naValue)
 
 #dcast(myData, User.ID+Longitudinal.Feature.Week ~ Feature.Name, value.var="values", fun.aggregate = sum)
 

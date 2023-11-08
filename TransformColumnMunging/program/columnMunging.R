@@ -12,10 +12,12 @@ suppressMessages(library(data.table))
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
   #if only one col is retrieved, try again with ,
   if (ncol(ds_file) == 1) {
-    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+    #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
   }
   return(ds_file)
 }
@@ -82,6 +84,7 @@ level2SortOrder = ""
 level3ToSort = ""
 level3SortOrder = ""
 uniqueValue = c()
+naValue = ""
 
 while (i <= length(args)) {
   if (args[i] == "-node") {
@@ -376,6 +379,12 @@ while (i <= length(args)) {
       stop("uniqueValue name must be specified")
     }
     uniqueValue <- c(uniqueValue, args[i+1])
+    i = i+1
+  } else if (args[i] == "-naValue") {
+    if (length(args) == i) {
+      stop("naValue name must be specified")
+    }
+    naValue = args[i+1]
     i = i+1
   } 
   i = i+1
@@ -703,5 +712,7 @@ if (columnOperation == "Unique value") {
     resultDS = resultDS %>% rename(!!level3ToSort := col_munging_temp_sortColumn3)
   }
 }
-
-my.write(resultDS, outputFileName, sep="\t", row.names = F, col.names=T, quote = F)
+if (naValue == "blank") {
+  naValue = ""
+}
+my.write(resultDS, outputFileName, sep="\t", row.names = F, col.names=T, quote = F, na=naValue)
