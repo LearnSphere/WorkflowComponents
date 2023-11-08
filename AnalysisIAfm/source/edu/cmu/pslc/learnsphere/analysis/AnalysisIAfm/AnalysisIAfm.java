@@ -46,7 +46,7 @@ public class AnalysisIAfm extends AbstractComponent {
     	File inputFile = getAttachment(0, 0);
         logger.info("iAFM inputFile: " + inputFile.getAbsolutePath());
         String opportunity = this.getOptionAsString("opportunity");
-        if (!isColumnNumeric(inputFile.getAbsolutePath(), opportunity)) {
+        if (!isColumnNumeric(inputFile.getAbsolutePath(), opportunity, true)) {
 			String err = "Opportunity Column has non-numeric value.";
             addErrorMessage(err);
             logger.info("iAFM component is aborted: " + err);
@@ -79,7 +79,7 @@ public class AnalysisIAfm extends AbstractComponent {
         
     }
     
-    private boolean isColumnNumeric(String filePath, String colName) {
+    private boolean isColumnNumeric(String filePath, String colName, boolean excludeSpecialChar) {
     	String[][] allCells = IOUtil.read2DStringArray(filePath, "\t");
         String[] headers = allCells[0];
         if (headers.length < 2) {
@@ -100,7 +100,15 @@ public class AnalysisIAfm extends AbstractComponent {
         if (cumsumColInd == -1)
         	return false;
         for (int i = 1; i < allCells.length; i++) {
-        	if (!isNumeric(allCells[i][cumsumColInd]))
+        	String cellVal = allCells[i][cumsumColInd];
+        	if (excludeSpecialChar) {
+        		if (cellVal.trim().equals("") || cellVal.trim().equals(".") ||
+        				cellVal.trim().equalsIgnoreCase("none") ||
+        				cellVal.trim().equalsIgnoreCase("null") ||
+        				cellVal.trim().equalsIgnoreCase("na"))
+        			continue;
+        	}
+        	if (!isNumeric(cellVal.trim()))
         		return false;
         }
         return true;
