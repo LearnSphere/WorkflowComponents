@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[13]:
+# In[54]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[14]:
+# In[55]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -75,10 +75,8 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
         df = df[~df[kc_col_name].isnull()]
     else:
         df.ix[df[kc_col_name].isnull(), kc_col_name] = 'NaN'
-    
     # Drop duplicates
     df.drop_duplicates(subset=["user_id", "item_id", "timestamp"], inplace=True)
-    
     # Filter too short sequences
     df = df.groupby("user_id").filter(lambda x: len(x) >= min_interactions_per_user)
     df[kc_col_name] = df[kc_col_name].astype('str')
@@ -214,7 +212,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[15]:
+# In[56]:
 
 
 def phi(x):
@@ -226,7 +224,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[16]:
+# In[57]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -542,7 +540,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[17]:
+# In[58]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -701,7 +699,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[18]:
+# In[59]:
 
 
 def compute_metrics(y, y_pred):
@@ -741,7 +739,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[19]:
+# In[60]:
 
 
 def logToWfl(msg):
@@ -758,7 +756,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[22]:
+# In[82]:
 
 
 #test command from WF component:
@@ -803,7 +801,8 @@ if command_line:
         cv_fold = args.numFold
 else:
     #student_step file
-    file_name = "ds76_student_step_export.txt"
+    file_name = "ds76_stu_step_with_null_skills.txt"
+    #file_name = "ds76_student_step_export.txt"
     #file_name = "C:/WPIDevelopment/dev06_dev/test/AFM_improved_optimization/runFastAFM/ds392_student_step_All_Data_1310_2019_0802_022703.txt"
     #file_name = "ds76_student_step_All_Data_test_fastAFM.txt"
     #file_name = "C:/WPIDevelopment/dev06_dev/LFA/testData/search/input/DS 76 Geometry Area (1996-97)/Lasso ModelSSSVTS2.txt"
@@ -816,7 +815,7 @@ else:
     #kc_col_names=['KC(KTracedSkills)']
     #kc_col_name="KC (DecompArithDiam)"
     #kc_col_name="KC (Lasso Model)"
-    kc_col_names=["KC (Single-KC)"]
+    kc_col_names=["KC (Circle-Collapse)"]
     #kc_col_name="KC (Default)"
     #working_dir
     working_dir = "."
@@ -948,6 +947,8 @@ for kc_col_name in kc_col_names:
         df_original = pd.read_csv(prediction_file_name, delimiter='\t')
     if remove_nan_skills:
         df_original = df_original[~df_original[kc_col_name].isnull()]
+        #drop duplicate because prepare_data function is doing this
+        df_original = df_original.drop_duplicates(subset=["Anon Student Id", "Problem Hierarchy", "Problem Name","Step Name", "First Transaction Time"]).reset_index(drop=True)
     #error rate prediction!
     #df_original[f"Predicted Error Rate ({kc_name})"] = 1-y_all_pred
     df_original["Predicted Error Rate (" + str(kc_name) + ")"] = 1-y_all_pred
