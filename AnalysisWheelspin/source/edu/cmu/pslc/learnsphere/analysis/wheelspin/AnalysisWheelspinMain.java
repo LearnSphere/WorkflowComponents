@@ -161,12 +161,21 @@ public class AnalysisWheelspinMain extends AbstractComponent {
         File outputDirectory = this.runExternal();
         if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
                 logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
-                File outputFile = new File(outputDirectory.getAbsolutePath() + "/wheelspin_result.txt");
-                if (outputFile != null && outputFile.exists()) {
-                        Integer nodeIndex0 = 0;
-                        Integer fileIndex0 = 0;
-                        String label0 = "tab-delimited";
-                        this.addOutputFile(outputFile, nodeIndex0, fileIndex0, label0);
+                File outputFileResult = new File(outputDirectory.getAbsolutePath() + "/wheelspin_result.txt");
+                File outputFileParameters = new File(outputDirectory.getAbsolutePath() + "/wheelspin_parameters.txt");
+                
+                if (outputFileResult != null && outputFileResult.exists() &&
+                		outputFileParameters != null && outputFileParameters.exists()) {
+                        Integer nodeIndex = 0;
+                        Integer fileIndex = 0;
+                        String label = "tab-delimited";
+                        this.addOutputFile(outputFileResult, nodeIndex, fileIndex, label);
+                        
+                        nodeIndex = 1;
+                        label = "parameters";
+                        this.addOutputFile(outputFileParameters, nodeIndex, fileIndex, label);
+
+                            
                 } else {
                         String exErr = "An error has occurred. No output file is found.";
                         addErrorMessage(exErr);

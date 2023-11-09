@@ -19,7 +19,9 @@
 <b>Student-Step</b>
 </inputs>
 
-<outputs>Output is a tab-delimited file. Each row represents a unique combination of student and KC skill. Here is description for each column in the output file
+<outputs>
+<ol>
+<li><b>A tab-delimited file:</b> Each row represents a unique combination of student and KC skill. Here is description for each column in the output file
 <ul>
 <li>Anon Student Id: student ID</li>
 <li>KC (model_name): the KC model of interest</li>
@@ -59,6 +61,9 @@ when Local_Measurement_Slope_CI_Lower_Bound &lt; 0 and Local_Measurement_Slope &
 when Local_Measurement_Slope_CI_Upper_Bound &gt; 0 and Local_Measurement_Slope &lt;= 0, student-KC is pws (possible wheelspin);</li>
 <li>Local Measurement Progress Probability: probability of progress for student-KC by local measurement</li>
 </ul>
+</li>
+<li><b>Parameter file:</b> Contains parameters from the iAFM Predictive Model and the Local Measurement Model</li>
+</ol>
 </outputs>
 
 <options>

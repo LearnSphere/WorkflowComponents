@@ -66,9 +66,9 @@ while (i <= length(args)) {
 }
 
 #
-# ds.name = "ds1943"
-# model.name = "Default"
-# ds<-read.table("ds1943_Ran_paper/ds1943_student_step_All_Data_3691_2017_0522_203358_cleaned.txt", sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
+#ds.name = "ds445"
+#model.name = "Item_add_Click_Type"
+#ds<-read.table("ds445/ds445_student_step_All_Data_1469_2016_0403_085520_multiskill_converted.txt", sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
 ds<-logWarningsMessages(read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE), logFileName = "predictive_wheelspinning_WF.wfl")
 
@@ -142,6 +142,14 @@ if (nrow(ds) == 0) {
 ### fit/predict hierarchical iAFM model: First.Attempt ~ opportunity + (opportunity|student) + (opportunity|KC)
 fitted.model<-logWarningsMessages(glmer(First.Attempt~KC.model.opportunity+(KC.model.opportunity|Anon.Student.Id)+(KC.model.opportunity|KC.model.name),data=ds, family= binomial(link = logit)), logFileName = "predictive_wheelspinning_WF.wfl")
 ds$predicted <- 1-logWarningsMessages(predict(fitted.model, ds, allow.new.levels = TRUE, type="response"), logFileName = "predictive_wheelspinning_WF.wfl")
+
+kc.params <- data.frame( cbind(row.names(ranef(fitted.model)$KC.model.name), ranef(fitted.model)$KC.model.name[,1], ranef(fitted.model)$KC.model.name[,2]) )
+kc.params <- cbind(Type="Skill", kc.params)
+colnames(kc.params) <- c("Type", "Name", "Intercept", "Slope")
+stud.params <- data.frame( cbind(row.names(ranef(fitted.model)$Anon.Student.Id), ranef(fitted.model)$Anon.Student.Id[,1], ranef(fitted.model)$Anon.Student.Id[,2]) )
+stud.params <- cbind(Type="Student", stud.params)
+colnames(stud.params) <- c("Type", "Name", "Intercept", "Slope")
+iafm.params = rbind(kc.params, stud.params)
 
 # ### AFM: First.Attempt ~ (1|student) + KC + KC:Opportunity
 # AFM.fitted.model<-glmer(First.Attempt~(1|Anon.Student.Id)+ KC.model.name + KC.model.name:KC.model.opportunity,data=ds, family= binomial(link = logit))
@@ -253,6 +261,12 @@ lr.matrix[,"local_measurement_slope_CI_up_bound"] <- NA
 #find learning rate of each student for each skill (like the learning curve on datashop, except using the real data, not the predition) and populate lr.matrix lf_AFM
 #for each student and each skill the student has gone thru, order by opportunity, do lm(first.attempt~opportunity) to get slope
 #populate lr.matrix$lr_AFM with the slope
+#dataframes to store parameters for local glm
+local.params <- data.frame(Student = character(), 
+                 SKill = character(), 
+                 Intercept = double(), 
+                 Slope = double(),
+                 stringsAsFactors = FALSE) 
 for (i in 1:length(all.students)) {
   student = all.students[i];
   for (j in 1:length(all.skills)) {
@@ -274,11 +288,14 @@ for (i in 1:length(all.students)) {
         lr.matrix$local_measurement_slope_se[lr.matrix$Anon.Student.Id == student & lr.matrix$KC.model.name == skill] = slope_se
         lr.matrix$local_measurement_slope_CI_up_bound[lr.matrix$Anon.Student.Id == student & lr.matrix$KC.model.name == skill] = slope_CI_up_bound
         lr.matrix$local_measurement_slope_CI_low_bound[lr.matrix$Anon.Student.Id == student & lr.matrix$KC.model.name == skill] = slope_CI_low_bound
+        #add parameters to dataframes
+        temp_df<-data.frame(student,skill,intercept, slope)
+        names(temp_df)<-c("Student","Skill","Intercept","Slope")
+        local.params <- rbind(local.params, temp_df)
       }
     }
   }
 }
-
 
 count_mean = mean(lr.matrix$count, na.rm = TRUE)
 count_median = median(lr.matrix$count, na.rm = TRUE)
@@ -399,4 +416,17 @@ colnames(lr.matrix.output) = c("Anon Student Id", paste("KC (", model.name, ")",
 
 #output the lr_matrix result
 write.table(lr.matrix.output, file = "wheelspin_result.txt", sep = "\t",  row.names = FALSE, col.names = TRUE, quote = FALSE)
+
+#write parameters
+#title df
+ds.title <- data.frame(title=character(),
+                     stringsAsFactors=FALSE)
+names(ds.title) = c("IAFM Parameters")
+logWarningsMessages(write.table(ds.title, file="wheelspin_parameters.txt", col.names=TRUE, sep="\t", quote = FALSE), logFileName = "predictive_wheelspinning_WF.wfl")
+logWarningsMessages(write.table(iafm.params, file="wheelspin_parameters.txt", col.names=TRUE, sep="\t",  append=TRUE,, quote = FALSE), logFileName = "predictive_wheelspinning_WF.wfl")
+ds.title <- data.frame(title=character(),
+                       stringsAsFactors=FALSE)
+names(ds.title) = c("Local Parameters")
+logWarningsMessages(write.table(ds.title, file="wheelspin_parameters.txt", col.names=TRUE, sep="\t",  append=TRUE, quote = FALSE), logFileName = "predictive_wheelspinning_WF.wfl")
+logWarningsMessages(write.table(local.params, file="wheelspin_parameters.txt", col.names=TRUE, sep="\t", append=TRUE,, quote = FALSE), logFileName = "predictive_wheelspinning_WF.wfl")
 
