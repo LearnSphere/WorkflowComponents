@@ -52,7 +52,7 @@ public class AnalysisIAfm extends AbstractComponent {
             logger.info("iAFM component is aborted: " + err);
             reqsMet = false;
 		}
-        
+        String paramOutputFileFormat = this.getOptionAsString("paramOutputFile");
         if (reqsMet) {
         	// Run the program...
             File outputDirectory = this.runExternal();
@@ -71,8 +71,11 @@ public class AnalysisIAfm extends AbstractComponent {
     	nodeIndex = 2;
     	fileLabel = "parameters";
             File paramsFile = new File(outputDirectory.getAbsolutePath() + "/parameters.xml");
-            this.addOutputFile(paramsFile, nodeIndex, fileIndex, fileLabel);
-
+            File paramsFile2 = new File(outputDirectory.getAbsolutePath() + "/parameters_tab_delim.txt");
+            if (paramOutputFileFormat.equalsIgnoreCase("xml"))
+            	this.addOutputFile(paramsFile, nodeIndex, fileIndex, fileLabel);
+            else
+            	this.addOutputFile(paramsFile2, nodeIndex, fileIndex, fileLabel);
         }               
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());

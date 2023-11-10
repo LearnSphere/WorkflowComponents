@@ -7,8 +7,10 @@ suppressWarnings(suppressMessages(library(rlang)))
 suppressWarnings(suppressMessages(library(lme4)))
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(optimx)))
+suppressWarnings(suppressMessages(library(dplyr)))
 
-preprocess <- function(origRollup, kcm,response,opportunity,individual) {
+
+preprocess <- function(origRollup, kcm,response,opportunity,individual, useReverseOpp) {
   #kcm_index <- grep(kcm,names(origRollup))
   df = origRollup #the file to import
   names(df) <- make.names(names(df)) #add the periods instead of spaces
@@ -18,8 +20,17 @@ preprocess <- function(origRollup, kcm,response,opportunity,individual) {
   names(df)[which( colnames(df)==make.names(eval(individual)) )] <- "individual" #replace the individualizing factor name with "individual"
   success <- ifelse(df$response=="correct",1,0) #recode response as 0 (incorrect) or 1 (correct)
   df$success <- success
+  if (useReverseOpp) {
+    df = df %>% group_by(individual, KC) %>%
+      mutate(
+        opportunity = max(opportunity) - opportunity
+      ) %>%
+      ungroup()
+  } else {
+    df$opportunity <- df$opportunity -1
+  }
   df$errorRate <- 1-success #add a success column
-  rm(success)
+  #rm(success)
   return(df)
 }
 
@@ -34,6 +45,8 @@ replace_special_chars <- function(str) {
 
 wfl_log_file = "iAFM.wfl"
 workingDir = "."
+useReverseOpp = "No"
+
 
 if (length(args) == 2) {
   stuStepFileName = args[1]
@@ -87,13 +100,37 @@ if (length(args) == 2) {
       }
       workingDir = args[i+1]
       i = i+1
+    } else if (args[i] == "-useReverseOpp") {
+      if (length(args) == i) {
+        stop("useReverseOpp name must be specified")
+      }
+      useReverseOpp = args[i+1]
+      i = i+1
     }
     i = i+1
   }
 }
 
+#for testing
+# stuStepFileName = "ds96_reordered_multiskill_converted.txt"
+# modelName = "KC (Default)"
+# response = "First Attempt"
+# opportunity = "Opportunity (Default)"
+# individual = "Anon Student Id"
+# workingDir = "."
+# useReverseOpp = "Yes"
+
+
+#set default
+if (useReverseOpp == "Yes") {
+  useReverseOpp = TRUE
+} else {
+  useReverseOpp = FALSE
+}
+
+
 #df <- preprocess(suppressWarnings(fread(file=stuStepFileName,verbose = F)),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
-df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(response),eval(opportunity),eval(individual)) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
+df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(response),eval(opportunity),eval(individual),useReverseOpp) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 
 ## fit iAFM - four params - individual intercept, individual slope, KC intercept, and KC slope
 #iafm.model <- suppressWarnings(glmer(success ~ opportunity + (opportunity|individual) + (opportunity|KC), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))))
@@ -118,6 +155,7 @@ write("<parameters>",file=outputFile2,sep="",append=FALSE)
 # kc.params is a table where column 1 is the KC name, column 2 is the iAFM estimated KC intercept, and column 3 is the iAFM estimated KC slope
 kc.params <- data.frame( cbind(row.names(ranef(iafm.model)$KC), ranef(iafm.model)$KC[,1], ranef(iafm.model)$KC[,2]) )
 kc.params <- cbind(Type="Skill", kc.params)
+colnames(kc.params) =  c("Type", "Name", "Intercept", "Slope")
 
 strBuilder <- ""
 for (x in 1:length(rownames(kc.params))) {
@@ -133,7 +171,7 @@ for (x in 1:length(rownames(kc.params))) {
 
 # stud.params is a table where column 1 is the student ID, column 2 is the iAFM estimated student intercept, and column 3 is the iAFM estimated student slope
 stud.params <- data.frame( cbind(row.names(ranef(iafm.model)$individual), ranef(iafm.model)$individual[,1], ranef(iafm.model)$individual[,2]) )
-stud.params <- cbind(Type="Individual", stud.params)
+stud.params <- cbind(Type="Student", stud.params)
 colnames(stud.params) <- c("Type", "Name", "Intercept", "Slope")
 for (x in 1:length(rownames(stud.params))) {
   strBuilder <- paste(strBuilder,
@@ -146,9 +184,13 @@ for (x in 1:length(rownames(stud.params))) {
       sep="")
 }
 write(strBuilder,file=outputFile2,sep="",append=TRUE)
-
-
 write("</parameters>",file=outputFile2,sep="",append=TRUE)
+
+#write the parameters as tab delimited
+outputFile2 <- paste(workingDir, "/parameters_tab_delim.txt", sep="")
+iafm.params = rbind(kc.params, stud.params)
+logWarningsMessages(write.table(iafm.params, file=outputFile2, col.names=TRUE, row.names = FALSE, sep="\t", quote = FALSE), logFileName = "predictive_wheelspinning_WF.wfl")
+
 
 # Prepare to write student-step file.
 outputFile3 <- paste(workingDir, "/student-step.txt", sep="")

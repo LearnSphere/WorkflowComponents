@@ -24,6 +24,8 @@
 <b>First Attempt</b> - the column containing the First Attempt data <br/>
 <b>Opportunity</b> - the column containing the Opportunity data. Has to be numeric. <br/>
 <b>Student</b> - the column containing the Student ID. <br/>
+<b>Use Reverse Opportunity</b> - Opportunity is max opportunity minus opportunity. <br/>
+<b>Student</b> - Parameters Output Format, XML or Tab-delimited <br/>
 </options>
 
 </info>

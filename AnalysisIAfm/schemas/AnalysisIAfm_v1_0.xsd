@@ -89,6 +89,19 @@
       <xs:element name="output2" type="OutputDefinition2" />
     </xs:sequence>
   </xs:complexType>
+  
+  <xs:simpleType name="yesNoType" final="restriction">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="No" />
+    <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="paramOutputType" final="restriction">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="XML" />
+    <xs:enumeration value="Tab-delimited" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -96,6 +109,8 @@
       <xs:element type="FileInputHeader" name="firstAttempt" id="First_Attempt" default="First Attempt" />
       <xs:element type="FileInputHeader" name="opportunity" id="Opportunity" default="\s*Opportunity\s*\((.*)\)\s*" />
       <xs:element type="FileInputHeader" name="student" id="Student" default="Anon Student Id" />
+      <xs:element type="yesNoType" name="useReverseOpp" id="Use_Reverse_Opportunity" default="No" />
+      <xs:element type="paramOutputType" name="paramOutputFile" id="Parameters_Output_Format" default="XML" />
     </xs:choice>
   </xs:complexType>
 
