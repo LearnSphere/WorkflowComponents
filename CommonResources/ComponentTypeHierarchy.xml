@@ -54,6 +54,7 @@
 	<Analysis>
 	    <Recently_Used />
 		<AFM />
+		<AFM_R_Version/>
 		<Apply_Detector />
 		<Assessment />
 		<BKT />
@@ -69,6 +70,7 @@
 		<LFA_Search />
 		<Linear_Modeling />
 		<LSA />
+		<Memory_Student_Learning_Models />
 		<OLI_Content_Extractor />
 		<OLI_Demographic />
 		<OLI_Error_Report />
@@ -78,6 +80,7 @@
 		<Output_Comparator />
 		<Performance_Difference_Analysis />
 		<PFA />
+		<PFA_Step_Based/>
 		<Propensity_Matching />
 		<Python_AFM />
 		<RISE />

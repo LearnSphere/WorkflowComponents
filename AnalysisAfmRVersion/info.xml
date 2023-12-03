@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>
+DataShop@CMU
+<email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAfmRVersion</url>
+<date>2023-12-01</date>
+<abstract>The <b>Additive Factor Model</b> (AFM) performs a logistic regression over the "error rate" learning curve data. This script is written in R.</abstract>
+<description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>
+
+<inputs>
+<b>Datashop Student-Step export.</b> 
+<br>The required columns are: </br>
+<ul>
+<li>"Anon Student Id"</li>
+<li>"First Attempt"</li>
+<li>"First Transaction Time"</li>
+<li>"KC (name_of_the_KC_model_of_your_interest)"</li>
+<li>"Opportunity (name_of_the_KC_model_of_your_interest)"</li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>Student-Step (with new prediction)</li>
+<li>Model summary output by R</li>
+<li>Model values</li>
+<li>Parameter values in XML or tab-delimited format</li>
+</ul>
+</outputs>
+
+<options>
+<b>Model</b>: the column containing the KCM data <br/>
+<b>Use Reverse Opportunity</b>: if "Yes", KCM opportunity is turned to reverse opportunity, i.e. max(opportunity)-opportunity, thus the intercept is a de facto prediction<br/>
+<b>Parameters Output Format</b>: choose from XML or tab-delimited text  <br/>
+</options>
+
+</info>

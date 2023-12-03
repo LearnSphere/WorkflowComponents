@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>
+DataShop@CMU
+<email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAfmRVersion</url>
+<date>2023-12-01</date>
+<abstract>The <b>Memory Student Learning Models</b> performs enhanced AFM or PFA. In addition to the number of previous opportunities learners have, lag time is included in the model as a second linear component. The lag time is represented as Memory Strength: -d*log(LagTime) where d=-0.5</abstract>
+<description>The Memory Student Learning Models performs enhanced AFM or PFA modeling. In addition to the number of previous opportunities learners had, lag time was included in the model as a second linear component. The lag time is represented as memory Strength: -d*log(LagTime) where d=-0.5</description>
+
+<inputs>
+<b>Datashop Student-Step export.</b> 
+<br>The required columns are: </br>
+<ul>
+<li>"Anon Student Id"</li>
+<li>"First Attempt"</li>
+<li>"First Transaction Time"</li>
+<li>"KC (name_of_the_KC_model_of_your_interest)"</li>
+<li>"Opportunity (name_of_the_KC_model_of_your_interest)"</li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>Student-Step (with new prediction)</li>
+<li>Model summary output by R</li>
+<li>Model values</li>
+<li>Parameter values in XML or tab-delimited format</li>
+</ul>
+</outputs>
+
+<options>
+<b>Model</b>: the column containing the KCM data <br/>
+<b>Modeling Method</b>: choose from AFM and PFA<br/>
+<b>Parameters Output Format</b>: choose from XML or tab-delimited text  <br/>
+</options>
+
+</info>
