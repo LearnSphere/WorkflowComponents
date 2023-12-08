@@ -1,2 +1,2 @@
 component.interpreter.path=/usr/local/bin/Rscript
-component.program.path=program/iAFM.R
+component.program.path=program/AFM.R
