@@ -5,7 +5,7 @@
 DataShop@CMU
 <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAfmRVersion</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisPfaStepBased</url>
 <date>2023-12-01</date>
 <abstract>The <b>Performance Factors Analysis</b> (PFA) performs a logistic regression over the "error rate" learning curve data. PFA is a generalization of the additive factors model (AFM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, the KC by prior succesful opportunity interaction and the KC by prior unsuccessful opportunity interaction.</abstract>
 <description>PFA is a generalization of the additive factors model (AFM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, the KC by prior succesful opportunity interaction and the KC by prior unsuccessful opportunity interaction.</description>

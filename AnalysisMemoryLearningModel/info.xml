@@ -5,7 +5,7 @@
 DataShop@CMU
 <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisAfmRVersion</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisMemoryLearningModel</url>
 <date>2023-12-01</date>
 <abstract>The <b>Memory Student Learning Models</b> performs enhanced AFM or PFA. In addition to the number of previous opportunities learners have, lag time is included in the model as a second linear component. The lag time is represented as Memory Strength: -d*log(LagTime) where d=-0.5</abstract>
 <description>The Memory Student Learning Models performs enhanced AFM or PFA modeling. In addition to the number of previous opportunities learners had, lag time was included in the model as a second linear component. The lag time is represented as memory Strength: -d*log(LagTime) where d=-0.5</description>
