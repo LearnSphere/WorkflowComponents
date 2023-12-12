@@ -8,8 +8,8 @@ suppressWarnings(suppressMessages(library(lme4)))
 suppressWarnings(suppressMessages(library(data.table)))
 suppressWarnings(suppressMessages(library(optimx)))
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(performance)))
-suppressWarnings(suppressMessages(library(bayestestR)))
+#suppressWarnings(suppressMessages(library(performance)))
+#suppressWarnings(suppressMessages(library(bayestestR)))
 
 #preprocess <- function(origRollup, kcm, pid, response, opportunity, individual, txntime, useReverseOpp) {
 preprocess <- function(origRollup, kcm) {
@@ -59,6 +59,20 @@ get_kc_name <- function(kcm_with_paren) {
   #change KC (Default) to Default
   return(strsplit(kcm_with_paren,split = '[()]')[[1]][length(strsplit(kcm_with_paren,split = '[()]')[[1]])])
 }
+
+# ref: https://stackoverflow.com/questions/4903092/calculate-auc-in-r and By Miron Kursa https://mbq.me
+#how to use: for example: compute_auc(predicted, true_score) where true_score is TRUE or 1 for correct and FALSE or 0 for incorrect
+compute_auc <- function(predicted, true_score) {
+  n1 <- sum(!true_score)
+  n2 <- sum(true_score)
+  U  <- sum(rank(predicted)[!true_score]) - n1 * (n1 + 1) / 2
+  return(1 - U / n1 / n2)
+}
+
+compute_rmse <- function(predicted, true_score) {
+  return(sqrt(mean((true_score - predicted)^2)))
+}
+
 
 # parse commandline args
 i = 1
@@ -118,8 +132,9 @@ logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE
 logWarningsMessages(capture.output(params, file = summary.file, append = TRUE), logFileName = wfl_log_file)
 
 #output model-values in xml format
-RMSE = round(performance_rmse(model), 3)
-AUC = performance_roc(model)
+predicted_score = predict(model,df,type="response",allow.new.levels=TRUE)
+AUC = compute_auc(predicted_score, df$response)
+RMSE = compute_rmse(predicted_score, df$response)
 outputFile1 <- paste(workingDir, "/model-values.xml", sep="")
 write("<model_values>",file=outputFile1,sep="",append=FALSE)
 write("\t<model>",file=outputFile1,sep="",append=TRUE)
@@ -128,7 +143,7 @@ write(paste("\t\t<AIC>",AIC(model),"</AIC>",sep=""),file=outputFile1,sep="",appe
 write(paste("\t\t<BIC>",BIC(model),"</BIC>",sep=""),file=outputFile1,sep="",append=TRUE)
 write(paste("\t\t<log_likelihood>",as.numeric(logLik(model)),"</log_likelihood>",sep=""),file=outputFile1,sep="",append=TRUE)
 write(paste("\t\t<RMSE>",as.numeric(RMSE),"</RMSE>",sep=""),file=outputFile1,sep="",append=TRUE)
-write(paste("\t\t<AUC>",as.numeric(area_under_curve(AUC$Specificity, AUC$Sensitivity)),"</AUC>",sep=""),file=outputFile1,sep="",append=TRUE)
+write(paste("\t\t<AUC>",as.numeric(AUC),"</AUC>",sep=""),file=outputFile1,sep="",append=TRUE)
 main_fixef = fixef(model)
 for(i in 1:length(main_fixef)) {
   name = replace_special_chars(names(main_fixef))[i]
