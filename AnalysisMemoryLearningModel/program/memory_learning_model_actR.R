@@ -29,7 +29,7 @@ preprocess <- function(origRollup, kcm) {
   df = df %>% arrange(individual, KC, txntime) %>%
     group_by(individual, KC) %>%
     mutate(
-      time_lag_mins = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 1, 1+round(as.numeric(difftime(txntime, lag(txntime), unit="mins")), 3)),
+      time_lag_mins = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 1, 1+round(as.numeric(difftime(txntime, lag(txntime), units="mins")), 3)),
       actr = as.numeric(log(time_lag_mins ** -0.5)),
       cumulative.corrects = cumsum(correct == 1),
       cumulative.incorrects = cumsum(correct == 0)
