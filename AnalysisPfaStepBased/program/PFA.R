@@ -202,7 +202,7 @@ write("</parameters>",file=outputFile2,sep="",append=TRUE)
 
 #write the parameters as tab delimited
 outputFile2 <- paste(workingDir, "/parameters_tab_delim.txt", sep="")
-afm.params = bind_rows(kc.params, stud.params)
+afm.params = logWarningsMessages(bind_rows(kc.params, stud.params), logFileName = wfl_log_file)
 logWarningsMessages(write.table(afm.params, file=outputFile2, col.names=TRUE, row.names = FALSE, sep="\t", quote = FALSE, na =""), logFileName = wfl_log_file)
 
 # Prepare to write student-step file with new prediction, reverse opp and actr when applies

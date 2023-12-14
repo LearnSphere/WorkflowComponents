@@ -20,9 +20,7 @@ preprocess <- function(origRollup, kcm) {
   names(df)[which( colnames(df)==paste("Opportunity (", get_kc_name(kcm), ")", sep=""))] <- "opportunity" #replace the opportunity name with "opportunity"
   names(df)[which( colnames(df)=="Anon Student Id")] <- "individual" #replace the individualizing factor name with "individual"
   names(df)[which( colnames(df)=="First Transaction Time")] <- "txntime" #replace First Transaction Time with "txntime"
-  
   df$correct = ifelse((df$response=="Correct"|df$response=="correct"|df$response=="CORRECT"), 1, 0)
-  
   # Data cleaning and transformations to get new columns:
   # time_lag_mins: minute difference bw this and last row + 1
   # actr: ln(1/sqrt(time_lag_mins)), is the forgetting variable calculated based on time
@@ -31,7 +29,7 @@ preprocess <- function(origRollup, kcm) {
   df = df %>% arrange(individual, KC, txntime) %>%
     group_by(individual, KC) %>%
     mutate(
-      time_lag_mins = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 1, 1+round(as.numeric(txntime - lag(txntime), units = "mins"), 3)),
+      time_lag_mins = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 1, 1+round(as.numeric(difftime(txntime, lag(txntime), unit="mins")), 3)),
       actr = as.numeric(log(time_lag_mins ** -0.5)),
       cumulative.corrects = cumsum(correct == 1),
       cumulative.incorrects = cumsum(correct == 0)
@@ -133,7 +131,6 @@ workingDir = "."
 
 #df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(problemName),eval(response),eval(opportunity),eval(individual),eval(firstTransactionTime),useReverseOpp) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file), eval(modelName)) 
-
 if (modelingMethod == "AFM") {
   #glmer(correct ~  opportunity + actr + (opportunity + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
@@ -143,14 +140,12 @@ if (modelingMethod == "AFM") {
   #model <- logWarningsMessages(glmer(response ~ cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
   model <- logWarningsMessages(glmer(response ~ cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0 ), logFileName = wfl_log_file)
 }
-
 #output summary
 summary.file <- paste(workingDir, "/R-summary.txt", sep="")
 modelSum <- summary(model)
 params <- ranef(model)
 logWarningsMessages(capture.output(modelSum, file = summary.file, append = FALSE), logFileName = wfl_log_file)
 logWarningsMessages(capture.output(params, file = summary.file, append = TRUE), logFileName = wfl_log_file)
-
 #output model-values in xml format
 predicted_score = predict(model,df,type="response",allow.new.levels=TRUE)
 AUC = compute_auc(predicted_score, df$response)
@@ -173,7 +168,6 @@ for(i in 1:length(main_fixef)) {
 }
 write("\t</model>",file=outputFile1,sep="",append=TRUE)
 write("</model_values>",file=outputFile1,sep="",append=TRUE)
-
 # output parameters in xml
 outputFile2 <- paste(workingDir, "/parameters.xml", sep="")
 write("<parameters>",file=outputFile2,sep="",append=FALSE)
@@ -196,7 +190,6 @@ for(i in 1:length(stud_randef)) {
 }
 stud.params <- cbind(Type="Student", stud.params)
 colnames(stud.params) =  stud.params.colnames
-
 strBuilder <- ""
 for (x in 1:length(rownames(kc.params))) {
   strBuilder <- paste(strBuilder, "\t<parameter>\n", sep="")
@@ -207,7 +200,6 @@ for (x in 1:length(rownames(kc.params))) {
   }
   strBuilder <- paste(strBuilder, "\t</parameter>\n", sep="")
 }
-
 for (x in 1:length(rownames(stud.params))) {
   strBuilder <- paste(strBuilder, "\t<parameter>\n", sep="")
   for (y in 1:length(stud.params)) {
@@ -217,15 +209,13 @@ for (x in 1:length(rownames(stud.params))) {
   }
   strBuilder <- paste(strBuilder, "\t</parameter>\n", sep="")
 }
-
 write(strBuilder,file=outputFile2,sep="",append=TRUE)
 write("</parameters>",file=outputFile2,sep="",append=TRUE)
 
 #write the parameters as tab delimited
 outputFile2 <- paste(workingDir, "/parameters_tab_delim.txt", sep="")
-afm.params = bind_rows(kc.params, stud.params)
+afm.params = logWarningsMessages(bind_rows(kc.params, stud.params), logFileName = wfl_log_file)
 logWarningsMessages(write.table(afm.params, file=outputFile2, col.names=TRUE, row.names = FALSE, sep="\t", quote = FALSE, na =""), logFileName = wfl_log_file)
-
 # Prepare to write student-step file with new prediction and time lag when applies
 outputFile3 <- paste(workingDir, "/student-step.txt", sep="")
 #use the original file to this
@@ -236,7 +226,6 @@ names(origFile)[which( colnames(origFile)==eval(modelName))] <- "KC"
 origFile = origFile %>%
   filter(!(is.na(KC) | KC == "" | KC=="0" | KC == 0 ))  # remove empty KC
 colnames(origFile) <- origCols
-
 #make sure order is the same for two dataframes
 if("Row"%in%names(df)){
   df = df %>% arrange(`Row`)
@@ -248,7 +237,6 @@ if("Row"%in%names(origFile)){
 } else {
   origFile = df %>% arrange(`Anon Student Id`, `First Transaction Time`)
 }
-
 # Add PER for the specified model. if it exists replaces, if it doesn't exist gets added to the end
 PERname = paste("Predicted Error Rate (",get_kc_name(modelName),")",sep="")
 if(PERname%in%origCols){
@@ -261,8 +249,5 @@ if(PERname%in%origCols){
 df$time_lag_mins = df$time_lag_mins -1
 origFile <- cbind(origFile, df$time_lag_mins)
 names(origFile)[ncol(origFile)] <- 'Timelag in Minutes'
-
 logWarningsMessages(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""), logFileName = wfl_log_file)
-
-
 
