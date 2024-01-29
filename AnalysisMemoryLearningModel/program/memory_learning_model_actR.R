@@ -20,7 +20,11 @@ preprocess <- function(origRollup, kcm) {
   names(df)[which( colnames(df)==paste("Opportunity (", get_kc_name(kcm), ")", sep=""))] <- "opportunity" #replace the opportunity name with "opportunity"
   names(df)[which( colnames(df)=="Anon Student Id")] <- "individual" #replace the individualizing factor name with "individual"
   names(df)[which( colnames(df)=="First Transaction Time")] <- "txntime" #replace First Transaction Time with "txntime"
+  names(df)[which( colnames(df)=="Step Duration (sec)")] <- "step_duration" #replace First Transaction Time with "txntime"
+  #df$step_start_time = ifelse(is.na(df$`Step Start Time`), df$txntime, df$`Step Start Time`)
+  #df$step_end_time = df$`Step End Time`
   df$correct = ifelse((df$response=="Correct"|df$response=="correct"|df$response=="CORRECT"), 1, 0)
+  df$is_first_opportunity = ifelse(df$opportunity==1, 1, 0)
   # Data cleaning and transformations to get new columns:
   # time_lag_mins: minute difference bw this and last row + 1
   # actr: ln(1/sqrt(time_lag_mins)), is the forgetting variable calculated based on time
@@ -29,7 +33,13 @@ preprocess <- function(origRollup, kcm) {
   df = df %>% arrange(individual, KC, txntime) %>%
     group_by(individual, KC) %>%
     mutate(
-      time_lag_mins = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 1, 1+round(as.numeric(difftime(txntime, lag(txntime), units="mins")), 3)),
+      time_lag_secs = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 0, round(as.numeric(difftime(txntime, lag(txntime), units="secs")), 3)),
+      #take out step duration if exist
+      time_lag_secs = ifelse(!is.na(step_duration) & as.character(step_duration) != "." & as.character(step_duration) != "", time_lag_secs - as.numeric(step_duration), time_lag_secs),
+      time_lag_mins = ifelse(time_lag_secs <= 0, 1, 1+time_lag_secs/60),
+      
+      #time_lag_mins = ifelse(is.na(lag(step_end_time)) | (lag(step_end_time) == step_start_time), 1, 1+round(as.numeric(difftime(step_start_time, lag(step_end_time), units="mins")), 3)),
+      
       actr = as.numeric(log(time_lag_mins ** -0.5)),
       cumulative.corrects = cumsum(correct == 1),
       cumulative.incorrects = cumsum(correct == 0)
@@ -123,18 +133,19 @@ wfl_log_file = "AFM_actR.wfl"
 workingDir = "."
 
 #for testing
-# stuStepFileName = "ds76_stu_step_with_null_skills.txt"
-# #stuStepFileName = "ds76_student_step_export.txt"
+# #stuStepFileName = "ds76_stu_step_with_null_skills.txt"
+# stuStepFileName = "ds76_student_step_export.txt"
 # modelName = "KC (Circle-Collapse)"
 # workingDir = "."
 # modelingMethod = "AFM"
 
 #df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(problemName),eval(response),eval(opportunity),eval(individual),eval(firstTransactionTime),useReverseOpp) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file), eval(modelName)) 
+#write.csv(df, "df_temp.csv", sep="\t", row.names=FALSE)
 if (modelingMethod == "AFM") {
   #glmer(correct ~  opportunity + actr + (opportunity + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
-  model <- logWarningsMessages(glmer(response ~ opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0), logFileName = wfl_log_file)
+  model <- logWarningsMessages(glmer(response ~ is_first_opportunity + opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0), logFileName = wfl_log_file)
 } else if (modelingMethod == "PFA") {
   #glmer(correct ~  cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
