@@ -33,9 +33,9 @@ preprocess <- function(origRollup, kcm) {
   df = df %>% arrange(individual, KC, txntime) %>%
     group_by(individual, KC) %>%
     mutate(
-      time_lag_secs = ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 0, round(as.numeric(difftime(txntime, lag(txntime), units="secs")), 3)),
+      time_lag_secs = logWarningsMessages(ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 0, round(as.numeric(difftime(txntime, lag(txntime), units="secs")), 3)), logFileName = wfl_log_file),
       #take out step duration if exist
-      time_lag_secs = ifelse(!is.na(step_duration) & as.character(step_duration) != "." & as.character(step_duration) != "", time_lag_secs - as.numeric(step_duration), time_lag_secs),
+      time_lag_secs = logWarningsMessages(ifelse(!is.na(step_duration) & as.character(step_duration) != "." & as.character(step_duration) != "", time_lag_secs - as.numeric(step_duration), time_lag_secs), logFileName = wfl_log_file),
       time_lag_mins = ifelse(time_lag_secs <= 0, 1, 1+time_lag_secs/60),
       
       #time_lag_mins = ifelse(is.na(lag(step_end_time)) | (lag(step_end_time) == step_start_time), 1, 1+round(as.numeric(difftime(step_start_time, lag(step_end_time), units="mins")), 3)),
