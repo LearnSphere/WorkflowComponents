@@ -260,5 +260,7 @@ if(PERname%in%origCols){
 df$time_lag_mins = df$time_lag_mins -1
 origFile <- cbind(origFile, df$time_lag_mins)
 names(origFile)[ncol(origFile)] <- 'Timelag in Minutes'
+origFile <- cbind(origFile, df$is_first_opportunity)
+names(origFile)[ncol(origFile)] <- 'Is First Opportunity'
 logWarningsMessages(fwrite(origFile, file=outputFile3,sep="\t", quote=FALSE, na=""), logFileName = wfl_log_file)
 
