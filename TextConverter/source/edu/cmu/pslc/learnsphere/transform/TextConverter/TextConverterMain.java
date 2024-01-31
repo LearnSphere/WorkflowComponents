@@ -325,7 +325,6 @@ public class TextConverterMain extends AbstractComponent {
 	}
 
 	private File convertTabAndCsv(File inputFile, String inFileType) {
-		String osName = System.getProperty("os.name").toLowerCase();
 		this.loadBuildProperties("build.properties");
 
 		String pythonInterpreter =
@@ -333,12 +332,12 @@ public class TextConverterMain extends AbstractComponent {
 		String pythonProgram =
 				System.getProperty("component.CSVTab.program.path");
 		
-		String intermediateFile = "convertedDelimited";
+		String outputFile = "convertedDelimited";
 		File convertedFile = null;
 		if (inFileType.equalsIgnoreCase(CSV_FILE_TYPE)) {
-			convertedFile = this.createFile(intermediateFile, ".txt");
+			convertedFile = this.createFile(outputFile, ".txt");
         } else {
-        	convertedFile = this.createFile(intermediateFile, ".csv");
+        	convertedFile = this.createFile(outputFile, ".csv");
         }
 		
 		ArrayList<String> processParams = new ArrayList<String>();
@@ -362,8 +361,6 @@ public class TextConverterMain extends AbstractComponent {
         processParams.add(this.getComponentOutputDir());
         
         processBuilder.directory(new File(this.getToolDir()));
-        
-
         processBuilder.command(processParams);
         try {
 
