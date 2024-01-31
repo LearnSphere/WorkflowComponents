@@ -1,2 +1,4 @@
 component.interpreter.path=
-component.program.path=C:/Python34/Scripts/csvjson.exe
+component.program.path=C:/anaconda3/Scripts/csvjson.exe
+component.CSVTab.interpreter.path=C:\\Users\\hchen\\Anaconda3\\python.exe
+component.CSVTab.program.path=program/convertTabCsv.py

@@ -90,7 +90,8 @@ public class TextConverterMain extends AbstractComponent {
         	        generatedFile = csvToJsonFile(inputFilePath, ift);
 
         	} else if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
-        	        generatedFile = convertTabAndCsv(inputFile, ift, oft);
+        	        //generatedFile = convertTabAndCsv(inputFile, ift, oft);
+        		generatedFile = convertTabAndCsv(inputFile, ift);
         	}
         }
 
@@ -322,99 +323,75 @@ public class TextConverterMain extends AbstractComponent {
 
 		return convertedFile;
 	}
-	private File convertTabAndCsv(File inputFile, String inFileType, String outFileType) {
-        File convertedFile = null;
 
-        String fromSeparator = null;
-        String toSeparator = null;
+	private File convertTabAndCsv(File inputFile, String inFileType) {
+		String osName = System.getProperty("os.name").toLowerCase();
+		this.loadBuildProperties("build.properties");
 
-        if (inFileType.equals(TAB_DELIM_FILE_TYPE)) {
-            fromSeparator = "\t";
-        } else if (inFileType.equals(CSV_FILE_TYPE)) {
-            fromSeparator = ",";
+		String pythonInterpreter =
+			System.getProperty("component.CSVTab.interpreter.path");
+		String pythonProgram =
+				System.getProperty("component.CSVTab.program.path");
+		
+		String intermediateFile = "convertedDelimited";
+		File convertedFile = null;
+		if (inFileType.equalsIgnoreCase(CSV_FILE_TYPE)) {
+			convertedFile = this.createFile(intermediateFile, ".txt");
         } else {
-            addErrorMessage("Unrecognized input file type: " + inFileType);
+        	convertedFile = this.createFile(intermediateFile, ".csv");
+        }
+		
+		ArrayList<String> processParams = new ArrayList<String>();
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        Process process = null;
+
+        processParams.add(pythonInterpreter);
+        processParams.add(pythonProgram);
+        if (inFileType.equalsIgnoreCase(CSV_FILE_TYPE)) {
+        	processParams.add("-inputFormat");
+        	processParams.add("CSV");
+        } else {
+        	processParams.add("-inputFormat");
+        	processParams.add("Tab-delimited");
         }
 
-        if (outFileType.equals(TAB_DELIM_FILE_TYPE)) {
-            toSeparator = "\t";
-        } else if (outFileType.equals(CSV_FILE_TYPE)) {
-            toSeparator = ",";
-        } else {
-            addErrorMessage("Unrecognized output file type: " + outFileType);
-        }
+        processParams.add("-inputFile");
+        processParams.add(inputFile.getAbsolutePath());
+        
+        processParams.add("-workingDir");
+        processParams.add(this.getComponentOutputDir());
+        
+        processBuilder.directory(new File(this.getToolDir()));
+        
 
-        BufferedReader br = null;
-        BufferedWriter bw = null;
+        processBuilder.command(processParams);
         try {
 
-            String intermediateFile = "convertedDelimited";
-            convertedFile = this.createFile(intermediateFile, ".txt");
-            convertedFile.createNewFile();
+			process = processBuilder.start();
 
-            if (inputFile != null && inputFile.exists()) {
-                br = new BufferedReader(new FileReader(inputFile));
-                bw = new BufferedWriter(new FileWriter(convertedFile));
+			List<String> errorLines = null;
+			ThreadedStreamReader errorReader =
+				new ThreadedStreamReader(process.getErrorStream());
 
-                int numHeaders = -1; int lineNumber = 1;
-                while (br.ready()) {
-                    String line = br.readLine();
-                    if (line.contains(fromSeparator)) {
-	                    String [] lineTokens = line.split(fromSeparator);
+            Thread errorReaderThread = new Thread(errorReader);
 
-	                    if (numHeaders < 0) {
-	                        numHeaders = lineTokens.length;
-	                    }
+            errorReaderThread.start();
 
-	                    // If the number of values in this line is not equal to the number of headers
-	                    // AND it is not the last line in the file, return an error
-	                    if (lineTokens.length != numHeaders && br.ready()) {
-	                        addErrorMessage("Error in line number " + lineNumber
-	                                     + ".  Fewer values (" + lineTokens.length
-	                                     + ") in this row than the header (" + numHeaders + ").");
-	                        return null;
-	                    } else if (lineTokens.length != numHeaders && !br.ready()) {
-	                    	// This is the last line
-	                    	lineTokens = new String [0];
-	                    }
+            errorReaderThread.join();
 
-	                    StringBuilder builder = new StringBuilder();
-	                    Integer currentHeaderIndex = 0;
-	                    for (String s : lineTokens) {
-	                        if (s.contains(toSeparator)) {
-	                            addErrorMessage("Value \"" + s + "\" on line " + lineNumber + " contains the"
-	                                         + " desired separator of the output file.");
-	                            return null;
-	                        }
-	                        if (currentHeaderIndex < numHeaders - 1) {
-	                        	builder.append(s + toSeparator);
-	                        } else {
-	                        	builder.append(s);
-	                        }
-	                        currentHeaderIndex++;
-	                    }
-	                    String newLine = builder.toString();
-
-	                    bw.write(newLine);
-	                    if (br.ready()) {
-	                        bw.write("\n");
-	                    }
-
-	                    lineNumber++;
-                    }
-                }
-                br.close();
-                bw.flush();
-                bw.close();
-            } else {
-                addErrorMessage("Input file is null or does not exist.");
+            errorLines = errorReader.getStringBuffer();
+            if (!errorLines.isEmpty()) {
+                errorMessages.addAll(errorLines);
             }
-        } catch (IOException e) {
-            addErrorMessage("Error reading or writing out to file: " + e.toString());
-        }
-
+		} catch (IOException e) {
+			this.addErrorMessage("Could not execute csvjson: "
+				+ e.toString());
+		} catch (InterruptedException e) {
+			this.addErrorMessage("Could not read output stream: "
+					+ e.toString());
+		}
         return convertedFile;
-    }
+	}
 
     private File convertJsonToDelimited(String inputFilePathName, String ift, String oft) {
         String intermediateFile = "convertedDelimited";
