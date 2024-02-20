@@ -22,16 +22,16 @@ Tab-delimited file contains join result.
 <options>
 <p><b>Join by concatenation</b>
  <ul>
-<li>File 1 Column Delimiter: tab, comma, period or pipe</li>
-<li>File 2 Column Delimiter: tab, comma, period or pipe</li>
+<li>File 1 Column Delimiter: tab or comma</li>
+<li>File 2 Column Delimiter: tab or comma</li>
 <li>Join type: choose concatenate</li>
 <li>How to Concetenate: choose vertically or horizontally</li>
 </ul>
 </p>
 <p><b>Join by merge</b>
  <ul>
-<li>File 1 Column Delimiter: tab, comma, period or pipe</li>
-<li>File 2 Column Delimiter: tab, comma, period or pipe</li>
+<li>File 1 Column Delimiter: tab or comma</li>
+<li>File 2 Column Delimiter: tab or comma</li>
 <li>Join type: choose merge</li>
 <li>How to Merge: choose inner, left, right or outer</li>
 <li>Number of Merging Conditions: enter an integer 1 to 5</li>

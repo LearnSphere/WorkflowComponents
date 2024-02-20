@@ -103,8 +103,7 @@
   <xs:simpleType name="delimiterType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="\t" />
-      <xs:enumeration value="." />
-      <xs:enumeration value="|" />
+      <xs:enumeration value="," />
     </xs:restriction>
   </xs:simpleType>
   
