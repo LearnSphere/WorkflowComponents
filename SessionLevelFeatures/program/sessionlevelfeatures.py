@@ -73,18 +73,25 @@ def generate_class_session_info(df_main_min_1):
 
 def generate_class_session_info_agg_class(df_main_min_3, school_start_hour=7, school_end_hour=16, min_class_size=5):
     # df_main_min_1['parsed_time'] = df_main_min_1['Time'].apply(lambda x: dt.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    #df_class_sessions = df_main_min_3.groupby(['School', 'Class', 'class_session_id']).agg(
+    #   session_student_count=('Anon Student Id', 'nunique'),
+    #   class_session_start_hour=('parsed_hour', 'min'),
+    #    class_session_end_hour=('parsed_hour', 'max'),
+    #    class_session_start_timestamp=('parsed_time', 'min'),
+    #    class_session_end_timestamp=('parsed_time', 'max')
+    #).reset_index()
+    
     df_class_sessions = df_main_min_3.groupby(['School', 'Class', 'class_session_id']).agg(
-        session_student_count=('Anon Student Id', 'nunique'),
-        class_session_start_hour=('parsed_hour', 'min'),
-        class_session_end_hour=('parsed_hour', 'max'),
-        class_session_start_timestamp=('parsed_time', 'min'),
-        class_session_end_timestamp=('parsed_time', 'max')
+		{'Anon Student Id': [('session_student_count','nunique')],
+		'parsed_hour': [('class_session_start_hour','min'), ('class_session_end_hour','max')],
+		'parsed_time': [('class_session_start_timestamp','min'), ('class_session_end_timestamp','max')]}
     ).reset_index()
-
+    df_class_sessions.columns = ["&".join(col_name).rstrip('&') for col_name in df_class_sessions.columns]
+    df_class_sessions.columns = [col_name[col_name.find('&')+1:] for col_name in df_class_sessions.columns]
     df_class_sessions_classwork_ids = df_class_sessions.loc[
-        (df_class_sessions.session_student_count >= min_class_size) &
-        (df_class_sessions.class_session_start_hour >= school_start_hour) &
-        (df_class_sessions.class_session_end_hour < school_end_hour)]['class_session_id'].unique()
+        (df_class_sessions['session_student_count'] >= min_class_size) &
+        (df_class_sessions['class_session_start_hour'] >= school_start_hour) &
+        (df_class_sessions['class_session_end_hour'] < school_end_hour)]['class_session_id'].unique()
 
     df_class_sessions['class_session_start_time'] = \
         df_class_sessions.class_session_start_timestamp.apply(lambda x: x.strftime('%H:%M'))
@@ -104,15 +111,22 @@ def generate_class_session_info_agg_class(df_main_min_3, school_start_hour=7, sc
 def generate_student_session_info_agg_class(df_main_min_4, df_class_sessions_agg_classes):
     df_class_sessions_agg_classes = df_class_sessions_agg_classes[['class_session_id', 'Classwork']]
 
+    #df_student_session_agg = df_main_min_4.groupby(['School', 'Class', 'Anon Student Id', 'class_session_id', 'Session Id']).agg(
+    #    student_session_start_hour=('parsed_hour', 'min'),
+    #    student_session_end_hour=('parsed_hour', 'max'),
+    #    student_session_start_timestamp=('parsed_time', 'min'),
+    #    student_session_end_timestamp=('parsed_time', 'max')
+    #).reset_index()
+    
     df_student_session_agg = df_main_min_4.groupby(['School', 'Class', 'Anon Student Id', 'class_session_id', 'Session Id']).agg(
-        student_session_start_hour=('parsed_hour', 'min'),
-        student_session_end_hour=('parsed_hour', 'max'),
-        student_session_start_timestamp=('parsed_time', 'min'),
-        student_session_end_timestamp=('parsed_time', 'max')
+        {'parsed_hour': [('student_session_start_hour','min'), ('student_session_end_hour','max')],
+        'parsed_time': [('student_session_start_timestamp','min'), ('student_session_end_timestamp','max')]}
     ).reset_index()
+    df_student_session_agg.columns = ["&".join(col_name).rstrip('&') for col_name in df_student_session_agg.columns]
+    df_student_session_agg.columns = [col_name[col_name.find('&')+1:] for col_name in df_student_session_agg.columns]
 
     df_student_session_agg['student_session_start_time'] = \
-        df_student_session_agg.student_session_start_timestamp.apply(lambda x: x.strftime('%H:%M'))
+        df_student_session_agg['student_session_start_timestamp'].apply(lambda x: x.strftime('%H:%M'))
     df_student_session_agg['student_session_end_time'] = \
         df_student_session_agg.student_session_end_timestamp.apply(lambda x: x.strftime('%H:%M'))
 
@@ -127,11 +141,19 @@ def generate_student_session_info_agg_class(df_main_min_4, df_class_sessions_agg
 def generate_session_level_features(df_main_min_2, school_start_hour=7, school_end_hour=16, min_class_size=5):
     # df_main_min_1['parsed_time'] = df_main_min_1['Time'].apply(lambda x: dt.strptime(x, '%Y-%m-%d %H:%M:%S'))
     # print([school_start_hour, school_end_hour, min_class_size])
+    #df_class_sessions = df_main_min_2.groupby(['School', 'Class', 'class_session_id']).agg(
+    #    session_student_count=('Anon Student Id', 'nunique'),
+    #    class_session_start_hour=('parsed_hour', 'min'),
+    #    class_session_end_hour=('parsed_hour', 'max')
+    #).reset_index()
+    
     df_class_sessions = df_main_min_2.groupby(['School', 'Class', 'class_session_id']).agg(
-        session_student_count=('Anon Student Id', 'nunique'),
-        class_session_start_hour=('parsed_hour', 'min'),
-        class_session_end_hour=('parsed_hour', 'max')
+        {'Anon Student Id': [('session_student_count','nunique')],
+        'parsed_hour': [('class_session_start_hour','min'), ('class_session_end_hour','max')]}
     ).reset_index()
+    df_class_sessions.columns = ["&".join(col_name).rstrip('&') for col_name in df_class_sessions.columns]
+    df_class_sessions.columns = [col_name[col_name.find('&')+1:] for col_name in df_class_sessions.columns]
+
 
     # dev-note: identify the classwork sessions
     df_classwork_sessions = df_class_sessions.loc[
@@ -144,24 +166,42 @@ def generate_session_level_features(df_main_min_2, school_start_hour=7, school_e
         df_main_min_2.class_session_id.isin(df_classwork_sessions.class_session_id.unique())]
 
     # dev-note: first calculate student session stats
+    #df_classwork_student_session_stats = df_main_classworks.groupby(
+    #    ['Class', 'class_session_id', 'Session Id', 'Anon Student Id']).agg(
+    #    student_session_start_time=('parsed_time_sec', 'min'),
+    #    student_session_end_time=('parsed_time_sec', 'max')
+    #).reset_index()
+    
     df_classwork_student_session_stats = df_main_classworks.groupby(
         ['Class', 'class_session_id', 'Session Id', 'Anon Student Id']).agg(
-        student_session_start_time=('parsed_time_sec', 'min'),
-        student_session_end_time=('parsed_time_sec', 'max')
+        {'parsed_time_sec': [('student_session_start_time','min'), ('student_session_end_time','max')]}
     ).reset_index()
+    df_classwork_student_session_stats.columns = ["&".join(col_name).rstrip('&') for col_name in df_classwork_student_session_stats.columns]
+    df_classwork_student_session_stats.columns = [col_name[col_name.find('&')+1:] for col_name in df_classwork_student_session_stats.columns]
+
 
     df_classwork_student_session_stats['student_session_length_sec'] = \
         df_classwork_student_session_stats.student_session_end_time - \
         df_classwork_student_session_stats.student_session_start_time
 
     # dev-note: now let's calculate class session stats
+    #df_classwork_class_session_stats_1 = df_classwork_student_session_stats.groupby(
+    #    ['Class', 'class_session_id']).agg(
+    #    class_session_start_time=('student_session_start_time', 'min'),
+    #    class_session_end_time=('student_session_end_time', 'max'),
+    #    mean_student_session_length=('student_session_length_sec', 'mean'),
+    #    std_student_session_length=('student_session_length_sec', 'std')
+    #).reset_index()
+    
     df_classwork_class_session_stats_1 = df_classwork_student_session_stats.groupby(
         ['Class', 'class_session_id']).agg(
-        class_session_start_time=('student_session_start_time', 'min'),
-        class_session_end_time=('student_session_end_time', 'max'),
-        mean_student_session_length=('student_session_length_sec', 'mean'),
-        std_student_session_length=('student_session_length_sec', 'std')
+        {'student_session_start_time': [('class_session_start_time','min')],
+		'student_session_end_time': [('class_session_end_time','max')],
+        'student_session_length_sec': [('mean_student_session_length','mean'), ('std_student_session_length','std')]}
     ).reset_index()
+    df_classwork_class_session_stats_1.columns = ["&".join(col_name).rstrip('&') for col_name in df_classwork_class_session_stats_1.columns]
+    df_classwork_class_session_stats_1.columns = [col_name[col_name.find('&')+1:] for col_name in df_classwork_class_session_stats_1.columns]
+
 
     df_classwork_class_session_stats_1['class_session_length_sec'] = \
         df_classwork_class_session_stats_1.class_session_end_time - \
@@ -180,13 +220,22 @@ def generate_session_level_features(df_main_min_2, school_start_hour=7, school_e
         df_classwork_student_session_stats['student_session_start_time']
 
     # dev-note: let's compute the mean and std of the delayed start and early stop times
+    #df_classwork_class_session_stats_2 = df_classwork_student_session_stats.groupby(
+    #   ['class_session_id']).agg(
+    #    mean_student_session_delayed_start=('student_session_delayed_start', 'mean'),
+    #    std_student_session_delayed_start=('student_session_delayed_start', 'std'),
+    #    mean_student_session_early_stop=('student_session_early_stop', 'mean'),
+    #    std_student_session_early_stop=('student_session_early_stop', 'std')
+    #).reset_index()
+    
     df_classwork_class_session_stats_2 = df_classwork_student_session_stats.groupby(
-        ['class_session_id']).agg(
-        mean_student_session_delayed_start=('student_session_delayed_start', 'mean'),
-        std_student_session_delayed_start=('student_session_delayed_start', 'std'),
-        mean_student_session_early_stop=('student_session_early_stop', 'mean'),
-        std_student_session_early_stop=('student_session_early_stop', 'std')
+        ['class_session_id']).agg({
+        'student_session_delayed_start': [('mean_student_session_delayed_start','mean'), ('std_student_session_delayed_start','std')],
+		'student_session_early_stop': [('mean_student_session_early_stop','mean'), ('std_student_session_early_stop','std')]}
     ).reset_index()
+    df_classwork_class_session_stats_2.columns = ["&".join(col_name).rstrip('&') for col_name in df_classwork_class_session_stats_2.columns]
+    df_classwork_class_session_stats_2.columns = [col_name[col_name.find('&')+1:] for col_name in df_classwork_class_session_stats_2.columns]
+
 
     # dev-note: connect with the main df
     df_classwork_student_session_stats = df_classwork_student_session_stats.merge(
@@ -208,38 +257,75 @@ def generate_session_level_features(df_main_min_2, school_start_hour=7, school_e
          df_classwork_student_session_stats['mean_student_session_early_stop']) / \
         df_classwork_student_session_stats['std_student_session_early_stop']
 
+    #df_classwork_student_session_agg = df_classwork_student_session_stats.groupby(
+    #    ['Anon Student Id']).agg(
+    #    avg_student_session_length_sec=('student_session_length_sec', 'mean'),
+    #    avg_student_session_delayed_start=('student_session_delayed_start', 'mean'),
+    #    avg_student_session_early_stop=('student_session_early_stop', 'mean'),
+    #    avg_relative_student_session_length=('relative_student_session_length', 'mean'),
+    #    avg_relative_student_session_delayed_start=('relative_student_session_delayed_start', 'mean'),
+    #    avg_relative_student_session_early_stop=('relative_student_session_early_stop', 'mean')
+    #).reset_index()
+    
     df_classwork_student_session_agg = df_classwork_student_session_stats.groupby(
         ['Anon Student Id']).agg(
-        avg_student_session_length_sec=('student_session_length_sec', 'mean'),
-        avg_student_session_delayed_start=('student_session_delayed_start', 'mean'),
-        avg_student_session_early_stop=('student_session_early_stop', 'mean'),
-        avg_relative_student_session_length=('relative_student_session_length', 'mean'),
-        avg_relative_student_session_delayed_start=('relative_student_session_delayed_start', 'mean'),
-        avg_relative_student_session_early_stop=('relative_student_session_early_stop', 'mean')
+        {'student_session_length_sec': [('avg_student_session_length_sec','mean')], 
+        'student_session_delayed_start': [('avg_student_session_delayed_start','mean')], 
+        'student_session_early_stop': [('avg_student_session_early_stop','mean')], 
+        'relative_student_session_length': [('avg_relative_student_session_length','mean')], 
+        'relative_student_session_delayed_start': [('avg_relative_student_session_delayed_start','mean')],
+        'relative_student_session_early_stop': [('avg_relative_student_session_early_stop','mean')]}
     ).reset_index()
+    df_classwork_student_session_agg.columns = ["&".join(col_name).rstrip('&') for col_name in df_classwork_student_session_agg.columns]
+    df_classwork_student_session_agg.columns = [col_name[col_name.find('&')+1:] for col_name in df_classwork_student_session_agg.columns]
+
 
     # dev-note: compute student time use ratio
     #  i.e. (total time in class)/(general total time)
+    #df_student_timeontask_stats = df_main_min_2.groupby(
+    #    ['School', 'Class', 'class_session_id', 'Anon Student Id', 'Session Id']).agg(
+    #    student_session_start_time=('parsed_time_sec', 'min'),
+    #    student_session_end_time=('parsed_time_sec', 'max')
+    #).reset_index()
+    
     df_student_timeontask_stats = df_main_min_2.groupby(
         ['School', 'Class', 'class_session_id', 'Anon Student Id', 'Session Id']).agg(
-        student_session_start_time=('parsed_time_sec', 'min'),
-        student_session_end_time=('parsed_time_sec', 'max')
+        {'parsed_time_sec': [('student_session_start_time','min'), ('student_session_end_time','max')]}
     ).reset_index()
+    df_student_timeontask_stats.columns = ["&".join(col_name).rstrip('&') for col_name in df_student_timeontask_stats.columns]
+    df_student_timeontask_stats.columns = [col_name[col_name.find('&')+1:] for col_name in df_student_timeontask_stats.columns]
+
 
     df_student_timeontask_stats['student_session_length'] = \
         df_student_timeontask_stats['student_session_end_time'] - \
         df_student_timeontask_stats['student_session_start_time']
 
+    #df_student_timeontask_agg = df_student_timeontask_stats.groupby(
+    #    ['Class', 'Anon Student Id']).agg(
+    #    total_timeontask=('student_session_length', 'sum')
+    #).reset_index()
+    
     df_student_timeontask_agg = df_student_timeontask_stats.groupby(
         ['Class', 'Anon Student Id']).agg(
-        total_timeontask=('student_session_length', 'sum')
+        {'student_session_length': [('total_timeontask','sum')]}
     ).reset_index()
+    df_student_timeontask_agg.columns = ["&".join(col_name).rstrip('&') for col_name in df_student_timeontask_agg.columns]
+    df_student_timeontask_agg.columns = [col_name[col_name.find('&')+1:] for col_name in df_student_timeontask_agg.columns]
 
+
+    #df_student_classwork_time_stats = df_classwork_class_session_stats_1.groupby(
+    #    ['Class']).agg(
+    #   total_classwork_time=('class_session_length_sec', 'sum')
+    #).reset_index()
+    
     df_student_classwork_time_stats = df_classwork_class_session_stats_1.groupby(
         ['Class']).agg(
-        total_classwork_time=('class_session_length_sec', 'sum')
+        {'class_session_length_sec': [('total_classwork_time','sum')]}
     ).reset_index()
+    df_student_classwork_time_stats.columns = ["&".join(col_name).rstrip('&') for col_name in df_student_classwork_time_stats.columns]
+    df_student_classwork_time_stats.columns = [col_name[col_name.find('&')+1:] for col_name in df_student_classwork_time_stats.columns]
 
+    
     df_student_timeontask_agg = df_student_timeontask_agg.merge(
         df_student_classwork_time_stats, on=['Class'], how='inner')
 
