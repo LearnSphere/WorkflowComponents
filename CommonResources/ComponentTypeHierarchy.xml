@@ -48,6 +48,7 @@
 		<Resource_Use />
 		<Row_Operations />
 		<Row_Remover />
+		<Session_Level_Features />
 		<Text_Converter />
 		<Transaction_Aggregator />
 	</Transform>
@@ -64,6 +65,7 @@
 		<Entity_Set />
 		<Fast_AFM_and_CV />
 		<Gaming_Detector />
+		<Gaming_Tendency_Estimate />
 		<Intervention_Effects />
 		<iAFM />
 		<Learning_Rate />

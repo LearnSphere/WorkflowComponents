@@ -1,0 +1,375 @@
+<component>
+  <component_id>Transform-1-x028113</component_id>
+  <component_id_human>Transform #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>ComponentSessionLevelFeatures</component_name>
+  <component_type>transform</component_type>
+  <left>441.00001525878906</left>
+  <connections>
+    <connection>
+      <index>0</index>
+      <tindex>0</tindex>
+      <from>Data-1-x918909</from>
+    </connection>
+  </connections>
+  <top>67</top>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x918909</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <index>0</index>
+          <file_path>test/example_files/test_input.txt</file_path>
+          <label>tab-delimited</label>
+          <file_name>test_input.txt</file_name>
+          <metadata>
+          	<header>
+			    <id>header0</id>
+			    <index>0</index>
+			    <name>Row </name>
+			</header>
+			<header>
+			    <id>header1</id>
+			    <index>1</index>
+			    <name>Sample Name </name>
+			</header>
+			<header>
+			    <id>header2</id>
+			    <index>2</index>
+			    <name>Transaction Id </name>
+			</header>
+			<header>
+			    <id>header3</id>
+			    <index>3</index>
+			    <name>Anon Student Id </name>
+			</header>
+			<header>
+			    <id>header4</id>
+			    <index>4</index>
+			    <name>Session Id </name>
+			</header>
+			<header>
+			    <id>header5</id>
+			    <index>5</index>
+			    <name>Time </name>
+			</header>
+			<header>
+			    <id>header6</id>
+			    <index>6</index>
+			    <name>Time Zone </name>
+			</header>
+			<header>
+			    <id>header7</id>
+			    <index>7</index>
+			    <name>Duration (sec)</name>
+			</header>
+			<header>
+			    <id>header8</id>
+			    <index>8</index>
+			    <name>Student Response Type </name>
+			</header>
+			<header>
+			    <id>header9</id>
+			    <index>9</index>
+			    <name>Student Response Subtype </name>
+			</header>
+			<header>
+			    <id>header10</id>
+			    <index>10</index>
+			    <name>Tutor Response Type </name>
+			</header>
+			<header>
+			    <id>header11</id>
+			    <index>11</index>
+			    <name>Tutor Response Subtype </name>
+			</header>
+			<header>
+			    <id>header12</id>
+			    <index>12</index>
+			    <name>Level (Unit)</name>
+			</header>
+			<header>
+			    <id>header13</id>
+			    <index>13</index>
+			    <name>Level (Section)</name>
+			</header>
+			<header>
+			    <id>header14</id>
+			    <index>14</index>
+			    <name>Problem Name </name>
+			</header>
+			<header>
+			    <id>header15</id>
+			    <index>15</index>
+			    <name>Problem View </name>
+			</header>
+			<header>
+			    <id>header16</id>
+			    <index>16</index>
+			    <name>Problem Start Time </name>
+			</header>
+			<header>
+			    <id>header17</id>
+			    <index>17</index>
+			    <name>Step Name </name>
+			</header>
+			<header>
+			    <id>header18</id>
+			    <index>18</index>
+			    <name>Attempt At Step </name>
+			</header>
+			<header>
+			    <id>header19</id>
+			    <index>19</index>
+			    <name>Is Last Attempt </name>
+			</header>
+			<header>
+			    <id>header20</id>
+			    <index>20</index>
+			    <name>Outcome </name>
+			</header>
+			<header>
+			    <id>header21</id>
+			    <index>21</index>
+			    <name>Selection </name>
+			</header>
+			<header>
+			    <id>header22</id>
+			    <index>22</index>
+			    <name>Action </name>
+			</header>
+			<header>
+			    <id>header23</id>
+			    <index>23</index>
+			    <name>Input </name>
+			</header>
+			<header>
+			    <id>header24</id>
+			    <index>24</index>
+			    <name>Feedback Text </name>
+			</header>
+			<header>
+			    <id>header25</id>
+			    <index>25</index>
+			    <name>Feedback Classification </name>
+			</header>
+			<header>
+			    <id>header26</id>
+			    <index>26</index>
+			    <name>Help Level </name>
+			</header>
+			<header>
+			    <id>header27</id>
+			    <index>27</index>
+			    <name>Total Num Hints </name>
+			</header>
+			<header>
+			    <id>header28</id>
+			    <index>28</index>
+			    <name>Condition Name </name>
+			</header>
+			<header>
+			    <id>header29</id>
+			    <index>29</index>
+			    <name>Condition Type </name>
+			</header>
+			<header>
+			    <id>header30</id>
+			    <index>30</index>
+			    <name>KC (SubSkills)</name>
+			</header>
+			<header>
+			    <id>header31</id>
+			    <index>31</index>
+			    <name>KC Category (SubSkills)</name>
+			</header>
+			<header>
+			    <id>header32</id>
+			    <index>32</index>
+			    <name>KC (SubSkills).1 </name>
+			</header>
+			<header>
+			    <id>header33</id>
+			    <index>33</index>
+			    <name>KC Category (SubSkills).1 </name>
+			</header>
+			<header>
+			    <id>header34</id>
+			    <index>34</index>
+			    <name>KC (SubSkills).2 </name>
+			</header>
+			<header>
+			    <id>header35</id>
+			    <index>35</index>
+			    <name>KC Category (SubSkills).2 </name>
+			</header>
+			<header>
+			    <id>header36</id>
+			    <index>36</index>
+			    <name>KC (SubSkills).3 </name>
+			</header>
+			<header>
+			    <id>header37</id>
+			    <index>37</index>
+			    <name>KC Category (SubSkills).3 </name>
+			</header>
+			<header>
+			    <id>header38</id>
+			    <index>38</index>
+			    <name>KC (SubSkills).4 </name>
+			</header>
+			<header>
+			    <id>header39</id>
+			    <index>39</index>
+			    <name>KC Category (SubSkills).4 </name>
+			</header>
+			<header>
+			    <id>header40</id>
+			    <index>40</index>
+			    <name>KC (SubSkills).5 </name>
+			</header>
+			<header>
+			    <id>header41</id>
+			    <index>41</index>
+			    <name>KC Category (SubSkills).5 </name>
+			</header>
+			<header>
+			    <id>header42</id>
+			    <index>42</index>
+			    <name>KC (SubSkills).6 </name>
+			</header>
+			<header>
+			    <id>header43</id>
+			    <index>43</index>
+			    <name>KC Category (SubSkills).6 </name>
+			</header>
+			<header>
+			    <id>header44</id>
+			    <index>44</index>
+			    <name>KC (SubSkills).7 </name>
+			</header>
+			<header>
+			    <id>header45</id>
+			    <index>45</index>
+			    <name>KC Category (SubSkills).7 </name>
+			</header>
+			<header>
+			    <id>header46</id>
+			    <index>46</index>
+			    <name>KC (KTracedSkills)</name>
+			</header>
+			<header>
+			    <id>header47</id>
+			    <index>47</index>
+			    <name>KC Category (KTracedSkills)</name>
+			</header>
+			<header>
+			    <id>header48</id>
+			    <index>48</index>
+			    <name>KC (KTracedSkills).1 </name>
+			</header>
+			<header>
+			    <id>header49</id>
+			    <index>49</index>
+			    <name>KC Category (KTracedSkills).1 </name>
+			</header>
+			<header>
+			    <id>header50</id>
+			    <index>50</index>
+			    <name>KC (KTracedSkills).2 </name>
+			</header>
+			<header>
+			    <id>header51</id>
+			    <index>51</index>
+			    <name>KC Category (KTracedSkills).2 </name>
+			</header>
+			<header>
+			    <id>header52</id>
+			    <index>52</index>
+			    <name>KC (KTracedSkills).3 </name>
+			</header>
+			<header>
+			    <id>header53</id>
+			    <index>53</index>
+			    <name>KC Category (KTracedSkills).3 </name>
+			</header>
+			<header>
+			    <id>header54</id>
+			    <index>54</index>
+			    <name>KC (KTracedSkills).4 </name>
+			</header>
+			<header>
+			    <id>header55</id>
+			    <index>55</index>
+			    <name>KC Category (KTracedSkills).4 </name>
+			</header>
+			<header>
+			    <id>header56</id>
+			    <index>56</index>
+			    <name>KC (Rules)</name>
+			</header>
+			<header>
+			    <id>header57</id>
+			    <index>57</index>
+			    <name>KC Category (Rules)</name>
+			</header>
+			<header>
+			    <id>header58</id>
+			    <index>58</index>
+			    <name>KC (Single-KC)</name>
+			</header>
+			<header>
+			    <id>header59</id>
+			    <index>59</index>
+			    <name>KC Category (Single-KC)</name>
+			</header>
+			<header>
+			    <id>header60</id>
+			    <index>60</index>
+			    <name>KC (Unique-step)</name>
+			</header>
+			<header>
+			    <id>header61</id>
+			    <index>61</index>
+			    <name>KC Category (Unique-step)</name>
+			</header>
+			<header>
+			    <id>header62</id>
+			    <index>62</index>
+			    <name>School </name>
+			</header>
+			<header>
+			    <id>header63</id>
+			    <index>63</index>
+			    <name>Class </name>
+			</header>
+			<header>
+			    <id>header64</id>
+			    <index>64</index>
+			    <name>parsed_time </name>
+			</header>
+			<header>
+			    <id>header65</id>
+			    <index>65</index>
+			    <name>parsed_time_sec </name>
+			</header>
+          </metadata>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"test_input.txt","importFileType":"tab-delimited","importFileNameTitle":"File: test_input.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"36","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <minClassSize>5</minClassSize>
+    <schoolHoursStartTime>7</schoolHoursStartTime>
+    <schoolHoursStopTime>16</schoolHoursStopTime>
+  </options>
+</component>

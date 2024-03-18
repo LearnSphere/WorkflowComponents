@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <!-- Ashish Gurung -->
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/SessionLevelFeatures</url>
+<date>7th March 2024</date>
+
+<abstract>
+  The <b>Session Level Features</b> helps you compute the time-based indicators of learner engagement (or disengagement) in your dataset. Specifically, it computes the <i>delayed start, session length, early stop, total time on task, and student time usage</i> for the measures, along with the peer-normalized estimates where required.
+  <!-- needs to be modified once I have get to building the workflow using the componenets for reference. -->
+</abstract>
+
+<description>
+  This component helps you generate the session-level features in your dataset using inferred class and student session information. A workflow demo for the component is provided in the following <a href="https://pslc-qa.andrew.cmu.edu/datashop/LearnSphere?workflowId=2131">link</a>.<br/>
+
+  For <b>Class Session Information</b>, the component uses <i>Class Id</i>(must be included in the data) to infer the class sessions. Class sessions are intervals where one or more student transactions are logged, and the interval between consecutive transaction logs is less than 10 minutes. The inferred class sessions are then used to calculate the start time, stop time, session length, and session size (students in session) for each class session. Additionally, if there are 5 or more students in the class session and the start time for the class session is between 7 a.m. and 4 p.m., then these class sessions are categorized as <i>Classworks sessions</i>. It is important to note that the class size (5) and start time thresholds (7 a.m. and 4 p.m.) are default values and can be modified using the Input Options of this component. 
+
+  For <b>Student Session Information</b>, the student sessions are inferred using the inferred class sessions. The transactions logged by the student within a class session help infer the student session and associated information, i.e., start time, stop time, and session length. The difference in the start times between the class session and the student session is used to calculate the delay in a specific student's start time (delayed start). Similarly, the difference in the stop time between the class session and the student session is used to infer the student's stop time (early stop). Finally, the difference between the start and stop time can be used to calculate the student's session length. 
+
+  This component generates four files. 
+    <ol>
+      <li>Class session information: <br/> This file contains the inferred class session information along with the class size, start and stop hours, as well as if they were inferred as a Classwork session. If the school start and stop times were estimated, then visualizing the class session start times can help you validate the accuracy of the estimated start and stop times in your analysis.</li>
+      <li>Student Session information: <br/> This file contains the inferred student session information along with the start and stop time of each session as well as the class session the student session belongs to. </li>
+      <li>Transaction logs with session information:<br/> This file contains the class and student session information, along with the gaming labels identified using a rule-based gaming detector. </li>
+      <li>Aggregated observed features: <br/> This file contains the aggregated measure of the students' <i>delayed start, session length, early stop, total time on task, and student time usage</i> across all the sessions in the dataset. This file should be used to estimate the impact of learner behavior on learning outcomes. </li>
+    <ol>
+</description>
+
+<inputs>
+  <ul>
+    <li>Input tab-delimited text file: data to be analyzed. It is assumed that the data follows the DataShop transaction log schema and is structured accordingly. </li>
+  </ul>
+</inputs>
+
+<outputs>
+<ul> 
+ <li>Class session information: the total students, start and end times for the class session, as well as if the session was inferred as classwork.</li>
+ <li>Student Session information: the start and end times of the student session.</li>
+ <li>Transaction logs with inferred session information along with gaming labels identified using rule-based gaming detection.</li>
+ <li>Tab-delimited file contains aggregated session-level features.</li>
+</ul>
+</outputs>
+
+<options>
+<p>
+  <b>Input Options:</b>
+  <ul>
+    <li>Dataset: The dataset to be analyzed.</li>
+    <li>School Start Time: The start time for the school hours. (default: 7 | i.e., 7 a.m.)</li>
+    <li>School End Time: The stop time for the school hours. (default: 16 | i.e.,4 p.m.)</li>
+    <li>Min Class Size: Min allowable class size. (default: 5 or more students)</li>
+  </ul>
+</p>
+
+<p>
+  <!-- <b>Examples in the <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2779" target="_blank">demo</a> workflow</b> -->
+</p>
+</options>
+
+</info>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+	<!-- Ashish Gurung -->
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/GamingTendencyEstimate</url>
+<date>16th March 2024</date>
+<abstract>The <b>Gaming Tendency Estimate</b> performs a logistic regression using the student ID as a random intercept while controlling for content type to infer the latent gaming tendency of the student.</abstract>
+
+<description>
+	This component helps estimate the student's latent gaming tendency. A workflow demo for this component is provided in the following <a href="https://pslc-qa.andrew.cmu.edu/datashop/LearnSphere?workflowId=2132">link</a>.<br/>
+	
+	This component takes transaction logs with gaming labels as input from the Session Level Features component (Transform > Session Level Features) and computes a single latent estimate for each individual student present in the dataset.	 
+</description>
+
+
+<inputs>
+<b>Student transaction logs with labels for inferred gaming. The gaming can be inferred using any gaming detector. The initial exploration was conducted using the rule-based gaming detector.</b>
+</inputs>
+
+<outputs>
+<ul>
+	<li>A tab-delimited text file estimating the individual students' gaming tendency. </li>
+</ul>
+</outputs>
+
+</info>

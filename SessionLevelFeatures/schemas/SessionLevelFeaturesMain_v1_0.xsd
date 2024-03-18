@@ -1,0 +1,168 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ls="http://learnsphere.org/ls" >
+ 
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+<xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:all>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+
+  
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList2" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList2">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition3">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList3" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList3">
+    <xs:choice>
+      <xs:element ref="tab-delimited" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
+      <xs:element name="output2" type="OutputDefinition2" />
+      <xs:element name="output3" type="OutputDefinition3" />
+    </xs:sequence>
+  </xs:complexType>
+    
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="xs:integer" name="minClassSize" id="Minimum_Class_Size" default="5"/>
+      <xs:element type="xs:integer" name="schoolHoursStartTime" id="School_Hours_Start_Time" default="7"/>
+      <xs:element type="xs:integer" name="schoolHoursStopTime" id="School_Hours_Stop_Time" default="16"/> 
+    </xs:choice>
+  </xs:complexType>
+  
+  <!-- <xs:complexType name="OptionsType">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="delimiterType" name="file1Delimiter" id="File_1_Column_Delimiter" default="\t" />
+      <xs:element type="delimiterType" name="file2Delimiter" id="File_2_Column_Delimiter" default="\t" />
+      <xs:element type="joinType" name="howToJoin" id="Join_Type" default="merge" />
+      <xs:element type="concatenateType" name="howToConcatenate" id="How_to_Concatenate" default="vertical" />
+      <xs:element type="mergeType" name="howToMerge" id="How_to_Merge" default="inner" />
+      <xs:element type="xs:integer" name="numColumnsToMerge" id="Number_of_Merging_Conditions" default="1" />
+      <xs:element type="FileInputHeader" name="file1MatchColumns1" id="File_1_Column_To_Match_First" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file2MatchColumns1" id="File_2_Column_To_Match_First" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file1MatchColumns2" id="File_1_Column_To_Match_Second" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file2MatchColumns2" id="File_2_Column_To_Match_Second" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file1MatchColumns3" id="File_1_Column_To_Match_Third" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file2MatchColumns3" id="File_2_Column_To_Match_Third" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file1MatchColumns4" id="File_1_Column_To_Match_Forth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file2MatchColumns4" id="File_2_Column_To_Match_Forth" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file1MatchColumns5" id="File_1_Column_To_Match_Fifth" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      <xs:element type="FileInputHeader" name="file2MatchColumns5" id="File_2_Column_To_Match_Fifth" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
+    </xs:sequence>
+  </xs:complexType>
+ -->
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
