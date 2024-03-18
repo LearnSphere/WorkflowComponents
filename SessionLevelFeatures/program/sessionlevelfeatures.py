@@ -65,7 +65,8 @@ def generate_class_session_info(df_main_min_1):
     df_main_min_1.fillna({"Duration (sec)": 0.00001, "Help Level": 0}, inplace=True)
     df_main_min_1['parsed_endtime_sec'] = df_main_min_1.parsed_time_sec + df_main_min_1['Duration (sec)']
     df_main_min_1.rename(columns={'session_id': 'Session Id'}, inplace=True)
-    df_main_min_1.sort_values(by=['Class', 'parsed_time'], inplace=True, ignore_index=True)
+    df_main_min_1.sort_values(by=['Class', 'parsed_time'], inplace=True) #, ignore_index=True)
+    df_main_min_1.reset_index(drop=True, inplace=True)
     # print("Completed: initial session id feature generation")
     return df_main_min_1
 
@@ -95,7 +96,8 @@ def generate_class_session_info_agg_class(df_main_min_3, school_start_hour=7, sc
     df_class_sessions.loc[df_class_sessions.class_session_id.isin(df_class_sessions_classwork_ids), 'Classwork'] = 1
 
     df_class_sessions.sort_values(
-        by=['Class', 'class_session_start_timestamp'], inplace=True, ignore_index=True)
+        by=['Class', 'class_session_start_timestamp'], inplace=True)        #, ignore_index=True)
+    df_class_sessions.reset_index(drop=True, inplace=True)
     return df_class_sessions
 
 
@@ -117,7 +119,8 @@ def generate_student_session_info_agg_class(df_main_min_4, df_class_sessions_agg
     df_student_session_agg = df_student_session_agg.merge(
         df_class_sessions_agg_classes, on=['class_session_id'], how='left')
     df_student_session_agg.sort_values(
-        by=['Class', 'student_session_start_timestamp'], inplace=True, ignore_index=True)
+        by=['Class', 'student_session_start_timestamp'], inplace=True) #, ignore_index=True)
+    df_student_session_agg.reset_index(drop=True, inplace=True)        
     return df_student_session_agg
 
 

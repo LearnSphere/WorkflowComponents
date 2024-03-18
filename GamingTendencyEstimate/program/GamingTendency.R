@@ -3,7 +3,7 @@ suppressWarnings(suppressMessages(library(lme4)))
 #   suppressWarnings(suppressMessages(install.packages("optparse")))
 # }
 # suppressWarnings(suppressMessages(library(optparse)))
-suppressWarnings(suppressMessages(library(tidyr)))
+# suppressWarnings(suppressMessages(library(tidyr)))
 suppressWarnings(suppressMessages(library(dplyr)))
 
 args <- commandArgs(trailingOnly = TRUE)
