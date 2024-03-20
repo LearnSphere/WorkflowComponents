@@ -4,7 +4,7 @@
 <author>Carnegie Mellon University
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ImportStudentStep</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ImportGradebook</url>
 <date>2017-03-20</date>
 <abstract>
 The <b>Gradebook</b> import is a tab-delimited text file containing gradebook values for each student and item.

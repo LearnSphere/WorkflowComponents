@@ -4,7 +4,7 @@
 <author>Paulo Carvalho
   <email>pcarvalho@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformDataShopTxnRollup</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformDataShopTxnRollup</url>
 <date>2019-03-11</date>
 <abstract>The Datashop Transaction RollUp component takes a Datashop transaction export and outputs general use information for each student in the file: number of hours spent, number of problems completed, number of hints requested, number of steps completed, as well as the time of the last transaction.</abstract>
 <description></description>

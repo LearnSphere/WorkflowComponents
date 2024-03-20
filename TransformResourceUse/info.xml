@@ -4,7 +4,7 @@
 <author>Paulo Carvalho
   <email>pcarvalho@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformResourceUse</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformResourceUse</url>
 <date>2019-03-11</date>
 <abstract>The Resource Use component summarizes use information by student for a specified time interval. The input is a file with student usage information with required headers: Anon Student Id, errors, hints, time, problems, steps and date (last transaction time).</abstract>
 <description></description>

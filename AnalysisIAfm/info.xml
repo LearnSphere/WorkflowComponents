@@ -4,7 +4,7 @@
 <author>Ran Liu
   <email>ranliu@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisIAfm</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisIAfm</url>
 <date>2017-02-28</date>
 <abstract>The <b>Individualized Additive Factor Model</b> (iAFM) performs a logistic regression over the "error rate" learning curve data. In addition to slope per KC, you also get slope per student. To make glmer runs fast and efficiently, we apply glmerControl with optimx as optimizer</abstract>
 <description>AFM is a generalization of the log-linear test model (LLTM). It is a specific instance of logistic regression, with student-success (0 or 1) as the dependent variable and with independent variable terms for the student, the KC, and the KC by opportunity interaction. Without the third term (KC by opportunity), AFM is LLTM. If the KC Model is the Unique-Step model (and there is no third term), the model is Item Response Theory, or the Rasch model.</description>

@@ -5,7 +5,7 @@
 	<!-- Ashish Gurung -->
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/GamingTendencyEstimate</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GamingTendencyEstimate</url>
 <date>16th March 2024</date>
 <abstract>The <b>Gaming Tendency Estimate</b> performs a logistic regression using the student ID as a random intercept while controlling for content type to infer the latent gaming tendency of the student.</abstract>
 
