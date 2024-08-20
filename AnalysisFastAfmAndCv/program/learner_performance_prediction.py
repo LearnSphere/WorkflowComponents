@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[54]:
+# In[1]:
 
 
 from datetime import datetime
@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[55]:
+# In[2]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -212,7 +212,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[56]:
+# In[3]:
 
 
 def phi(x):
@@ -224,7 +224,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[57]:
+# In[4]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -540,7 +540,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[58]:
+# In[5]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -699,7 +699,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[59]:
+# In[6]:
 
 
 def compute_metrics(y, y_pred):
@@ -739,7 +739,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[60]:
+# In[7]:
 
 
 def logToWfl(msg):
@@ -756,7 +756,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[82]:
+# In[10]:
 
 
 #test command from WF component:
@@ -801,7 +801,7 @@ if command_line:
         cv_fold = args.numFold
 else:
     #student_step file
-    file_name = "ds76_stu_step_with_null_skills.txt"
+    file_name = "ds7_student_step_All_Data_7_2024_0723_172529.txt"
     #file_name = "ds76_student_step_export.txt"
     #file_name = "C:/WPIDevelopment/dev06_dev/test/AFM_improved_optimization/runFastAFM/ds392_student_step_All_Data_1310_2019_0802_022703.txt"
     #file_name = "ds76_student_step_All_Data_test_fastAFM.txt"
@@ -815,7 +815,7 @@ else:
     #kc_col_names=['KC(KTracedSkills)']
     #kc_col_name="KC (DecompArithDiam)"
     #kc_col_name="KC (Lasso Model)"
-    kc_col_names=["KC (Circle-Collapse)"]
+    kc_col_names=["KC (xDecmpTrapCheat)"]
     #kc_col_name="KC (Default)"
     #working_dir
     working_dir = "."
@@ -912,6 +912,8 @@ for kc_col_name in kc_col_names:
     model = LogisticRegression(solver="lbfgs", max_iter=iter)
     model.fit(X_all, y_all)
     
+    #get overall intercept for skill
+    overall_skill_intercept = model.intercept_
     #get params
     params = model.coef_[0]
     num_params = len(params)
@@ -924,7 +926,7 @@ for kc_col_name in kc_col_names:
     end_ind_skill_intercept = end_ind_student+skill_df.shape[0]
     skill_intercept_param = params[end_ind_student:end_ind_skill_intercept]
     skill_slope_param = params[end_ind_skill_intercept:]
-    skill_df["intercept"] = skill_intercept_param
+    skill_df["intercept"] = skill_intercept_param + overall_skill_intercept
     skill_df["slope"] = skill_slope_param
     skill_df = skill_df[['skill_id', 'skill_name', 'intercept', 'slope']]
     skill_df = skill_df.sort_values(by=['skill_name'])
