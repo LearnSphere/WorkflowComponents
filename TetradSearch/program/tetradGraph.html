@@ -181,7 +181,9 @@ function initiateTetradGraphViewer() {
       d.data = {};
       //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.data.id = childNodes[j];
-      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+      //d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+	  temp_num = Number(childNodes[j].replace(nodes[j],"")).toFixed(6);
+	  d.data.name = temp_num.toString();
       d.classes = "SEM_Label";
       d.data.parent = nodes[j];
       d.data.idNumChars = nodes[j].length;
@@ -255,7 +257,9 @@ function initiateTetradGraphEditor() {
       //d.data.id = childNodes[j].replace(nodes[j],"").substring(0,6);
       d.data.id = childNodes[j];
       //console.log(childNodes[j]);
-      d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+      //d.data.name = childNodes[j].replace(nodes[j],"").substring(0,6);
+	  temp_num = Number(childNodes[j].replace(nodes[j],"")).toFixed(6);
+	  d.data.name = temp_num.toString();
       d.classes = "SEM_Label";
       d.data.parent = nodes[j];
       d.data.idNumChars = nodes[j].length;
@@ -668,7 +672,9 @@ function getEdges(lines) {
         } else if (tokens[j] == 'dd') {
           d.classes += ' definitelyDirected';
         } else if (!isNaN(tokens[j])) {
-          d.data.label = tokens[j].substring(0,6);
+          //d.data.label = tokens[j].substring(0,6);
+		   temp_num = Number(tokens[j]).toFixed(6);
+			d.data.label = temp_num.toString();
         } else if (tokens[j] == ('y')) {
           d.classes= 'addedEdge';
         }
