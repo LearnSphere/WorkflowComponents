@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from utils.queue import TimeWindowQueue
 
 
-# In[2]:
+# In[9]:
 
 
 def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name, remove_nan_skills, train_split_type=None, train_split=0.8, cv_student=None, cv_item=None, cv_fold=3):
@@ -89,6 +89,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
     #kc2idx is skill name to skill id mapping dict
     kc2idx = {kc: i for i, kc in enumerate(kc_set)}
     
+    df["user_id"] = df["user_id"].astype(str)
     df["user_id_orig"] = df["user_id"].copy()
     df["user_id"] = np.unique(df["user_id"], return_inverse=True)[1]
     df["item_id_orig"] = df["item_id"].copy()
@@ -212,7 +213,7 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
 # print("after time for preparing data: ", datetime.now().strftime("%H:%M:%S"))  
 
 
-# In[3]:
+# In[10]:
 
 
 def phi(x):
@@ -224,7 +225,7 @@ WINDOW_LENGTHS = [3600 * 24 * 30, 3600 * 24 * 7, 3600 * 24, 3600]
 NUM_WINDOWS = len(WINDOW_LENGTHS) + 1
 
 
-# In[4]:
+# In[11]:
 
 
 def df_to_sparse(df, Q_mat, active_features):
@@ -540,7 +541,7 @@ def df_to_sparse(df, Q_mat, active_features):
 # print("after time for encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[5]:
+# In[12]:
 
 
 def df_to_sparse_afm(df, Q_mat):
@@ -699,7 +700,7 @@ def df_to_sparse_afm(df, Q_mat):
 # print("after time for AFM encoding data: ", datetime.now().strftime("%H:%M:%S"))    
 
 
-# In[6]:
+# In[13]:
 
 
 def compute_metrics(y, y_pred):
@@ -739,7 +740,7 @@ def calculate_bic_by_mse(n, mse, num_params):
     return bic
 
 
-# In[7]:
+# In[14]:
 
 
 def logToWfl(msg):
@@ -756,7 +757,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[10]:
+# In[15]:
 
 
 #test command from WF component:
@@ -801,7 +802,8 @@ if command_line:
         cv_fold = args.numFold
 else:
     #student_step file
-    file_name = "ds7_student_step_All_Data_7_2024_0723_172529.txt"
+    file_name = "ds6160_student_step_All_Data_8579_2024_0831_214024.txt"
+    #file_name = "ds7_student_step_All_Data_7_2024_0723_172529.txt"
     #file_name = "ds76_student_step_export.txt"
     #file_name = "C:/WPIDevelopment/dev06_dev/test/AFM_improved_optimization/runFastAFM/ds392_student_step_All_Data_1310_2019_0802_022703.txt"
     #file_name = "ds76_student_step_All_Data_test_fastAFM.txt"
@@ -815,7 +817,7 @@ else:
     #kc_col_names=['KC(KTracedSkills)']
     #kc_col_name="KC (DecompArithDiam)"
     #kc_col_name="KC (Lasso Model)"
-    kc_col_names=["KC (xDecmpTrapCheat)"]
+    kc_col_names=["KC (Concept)"]
     #kc_col_name="KC (Default)"
     #working_dir
     working_dir = "."
