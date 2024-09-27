@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[71]:
+# In[1]:
 
 
 import argparse
@@ -15,7 +15,7 @@ import datetime as dt
 from settings import settings
 
 
-# In[72]:
+# In[2]:
 
 
 #set constant from settings
@@ -36,7 +36,7 @@ logFile = open(log_file_name, "w")
 logFile.close();
 
 
-# In[73]:
+# In[3]:
 
 
 def extract_response(response_obj, json=False):
@@ -55,7 +55,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[74]:
+# In[32]:
 
 
 def score_inputs(client, inputs, prompt_start, prompt_format):
@@ -70,24 +70,26 @@ def score_inputs(client, inputs, prompt_start, prompt_format):
         progress = loop_cnt/len(inputs_upto)
         progress = f"{progress * 100:.{0}f}%"
         logProgressToWfl(progress)
-        new_row = {} 
-        overall_history = [{"role": "system", "content": prompt_start}, 
-                           {"role": "user", "content": inpt}, 
-                           {"role": "system", "content": prompt_format}]
-        openai_out = client.chat.completions.create(model=MODEL, messages=overall_history, max_tokens=MAX_TOKENS, temperature = TEMPERATURE)
-        role, content = extract_response(openai_out)
-        #print(role)
-        #print(content)
-        # We now need to parse the JSON into rational and score
-        try:
-            content_json = json.loads(content)  # Run response through JSON
-            score = str(content_json["Score"])  # Cast to string to avoid type inequality
-            rationale = str(content_json["Rationale"])  # Fetch the rationale
-            new_row['score'] = score
-            new_row['rationale'] = rationale
-        except:
+        new_row = {}
+        if pd.isna(inpt):
             new_row['score'] =  "---"
             new_row['rationale'] = "---" 
+        else:
+            overall_history = [{"role": "system", "content": prompt_start}, 
+                               {"role": "user", "content": inpt}, 
+                               {"role": "system", "content": prompt_format}]
+            try:
+                openai_out = client.chat.completions.create(model=MODEL, messages=overall_history, max_tokens=MAX_TOKENS, temperature = TEMPERATURE)
+                role, content = extract_response(openai_out)
+                # We now need to parse the JSON into rational and score
+                content_json = json.loads(content)  # Run response through JSON
+                score = str(content_json["Score"])  # Cast to string to avoid type inequality
+                rationale = str(content_json["Rationale"])  # Fetch the rationale
+                new_row['score'] = score
+                new_row['rationale'] = rationale
+            except Exception as e:
+                new_row['score'] =  "---"
+                new_row['rationale'] = f"OpenAI experienced error: {e}" 
         new_df = pd.concat([new_df, pd.DataFrame([new_row])], ignore_index=True) # Failsafe
         loop_cnt = loop_cnt + 1
     
@@ -99,7 +101,7 @@ def score_inputs(client, inputs, prompt_start, prompt_format):
     return new_df
 
 
-# In[75]:
+# In[33]:
 
 
 #test command
@@ -158,9 +160,11 @@ if command_line:
 else:
     working_dir = "."
     program_dir = "."
-    data_file = "HSME_predict.csv"
+    #data_file = "HSME_predict.csv"
+    data_file = "Helping Students Manage Inequity_test.csv"
     config_file = "config_file.txt"
-    column_to_score = "Input"
+    #column_to_score = "Input"
+    column_to_score = "Response"
     lesson = "Helping Students Manage Inequity"
     #lesson = "Giving Effective Praise"
     predict_explain = "predict"
@@ -201,7 +205,7 @@ client = OpenAI(api_key=api_key)
 scored_df = score_inputs(client, inputs_to_score, scoring_prompt_start, scoring_format_prompt)
 
 
-# In[76]:
+# In[34]:
 
 
 #concatenate with original df
