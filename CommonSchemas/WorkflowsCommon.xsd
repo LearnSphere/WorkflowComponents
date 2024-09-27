@@ -59,6 +59,14 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
+<xs:simpleType name="TextFieldForTextAnswerFeedback" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:simpleType name="TextAnswerFeedbackLessons" >
+  <xs:restriction base="xs:string" />
+</xs:simpleType>
+
 <xs:simpleType name="Import" >
   <xs:restriction base="xs:string" />
 </xs:simpleType>

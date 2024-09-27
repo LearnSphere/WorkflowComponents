@@ -1,0 +1,46 @@
+<component>
+  <component_type>tutoringanalytics</component_type>
+  <component_id>Tutoringanalytics-1-x345861</component_id>
+  <workflow_id>262</workflow_id>
+  <top>70.39999389648438</top>
+  <left>476.00001525878906</left>
+  <component_name>AI Lesson Scoring</component_name>
+  <component_id_human>Tutoringanalytics #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x509267</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x509267</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <file_path>test/test_data/HSME_predict.csv</file_path>
+          
+          <file_name>HSME_predict.csv</file_name>
+          <index>0</index>
+          <label>csv</label>
+        </csv>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"HSME_predict_2.csv","importFileType":"csv","importFileNameTitle":"File: HSME_predict_2.csv","fileTypeSelection":"csv","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"1386","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <scoringCol>Input 0 (0) - Input (column 5)</scoringCol>
+    <lesson>Helping Students Manage Inequity</lesson>
+    <predict_explain>Predict</predict_explain>
+    <have_api_key>No</have_api_key>
+    <openai_api_key />
+  </options>
+</component>

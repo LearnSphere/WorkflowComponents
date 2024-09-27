@@ -58,11 +58,13 @@
 	  <xs:element name="parameters" substitutionGroup="text" />
 	    <xs:element name="analysis-summary" substitutionGroup="text" />
 		<xs:element name="predictions" substitutionGroup="text" />
+		<xs:element name="config-file" substitutionGroup="text" />
 	  <xs:element name="csv" substitutionGroup="text" />
 
 <xs:element name="student-goal" substitutionGroup="csv" />
 <xs:element name="resource-use" substitutionGroup="csv" />
 <xs:element name="hierarchy-order" substitutionGroup="csv" />
+<xs:element name="encoding-map" substitutionGroup="csv" />
 
 	  <xs:element name="sql" substitutionGroup="text" />
 		  <xs:element name="coursera-hash-mapping" substitutionGroup="text" />

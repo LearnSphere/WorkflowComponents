@@ -29,7 +29,8 @@
 		<Data_Conversion />
 		<DataShop_Txn_Rollup />
 		<Datastage_Aggregator />
-		<Deidentify />
+		<Deidentify_Student_IDs/>
+		<Deidentify_Dialogue />
 		<Discretize />
 		<Feature_Synthesis />
 		<Fuzzy_Match />
@@ -101,17 +102,19 @@
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
+		<Learning_Curves_Python_Based />
 		<Learning_Rate_Plot />
 		<Line_Graph />
 		<Scatter_Plot />
 		<Solution_Paths />
 		<Student_Demographics />
 	</Visualization>
-	<NLP>
+	<TutoringAnalytics>
 	    <Recently_Used />
-		<N_Grams />
-		<TF_IDF />
-	</NLP>
+		<AI_Lesson_Scoring />
+		<!--<Deidentify_Dialogue />-->
+		<!--<Text_Answer_Feedback />-->
+	</TutoringAnalytics>
 	<Tetrad>
 	    <Recently_Used />
 	    <Classifier />
