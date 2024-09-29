@@ -1,2 +1,5 @@
-component.interpreter.path=C:\\Users\\hchen\\Anaconda3\\python.exe
-component.program.path=program/ai_lesson_scoring.py
+#component.interpreter.path=C:\\Users\\hchen\\Anaconda3\\python.exe
+#component.program.path=program/ai_lesson_scoring.py
+
+component.interpreter.path=C:\\Users\\hchen\\Anaconda3\\envs\\36_env\\python.exe
+component.program.path=program/ai_lesson_scoring_py36.py

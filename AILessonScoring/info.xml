@@ -6,7 +6,7 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AILessonScoring</url>
 <date>2024-09-20</date>
-<abstract>The <b>AI Lesson Scoring</b> component gives users the OpenAI's responses to the text answers of a selected lesson. The OpenAI's response includes a score and a rationale for the scoring. 
+<abstract>The <b>AI Lesson Scoring</b> component gives users the OpenAI's responses to the text answers of a selected lesson. The OpenAI's response includes a score and a rationale for the scoring. We are using OpenAI gpt-3.5-turb-instruct engine.
 </abstract>
 <description>This component gives users OpenAI's response to text answer for selected lessons. The OpenAI's response includes a score and a rationale for the scoring. 
 </description>
@@ -14,7 +14,8 @@
 <inputs>
 <ul>
 <li>A CSV file that contains a column of text answers for the OpenAI to score. <b>Required</b></li>
-<li>A config (i.e. configuration) file. This file should contain the API key for your OpenAI's account. <b>Optional</b>, only visible when the Have API Key option is set to Yes and the Use Config File option is set to Yes (see the Options section of this document). The config file should have one row in this format:
+<li>A config (i.e. configuration) file. This file should contain the API key for your OpenAI's account. <b>Optional</b>, only visible when the Have API Key option is set to Yes and the Use Config File option is set to Yes (see the Options section of this document). The config file should have two rows in this format:
+<p>[section_key]</p>
 <p>OPENAI_API_KEY=your_api_key</p>
 </li>
 </ul>
@@ -32,7 +33,7 @@
 <li>Lesson: choose the relevant lesson.</li>
 <li>Predict or Explain: choose from Predict or Explain.</li>
 <li>Have API KEY: choose Yes if you have an API Key for your OpenAI account.</li>
-<li>Use Config File: choose yes if you want to use a configuation file to pass your API key.<b>This is a more secured way to pass the key.</b> This option is only present when the Have API KEY option is selected for Yes.</li>
+<li>Use Config File: choose yes if you want to use a configuation file to pass your API key. <b>API key can be viewed when you shared your WF with others.</b></li>
 <li>API Key: only present when the Have API Key option is selected for Yes and the Use Config File option is selected for No. <b>API key can be viewed when you shared your WF with others.</b></li>
 
 </ul>
