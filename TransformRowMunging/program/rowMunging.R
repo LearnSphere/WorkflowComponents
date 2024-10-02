@@ -12,15 +12,18 @@ suppressMessages(library(data.table))
 #suppressMessages(library(Dict))
 suppressMessages(library(hash))
 
+wfl_log_file = "row_operations.wfl"
+
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE, fill = TRUE)
+  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  ds_file = suppressMessages(fread(file=filename,verbose = F))
   #if only one col is retrieved, try again with ,
-  if (ncol(ds_file) == 1) {
-    #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-  }
+  # if (ncol(ds_file) == 1) {
+  #   #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  #   ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  # }
   return(ds_file)
 }
 
@@ -580,7 +583,7 @@ for (colname in colnames(myData)) {
 if (naValue == "blank") {
   naValue = ""
 }
-my.write(resultData, outputFileName, sep="\t", row.names = F, col.names=T, quote = F, na = naValue)
-
+#my.write(resultData, outputFileName, sep="\t", row.names = F, col.names=T, quote = F, na = naValue)
+write.table(resultData, file = outputFileName, sep = "\t", row.names = FALSE, col.names=T, na = naValue)
 
 
