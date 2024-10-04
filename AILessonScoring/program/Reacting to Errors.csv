@@ -1,0 +1,23 @@
+type,scoring_prompt_start
+predict,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
+
+
+-If the tutor’s response provides an implicit way of calling attention to the error, focus on encouraging students thinking about math and  metacognition rather than giving explicit answers, and use effective praise to motivate students' learning, score with a 1. Examples of responses scoring a 1 are: “Lucy, great start! Explain how you passed to the second column.”; “Thank you for showing me your work, Lucy. You worked hard on adding these numbers. I am going to work on this problem with you. Can you tell me how you added the numbers first?”; “Well done setting up the problem, Lucy. Can you tell me how you went about calculating the first few steps?”; “I like your effort, but show me what you are trying to do in the second step.”; “Kanye, very well done. Your effort was very valuable. Can you repeat how you arrived at this result? Let's do this problem together.”
+
+
+-If the tutor's response directly addresses the student’s error using explicit language, or directly calls attention to the student’s error, or fails to encourage the students think about math or metacognition by not guiding them to reflect on their thought process, score with a 0.
+Sample responses scoring a 0 include: “Let's try solving the problem together.”; “Good effort.”; “I got a different answer. Let's look at this together.”; “Do you know about carrying the 1?”; “Kanye, let me show you how this should be done.”
+
+
+Response Start ---"
+explain,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
+
+
+-If the tutor's response demonstrates that the tutor understands they should implicitly and not directly call attention to the students error, focusing on the learning process, score it with a 1. Examples of responses scoring a 1 are: “Start with a positive statement and then offer to do it together, fostering a team feeling. Go through the steps to see if she can find the error herself”; “Recognizing her effort is important. Plus, encouraging her to work together in identify where the error is will boost her self confidence”; “indirectly pointing out problem with praise first”; “Praise the effort and then go through the steps together, fostering a feeling of not being alone and teaching the student to work step-by-step in looking for errors”; “This approach encourages the student for making the effort, as well as prompting them to find their own mistake.”
+  
+-If the tutor's response does NOT demonstrate that the tutor understand the important of indirectly calling attention to the students errors, score it with a 0. Sample responses scoring a 0 include: “She has the numbers aligned properly. This gives me a baseline to see where she is making mistakes. She will be motivated because she has the first step in the process-focused coaching correct. At this point, I think Lucy never learned how to carry over numbers from one place value to another e.g. units, tens, hundreds…”; “I know how Kanye started solving the problem, so I think Kanye needs a hint as to what is wrong”; “You are showing that you are on the student's side.”; “You do not disappoint the student by saying that he is wrong and you still motivate learning by solving the problem together with him”; “He'll feel good that his efforts are appreciated and he will continue to work hard.”
+
+
+
+
+Response Start ---"

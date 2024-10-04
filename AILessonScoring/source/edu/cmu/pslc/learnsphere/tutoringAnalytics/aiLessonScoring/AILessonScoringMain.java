@@ -36,11 +36,11 @@ public class AILessonScoringMain extends AbstractComponent {
     @Override
     protected void runComponent() {
         File inputFile1 = getAttachment(0, 0);
-        File inputFile2 = null;
+        //File inputFile2 = null;
         logger.info("AIlessonScoring inputFile: " + inputFile1.getAbsolutePath());
         Boolean reqsMet = true;
         //when have_api_key is yes and use_config is yes
-        String haveApiKey = this.getOptionAsString("have_api_key");
+        /*String haveApiKey = this.getOptionAsString("have_api_key");
         String userConfig = this.getOptionAsString("use_config");
         if (haveApiKey.equals("Yes") && userConfig.equals("Yes")) {
         	inputFile2 = getAttachment(1, 0);
@@ -63,7 +63,16 @@ public class AILessonScoringMain extends AbstractComponent {
                 logger.info("AIlessonScoring is aborted: " + err);
                 reqsMet = false;
         	}
-        }
+        }*/
+        String apiKey = this.getOptionAsString("openai_api_key");
+        if (apiKey == null || apiKey.trim().equals("")) {
+    		reqsMet = false;
+        	//send error message
+            String err = "OpenAI API Key is required.";
+            addErrorMessage(err);
+            logger.info("AIlessonScoring is aborted: " + err);
+            reqsMet = false;
+    	}
         
         if (reqsMet) {
         	File outputDirectory = this.runExternal();

@@ -1,0 +1,21 @@
+type,scoring_prompt_start
+predict,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
+
+
+-if the tutor’s response provides effective, process-focused praise that acknowledges the student’s effort, hard work, perseverance, or focuses on the student’s actions towards the learning process, score with a 1. Examples of responses scoring a 1 are: “Kevin, you didn't give up and you managed to learn, congratulations! Let's finish your math homework together so you can still get a good grade and learn how this kind of homework will be easier sooner.”; “Keep Working.”; “Great job Kevin! You are on the right track, keep working on the problem, you get it!”; “Kevin, that was awesome the way you kept at it and were able to get to the correct answer. You should be proud. Keep up the great work!”; “You're doing a great job working on this paragraph! It can be tricky to find the right words and I think you're doing really well working through it.”
+
+
+-if the tutor's response provides outcomes-based praise, acknowledging only the student’s achievements or outcomes, or does not acknowledge the learning process or effort towards learning, score with a 0. Sample responses scoring a 0 include: “You\'re doing great, let\'s see what the next step is.”; “Good Job.”; “I would say she is doing well and let us explore a bit more.”; “I think you are doing great.”; “You can do this! Just take it one step at a time.”
+
+
+Response Start ---"
+explain,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
+
+
+-if the tutor's response demonstrates that the tutor understands the importance of praising for effort or acknowledging the learning process, score with a 1. Examples of responses scoring a 1 are: “It is encouraging to continue working through the assignment and highlights visible improvement.”; “Because it praises the effort, not the ability, and it points out the positive effect that the effort has”; “The praise is sincere and shows appreciation for the effort the student put in to solving the question.”; “It's process-focused”; “Shows the student how persevering he was, motivating him to continue like this” 
+
+
+-if the tutor response does NOT demonstrate that the tutor understands the importance of praising for effort or acknowledging the learning process, t, score with a 0. Sample responses scoring a 0 include: “Always encouraging students helps to increase student confidence.”; “Provides the student with positive feelings”; “Carla will be more motivated and confident to continue completing her homework”; “Honest praise.  Is this math or writing?”; “It is supporting them without comparing them to other students”
+
+
+Response Start ---"

@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[50]:
+# In[3]:
 
 
 import argparse
@@ -14,7 +14,7 @@ import datetime as dt
 import configparser
 
 
-# In[51]:
+# In[4]:
 
 
 def extract_response(response_obj):
@@ -31,10 +31,10 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[52]:
+# In[5]:
 
 
-def score_inputs(inputs, prompt_start, prompt_format):
+def score_inputs(inputs, prompt_start):
     new_df = pd.DataFrame(columns = ['score','rationale'])
     #not over RUN_UP_TO, If an upper bound is set, get response less than this number
     if RUN_UP_TO >=  0:  
@@ -73,16 +73,12 @@ def score_inputs(inputs, prompt_start, prompt_format):
     return new_df
 
 
-# In[58]:
+# In[10]:
 
 
 #test command
-#test: predict, no key
-#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring.py -programDir . -workingDir . -userId hcheng -have_api_key No -lesson "Helping Students Manage Inequity" -predict_explain Predict -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -use_config Yes -node 0 -fileIndex 0 HSME_predict.csv
-#test: predict, config file
-#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring.py -programDir . -workingDir . -userId hcheng -have_api_key Yes -lesson "Helping Students Manage Inequity" -predict_explain Explain -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -use_config Yes -node 0 -fileIndex 0 HSME_predict.csv -node 1 -fileIndex 0 config_file.txt
 #test: explain with key
-#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring.py -programDir . -workingDir . -userId hcheng -have_api_key Yes -lesson "Helping Students Manage Inequity" -openai_api_key somekey -predict_explain Explain -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -use_config No -node 0 -fileIndex 0 HSME_predict.csv -node 1 -fileIndex 0 config_file.txt
+#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring_py36.py -programDir . -workingDir . -userId hcheng -lesson "Helping Students Manage Inequity" -openai_api_key somekey -predict_explain Explain -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -node 0 -fileIndex 0 HSME_predict.csv -node 1 -fileIndex 0 config_file.txt
 command_line = True
 if command_line:
     parser = argparse.ArgumentParser(description="AI Lessons Scoring")
@@ -93,8 +89,8 @@ if command_line:
     parser.add_argument("-lesson", help="4 lessons to pick", type=str, required=True)
     parser.add_argument("-predict_explain", help="predict or explain", type=str, required=True, choices=['Predict', 'Explain'])
     parser.add_argument("-scoringCol", type=str, help='column to score')
-    parser.add_argument("-have_api_key", help="Boolean to decide which key to use.", type=str, choices=['Yes', 'No'], default="Yes")
-    parser.add_argument("-use_config", help="Boolean to decide if key is from config file.", type=str, choices=['Yes', 'No'], default="Yes")
+    #parser.add_argument("-have_api_key", help="Boolean to decide which key to use.", type=str, choices=['Yes', 'No'], default="Yes")
+    #parser.add_argument("-use_config", help="Boolean to decide if key is from config file.", type=str, choices=['Yes', 'No'], default="Yes")
     parser.add_argument("-openai_api_key", help="API key for the account that we want to use azure", type=str)
     
     args, option_file_index_args = parser.parse_known_args()
@@ -102,43 +98,43 @@ if command_line:
     working_dir = args.workingDir
     program_dir = args.programDir
     data_file = None
-    config_file = None
+    #config_file = None
     
     for x in range(len(args.node)):
         if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
             data_file = args.fileIndex[x][1]
-        if (args.node[x][0] == "1" and args.fileIndex[x][0] == "0"):
-            config_file = args.fileIndex[x][1]
+#         if (args.node[x][0] == "1" and args.fileIndex[x][0] == "0"):
+#             config_file = args.fileIndex[x][1]
             
     column_to_score = args.scoringCol
     lesson = args.lesson
     predict_explain = (args.predict_explain).lower()
     
-    have_api_key = (args.have_api_key).lower()
-    use_config = (args.use_config).lower()
+    #have_api_key = (args.have_api_key).lower()
+    #use_config = (args.use_config).lower()
     api_key = args.openai_api_key
                     
-    if have_api_key == "yes" and use_config == "yes":
-        if config_file is not None:
-            config = configparser.ConfigParser()
-            config.read(config_file)
-            api_key = config.get('section_key', 'OPENAI_API_KEY')
+#     if have_api_key == "yes" and use_config == "yes":
+#         if config_file is not None:
+#             config = configparser.ConfigParser()
+#             config.read(config_file)
+#             api_key = config.get('section_key', 'OPENAI_API_KEY')
     
-    if have_api_key == "no":
-        api_key = None
+#     if have_api_key == "no":
+#         api_key = None
 
 else:
     working_dir = "."
     program_dir = "."
-    #data_file = "HSME_predict.csv"
-    data_file = "Helping Students Manage Inequity_test.csv"
+    data_file = "HSME_predict.csv"
+    #data_file = "Helping Students Manage Inequity_test.csv"
 #     config_file = "config_file.txt"
 #     config = configparser.ConfigParser()
 #     config.read(config_file)
 #     api_key = config.get('section_key', 'OPENAI_API_KEY')
-    api_key = None
-    #column_to_score = "Input"
-    column_to_score = "Response"
+    api_key = "some key"
+    column_to_score = "Input"
+    #column_to_score = "Response"
     lesson = "Helping Students Manage Inequity"
     #lesson = "Giving Effective Praise"
     predict_explain = "predict"
@@ -163,9 +159,8 @@ TEMPERATURE = int(config.get('section_engine', 'TEMPERATURE'))
 RUN_UP_TO = int(config.get('section_engine', 'RUN_UP_TO'))
 MODEL = config.get('section_engine', 'MODEL')
 
-if api_key is None or api_key == "":
-    api_key = config.get('section_key', 'OPENAI_API_KEY')
-#print(api_key)
+# if api_key is None or api_key == "":
+#     api_key = config.get('section_key', 'OPENAI_API_KEY')
 
 lesson_prompt_dic = {"Helping Students Manage Inequity" : "Helping Students Manage Inequity.csv",
                     "Determining What students Know" : "Determining What students Know.csv",
@@ -198,14 +193,15 @@ else:
     sys.exit(f'Prompt file not found for lesson: {lesson}')
     
 scoring_prompt_start = df_prompt.loc[df_prompt['type'] == predict_explain, 'scoring_prompt_start'].values[0]
-scoring_format_prompt = df_prompt.loc[df_prompt['type'] == predict_explain, 'scoring_format_prompt'].values[0]
+#scoring_format_prompt = df_prompt.loc[df_prompt['type'] == predict_explain, 'scoring_format_prompt'].values[0]
 
 openai.api_key = api_key
 
-scored_df = score_inputs(inputs_to_score, scoring_prompt_start, scoring_format_prompt)
+#scored_df = score_inputs(inputs_to_score, scoring_prompt_start, scoring_format_prompt)
+scored_df = score_inputs(inputs_to_score, scoring_prompt_start)
 
 
-# In[55]:
+# In[11]:
 
 
 #concatenate with original df

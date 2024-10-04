@@ -40,7 +40,6 @@
     <scoringCol>Input 0 (0) - Input (column 5)</scoringCol>
     <lesson>Helping Students Manage Inequity</lesson>
     <predict_explain>Predict</predict_explain>
-    <have_api_key>No</have_api_key>
-    <openai_api_key />
+    <openai_api_key>some key</openai_api_key>
   </options>
 </component>

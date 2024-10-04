@@ -1,4 +1,4 @@
-type,scoring_prompt_start,scoring_format_prompt
+type,scoring_prompt_start
 predict,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
 
 
@@ -8,7 +8,7 @@ predict,"You are a tutor evaluator. Please score the following tutor response to
 -if the tutor's response does not demonstrate that the tutor understands that the student needs support in advocating for themselves, score with a 0. Sample responses scoring a 0 include: “That would be the right approach because I am helping the student solve the problem rationally""; ""This can let him feel supported and at the same time, gives him a solution of this problem""; ""Because it teaches Alexis a possible way to avoid similar problems in the future; and ""Discussing the plan with the student will provide them how to stand up for the inequity.""
 
 
-Response Start ---","--- Response End. Given the earlier response, please return a JSON string following the format, {""Rationale"": ""your reasoning here"", ""Score"":0/1}."
+Response Start ---"
 explain,"You are a tutor evaluator. Please assess a tutor’s response within a tutor training scenario involving a tutor instructing a middle school student to advocate for themselves when they are experiencing an inequity. Educators and tutors should apply the strategy of assisting students in identifying when they are experiencing an inequity and instruct them to advocate for themselves. The tutor is explaining the rationale behind their response. Assess and score the tutor’s response, as follows:
 
 
@@ -18,4 +18,4 @@ explain,"You are a tutor evaluator. Please assess a tutor’s response within a tu
 -if the tutor's response does not demonstrate that the tutor understands that the student needs support in advocating for themselves, score with a 0. Sample responses scoring a 0 include: “That would be the right approach because I am helping the student solve the problem rationally""; ""This can let him feel supported and at the same time, gives him a solution of this problem""; ""Because it teaches Alexis a possible way to avoid similar problems in the future; and ""Discussing the plan with the student will provide them how to stand up for the inequity.""
 
 
-Response Start ---","--- Response End. Given the earlier response, please return a JSON string following the format, {\""Rationale\"": \""your reasoning here\"", \""Score\"":1/0}."
+Response Start ---"

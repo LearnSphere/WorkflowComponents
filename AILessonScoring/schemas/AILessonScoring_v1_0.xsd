@@ -20,6 +20,7 @@
     </xs:choice>
   </xs:complexType>
 
+<!--  
   <xs:complexType name="InputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -35,19 +36,19 @@
     <xs:choice>
       <xs:element ref="file"  minOccurs="0" />
     </xs:choice>
-  </xs:complexType>
+  </xs:complexType>-->
   
   <xs:complexType name="InputType">
     <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="0" />
-      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
+      <!--  <xs:element name="input1" type="InputDefinition1" minOccurs="0" />-->
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputLabel">
     <xs:all>
       <xs:element name="input0" type="xs:string" default="csv" minOccurs="1" />
-      <xs:element name="input1" type="xs:string" default="config-file" minOccurs="0" />
+      <!--  <xs:element name="input1" type="xs:string" default="config-file" minOccurs="0" />-->
     </xs:all>
   </xs:complexType>
 
@@ -82,7 +83,7 @@
     <xs:enumeration value="Explain" />
     </xs:restriction>
   </xs:simpleType>
-  
+ 
   <xs:simpleType name="lessonType" final="restriction">
     <xs:restriction base="xs:string">
     <xs:enumeration value="Helping Students Manage Inequity" />
@@ -106,19 +107,19 @@
     <xs:element type="FileInputHeader" name="scoringCol" id="Column_to_Score" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
     <xs:element type="lessonType" name="lesson" id="Lesson" default="Helping Students Manage Inequity" />
     <xs:element type="preditExplainType" name="predict_explain" id="Predict_or_Explain" default="Predict" />
-    <xs:element type="trueFalseType" name="have_api_key" id="Have_API_KEY" default="Yes" />
-    <xs:element type="trueFalseType" name="use_config" id="Use_Config_File" default="Yes" />
+    <!--  <xs:element type="trueFalseType" name="have_api_key" id="Have_API_KEY" default="Yes" />
+    <xs:element type="trueFalseType" name="use_config" id="Use_Config_File" default="Yes" />-->
     <xs:element type="xs:string" name="openai_api_key" id="OPENAI_API_KEY" default="" />
     </xs:choice>
   </xs:complexType>
-    
+    <!-- 
   <xs:complexType name="option_dependency">
 	<xs:choice>
 	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="use_config" ls:dependsOn="have_api_key" ls:constraint="matches(Yes)" />
 	<xs:element type="conjunctive" name="dependency2" ls:dependentOption="openai_api_key" ls:dependsOn="have_api_key" ls:constraint="matches(Yes)" />
 	<xs:element type="conjunctive" name="dependency3" ls:dependentOption="openai_api_key" ls:dependsOn="use_config" ls:constraint="matches(No)" />
 	</xs:choice>
-</xs:complexType>
+</xs:complexType> -->
 
 
   <xs:element name="component">
