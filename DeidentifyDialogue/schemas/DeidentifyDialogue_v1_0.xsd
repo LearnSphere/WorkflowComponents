@@ -1,0 +1,207 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+  
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <!-- <xs:complexType name="InputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList2" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList2">
+    <xs:choice>
+      <xs:element ref="file"  minOccurs="0" />
+    </xs:choice>
+  </xs:complexType> -->
+
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
+      <!--  <xs:element name="input2" type="InputDefinition2" minOccurs="0" />-->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="encoding-map" minOccurs="0" />
+      <!--  <xs:element name="input2" type="xs:string" default="config-file" minOccurs="0" />-->
+    </xs:all>
+  </xs:complexType>
+
+<xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="text" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="encoding-map" />
+    </xs:choice>
+  </xs:complexType>
+  
+  
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="methodType" final="restriction">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="Presidio" />
+    <xs:enumeration value="Azure" />
+      <xs:enumeration value="Comprehend" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="trueFalseType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="fileType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Non-CSV" />
+      <xs:enumeration value="CSV" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+
+
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+	<xs:element type="methodType" name="method" id="Anonymize_Method" default="Presidio" />
+    <xs:element type="trueFalseType" name="Hips_boolean" id="HIPS" default="No" />
+	<xs:element type="fileType" name="piiFileType" id="File_Type" default="Non-CSV" />
+	<xs:element type="trueFalseType" name="skipCol" id="Skip_Columns" default="No" />
+    <xs:element type="MultiFileInputHeader" name="skip_columns" id="Columns_to_Skip" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
+    <xs:element type="trueFalseType" name="useEncoding" id="Use_Encoding_File" default="No" />
+    <xs:element type="FileInputHeader" name="name_col" id="Name_Column_in_Encoding_File" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*" />
+    <xs:element type="FileInputHeader" name="Hash_col" id="Hash_Column_in_Encoding_File" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*" />
+    <xs:element type="xs:string" name="aws_access_key" id="AWS_Access_Key" default="" />
+	<xs:element type="xs:string" name="aws_secret_key" id="AWS_Secret_Key" default="" />
+	<xs:element type="xs:string" name="api_key" id="API_Key" default="" />
+	<xs:element type="xs:string" name="end_point" id="END_POINT" default="" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="useEncoding" ls:dependsOn="Hips_boolean" ls:constraint="matches(No)" />
+	
+	<xs:element type="conjunctive" name="dependency2" ls:dependentOption="name_col" ls:dependsOn="Hips_boolean" ls:constraint="matches(No)" />
+	<xs:element type="conjunctive" name="dependency3" ls:dependentOption="name_col" ls:dependsOn="useEncoding" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency4" ls:dependentOption="Hash_col" ls:dependsOn="Hips_boolean" ls:constraint="matches(No)" />
+	<xs:element type="conjunctive" name="dependency5" ls:dependentOption="Hash_col" ls:dependsOn="useEncoding" ls:constraint="matches(Yes)" />
+	
+	<!--  <xs:element type="disjunctive" name="dependency6" ls:dependentOption="use_config" ls:dependsOn="method" ls:constraint="matches(Presidio)" ls:negation="true"  />-->
+	<!-- <xs:element type="conjunctive" name="dependency7" ls:dependentOption="aws_access_key" ls:dependsOn="use_config" ls:constraint="matches(No)" />-->
+	<xs:element type="conjunctive" name="dependency8" ls:dependentOption="aws_access_key" ls:dependsOn="method" ls:constraint="matches(Comprehend)" />
+	<!-- <xs:element type="conjunctive" name="dependency9" ls:dependentOption="aws_secret_key" ls:dependsOn="use_config" ls:constraint="matches(No)" />-->
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="aws_secret_key" ls:dependsOn="method" ls:constraint="matches(Comprehend)" />
+	<!-- <xs:element type="conjunctive" name="dependency11" ls:dependentOption="api_key" ls:dependsOn="use_config" ls:constraint="matches(No)" />-->
+	<xs:element type="conjunctive" name="dependency12" ls:dependentOption="api_key" ls:dependsOn="method" ls:constraint="matches(Azure)" />
+	<!-- <xs:element type="conjunctive" name="dependency13" ls:dependentOption="end_point" ls:dependsOn="use_config" ls:constraint="matches(No)" />-->
+	<xs:element type="conjunctive" name="dependency14" ls:dependentOption="end_point" ls:dependsOn="method" ls:constraint="matches(Azure)" />
+	
+	<xs:element type="disjunctive" name="dependency15" ls:dependentOption="skipCol" ls:dependsOn="piiFileType" ls:constraint="matches(CSV)" />
+	<xs:element type="conjunctive" name="dependency16" ls:dependentOption="skip_columns" ls:dependsOn="skipCol" ls:constraint="matches(Yes)" />
+	<xs:element type="conjunctive" name="dependency17" ls:dependentOption="skip_columns" ls:dependsOn="piiFileType" ls:constraint="matches(CSV)" />
+	</xs:choice>
+</xs:complexType>
+
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all >
+        <xs:element type="xs:integer" name="workflow_id"  />
+        <xs:element type="xs:string" name="component_id"  />
+        <xs:element type="xs:string" name="component_id_human"  />
+        <xs:element type="xs:string" name="component_name"  />
+        <xs:element type="xs:string" name="component_type"  />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="inputLabels" type="InputLabel" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

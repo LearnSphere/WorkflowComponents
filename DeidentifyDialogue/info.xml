@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DeidentifyDialogue</url>
+<date>2024-09-20</date>
+<abstract>The <b>Deidentify Dialogue</b> component gives users option between Azure langauge services (paid), Amazon Comprehend(paid), or Presidio (free) for PII
+ detection. Also, when it comes to replacing the PII, users have the option to either encode with hash values or use HIPS..
+<p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=3919" target="_blank">demo</a> workflow.</p></abstract>
+<description>This component gives users option between Azure langauge services (paid), Amazon Comprehend (paid), or Presidio (free) for PII
+detection.</description>
+
+<inputs>
+<ul>
+<li>A CSV file or any text file that has PII that needs to be deidentified. <b>Required</b></li>
+<li>A CSV file that can be used for encoding the PII. It should include a column for the PII values and a column for the hash values. <b>Optional</b>, only visible when the Encoding option is set to Yes (see the Options section of this document)</li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>The CSV file or the text file that has PII deidentified. </li>
+<li>A CSV file with PII names and the hash values used. If an encoding file is used, this CSV has the updated encoding hash values.</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Anonymize Method: choose from Presidio, Azure or Comprehend. Presidio is free.</li>
+<li>HIPS: hidden in plain sight. If no, the Use Encoding File option is visible.</li>
+<li>File Type: choose from CSV or Non-CSV</li>
+<li>Skip Columns: choose Yes if you have columns to skip the deidentification process. This option is only present when CSV is selected for File type option.</li>
+<li>Columns to Skip: select columns to skip the deidentification process. This option is only present when Yes is selected for the Skip Columns option.</li>
+<li>Use Encoding File: choose yes to provide encoding file for hash values. This option is only present when No is selected for HIPS</li>
+<li>Name Column in Encoding File: choose the column that has PII names in the encoding file. This option is only present when Yes is selected for the Use Encoding File option.</li>
+<li>Hash Column in Encoding File: choose the column that has hash values in the encoding file. This option is only present when Yes is selected for the Use Encoding File option.</li>
+<li>API Key: only present when Azure is selected. <b>API key can be viewed when you shared your WF with others.</b></li>
+<li>END POINT: only present when Azure is selected. <b>END POINT can be viewed when you shared your WF with others.</b></li>
+<li>AWS Access Key: only present when Comprehend is selected. <b>Your AWS Secret Key can be viewed when you shared your Workflow with others.</b></li>
+<li>AWS Secret Key: only present when Comprehend is selected. <b>Your AWS Access Key can be viewed when you shared your Workflow with others.</b></li>
+
+</ul>
+
+<p>
+The <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=3919" target="_blank">demo</a> workflow shows two ways to use the Deidentidy Dialogue component:
+<ul>
+<li>Use Presidio to deidentify a tutoring transcript using HIPS</li>
+<li>Use Presidio to deidentify a CSV file with provided encoding hash values</li>
+</ul>
+</p>
+</options>
+
+
+</info>
