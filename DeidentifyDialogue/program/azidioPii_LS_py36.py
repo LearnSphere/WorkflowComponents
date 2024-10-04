@@ -335,9 +335,7 @@ def hips_method(pii_file, client, method, ignore_columns) -> None:
 def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, ignore_columns) -> None:
     """Declares file names for the returned pii file and the encodings we have. Preps clients to use encoding when replacing pii"""
     global updated_encoding_file
-    print(1)
     try:
-        print(2)
         load_name_hash_mapping(encoding_file, name_col, hash_col)
         filename, file_extension = os.path.splitext(os.path.basename(encoding_file))
         updated_encoding_file = f"{filename}_updated{file_extension}"
@@ -431,6 +429,8 @@ if command_line:
     skip_columns = None
     if args.skipCol == "Yes" and args.skip_columns is not None:
         skip_columns = args.skip_columns
+    else:
+        skip_columns = []
     hash_col = None
     name_col = None
     if args.Hash_col is not None:
