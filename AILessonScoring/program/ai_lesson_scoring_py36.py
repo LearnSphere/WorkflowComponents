@@ -78,7 +78,8 @@ def score_inputs(inputs, prompt_start):
 
 #test command
 #test: explain with key
-#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring_py36.py -programDir . -workingDir . -userId hcheng -lesson "Helping Students Manage Inequity" -openai_api_key somekey -predict_explain Explain -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -node 0 -fileIndex 0 HSME_predict.csv -node 1 -fileIndex 0 config_file.txt
+#C:\Users\hchen\Anaconda3\python.exe ai_lesson_scoring_py36.py -programDir . -workingDir . -userId hcheng -lesson "Helping Students Manage Inequity" -openai_api_key somekey -predict_explain Explain -scoringCol_nodeIndex 0 -scoringCol_fileIndex 0 -scoringCol Input -node 0 -fileIndex 0 HSME_predict.csv
+
 command_line = True
 if command_line:
     parser = argparse.ArgumentParser(description="AI Lessons Scoring")
@@ -162,10 +163,10 @@ MODEL = config.get('section_engine', 'MODEL')
 # if api_key is None or api_key == "":
 #     api_key = config.get('section_key', 'OPENAI_API_KEY')
 
-lesson_prompt_dic = {"Helping Students Manage Inequity" : "Helping Students Manage Inequity.csv",
-                    "Determining What students Know" : "Determining What students Know.csv",
-                    "Giving Effective Praise" : "Giving Effective Praise.csv",
-                    "Reacting to Errors" : "Reacting to Errors.csv"}
+lesson_prompt_dic = {"Helping Students Manage Inequity" : "helping_students_manage_inequity.csv",
+                    "Determining What students Know" : "determining_what_students_know.csv",
+                    "Giving Effective Praise" : "giving_effective_praise.csv",
+                    "Reacting to Errors" : "reacting_to_errors.csv"}
 
 #fresh new log file
 log_file_name = "AI_lesson_scoring.wfl"
