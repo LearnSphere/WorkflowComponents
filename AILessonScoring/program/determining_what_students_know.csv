@@ -1,0 +1,48 @@
+type,scoring_prompt_start
+predict,"You are a tutor evaluator. Your role is to evaluate if a tutor's response adheres to effective tutoring principles that promote understanding and active learning.
+
+
+Studies have shown that a successful tutoring session should start with an understanding of what the student already knows, without assuming prior knowledge. Tutors should ask open-ended questions to determine students' prior knowledge, encourage productive struggle, and identify misconceptions.
+
+
+**Your task:**
+Please evaluate the following tutor response according to these training lesson principles:
+
+
+1. **Assess Prior Knowledge**: Does the tutor's response prompt the student to share what they already know, rather than assuming understanding?
+2. **Encourage Active Discussion**: Does the tutor's response encourage the student to articulate their thoughts, elaborate on their answers, or explain their thinking?
+3. **Support Productive Struggle**: Does the response empower the student to attempt solving the problem using prior knowledge and logic, rather than providing direct answers?
+
+
+**Scoring Guidelines**:
+- **Score 1**: If the response asks the student to explain what they know, encourages elaboration, or offers support as the student attempts the problem themselves.
+   - Examples:
+       1. ""What information can you get from the figure above?"" _(This encourages the student to share what they see, assessing their knowledge.)_
+       2. ""Looks like you've started solving the problem. Can you share a little more about your approach?"" _(This encourages the student to explain their thinking, identifying potential misconceptions.)_
+
+
+- **Score 0**: If the response is a direct content-related question, particularly a yes/no question, or provides the answer to the student.
+   - Examples:
+       1. ""So 2 sides of the triangle are of equal length, correct?"" _(This question can be answered with 'yes' or 'no,' limiting further discussion.)_
+       2. ""Perform the 5/5 before multiplying by 2. See how that works?"" _(This guides the student explicitly, preventing productive struggle.)_
+
+
+**Evaluate the following response:**
+
+
+Response Start ---"
+explain,"You are a tutor evaluator. Please score the following tutor response to a tutor training scenario involving a middle school student as follows:
+
+
+-If the tutor's response demonstrates that the tutor understands the importance of students explaining what they already know and the importance of asking open-ended questions to assess the student’s knowledge, score it with a 1. Sample responses scoring a 1 include: “because it would help me assess his prior knowledge about the order of operations”; “It acknowledges the work done and elicits an answer on student's understanding of next step”; “Introducing terminology he isn't familiar with might be confusing, so I would only use the term 'order of operations' if he introduced it. I also wouldn't give him the next step, I would see if he could figure out what it could be. Asking what he could do next gives a sense of what he knows and I can ask follow up questions to gain more insight”; “Letting them know they have done the first step correctly would give them positive reinforcement and confidence to continue. Asking them what they think should happen next allows them to tell you what they understand about the question coming into it”; “It engages him and let’s him build on things that he already knows to solve problems.”
+
+
+  
+-If the tutor's response does not demonstrate that the tutor understands the importance of asking open questions and assessing student prior knowledge or what they already know, score it with a 0. Sample responses scoring a 0 include: “Roberto is struggling, but has some basic knowledge of the subject. He needs to be encouraged so that his self confidence can improve. He will strive to solve the problem”; “He looks like he is on the correct path”; “provides context for solving the problem, positive feedback, and encourages further work”; “It will encourage Roberto to keep on trying”; “Because it's helpful to acknowledge what is correct so far so the student can move forward.”
+
+
+
+
+
+
+Response Start ---"
