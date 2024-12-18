@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RetrospectiveModelTracing</url>
+<date>2024-09-20</date>
+<abstract></abstract>
+<description></description>
+
+<inputs>
+<ul>
+<li>A Datashop transaction file. <b>Required</b></li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>The TXT file. </li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Tracing Method</li>
+
+</ul>
+
+</options>
+
+
+</info>

@@ -86,6 +86,7 @@
 		<PFA_Step_Based/>
 		<Propensity_Matching />
 		<Python_AFM />
+		<Retrospective_Model_Tracing />
 		<RISE />
 		<RLM_Fitting />
 		<Skill_Model_Import />
@@ -113,7 +114,7 @@
 	    <Recently_Used />
 		<AI_Lesson_Scoring />
 		<Deidentify_Dialogue />
-		<!--<Text_Answer_Feedback />-->
+		<Text_Answer_Feedback />
 	</TutoringAnalytics>
 	<Tetrad>
 	    <Recently_Used />
