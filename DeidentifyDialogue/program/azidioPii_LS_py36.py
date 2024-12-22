@@ -1,7 +1,7 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
-# In[22]:
+# In[39]:
 
 
 """
@@ -33,7 +33,7 @@ from email_validator import validate_email, EmailNotValidError
 #from azureConfig import loginConfig
 
 
-# In[11]:
+# In[40]:
 
 
 def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
@@ -47,7 +47,7 @@ def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
 #print(get_azure_client())
 
 
-# In[12]:
+# In[41]:
 
 
 def get_presidio_client() -> AnalyzerEngine:
@@ -63,7 +63,7 @@ def get_presidio_client() -> AnalyzerEngine:
 #print(get_presidio_client())
 
 
-# In[13]:
+# In[42]:
 
 
 def get_comprehend_client(access_key, secret_key) -> boto3.client:
@@ -84,7 +84,7 @@ def get_comprehend_client(access_key, secret_key) -> boto3.client:
 
 
 
-# In[14]:
+# In[43]:
 
 
 def update_encoding_file(hash_key, value) -> None:
@@ -117,7 +117,7 @@ def is_email(entity) -> bool:
         return False
 
 
-# In[15]:
+# In[44]:
 
 
 def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Union[str, Exception]]]:
@@ -199,7 +199,7 @@ def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Uni
 #print(line_text)
 
 
-# In[16]:
+# In[45]:
 
 
 def encode_pii(entity_text, category, current_text) -> str:
@@ -240,26 +240,26 @@ def hide_pii(entity_text, category, current_text) -> str:
     return current_text
 
 
-# In[17]:
+# In[46]:
 
 
 def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignore_columns) -> None:
     """This file is meant to handle when csvs are passed in"""
 
-    df = pd.read_csv(transcript_file)
+    df = pd.read_csv(transcript_file, quotechar='"')
     print(f"starting to encode: {transcript_file}")
-
+    
     with open(output_file, 'w', encoding='utf-8', newline='\n') as file:
         file.write(','.join(df.columns) + '\n')
 
         columns = df.columns
         for index, row in df.iterrows():
             cleaned_row = []
-
             column_index = 0
             #goes cell by cell -> row by row to detect, update pii
             for cell in row:
-
+                if pd.isnull(cell):
+                    cell = ''
                 #check if we should skip
                 cell_column = columns[column_index]
                 if cell_column in ignore_columns:
@@ -267,16 +267,15 @@ def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignor
                     cleaned_row.append(cell)
                     continue
 
-                if pd.isnull(cell):
-                    cell = ''
-
                 redacted_cell = redact_pii(cell, client, method, hips_boolean)
+                #check if comma is present, add quote
+                if "," in str(redacted_cell):
+                    redacted_cell = f'"{redacted_cell}"'
                 if isinstance(redacted_cell, tuple):
                     sys.exit(f"Managed to process {index-1} rows before failing. We encountered the following error: {redacted_cell[1]}")
 
                 cleaned_row.append(f'{redacted_cell}')
                 column_index += 1
-
             file.write(','.join(map(str, cleaned_row)) + '\n')
             if (index+1) % CSV_ROW_UPDATE == 0:
                 print(f"In progress: {index} rows encoded")
@@ -311,7 +310,7 @@ def handle_other(output_file, transcript_file, client, method, hips_boolean) -> 
 #handle_other("random_transcript_cleaned.json", "random_transcript.json", get_presidio_client(), "presidio", True)
 
 
-# In[18]:
+# In[47]:
 
 
 def hips_method(pii_file, client, method, ignore_columns) -> None:
@@ -360,7 +359,7 @@ def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method,
 
 
 
-# In[19]:
+# In[48]:
 
 
 # Globals
@@ -374,7 +373,7 @@ RANDOMS = Faker()
 DATE_TIME = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-# In[21]:
+# In[49]:
 
 
 #test on command line
@@ -469,7 +468,7 @@ if command_line:
 else:
     # use proper client
     #method = "azure"
-    #method = "presidio"
+    method = "presidio"
 
     # hips_boolean = True
     # encoding_file = None
@@ -481,8 +480,9 @@ else:
     encoding_file = "updated_encoding_file.csv"
     
     #pii_file = "random_transcript.json"
-    pii_file = "csv_file_test.csv"
-    skipCol = "Yes"
+    #pii_file = "csv_file_test.csv"
+    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita.csv"
+    skipCol = "No"
     skip_columns = ['name', 'hash']
     api_key = ""
     end_point = "https://remove-pii.cognitiveservices.azure.com/"
@@ -530,4 +530,10 @@ if hips_boolean:
 else:
     encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, skip_columns)
     print(f"Successfully encrypted {pii_file}")
+
+
+# In[ ]:
+
+
+
 
