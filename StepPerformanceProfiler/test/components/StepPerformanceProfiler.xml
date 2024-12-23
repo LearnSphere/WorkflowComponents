@@ -1,0 +1,39 @@
+<component>
+  <component_type>analysis</component_type>
+  <component_id>Analysis-1-x495975</component_id>
+  <workflow_id>262</workflow_id>
+  <top>70.39999389648438</top>
+  <left>476.00001525878906</left>
+  <component_name>Step Performance Profiler</component_name>
+  <component_id_human>analysis #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x509267</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x509267</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <file_path>test/test_data/ds6224_tx_All_Data_8657_2024_0824_140746.txt</file_path>
+          
+          <file_name>ds6224_tx_All_Data_8657_2024_0824_140746.txt</file_name>
+          <index>0</index>
+          <label>csv</label>
+        </csv>
+      </files>
+      <inputmeta />
+    </input0>
+  </inputs>
+  <options>
+    <model>Input 0 (0) - KC (Default) (column 30)</model>
+  </options>
+</component>

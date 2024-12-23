@@ -90,6 +90,7 @@
 		<RISE />
 		<RLM_Fitting />
 		<Skill_Model_Import />
+		<Step_Performance_Profiler />
 		<Student_Growth />
 		<Student_Progress_Classification />
 		<TKT />

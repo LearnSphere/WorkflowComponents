@@ -1,0 +1,2 @@
+component.interpreter.path=C:/Program Files/R/R-4.3.1/bin/Rscript.exe
+component.program.path=program/step_performance.R

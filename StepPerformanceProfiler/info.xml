@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/StepPerformanceProfiler</url>
+<date>2024-12-23</date>
+<abstract>Step Performance Profiler component aggregates Datashop transaction data based on steps including problem hierarchies and problems, students' answers for steps and ordinals of attempts</abstract>
+<description>Step Performance Profiler component aggregate Datashop transaction data based on the steps including problem hierarchies and problems</description>
+
+<inputs>
+<ul>
+<li>Datashop transaction data<b>Required</b></li>
+</ul>
+</inputs>
+
+<outputs>
+A tab-delimited file that contains these columns:										
+
+<ul>
+<li>problem_step: concatenation of problem hierarchy, problem name and step name</li>
+<li>attempt: the ordinal of attempts for the step</li>
+<li>input: students' answer for the step</li>
+<li>num_selected: the count of students who answer the step with the input at the ordinal attempt</li>
+<li>total: the total count of the students who answer the step with the input</li>
+<li>rate: num_selected/total</li>
+<li>is_correct: whether the input is correct</li>
+<li>correct_rate_att: the correct rate for the ordinal attempt for the step</li>
+<li>correct_rate: the correct rate for all attempts for the step</li>
+<li>KC ([KC name]): skill for this step</li>
+<li>number_of_choices: how many possible inputs for the step</li>
+</ul>
+</outputs>
+
+<options>
+ <ul>
+<li>Model: the KC model for steps</li>
+</ul>
+
+</options>
+
+
+</info>
