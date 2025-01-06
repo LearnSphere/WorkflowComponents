@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <info>
-<author>DataShop@CMU
-  <email>datashop-help@lists.andrew.cmu.edu</email>
+<author>Carl Haynes-Magyar@CMU
+  <email>chaynesm@andrew.cmu.edu</email>
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RetrospectiveModelTracing</url>
 <date>2024-09-20</date>
-<abstract></abstract>
-<description></description>
+<abstract>
+<p>Component Retrospective Model Tracing provides two approaches for model-tracing:</p>
+<p><b>The typical/simple model-tracing approach penalizes learners for all the errors they make in a submission.</b>
+<ul>
+<li>This approach treats every error as an individual observation with a KC, regardless of whether multiple errors are made within a single submission.</li>
+<li>As a result, if a student makes several errors in a single attempt, each error contributes to the total count of observations.</li>
+<li>This can inflate the number of observations with KCs, since multiple errors in a single submission are counted separately.</li>
+</ul>
+</p>
+
+<p>
+<b>The retrospective model-tracing approach only penalizes learners for the first error they make in a submission.</b>
+<ul>
+<li>This method focuses on the first error made in a submission and does not count subsequent errors in the same submission.</li>
+<li>It assumes that the first error is the most significant learning moment, and subsequent errors are a consequence of the first.</li>
+<li>By penalizing only the first error, the number of observations with KCs is reduced because only the initial mistake is considered a learning opportunity.</li>
+</ul>
+</p>
+</abstract>
+<description>Component Retrospective Model Tracing provides two approaches for model-tracing</description>
 
 <inputs>
 <ul>
@@ -17,7 +35,7 @@
 
 <outputs>
 <ul>
-<li>The TXT file. </li>
+<li>The result tab-delimited file. </li>
 </ul>
 </outputs>
 
