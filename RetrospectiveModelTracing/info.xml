@@ -29,7 +29,7 @@
 
 <inputs>
 <ul>
-<li>A Datashop transaction file. <b>Required</b></li>
+<li>A Datashop transaction file. <b>Required</b>(Note: This component will only produce the expected results if the 'Selection' and 'Input' column are compatible for comparison.)</li>
 </ul>
 </inputs>
 

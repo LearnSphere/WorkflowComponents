@@ -9,12 +9,18 @@ import os
 import argparse
 
 
-# In[15]:
+# In[ ]:
 
 
 def transform_retrospective_model_tracing(input_file, output_file):
     # Read the txt file into a pandas DataFrame, assuming tab-separated values
     df = pd.read_csv(input_file, sep='\t')
+
+    # Ensure the Outcome column is explicitly set to a string-compatible type
+    if 'Outcome' not in df.columns:
+        df['Outcome'] = ''  # Add the Outcome column if it does not exist
+    else:
+        df['Outcome'] = df['Outcome'].astype(str)  # Explicitly cast to string
 
     # Sort the DataFrame by relevant columns to ensure proper sequence
     df = df.sort_values(by=['Anon Student Id', 'Problem Name', 'Attempt At Step', 'Row']).reset_index(drop=True)
@@ -37,21 +43,15 @@ def transform_retrospective_model_tracing(input_file, output_file):
             df.at[index, 'Outcome'] = 'N/A'
             continue
 
-        # If the key is not in the tracker, evaluate the row
-        if key not in state_tracker:
-            if row['Input'] == row['Selection']:
-                # If they match, set Outcome to "correct" and track the state
-                df.at[index, 'Outcome'] = 'correct'
-                state_tracker[key] = 'correct'
-            else:
-                # If they do not match, set Outcome to "incorrect" and mark key as "N/A" for subsequent rows
-                df.at[index, 'Outcome'] = 'incorrect'
-                state_tracker[key] = 'N/A'
+        # Check if Input matches Selection
+        if row['Input'] == row['Selection']:
+            # If they match, set Outcome to "correct"
+            df.at[index, 'Outcome'] = 'correct'
+            state_tracker[key] = 'correct'
         else:
-            # If the state is "correct" but now the Input does not match the Selection, mark as "incorrect" and update state
-            if row['Input'] != row['Selection']:
-                df.at[index, 'Outcome'] = 'incorrect'
-                state_tracker[key] = 'N/A'
+            # If they do not match, set Outcome to "incorrect" and mark key as "N/A" for subsequent rows
+            df.at[index, 'Outcome'] = 'incorrect'
+            state_tracker[key] = 'N/A'
 
     # Write the updated DataFrame to a new txt file, preserving the original format
     df.to_csv(output_file, sep='\t', index=False)
