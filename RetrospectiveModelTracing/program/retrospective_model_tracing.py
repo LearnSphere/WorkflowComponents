@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[1]:
 
 
 import pandas as pd
@@ -9,7 +9,7 @@ import os
 import argparse
 
 
-# In[ ]:
+# In[2]:
 
 
 def transform_retrospective_model_tracing(input_file, output_file):
@@ -57,12 +57,18 @@ def transform_retrospective_model_tracing(input_file, output_file):
     df.to_csv(output_file, sep='\t', index=False)
 
 
-# In[16]:
+# In[18]:
 
 
 def transform_typical_simple_to_model_tracing(input_file, output_file):
     # Read the txt file into a pandas DataFrame, assuming tab-separated values
     df = pd.read_csv(input_file, sep='\t')
+    
+    # Ensure the Outcome column is explicitly set to a string-compatible type
+    if 'Outcome' not in df.columns:
+        df['Outcome'] = ''  # Add the Outcome column if it does not exist
+    else:
+        df['Outcome'] = df['Outcome'].astype(str)  # Explicitly cast to string
 
     # Sort the DataFrame by relevant columns to ensure proper sequence
     df = df.sort_values(by=['Anon Student Id', 'Problem Name', 'Attempt At Step', 'Row']).reset_index(drop=True)
@@ -98,7 +104,7 @@ def transform_typical_simple_to_model_tracing(input_file, output_file):
     df.to_csv(output_file, sep='\t', index=False)
 
 
-# In[21]:
+# In[19]:
 
 
 #test command
@@ -126,12 +132,12 @@ if command_line:
 else:
     working_dir = "."
     program_dir = "."
-    input_file = "Typical Simple Approach.txt"
+    input_file = "./original/Typical Simple Approach_new.txt"
     tracingMethod = "Typical Simple Approach"
     #tracingMethod = "Retrospective Model Tracing"
 
 
-# In[22]:
+# In[20]:
 
 
 if tracingMethod == "Typical Simple Approach":
