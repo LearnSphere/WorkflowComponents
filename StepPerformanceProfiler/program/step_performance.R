@@ -2,7 +2,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 suppressWarnings(suppressMessages(library(logWarningsMessagesPkg)))
-suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(dplyr)))
 
 # parse commandline args
 i = 1
