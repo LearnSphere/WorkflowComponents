@@ -148,7 +148,7 @@ public class DeidentifyDialogueMain extends AbstractComponent {
 	            logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
 	            Integer nodeIndex = 0;
 	            Integer fileIndex = 0;
-	            String label = "cleaned";
+	            String label = "csv";
 	            
 	            String newFileName = FilenameUtils.removeExtension(inputFile1.getName()) + "_cleaned." + FilenameUtils.getExtension(inputFile1.getAbsolutePath());
 	            File file0 = new File(outputDirectory.getAbsolutePath() + "/" + newFileName);

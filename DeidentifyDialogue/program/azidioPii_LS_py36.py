@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[39]:
+# In[34]:
 
 
 """
@@ -33,7 +33,7 @@ from email_validator import validate_email, EmailNotValidError
 #from azureConfig import loginConfig
 
 
-# In[40]:
+# In[35]:
 
 
 def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
@@ -47,7 +47,7 @@ def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
 #print(get_azure_client())
 
 
-# In[41]:
+# In[36]:
 
 
 def get_presidio_client() -> AnalyzerEngine:
@@ -63,7 +63,7 @@ def get_presidio_client() -> AnalyzerEngine:
 #print(get_presidio_client())
 
 
-# In[42]:
+# In[37]:
 
 
 def get_comprehend_client(access_key, secret_key) -> boto3.client:
@@ -84,7 +84,7 @@ def get_comprehend_client(access_key, secret_key) -> boto3.client:
 
 
 
-# In[43]:
+# In[38]:
 
 
 def update_encoding_file(hash_key, value) -> None:
@@ -117,7 +117,7 @@ def is_email(entity) -> bool:
         return False
 
 
-# In[44]:
+# In[39]:
 
 
 def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Union[str, Exception]]]:
@@ -199,7 +199,7 @@ def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Uni
 #print(line_text)
 
 
-# In[45]:
+# In[40]:
 
 
 def encode_pii(entity_text, category, current_text) -> str:
@@ -240,7 +240,7 @@ def hide_pii(entity_text, category, current_text) -> str:
     return current_text
 
 
-# In[46]:
+# In[41]:
 
 
 def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignore_columns) -> None:
@@ -264,12 +264,22 @@ def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignor
                 cell_column = columns[column_index]
                 if cell_column in ignore_columns:
                     column_index += 1
+                    if isinstance(cell, str) and len(cell) > 0:
+                        #escape double quote
+                        cell = cell.replace('"', r'\"')
+                        #add quote 
+                        cell = f'"{cell}"'
                     cleaned_row.append(cell)
                     continue
 
                 redacted_cell = redact_pii(cell, client, method, hips_boolean)
                 #check if comma is present, add quote
-                if "," in str(redacted_cell):
+#                 if "," in str(redacted_cell):
+#                     redacted_cell = f'"{redacted_cell}"'
+                if isinstance(redacted_cell, str) and len(redacted_cell) > 0:
+                    #escape double quote
+                    redacted_cell = redacted_cell.replace('"', r'\"')
+                    #add quote
                     redacted_cell = f'"{redacted_cell}"'
                 if isinstance(redacted_cell, tuple):
                     sys.exit(f"Managed to process {index-1} rows before failing. We encountered the following error: {redacted_cell[1]}")
@@ -310,7 +320,7 @@ def handle_other(output_file, transcript_file, client, method, hips_boolean) -> 
 #handle_other("random_transcript_cleaned.json", "random_transcript.json", get_presidio_client(), "presidio", True)
 
 
-# In[47]:
+# In[42]:
 
 
 def hips_method(pii_file, client, method, ignore_columns) -> None:
@@ -359,7 +369,7 @@ def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method,
 
 
 
-# In[48]:
+# In[43]:
 
 
 # Globals
@@ -380,6 +390,8 @@ DATE_TIME = datetime.now().strftime("%Y%m%d_%H%M%S")
 #C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId 1 -Hips_boolean No -method Presidio -piiFileType Non-CSV -skipCol No -useEncoding No -node 0 -fileIndex 0 random_transcript.json
 #config file, hips no, azure, noncsv, skip no
 #C:\Users\hchen\Anaconda3\python.exe azidioPii_LS.py -programDir . -workingDir . -userId hcheng -Hips_boolean No -method Azure -piiFileType Non-CSV -skipCol No -useEncoding No -node 0 -fileIndex 0 random_transcript.json -node 2 -fileIndex 0 config_file.txt
+#C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId hcheng -Hips_boolean Yes -method Presidio -piiFileType CSV -skipCol Yes -skip_columns_nodeIndex 0 -skip_columns_fileIndex 0 -skip_columns "CF (Rule Id)" -useEncoding No -node 0 -fileIndex 0 Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv
+#C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId hcheng -Hips_boolean Yes -method Presidio -piiFileType CSV -skipCol Yes -skip_columns_nodeIndex 0 -skip_columns_fileIndex 0 -skip_columns "CF (Rule Id)" -useEncoding No -node 0 -fileIndex 0 Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple_cleaned.csv
 #command line
 command_line = True
 if command_line:
@@ -481,9 +493,9 @@ else:
     
     #pii_file = "random_transcript.json"
     #pii_file = "csv_file_test.csv"
-    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita.csv"
-    skipCol = "No"
-    skip_columns = ['name', 'hash']
+    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv"
+    skipCol = "Yes"
+    skip_columns = ["CF (Rule Id)"]
     api_key = ""
     end_point = "https://remove-pii.cognitiveservices.azure.com/"
     hash_col = "hash"

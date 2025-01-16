@@ -21,6 +21,7 @@
   </xs:complexType>
 
   <xs:complexType name="InputDefinition1">
+
     <xs:complexContent>
       <xs:extension base="InputContainer">
         <xs:sequence>
@@ -64,7 +65,7 @@
 
   <xs:complexType name="InputLabel">
     <xs:all>
-      <xs:element name="input0" type="xs:string" default="text" minOccurs="0" />
+      <xs:element name="input0" type="xs:string" default="csv" minOccurs="0" />
       <xs:element name="input1" type="xs:string" default="encoding-map" minOccurs="0" />
       <!--  <xs:element name="input2" type="xs:string" default="config-file" minOccurs="0" />-->
     </xs:all>
@@ -83,7 +84,7 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
-      <xs:element ref="text" />
+      <xs:element ref="csv" />
     </xs:choice>
   </xs:complexType>
 
