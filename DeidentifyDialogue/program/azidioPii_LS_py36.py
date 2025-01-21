@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[34]:
+# In[3]:
 
 
 """
@@ -33,7 +33,7 @@ from email_validator import validate_email, EmailNotValidError
 #from azureConfig import loginConfig
 
 
-# In[35]:
+# In[4]:
 
 
 def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
@@ -47,7 +47,7 @@ def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
 #print(get_azure_client())
 
 
-# In[36]:
+# In[5]:
 
 
 def get_presidio_client() -> AnalyzerEngine:
@@ -63,7 +63,7 @@ def get_presidio_client() -> AnalyzerEngine:
 #print(get_presidio_client())
 
 
-# In[37]:
+# In[6]:
 
 
 def get_comprehend_client(access_key, secret_key) -> boto3.client:
@@ -101,11 +101,11 @@ def load_name_hash_mapping(csv_file, name_col, hash_col) -> None:
     between names and their encoded hashes.
     """
 
-    name_hash_df = pd.read_csv(csv_file)
+    name_hash_df = pd.read_csv(csv_file, dtype=str)
     name_id = name_hash_df.columns.get_loc(name_col)
     hash_id = name_hash_df.columns.get_loc(hash_col)
     for _, row in name_hash_df.iterrows():
-        name, hash_value = row.iloc[name_id].strip(), row.iloc[hash_id].strip()
+        name, hash_value = str(row.iloc[name_id]).strip(), str(row.iloc[hash_id]).strip()
         name_hash_dict[name.lower()] = hash_value
         
 def is_email(entity) -> bool:
@@ -383,7 +383,7 @@ RANDOMS = Faker()
 DATE_TIME = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-# In[49]:
+# In[44]:
 
 
 #test on command line
@@ -488,18 +488,18 @@ else:
     # hips_boolean = False
     # encoding_file = None
 
-    hips_boolean = True
-    encoding_file = "updated_encoding_file.csv"
+    hips_boolean = False
+    encoding_file = "updated_encoding_file_v1.csv"
     
     #pii_file = "random_transcript.json"
     #pii_file = "csv_file_test.csv"
-    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv"
+    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_cleaned_v1.csv"
     skipCol = "Yes"
     skip_columns = ["CF (Rule Id)"]
     api_key = ""
     end_point = "https://remove-pii.cognitiveservices.azure.com/"
-    hash_col = "hash"
-    name_col = "name"
+    hash_col = "name"
+    name_col = "hash"
     
     
 #test
