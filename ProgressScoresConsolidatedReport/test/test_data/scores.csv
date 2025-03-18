@@ -1,0 +1,400 @@
+section,student,email,page,resource_id,score,out_of
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 2,student2@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 3,student3@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 4,student4@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 5,student5@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,10.0,11.0
+Sample Section 1,Student 6,student6@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 7,student7@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,,
+Sample Section 1,Student 8,student8@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 9,student9@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,4.0,11.0
+Sample Section 1,Student 10,student10@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 11,student11@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 12,student12@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 13,student13@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 14,student14@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 15,student15@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 16,student16@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 17,student17@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 18,student18@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 19,student19@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 20,student20@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,10.0,11.0
+Sample Section 1,Student 21,student21@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,10.0,11.0
+Sample Section 1,Student 22,student22@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 23,student23@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 24,student24@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,7.0,11.0
+Sample Section 1,Student 25,student25@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 26,student26@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 27,student27@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,6.0,11.0
+Sample Section 1,Student 28,student28@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,7.0,11.0
+Sample Section 1,Student 29,student29@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,8.0,11.0
+Sample Section 1,Student 30,student30@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 31,student31@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 32,student32@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301869,9.0,11.0
+Sample Section 1,Student 1,student1@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 2,student2@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 3,student3@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,11.0,12.0
+Sample Section 1,Student 4,student4@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 5,student5@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 6,student6@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 8,student8@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 9,student9@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,6.0,12.0
+Sample Section 1,Student 10,student10@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,8.0,12.0
+Sample Section 1,Student 11,student11@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 12,student12@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 13,student13@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 14,student14@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 15,student15@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,8.0,12.0
+Sample Section 1,Student 16,student16@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,6.0,12.0
+Sample Section 1,Student 17,student17@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,6.0,12.0
+Sample Section 1,Student 18,student18@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,12.0,12.0
+Sample Section 1,Student 19,student19@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,12.0,12.0
+Sample Section 1,Student 20,student20@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,12.0,12.0
+Sample Section 1,Student 21,student21@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,11.0,12.0
+Sample Section 1,Student 22,student22@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 23,student23@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,6.0,12.0
+Sample Section 1,Student 24,student24@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,12.0,12.0
+Sample Section 1,Student 25,student25@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,11.0,12.0
+Sample Section 1,Student 26,student26@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,10.0,12.0
+Sample Section 1,Student 27,student27@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,6.0,12.0
+Sample Section 1,Student 28,student28@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 29,student29@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 30,student30@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,12.0,12.0
+Sample Section 1,Student 31,student31@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,11.0,12.0
+Sample Section 1,Student 32,student32@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170301870,9.0,12.0
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,7.0,9.0
+Sample Section 1,Student 2,student2@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,7.0,9.0
+Sample Section 1,Student 3,student3@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 4,student4@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 5,student5@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,6.0,9.0
+Sample Section 1,Student 6,student6@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,7.0,9.0
+Sample Section 1,Student 8,student8@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 9,student9@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,5.0,9.0
+Sample Section 1,Student 10,student10@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 11,student11@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 12,student12@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,2.0,9.0
+Sample Section 1,Student 13,student13@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,,
+Sample Section 1,Student 14,student14@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 15,student15@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,5.0,9.0
+Sample Section 1,Student 16,student16@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,4.0,9.0
+Sample Section 1,Student 17,student17@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,4.0,9.0
+Sample Section 1,Student 18,student18@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 19,student19@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 20,student20@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 21,student21@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 22,student22@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,5.0,9.0
+Sample Section 1,Student 23,student23@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,6.0,9.0
+Sample Section 1,Student 24,student24@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 25,student25@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 26,student26@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 27,student27@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,6.0,9.0
+Sample Section 1,Student 28,student28@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 29,student29@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,8.0,9.0
+Sample Section 1,Student 30,student30@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,9.0,9.0
+Sample Section 1,Student 31,student31@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,7.0,9.0
+Sample Section 1,Student 32,student32@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170301299,4.0,9.0
+Sample Section 1,Student 1,student1@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 2,student2@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 3,student3@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 4,student4@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,6.0,9.0
+Sample Section 1,Student 5,student5@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,6.0,9.0
+Sample Section 1,Student 6,student6@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 8,student8@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 9,student9@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,5.0,9.0
+Sample Section 1,Student 10,student10@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,6.0,9.0
+Sample Section 1,Student 11,student11@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 12,student12@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 13,student13@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,5.0,9.0
+Sample Section 1,Student 14,student14@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 15,student15@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,5.0,9.0
+Sample Section 1,Student 16,student16@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 17,student17@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 18,student18@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 19,student19@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 20,student20@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 21,student21@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 22,student22@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 23,student23@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,6.0,9.0
+Sample Section 1,Student 24,student24@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 25,student25@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 26,student26@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 27,student27@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,5.0,9.0
+Sample Section 1,Student 28,student28@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,8.0,9.0
+Sample Section 1,Student 29,student29@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 30,student30@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,9.0,9.0
+Sample Section 1,Student 31,student31@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 32,student32@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170301304,7.0,9.0
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,17.0,20.0
+Sample Section 1,Student 2,student2@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,14.0,20.0
+Sample Section 1,Student 3,student3@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,14.0,20.0
+Sample Section 1,Student 4,student4@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,,
+Sample Section 1,Student 5,student5@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,13.0,20.0
+Sample Section 1,Student 6,student6@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,18.0,20.0
+Sample Section 1,Student 8,student8@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,17.0,20.0
+Sample Section 1,Student 9,student9@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,4.0,20.0
+Sample Section 1,Student 10,student10@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,18.0,20.0
+Sample Section 1,Student 11,student11@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,18.0,20.0
+Sample Section 1,Student 12,student12@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,17.0,20.0
+Sample Section 1,Student 13,student13@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,4.0,20.0
+Sample Section 1,Student 14,student14@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,19.0,20.0
+Sample Section 1,Student 16,student16@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,7.0,20.0
+Sample Section 1,Student 17,student17@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,8.0,20.0
+Sample Section 1,Student 18,student18@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,19.0,20.0
+Sample Section 1,Student 19,student19@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,18.0,20.0
+Sample Section 1,Student 20,student20@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,17.0,20.0
+Sample Section 1,Student 21,student21@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,11.0,20.0
+Sample Section 1,Student 22,student22@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,14.0,20.0
+Sample Section 1,Student 23,student23@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,3.0,20.0
+Sample Section 1,Student 24,student24@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,6.0,20.0
+Sample Section 1,Student 25,student25@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,11.0,20.0
+Sample Section 1,Student 26,student26@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,8.0,20.0
+Sample Section 1,Student 27,student27@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,,
+Sample Section 1,Student 28,student28@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,14.0,20.0
+Sample Section 1,Student 29,student29@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,8.0,20.0
+Sample Section 1,Student 30,student30@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,17.0,20.0
+Sample Section 1,Student 32,student32@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301382,9.0,20.0
+Sample Section 1,Student 1,student1@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,18.0,20.0
+Sample Section 1,Student 3,student3@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 5,student5@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,14.0,20.0
+Sample Section 1,Student 6,student6@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,,
+Sample Section 1,Student 8,student8@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,16.0,20.0
+Sample Section 1,Student 9,student9@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,6.0,20.0
+Sample Section 1,Student 10,student10@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,15.0,20.0
+Sample Section 1,Student 11,student11@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,10.0,20.0
+Sample Section 1,Student 12,student12@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 13,student13@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 14,student14@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,14.0,20.0
+Sample Section 1,Student 15,student15@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,,
+Sample Section 1,Student 17,student17@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,11.0,20.0
+Sample Section 1,Student 18,student18@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 19,student19@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 21,student21@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,18.0,20.0
+Sample Section 1,Student 22,student22@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,16.0,20.0
+Sample Section 1,Student 23,student23@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,10.0,20.0
+Sample Section 1,Student 24,student24@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,12.0,20.0
+Sample Section 1,Student 25,student25@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,16.0,20.0
+Sample Section 1,Student 26,student26@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,11.0,20.0
+Sample Section 1,Student 28,student28@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,12.0,20.0
+Sample Section 1,Student 30,student30@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,20.0,20.0
+Sample Section 1,Student 32,student32@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170301386,9.0,20.0
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 3,student3@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,10.0,10.0
+Sample Section 1,Student 5,student5@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,5.0,10.0
+Sample Section 1,Student 8,student8@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 10,student10@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,2.0,10.0
+Sample Section 1,Student 11,student11@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,5.0,10.0
+Sample Section 1,Student 12,student12@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,5.0,10.0
+Sample Section 1,Student 13,student13@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 14,student14@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 17,student17@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,3.0,10.0
+Sample Section 1,Student 18,student18@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,9.0,10.0
+Sample Section 1,Student 19,student19@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,8.0,10.0
+Sample Section 1,Student 21,student21@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,9.0,10.0
+Sample Section 1,Student 22,student22@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 24,student24@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,4.0,10.0
+Sample Section 1,Student 25,student25@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,7.0,10.0
+Sample Section 1,Student 26,student26@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,8.0,10.0
+Sample Section 1,Student 28,student28@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,6.0,10.0
+Sample Section 1,Student 30,student30@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300853,9.0,10.0
+Sample Section 1,Student 1,student1@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 3,student3@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,,
+Sample Section 1,Student 5,student5@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,6.0,8.0
+Sample Section 1,Student 8,student8@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 11,student11@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,6.0,8.0
+Sample Section 1,Student 12,student12@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,7.0,8.0
+Sample Section 1,Student 13,student13@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 14,student14@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,5.0,8.0
+Sample Section 1,Student 17,student17@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,,
+Sample Section 1,Student 19,student19@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 21,student21@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 22,student22@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,5.0,8.0
+Sample Section 1,Student 24,student24@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 25,student25@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,7.0,8.0
+Sample Section 1,Student 26,student26@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,7.0,8.0
+Sample Section 1,Student 28,student28@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,8.0,8.0
+Sample Section 1,Student 30,student30@example.com,Post-Test - Time Management and Organizational Skills (પોસ્ટ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170300953,,
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Conflict Management (પ્રિ-ટેસ્ટ - (કોન્ફ્લિક્ટ (સંઘર્ષ) મેનેજમેન્ટ)),170301465,1.0,1.0
+Sample Section 1,Student 28,student28@example.com,Pre-Test - Conflict Management (પ્રિ-ટેસ્ટ - (કોન્ફ્લિક્ટ (સંઘર્ષ) મેનેજમેન્ટ)),170301465,1.0,1.0
+Sample Section 1,Student 1,student1@example.com,Post-Test - Conflict Management (પોસ્ટ-ટેસ્ટ - (કોન્ફ્લિક્ટ (સંઘર્ષ) મેનેજમેન્ટ) ),170301531,5.0,7.0
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Professional Image (પ્રિ-ટેસ્ટ - વ્યાવસાયિક છબી),170300967,13.0,20.0
+Sample Section 1,Student 1,student1@example.com,Post-Test - Professional Image (પોસ્ટ-ટેસ્ટ - વ્યાવસાયિક છબી),170301033,14.0,18.0
+Sample Section 1,Student 1,student1@example.com,Pre-Test - Customer Service (પ્રિ-ટેસ્ટ - કસ્ટમર સર્વિસ),170301173,10.0,14.0
+Sample Section 1,Student 1,student1@example.com,Post-test - Customer Service (પોસ્ટ-ટેસ્ટ - કસ્ટમર સર્વિસ),170301177,17.0,21.0
+Sample Section 2,Student 33,student33@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 34,student34@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 35,student35@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 36,student36@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 37,student37@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 38,student38@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 40,student40@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 41,student41@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 42,student42@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 43,student43@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 44,student44@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,6.0,11.0
+Sample Section 2,Student 45,student45@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 46,student46@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,10.0,11.0
+Sample Section 2,Student 47,student47@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 48,student48@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 49,student49@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 50,student50@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,6.0,11.0
+Sample Section 2,Student 51,student51@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,3.0,11.0
+Sample Section 2,Student 52,student52@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 53,student53@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 54,student54@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 55,student55@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,5.0,11.0
+Sample Section 2,Student 56,student56@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 57,student57@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,6.0,11.0
+Sample Section 2,Student 58,student58@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 59,student59@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,9.0,11.0
+Sample Section 2,Student 60,student60@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,10.0,11.0
+Sample Section 2,Student 61,student61@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 62,student62@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,8.0,11.0
+Sample Section 2,Student 63,student63@example.com,Pre-Test - Digital Literacy Basics (પ્રિ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304129,7.0,11.0
+Sample Section 2,Student 33,student33@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 34,student34@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,6.0,12.0
+Sample Section 2,Student 35,student35@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,6.0,12.0
+Sample Section 2,Student 36,student36@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 37,student37@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,8.0,12.0
+Sample Section 2,Student 38,student38@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,8.0,12.0
+Sample Section 2,Student 39,student39@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,,
+Sample Section 2,Student 39,student39@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,11.0,12.0
+Sample Section 2,Student 39,student39@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 40,student40@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,9.0,12.0
+Sample Section 2,Student 41,student41@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,9.0,12.0
+Sample Section 2,Student 42,student42@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,12.0,12.0
+Sample Section 2,Student 43,student43@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,10.0,12.0
+Sample Section 2,Student 44,student44@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,9.0,12.0
+Sample Section 2,Student 45,student45@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,8.0,12.0
+Sample Section 2,Student 46,student46@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,12.0,12.0
+Sample Section 2,Student 47,student47@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 48,student48@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 49,student49@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 50,student50@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,9.0,12.0
+Sample Section 2,Student 51,student51@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,12.0,12.0
+Sample Section 2,Student 52,student52@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 53,student53@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 54,student54@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 55,student55@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,4.0,12.0
+Sample Section 2,Student 56,student56@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 57,student57@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,9.0,12.0
+Sample Section 2,Student 58,student58@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 59,student59@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,7.0,12.0
+Sample Section 2,Student 60,student60@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,12.0,12.0
+Sample Section 2,Student 61,student61@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,10.0,12.0
+Sample Section 2,Student 62,student62@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,8.0,12.0
+Sample Section 2,Student 63,student63@example.com,Post-Test - Digital Literacy Basics (પોસ્ટ-ટેસ્ટ - ડિજિટલ સાક્ષરતા મૂળ બાબતો),170304130,6.0,12.0
+Sample Section 2,Student 33,student33@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 34,student34@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 35,student35@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,1.0,9.0
+Sample Section 2,Student 36,student36@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,3.0,9.0
+Sample Section 2,Student 37,student37@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 38,student38@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,7.0,9.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,5.0,9.0
+Sample Section 2,Student 40,student40@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,3.0,9.0
+Sample Section 2,Student 41,student41@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,4.0,9.0
+Sample Section 2,Student 42,student42@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 43,student43@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 44,student44@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,8.0,9.0
+Sample Section 2,Student 45,student45@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 46,student46@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,5.0,9.0
+Sample Section 2,Student 47,student47@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,7.0,9.0
+Sample Section 2,Student 48,student48@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 49,student49@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 50,student50@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 51,student51@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,4.0,9.0
+Sample Section 2,Student 52,student52@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,3.0,9.0
+Sample Section 2,Student 53,student53@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 54,student54@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 56,student56@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,2.0,9.0
+Sample Section 2,Student 57,student57@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,4.0,9.0
+Sample Section 2,Student 58,student58@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,4.0,9.0
+Sample Section 2,Student 59,student59@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 60,student60@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,6.0,9.0
+Sample Section 2,Student 61,student61@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,7.0,9.0
+Sample Section 2,Student 62,student62@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,4.0,9.0
+Sample Section 2,Student 63,student63@example.com,Pre-Test - Habits (પ્રિ-ટેસ્ટ -  ટેવો),170303559,5.0,9.0
+Sample Section 2,Student 33,student33@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,4.0,9.0
+Sample Section 2,Student 34,student34@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 35,student35@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 36,student36@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 37,student37@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 38,student38@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,4.0,9.0
+Sample Section 2,Student 39,student39@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 40,student40@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 41,student41@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 42,student42@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 43,student43@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,6.0,9.0
+Sample Section 2,Student 44,student44@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 45,student45@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 46,student46@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 47,student47@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 48,student48@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 49,student49@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 50,student50@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 52,student52@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,9.0,9.0
+Sample Section 2,Student 53,student53@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,8.0,9.0
+Sample Section 2,Student 54,student54@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 56,student56@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,9.0,9.0
+Sample Section 2,Student 57,student57@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,7.0,9.0
+Sample Section 2,Student 58,student58@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,6.0,9.0
+Sample Section 2,Student 59,student59@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,4.0,9.0
+Sample Section 2,Student 60,student60@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,6.0,9.0
+Sample Section 2,Student 61,student61@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 62,student62@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,5.0,9.0
+Sample Section 2,Student 63,student63@example.com,Post-Test - Habits (પોસ્ટ-ટેસ્ટ -  ટેવો),170303564,6.0,9.0
+Sample Section 2,Student 34,student34@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,7.0,20.0
+Sample Section 2,Student 35,student35@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,5.0,20.0
+Sample Section 2,Student 36,student36@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,8.0,20.0
+Sample Section 2,Student 37,student37@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,19.0,20.0
+Sample Section 2,Student 39,student39@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,9.0,20.0
+Sample Section 2,Student 40,student40@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,,
+Sample Section 2,Student 41,student41@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,18.0,20.0
+Sample Section 2,Student 42,student42@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,17.0,20.0
+Sample Section 2,Student 43,student43@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,15.0,20.0
+Sample Section 2,Student 44,student44@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,19.0,20.0
+Sample Section 2,Student 45,student45@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,17.0,20.0
+Sample Section 2,Student 46,student46@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,12.0,20.0
+Sample Section 2,Student 47,student47@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,17.0,20.0
+Sample Section 2,Student 48,student48@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,2.0,20.0
+Sample Section 2,Student 49,student49@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,13.0,20.0
+Sample Section 2,Student 50,student50@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,9.0,20.0
+Sample Section 2,Student 52,student52@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,,
+Sample Section 2,Student 53,student53@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,14.0,20.0
+Sample Section 2,Student 54,student54@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,9.0,20.0
+Sample Section 2,Student 56,student56@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,17.0,20.0
+Sample Section 2,Student 57,student57@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,18.0,20.0
+Sample Section 2,Student 58,student58@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,11.0,20.0
+Sample Section 2,Student 60,student60@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,12.0,20.0
+Sample Section 2,Student 61,student61@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,7.0,20.0
+Sample Section 2,Student 62,student62@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,18.0,20.0
+Sample Section 2,Student 63,student63@example.com,Pre-Test - Troubleshooting (પ્રિ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303642,7.0,20.0
+Sample Section 2,Student 34,student34@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 35,student35@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 36,student36@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 37,student37@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,19.0,20.0
+Sample Section 2,Student 39,student39@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,9.0,20.0
+Sample Section 2,Student 41,student41@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,14.0,20.0
+Sample Section 2,Student 42,student42@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,14.0,20.0
+Sample Section 2,Student 43,student43@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,16.0,20.0
+Sample Section 2,Student 44,student44@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,16.0,20.0
+Sample Section 2,Student 45,student45@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,19.0,20.0
+Sample Section 2,Student 46,student46@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,16.0,20.0
+Sample Section 2,Student 47,student47@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 48,student48@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 49,student49@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,13.0,20.0
+Sample Section 2,Student 50,student50@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,11.0,20.0
+Sample Section 2,Student 52,student52@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,10.0,20.0
+Sample Section 2,Student 53,student53@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,14.0,20.0
+Sample Section 2,Student 54,student54@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,11.0,20.0
+Sample Section 2,Student 56,student56@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,17.0,20.0
+Sample Section 2,Student 57,student57@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,13.0,20.0
+Sample Section 2,Student 58,student58@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,16.0,20.0
+Sample Section 2,Student 60,student60@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,16.0,20.0
+Sample Section 2,Student 61,student61@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,12.0,20.0
+Sample Section 2,Student 62,student62@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,14.0,20.0
+Sample Section 2,Student 63,student63@example.com,Post-test - Troubleshooting (પોસ્ટ-ટેસ્ટ - ટ્રબલ શુટિંગ),170303646,,
+Sample Section 2,Student 34,student34@example.com,Pre-Test - Time Management and Organizational Skills (પ્રિ-ટેસ્ટ - ટાઈમ મેનેજમેન્ટ અને ઓર્ગેનાઈઝેશનલ સ્કિલ્સ),170303113,4.0,10.0

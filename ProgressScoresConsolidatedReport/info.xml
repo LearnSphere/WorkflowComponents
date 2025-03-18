@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>msambou
+  <email>msambou@andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProgressScoresConsolidatedReport</url>
+<date>February 17, 2025</date>
+<abstract>The <b>ProgressScoresConsolidatedReport</b> component is an example of a(n) Python component.</abstract>
+<description>This program takes scores and progress as csv and produces a consolidated report in Excel format.</description>
+
+<inputs>
+<b>scores csv: A CSV file containing scores output from OLI. The colums expected columns are: section,student,email,page,resource_id,score,out_of</b><br/>
+<b>progress csv: A CSV file containing students' progress. Expected columns are: section_title,module_title,user_id,email,name,children,progress </b><br/>
+</inputs>
+
+<outputs>
+<b>file</b><br/>
+<b>This is the consolidated report in Excel format.</b>
+</outputs>
+
+<options>
+</options>
+
+</info>
