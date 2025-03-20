@@ -61,6 +61,7 @@
       <xs:enumeration value="Tab-delimited" />
       <xs:enumeration value="CSV" />
       <xs:enumeration value="JSON" />
+      <xs:enumeration value="VTT" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -80,6 +81,12 @@
 
     </xs:choice>
   </xs:complexType>
+  
+  <xs:complexType name="option_dependency">
+	<xs:choice>
+	<xs:element type="disjunctive" name="dependency1" ls:dependentOption="oft" ls:dependsOn="ift" ls:constraint="matches(VTT)" ls:negation="true" />
+	</xs:choice>
+</xs:complexType>
 
   <xs:element name="component">
     <xs:complexType>

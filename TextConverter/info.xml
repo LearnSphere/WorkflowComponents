@@ -6,7 +6,7 @@
 </author>
 <url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TextConverter</url>
 <date>2018-02-02</date>
-<abstract>The <b>Text Converter</b> component converts various types of text file to other text file types. Currently you can use this component to convert a XML, Tab-delimited, CSV or JSON file into a XML, Tab-delimited, CSV or JSON file.
+<abstract>The <b>Text Converter</b> component converts various types of text file to other text file types. Currently you can use this component to convert a XML, Tab-delimited, CSV or JSON file into a XML, Tab-delimited, CSV or JSON file. Additionally, it can also convert a VTT file to a CSV file.
 <p>
 This component currently can only convert simple XML file. Here is an example of an XML file that can be converted with this component:
 <p>&lt;model_output&gt;</p>
@@ -33,7 +33,7 @@ This component currently can only convert flat JSON oject file. Here is an examp
 </p>
 
 </abstract>
-<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert between XML, tab-delimited, CSV, and JSON. Blank lines are removed from Tab-delimited and CSV files prior to converting to JSON.</description>
+<description>This component allows you to convert text file from one type to another. Currently you can use this component to convert between XML, tab-delimited, CSV, and JSON. It can also convert VTT to CVS. Blank lines are removed from Tab-delimited and CSV files prior to converting to JSON.</description>
 
 <inputs><ul>
 <li>A text file to be converted.</li>
@@ -47,7 +47,7 @@ This component currently can only convert flat JSON oject file. Here is an examp
 
 <options>
  <ul>
-<li><b>Input file type</b> - Tab-Delimitied, CSV, XML, or JSON</li>
+<li><b>Input file type</b> - Tab-Delimitied, CSV, XML, JSON, VTT</li>
 <li><b>Output file type</b> - Tab-Delimited, CSV, XML, or JSON</li>
 </ul>
 </options>

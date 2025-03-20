@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[47]:
 
 
 """
@@ -33,7 +33,7 @@ from email_validator import validate_email, EmailNotValidError
 #from azureConfig import loginConfig
 
 
-# In[4]:
+# In[48]:
 
 
 def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
@@ -47,7 +47,7 @@ def get_azure_client(API_KEY, END_POINT) -> TextAnalyticsClient:
 #print(get_azure_client())
 
 
-# In[5]:
+# In[49]:
 
 
 def get_presidio_client() -> AnalyzerEngine:
@@ -63,7 +63,7 @@ def get_presidio_client() -> AnalyzerEngine:
 #print(get_presidio_client())
 
 
-# In[6]:
+# In[50]:
 
 
 def get_comprehend_client(access_key, secret_key) -> boto3.client:
@@ -84,7 +84,7 @@ def get_comprehend_client(access_key, secret_key) -> boto3.client:
 
 
 
-# In[38]:
+# In[51]:
 
 
 def update_encoding_file(hash_key, value) -> None:
@@ -100,7 +100,6 @@ def load_name_hash_mapping(csv_file, name_col, hash_col) -> None:
     This function reads in a csv file and fills our name_hash_dict dictionary that represents the key, value pairs 
     between names and their encoded hashes.
     """
-
     name_hash_df = pd.read_csv(csv_file, dtype=str)
     name_id = name_hash_df.columns.get_loc(name_col)
     hash_id = name_hash_df.columns.get_loc(hash_col)
@@ -117,10 +116,10 @@ def is_email(entity) -> bool:
         return False
 
 
-# In[39]:
+# In[71]:
 
 
-def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Union[str, Exception]]]:
+def redact_pii(text, client, method, hips_boolean, scoring_threshold) -> Union[str, Tuple[None, Union[str, Exception]]]:
     """
     Takes in text and using the apropiate client (Azure/Presidio/Comprehend) will either encode/HIPS for all instances of pii in the text 
     PARAMETERS:
@@ -140,14 +139,19 @@ def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Uni
             response = response[0].entities
 
         elif method == 'presidio':
-            response = client.analyze(text=text, entities=["PERSON", "EMAIL_ADDRESS"], language='en')
+            response = client.analyze(text=text, entities=["PERSON", "EMAIL_ADDRESS"], language='en', score_threshold=scoring_threshold)
+            #Lower Threshold (e.g., 0.3): More detections (may include false positives).
+            #Higher Threshold (e.g., 0.8): Fewer detections (reduces false positives).
+            #example response: [type: EMAIL_ADDRESS, start: 42, end: 63, score: 1.0, type: PERSON, start: 7, end: 12, score: 0.85, type: PERSON, start: 14, end: 24, score: 0.85]
             if response is None:
-                return None, "Error: No response received from analyze."
+                return None, "Error: No response received from analyze of presidio."
+        
         elif method == 'comprehend':
             response = client.detect_entities(Text=text, LanguageCode='en')
             if response is None:
                 return None, "Error: No response received from detect_entities"
             response = response['Entities']
+            
         redacted_text = text
         # sort in reverse so we dont mess up index order, but not needed
         #response.sort(key=lambda x: x.start, reverse=True)
@@ -172,12 +176,10 @@ def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Uni
                 continue
             #Comprehend doesn't have an email tag, so we have to make sure this OTHER instance is actually an email
             if category in ['OTHER'] and not is_email(entity_text):
-                continue 
-
+                continue
             #switch other -> email for comprehend so we can get prefixes when encoding 
             if category in ['OTHER'] and method == 'comprehend':
                 category = 'email'
-
             #switch org -> person for comprehend so we can get prefixes when encoding
             if category in ['ORGANIZATION'] and method == 'comprehend':
                 category = 'person'
@@ -193,15 +195,16 @@ def redact_pii(text, client, method, hips_boolean) -> Union[str, Tuple[None, Uni
     except Exception as e:
         return None, e
     
-#test presidio
-#line_text = redact_pii("hello, Jaden, John Smith can you hear me? hcheng688@hotmail.com", get_presidio_client(), "presidio", True)
-#line_text = redact_pii("hello, Jaden, John Smith can you hear me? hcheng688@hotmail.com", get_presidio_client(), "presidio", False)
-#print(line_text)
+# #test presidio
+# #line_text = redact_pii("hello, Jaden, John Smith can you hear me? hcheng688@hotmail.com", get_presidio_client(), "presidio", True)
+# line_text = redact_pii("hello, Jaden, John Smith can you hear me? hcheng688@hotmail.com", get_presidio_client(), "presidio", False)
+# print(line_text)
 
 
-# In[40]:
+# In[72]:
 
 
+#name_hash_dict should have the pairs of name and hash. if not existing in file, we make new hash and add it to updated encoding file
 def encode_pii(entity_text, category, current_text) -> str:
     """Takes in the text of our instance and encodes it based off our hash values"""
     prefix = category.lower() if category.lower() in ['person', 'email', 'email_address'] else 'obj'
@@ -216,6 +219,11 @@ def encode_pii(entity_text, category, current_text) -> str:
         current_text = current_text.replace(entity_text, name_hash_dict[entity_text.lower()])
     return current_text
 
+
+# In[73]:
+
+
+#get Random name and email if not deidentified already. if new, add to updated encoding file
 def hide_pii(entity_text, category, current_text) -> str:
     """Takes in the text of our instance and generates a fake value to hip"""
     if category.lower() == "person":
@@ -240,58 +248,31 @@ def hide_pii(entity_text, category, current_text) -> str:
     return current_text
 
 
-# In[41]:
+# In[74]:
 
 
-def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignore_columns) -> None:
-    """This file is meant to handle when csvs are passed in"""
-
+#handle csv. call redact_pii which depending on hips_boolean to call HIPS or encoding
+def handle_csv(output_file, transcript_file, client, method, hips_boolean, ignore_columns, scoring_threshold) -> None:
     df = pd.read_csv(transcript_file, quotechar='"')
     print(f"starting to encode: {transcript_file}")
+    for col in df.columns:
+        if col not in ignore_columns:
+            df[col] = df[col].apply(lambda x:  redact_pii(x, client, method, hips_boolean, scoring_threshold))
+    df.to_csv(output_file, index=False)        
+    print(f"{len(df)} rows completed")    
     
-    with open(output_file, 'w', encoding='utf-8', newline='\n') as file:
-        file.write(','.join(df.columns) + '\n')
+# #test
+# #handle_csv("Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_cleaned.csv", "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita.csv", get_presidio_client(), "presidio", True, ['Input'])
+# handle_csv("Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_non_hips_cleaned.csv", "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv", get_presidio_client(), "presidio", False, [])
+# print(name_hips_dict)
+# print(name_hash_dict)
 
-        columns = df.columns
-        for index, row in df.iterrows():
-            cleaned_row = []
-            column_index = 0
-            #goes cell by cell -> row by row to detect, update pii
-            for cell in row:
-                if pd.isnull(cell):
-                    cell = ''
-                #check if we should skip
-                cell_column = columns[column_index]
-                if cell_column in ignore_columns:
-                    column_index += 1
-                    if isinstance(cell, str) and len(cell) > 0:
-                        #escape double quote
-                        cell = cell.replace('"', r'\"')
-                        #add quote 
-                        cell = f'"{cell}"'
-                    cleaned_row.append(cell)
-                    continue
 
-                redacted_cell = redact_pii(cell, client, method, hips_boolean)
-                #check if comma is present, add quote
-#                 if "," in str(redacted_cell):
-#                     redacted_cell = f'"{redacted_cell}"'
-                if isinstance(redacted_cell, str) and len(redacted_cell) > 0:
-                    #escape double quote
-                    redacted_cell = redacted_cell.replace('"', r'\"')
-                    #add quote
-                    redacted_cell = f'"{redacted_cell}"'
-                if isinstance(redacted_cell, tuple):
-                    sys.exit(f"Managed to process {index-1} rows before failing. We encountered the following error: {redacted_cell[1]}")
+# In[75]:
 
-                cleaned_row.append(f'{redacted_cell}')
-                column_index += 1
-            file.write(','.join(map(str, cleaned_row)) + '\n')
-            if (index+1) % CSV_ROW_UPDATE == 0:
-                print(f"In progress: {index} rows encoded")
-        print(f"{len(df)} rows completed")
 
-def handle_other(output_file, transcript_file, client, method, hips_boolean) -> None:
+#handle all text file format. call redact_pii which depending on hips_boolean to call HIPS or encoding
+def handle_other(output_file, transcript_file, client, method, hips_boolean, scoring_threshold) -> None:
     """
     This method is meant to handle text files that can be passed in
     PARAMETERS:
@@ -309,7 +290,7 @@ def handle_other(output_file, transcript_file, client, method, hips_boolean) -> 
     with open(output_file, 'w', encoding='utf-8', newline='\n') as file:
         index = 1
         for chunk in chunks:
-            modified_chunk = redact_pii(chunk, client, method, hips_boolean)
+            modified_chunk = redact_pii(chunk, client, method, hips_boolean, scoring_threshold)
             if isinstance(modified_chunk, tuple):
                 sys.exit(f"Managed to process {index-1} chunks before failing. We encountered the following error: {modified_chunk[1]}")
             file.write(modified_chunk)
@@ -320,34 +301,42 @@ def handle_other(output_file, transcript_file, client, method, hips_boolean) -> 
 #handle_other("random_transcript_cleaned.json", "random_transcript.json", get_presidio_client(), "presidio", True)
 
 
-# In[42]:
+# In[76]:
 
 
-def hips_method(pii_file, client, method, ignore_columns) -> None:
+#use HIPS to deidentify. depending the pii_file extension, will call handle_csv or handle_other
+def hips_method(pii_file, client, method, ignore_columns, scoring_threshold) -> None:
     """Declares file name for the returned pii file and preps clients to use hips when replacing pii"""
     filename, file_extension = os.path.splitext(os.path.basename(pii_file))
     return_pii_file = f"{filename}_cleaned{file_extension}"
-    
+    #not the best way to write this but updated_encoding_file is defined before this function is called
     with open(updated_encoding_file, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(["name", "hash"])
 
     try:
         if file_extension == '.csv':
-            handle_csv(return_pii_file, pii_file, client, method, True, ignore_columns)
+            handle_csv(return_pii_file, pii_file, client, method, True, ignore_columns, scoring_threshold)
         else:
-            handle_other(return_pii_file, pii_file, client, method, True)
+            handle_other(return_pii_file, pii_file, client, method, True, scoring_threshold)
     except Exception as e:
         print(f"An error occurred while reading the PII file: {e}")
         sys.exit(1)
         
-def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, ignore_columns) -> None:
+
+
+# In[77]:
+
+
+#use encoding file to deidentify. depending the pii_file extension, will call handle_csv or handle_other
+def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, ignore_columns, scoring_threshold) -> None:
     """Declares file names for the returned pii file and the encodings we have. Preps clients to use encoding when replacing pii"""
     global updated_encoding_file
     try:
         load_name_hash_mapping(encoding_file, name_col, hash_col)
         filename, file_extension = os.path.splitext(os.path.basename(encoding_file))
         updated_encoding_file = f"{filename}_updated{file_extension}"
+        #copy encoding_file to updated_encoding_file
         shutil.copyfile(encoding_file, updated_encoding_file)
     except:
         print('No passed in encoding file, will start with empty one')
@@ -360,16 +349,16 @@ def encoding_method(encoding_file, pii_file, name_col, hash_col, client, method,
 
     try:
         if file_extension == '.csv':
-            handle_csv(return_pii_file, pii_file, client, method, False, ignore_columns)
+            handle_csv(return_pii_file, pii_file, client, method, False, ignore_columns, scoring_threshold)
         else:
-            handle_other(return_pii_file, pii_file, client, method, False)
+            handle_other(return_pii_file, pii_file, client, method, False, scoring_threshold)
     except Exception as e:
         print(f"An error occurred while reading the PII file: {e}")
         sys.exit(1)
 
 
 
-# In[43]:
+# In[81]:
 
 
 # Globals
@@ -382,17 +371,9 @@ CSV_ROW_UPDATE = 100
 RANDOMS = Faker()
 DATE_TIME = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-
-# In[44]:
-
-
 #test on command line
 #C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId 1 -Hips_boolean No -method Presidio -piiFileType Non-CSV -skipCol No -useEncoding No -node 0 -fileIndex 0 random_transcript.json
-#config file, hips no, azure, noncsv, skip no
-#C:\Users\hchen\Anaconda3\python.exe azidioPii_LS.py -programDir . -workingDir . -userId hcheng -Hips_boolean No -method Azure -piiFileType Non-CSV -skipCol No -useEncoding No -node 0 -fileIndex 0 random_transcript.json -node 2 -fileIndex 0 config_file.txt
-#C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId hcheng -Hips_boolean Yes -method Presidio -piiFileType CSV -skipCol Yes -skip_columns_nodeIndex 0 -skip_columns_fileIndex 0 -skip_columns "CF (Rule Id)" -useEncoding No -node 0 -fileIndex 0 Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv
-#C:\Users\hchen\Anaconda3\envs\36_env\python.exe azidioPii_LS_py36.py -programDir . -workingDir . -userId hcheng -Hips_boolean Yes -method Presidio -piiFileType CSV -skipCol Yes -skip_columns_nodeIndex 0 -skip_columns_fileIndex 0 -skip_columns "CF (Rule Id)" -useEncoding No -node 0 -fileIndex 0 Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple_cleaned.csv
-#command line
+
 command_line = True
 if command_line:
     parser = argparse.ArgumentParser(description="Deidentification script using Azure, Comprehend, or Presidio")
@@ -401,6 +382,7 @@ if command_line:
     parser.add_argument("-fileIndex", nargs=2, action='append')
     parser.add_argument("-node", action='append')
     parser.add_argument("-method", help="Method to use for deidentification: 'Azure', 'Comprehend' or 'Presidio'", type=str, required=True, choices=['Azure', 'Presidio', 'Comprehend'])
+    parser.add_argument("-presidioScoreThreshold", help="Scoring threshold for Presidio", type=float, default=0.6)
     parser.add_argument("-Hips_boolean", help="Boolean to decide which method to use.", type=str, choices=['Yes', 'No'], default="No")
     parser.add_argument("-useEncoding", help="Boolean to decide if using encoding.", type=str, choices=['Yes', 'No'], default="No")
     parser.add_argument("-skipCol", type=str, choices=['Yes', 'No'], default="No")
@@ -434,6 +416,7 @@ if command_line:
 #             config_file = args.fileIndex[x][1]
 
     method = (args.method).lower()
+    scoring_threshold = args.presidioScoreThreshold
     hips_boolean = False
     if (args.Hips_boolean).lower() == "yes":
         hips_boolean = True
@@ -463,19 +446,7 @@ if command_line:
             api_key = args.api_key
         if args.end_point is not None:
             end_point = args.end_point
-#         else:
-#             if config_file is not None:
-#                 configs = Properties()
-#                 with open(config_file, 'rb') as cfile:
-#                     configs.load(cfile)
-#                     if configs.get("AWS_ACCESS_KEY") is not None:
-#                         aws_access_key = configs.get("AWS_ACCESS_KEY").data
-#                     if configs.get("AWS_SECRET_KEY") is not None:
-#                         aws_secret_key = configs.get("AWS_SECRET_KEY").data
-#                     if configs.get("API_KEY") is not None:
-#                         api_key = configs.get("API_KEY").data
-#                     if configs.get("END_POINT") is not None:
-#                         end_point = configs.get("END_POINT").data
+
                     
 else:
     # use proper client
@@ -488,12 +459,13 @@ else:
     # hips_boolean = False
     # encoding_file = None
 
-    hips_boolean = False
+    hips_boolean = True
     encoding_file = "updated_encoding_file_v1.csv"
+    scoring_threshold = 0.3
     
     #pii_file = "random_transcript.json"
     #pii_file = "csv_file_test.csv"
-    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_cleaned_v1.csv"
+    pii_file = "Zoom_Mathia_Mohawk_10_24_2024_1305_Geramita_simple.csv"
     skipCol = "Yes"
     skip_columns = ["CF (Rule Id)"]
     api_key = ""
@@ -514,6 +486,7 @@ else:
 # print(aws_secret_key)
 # print(api_key)
 # print(end_point)
+# print(scoring_threshold)
     
 if method == 'azure':
     client = get_azure_client(api_key, end_point)
@@ -537,10 +510,10 @@ except:
 
 # use proper encoding method
 if hips_boolean:
-    hips_method(pii_file, client, method, skip_columns)
+    hips_method(pii_file, client, method, skip_columns, scoring_threshold)
     print(f"Successfully hid PII in {pii_file}")
 else:
-    encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, skip_columns)
+    encoding_method(encoding_file, pii_file, name_col, hash_col, client, method, skip_columns, scoring_threshold)
     print(f"Successfully encrypted {pii_file}")
 
 

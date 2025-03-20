@@ -54,6 +54,16 @@ public class DeidentifyDialogueMain extends AbstractComponent {
                 reqsMet = false;
         	}
         }
+        //Presidio threshold has to be between 0 and 1
+        Double scoreThreshold = this.getOptionAsDouble("presidioScoreThreshold");
+        if (scoreThreshold <= 0 || scoreThreshold >= 1) {
+        	reqsMet = false;
+        	//send error message
+            String err = "Presidio Score Threshold has to be between 0 and 1";
+            addErrorMessage(err);
+            logger.info("DeidentifyDialogue is aborted: " + err);
+        }
+        
         //file type is CSV or Non-CSV
         String fileType = this.getOptionAsString("piiFileType");
         if (reqsMet && (fileType != null && fileType.equals("CSV"))) {
@@ -146,6 +156,44 @@ public class DeidentifyDialogueMain extends AbstractComponent {
         	File outputDirectory = this.runExternal();
 	        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
 	            logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+	            String newFileName = FilenameUtils.removeExtension(inputFile1.getName()) + "_cleaned." + FilenameUtils.getExtension(inputFile1.getAbsolutePath());
+	            File file0 = new File(outputDirectory.getAbsolutePath() + "/" + newFileName);
+	            if (file0 != null && file0.exists()) {
+	            	if (fileType != null && fileType.equals("CSV")) {
+		            	//put the output file in the first node
+	            		this.addOutputFile(file0, 0, 0, "csv");
+		            } else {
+		            	//put the output file in the second node
+		            	this.addOutputFile(file0, 1, 0, "file");
+		            }
+	                
+	            } else {
+	                addErrorMessage("An error has occurred with the DeidentifyDialogue component: " + newFileName + " can't be found.");
+	            }
+	            
+	            //if no HIPS and use encoding, the encoding file is named: encoding file name + updated
+	            //else named updated_encoding_file.csv
+	            String newEncodingFileName = "updated_encoding_file.csv";
+	            if (isHIPS.equals("No") && useEncoding.equals("Yes")) {
+	            	newEncodingFileName = FilenameUtils.removeExtension(inputFile2.getName()) + "_updated." + FilenameUtils.getExtension(inputFile2.getAbsolutePath());
+	            }
+	            File file1 = new File(outputDirectory.getAbsolutePath() + "/" + newEncodingFileName);
+	            if (file1 != null && file1.exists()) {
+	                this.addOutputFile(file1, 2, 0, "encoding-map");
+	            } else {
+	                addErrorMessage("An error has occurred with the DeidentifyDialogue component: " + newEncodingFileName + " can't be found.");
+	            }
+	            
+	        }
+        }
+        
+        
+        /*if (reqsMet) {
+        	String isHIPS = this.getOptionAsString("Hips_boolean");
+        	File outputDirectory = this.runExternal();
+	        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
+	            logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
+	            
 	            Integer nodeIndex = 0;
 	            Integer fileIndex = 0;
 	            String label = "csv";
@@ -173,7 +221,10 @@ public class DeidentifyDialogueMain extends AbstractComponent {
 	            }
 	            
 	        }
-        }
+        }*/
+        
+        
+        
         // Send the component output back to the workflow.
         System.out.println(this.getOutput());
         

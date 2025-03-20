@@ -28,6 +28,7 @@ public class TextConverterMain extends AbstractComponent {
     static private String TAB_DELIM_FILE_TYPE = "tab-delimited";
     static private String CSV_FILE_TYPE = "csv";
     static private String JS_FILE_TYPE = "json";
+    static private String VTT_FILE_TYPE = "vtt";
     
     static private String PATTERN_FOR_JSONARRAY = "\\s*\\[.*\\]\\s*";
     static private String PATTERN_FOR_JSONOBJECT = "\\s*\\{.*\\}\\s*";
@@ -81,17 +82,22 @@ public class TextConverterMain extends AbstractComponent {
         	        generatedFile = xmlToJsonFile(inputFilePath);
 
         	}
-        } else if (ift.equals(CSV_FILE_TYPE) || ift.equals(TAB_DELIM_FILE_TYPE)) {
-        	if (oft.equals(XML_FILE_TYPE)) { // -k \"Some Column Key\"
-        	        File jsonFile = csvToJsonFile(inputFilePath, ift);
-        		generatedFile = jsonToXmlFile(jsonFile.getAbsolutePath());
-
-        	} else if (oft.equals(JS_FILE_TYPE)) {
-        	        generatedFile = csvToJsonFile(inputFilePath, ift);
-
-        	} else if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
-        	        //generatedFile = convertTabAndCsv(inputFile, ift, oft);
-        		generatedFile = convertTabAndCsv(inputFile, ift);
+        } else if (ift.equals(CSV_FILE_TYPE) || ift.equals(TAB_DELIM_FILE_TYPE) || ift.equals(VTT_FILE_TYPE)) {
+        	if (ift.equals(VTT_FILE_TYPE)) {
+        		oft = "csv";
+        		generatedFile = convertTabCsvVtt(inputFile, ift);
+        	} else {
+	        	if (oft.equals(XML_FILE_TYPE)) { // -k \"Some Column Key\"
+	        	        File jsonFile = csvToJsonFile(inputFilePath, ift);
+	        		generatedFile = jsonToXmlFile(jsonFile.getAbsolutePath());
+	
+	        	} else if (oft.equals(JS_FILE_TYPE)) {
+	        	        generatedFile = csvToJsonFile(inputFilePath, ift);
+	
+	        	} else if (oft.equals(CSV_FILE_TYPE) || oft.equals(TAB_DELIM_FILE_TYPE)) {
+	        	        //generatedFile = convertTabAndCsv(inputFile, ift, oft);
+	        		generatedFile = convertTabCsvVtt(inputFile, ift);
+	        	}
         	}
         }
 
@@ -324,7 +330,7 @@ public class TextConverterMain extends AbstractComponent {
 		return convertedFile;
 	}
 
-	private File convertTabAndCsv(File inputFile, String inFileType) {
+	private File convertTabCsvVtt(File inputFile, String inFileType) {
 		this.loadBuildProperties("build.properties");
 
 		String pythonInterpreter =
@@ -349,6 +355,9 @@ public class TextConverterMain extends AbstractComponent {
         if (inFileType.equalsIgnoreCase(CSV_FILE_TYPE)) {
         	processParams.add("-inputFormat");
         	processParams.add("CSV");
+        } else if (inFileType.equalsIgnoreCase(VTT_FILE_TYPE)) {
+        	processParams.add("-inputFormat");
+        	processParams.add("VTT");
         } else {
         	processParams.add("-inputFormat");
         	processParams.add("Tab-delimited");

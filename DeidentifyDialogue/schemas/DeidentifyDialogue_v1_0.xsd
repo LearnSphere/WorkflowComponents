@@ -87,7 +87,7 @@
       <xs:element ref="csv" />
     </xs:choice>
   </xs:complexType>
-
+  
   <xs:complexType name="OutputDefinition1">
     <xs:complexContent>
       <xs:extension base="InputContainer">
@@ -99,8 +99,25 @@
     </xs:complexContent>
   </xs:complexType>
 
-
   <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition2">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList2" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="OutFileList2">
     <xs:choice>
       <xs:element ref="encoding-map" />
     </xs:choice>
@@ -110,8 +127,9 @@
 
   <xs:complexType name="OutputType">
     <xs:sequence>
-      <xs:element name="output0" type="OutputDefinition0" />
-      <xs:element name="output1" type="OutputDefinition1" />
+      <xs:element name="output0" type="OutputDefinition0" minOccurs="0"/>
+      <xs:element name="output1" type="OutputDefinition1" minOccurs="0"/>
+      <xs:element name="output2" type="OutputDefinition1" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
   
@@ -143,6 +161,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
 	<xs:element type="methodType" name="method" id="Anonymize_Method" default="Presidio" />
+	<xs:element type="xs:double" name="presidioScoreThreshold" id="Detection_Threshold" default="0.6" />
     <xs:element type="trueFalseType" name="Hips_boolean" id="HIPS" default="No" />
 	<xs:element type="fileType" name="piiFileType" id="File_Type" default="Non-CSV" />
 	<xs:element type="trueFalseType" name="skipCol" id="Skip_Columns" default="No" />
@@ -179,6 +198,8 @@
 	<xs:element type="disjunctive" name="dependency15" ls:dependentOption="skipCol" ls:dependsOn="piiFileType" ls:constraint="matches(CSV)" />
 	<xs:element type="conjunctive" name="dependency16" ls:dependentOption="skip_columns" ls:dependsOn="skipCol" ls:constraint="matches(Yes)" />
 	<xs:element type="conjunctive" name="dependency17" ls:dependentOption="skip_columns" ls:dependsOn="piiFileType" ls:constraint="matches(CSV)" />
+	<xs:element type="conjunctive" name="dependency18" ls:dependentOption="presidioScoreThreshold" ls:dependsOn="method" ls:constraint="matches(Presidio)" />
+	
 	</xs:choice>
 </xs:complexType>
 

@@ -29,6 +29,7 @@ detection.</description>
 <options>
  <ul>
 <li>Anonymize Method: choose from Presidio, Azure or Comprehend. Presidio is free.</li>
+<li>Detection Threshold: the scoring threshold for Presidio, .</li>
 <li>HIPS: hidden in plain sight. If no, the Use Encoding File option is visible.</li>
 <li>File Type: choose from CSV or Non-CSV</li>
 <li>Skip Columns: choose Yes if you have columns to skip the deidentification process. This option is only present when CSV is selected for File type option.</li>
