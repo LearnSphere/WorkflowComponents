@@ -161,7 +161,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
 	<xs:element type="methodType" name="method" id="Anonymize_Method" default="Presidio" />
-	<xs:element type="xs:double" name="presidioScoreThreshold" id="Detection_Threshold" default="0.6" />
+	<xs:element type="xs:string" name="presidioScoreThreshold" id="Detection_Threshold" default="0.6" />
     <xs:element type="trueFalseType" name="Hips_boolean" id="HIPS" default="No" />
 	<xs:element type="fileType" name="piiFileType" id="File_Type" default="Non-CSV" />
 	<xs:element type="trueFalseType" name="skipCol" id="Skip_Columns" default="No" />

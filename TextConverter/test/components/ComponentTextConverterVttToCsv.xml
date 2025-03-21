@@ -1,0 +1,37 @@
+<component>
+    <component_id>ComponentTestOutputVttToCsv</component_id>
+    <component_id_human>Transform #2</component_id_human>
+    <workflow_id>1</workflow_id>
+    <component_name>CsvParser</component_name>
+    <component_type>transform</component_type>
+    <left>72</left>
+    <top>48</top>
+    <connections>
+        <connection>
+            <to>Import2</to>
+        </connection>
+    </connections>
+    <options>
+      <ift>VTT</ift>
+	<oft>Tab-delimited</oft>
+  </options>
+
+  <inputs>
+    <input0>
+      <component_id>Import2</component_id>
+      <component_id_human>Import #2</component_id_human>
+      <component_type>import</component_type>
+      <component_name>file</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors/>
+      <files>
+      <csv>
+        <file_path>test/test_data/transcript_sample.vtt</file_path>
+        <label>file</label>
+        <file_name>transcript_sample.vtt</file_name>
+        <index>0</index>
+      </csv>
+      </files>
+    </input0>
+    </inputs>
+</component>

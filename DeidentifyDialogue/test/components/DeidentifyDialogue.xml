@@ -43,6 +43,7 @@
     <piiFileType>Non-CSV</piiFileType>
     <skipCol>No</skipCol>
     <useEncoding>No</useEncoding>
+    <presidioScoreThreshold>0.6</presidioScoreThreshold>
     <aws_access_key />
     <aws_secret_key />
     <api_key />
