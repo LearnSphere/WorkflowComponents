@@ -35,7 +35,7 @@ public class DeidentifyDialogueMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
-        File inputFile1 = getAttachment(0, 0);
+    	File inputFile1 = getAttachment(0, 0);
         File inputFile2 = null;
         //File inputFile3 = null;
         logger.info("DeidentifyDialogue inputFile: " + inputFile1.getAbsolutePath());
@@ -55,11 +55,17 @@ public class DeidentifyDialogueMain extends AbstractComponent {
         	}
         }
         //Presidio threshold has to be between 0 and 1
-        Double scoreThreshold = this.getOptionAsDouble("presidioScoreThreshold");
-        if (scoreThreshold <= 0 || scoreThreshold >= 1) {
+        String s_scoreThreshold = this.getOptionAsString("presidioScoreThreshold");
+        Double scoreThreshold = null;
+        try {
+        	scoreThreshold = Double.parseDouble(s_scoreThreshold);
+        } catch (NumberFormatException e) {
+        	scoreThreshold = null;
+        }
+        if (scoreThreshold == null || (scoreThreshold <= 0 || scoreThreshold >= 1)) {
         	reqsMet = false;
         	//send error message
-            String err = "Presidio Score Threshold has to be between 0 and 1";
+            String err = "Presidio Score Threshold must be given and has to be between 0 and 1";
             addErrorMessage(err);
             logger.info("DeidentifyDialogue is aborted: " + err);
         }
