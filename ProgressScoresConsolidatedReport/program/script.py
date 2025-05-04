@@ -25,7 +25,6 @@ def get_module_details(email, scores, progress, modules, modules_raw):
   all_module_details = []
   for module, module_raw in zip(modules, modules_raw):
     module_details = {}
-    # print (module)
     
     progress_values = progress[(progress['module_title'] == module_raw) & (progress['email'] == email)]['percent_progress'].tolist()
     module_details['progress'] = progress_values[0] if progress_values else None
@@ -53,8 +52,8 @@ def get_module_details(email, scores, progress, modules, modules_raw):
   return all_module_details
 
 
-# Helper function to convert results to Excel
-def convert_to_excel(student_details, working_dir):
+# Helper function to save output
+def save_output(student_details, working_dir):
   # Convert student_details dictionary to a list of dictionaries
   data = []
   modules = set()
@@ -79,8 +78,7 @@ def convert_to_excel(student_details, working_dir):
   # Create MultiIndex columns
   df.columns = pd.MultiIndex.from_tuples(df.columns)
 
-  # Save to Excel
-  #df.to_excel(os.path.join(working_dir, 'output.xlsx'))
+  # Save the output in CSV format
   df.to_csv(os.path.join(working_dir, 'output.csv'), index=False)
 
 
@@ -127,7 +125,7 @@ def main_program(scores, progress, working_dir):
     student_details = student_details.to_dict(orient='records')
 
     # Convert student details to Excel
-    convert_to_excel(student_details, working_dir)
+    save_output(student_details, working_dir)
 
 
 def progressMessage(progressLogFilePath, message):
