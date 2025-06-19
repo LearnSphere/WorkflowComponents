@@ -37,6 +37,9 @@
 
   <xs:element name="json" substitutionGroup="text" />
   	  <xs:element name="d3m-dataset" substitutionGroup="json" />
+	  
+	<xs:element name="gpt-prompt" substitutionGroup="text" /> 
+
 
   <xs:element name="tab-delimited" substitutionGroup="text" />
 	  <xs:element name="user-sess-map" substitutionGroup="tab-delimited" />

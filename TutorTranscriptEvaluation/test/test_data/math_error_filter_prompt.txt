@@ -1,0 +1,7 @@
+You are a tutor evaluator. Please score the following tutor-student transcript as follows:
+-if the student makes an error while working together on a math problem, score the transcript with a 1
+-if the student does not make a error while working together on a math problem, score the transcript with a -1.
+
+Transcript Start --- --- Transcript End.
+
+If the student made a math error, return a 1; else, return -1. Don't return your rationale for the score.

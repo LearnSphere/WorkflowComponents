@@ -1,0 +1,67 @@
+<component>
+  <component_type>tutoringanalytics</component_type>
+  <component_id>Tutoringanalytics-1-x345861</component_id>
+  <workflow_id>262</workflow_id>
+  <top>70.39999389648438</top>
+  <left>476.00001525878906</left>
+  <component_name>Situation Finder</component_name>
+  <component_id_human>Tutoringanalytics #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x509267</from>
+    </connection>
+	<connection>
+      <tindex>1</tindex>
+      <index>0</index>
+      <from>Data-1-x337932</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x509267</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <file_path>test/test_data/878011973_captions.vtt</file_path>
+          
+          <file_name>878011973_captions.vtt</file_name>
+          <index>0</index>
+          <label>csv</label>
+        </text>
+      </files>
+      <inputmeta />
+    </input0>
+	<input1>
+      <component_id>Data-1-x337932</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <file_path>test/test_data/math_error_evaluation_prompt.txt</file_path>
+          
+          <file_name>math_error_evaluation_prompt.txt</file_name>
+          <index>0</index>
+          <label>csv</label>
+        </text>
+      </files>
+      <inputmeta />
+    </input1>
+  </inputs>
+  <options>
+    <openai_api_key>your key</openai_api_key>
+<transcript_file_type>Single VTT</transcript_file_type>
+<number_of_trials>3</number_of_trials>
+<max_token>200</max_token>
+<temperature>1.0</temperature>
+<!--<write_prompt>false</write_prompt>	-->
+  </options>
+</component>

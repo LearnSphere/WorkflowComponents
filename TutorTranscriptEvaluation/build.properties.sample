@@ -1,0 +1,6 @@
+#component.interpreter.path=C:\\Users\\hchen\\Anaconda3\\python.exe
+#component.program.path=program/tutor_transcript_evaluation.py
+
+component.interpreter.path=C:\\Users\\hchen\\Anaconda3\\envs\\36_env\\python.exe
+component.program.path=program/tutor_transcript_evaluation_py36.py
+

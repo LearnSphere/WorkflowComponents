@@ -116,7 +116,7 @@
 	    <Recently_Used />
 		<AI_Lesson_Scoring />
 		<Deidentify_Dialogue />
-		<Text_Answer_Feedback />
+		<Tutor_Transcript_Evaluation />
 	</TutoringAnalytics>
 	<Tetrad>
 	    <Recently_Used />

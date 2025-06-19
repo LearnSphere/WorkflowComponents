@@ -1,0 +1,65 @@
+Find the Whole 
+Country music makes up 75\% of a person's music library. 
+If they have downloaded 90 country music songs, how many songs do they have in their music library? 
+Think About It! 
+
+A classmate claims that because \( 75 \% \) is less than 100, the person should have more than 90 music songs in their library. Do you think this reasoning is correct? Why or why not? 
+
+Begin by identifying the part, the whole, and the percent. 
+part: 
+whole: 
+percent:  \( \% \) 
+Clear 
+Show Correct Answer 
+Show Problem 
+Country music makes up \( 75 \% \) of the person's music library. 
+If they have downloaded 90 country music songs, how many songs do they have in their music library? 
+Method 1 Use a bar diagram. 
+
+Move through the slides to see how to use a bar diagram to find the whole. 
+sections to represent \( 75 \% \). 
+Reset 
+hi 
+Hi how are you/ 
+great what about you 
+doing well thx :) 
+could you share your question on the board? 
+sure can you plz wait for like 1 minute 
+take ur time! 
+ok give me a few minutes, so I can take a look :) 
+ok for this one we need to find 75% of 90 
+which is 90 times 0.75 
+can you calculate this? 
+67.5 
+correct, great job! 
+oh wait 
+my bad 
+actually 75% is 90 country songs 
+if A is the number of songs in the library, 
+then 75% of A is equal to 90 
+so A times 0.75 = 90 
+then A is 90 divided by 0.75 
+can you calculate 90 divided by 0.75? 
+120. 
+great job, correct! 
+are you there 
+Yes 
+Do you have other questions? 
+I put it on the board 
+Ok let me take a look 
+ok part is 90 
+whole is unknown 
+and percent is 90% 
+does this make sense? 
+yes 
+great! 
+can we move on? 
+yes 
+ok what's next? :) 
+it on the board 
+about the bar diagram? 
+that looks correct 
+ok what's next question? :) 
+that was the last one but thank you for all your help today 
+my pleasure 
+have a great day! :)
