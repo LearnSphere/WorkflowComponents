@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[16]:
+# In[14]:
 
 
 import openai
-from openai.error import APIConnectionError
-import xlsxwriter
 import json
 import argparse
 import pandas as pd
@@ -16,11 +14,10 @@ import sys
 import re
 import datetime as dt
 import operator
-from collections import Counter
 import zipfile
 
 
-# In[17]:
+# In[15]:
 
 
 def logProgressToWfl(progressMsg):
@@ -31,7 +28,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[18]:
+# In[16]:
 
 
 def logToWfl(msg):
@@ -41,7 +38,7 @@ def logToWfl(msg):
     logFile.close();
 
 
-# In[19]:
+# In[17]:
 
 
 def fix_malformed_json(json_str):
@@ -112,7 +109,7 @@ def fix_malformed_json(json_str):
 # print(fix_malformed_json(test_str))
 
 
-# In[46]:
+# In[18]:
 
 
 def extract_response(response_str, json_obj=False):
@@ -157,7 +154,7 @@ def extract_response(response_str, json_obj=False):
 # print(extract_response(test_str, json_obj=True))
 
 
-# In[37]:
+# In[19]:
 
 
 def vtt_to_df(vtt_file):
@@ -177,7 +174,7 @@ def vtt_to_df(vtt_file):
 # print(vtt_to_df(transcript_filename))
 
 
-# In[38]:
+# In[20]:
 
 
 def convert_df_column_prompt_text(df, col):
@@ -190,7 +187,7 @@ def convert_df_column_prompt_text(df, col):
 # print(convert_df_column_prompt_text(df, "text"))
 
 
-# In[39]:
+# In[21]:
 
 
 #prompt file should has this: Transcript Start --- --- Transcript End
@@ -216,7 +213,7 @@ def parse_prompt(filename):
 # print(format_prompt)
 
 
-# In[40]:
+# In[22]:
 
 
 #extract csv and get all files with extension vtt
@@ -233,7 +230,7 @@ def get_files_in_zip(zip_filename, extract_to):
 #print(get_files_in_zip("danielle_vtts.zip", "./unzipped_temp"))
 
 
-# In[41]:
+# In[23]:
 
 
 #clean a the double // or \\ from the file path
@@ -246,7 +243,7 @@ def clean_filename(filename):
 #print(clean_filename(".//unzipped_files_temp\\blah//blah2\\878010491_captions.vtt"))
 
 
-# In[52]:
+# In[24]:
 
 
 def query_open_ai(prompt, temperature=1, max_tokens=200):
@@ -271,15 +268,13 @@ def query_open_ai(prompt, temperature=1, max_tokens=200):
 # response = None
 # try:
 #     response = query_open_ai(prompt)
-# except APIConnectionError as e:
-#     print(f"API Connection Error: {e}")
 # except Exception as e:
 #     print(f"An error occurred: {e}")
 # print(response)
 # print(extract_response(response, True))
 
 
-# In[64]:
+# In[25]:
 
 
 #filename: vtt or csv
@@ -321,11 +316,6 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
             #print(response)
             response_parsed = extract_response(response, json_obj=True)
             #print(response_parsed)
-        except APIConnectionError as e:
-            error_msg = f"APIConnectionError: {e}"
-            logToWfl(error_msg)
-            print(error_msg)
-            response_parsed = pd.DataFrame([{"OpenAI Server Error": error_msg}])
         except Exception as e:
             error_msg = f"An error occurred: {e}"
             logToWfl(error_msg)
@@ -357,7 +347,7 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
 # print(response["Trial_3"])
 
 
-# In[76]:
+# In[26]:
 
 
 #test situation filter
