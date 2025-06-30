@@ -1,0 +1,74 @@
+<component>
+  <component_type>analysis</component_type>
+  <component_id>Analysis-1-x104131</component_id>
+  <workflow_id>46</workflow_id>
+  <top>89.20832824707031</top>
+  <left>520.6667022705078</left>
+  <component_name>Confusion Matrix</component_name>
+  <component_id_human>Analysis #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x750308</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x750308</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <csv>
+          <file_path>test/test_data/Human and AI output.csv</file_path>
+          <metadata>
+            <header>
+              <name>Utterance ID</name>
+              <index>0</index>
+              <id>header0</id>
+            </header>
+            <header>
+              <name>Role</name>
+              <index>1</index>
+              <id>header1</id>
+            </header>
+            <header>
+              <name>Human Teacher Move Student error only FIXED</name>
+              <index>2</index>
+              <id>header2</id>
+            </header>
+            <header>
+              <name>AI Teacher Move Student error only</name>
+              <index>3</index>
+              <id>header3</id>
+            </header>
+            <header>
+              <name>Human Teacher Move Dictionary</name>
+              <index>4</index>
+              <id>header4</id>
+            </header>
+            <header>
+              <name>AI Teacher Move Dictionary</name>
+              <index>5</index>
+              <id>header5</id>
+            </header>
+          </metadata>
+          <file_name>Human and AI output.csv</file_name>
+          <index>0</index>
+          <label>csv</label>
+        </csv>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"Human and AI output.csv","importFileType":"csv","importFileNameTitle":"File: Human and AI output.csv","fileTypeSelection":"csv","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"1431","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <source_a_col>Input 0 (0) - Human Teacher Move Dictionary (column 4)</source_a_col>
+    <source_b_col>Input 0 (0) - AI Teacher Move Dictionary (column 5)</source_b_col>
+  </options>
+</component>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ConfusionMatrix</url>
+<date>2024-09-20</date>
+<abstract>The <b>Confusion Matrix</b> component generates a confusion matrix from the input CSV file.</abstract>
+<description>This component generates a confusion matrix from the input CSV file.
+</description>
+
+<inputs>
+<ul>
+<li>CSV file <b>Required</b></li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>Confusion Matrix in CSV format. </li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><strong>Source A:</strong> Select a column to use as Source A.</li>
+<li><strong>Source B:</strong> Select a column to use as Source B.</li>
+</ul>
+
+</options>
+
+
+</info>

@@ -60,6 +60,7 @@
 		<Apply_Detector />
 		<Assessment />
 		<BKT />
+		<Confusion_Matrix />
 		<Correlation />
 		<Cronbachs_Alpha />
 		<DASH />
