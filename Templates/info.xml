@@ -4,7 +4,7 @@
 <author>%COMPONENT_AUTHOR%
   <email>%COMPONENT_AUTHOR_EMAIL%</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/%COMPONENT_NAME%</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/%COMPONENT_NAME%</url>
 <date>%CREATION_DATE%</date>
 <abstract>The <b>%COMPONENT_NAME%</b> component is an example of a(n) %COMPONENT_LANG% component.</abstract>
 <description>%COMPONENT_DESCRIPTION%</description>

@@ -4,7 +4,7 @@
 <author>Marsha Lovett
   <email>lovett@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/PerformanceDifferenceAnalysis</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/PerformanceDifferenceAnalysis</url>
 <date>July 11, 2019</date>
 <abstract>This workflow component calculates performance differences for an individual course, following <a href="https://arxiv.org/abs/1608.07565">Koester, Grom, &amp; McKay (2016)</a> and <a href="https://journals.sagepub.com/doi/full/10.1177/2332858417743754">Matz et al. (2017)</a>
 The target use case is calculating gendered differences (or other factor) in final grade for a target course (e.g., intro physics), esp relative to grades in other courses taken by

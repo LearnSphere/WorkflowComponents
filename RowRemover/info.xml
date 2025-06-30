@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RowRemover</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/RowRemover</url>
 <date>2018-01-14</date>
 <abstract>The <b>Row Remover</b> component selects rows that you would like removed or kept within a data set.</abstract>
 <description>This component allows you to remove or keep rows that meet certain criteria from a dataset.</description>

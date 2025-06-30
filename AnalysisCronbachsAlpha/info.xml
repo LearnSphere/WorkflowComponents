@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisCronbachsAlpha</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisCronbachsAlpha</url>
 <date>2016-10-08</date>
 <abstract>The <b>Cronbach's Alpha</b> calculates a reliability values for items (columns) in a gradebook. For missing data, we implement "partial" imputation: we ignore missing data 
 when computing items' variances; but we impute with student's average for missing data when we compute the variance for "total" column.</abstract>

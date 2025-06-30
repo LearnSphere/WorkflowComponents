@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliPerformance</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/OliPerformance</url>
 <date>2022-06-14</date>
 <abstract><p>The <b>OliPerformance</b> component can transform problem data into a Datashop formatted csv file with student performance on oli courses.</p>
 <p>The required input fields are three checkboxes for if the user wants to include the specified csv file in the output zip file.

@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliErrorReport</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/OliErrorReport</url>
 <date>2022-06-14</date>
 <abstract><p>The <b>OliErrorReport</b> component can transform a oli content csv file (output from the OliContentExtractor Component)
 and a transaction data txt file into a Datashop formatted csv file with error reports for every question and its choices.</p>

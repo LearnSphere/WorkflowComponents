@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/BarChart</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/BarChart</url>
 <date>2018-9-14</date>
 <abstract>The <b>Bar Chart</b> component creates a bar chart of the input data.  Use a tab-delimited file with column headers as input.  
 The html output page contains options that you can use to adjust the bar chart to fit your need. The options are:

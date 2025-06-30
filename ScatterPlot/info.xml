@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ScatterPlot</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ScatterPlot</url>
 <date>2018-9-20</date>
 <abstract>The <b>Scatter Plot</b> component creates a scatter plot of the input data.  Use a tab-delimited file with column headers as input.  The options are contained in the html output file.</abstract>
 

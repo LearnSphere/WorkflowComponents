@@ -4,7 +4,7 @@
 <author>Carl Haynes-Magyar@CMU
   <email>chaynesm@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/RetrospectiveModelTracing</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/RetrospectiveModelTracing</url>
 <date>2024-09-20</date>
 <abstract>
 <p>Component Retrospective Model Tracing provides two approaches for model-tracing:</p>

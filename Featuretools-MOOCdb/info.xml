@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Featuretools-MOOCdb</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/Featuretools-MOOCdb</url>
 <date>2017-03-10</date>
 <abstract>The <b>Featuretools-MOOCdb<</b> component using an entity set extracts features from a MOOCdb database.</abstract>
 <description>MOOCdb TSV Files:

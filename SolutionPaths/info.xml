@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/SolutionPaths</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/SolutionPaths</url>
 <date>2018-9-20</date>
 <abstract>The <b>Solution Paths</b> component creates a visualization of the process students went through in order to solve a problem.  The nodes in the graph are the steps that they got to throughout the problem. The links show how many students took a particular path and the color of the link corresponds to the correctness of their responses from one step to the next.</abstract>
 

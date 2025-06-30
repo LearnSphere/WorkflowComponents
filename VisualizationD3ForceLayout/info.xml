@@ -4,7 +4,7 @@
 <author>Rojina Maharjan
   <email>rmharjan@memphis.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationD3ForceLayout</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/VisualizationD3ForceLayout</url>
 <date>2017-10-01</date>
 <abstract>The <b>D3 Force Layout</b> component produces an undirected graph of any matrix input.</abstract>
 <description>

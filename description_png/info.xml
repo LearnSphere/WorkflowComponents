@@ -4,7 +4,7 @@
 <author>Arun Sharma
   <email>aruns2@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/description</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/description</url>
 <date>July 22, 2020</date>
 <abstract>The <b> description</b>component generates one-click decription of students' distribution. By importing a CSV file that contains information about students' school, grade, gender and race <b>description</b> </abstract>
 <description>The Component generates four graphs portraying the number of students for each school, grade, gender, and race. </description>

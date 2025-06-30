@@ -4,7 +4,7 @@
 <author>Paulo Carvalho
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationLearningRate</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/VisualizationLearningRate</url>
 <date>2022-10-28</date>
 <abstract>This component fits one of three student models (AFM, iAFM, or t-AFM) and returns student or KC learning curve fits represented graphically with one line in log-odds scale for each student/KC and numerically with learning rate and initial knowledge parameters for each student/KC.
 <p>The component offers three student models:

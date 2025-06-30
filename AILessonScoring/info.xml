@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AILessonScoring</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AILessonScoring</url>
 <date>2024-09-20</date>
 <abstract>The <b>AI Lesson Scoring</b> component gives users the OpenAI's responses to the text answers of a selected lesson. The OpenAI's response includes a score and a rationale for the scoring. We are using OpenAI gpt-3.5-turb-instruct engine.
 </abstract>

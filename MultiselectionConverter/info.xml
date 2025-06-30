@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/MultiselectionConverter</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/MultiselectionConverter</url>
 <date>2019-01-02</date>
 <abstract><p>The <b>Multiselection Converter</b> component converts a multi-selection row into multiple rows of single step and modify outcome of accordingly.
 The required input files are: a Datashop transaction export file and a multi-selection item mapping file. The mapping file should contains the same Levels, Problem Name and Step Name hierarchy depicted in the Datashop transaction export. 

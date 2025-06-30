@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/nlpTfIdf</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/nlpTfIdf</url>
 <date>2022-12-31</date>
 <abstract><p>The <b>TF IDF</b> component helps compute the TF-IDF value of a word or phrase for a collection of files or for rows of column(s) of a tab-delimited file. TF-IDF stands for "Term Frequency - Inverse Document Frequency".</p>
 

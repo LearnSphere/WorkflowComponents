@@ -4,7 +4,7 @@
 <author>Arun Sharma
   <email>aruns2@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/LearningRateAnalysis</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/LearningRateAnalysis</url>
 <date>July 28, 2020</date>
 <abstract>The <b>iAFMgraph</b> component uses iAFM to model growth for an individual student and displays students growth in year1 and year2 using MAP data for those who received the intervention vs those who did not</abstract>
 <description>The component takes in data for two years, and the data for the intervention(eg: Mentor or Tech). The component models the growth (learning rate) and the intercept(previous knowledge) for each student using iAFM and displays two graphs each for learning rate and previous knowledge along with the CSV file.</description>

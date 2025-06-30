@@ -4,7 +4,7 @@
 <author>Carnegie Mellon University
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GenerateRandomMatrix</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/GenerateRandomMatrix</url>
 <date>2017-03-09</date>
 <abstract>Generates a randomly initialized real matrix given the number of rows and columns.</abstract>
 <details></details>

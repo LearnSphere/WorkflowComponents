@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisPropensity</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisPropensity</url>
 <date>2018-01-14</date>
 <abstract>The <b>Propensity Matching</b> component helps to select matched samples of the original treated and
  control groups with similar covariate distributions. It conducts matching with propensity scores, using R's <a href="https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf" target="_blank">MatchIt</a> package. 

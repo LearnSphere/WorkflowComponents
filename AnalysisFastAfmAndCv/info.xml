@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisFastAfmAndCv</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisFastAfmAndCv</url>
 <date>2018-01-14</date>
 <abstract>The <b>Fast AFM and CV</b> component uses Python Logistic Regression function to generate results for AFM and Cross Validation in a relatively fast speed.
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2349" target="_blank">demo</a> workflow.</p></abstract>

@@ -4,7 +4,7 @@
 <author>Nick Lewis
   <email>thecanary@gmail.com</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisDash</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisDash</url>
 <date>2017-07-22</date>
 <abstract><b>Difficulty, Ability, and Study History (DASH):</b> Four models that add time or memory strength to a logistic regression over the "error rate" learning curve data.
 <br/><br/>

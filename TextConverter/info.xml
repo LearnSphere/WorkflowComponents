@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TextConverter</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TextConverter</url>
 <date>2018-02-02</date>
 <abstract>The <b>Text Converter</b> component converts various types of text file to other text file types. Currently you can use this component to convert a XML, Tab-delimited, CSV or JSON file into a XML, Tab-delimited, CSV or JSON file. Additionally, it can also convert a VTT file to a CSV file.
 <p>

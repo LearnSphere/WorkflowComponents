@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/StepPerformanceProfiler</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/StepPerformanceProfiler</url>
 <date>2024-12-23</date>
 <abstract>Step Performance Profiler component aggregates Datashop transaction data based on steps including problem hierarchies and problems, students' answers for steps and ordinals of attempts</abstract>
 <description>Step Performance Profiler component aggregate Datashop transaction data based on the steps including problem hierarchies and problems</description>

@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/CourseraMOOCdbTranslate</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/CourseraMOOCdbTranslate</url>
 <date>2017-05-14</date>
 <abstract>The <b>Coursera MOOCdb Translator</b> component translates data from Coursera Spark platform to MOOCdb. MOOCdb data can then be used to extract longitudinal features.</abstract>
 <description>Coursera Spark platform exports data for a course into SQL database backup files. 

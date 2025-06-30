@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformRowMunging</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformRowMunging</url>
 <date>2018-01-14</date>
 <abstract>The <b>Row Munging</b> component provides various row operations for data manipulation. It allows you to keep rows, remove rows, and reset row values using column values.
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2425" target="_blank">demo</a> workflow.</p></abstract>

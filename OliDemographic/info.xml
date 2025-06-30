@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliDemographic</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/OliDemographic</url>
 <date>2022-06-14</date>
 <abstract><p>The <b>OliDemographic</b> component can transform problem and transaction data into a Datashop formatted csv file with student performance on oli courses.</p>
 <p>The required input fields are a string that is the problem name of demographic survey questions and a string that is the problem name of confidence survey questions.

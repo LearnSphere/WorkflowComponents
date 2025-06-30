@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DatastageAggregator</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/DatastageAggregator</url>
 <date>2018-06-18</date>
 <abstract>The <b>Datastage Aggregator</b> component aggregates student Datastage transaction data.</abstract>
 <description>The <b>Datastage Aggregator</b> component aggregates student transaction data from EventXtract.csv, VideoInteraction.csv, ActivityGrade.csv and Performance.csv files; and output student page reading, problem solving, video watching, forum participating and performance grade for the entire course.</description>

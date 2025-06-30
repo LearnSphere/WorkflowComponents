@@ -4,7 +4,7 @@
 <author>Gillian Gold
   <email>gillian.gold@yale.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/KCExport</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/KCExport</url>
 <date>August 02, 2023</date>
 <abstract>The <b>KC Export</b> component creates an export of an existing model or template for creating a new KC model.
 <br></br>

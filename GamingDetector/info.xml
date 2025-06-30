@@ -4,7 +4,7 @@
 <author>stevenda
   <email>stevenda@cs.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/GamingDetector</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/GamingDetector</url>
 <date>August 13, 2019</date>
 <abstract>Given a transaction file, generate labels for gaming based on Paquette et al, 2014 detector</abstract>
 <description>Given a transaction file, generate labels for gaming based on Paquette 2014 detector</description>

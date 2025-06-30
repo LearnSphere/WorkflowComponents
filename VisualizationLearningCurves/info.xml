@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/VisualizationLearningCurves</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/VisualizationLearningCurves</url>
 <abstract>
 A learning curve visualizes changes in student performance over time. The line graph displays opportunities across the x-axis, and a measure of student performance along the y-axis. A good learning curve reveals improvement in student performance as opportunity count (i.e., practice with a given knowledge component) increases.
 </abstract>

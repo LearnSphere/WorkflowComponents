@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OutputComparator</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/OutputComparator</url>
 <date>2018-01-14</date>
 <abstract>The <b>Output Comparator</b> component can compare files of type XML, properties or tab-delimited.</abstract>
 <description>This component allows you to compare files of XML, properties or tabular format. Output file contains variables lined up next to each other so the values can be compared clearly.</description>

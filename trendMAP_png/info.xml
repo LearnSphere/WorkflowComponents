@@ -4,7 +4,7 @@
 <author>Arun Sharma
   <email>aruns2@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/trendMAP</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/trendMAP</url>
 <date>July 23, 2020</date>
 <abstract>The <b>trendMAP</b> component traces the average scores for minortized and non-minoritized students over two years.</abstract>
 <description>The component takes in MAP data for two years and generates score trends for two years for a desired discipline for minoritized(non-white) and non-minoritized(Whites and Asians) students.</description>

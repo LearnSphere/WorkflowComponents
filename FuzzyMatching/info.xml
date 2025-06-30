@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/FuzzyMatching</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/FuzzyMatching</url>
 <date>2022-10-19</date>
 <abstract><p>The <b>Fuzzy Match</b> component uses Levenshtein Distance Ratio to determine the similarity between two character sequences. It suggests if there is a match based on the difference between Levenshtein Distance Ratio and the threshold that the user specified.</p>
 <p>The component offers two matching modes:

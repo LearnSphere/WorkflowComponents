@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/OliContentExtractor</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/OliContentExtractor</url>
 <date>2022-06-14</date>
 <abstract><p>The <b>OliContentExtractor</b> component can transform xml files from oli workbook and inline assessments into a Datashop formatted csv file
 with unit, module, title, activity id, question content, choice content, and feedback content. </p>

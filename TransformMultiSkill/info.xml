@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformMultiSkill</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformMultiSkill</url>
 <date>2017-09-14</date>
 <abstract>
 <p>The <b>Transform Multiskill</b> component allows users to transform student-step export from muitl-skill KC into multi-row of single skills. For example: 

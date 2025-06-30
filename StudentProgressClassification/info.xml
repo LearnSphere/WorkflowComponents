@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/StudentProgressClassification</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/StudentProgressClassification</url>
 <date>2018-01-14</date>
 <abstract>The <b>Student Progress Classification</b> component assigns progress classification to student based on student's usage and accuracy info; and the goal that student set up.
 The four progress classifications are Miss You, Ramp it up, Keep it up and Wow. If a student meets the accuracy goal and exceeds the usage goal by defined threshold in a time frame, he gets Wow.

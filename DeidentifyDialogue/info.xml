@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/DeidentifyDialogue</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/DeidentifyDialogue</url>
 <date>2024-09-20</date>
 <abstract>The <b>Deidentify Dialogue</b> component gives users option between Azure langauge services (paid), Amazon Comprehend(paid), or Presidio (free) for PII
  detection. Also, when it comes to replacing the PII, users have the option to either encode with hash values or use HIPS..

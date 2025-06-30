@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>, MIT
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/MOOCdbFeatureExtract</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/MOOCdbFeatureExtract</url>
 <date>2017-03-10</date>
 <abstract>The <b>MOOCdb Feature Extractor</b> component extracts longitudinal features from a MOOCdb database.</abstract>
 <description>This component extracts longitudinal data from a MOOCdb. The available featrues are listed below:

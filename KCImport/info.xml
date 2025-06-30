@@ -4,7 +4,7 @@
 <author>Gillian Gold
   <email>gillian.gold@yale.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/KCImport</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/KCImport</url>
 <date>August 06, 2023</date>
 <abstract>The <b> KC Import </b> component creates new KC models in the student-step roll up (exported from DataShop).
 <br></br>

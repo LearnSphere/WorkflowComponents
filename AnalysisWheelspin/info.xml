@@ -4,7 +4,7 @@
 <author>Hui Cheng
   <email>hcheng@cs.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisWheelspin</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisWheelspin</url>
 <date>2020-01-15</date>
 <abstract>The <b>Wheelspin</b> component produces three kinds of prediction for wheelspin: iAFM predictive model prediction, Beck model prediction and local measurement prediction. To be specific:
 <ul>

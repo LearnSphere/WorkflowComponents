@@ -4,7 +4,7 @@
 <author>msambou
   <email>msambou@andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/ProgressScoresConsolidatedReport</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/ProgressScoresConsolidatedReport</url>
 <date>February 17, 2025</date>
 <abstract>The <b>ProgressScoresConsolidatedReport</b> component is an example of a(n) Python component.</abstract>
 <description>This program takes scores and progress as csv and produces a consolidated report in Excel format.</description>

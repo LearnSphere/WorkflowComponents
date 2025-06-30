@@ -4,7 +4,7 @@
 <author>Bryan Farris
   <email>bryan@goldfishprods.com</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/FeatureSynthesis</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/FeatureSynthesis</url>
 <date>2018-08-01</date>
 <abstract>The <b>Feature Synthesis<</b> component generates a feature matrix from an entity set and outputs it as a csv file.</abstract>
 <description>The Feature Synthesis component leverages the Featuretools library to generate a feature matrix from a zipped entity set.  The component provides options to specify Agg Primitives, Trans Primitives and Max Depth for the Feature Matrix algorithm.  In addition, the component can optionally apply one-hot encoding to the feature matrix output.

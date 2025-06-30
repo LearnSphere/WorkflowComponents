@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/Histogram</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/Histogram</url>
 <date>2018-9-14</date>
 <abstract>The <b>Histogram</b> component creates a histogramof the input data.  Use a tab-delimited file with column headers as input.  The options are contained in the html output file.</abstract>
 

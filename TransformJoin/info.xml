@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TransformJoin</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TransformJoin</url>
 <date>2018-01-14</date>
 <abstract>The <b>Join</b> component is incredibly useful when you have two data files and want to aggregate them into a larger, singular data set. The component allows merging or concatenating of two data files, where merging is to combine two data files based on values in shared columns and concatenating is to stack two data files together vertically or horizontally
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=2779" target="_blank">demo</a> workflow.</p></abstract>

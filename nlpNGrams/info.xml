@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/nlpNGrams</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/nlpNGrams</url>
 <date>2022-12-31</date>
 <abstract><p>The <b>N Grams</b> component helps compute the frequency of contiguous sequence of n items from a text file or a column of a tab-delimited file.</p>
 

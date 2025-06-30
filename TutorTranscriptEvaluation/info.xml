@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/TutorTranscriptEvaluation</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/TutorTranscriptEvaluation</url>
 <date>2024-09-20</date>
 <abstract>The <b>Tutor Transcript Evaluation</b> component gives users the OpenAI's evaluation to the transcript of tutoring session. We are using OpenAI gpt-3.5-turb-instruct engine.
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=4333" target="_blank">demo</a> workflow.</p></abstract>
@@ -14,7 +14,7 @@
 <inputs>
 <ul>
 <li>Transcript of tutoring session. Transcript can be in VTT, CSV or text format. Zipped multiple transcripts can be used. <b>Required</b></li>
-<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/tree/master/TutorTranscriptEvaluation" target="_blank">filter at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/tree/master/TutorTranscriptEvaluation" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/tree/master/TutorTranscriptEvaluation" target="_blank">evaluation by line</a></li>
+<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_filter_prompt.txt" target="_blank">filter prompt at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_evaluation_prompt.txt" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_by_line_prompt_gpt35.txt" target="_blank">evaluation by line</a></li>
 </ul>
 </inputs>
 

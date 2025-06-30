@@ -4,7 +4,7 @@
 <author>DataShop@CMU
   <email>datashop-help@lists.andrew.cmu.edu</email>
 </author>
-<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/AnalysisInterventionEffects</url>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/AnalysisInterventionEffects</url>
 <date>2018-01-14</date>
 <abstract>The <b>Intervention Effects</b> component helps you analyze data for the intervention effects.
 <p>See <a href="https://pslcdatashop.web.cmu.edu/LearnSphere?workflowId=?" target="_blank">demo</a> workflow.</p></abstract>
