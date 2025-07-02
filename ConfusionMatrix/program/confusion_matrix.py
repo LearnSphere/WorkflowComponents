@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[73]:
+# In[24]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import numpy as np
 import argparse
 
 
-# In[74]:
+# In[25]:
 
 
 def confusion_matrix_manual(y_true, y_pred, labels=None):
@@ -30,7 +30,7 @@ def confusion_matrix_manual(y_true, y_pred, labels=None):
     return labels, matrix
 
 
-# In[75]:
+# In[26]:
 
 
 def calculate_metrics(labels, cm):
@@ -50,7 +50,7 @@ def calculate_metrics(labels, cm):
     return accuracy, precision, recall
 
 
-# In[76]:
+# In[27]:
 
 
 def calculate_kappa(labels, cm):
@@ -68,7 +68,7 @@ def calculate_kappa(labels, cm):
     return kappa
 
 
-# In[77]:
+# In[28]:
 
 
 def get_kappa_strength(kappa):
@@ -88,7 +88,16 @@ def get_kappa_strength(kappa):
         return "Invalid kappa value"
 
 
-# In[84]:
+# In[29]:
+
+
+def convert_numeric(value):
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
+
+
+# In[37]:
 
 
 command_line=True
@@ -120,14 +129,24 @@ if command_line:
 else: #for test
     working_dir = ".//"
     program_dir = ".//"
-    in_file = "Human and AI output for reacting to student error & dictionary of moves - June 11th 2025 original.csv" 
-    source_a_col = "Human"
-    source_b_col = "AI"
+    #in_file = "Human and AI output for reacting to student error & dictionary of moves - June 11th 2025 original.csv" 
+    in_file = "convertedDelimited.csv"
+    source_a_col = "Human good react to error "
+    source_b_col = "Score"
     
-df = pd.read_csv(in_file, encoding='ISO-8859-1')
+df = None
+#check if csv or txt
+if in_file.lower().endswith('.csv'):
+    df = pd.read_csv(in_file, encoding='ISO-8859-1')
+elif in_file.lower().endswith('.txt'):
+    df = pd.read_csv(in_file, sep='\t', encoding='ISO-8859-1')
+
 #convert na to ""
 df[source_a_col] = df[source_a_col].fillna('')
 df[source_b_col] = df[source_b_col].fillna('')
+#make sure string type
+df[source_a_col] = df[source_a_col].apply(convert_numeric).astype(str)
+df[source_b_col] = df[source_b_col].apply(convert_numeric).astype(str)
 # Extract columns from DataFrame
 source_a = df[source_a_col].tolist()
 source_b = df[source_b_col].tolist()
@@ -148,7 +167,7 @@ df_cm.loc['Total'] = df_cm.sum(axis=0)
 df_cm['Percent of agreement'] = round(df_cm['Agreement']/df_cm['Total'], 2)
 
 
-# In[85]:
+# In[38]:
 
 
 # Metrics
@@ -167,7 +186,7 @@ output_file = os.path.join(working_dir,'confusion_matrix.csv')
 df_cm.to_csv(output_file) 
 
 
-# In[86]:
+# In[39]:
 
 
 #add accuracy and kappa
