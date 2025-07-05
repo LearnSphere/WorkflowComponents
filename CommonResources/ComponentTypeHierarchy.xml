@@ -114,11 +114,8 @@
 	<TutoringAnalytics>
 	    <Recently_Used />
 		<AI_Lesson_Scoring />
-		<Annotate_Session_Data />
 		<Confusion_Matrix />
 		<Deidentify_Dialogue />
-		<Output_Session_Data_To_CSV />
-		<Session_Data_Conversion />
 		<Tutor_Transcript_Evaluation />
 	</TutoringAnalytics>
 	<Tetrad>
