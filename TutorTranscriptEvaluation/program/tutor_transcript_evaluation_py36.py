@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[81]:
 
 
 import openai
@@ -17,7 +17,7 @@ import operator
 import zipfile
 
 
-# In[15]:
+# In[82]:
 
 
 def logProgressToWfl(progressMsg):
@@ -28,7 +28,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[16]:
+# In[83]:
 
 
 def logToWfl(msg):
@@ -38,7 +38,7 @@ def logToWfl(msg):
     logFile.close();
 
 
-# In[17]:
+# In[84]:
 
 
 def fix_malformed_json(json_str):
@@ -109,7 +109,33 @@ def fix_malformed_json(json_str):
 # print(fix_malformed_json(test_str))
 
 
-# In[18]:
+# In[85]:
+
+
+def escape_rationale(json_str):
+    def escape_match(m):
+        content = m.group(1)
+        escaped = content.replace('"', r'\"')
+        return f'"Rationale": "{escaped}"'
+
+    # Match all Rationale values
+    pattern = r'"Rationale"\s*:\s*"((?:[^"\\]|\\.)*?)"'
+    return re.sub(pattern, escape_match, json_str, flags=re.DOTALL)
+
+
+# In[86]:
+
+
+def extract_score(response_str):
+    match = re.search(r'(?i)score[^0-9]*([01])', response_str)
+    return int(match.group(1)) if match else None
+#test
+#test_str = '''The tutor effectively responds to the student's error by guiding and motivating them to find their own mistake, rather than directly stating that they are wrong. This is shown through the tutor's use of prompts such as "Please walk me through that problem again?" and "Can you explain to me what you did here?" Additionally, the tutor encourages the student to think critically and offers alternative methods for solving the problem. This approach allows the student to understand their mistake and learn from it, rather than being told they are incorrect. Therefore, this transcript would score a 1.'''
+# test_str = '''The tutor effectively guided the student to find their own mistake without directly mentioning the error by asking open-ended questions, such as 'What is your question?' and 'Does that make sense or are you confused?'. Also, the tutor provided positive reinforcement by saying 'You got it' and 'Good luck on the rest of your classwork'. Therefore, the tutor's response was effective in correcting the student's error without causing discouragement. Score: 1.'''
+# print(extract_score(test_str))
+
+
+# In[97]:
 
 
 def extract_response(response_str, json_obj=False):
@@ -120,6 +146,9 @@ def extract_response(response_str, json_obj=False):
         return response_str
     #clean the misformed JSON, happened when max_token is too small, last object can be truncated
     response_str = fix_malformed_json(response_str)
+    response_str = escape_rationale(response_str)
+    #delete the last period
+    response_str = response_str[:-1] if response_str.endswith('.') else response_str
     df = pd.DataFrame()
     try:
         # Attempt to load the JSON
@@ -128,33 +157,62 @@ def extract_response(response_str, json_obj=False):
             for obj in parsed:
                 new_row = {}
                 for key, value in obj.items():
+                    if value is None or value == "":
+                        value = 0
                     new_row[key] = value
                 df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            return df
         elif isinstance(parsed, dict):
             new_row = {}
             for key, value in parsed.items():
+                if value is None or value == "":
+                    value = 0
                 new_row[key] = value
             df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            return df
         else:
             new_row = {}
             new_row['Response'] = response_str
+            try:
+                new_row['Score'] = int(response_str)
+            except (ValueError, TypeError):
+                new_row['Score'] = 0
             df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            return df
+        if 'Score' in df.columns:
+            # Replace empty strings or NaN values with 0
+            df['Score'] = df['Score'].replace('', None)  # Treat empty string as missing
+            df['Score'] = df['Score'].fillna(0) 
+        elif 'Rationale' in df.columns:
+            last_try = extract_score(df['Rationale'])
+            if last_try is not None:
+                df['Score'] = last_try 
+        return df
     except Exception as e:
+        last_try = extract_score(response_str)
         new_row = {}
-        new_row['Response'] = response_str
+        if last_try is None or last_try == "":
+            new_row["Score"] = 0
+            new_row['Response'] = response_str
+        else:
+            #only specific for score and rationale situation
+            new_row["Score"] = last_try
+            new_row["Rationale"] = response_str
         df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+        if 'Score' in df.columns:
+            # Replace empty strings or NaN values with 0
+            df['Score'] = df['Score'].replace('', None)  # Treat empty string as missing
+            df['Score'] = df['Score'].fillna(0)    
         return df
 
-# #test
-# #print(extract_response("error not found", json_obj=True))
-# test_str = '''[\n    {\n        "Line": 46,\n        "Error": "Incorrect statement that 2 can go into 7",\n        "Tutor Response": "You can\'t go into seven evenly. 2, 4, 6, 8.",\n        "Score": 1,\n        "Rationale": "The tutor effectively corrects the student\'s misunderstanding by listing multiples of 2, guiding the student to see the error."\n    },\n    {\n        "Line": 57,\n        "Error": "Incorrect statement that 3 can go into 5",\n        "Tutor Response": "Three can go into, uh, five. Cannot go into",\n        "Score": 1,\n        "Rationale": "The tutor corrects the student by clarifying that 3 cannot go into 5, effectively addressing the mistake."\n    },\n    {\n        "Line": 65,\n        "Error": "Incorrect statement about divisibility of 9 into 53",\n        "Tutor Response": "So does nine go 53? No, no. Goes 54.",\n        "Score": 1,\n        "Rationale": "The tutor effectively points out the correct understanding of divisibility by 9, correcting the student\'s error."\n    },\n    {\n        "Line": 85,\n        "Error": "Incorrect addition of 18 and 5, resulting in 23 instead of 23",\n        "Tutor Response": "Five is 23, I think.",\n        "Score": 0,\n        "Rationale": "The tutor confirms an incorrect calculation without correction, which does not help the student understand the correct operation."\n    },\n    {\n        "Line": 90,\n        "Error": "Incorrect statement that 3 goes into 28 evenly",\n        "Tutor Response": "Now three going to 28. I can play right now. 28 even.",\n        "Score": 0,\n        "Rationale": "The tutor incorrectly confirms that 3 goes into 28 evenly, reinforcing the student\'s error instead of correcting it."\n    }\n]'''
-# print(extract_response(test_str, json_obj=True))
+#test
+#print(extract_response("error not found", json_obj=True))
+#test_str = '''[\n    {\n        "Line": 46,\n        "Error": "Incorrect statement that 2 can go into 7",\n        "Tutor Response": "You can\'t go into seven evenly. 2, 4, 6, 8.",\n        "Score": 1,\n        "Rationale": "The tutor effectively corrects the student\'s misunderstanding by listing multiples of 2, guiding the student to see the error."\n    },\n    {\n        "Line": 57,\n        "Error": "Incorrect statement that 3 can go into 5",\n        "Tutor Response": "Three can go into, uh, five. Cannot go into",\n        "Score": 1,\n        "Rationale": "The tutor corrects the student by clarifying that 3 cannot go into 5, effectively addressing the mistake."\n    },\n    {\n        "Line": 65,\n        "Error": "Incorrect statement about divisibility of 9 into 53",\n        "Tutor Response": "So does nine go 53? No, no. Goes 54.",\n        "Score": 1,\n        "Rationale": "The tutor effectively points out the correct understanding of divisibility by 9, correcting the student\'s error."\n    },\n    {\n        "Line": 85,\n        "Error": "Incorrect addition of 18 and 5, resulting in 23 instead of 23",\n        "Tutor Response": "Five is 23, I think.",\n        "Score": 0,\n        "Rationale": "The tutor confirms an incorrect calculation without correction, which does not help the student understand the correct operation."\n    },\n    {\n        "Line": 90,\n        "Error": "Incorrect statement that 3 goes into 28 evenly",\n        "Tutor Response": "Now three going to 28. I can play right now. 28 even.",\n        "Score": 0,\n        "Rationale": "The tutor incorrectly confirms that 3 goes into 28 evenly, reinforcing the student\'s error instead of correcting it."\n    }\n]'''
+#test_str = '''{"Rationale": "The tutor effectively reacted to the student's error by guiding and motivating them to find their own mistake instead of directly mentioning the error. This can be seen in the tutor's effective responses such as "So I suppose the question is asking you to determine the value of x from this equation?" and "Can you think of the next step we can do?". This approach allows the student to actively participate in the learning process and develop problem-solving skills. Therefore, a score of 1 is given.", "Score":1}'''
+#test_str = '''{"Rationale": "The tutor effectively helps the student realize their mistake by prompting them with questions like \"Is there a number after the 5?\" and explaining the rounding process to them. This helps the student understand their error and correct it on their own, instead of just being told they are wrong, which can be discouraging. The tutor also apologizes and explains that they are at school and cannot continue the session, showing consideration and responsibility. There is no mention of the student making a mistake, but rather a focus on guiding them to the correct solution.", "Score": 1}'''
+#test_str = '''The tutor effectively reacts to the student's error by guiding them to think through the problem and find their own mistake. They ask the student to explain their thought process and provide helpful hints to solve the problem. This fosters independent thinking and problem-solving skills in the student. In contrast, direct criticism can discourage students and hinder their learning progress. Hence, the tutor's responses are effective and show understanding of best practices in tutoring. Score: 1'''
+#test_str = '1'
+#print(extract_response(test_str, json_obj=True))
 
 
-# In[19]:
+# In[98]:
 
 
 def vtt_to_df(vtt_file):
@@ -174,7 +232,7 @@ def vtt_to_df(vtt_file):
 # print(vtt_to_df(transcript_filename))
 
 
-# In[20]:
+# In[99]:
 
 
 def convert_df_column_prompt_text(df, col):
@@ -187,7 +245,7 @@ def convert_df_column_prompt_text(df, col):
 # print(convert_df_column_prompt_text(df, "text"))
 
 
-# In[21]:
+# In[100]:
 
 
 #prompt file should has this: Transcript Start --- --- Transcript End
@@ -213,7 +271,7 @@ def parse_prompt(filename):
 # print(format_prompt)
 
 
-# In[22]:
+# In[101]:
 
 
 #extract csv and get all files with extension vtt
@@ -230,7 +288,7 @@ def get_files_in_zip(zip_filename, extract_to):
 #print(get_files_in_zip("danielle_vtts.zip", "./unzipped_temp"))
 
 
-# In[23]:
+# In[102]:
 
 
 #clean a the double // or \\ from the file path
@@ -243,7 +301,7 @@ def clean_filename(filename):
 #print(clean_filename(".//unzipped_files_temp\\blah//blah2\\878010491_captions.vtt"))
 
 
-# In[24]:
+# In[103]:
 
 
 def query_open_ai(prompt, temperature=1, max_tokens=200):
@@ -252,6 +310,7 @@ def query_open_ai(prompt, temperature=1, max_tokens=200):
                                             temperature = temperature,
                                             max_tokens = max_tokens)
     response = response_obj['choices'][0]['text'].strip()
+    #print(f"in query_open_ai: {response}")
     return response
 
 # #test
@@ -274,7 +333,7 @@ def query_open_ai(prompt, temperature=1, max_tokens=200):
 # print(extract_response(response, True))
 
 
-# In[25]:
+# In[104]:
 
 
 #filename: vtt or csv
@@ -313,14 +372,12 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
             #response if parsed in query_open_ai
             response = query_open_ai(prompt, temperature = temperature, max_tokens = max_tokens)
             
-            #print(response)
             response_parsed = extract_response(response, json_obj=True)
-            #print(response_parsed)
         except Exception as e:
             error_msg = f"An error occurred: {e}"
             logToWfl(error_msg)
             print(error_msg)
-            response_parsed = pd.DataFrame([{"Server Error": error_msg}])
+            response_parsed = pd.DataFrame([{"Server Error": error_msg,"Score":0}])
         all_trial_responses[trial_name] = response_parsed
         
         prog = ((cur_file_cnt - 1)/all_file_cnt) + (1/all_file_cnt) * ((trial_index+1)/num_tries)
@@ -347,7 +404,7 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
 # print(response["Trial_3"])
 
 
-# In[26]:
+# In[114]:
 
 
 #test situation filter
@@ -397,12 +454,12 @@ if command_line:
 else:
     working_dir = ".//"
     program_dir = ".//"
-    transcript_file_type = "CSV" #Zip of VTT Files, Zip of CSV Files, Zip of TXT Files, VTT, CSV, TXT
+    transcript_file_type = "Zip of TXT Files" #Zip of VTT Files, Zip of CSV Files, Zip of TXT Files, VTT, CSV, TXT
     openai_api_key = "your key"
     #test_vtt.zip, test_text_transcripts.zip, ../NTO/test_csv.zip,drive-download-20250325T133806Z-001/878010491_captions.vtt, 878010491_captions_converted.csv, A2 Transcript of user 216886 tutor session on 2023-09-25 LS id 4760786.vtt
-    transcript_file = "878010491_captions_converted.csv" 
-    #prompt_file = "math_error_filter_prompt.txt" math_error_evaluation_prompt.txt math_error_by_line_prompt_gpt35.txt
-    prompt_file = "math_error_evaluation_prompt.txt" 
+    transcript_file = "UpChieve_4_transcripts.zip" 
+    #prompt_file = "math_error_filter_prompt.txt" math_error_evaluation_prompt.txt math_error_by_line_prompt_gpt35
+    prompt_file = "math_error_filter_prompt.txt" 
     max_token = 200
     num_trails = 3
     temperature = 1

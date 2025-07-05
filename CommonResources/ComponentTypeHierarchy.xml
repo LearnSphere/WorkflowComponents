@@ -30,7 +30,6 @@
 		<DataShop_Txn_Rollup />
 		<Datastage_Aggregator />
 		<Deidentify_Student_IDs/>
-		<Deidentify_Dialogue />
 		<Discretize />
 		<Feature_Synthesis />
 		<Fuzzy_Match />
@@ -60,7 +59,6 @@
 		<Apply_Detector />
 		<Assessment />
 		<BKT />
-		<Confusion_Matrix />
 		<Correlation />
 		<Cronbachs_Alpha />
 		<DASH />
@@ -116,7 +114,11 @@
 	<TutoringAnalytics>
 	    <Recently_Used />
 		<AI_Lesson_Scoring />
+		<Annotate_Session_Data />
+		<Confusion_Matrix />
 		<Deidentify_Dialogue />
+		<Output_Session_Data_To_CSV />
+		<Session_Data_Conversion />
 		<Tutor_Transcript_Evaluation />
 	</TutoringAnalytics>
 	<Tetrad>
