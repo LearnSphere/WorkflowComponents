@@ -14,7 +14,7 @@
 <inputs>
 <ul>
 <li>Transcript of tutoring session. Transcript can be in VTT, CSV or text format. Zipped multiple transcripts can be used. <b>Required</b></li>
-<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Not Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_filter_prompt.txt" target="_blank">filter prompt at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_evaluation_prompt.txt" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_by_line_prompt_gpt35.txt" target="_blank">evaluation by line</a></li>
+<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Not Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_filter_prompt.txt" target="_blank">filter prompt at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_evaluation_prompt.txt" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_by_line_prompt.txt" target="_blank">evaluation by line</a></li>
 </ul>
 </inputs>
 
