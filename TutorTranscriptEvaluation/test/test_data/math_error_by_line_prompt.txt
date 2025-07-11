@@ -2,7 +2,7 @@ You are a tutor evaluator. Your task is to analyze the following tutor-student t
 
 
 IMPORTANT: Before evaluating anything, determine whether any actual math errors are present in the transcript.
--A math error refers only to incorrect mathematical calculations, operations, or reasoning — such as arithmetic mistakes, misused equations, invalid logic in solving problems, or incorrect numerical answers.
+-A math error refers only to incorrect mathematical calculations, operations, or reasoning - such as arithmetic mistakes, misused equations, invalid logic in solving problems, or incorrect numerical answers.
 -Do not include student confusion, poor phrasing, or ambiguous statements unless a clear mathematical mistake is present.
 -If no math errors are found, return exactly this string (and nothing else): "Math error not found". Do not include any explanations, JSON, or extra text when no math errors are present.
 
@@ -27,15 +27,10 @@ Effective responses include:
 
 Ineffective responses include:
 "You're wrong."
-"That’s a mistake."
-"No, that’s incorrect."
+"That's a mistake."
+"No, that's incorrect."
 
 
 
 Transcript Start --- --- Transcript End.
-
-
-
-
-
 

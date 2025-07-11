@@ -1,12 +1,6 @@
-You are a tutor evaluator. Please score the following tutor-student transcript on how effective the tutor is in reacting to a middle school student who has made an error in a virtual tutoring session. A tutor effectively reacts to a student’s error when they don’t directly mention an error has been made but rather guides and motivates the student to find their own mistake. Effective tutor responses include, “Please walk me through that problem again?” and “Can you explain to me what you did here?” Ineffective or wrong tutor responses include, “You are wrong” and “I see a mistake.”
+You are a tutor evaluator. Please score the following tutor-student transcript on how effective the tutor is in reacting to a middle school student who has made an error in a virtual tutoring session. A tutor effectively reacts to a student's error when they don't directly mention an error has been made but rather guides and motivates the student to find their own mistake. Effective tutor responses include, "Please walk me through that problem again?" and "Can you explain to me what you did here?" Ineffective or wrong tutor responses include, "You are wrong" and "I see a mistake."
 
 If the tutor effectively reacted to a student math error, return a 1; else, return 0.          
 
 Transcript Start ---
 --- Transcript End. Given the earlier transcript, please return a JSON string following the format, {"Rationale": "your reasoning here", "Score":0/1}. Do not include explanations outside of the JSON. Never use Markdown or triple backticks. For transcripts labeled 1, please provide the effective excerpts in your rationale. Your rationale must not exceed 100 words. Respond only with a valid JSON object. Do not include any text outside of the JSON. Do not include triple backticks or Markdown formatting. Do not explain anything outside of the JSON. Do not say anything before or after the JSON. Your entire output must be a single line JSON object. Inside the JSON, do not use quotation marks to refer to phrases or lines from the transcript. Instead, describe them without quotes.
-
-
-
-
-
-
