@@ -59,7 +59,7 @@
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 
-<xs:simpleType name="TextFieldForTextAnswerFeedback" >
+<xs:simpleType name="AutosizedTextField" >
   <xs:restriction base="xs:string" />
 </xs:simpleType>
 

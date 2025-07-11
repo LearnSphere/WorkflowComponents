@@ -42,7 +42,7 @@
     <xs:sequence>
       <xs:element name="input0" type="InputDefinition0" minOccurs="1" />
       <!--  <xs:element name="input1" type="InputDefinition1" minOccurs="0" />-->
-      <xs:element name="input1" type="InputDefinition1" minOccurs="1" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
@@ -50,7 +50,7 @@
     <xs:all>
       <xs:element name="input0" type="xs:string" default="file" minOccurs="1" />
       <!--  <xs:element name="input1" type="xs:string" default="gpt-prompt" minOccurs="0" />-->
-      <xs:element name="input1" type="xs:string" default="gpt-prompt" minOccurs="1" />
+      <xs:element name="input1" type="xs:string" default="gpt-prompt" minOccurs="0" />
     </xs:all>
   </xs:complexType>
 
@@ -71,11 +71,28 @@
     </xs:choice>
   </xs:complexType>
 
+<xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
+      <xs:element ref="gpt-prompt" />
+    </xs:choice>
+  </xs:complexType>
   
 
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
     </xs:sequence>
   </xs:complexType>
   
@@ -108,8 +125,8 @@
     <xs:element type="xs:integer" name="number_of_trials" id="Number_of_Trials" default="3" />
     <xs:element type="xs:integer" name="max_token" id="Max_Token" default="200" />
     <xs:element type="xs:double" name="temperature" id="Temperature_of_GPT_Engine" default="1.0" />
-    <!-- <xs:element type="xs:boolean" name="write_prompt" id="Compose_Prompt_Now" default="false" />
-    <xs:element type="xs:string" name="prompt" id="Prompt" default="" />-->
+    <xs:element type="xs:boolean" name="write_prompt" id="Compose_Prompt_Now" default="false" />
+    <xs:element type="AutosizedTextField" name="prompt" id="Prompt" default="Transcript Start --- --- Transcript End."/>
     </xs:choice>
   </xs:complexType>
   
@@ -117,7 +134,7 @@
 	<xs:choice>
 	<xs:element type="conjunctive" name="dependency1" ls:dependentOption="utterance_col_csv" ls:dependsOn="transcript_file_type" ls:constraint="matches(Single CSV)" />
 	<xs:element type="conjunctive" name="dependency2" ls:dependentOption="utterance_col_zip" ls:dependsOn="transcript_file_type" ls:constraint="matches(Zip of CSV Files)" />
-	<!--  <xs:element type="conjunctive" name="dependency3" ls:dependentOption="prompt" ls:dependsOn="write_prompt" ls:constraint="matches(true)" />-->
+	<xs:element type="conjunctive" name="dependency3" ls:dependentOption="prompt" ls:dependsOn="write_prompt" ls:constraint="matches(true)" />
 	</xs:choice>
 </xs:complexType> 
 

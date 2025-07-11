@@ -4,6 +4,15 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -36,15 +45,72 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
 
     @Override
     protected void runComponent() {
+    	Boolean reqsMet = true;
         File inputFile1 = getAttachment(0, 0);
         File inputFile2 = getAttachment(1, 0);
+        Path promptFile = null;
+        Boolean writePrompt = this.getOptionAsBoolean("write_prompt");
+        String prompt = this.getOptionAsString("prompt");
+        logger.info("prompt: " + prompt);
         logger.info("TutorTranscriptEvaluation inputFile transcript: " + inputFile1.getAbsolutePath());
-        if (inputFile2 != null) {
-        	logger.info("TutorTranscriptEvaluation inputFile prompt: " + inputFile2.getAbsolutePath());
+        //check the prompt
+        if (writePrompt != null && writePrompt == true) {
+        	if (prompt == null || prompt.trim().equals("")) {
+        		reqsMet = false;
+            	//send error message
+                String err = "TutorTranscriptEvaluation is aborted because the Prompt field is left blank. ";
+                addErrorMessage(err);
+                logger.info(err);
+        	} else {
+	        	byte[] bytes = prompt.getBytes(StandardCharsets.ISO_8859_1); 
+	            boolean isValid = isValidUTF8(bytes);
+	            if (!isValid) {
+	            	reqsMet = false;
+	            	//send error message
+	                String err = "TutorTranscriptEvaluation is aborted because your prompt contains non-ASCII characters. Please use plain text editor, such as Notepad++ to correct this error. ";
+	                addErrorMessage(err);
+	                logger.info(err);
+	            } else {
+	            	//add prompt to a file in the output folder
+	            	String outputDir = getComponentOutputDir();
+	                Path outputPath = Paths.get(outputDir);
+	                promptFile = outputPath.resolve("prompt.txt");
+	                try {
+	                	Files.write(promptFile, prompt.getBytes(StandardCharsets.UTF_8));
+	                } catch (IOException ioex) {
+	                	reqsMet = false;
+		            	//send error message
+		                String err = "TutorTranscriptEvaluation is aborted because IOException found while writing prompt.txt: " + ioex.toString();
+		                addErrorMessage(err);
+		                logger.info(err);
+	                }
+	            }
+        	}
         } else {
-        	logger.info("TutorTranscriptEvaluation inputFile prompt is not defined.");
-        }
-        Boolean reqsMet = true;
+        	if (inputFile2 != null) {
+            	logger.info("TutorTranscriptEvaluation inputFile prompt: " + inputFile2.getAbsolutePath());
+            	//copy propmt file to output folder
+            	Path inputPromptPath = inputFile2.toPath();
+            	String outputDir = getComponentOutputDir();
+                Path outputPath = Paths.get(outputDir);
+                promptFile = outputPath.resolve(inputPromptPath.getFileName());
+                try {
+                    Files.copy(inputPromptPath, promptFile, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                	reqsMet = false;
+	    			String errorMsg = "TutorTranscriptEvaluation is aborted because IOException found while copying prompt file to the output folder: " + e.toString();
+	    			this.addErrorMessage(errorMsg);
+	    			logger.info(errorMsg);
+                }
+            } else {
+            	reqsMet = false;
+            	//send error message
+                String err = "TutorTranscriptEvaluation is aborted because the prompt file is missing. ";
+                addErrorMessage(err);
+                logger.info(err);
+            }
+    	}
+        
         String apiKey = this.getOptionAsString("openai_api_key");
         if (apiKey == null || apiKey.trim().equals("")) {
     		reqsMet = false;
@@ -62,6 +128,7 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
             addErrorMessage(err);
             logger.info("TutorTranscriptEvaluation is aborted: " + err);
         }
+        
         //CSV utterance column
         String transcriptFileType = this.getOptionAsString("transcript_file_type");
         String utteranceColumnName = null;
@@ -95,27 +162,6 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
         	transcriptFileType = transcriptFileType.replace("Single", "").trim();
         	this.setOption("transcript_file_type", transcriptFileType);
         }
-        //if write_prompt is true, inputFile2 can't be null
-        /*will be used later
-        Boolean writePrompt = this.getOptionAsBoolean("write_prompt");
-        if (!writePrompt) {
-        	if (inputFile2 == null) {
-        		reqsMet = false;
-            	//send error message
-                String err = "An input prompt file is required if you choose not to compose the prompt on the workflow component.";
-                addErrorMessage(err);
-                logger.info("TutorTranscriptEvaluation is aborted: " + err);
-        	}
-        } else {
-        	String prompt = this.getOptionAsString("prompt");
-        	if (prompt == null || prompt.trim().equals("")) {
-        		reqsMet = false;
-            	//send error message
-                String err = "Meaningful prompt is required if you choose to compose the prompt on the workflow component.";
-                addErrorMessage(err);
-                logger.info("TutorTranscriptEvaluation is aborted: " + err);
-        	}
-        }*/
         //needs to make sure the utterance column header exist
         if (transcriptFileType.equals("CSV")) {
         	boolean foundRequiredColumn = checkRequiredColumnInCSV (inputFile1, utteranceColumnName);
@@ -157,7 +203,17 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
         		deleteDirectory(tempUnzipFolderFile);
             }
         }
-        
+        //confirmed the promptFile exist
+        if (promptFile == null || !Files.exists(promptFile)) {
+        	reqsMet = false;
+        	String err = "Error caught when checking the required column in file: " + inputFile1.getAbsolutePath() + ".";
+            addErrorMessage(err);
+            logger.info("TutorTranscriptEvaluation is aborted: " + err);
+        } else {
+        	this.setOption("prompt_file", promptFile.toFile().getAbsolutePath());
+        }
+        //also reset prompt to empty
+        this.setOption("prompt", "");
         if (reqsMet) {
         	File outputDirectory = this.runExternal();
 	        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
@@ -170,16 +226,26 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
 	            if (file0 != null && file0.exists()) {
 	                this.addOutputFile(file0, nodeIndex, fileIndex, "csv");
 	            } else {
-	                addErrorMessage("An error has occurred with the TutorTranscriptEvaluation component: " + newFileName + " can't be found.");
+	            	reqsMet = false;
+	            	String err = "An error has occurred with the TutorTranscriptEvaluation component: " + newFileName + " can't be found.";
+	                addErrorMessage(err);
+	                logger.info("TutorTranscriptEvaluation is aborted: " + err);
+	            }
+	            if (reqsMet) {
+		            //add the prompt
+	            	nodeIndex = 1;
+		            this.addOutputFile(promptFile.toFile(), nodeIndex, fileIndex, "gpt-prompt");
+		            // Send the component output back to the workflow.
+		            System.out.println(this.getOutput());
 	            }
 	        }
         }
-        // Send the component output back to the workflow.
-        System.out.println(this.getOutput());
         
-        for (String err : this.errorMessages) {
-                // These will also be picked up by the workflows platform and relayed to the user.
-                System.err.println(err);
+        if (!reqsMet) {
+	        for (String err : this.errorMessages) {
+	                // These will also be picked up by the workflows platform and relayed to the user.
+	                System.err.println(err);
+	        }
         }
 
     }
@@ -273,6 +339,19 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
             }
         }
         return dir.delete();  // delete file or empty folder
+    }
+    
+    private static boolean isValidUTF8(byte[] input) {
+        CharsetDecoder decoder = StandardCharsets.UTF_8
+            .newDecoder()
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT);
+        try {
+            decoder.decode(ByteBuffer.wrap(input));
+            return true;
+        } catch (CharacterCodingException e) {
+            return false;
+        }
     }
     
 }

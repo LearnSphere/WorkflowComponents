@@ -62,6 +62,9 @@
 <number_of_trials>3</number_of_trials>
 <max_token>200</max_token>
 <temperature>1.0</temperature>
-<!--<write_prompt>false</write_prompt>	-->
+<write_prompt>true</write_prompt>
+<prompt>line 1
+line 2
+Transcript start --- ---- Transcript End</prompt>
   </options>
 </component>

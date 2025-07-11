@@ -14,7 +14,7 @@
 <inputs>
 <ul>
 <li>Transcript of tutoring session. Transcript can be in VTT, CSV or text format. Zipped multiple transcripts can be used. <b>Required</b></li>
-<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_filter_prompt.txt" target="_blank">filter prompt at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_evaluation_prompt.txt" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_by_line_prompt_gpt35.txt" target="_blank">evaluation by line</a></li>
+<li>GPT prompt in plain text format. This text string must be included in the prompt file: "Transcript Start --- --- Transcript End." <b>Not Required</b>. Sample prompts: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_filter_prompt.txt" target="_blank">filter prompt at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_evaluation_prompt.txt" target="_blank">evaluation at session level</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/TutorTranscriptEvaluation/test/test_data/math_error_by_line_prompt_gpt35.txt" target="_blank">evaluation by line</a></li>
 </ul>
 </inputs>
 
@@ -32,7 +32,8 @@
 <li><strong>Number of Trials:</strong> Number of times GPT will be queried with the same transcript.</li>
 <li><strong>Max Tokens:</strong> Maximum number of tokens allowed in GPT's response.</li>
 <li><strong>GPT Temperature:</strong> A value between 0 and 1; lower values make the output more focused and deterministic.</li>
-
+<li><strong>Compose Prompt Now:</strong> When checked, you are required to enter your own prompt in the Prompt field. If left unchecked, prompt must be imported as a file, see the Inputs section above.</li>
+<li><strong>Prompt:</strong> Only available if the checkbox of Compose Prompt Now is checked. The text "Transcript Start --- --- Transcript End." is required to be included in the field. Non ACSII characters are not allowed in this field, so you must clean them up before the component can run. </li>
 </ul>
 
 </options>

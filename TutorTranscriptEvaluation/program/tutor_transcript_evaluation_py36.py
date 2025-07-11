@@ -362,6 +362,7 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
         raise FileTypeError('Transcript file can only be CSV, VTT or TXT')
         
     prompt = f"""{prompt_start} {all_text} {format_prompt}"""
+    #logToWfl(f"prompt: {prompt}")
     
     # Iterate over the num_tries times
     all_trial_responses = {}
@@ -407,6 +408,8 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
 # In[114]:
 
 
+#test
+#C:\Users\hchen\Anaconda3\envs\36_env\python.exe tutor_transcript_evaluation_py36.py -programDir . -workingDir . -userId 1 -max_token 200 -number_of_trials 3 -openai_api_key  -prompt_file C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\Tutoringanalytics-1-x345861\output\prompt.txt -temperature 1.0 -transcript_file_type VTT -write_prompt true -node 0 -fileIndex 0, C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\878011973_captions.vtt -node 1 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\math_error_evaluation_prompt.txt
 #test situation filter
 command_line=True
 if command_line:
@@ -418,13 +421,11 @@ if command_line:
     parser.add_argument("-max_token", help="maximum token returned from gpt", type=int, default=200)
     parser.add_argument("-number_of_trials", help="number of trials to query gpt", type=int, default=3)
     parser.add_argument("-temperature", help="temperature for gpt engine", type=float, default=1.0)
-    parser.add_argument("-utterances_col", help="the transcript uterence column when the input file is CSV", type=str)       
-    #only for WF:
+    parser.add_argument("-utterances_col", help="the transcript uterence column when the input file is CSV", type=str)   
+    parser.add_argument("-prompt_file",  type=str, required=True)
+    
     parser.add_argument("-fileIndex", nargs=2, action='append')
     parser.add_argument("-node", action='append')
-    #only for pure command line runnging
-    parser.add_argument("-transcript_file")
-    parser.add_argument("-prompt_file")
     #args = parser.parse_args()
     args, option_file_index_args = parser.parse_known_args()
     working_dir = args.workingDir
@@ -439,7 +440,6 @@ if command_line:
     num_trails = args.number_of_trials
     temperature = args.temperature
     utterances_col = args.utterances_col
-    transcript_file = args.transcript_file
     prompt_file = args.prompt_file
     
     #process files for WF:
@@ -447,8 +447,6 @@ if command_line:
         for x in range(len(args.node)):
             if (args.node[x][0] == "0" and args.fileIndex[x][0] == "0"):
                 transcript_file = args.fileIndex[x][1]
-            if (args.node[x][0] == "1" and args.fileIndex[x][0] == "0"):
-                prompt_file = args.fileIndex[x][1]
      
 #for test                  
 else:
