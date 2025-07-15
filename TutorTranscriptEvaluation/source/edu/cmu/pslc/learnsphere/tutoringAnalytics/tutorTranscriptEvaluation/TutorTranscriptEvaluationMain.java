@@ -62,7 +62,7 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
                 addErrorMessage(err);
                 logger.info(err);
         	} else {
-	        	byte[] bytes = prompt.getBytes(StandardCharsets.ISO_8859_1); 
+	        	/*byte[] bytes = prompt.getBytes(StandardCharsets.ISO_8859_1); 
 	            boolean isValid = isValidUTF8(bytes);
 	            if (!isValid) {
 	            	reqsMet = false;
@@ -84,7 +84,20 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
 		                addErrorMessage(err);
 		                logger.info(err);
 	                }
-	            }
+	            }*/
+        		//add prompt to a file in the output folder
+            	String outputDir = getComponentOutputDir();
+                Path outputPath = Paths.get(outputDir);
+                promptFile = outputPath.resolve("prompt.txt");
+                try {
+                	Files.write(promptFile, prompt.getBytes(StandardCharsets.UTF_8));
+                } catch (IOException ioex) {
+                	reqsMet = false;
+	            	//send error message
+	                String err = "TutorTranscriptEvaluation is aborted because IOException found while writing prompt.txt: " + ioex.toString();
+	                addErrorMessage(err);
+	                logger.info(err);
+                }
         	}
         } else {
         	if (inputFile2 != null) {
