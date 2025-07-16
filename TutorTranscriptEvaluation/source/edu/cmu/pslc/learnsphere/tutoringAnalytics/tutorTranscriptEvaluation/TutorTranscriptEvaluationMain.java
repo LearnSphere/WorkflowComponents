@@ -86,6 +86,13 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
 	                }
 	            }*/
         		//add prompt to a file in the output folder
+        		byte[] bytes = prompt.getBytes(StandardCharsets.ISO_8859_1); 
+	            boolean isValid = isValidUTF8(bytes);
+	            if (!isValid) { 
+	            	prompt = cleanString(prompt);
+	            	logger.info("cleaned prompt: " + prompt);
+	            }
+        		
             	String outputDir = getComponentOutputDir();
                 Path outputPath = Paths.get(outputDir);
                 promptFile = outputPath.resolve("prompt.txt");
@@ -365,6 +372,27 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
         } catch (CharacterCodingException e) {
             return false;
         }
+    }
+    
+    private String cleanString(String input) {
+        if (input == null) {
+            return null;
+        }
+        // Use a StringBuilder to efficiently build the cleaned string
+        StringBuilder cleaned = new StringBuilder();
+        boolean lastIsAscii = false;
+        for (char c : input.toCharArray()) {
+        	if (c < 128) { // If the character is ASCII
+                cleaned.append(c);
+                lastIsAscii = true;
+            } else { // If it's a non-ASCII 
+            	if (lastIsAscii) {
+            		cleaned.append(' '); // add ASCII space
+            	}
+            	lastIsAscii = false;
+            }
+        }
+        return cleaned.toString();
     }
     
 }
