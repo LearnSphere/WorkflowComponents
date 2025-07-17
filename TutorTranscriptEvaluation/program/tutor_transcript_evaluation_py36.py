@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[81]:
+# In[1]:
 
 
 import openai
@@ -17,7 +17,7 @@ import operator
 import zipfile
 
 
-# In[82]:
+# In[2]:
 
 
 def logProgressToWfl(progressMsg):
@@ -28,7 +28,7 @@ def logProgressToWfl(progressMsg):
     logFile.close();
 
 
-# In[83]:
+# In[3]:
 
 
 def logToWfl(msg):
@@ -38,7 +38,7 @@ def logToWfl(msg):
     logFile.close();
 
 
-# In[84]:
+# In[4]:
 
 
 def fix_malformed_json(json_str):
@@ -109,7 +109,7 @@ def fix_malformed_json(json_str):
 # print(fix_malformed_json(test_str))
 
 
-# In[85]:
+# In[5]:
 
 
 def escape_rationale(json_str):
@@ -123,7 +123,7 @@ def escape_rationale(json_str):
     return re.sub(pattern, escape_match, json_str, flags=re.DOTALL)
 
 
-# In[86]:
+# In[6]:
 
 
 def extract_score(response_str):
@@ -135,7 +135,7 @@ def extract_score(response_str):
 # print(extract_score(test_str))
 
 
-# In[97]:
+# In[7]:
 
 
 def extract_response(response_str, json_obj=False):
@@ -212,7 +212,7 @@ def extract_response(response_str, json_obj=False):
 #print(extract_response(test_str, json_obj=True))
 
 
-# In[98]:
+# In[8]:
 
 
 def vtt_to_df(vtt_file):
@@ -232,7 +232,7 @@ def vtt_to_df(vtt_file):
 # print(vtt_to_df(transcript_filename))
 
 
-# In[99]:
+# In[9]:
 
 
 def convert_df_column_prompt_text(df, col):
@@ -245,7 +245,7 @@ def convert_df_column_prompt_text(df, col):
 # print(convert_df_column_prompt_text(df, "text"))
 
 
-# In[100]:
+# In[14]:
 
 
 #prompt file should has this: Transcript Start --- --- Transcript End
@@ -256,6 +256,7 @@ class PromptFormatError(Exception):
 def parse_prompt(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         content = file.read()
+        content = re.sub(r'\s+', ' ', content)
         found_start_prompt = "Transcript Start ---" in content
         found_format_prompt = "--- Transcript End" in content
         if not found_start_prompt or not found_format_prompt:
@@ -265,7 +266,8 @@ def parse_prompt(filename):
         return (start_prompt, format_prompt)
     
 # # test
-# prompt_filename = "math_error_filter_prompt.txt"
+# #prompt_filename = "math_error_filter_prompt.txt"
+# prompt_filename = "prompt.txt"
 # prompt_start, format_prompt = parse_prompt(prompt_filename)
 # print(prompt_start)
 # print(format_prompt)
@@ -409,7 +411,7 @@ def evaluation_file(transcript_filename, prompt_filename, cur_file_cnt, all_file
 
 
 #test
-#C:\Users\hchen\Anaconda3\envs\36_env\python.exe tutor_transcript_evaluation_py36.py -programDir . -workingDir . -userId 1 -max_token 200 -number_of_trials 3 -openai_api_key  -prompt_file C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\Tutoringanalytics-1-x345861\output\prompt.txt -temperature 1.0 -transcript_file_type VTT -write_prompt true -node 0 -fileIndex 0, C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\878011973_captions.vtt -node 1 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\math_error_evaluation_prompt.txt
+#C:\Users\hchen\Anaconda3\envs\36_env\python.exe tutor_transcript_evaluation_py36.py -programDir . -workingDir . -userId 1 -max_token 200 -number_of_trials 3 -openai_api_key your_key -prompt_file C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\Tutoringanalytics-1-x345861\output\prompt.txt -temperature 1.0 -transcript_file_type VTT -write_prompt true -node 0 -fileIndex 0, C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\878011973_captions.vtt -node 1 -fileIndex 0 C:\WPIDevelopment\dev06_dev\WorkflowComponents\TutorTranscriptEvaluation\test\test_data\math_error_evaluation_prompt.txt
 #test situation filter
 command_line=True
 if command_line:
