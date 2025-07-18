@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/VisualizationLearningCurvesPython</url>
+<abstract>
+A learning curve visualizes changes in student performance over time. The line graph displays opportunities across the x-axis, and a measure of student performance along the y-axis. A good learning curve reveals improvement in student performance as opportunity count (i.e., practice with a given knowledge component) increases. This is a python based component. We use the altair package for composing graphs
+</abstract>
+<description></description>
+
+<inputs>
+<ul>
+<li>DataShop Student-Step export.<b>Required</b></li>
+<li>Parameters<b>Optional</b>. Only required when the checkbox for Categorize Learning Curve is checked. Acceptable formats are: 
+	<b>XML</b>, outputed by various LearnSphere's AFM workflow components, such as iAFM); and
+	<b>Datashop Model Values export</b> exported from the Model Values tab of the Datashop Learning Curve page. 
+	Examples of parameters file: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/VisualizationLearningCurvesPython/test/test_data/parameters.xml" target="_blank">XML format</a>, <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/VisualizationLearningCurvesPython/test/test_data/ds76_afm_kcm472_2025_0225_183654.txt" target="_blank">Datashop Model Values export</a></li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>An inline HTML file with downloadable images, depicting the requested learning curve(s). </li>
+</ul>
+</outputs>
+
+<options>
+<li><strong>Learning Curve Type:</strong> Select from Knowledge Componentes and Students.</li>
+<li><strong>Learning Curve Metric:</strong> Select from Error Rate, Predicted Error Rate, Assistance Score, Number of Incorrects, Number of Hints, Step Duration, Correct Step Duration and Error Step Duration.</li>
+<li><strong>Show Predicted Learning Curve:</strong> Only available when Error Rate is selected for Learning Curve Metric. When checked, Predicted Error Rate line is added to the Error Rate line.</li>
+<li><strong>Error Bar Type:</strong> Select from No Error Bars, Standard Deviation and Standard Error.</li>
+<li><strong>Primary Model:</strong> The Knowledge Component (KC) model to plot.</li>
+<li><strong>View Secondary Model:</strong> Flag indicating whether or not to display secondary model curve</li>
+<li><strong>Secondary model:</strong>A secondary KC to include on graph</li>
+<li><strong>Opportunity Cut Off Max:</strong> A maximum number of opportunities a student must have had with a KC for the student-KC pair to be included in the graph.</li>
+<li><strong>Opportunity Cut Off Min:</strong> A minimum number of opportunities a student must have had with a KC for the student-KC pair to be included in the graph.</li>
+<li><strong>Categorize Learning Curve:</strong> Flag indicating whether or not to categorize the generated learning curves</li>
+<li><strong>LC Category Student Threshold:</strong> The categorization algorithm first discards points in each curve based on the student threshold. If a point has fewer than the student threshold, it is ignored. (default: 10)</li>
+<li><strong>LC Category Opportunity Threshold:</strong> Then, if the number of points is below the opportunity threshold, then that curve has <strong>Too Little Data</strong>. (default: 3)</li>
+<li><strong>LC Category Low Error Threshold:</strong> Next, if all points on the curve are beneath the low error threshold, then the curve is <strong>Low and Flat</strong>. (default: 20.0)</li>
+<li><strong>LC Category High Error Threshold:</strong> Then, if all point on the curve are above the high error threshold, then the curve is <strong>Still High</strong>. (default: 40.0)</li>
+<li><strong>LC Category AFM Slope Threshold:</strong> Then, if the slope of the predicted learning curve (as determined by the AFM algorithm) is below the AFM slope threshold, then the curve shows <strong>No Learning</strong>. (default: 0.001)</li>
+</options>
+
+
+
+</info>

@@ -1,0 +1,86 @@
+<component>
+  <component_type>visualization</component_type>
+  <component_id>Visualization-1-x387411</component_id>
+  <workflow_id>2</workflow_id>
+  <top>129</top>
+  <left>605.140625</left>
+  <component_name>Learning Curves Python Based</component_name>
+  <component_id_human>Visualization #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x464383</from>
+    </connection>
+    <connection>
+      <tindex>1</tindex>
+      <index>0</index>
+      <from>Data-1-x894331</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x464383</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <file_path>test/test_data/ds76_student_step_All_Data_74_2020_0926_034727.txt</file_path>
+          
+          <file_name>ds76_student_step_All_Data_74_2020_0926_034727.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"ds76_student_step_All_Data_74_2020_0926_034727.txt","importFileType":"student-step","importFileNameTitle":"File: ds76_student_step_All_Data_74_2020_0926_034727.txt","fileTypeSelection":"student-step","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"99","userAgreedToIRB":"true"}</Import>
+        <top>104</top>
+        <left>259</left>
+      </optionmeta>
+    </input0>
+    <input1>
+      <component_id>Data-1-x894331</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <text>
+          <file_path>test/test_data/ds76_afm_kcm472_2025_0225_183654.txt</file_path>
+          <metadata />
+          <file_name>ds76_afm_kcm472_2025_0225_183654.txt</file_name>
+          <index>0</index>
+          <label>text</label>
+        </text>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"ds76_afm_kcm472_2025_0225_183654.txt","importFileType":"text","importFileNameTitle":"File: ds76_afm_kcm472_2025_0225_183654.txt","fileTypeSelection":"text","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"100","userAgreedToIRB":"true"}</Import>
+        <top>271</top>
+        <left>233</left>
+      </optionmeta>
+    </input1>
+  </inputs>
+  <options>
+    <learningCurveGroupBy>Knowledge Components</learningCurveGroupBy>
+    <learningCurveMetric>Error Rate</learningCurveMetric>
+    <showPredictedLearningCurve>true</showPredictedLearningCurve>
+    <errorBar>No Error Bars</errorBar>
+    <primaryModel>Input 0 (0) - Predicted Error Rate (Original) (column 96)</primaryModel>
+    <viewSecondary>false</viewSecondary>
+    <secondaryModel>Input 0 (0) - Predicted Error Rate (Area) (column 21)</secondaryModel>
+    <opportunityCutOffMax>INF</opportunityCutOffMax>
+    <opportunityCutOffMin>0</opportunityCutOffMin>
+    <categorizeLearningCurve>true</categorizeLearningCurve>
+    <studentThreshold>10</studentThreshold>
+    <opportunityThreshold>3</opportunityThreshold>
+    <lowErrorThreshold>20.0</lowErrorThreshold>
+    <highErrorThreshold>40.0</highErrorThreshold>
+    <afmSlopeThreshold>0.001</afmSlopeThreshold>
+  </options>
+</component>

@@ -1,0 +1,185 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ls="http://learnsphere.org/ls" >
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd" />
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList0" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="InputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="InFileList1" name="files" />
+              <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList1">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" maxOccurs="unbounded" />
+      <xs:element name="input1" type="InputDefinition1" minOccurs="0"  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InputLabel">
+    <xs:all>
+      <xs:element name="input0" type="xs:string" default="student-step" minOccurs="0" />
+      <xs:element name="input1" type="xs:string" default="parameters" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList0" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="inline-html" />
+    </xs:choice>
+  </xs:complexType>
+
+ 
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0" />
+    </xs:sequence>
+  </xs:complexType>
+  
+ <xs:simpleType name="learningCurveType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Knowledge Components" />
+      <xs:enumeration value="Students" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="learningCurveMetricType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Error Rate" />
+      <xs:enumeration value="Predicted Error Rate" />
+      <xs:enumeration value="Assistance Score" />
+      <xs:enumeration value="Number of Incorrects" />
+      <xs:enumeration value="Number of Hints" />
+      <xs:enumeration value="Step Duration" />
+      <xs:enumeration value="Correct Step Duration" />
+      <xs:enumeration value="Error Step Duration" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="errorBarType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No Error Bars" />
+      <xs:enumeration value="Standard Deviation" />
+      <xs:enumeration value="Standard Error" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+  <xs:complexType name="OptionsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+    <xs:element type="learningCurveType" name="learningCurveGroupBy" id="Learning_Curve_Type" default="Knowledge Components" />
+     <xs:element type="learningCurveMetricType" name="learningCurveMetric" id="Learning_Curve_Metric" default="Error Rate" />
+     <xs:element type="xs:boolean" name="showPredictedLearningCurve" id="Show_Predicted_Learning_Curve" default="true" />
+     <xs:element type="errorBarType" name="errorBar" id="Error_Bar_Type" default="No Error Bars" />
+	
+	<xs:element type="FileInputHeader" name="primaryModel" id="Primary_Model"  default="Predicted Error Rate\s*(.*)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      
+      <xs:element type="xs:boolean" name="viewSecondary" id="View_Secondary_Model" default="false" />
+      <xs:element type="FileInputHeader" name="secondaryModel" id="Secondary_Model"  default="Predicted Error Rate\s*(.*)\s*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
+      
+     <xs:element type="xs:double" name="opportunityCutOffMax" id="Opportunity_Cut_Off_Max" default="INF" />
+      <xs:element type="xs:double" name="opportunityCutOffMin" id="Opportunity_Cut_Off_Min" default="0" />
+    
+    <xs:element type="xs:boolean" name="categorizeLearningCurve" id="Categorize_Learning_Curve" default="false" />
+      <xs:element type="xs:integer" name="studentThreshold" id="LC_Category_Student_Threshold" default="10" />
+      <xs:element type="xs:integer" name="opportunityThreshold" id="LC_Category_Opportunity_Threshold" default="3" />
+      <xs:element type="xs:double" name="lowErrorThreshold" id="LC_Category_Low_Error_Threshold" default="20.0" />
+      <xs:element type="xs:double" name="highErrorThreshold" id="LC_Category_High_Error_Threshold" default="40.0" />
+      <xs:element type="xs:double" name="afmSlopeThreshold" id="LC_Category_Slope_Threshold" default="0.001" />
+      </xs:choice>
+  </xs:complexType>
+  
+ 
+
+  <xs:complexType name="option_dependency">
+    <xs:choice>
+    <xs:element type="conjunctive" name="dependency0" ls:dependentOption="showPredictedLearningCurve" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate)" />
+	<xs:element type="conjunctive" name="dependency1" ls:dependentOption="secondaryModel" ls:dependsOn="viewSecondary" ls:constraint="matches(true)" />
+    
+    <xs:element type="conjunctive" name="dependency3" ls:dependentOption="categorizeLearningCurve" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)" />
+	
+	<xs:element type="conjunctive" name="dependency4" ls:dependentOption="categorizeLearningCurve" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	
+    <xs:element type="conjunctive" name="dependency6" ls:dependentOption="studentThreshold" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	<xs:element type="conjunctive" name="dependency7" ls:dependentOption="studentThreshold" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)" />
+	<xs:element type="conjunctive" name="dependency8" ls:dependentOption="studentThreshold" ls:dependsOn="categorizeLearningCurve" ls:constraint="matches(true)" />
+	
+	<xs:element type="conjunctive" name="dependency9" ls:dependentOption="opportunityThreshold" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	<xs:element type="conjunctive" name="dependency10" ls:dependentOption="opportunityThreshold" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)"  />
+	<xs:element type="conjunctive" name="dependency11" ls:dependentOption="opportunityThreshold" ls:dependsOn="categorizeLearningCurve" ls:constraint="matches(true)" />
+	
+	<xs:element type="conjunctive" name="dependency12" ls:dependentOption="lowErrorThreshold" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	<xs:element type="conjunctive" name="dependency13" ls:dependentOption="lowErrorThreshold" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)"  />
+	<xs:element type="conjunctive" name="dependency14" ls:dependentOption="lowErrorThreshold" ls:dependsOn="categorizeLearningCurve" ls:constraint="matches(true)" />
+	
+	<xs:element type="conjunctive" name="dependency15" ls:dependentOption="highErrorThreshold" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	<xs:element type="conjunctive" name="dependency16" ls:dependentOption="highErrorThreshold" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)"  />
+	<xs:element type="conjunctive" name="dependency17" ls:dependentOption="highErrorThreshold" ls:dependsOn="categorizeLearningCurve" ls:constraint="matches(true)" />
+	
+	<xs:element type="conjunctive" name="dependency18" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="learningCurveMetric" ls:constraint="matches(Error Rate|Predicted Error Rate)" />
+	<xs:element type="conjunctive" name="dependency19" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="learningCurveGroupBy" ls:constraint="matches(Knowledge Components)" />
+	<xs:element type="conjunctive" name="dependency20" ls:dependentOption="afmSlopeThreshold" ls:dependsOn="categorizeLearningCurve" ls:constraint="matches(true)" />
+	</xs:choice>
+</xs:complexType>
+
+  
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element type="xs:integer" name="workflow_id" />
+        <xs:element type="xs:string" name="component_id" />
+        <xs:element type="xs:string" name="component_id_human" />
+        <xs:element type="xs:string" name="component_name" />
+        <xs:element type="xs:string" name="component_type" />
+        <xs:element type="xs:double" name="left"  />
+        <xs:element type="xs:double" name="top"  />
+        <xs:element name="connections" minOccurs="0" maxOccurs="1"  type="ConnectionType" />
+
+        <xs:element name="inputs" type="InputType" minOccurs="0" />
+        <xs:element name="outputs" type="OutputType" minOccurs="0" />
+        <xs:element name="options" type="OptionsType" minOccurs="0" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
