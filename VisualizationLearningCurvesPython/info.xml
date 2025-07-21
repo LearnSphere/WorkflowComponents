@@ -27,6 +27,7 @@ A learning curve visualizes changes in student performance over time. The line g
 </outputs>
 
 <options>
+<ul>
 <li><strong>Learning Curve Type:</strong> Select from Knowledge Componentes and Students.</li>
 <li><strong>Learning Curve Metric:</strong> Select from Error Rate, Predicted Error Rate, Assistance Score, Number of Incorrects, Number of Hints, Step Duration, Correct Step Duration and Error Step Duration.</li>
 <li><strong>Show Predicted Learning Curve:</strong> Only available when Error Rate is selected for Learning Curve Metric. When checked, Predicted Error Rate line is added to the Error Rate line.</li>
@@ -42,6 +43,7 @@ A learning curve visualizes changes in student performance over time. The line g
 <li><strong>LC Category Low Error Threshold:</strong> Next, if all points on the curve are beneath the low error threshold, then the curve is <strong>Low and Flat</strong>. (default: 20.0)</li>
 <li><strong>LC Category High Error Threshold:</strong> Then, if all point on the curve are above the high error threshold, then the curve is <strong>Still High</strong>. (default: 40.0)</li>
 <li><strong>LC Category AFM Slope Threshold:</strong> Then, if the slope of the predicted learning curve (as determined by the AFM algorithm) is below the AFM slope threshold, then the curve shows <strong>No Learning</strong>. (default: 0.001)</li>
+</ul>
 </options>
 
 
