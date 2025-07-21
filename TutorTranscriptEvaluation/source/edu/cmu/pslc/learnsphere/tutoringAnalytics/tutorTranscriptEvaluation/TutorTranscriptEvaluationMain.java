@@ -392,7 +392,9 @@ public class TutorTranscriptEvaluationMain extends AbstractComponent {
             	lastIsAscii = false;
             }
         }
-        return cleaned.toString();
+        String cleanedString = cleaned.toString();
+        cleanedString = cleanedString.replaceAll("\\s", " ");
+        return cleanedString;
     }
     
 }
