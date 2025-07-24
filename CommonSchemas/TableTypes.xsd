@@ -55,6 +55,7 @@
 	  <xs:element name="correlation" substitutionGroup="tab-delimited" />
 	  <xs:element name="cronbachs-alpha" substitutionGroup="tab-delimited" />
 		<xs:element name="match-data" substitutionGroup="tab-delimited" />
+		<xs:element name="kc-model-export" substitutionGroup="tab-delimited" />
 
 
 	  <xs:element name="model-values" substitutionGroup="text" />

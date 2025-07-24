@@ -38,11 +38,13 @@
 		<Join />
 		<KC_Export />
 		<KC_Import />
+		<KC_Model_Multiskill_Converter />
 		<Missing_Values />
 		<MOOCdb_Verifier />
 		<MOOCdb_Feature_Extractor />
 		<Multiselection_Converter />
 		<Multiskill_Converter />
+		<New_KC_Model_Student_Step />
 		<OLI_LO_to_KC />
 		<Pivot />
 		<Resource_Use />
@@ -62,12 +64,14 @@
 		<Correlation />
 		<Cronbachs_Alpha />
 		<DASH />
+		<Engagement_Metrics />
 		<Entity_Set />
 		<Fast_AFM_and_CV />
 		<Gaming_Detector />
 		<Gaming_Tendency_Estimate />
 		<Intervention_Effects />
 		<iAFM />
+		<KMeans_Clustering />
 		<Learning_Rate />
 		<LFA_Search />
 		<Linear_Modeling />
@@ -116,6 +120,7 @@
 		<AI_Lesson_Scoring />
 		<Confusion_Matrix />
 		<Deidentify_Dialogue />
+		<Text_Answer_Feedback />
 		<Tutor_Transcript_Evaluation />
 	</TutoringAnalytics>
 	<Tetrad>
