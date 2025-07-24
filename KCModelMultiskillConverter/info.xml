@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/KCModelMultiskillConverter</url>
+<abstract>
+Component "KC Model Multiskill Converter" generates a new KCM that is single-skilled per step from an existing KCM that is multi-skilled per step.
+</abstract>
+<description></description>
+
+<inputs>
+<ul>
+<li>Datashop KC Model Export<b>Required</b>. The Datashop KC Model Export file can be exported from the KC Models tab of the Datashop Dataset Info page. 
+	Here is an example of a KC Model Export file with a multi-skilled KCM: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/KCModelMultiskillConverter/test/test_data/ds76_kcm_2025_0722_175015_multi_skill_lasso.txt" target="_blank">Datashop KC Model Export</a></li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>A new KC Model file with the new single-skilled KC model that is converted from an existing multi-skilled KC model. This file is ready to be used to import the new single-skilled KC model back to Datashop</li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><strong>KC Model to Convert:</strong> Select a Multi-skilled model that is to be converted</li>
+</ul>
+</options>
+
+
+
+</info>

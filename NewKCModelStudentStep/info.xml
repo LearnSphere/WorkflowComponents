@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>DataShop@CMU
+  <email>datashop-help@lists.andrew.cmu.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/dev/NewKCModelStudentStep</url>
+<abstract>
+Component "New KC Model Student Step" generates a new Student Step file for a new KC model.
+</abstract>
+<description></description>
+
+<inputs>
+<ul>
+<li>DataShop Student-Step export.<b>Required</b>.</li>
+<li>Datashop KC Model Export<b>Required</b>. The template of KC Model Export file can be exported from the KC Models tab of the Datashop Dataset Info page. You need to add your new KC model to the template file.
+	Here is an example of the KC Model Export file with a new KCM: <a href="https://github.com/LearnSphere/WorkflowComponents/blob/dev/NewKCModelStudentStep/test/test_data/ds76_kcm_2025_0722_175015_with_new_KCM.txt" target="_blank">Datashop KC Model Export</a></li>
+</ul>
+</inputs>
+
+<outputs>
+<ul>
+<li>A new Student Step with the new KC model and its opportunity counts. </li>
+</ul>
+</outputs>
+
+<options>
+<ul>
+<li><strong>Keep Steps With No SKill:</strong> Flag indicating whether steps without skill will be included in the output.</li>
+<li><strong>New KC Model:</strong> Select the new KCM name. Multi-skilled model is not allowed</li>
+</ul>
+</options>
+
+
+
+</info>

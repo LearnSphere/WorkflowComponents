@@ -1,0 +1,71 @@
+<component>
+  <component_type>transform</component_type>
+  <component_id>Transform-1-x412803</component_id>
+  <workflow_id>4</workflow_id>
+  <top>65</top>
+  <left>590.84375</left>
+  <component_name>New KC Model Student Step</component_name>
+  <component_id_human>Transform #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x184861</from>
+    </connection>
+    <connection>
+      <tindex>1</tindex>
+      <index>0</index>
+      <from>Data-1-x892521</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x184861</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <student-step>
+          <file_path>test/test_data/ds76_student_step_All_Data_74_2020_0926_034727.txt</file_path>
+          <metadata>
+          </metadata>
+          <file_name>ds76_student_step_All_Data_74_2020_0926_034727.txt</file_name>
+          <index>0</index>
+          <label>student-step</label>
+        </student-step>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"ds76_student_step_All_Data_74_2020_0926_034727.txt","importFileType":"student-step","importFileNameTitle":"File: ds76_student_step_All_Data_74_2020_0926_034727.txt","fileTypeSelection":"student-step","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"118","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+    <input1>
+      <component_id>Data-1-x892521</component_id>
+      <component_id_human>Data #2</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/test_data/ds76_kcm_2025_0722_175015_with_new_KCM.txt</file_path>
+          <metadata>
+          </metadata>
+          <file_name>ds76_kcm_2025_0722_175015_with_new_KCM.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"ds76_kcm_2025_0722_175015_with_new_KCM.txt","importFileType":"tab-delimited","importFileNameTitle":"File: ds76_kcm_2025_0722_175015_with_new_KCM.txt","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"119","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input1>
+  </inputs>
+  <options>
+    <keep_steps_without_skill>true</keep_steps_without_skill>
+    <new_kcm_name>Input 1 (0) - KC (My New KCM) (column 16)</new_kcm_name>
+  </options>
+</component>

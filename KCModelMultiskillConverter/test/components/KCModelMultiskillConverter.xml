@@ -1,0 +1,43 @@
+<component>
+  <component_type>transform</component_type>
+  <component_id>Transform-1-x290954</component_id>
+  <workflow_id>3</workflow_id>
+  <top>85</top>
+  <left>543.84375</left>
+  <component_name>KC Model Multiskill Converter</component_name>
+  <component_id_human>Transform #1</component_id_human>
+  <connections>
+    <connection>
+      <tindex>0</tindex>
+      <index>0</index>
+      <from>Data-1-x010374</from>
+    </connection>
+  </connections>
+  <inputs>
+    <input0>
+      <component_id>Data-1-x010374</component_id>
+      <component_id_human>Data #1</component_id_human>
+      <component_type>data</component_type>
+      <component_name>Import</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+      <errors />
+      <files>
+        <tab-delimited>
+          <file_path>test/test_data/ds76_kcm_2025_0722_175015_multi_skill_lasso.txt</file_path>
+          <metadata>
+          </metadata>
+          <file_name>ds76_kcm_2025_0722_175015_multi_skill_lasso.txt</file_name>
+          <index>0</index>
+          <label>tab-delimited</label>
+        </tab-delimited>
+      </files>
+      <inputmeta />
+      <optionmeta>
+        <Import>{"fileName":"","importFileType":"tab-delimited","importFileNameTitle":"File: ","fileTypeSelection":"tab-delimited","uploadLocation":"importFile","searchDatasetsString":"","datasetLink":"","datasetName":"","fileId":"117","userAgreedToIRB":"true"}</Import>
+      </optionmeta>
+    </input0>
+  </inputs>
+  <options>
+    <kcm_to_concatenate>Input 0 (0) - KC (Lasso Model) (column 17)</kcm_to_concatenate>
+  </options>
+</component>
