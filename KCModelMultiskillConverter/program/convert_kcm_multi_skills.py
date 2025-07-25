@@ -27,7 +27,7 @@ def concetanete_skills(skills):
     return '+'.join(skills)
 
 
-# In[13]:
+# In[3]:
 
 
 #command line
@@ -89,7 +89,7 @@ for index, row in df.iterrows():
     combinedSkills = concetanete_skills(combinedSkills)
     new_row[kcm_concatenated] = combinedSkills
     #new_df = new_df.append(new_row, ignore_index=True)
-    new_df = pd.concat([new_df, pd.DataFrame([new_row])], ignore_index=True)
+    new_df = pd.concat([new_df, pd.DataFrame([new_row])], ignore_index=True, sort=False)
 filename = os.path.basename(filename)
 output_file = os.path.join(working_dir, f'multiskill_converted_{filename}')
 new_df.to_csv(output_file, sep='\t', index=False, na_rep='')
