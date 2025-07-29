@@ -5,6 +5,7 @@ options(scipen=999)
 #oldw <- getOption("warn")
 options(warn = -1)
 library(reshape2)
+suppressMessages(library(data.table))
 
 
 
@@ -12,14 +13,18 @@ library(reshape2)
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
-  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE)
-  #if only one col is retrieved, try again with ,
-  if (ncol(ds_file) == 1) {
-    #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE)
-    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE)
+  # Read the first line to check the delimiter
+  first_line <- readLines(filename, n = 1)
+  if (grepl("\t", first_line)) {
+    #!!! can't use quote="" bc quote is needed
+    # Tab-delimited
+    df <- read.delim(filename, header = TRUE, na.strings = c("." , "NA", "na","none","NONE" ), comment.char = "", stringsAsFactors=FALSE)
+  } else {
+    # Comma-delimited
+    df <- read.csv(filename, header = TRUE, na.strings = c("." , "NA", "na","none","NONE" ), comment.char = "", stringsAsFactors=FALSE)
   }
-  return(ds_file)
+  return(df)
+  
 }
 
 my.write <- function(x, file, header, f = write.table, ...){
@@ -165,7 +170,6 @@ while (i <= length(args)) {
 # outputFileName = "pivot_result.txt"
 
 myData<-import.data(dataFileName)
-
 #get lists
 pivotRowList = c()
 if (hasRows != "No")
@@ -174,7 +178,6 @@ pivotCOlList = c()
 if (hasColumns != "No")
   pivotCOlList = unlist(strsplit(pivotColName, split=","))
 measureColAsList = unlist(strsplit(meaColName, split=","))
-
 #change , to +
 if (hasRows != "No") {
   pivotRowName<-gsub(",", "\\+", pivotRowName)
@@ -186,7 +189,6 @@ if (hasColumns != "No") {
 } else {
   pivotColName = "."
 }
-
 neededColList = c(pivotRowList, pivotCOlList, measureColAsList)
 #get only columns that are needed
 myData = subset(myData, select=neededColList)
