@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[93]:
 
 
 import pandas as pd
@@ -14,28 +14,28 @@ import os
 import math
 
 
-# In[2]:
+# In[94]:
 
 
 def getKCModelColumnName (modelName):
     return 'KC (' + modelName + ')'
 
 
-# In[3]:
+# In[95]:
 
 
 def getOpportunityColumnName (modelName):
     return 'Opportunity (' + modelName +')'
 
 
-# In[4]:
+# In[96]:
 
 
 def getPredictedErrorColumnName (modelName):
     return 'Predicted Error Rate (' + modelName + ')'
 
 
-# In[5]:
+# In[97]:
 
 
 def strip_model_name(model_name):
@@ -50,7 +50,7 @@ def strip_model_name(model_name):
 # print(strip_model_name("Orignial"))
 
 
-# In[6]:
+# In[98]:
 
 
 def int_or_inf(value):
@@ -59,7 +59,7 @@ def int_or_inf(value):
     return int(value)  # Otherwise, convert to an integer
 
 
-# In[7]:
+# In[99]:
 
 
 def safe_str_to_float(s):
@@ -69,7 +69,7 @@ def safe_str_to_float(s):
         return None
 
 
-# In[8]:
+# In[100]:
 
 
 def sanitize_filename(filename):
@@ -87,13 +87,14 @@ def sanitize_filename(filename):
 # print(safe_filename)
 
 
-# In[9]:
+# In[101]:
 
 
 #detect if the model is multi-skilled
 def multiskilled_detector (df, model):
     # Filter rows where the KC (model) column contains '~~'
     kc_model = getKCModelColumnName(model)
+    df[kc_model] = df[kc_model].astype(str)
     filtered_df = df[df[kc_model].str.contains('~~', case=False, na=False)]
     if filtered_df is None or filtered_df.empty:
         return False
@@ -105,7 +106,7 @@ def multiskilled_detector (df, model):
 # print(multiskilled_detector(df, "Lasso Model"))
 
 
-# In[10]:
+# In[102]:
 
 
 #turn the multi-skilled row into multiple rows
@@ -117,11 +118,16 @@ def multiskilled_converter (df, model):
     opportunity_col_name = getOpportunityColumnName(model)
     
     df[model_col_name] = df[model_col_name].str.split('~~')
+    df[opportunity_col_name] = df[opportunity_col_name].astype(str)
     df[opportunity_col_name] = df[opportunity_col_name].str.split('~~')
     predicted_error_rate_col_name = 'Predicted Error Rate (' + model + ')'
     anon_student_id_col_name = 'Anon Student Id'
     first_attempt_col_name = 'First Attempt'
-    # Expand rows for each item in the lists in KC (model)
+    
+    #delete the rows that opportunity is none or model is none
+    df = df.dropna(subset=[opportunity_col_name])
+    df = df.dropna(subset=[model_col_name])
+    
     df_expanded = pd.DataFrame({
         anon_student_id_col_name: df[anon_student_id_col_name].repeat(df[model_col_name].str.len()),   # Repeat the anon_student_id based on the length of each list
         first_attempt_col_name: df[first_attempt_col_name].repeat(df[model_col_name].str.len()),  
@@ -136,7 +142,43 @@ def multiskilled_converter (df, model):
 # print(multiskilled_converter (df, "Lasso Model"))
 
 
-# In[11]:
+# In[103]:
+
+
+#handle the last empty tab, BKT's output has an extra tab in each row except the header row
+def cleanLastEmptyTabInData(filename, workingDir):
+    with open(filename, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    # First line is the header — keep it as-is
+    header = lines[0].rstrip('\n')
+
+    # Process data rows: remove the last field if it’s empty (caused by trailing tab)
+    cleaned_rows = []
+    for line in lines[1:]:
+        parts = line.rstrip('\n').split('\t')
+        if parts[-1] == '':  # trailing tab led to empty last field
+            parts = parts[:-1]
+        cleaned_rows.append('\t'.join(parts))
+
+    # Combine back into one list
+    cleaned_lines = [header] + cleaned_rows
+    
+    filename_only = os.path.basename(filename)
+    name, ext = os.path.splitext(filename_only)  # name = 'data_file', ext = '.csv'
+    cleaned_file_name = os.path.join(workingDir, f"cleaned_file_{name}{ext}" )
+
+    # Write to new file
+    with open(cleaned_file_name, "w", encoding="utf-8") as f:
+        for line in cleaned_lines:
+            f.write(line + '\n')
+    return cleaned_file_name
+
+# df = pd.read_csv(cleanLastEmptyTabInData("Step-values-with-predictions1.txt", "."), sep='\t')
+# print(df)
+
+
+# In[104]:
 
 
 #clean up a dataframe: multi-skill conversion and first attempt conversion
@@ -146,15 +188,23 @@ def clean_df (df, model):
         df = multiskilled_converter(df, model)
     df['First Attempt Num'] = [1 if x =='correct' else 0 for x in df['First Attempt']]
     opp_column_name = getOpportunityColumnName(model)
+    model_col_name = getKCModelColumnName(model)
     #delete the rows that opportunity is none or not number
     # Step 1: Drop rows where opp is NaN or None
     df = df.dropna(subset=[opp_column_name])
+    df = df.dropna(subset=[model_col_name])
     # Step 2: Drop rows where opp is not a number
     df = df[pd.to_numeric(df[opp_column_name], errors='coerce').notna()]
     return df
+# #df = pd.read_csv("ds1_student_step_All_Data_1_2025_0714_175413.txt", sep='\t')
+# df = pd.read_csv("Step-values-with-predictions.txt", sep='\t')
+# primary_model = "decomp"
+# #check if model is multi-skilled and convert first attempt to 0/1 and delete rows that are non-numeric in opp column
+# df = clean_df(df, primary_model)
+# print(df)
 
 
-# In[12]:
+# In[105]:
 
 
 def add_thumb_prints_to_html(file_path, thumb_print_html):
@@ -171,7 +221,7 @@ def add_thumb_prints_to_html(file_path, thumb_print_html):
         file.writelines(content)
 
 
-# In[33]:
+# In[106]:
 
 
 def extract_chart_parts(html_content, chart_id):
@@ -194,7 +244,7 @@ def extract_chart_parts(html_content, chart_id):
 # print(extract_chart_parts(html, "vis1"))
 
 
-# In[34]:
+# In[107]:
 
 
 def write_main_chart_html(main_html_file):
@@ -209,7 +259,7 @@ def write_main_chart_html(main_html_file):
     return main_html
 
 
-# In[35]:
+# In[108]:
 
 
 def category_html(element_file_dict, skill_categories):
@@ -252,7 +302,7 @@ def category_html(element_file_dict, skill_categories):
 
 
 
-# In[36]:
+# In[109]:
 
 
 def no_category_html(element_file_dict):
@@ -290,7 +340,7 @@ def no_category_html(element_file_dict):
 # print(f"{combined_html_head}\n{html_table}\n{combined_html_tail}")
 
 
-# In[37]:
+# In[110]:
 
 
 #get the first level of aggregation: either by KC or student + opp
@@ -450,7 +500,7 @@ def get_df_kc_opp_aggr(df, model, group_by = 'Knowledge Components', aggregate_m
 #print(get_df_kc_opp_aggr(df, "Original", "Knowledge Components", "Error Step Duration", 'Standard Error'))
 
 
-# In[38]:
+# In[111]:
 
 
 #get the second level of aggregation: by KC
@@ -541,7 +591,7 @@ def get_df_opp_aggr(df, model, column_to_average = "Error Rate", error_bar = "No
 #print(get_df_opp_aggr(df_aggr, "Original", column_to_average = "Number of Incorrects", error_bar = "Standard Deviation"))
 
 
-# In[39]:
+# In[112]:
 
 
 #draw learning curve
@@ -773,7 +823,7 @@ def draw_error_rate_line (df,
 #error_rate_graph
 
 
-# In[40]:
+# In[113]:
 
 
 #create graph for a model
@@ -962,7 +1012,7 @@ def create_model_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[41]:
+# In[114]:
 
 
 #create graph for a student or skill
@@ -1082,7 +1132,7 @@ def create_element_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[42]:
+# In[115]:
 
 
 #df_aggr should have these columns: Count, KC (model), Opportunity (model)
@@ -1150,7 +1200,7 @@ def categorize_lc(df_aggr, model, skill_slope_dict,
 #                   slope_threshold = 0.001))
 
 
-# In[43]:
+# In[116]:
 
 
 #parse the parameter_xml file and output skill_slope_dict
@@ -1181,7 +1231,7 @@ def get_skill_slope_dict_from_xml(parameter_xml_filename):
 #print(get_skill_slope_dict_from_xml("Parameters.xml"))   
 
 
-# In[44]:
+# In[117]:
 
 
 #parse DS model value export and output skill_slope_dict
@@ -1214,7 +1264,7 @@ def get_skill_slope_dict_from_ds_export(model_values_filename):
 #print(get_skill_slope_dict_from_ds_export("ds76_afm_kcm472_2025_0225_183654.txt"))
 
 
-# In[48]:
+# In[128]:
 
 
 #test on command line
@@ -1303,6 +1353,7 @@ if command_line:
     
 else:
     primary_file = "ds76_student_step_All_Data_74_2020_0926_034727.txt"
+    #primary_file = "Step-values-with-predictions.txt"
     parameter_file = "parameters.xml"
     #parameter_file = "ds76_afm_kcm472_2025_0225_183654.txt"
     working_dir = "."
@@ -1319,14 +1370,14 @@ else:
     learningCurveType = "Knowledge Components"
     #learningCurveType = "Students"
     
-    categorizeLearningCurve = True
-    #categorizeLearningCurve = False
+    #categorizeLearningCurve = True
+    categorizeLearningCurve = False
     showPredictedLearningCurve = True
     #showPredictedLearningCurve = Fasle
     #viewSecondary = True
     viewSecondary = False
     
-    primaryModel = "Predicted Error Rate (Original)"
+    primaryModel = "Predicted Error Rate (Lasso Model)"
     secondaryModel = "Predicted Error Rate (Original)"
     
     opportunityCutOffMax = float("inf")
@@ -1365,6 +1416,8 @@ logFile.close();
 #clean primary data
 primary_model = strip_model_name(primaryModel)
 primary_opportunity = getOpportunityColumnName(primary_model)
+#clean the possible ending empty tab, for example, BKT output
+primary_file = cleanLastEmptyTabInData(primary_file, working_dir)
 df = pd.read_csv(primary_file, sep='\t')
 #check if model is multi-skilled and convert first attempt to 0/1 and delete rows that are non-numeric in opp column
 primary_df = clean_df(df, primary_model)
