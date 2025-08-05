@@ -26,6 +26,7 @@
 		<Column_Operations />
 		<Column_Remover />
 		<Coursera_MOOCdb_Translator />
+		<Create_Session />
 		<Data_Conversion />
 		<DataShop_Txn_Rollup />
 		<Datastage_Aggregator />
