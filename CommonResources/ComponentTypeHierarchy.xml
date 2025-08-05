@@ -109,7 +109,7 @@
 		<D3_Force_Layout />
 		<Histogram />
 		<Learning_Curves />
-		<Learning_Curves_Python_Based />
+		<Learning_Curves_Python />
 		<Learning_Rate_Plot />
 		<Line_Graph />
 		<Scatter_Plot />
