@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Jharana Sapkota
+  <email>jharana@vt.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/KMeansClustering</url>
+<date>July 18, 2025</date>
+<abstract>The <b>KMeansClustering</b> component is an example of a(n) python component.</abstract>
+<description>Perform K-Means clustering on selected columns from tab-delimited data</description>
+
+<inputs>
+<b>tab-delimited</b><br/>
+</inputs>
+
+<outputs>
+<b>tab-delimited</b><br/>
+</outputs>
+
+<options>
+<b>excludeAttr -- type FileInputHeader</b><br/>
+<b>numClusters -- type xs:integer</b><br/>
+</options>
+
+</info>
