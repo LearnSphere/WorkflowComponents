@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>jharana
+  <email>jharana@vt.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/CreateSession</url>
+<date>July 06, 2025</date>
+<abstract>The <b>CreateSession</b> component is an example of a(n) Python component.</abstract>
+<description>Reads 1 .txt/.csv file and writes 1 processed text file</description>
+
+<inputs>
+<b>file</b><br/>
+</inputs>
+
+<outputs>
+<b>file</b><br/>
+</outputs>
+
+<options>
+</options>
+
+</info>

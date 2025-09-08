@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:ls="http://learnsphere.org/ls"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:include schemaLocation="../../CommonSchemas/WorkflowsCommon.xsd"/>
+
+  <xs:complexType name="InputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="InFileList0"/>
+          <xs:any maxOccurs="unbounded" minOccurs="1" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InFileList0">
+    <xs:choice>
+      <xs:element ref="file" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="InputType">
+    <xs:sequence>
+      <xs:element name="input0" type="InputDefinition0" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OutputDefinition0">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element name="files" type="OutFileList0"/>
+          <xs:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList0">
+    <xs:choice>
+      <xs:element ref="file"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:sequence>
+      <xs:element name="output0" type="OutputDefinition0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OptionsType">
+    <xs:all/>
+  </xs:complexType>
+
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="workflow_id" type="xs:integer"/>
+        <xs:element name="component_id" type="xs:string"/>
+        <xs:element name="component_id_human" type="xs:string"/>
+        <xs:element name="component_name" type="xs:string"/>
+        <xs:element name="component_type" type="xs:string"/>
+        <xs:element name="left" type="xs:double"/>
+        <xs:element name="top" type="xs:double"/>
+        <xs:element name="connections" type="ConnectionType" minOccurs="0"/>
+        <xs:element name="inputs" type="InputType" minOccurs="0"/>
+        <xs:element name="outputs" type="OutputType" minOccurs="0"/>
+        <xs:element name="options" type="OptionsType" minOccurs="0"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
