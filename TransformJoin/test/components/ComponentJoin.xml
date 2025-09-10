@@ -223,6 +223,8 @@
 	<!--<howToConcatenate>horizontal</howToConcatenate>-->
     <howToMerge>inner</howToMerge>
     <numColumnsToMerge>1</numColumnsToMerge>
+    <combineMergingColumns>No</combineMergingColumns>
+    <mergedColName>Column name from left table</mergedColName>
     <file1MatchColumns1>Input 0 (0) - Anon Student Id (column 2)</file1MatchColumns1>
     <file2MatchColumns1>Input 1 (0) - Anon Student Id (column 0)</file2MatchColumns1>
     <file1MatchColumns2>Input 0 (0) - Row (column 0)</file1MatchColumns2>

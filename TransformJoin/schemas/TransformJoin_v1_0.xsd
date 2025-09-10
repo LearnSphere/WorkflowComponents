@@ -100,6 +100,23 @@
     </xs:restriction>
   </xs:simpleType>
   
+  
+  <xs:simpleType name="yesNoTypeType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="columnNameType" final="restriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Column name from left table" />
+      <xs:enumeration value="Column name from right table" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+  
   <xs:simpleType name="delimiterType" final="restriction">
     <xs:restriction base="xs:string">
       <xs:enumeration value="\t" />
@@ -138,6 +155,10 @@
 	<xs:element type="conjunctive" name="dependency22" ls:dependentOption="file2MatchColumns5" ls:dependsOn="numColumnsToMerge" ls:constraint="gte(5)" />
 	<xs:element type="conjunctive" name="dependency23" ls:dependentOption="file2MatchColumns5" ls:dependsOn="howToJoin" ls:constraint="matches(merge)" />
 	
+	<xs:element type="disjunctive" name="dependency24" ls:dependentOption="combineMergingColumns" ls:dependsOn="howToJoin" ls:constraint="matches(merge)" />
+	<xs:element type="conjunctive" name="dependency25" ls:dependentOption="mergedColName" ls:dependsOn="howToJoin" ls:constraint="matches(merge)" />
+	<xs:element type="conjunctive" name="dependency26" ls:dependentOption="mergedColName" ls:dependsOn="combineMergingColumns" ls:constraint="matches(Yes)" />
+	
 	</xs:choice>
 </xs:complexType>
 
@@ -152,6 +173,8 @@
       <xs:element type="joinType" name="howToJoin" id="Join_Type" default="merge" />
       <xs:element type="concatenateType" name="howToConcatenate" id="How_to_Concatenate" default="vertical" />
       <xs:element type="mergeType" name="howToMerge" id="How_to_Merge" default="inner" />
+      <xs:element type="yesNoTypeType" name="combineMergingColumns" id="Combine_the_Merging_Columns" default="No" />
+      <xs:element type="columnNameType" name="mergedColName" id="Merged_Column_Name" default="Column name from left table" />
       <xs:element type="xs:integer" name="numColumnsToMerge" id="Number_of_Merging_Conditions" default="1" />
         <xs:element type="FileInputHeader" name="file1MatchColumns1" id="File_1_Column_To_Match_First" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*"/>
         <xs:element type="FileInputHeader" name="file2MatchColumns1" id="File_2_Column_To_Match_First" default=".*" ls:inputNodeIndex="1" ls:inputFileIndex="*"/>
