@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[24]:
+# In[54]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import numpy as np
 import argparse
 
 
-# In[25]:
+# In[55]:
 
 
 def confusion_matrix_manual(y_true, y_pred, labels=None):
@@ -30,27 +30,55 @@ def confusion_matrix_manual(y_true, y_pred, labels=None):
     return labels, matrix
 
 
-# In[26]:
+# In[56]:
 
 
 def calculate_metrics(labels, cm):
     total = sum(sum(row) for row in cm)
     correct = sum(cm[i][i] for i in range(len(labels)))
-    accuracy = correct / total
+    accuracy = correct / total if total > 0 else 0.0
 
     precision = {}
     recall = {}
+    f1 = {}
+
     for i, label in enumerate(labels):
         tp = cm[i][i]
         fp = sum(cm[r][i] for r in range(len(labels))) - tp
         fn = sum(cm[i][c] for c in range(len(labels))) - tp
-        precision[label] = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        recall[label] = tp / (tp + fn) if (tp + fn) > 0 else 0.0
 
-    return accuracy, precision, recall
+        prec = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1_score = (2 * prec * rec / (prec + rec)) if (prec + rec) > 0 else 0.0
+
+        precision[label] = prec
+        recall[label] = rec
+        f1[label] = f1_score
+
+    # If binary classification, return only the "positive" class metrics
+    if len(labels) == 2:
+        pos_label = labels[1]  # treat the 2nd label as positive
+        return {
+            "type": "binary",
+            "accuracy": accuracy,
+            "positive_label": pos_label,
+            "precision": precision[pos_label],
+            "recall": recall[pos_label],
+            "f1": f1[pos_label],
+            "confusion_matrix": cm
+        }
+    else:
+        return {
+            "type": "multiclass",
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+            "confusion_matrix": cm
+        }
 
 
-# In[27]:
+# In[57]:
 
 
 def calculate_kappa(labels, cm):
@@ -68,7 +96,7 @@ def calculate_kappa(labels, cm):
     return kappa
 
 
-# In[28]:
+# In[58]:
 
 
 def get_kappa_strength(kappa):
@@ -88,7 +116,7 @@ def get_kappa_strength(kappa):
         return "Invalid kappa value"
 
 
-# In[29]:
+# In[59]:
 
 
 def convert_numeric(value):
@@ -97,7 +125,119 @@ def convert_numeric(value):
     return value
 
 
-# In[37]:
+# In[60]:
+
+
+table_style = '''border="1" cellspacing="0" cellpadding="5" 
+       style="border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; font-size: 12px; width: auto; min-width: 50%; height: auto; border: 2px solid solid #D0E0F0;"'''
+title_row_style = '''style=\"text-align:center; font-size: 14px; background-color: #F0F8FF;\"'''
+title_col_style = '''style=\"text-align:center; font-size: 14px; background-color: #F0F8FF; writing-mode: vertical-rl; text-orientation: mixed; text-align: center; vertical-align: middle;\"'''
+
+
+# In[61]:
+
+
+def make_inner_html(df_cm, row_source, col_source):
+    nrow = df_cm.shape[0] + 1
+    ncol = df_cm.shape[1] + 1
+
+    # Start HTML table
+    html = f"<table {table_style}>\n"
+    #first spanning rows
+    #html += f"<tr><td></td><td colspan=\"{ncol}\" style=\"text-align:center; font-weight:bold; background-color: #f2f2f2;\">{col_source}</td></tr>"
+    html += f"<tr {title_row_style}><td></td><td colspan=\"{ncol}\">{col_source}</td></tr>"
+    # index row
+    #html += f" <tr><td rowspan=\"{nrow}\" style='writing-mode: vertical-rl; text-orientation: mixed; text-align: center;vertical-align: middle; background-color: #f2f2f2; '>{row_source}</td>"
+    html += f" <tr {title_row_style}><td rowspan=\"{nrow}\" {title_col_style}>{row_source}</td>"
+    html += "<td></td>"
+    for col in df_cm.columns:
+        html += f"<td>{col}</td>"
+    html += "</tr>\n"
+    # Data rows
+    printPct = False
+    for idx, row in df_cm.iterrows():
+        html += f"  <tr><td {title_row_style}>{idx}</td>"
+        for col_name, value in row.items():
+            if "percent" in col_name.lower():
+                html += f"<td>{row[col_name]:.1%}</td>"
+            else:
+                html += f"<td>{row[col_name]:.0f}</td>"
+        html += "</tr>\n"
+        
+    
+    # End table
+    html += "</table>"
+    return html
+
+
+# In[62]:
+
+
+def metrics_to_html(metrics: dict) -> str:
+    """
+    Convert binary or multiclass metrics dictionary into an HTML table (manual HTML generation).
+    Allows styling control over each row/col.
+    """
+    #html = '<table class="metrics-table" border="1" cellspacing="0" cellpadding="5">\n'
+    html = f'<table {table_style}>\n'
+    
+    
+
+    if metrics["type"] == "binary":
+        # Single row without label
+        html += "  <thead>\n"
+        html += f"    <tr {title_row_style}><th>Precision</th><th>Recall</th><th>F1</th></tr>\n"
+        html += "  </thead>\n"
+        html += "  <tbody>\n"
+        html += f'    <tr>'
+        html += f'<td>{metrics["precision"]:.3f}</td>'
+        html += f'<td>{metrics["recall"]:.3f}</td>'
+        html += f'<td>{metrics["f1"]:.3f}</td>'
+        html += f'</tr>\n'
+
+    elif metrics["type"] == "multiclass":
+        html += "  <thead>\n"
+        html += f"    <tr {title_row_style}><th></th><th>Precision</th><th>Recall</th><th>F1</th></tr>\n"
+        html += "  </thead>\n"
+        html += "  <tbody>\n"
+        for label in metrics["precision"].keys():
+            html += f'    <tr>'
+            html += f'<td {title_row_style}">{label}</td>'
+            html += f'<td>{metrics["precision"][label]:.3f}</td>'
+            html += f'<td>{metrics["recall"][label]:.3f}</td>'
+            html += f'<td>{metrics["f1"][label]:.3f}</td>'
+            html += f'</tr>\n'
+
+    else:
+        raise ValueError("Unknown metrics type")
+
+    html += "  </tbody>\n</table>"
+
+    return html
+
+# #test
+# binary_example = {
+#     'type': 'binary',
+#     'accuracy': 0.94,
+#     'positive_label': '1',
+#     'precision': 0.8636363636363636,
+#     'recall': 1.0,
+#     'f1': 0.9268292682926829
+# }
+
+# multiclass_example = {
+#     'type': 'multiclass',
+#     'accuracy': 0.76,
+#     'precision': {'': 1.0, '0': 0.6363636363636364, '1': 0.2727272727272727},
+#     'recall': {'': 0.9032258064516129, '0': 0.5384615384615384, '1': 0.5},
+#     'f1': {'': 0.9491525423728813, '0': 0.5833333333333334, '1': 0.3529411764705882}
+# }
+
+# print(metrics_to_html(binary_example))
+# #print(metrics_to_html(multiclass_example))
+
+
+# In[63]:
 
 
 command_line=True
@@ -130,9 +270,9 @@ else: #for test
     working_dir = ".//"
     program_dir = ".//"
     #in_file = "Human and AI output for reacting to student error & dictionary of moves - June 11th 2025 original.csv" 
-    in_file = "convertedDelimited.csv"
-    source_a_col = "Human good react to error "
-    source_b_col = "Score"
+    in_file = "ECTEL2025 Transcript Scores human-paper-gpt4o.csv"
+    source_a_col = "praise_gpt4o-eval" #praise_gpt4o-present, praise_gpt4o-eval
+    source_b_col = "praise_human-eval" #praise_human-present, praise_human-eval
     
 df = None
 #check if csv or txt
@@ -154,9 +294,7 @@ source_b = df[source_b_col].tolist()
 # Compute confusion matrix
 labels, cm = confusion_matrix_manual(source_a, source_b)
 df_cm = pd.DataFrame(cm, index=labels, columns=labels)
-df_cm.index = df_cm.index.map(lambda x: f'{source_a_col}_' + str(x))
-df_cm.columns = df_cm.columns.map(lambda x: f'{source_b_col}_' + str(x))
-#print(df_cm)
+
 #total for columns
 df_cm['Total'] = df_cm.sum(axis=1)
 #add the agreement count column
@@ -166,37 +304,44 @@ df_cm.loc['Total'] = df_cm.sum(axis=0)
 #percent aggreement
 df_cm['Percent of agreement'] = round(df_cm['Agreement']/df_cm['Total'], 2)
 
-
-# In[38]:
-
-
-# Metrics
-accuracy, precision, recall = calculate_metrics(labels, cm)
-df_precision = pd.DataFrame.from_dict(precision, orient='index', columns=['Precision'])
-df_precision['Precision'] = round(df_precision['Precision'], 2)
-df_precision.index = df_precision.index.map(lambda x: f'{source_a_col}_' + str(x))
-df_precision.loc['Total'] = np.nan
-df_recall = pd.DataFrame.from_dict(recall, orient='index', columns=['Recall'])
-df_recall['Recall'] = round(df_recall['Recall'], 2)
-df_recall.index = df_recall.index.map(lambda x: f'{source_a_col}_' + str(x))
-df_recall.loc['Total'] = np.nan
-df_cm = df_cm.join(df_precision)
-df_cm = df_cm.join(df_recall)
-output_file = os.path.join(working_dir,'confusion_matrix.csv')
-df_cm.to_csv(output_file) 
+cm_html = make_inner_html(df_cm, source_a_col, source_b_col)
 
 
-# In[39]:
+# In[64]:
 
 
-#add accuracy and kappa
+metrics = calculate_metrics(labels, cm)
+accuracy = metrics["accuracy"]
 accuracy = round(accuracy, 2)
 kappa = round(calculate_kappa(labels, cm), 2)
 kappa_strength = get_kappa_strength(kappa)
-with open(output_file, 'a') as f:
-    f.write('\n')
-    f.write(f'Accuracy: {accuracy}\n')
-    f.write(f'Kappa: {kappa}; Strength of Agreement: {kappa_strength}\n')
+sum_html = f'''<p style="font-family: Arial, sans-serif;"><span style="font-weight: bold;">Agreement:</span> {accuracy}; 
+                <span style="font-weight: bold;">Kappa:</span> {kappa}; <span style="font-weight: bold;">Kappa Strength:</span> {kappa_strength}</p>'''
+metric_html = metrics_to_html(metrics)
+all_html = f'''<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        
+    </head>
+    <body>
+    {cm_html} 
+    {sum_html}
+    {metric_html}
+    </body>
+    </html>'''
+
+print(sum_html)
+
+
+# In[67]:
+
+
+#output files
+output_file = os.path.join(working_dir,'confusion_matrix.csv')
+df_cm.to_csv(output_file)
+with open("confusion_matrix.html", "w", encoding="utf-8") as f:
+    f.write(all_html)
 
 
 # In[ ]:

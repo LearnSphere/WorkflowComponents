@@ -33,10 +33,18 @@ public class ConfusionMatrixMain extends AbstractComponent {
 	            logger.info("outputDirectory:" + outputDirectory.getAbsolutePath());
 	            Integer nodeIndex = 0;
 	            Integer fileIndex = 0;
-	            String newFileName = "confusion_matrix.csv";
+	            String newFileName = "confusion_matrix.html";
 	            File file0 = new File(outputDirectory.getAbsolutePath() + "/" + newFileName);
 	            if (file0 != null && file0.exists()) {
-	                this.addOutputFile(file0, nodeIndex, fileIndex, "csv");
+	                this.addOutputFile(file0, nodeIndex, fileIndex, "inline-html");
+	            } else {
+	                addErrorMessage("An error has occurred with the ConfusionMatrix component: " + newFileName + " can't be found.");
+	            }
+	            nodeIndex = 1;
+	            newFileName = "confusion_matrix.csv";
+	            File file1 = new File(outputDirectory.getAbsolutePath() + "/" + newFileName);
+	            if (file1 != null && file1.exists()) {
+	                this.addOutputFile(file1, nodeIndex, fileIndex, "csv");
 	            } else {
 	                addErrorMessage("An error has occurred with the ConfusionMatrix component: " + newFileName + " can't be found.");
 	            }

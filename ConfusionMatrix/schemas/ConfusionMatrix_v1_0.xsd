@@ -46,6 +46,23 @@
 
   <xs:complexType name="OutFileList0">
     <xs:choice>
+      <xs:element ref="inline-html" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputDefinition1">
+    <xs:complexContent>
+      <xs:extension base="InputContainer">
+        <xs:sequence>
+          <xs:element type="OutFileList1" name="files" />
+          <xs:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutFileList1">
+    <xs:choice>
       <xs:element ref="csv" />
     </xs:choice>
   </xs:complexType>
@@ -55,14 +72,15 @@
   <xs:complexType name="OutputType">
     <xs:sequence>
       <xs:element name="output0" type="OutputDefinition0" />
+      <xs:element name="output1" type="OutputDefinition1" />
     </xs:sequence>
   </xs:complexType>
 
 
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-    <xs:element type="FileInputHeader" name="source_a_col" id="Source_A" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
-    <xs:element type="FileInputHeader" name="source_b_col" id="Source_B" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
+    <xs:element type="FileInputHeader" name="source_a_col" id="Row_Source" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
+    <xs:element type="FileInputHeader" name="source_b_col" id="Column_Source" default=".*" ls:inputNodeIndex="0" ls:inputFileIndex="*" />
     </xs:choice>
   </xs:complexType>
 
