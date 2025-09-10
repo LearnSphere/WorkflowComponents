@@ -25,8 +25,8 @@ public class TransformColumnMungingMain extends AbstractComponent {
     protected void runComponent() {
         //get/set -f option
     	boolean reqsMet = true;
-        File inputFile = getAttachment(0, 0);
-        logger.info("TransformColumnMunging inputFile: " + inputFile.getAbsolutePath());
+    	File inputFile = getAttachment(0, 0);
+        logger.info("TransformColumnMunging inputFile: " + inputFile);
         String columnOperation = this.getOptionAsString("columnOperation");
         //Cumulative sum: cumsumName is required; cumsumCol should be numeric column
         if (columnOperation.equals("Cumulative sum")) {

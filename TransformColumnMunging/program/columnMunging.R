@@ -12,14 +12,18 @@ suppressMessages(library(data.table))
 
 #SET UP LOADING DATE FUNCTION 
 import.data <- function(filename){
-  #ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-  ds_file = read.table(filename,sep="\t" ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-  #if only one col is retrieved, try again with ,
-  if (ncol(ds_file) == 1) {
-    #ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="\"", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
-    ds_file = read.table(filename,sep="," ,header=TRUE, na.strings = c("." , "NA", "na","none","NONE" ), quote="", comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  # Read the first line to check the delimiter
+  first_line <- readLines(filename, n = 1)
+  if (grepl("\t", first_line)) {
+    #!!! can't use quote="" bc quote is needed
+    # Tab-delimited
+    df <- read.delim(filename, header = TRUE, na.strings = c("." , "NA", "na","none","NONE" ), comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
+  } else {
+    # Comma-delimited
+    df <- read.csv(filename, header = TRUE, na.strings = c("." , "NA", "na","none","NONE" ), comment.char = "", stringsAsFactors=FALSE, check.names=FALSE)
   }
-  return(ds_file)
+  return(df)
+  
 }
 
 my.write <- function(x, file, header, f = write.table, ...){
@@ -440,13 +444,13 @@ while (i <= length(args)) {
 # for test and dev
 # dataFileName = "test_data.txt"
 # outputFileName = "column_munging_result.txt"
-
-# columnOperation = "Cumulative sum"
-# cumsumName = "cumsum"
-# groupBy = c("Feature Name", "User ID")
-# #cumsumVal = "Count within group"
-# cumsumVal = "Column cumulative sum within group"
-# cumsumCol = "Longitudinal Feature Value"
+# 
+# # columnOperation = "Cumulative sum"
+# # cumsumName = "cumsum"
+# # groupBy = c("Feature Name", "User ID")
+# # #cumsumVal = "Count within group"
+# # cumsumVal = "Column cumulative sum within group"
+# # cumsumCol = "Longitudinal Feature Value"
 
 # columnOperation = "Change column names"
 # nOfColNamesToChange = "3"
