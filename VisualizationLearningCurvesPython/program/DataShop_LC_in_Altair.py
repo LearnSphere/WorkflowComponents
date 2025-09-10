@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[93]:
+# In[1]:
 
 
 import pandas as pd
@@ -14,28 +14,28 @@ import os
 import math
 
 
-# In[94]:
+# In[2]:
 
 
 def getKCModelColumnName (modelName):
     return 'KC (' + modelName + ')'
 
 
-# In[95]:
+# In[3]:
 
 
 def getOpportunityColumnName (modelName):
     return 'Opportunity (' + modelName +')'
 
 
-# In[96]:
+# In[4]:
 
 
 def getPredictedErrorColumnName (modelName):
     return 'Predicted Error Rate (' + modelName + ')'
 
 
-# In[97]:
+# In[5]:
 
 
 def strip_model_name(model_name):
@@ -50,7 +50,7 @@ def strip_model_name(model_name):
 # print(strip_model_name("Orignial"))
 
 
-# In[98]:
+# In[6]:
 
 
 def int_or_inf(value):
@@ -59,7 +59,7 @@ def int_or_inf(value):
     return int(value)  # Otherwise, convert to an integer
 
 
-# In[99]:
+# In[7]:
 
 
 def safe_str_to_float(s):
@@ -69,7 +69,7 @@ def safe_str_to_float(s):
         return None
 
 
-# In[100]:
+# In[8]:
 
 
 def sanitize_filename(filename):
@@ -87,7 +87,7 @@ def sanitize_filename(filename):
 # print(safe_filename)
 
 
-# In[101]:
+# In[9]:
 
 
 #detect if the model is multi-skilled
@@ -106,7 +106,7 @@ def multiskilled_detector (df, model):
 # print(multiskilled_detector(df, "Lasso Model"))
 
 
-# In[102]:
+# In[10]:
 
 
 #turn the multi-skilled row into multiple rows
@@ -142,7 +142,7 @@ def multiskilled_converter (df, model):
 # print(multiskilled_converter (df, "Lasso Model"))
 
 
-# In[103]:
+# In[11]:
 
 
 #handle the last empty tab, BKT's output has an extra tab in each row except the header row
@@ -178,7 +178,7 @@ def cleanLastEmptyTabInData(filename, workingDir):
 # print(df)
 
 
-# In[104]:
+# In[12]:
 
 
 #clean up a dataframe: multi-skill conversion and first attempt conversion
@@ -204,7 +204,7 @@ def clean_df (df, model):
 # print(df)
 
 
-# In[105]:
+# In[13]:
 
 
 def add_thumb_prints_to_html(file_path, thumb_print_html):
@@ -221,7 +221,7 @@ def add_thumb_prints_to_html(file_path, thumb_print_html):
         file.writelines(content)
 
 
-# In[106]:
+# In[14]:
 
 
 def extract_chart_parts(html_content, chart_id):
@@ -244,7 +244,7 @@ def extract_chart_parts(html_content, chart_id):
 # print(extract_chart_parts(html, "vis1"))
 
 
-# In[107]:
+# In[121]:
 
 
 def write_main_chart_html(main_html_file):
@@ -253,22 +253,22 @@ def write_main_chart_html(main_html_file):
         main_orig_html = f.read()
     main_html = extract_chart_parts(main_orig_html, "all")
     main_html = f'''
-        <div style="margin-bottom: 40px;">
+        <div style="margin-bottom: 10px;">
                     {main_html}
         </div>'''
     return main_html
 
 
-# In[108]:
+# In[122]:
 
 
-def category_html(element_file_dict, skill_categories):
+def category_html(element_file_dict, element_opportunity_cnt_htmls, skill_categories):
     combined_html = ""
     if element_file_dict is not None and len(element_file_dict) > 0 and len(skill_categories) > 0:
         for category, elements in skill_categories.items():
             if elements is not None and len(elements) > 0:
                 category_element_file_dict = {k: element_file_dict[k] for k in elements if k in element_file_dict}
-                category_thrumbprint_html = no_category_html(category_element_file_dict)
+                category_thrumbprint_html = no_category_html(category_element_file_dict, element_opportunity_cnt_htmls)
                 formatted_category = category.replace('_', ' ').title()
                 combined_html = f'''{combined_html}\n
                     <div style="clear:left">
@@ -279,33 +279,15 @@ def category_html(element_file_dict, skill_categories):
                         <span style="font-weight: bold; font-size: 14px; font-family: Arial, sans-serif;">
                         {formatted_category}</span></p>
                     </div>
-                    {category_thrumbprint_html}
+                    {category_thrumbprint_html}\n
                 '''
     return combined_html
-# # Example usage:
-# my_dict = {'ALT:CIRCLE-AREA': 'ALT_CIRCLE-AREA', 'ALT:CIRCLE-CIRCUMFERENCE': 'ALT_CIRCLE-CIRCUMFERENCE', 'ALT:CIRCLE-DIAMETER': 'ALT_CIRCLE-DIAMETER', 'ALT:CIRCLE-RADIUS': 'ALT_CIRCLE-RADIUS', 'ALT:COMPOSE-BY-ADDITION': 'ALT_COMPOSE-BY-ADDITION', 'ALT:COMPOSE-BY-MULTIPLICATION': 'ALT_COMPOSE-BY-MULTIPLICATION', 'ALT:PARALLELOGRAM-AREA': 'ALT_PARALLELOGRAM-AREA', 'ALT:PARALLELOGRAM-SIDE': 'ALT_PARALLELOGRAM-SIDE', 'ALT:PENTAGON-AREA': 'ALT_PENTAGON-AREA', 'ALT:PENTAGON-SIDE': 'ALT_PENTAGON-SIDE', 'ALT:TRAPEZOID-AREA': 'ALT_TRAPEZOID-AREA', 'ALT:TRAPEZOID-BASE': 'ALT_TRAPEZOID-BASE', 'ALT:TRAPEZOID-HEIGHT': 'ALT_TRAPEZOID-HEIGHT', 'ALT:TRIANGLE-AREA': 'ALT_TRIANGLE-AREA', 'ALT:TRIANGLE-SIDE': 'ALT_TRIANGLE-SIDE'}
-# skill_categories = {'too_little_data': [], 'low_flat': ['ALT:PARALLELOGRAM-SIDE'], 'still_high': ['ALT:TRAPEZOID-AREA', 'ALT:TRAPEZOID-HEIGHT'], 'no_learning': ['ALT:COMPOSE-BY-ADDITION'], 'good': ['ALT:CIRCLE-RADIUS', 'ALT:CIRCLE-AREA', 'ALT:COMPOSE-BY-MULTIPLICATION', 'ALT:CIRCLE-DIAMETER', 'ALT:TRIANGLE-SIDE', 'ALT:PARALLELOGRAM-AREA', 'ALT:CIRCLE-CIRCUMFERENCE', 'ALT:TRIANGLE-AREA', 'ALT:PENTAGON-AREA', 'ALT:PENTAGON-SIDE', 'ALT:TRAPEZOID-BASE']}
-# html_table = category_html(my_dict, skill_categories)
-# combined_html_head = '''
-#     <!DOCTYPE html>
-#     <html>
-#     <head>
-#         <meta charset="utf-8">
-#         <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-#         <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-#         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-#     </head>
-#     <body>'''
-# combined_html_tail = '''</body>
-#     </html>'''
-# print(f"{combined_html_head}\n{html_table}\n{combined_html_tail}")
 
 
+# In[123]:
 
-# In[109]:
 
-
-def no_category_html(element_file_dict):
+def no_category_html(element_file_dict, element_opportunity_cnt_htmls):
     if element_file_dict is None or len(element_file_dict) == 0:
         return ""
     else:
@@ -315,32 +297,17 @@ def no_category_html(element_file_dict):
             element_file = os.path.join(working_dir, f"{value}.html")
             with open(element_file, 'r', encoding='utf-8') as f:
                 element_html = f.read()
-            element_chart = extract_chart_parts(element_html, f"{value}")    
+            element_chart = extract_chart_parts(element_html, f"{value}")   
+            element_html = element_opportunity_cnt_htmls[key]
             html = f'''{html}\n
-                    <div style="margin-bottom: 40px;">\n
+                    <div style="margin-bottom: 10px;">\n
                     {element_chart}\n
+                    {element_html}\n
                     </div>'''
         return html
-# # Example usage:
-# working_dir = "."
-# my_dict = {'ALT:CIRCLE-AREA': 'ALT_CIRCLE-AREA', 'ALT:CIRCLE-CIRCUMFERENCE': 'ALT_CIRCLE-CIRCUMFERENCE', 'ALT:CIRCLE-DIAMETER': 'ALT_CIRCLE-DIAMETER', 'ALT:CIRCLE-RADIUS': 'ALT_CIRCLE-RADIUS', 'ALT:COMPOSE-BY-ADDITION': 'ALT_COMPOSE-BY-ADDITION', 'ALT:COMPOSE-BY-MULTIPLICATION': 'ALT_COMPOSE-BY-MULTIPLICATION', 'ALT:PARALLELOGRAM-AREA': 'ALT_PARALLELOGRAM-AREA', 'ALT:PARALLELOGRAM-SIDE': 'ALT_PARALLELOGRAM-SIDE', 'ALT:PENTAGON-AREA': 'ALT_PENTAGON-AREA', 'ALT:PENTAGON-SIDE': 'ALT_PENTAGON-SIDE', 'ALT:TRAPEZOID-AREA': 'ALT_TRAPEZOID-AREA', 'ALT:TRAPEZOID-BASE': 'ALT_TRAPEZOID-BASE', 'ALT:TRAPEZOID-HEIGHT': 'ALT_TRAPEZOID-HEIGHT', 'ALT:TRIANGLE-AREA': 'ALT_TRIANGLE-AREA', 'ALT:TRIANGLE-SIDE': 'ALT_TRIANGLE-SIDE'}
-# html_table = no_category_html(my_dict)
-# combined_html_head = '''
-#     <!DOCTYPE html>
-#     <html>
-#     <head>
-#         <meta charset="utf-8">
-#         <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-#         <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-#         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-#     </head>
-#     <body>'''
-# combined_html_tail = '''</body>
-#     </html>'''
-# print(f"{combined_html_head}\n{html_table}\n{combined_html_tail}")
 
 
-# In[110]:
+# In[124]:
 
 
 #get the first level of aggregation: either by KC or student + opp
@@ -500,7 +467,7 @@ def get_df_kc_opp_aggr(df, model, group_by = 'Knowledge Components', aggregate_m
 #print(get_df_kc_opp_aggr(df, "Original", "Knowledge Components", "Error Step Duration", 'Standard Error'))
 
 
-# In[111]:
+# In[125]:
 
 
 #get the second level of aggregation: by KC
@@ -591,7 +558,7 @@ def get_df_opp_aggr(df, model, column_to_average = "Error Rate", error_bar = "No
 #print(get_df_opp_aggr(df_aggr, "Original", column_to_average = "Number of Incorrects", error_bar = "Standard Deviation"))
 
 
-# In[112]:
+# In[126]:
 
 
 #draw learning curve
@@ -823,7 +790,7 @@ def draw_error_rate_line (df,
 #error_rate_graph
 
 
-# In[113]:
+# In[127]:
 
 
 #create graph for a model
@@ -1012,7 +979,7 @@ def create_model_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[114]:
+# In[128]:
 
 
 #create graph for a student or skill
@@ -1132,7 +1099,7 @@ def create_element_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[115]:
+# In[129]:
 
 
 #df_aggr should have these columns: Count, KC (model), Opportunity (model)
@@ -1200,7 +1167,7 @@ def categorize_lc(df_aggr, model, skill_slope_dict,
 #                   slope_threshold = 0.001))
 
 
-# In[116]:
+# In[130]:
 
 
 #parse the parameter_xml file and output skill_slope_dict
@@ -1231,7 +1198,7 @@ def get_skill_slope_dict_from_xml(parameter_xml_filename):
 #print(get_skill_slope_dict_from_xml("Parameters.xml"))   
 
 
-# In[117]:
+# In[131]:
 
 
 #parse DS model value export and output skill_slope_dict
@@ -1264,7 +1231,68 @@ def get_skill_slope_dict_from_ds_export(model_values_filename):
 #print(get_skill_slope_dict_from_ds_export("ds76_afm_kcm472_2025_0225_183654.txt"))
 
 
-# In[128]:
+# In[132]:
+
+
+def make_opportunity_html_table(df_opportunity_count):
+    max_per_row = 20  # how many data points per row set
+
+    rows_html = []
+    for i in range(0, len(df_opportunity_count), max_per_row):
+        chunk = df_opportunity_count.iloc[i:i+max_per_row]
+
+        header_cells = "".join(
+            f'<td class="data-cell">{opp}</td>' for opp in chunk["Opportunity"]
+        )
+        count_cells = "".join(
+            f'<td class="data-cell">{cnt}</td>' for cnt in chunk["Count"]
+        )
+
+        rows_html.append(f"""
+            <tr>
+                <td class="label-cell"><b>Opportunity Number</b></td>
+                {header_cells}
+            </tr>
+            <tr>
+                <td class="label-cell"><b>Number of Observations</b></td>
+                {count_cells}
+            </tr>
+        """)
+
+    # Full HTML with a single table
+    final_html = f"""
+    <div style="font-family: Arial, sans-serif; font-size: 10px; text-align: left; margin-top: 0px; margin-bottom: 50px;">
+      <table class="styled-table">
+        {''.join(rows_html)}
+      </table>
+    </div>
+
+    <style>
+    .styled-table {{
+      border-collapse: collapse;
+      margin: 10px 10px;
+      font-size: 10px;
+
+    }}
+    .styled-table td {{
+      border: 1px solid #000;
+      padding: 4px 5px;
+      border-left: none;
+      border-right: none;
+      text-align: center;
+    }}
+    .label-cell {{
+      background-color: #f9f9f9;
+    }}
+    .data-cell:nth-child(even) {{
+      background-color: #f2f8ff; /* light blue shading */
+    }}
+    </style>
+    """
+    return final_html
+
+
+# In[137]:
 
 
 #test on command line
@@ -1370,15 +1398,15 @@ else:
     learningCurveType = "Knowledge Components"
     #learningCurveType = "Students"
     
-    #categorizeLearningCurve = True
-    categorizeLearningCurve = False
+    categorizeLearningCurve = True
+    #categorizeLearningCurve = False
     showPredictedLearningCurve = True
     #showPredictedLearningCurve = Fasle
     #viewSecondary = True
     viewSecondary = False
     
-    primaryModel = "Predicted Error Rate (Lasso Model)"
-    secondaryModel = "Predicted Error Rate (Original)"
+    primaryModel = "Predicted Error Rate (Original)"
+    secondaryModel = "Predicted Error Rate (Lasso Model)"
     
     opportunityCutOffMax = float("inf")
     #opportunityCutOffMax = 20
@@ -1452,6 +1480,12 @@ all_graphs = create_model_lc_chart(primary_df_aggr, primary_model, learningCurve
                                error_bar=errorBar
                                )
 
+df_opportunity_cnt = get_df_opp_aggr(primary_df_aggr, primary_model)
+opportunity_name = getOpportunityColumnName(primary_model)
+df_opportunity_cnt = df_opportunity_cnt[[opportunity_name, "Count"]]
+df_opportunity_cnt.rename(columns={opportunity_name: "Opportunity"}, inplace=True)
+all_opportunity_cnt_table = make_opportunity_html_table(df_opportunity_cnt)
+
 secondary_model = None
 secondary_df_aggr = None
 #viewSecondary
@@ -1477,7 +1511,6 @@ if viewSecondary:
                                y_axis_title="",
                                error_bar=errorBar
                                )
-
     if all_graphs is not None and all_graphs_secondary_model is not None:
             all_graphs.extend(all_graphs_secondary_model)
     elif all_graphs is None and all_graphs_secondary_model is not None:
@@ -1498,6 +1531,7 @@ if main_graph is not None:
 # Combine and remove duplicates
 unique_elements = list(set(unique_elements))
 element_safe_filename = {}
+element_opportunity_cnt_htmls = {}
 for element in unique_elements:
     all_graphs_for_this_element = None
     #primary model
@@ -1511,7 +1545,20 @@ for element in unique_elements:
                                                       x_axis_title="Opportunities",
                                                        y_axis_title=y_axis_title,
                                                        error_bar=errorBar)
+    df_element_opportunity_cnt = None
+    student_name = 'Anon Student Id'
+    kc_name = getKCModelColumnName(primary_model)
+    opportunity_name = getOpportunityColumnName(primary_model)
+    if learningCurveType == 'Knowledge Components':
+        df_element_opportunity_cnt = primary_df_aggr[primary_df_aggr[kc_name] == element]
+    else:
+        df_element_opportunity_cnt = primary_df_aggr[primary_df_aggr[student_name] == element]
+    df_element_opportunity_cnt = df_element_opportunity_cnt[[opportunity_name, "Count"]]
+    df_element_opportunity_cnt.rename(columns={opportunity_name: "Opportunity"}, inplace=True)
+    element_opportunity_cnt_table = make_opportunity_html_table(df_element_opportunity_cnt)
+    element_opportunity_cnt_htmls[element] = element_opportunity_cnt_table
     
+    #if opp_aggr_df_copied is None or opp_aggr_df_copied.empty:
     #viewSecondary
     if viewSecondary:
         graphs_for_this_element_secondary_model = create_element_lc_chart(secondary_df_aggr, secondary_model, learningCurveType, 
@@ -1585,12 +1632,13 @@ combined_html_tail = '''</body>
 #write the all_final.html
 all_html = write_main_chart_html(os.path.join(working_dir, "all.html"))
 if learningCurveType == 'Knowledge Components' and categorizeLearningCurve and skill_categories is not None:
-    elements_html = category_html(element_safe_filename, skill_categories)
+    elements_html = category_html(element_safe_filename, element_opportunity_cnt_htmls, skill_categories)
 else:
-    elements_html = no_category_html(element_safe_filename)
+    elements_html = no_category_html(element_safe_filename, element_opportunity_cnt_htmls)
 
 all_combined_html = f'''{combined_html_head}\n
                         {all_html}\n
+                        {all_opportunity_cnt_table}\n
                         {elements_html}\n
                         {combined_html_tail}'''
 with open(os.path.join(working_dir, "all_final.html"), 'w', encoding='utf-8') as f:
