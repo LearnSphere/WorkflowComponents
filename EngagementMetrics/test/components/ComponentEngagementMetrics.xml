@@ -1,0 +1,66 @@
+<component>
+  <component_id>ComponentTestOutput</component_id>
+  <component_id_human>analysis #1</component_id_human>
+  <workflow_id>3</workflow_id>
+  <component_name>EngagementMetrics</component_name>
+  <component_type>analysis</component_type>
+  <left>354</left>
+  <top>218</top>
+
+  <connections>
+    <connection>
+      <index>0</index>
+      <from>Import-1-x995490</from>
+    </connection>
+  </connections>
+
+  <!-- INPUTS -->
+  <inputs>
+    <input0>
+      <component_id>Import-1-x995490</component_id>
+      <component_id_human>Import #1</component_id_human>
+      <component_type>import</component_type>
+      <component_name>Dummy Import Name</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+
+      <errors/>
+
+      <files>
+  <file>
+    <index>0</index>
+    <file_path>Import-1-x995490/output/sessions_custom.txt</file_path>
+    <label>tab-delimited</label>
+    <file_name>sessions_custom.txt</file_name>
+  </file>
+</files>
+
+
+      <inputmeta/>
+    </input0>
+  </inputs>
+
+  <!-- OUTPUTS -->
+  <outputs>
+    <output0>
+      <component_id>ComponentTestOutput</component_id>
+      <component_id_human>analysis #1</component_id_human>
+      <component_type>analysis</component_type>
+      <component_name>EngagementMetrics</component_name>
+      <elapsed_seconds>0</elapsed_seconds>
+
+      <errors/>
+
+      <files>
+        <file>
+          <index>0</index>
+          <file_name>engagement_metrics.txt</file_name>
+          <label>tab‑delimited</label>
+        </file>
+      </files>
+
+      <outputmeta/>
+    </output0>
+  </outputs>
+
+  <options/>
+</component>

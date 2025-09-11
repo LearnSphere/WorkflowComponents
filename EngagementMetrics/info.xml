@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+<author>Jharana Sapkota
+  <email>jharana@vt.edu</email>
+</author>
+<url>https://github.com/LearnSphere/WorkflowComponents/tree/master/EngagementMetrics</url>
+<date>July 18, 2025</date>
+<abstract>The <b>EngagementMetrics</b> component is an example of a(n) Python component.</abstract>
+<description>Compute engagement metrics from a single interactionâlog file.</description>
+
+<inputs>
+<b>file</b><br/>
+</inputs>
+
+<outputs>
+<b>file</b><br/>
+</outputs>
+
+<options>
+</options>
+
+</info>
