@@ -1,7 +1,7 @@
 #usage
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValue "ex: aWord, 0" -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Written Assignment 1: Design an Experiment" -valueColumns "Written Assignment 1: Design an Experiment" -node 0 -fileIndex 0 "OLI-Psych-Gradebook_modified.txt"
 #"C:/Program Files/R/R-3.4.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive No -i_operation "Keep selected rows and remove the rest" -operation keep -removeNull No -removeValue "0, BUILDING_A_SIDEWALK, painting_the_wall, abc" -valueColumn "Problem Name,Step Name" -valueColumns "Problem Name,Step Name" -node 0 -fileIndex 0 student_step_export.txt
-
+#"C:/Program Files/R/R-4.3.1/bin/Rscript.exe" rowRemover.R -programDir . -workingDir . -userId hcheng -caseSensitive Yes -i_operation "Remove selected rows" -operation remove -removeNull Yes -removeValue Stu_34ad14f9b43563f9b19fbdcbb928241b -valueColumn_nodeIndex 0 -valueColumn_fileIndex 0 -valueColumn "Anon Student Id" -valueColumns "Anon Student Id" -node 0 -fileIndex 0 "ds4555_student_step_All_Data_6640_2021_1029_152741.txt"
 
 #load libraries and set optins
 options(echo=FALSE)
@@ -133,8 +133,6 @@ while (i <= length(args)) {
 # remove.null=TRUE
 
 
-
-
 # Load raw data
 ds<-read.table(inputFile, sep="\t", header=TRUE, quote="\"",comment.char = "",blank.lines.skip=TRUE)
 
@@ -185,6 +183,7 @@ if (operation == "remove") {
     #change column name back
     colnames(ds)[which(names(ds) == "work_column")] <- column.var.name
   }
+  colnames(ds) <- origCols
 } else {
   temp.ds<-NULL
   temp.ds.null<-NULL
