@@ -244,7 +244,7 @@ def extract_chart_parts(html_content, chart_id):
 # print(extract_chart_parts(html, "vis1"))
 
 
-# In[121]:
+# In[15]:
 
 
 def write_main_chart_html(main_html_file):
@@ -259,7 +259,7 @@ def write_main_chart_html(main_html_file):
     return main_html
 
 
-# In[122]:
+# In[16]:
 
 
 def category_html(element_file_dict, element_opportunity_cnt_htmls, skill_categories):
@@ -284,7 +284,7 @@ def category_html(element_file_dict, element_opportunity_cnt_htmls, skill_catego
     return combined_html
 
 
-# In[123]:
+# In[17]:
 
 
 def no_category_html(element_file_dict, element_opportunity_cnt_htmls):
@@ -307,7 +307,7 @@ def no_category_html(element_file_dict, element_opportunity_cnt_htmls):
         return html
 
 
-# In[124]:
+# In[18]:
 
 
 #get the first level of aggregation: either by KC or student + opp
@@ -467,7 +467,7 @@ def get_df_kc_opp_aggr(df, model, group_by = 'Knowledge Components', aggregate_m
 #print(get_df_kc_opp_aggr(df, "Original", "Knowledge Components", "Error Step Duration", 'Standard Error'))
 
 
-# In[125]:
+# In[19]:
 
 
 #get the second level of aggregation: by KC
@@ -558,7 +558,7 @@ def get_df_opp_aggr(df, model, column_to_average = "Error Rate", error_bar = "No
 #print(get_df_opp_aggr(df_aggr, "Original", column_to_average = "Number of Incorrects", error_bar = "Standard Deviation"))
 
 
-# In[126]:
+# In[27]:
 
 
 #draw learning curve
@@ -790,7 +790,7 @@ def draw_error_rate_line (df,
 #error_rate_graph
 
 
-# In[127]:
+# In[28]:
 
 
 #create graph for a model
@@ -979,7 +979,7 @@ def create_model_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[128]:
+# In[29]:
 
 
 #create graph for a student or skill
@@ -1099,7 +1099,7 @@ def create_element_lc_chart(opp_aggr_df, model,
 # final_graph
 
 
-# In[129]:
+# In[30]:
 
 
 #df_aggr should have these columns: Count, KC (model), Opportunity (model)
@@ -1167,7 +1167,7 @@ def categorize_lc(df_aggr, model, skill_slope_dict,
 #                   slope_threshold = 0.001))
 
 
-# In[130]:
+# In[31]:
 
 
 #parse the parameter_xml file and output skill_slope_dict
@@ -1198,7 +1198,7 @@ def get_skill_slope_dict_from_xml(parameter_xml_filename):
 #print(get_skill_slope_dict_from_xml("Parameters.xml"))   
 
 
-# In[131]:
+# In[32]:
 
 
 #parse DS model value export and output skill_slope_dict
@@ -1231,7 +1231,7 @@ def get_skill_slope_dict_from_ds_export(model_values_filename):
 #print(get_skill_slope_dict_from_ds_export("ds76_afm_kcm472_2025_0225_183654.txt"))
 
 
-# In[132]:
+# In[33]:
 
 
 def make_opportunity_html_table(df_opportunity_count):
@@ -1292,7 +1292,7 @@ def make_opportunity_html_table(df_opportunity_count):
     return final_html
 
 
-# In[137]:
+# In[34]:
 
 
 #test on command line
@@ -1398,8 +1398,8 @@ else:
     learningCurveType = "Knowledge Components"
     #learningCurveType = "Students"
     
-    categorizeLearningCurve = True
-    #categorizeLearningCurve = False
+    #categorizeLearningCurve = True
+    categorizeLearningCurve = False
     showPredictedLearningCurve = True
     #showPredictedLearningCurve = Fasle
     #viewSecondary = True
@@ -1446,7 +1446,7 @@ primary_model = strip_model_name(primaryModel)
 primary_opportunity = getOpportunityColumnName(primary_model)
 #clean the possible ending empty tab, for example, BKT output
 primary_file = cleanLastEmptyTabInData(primary_file, working_dir)
-df = pd.read_csv(primary_file, sep='\t')
+df = pd.read_csv(primary_file, sep='\t', low_memory=False)
 #check if model is multi-skilled and convert first attempt to 0/1 and delete rows that are non-numeric in opp column
 primary_df = clean_df(df, primary_model)
 

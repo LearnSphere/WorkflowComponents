@@ -57,7 +57,7 @@ public class VisualizationLearningCurvesPythonMain extends AbstractComponent {
     	        }
     		}
     	}
-    	if (reqsMet) {
+        if (reqsMet) {
     		//secondary model and primary model can't be the same
     		Boolean viewSecondary = this.getOptionAsBoolean("viewSecondary");
     		String primaryModel = this.getOptionAsString("primaryModel");
@@ -70,7 +70,6 @@ public class VisualizationLearningCurvesPythonMain extends AbstractComponent {
                 logger.info(err);
 	        }
     	}
-    	
     	if (reqsMet) {
         	File outputDirectory = this.runExternal();
 	        if (outputDirectory.isDirectory() && outputDirectory.canRead()) {
@@ -91,9 +90,8 @@ public class VisualizationLearningCurvesPythonMain extends AbstractComponent {
 	            }
 	        }
         }
-        
-        if (!reqsMet) {
-	        for (String err : this.errorMessages) {
+    	if (!reqsMet) {
+        	for (String err : this.errorMessages) {
 	                // These will also be picked up by the workflows platform and relayed to the user.
 	                System.err.println(err);
 	        }
