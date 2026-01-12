@@ -35,7 +35,7 @@ preprocess <- function(origRollup, kcm) {
   # actr: ln(1/sqrt(time_lag_mins)), is the forgetting variable calculated based on time
   # opportunity0: opportunity start at 0
   #
-  df = df %>% arrange(individual, KC, txntime) %>%
+  df = df %>% arrange(individual, KC, opportunity) %>%
     group_by(individual, KC) %>% 
     mutate(
       #time_lag_secs = logWarningsMessages(ifelse(is.na(lag(txntime)) | (lag(txntime) == txntime), 0, round(as.numeric(difftime(txntime, lag(txntime), units="secs")), 3)), logFileName = wfl_log_file),
