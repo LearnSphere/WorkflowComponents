@@ -229,8 +229,20 @@ def extract_chart_parts(html_content, chart_id):
     # Change the div id
     html_content = re.sub(r'id="vis"', f'id="{chart_id}"', html_content)
 
-    # Change the embed call to use the new id
-    html_content = re.sub(r'vegaEmbed\("#vis"', f'vegaEmbed("#{chart_id}"', html_content)
+    # Change the embed call — use DOM element directly instead of CSS selector string
+    # This avoids CSS selector issues with dots/colons in IDs
+    html_content = re.sub(
+        r'vegaEmbed\("#vis"',
+        f'vegaEmbed(document.getElementById("{chart_id}")',
+        html_content
+    )
+
+    # Fix the error handler element reference
+    html_content = re.sub(
+        r'document\.getElementById\(["\']vis["\']\)',
+        f'document.getElementById("{chart_id}")',
+        html_content
+    )
 
     # Extract <body> content only
     body_start = html_content.find('<body>') + len('<body>')
