@@ -111,6 +111,7 @@
   <xs:simpleType name="modelingType" final="restriction">
     <xs:restriction base="xs:string">
     <xs:enumeration value="AFM" />
+    <xs:enumeration value="iAFM" />
     <xs:enumeration value="PFA" />
     </xs:restriction>
   </xs:simpleType>

@@ -153,6 +153,8 @@ if (modelingMethod == "AFM") {
   #glmer(correct ~  opportunity + actr + (opportunity + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
   model <- logWarningsMessages(glmer(response ~ is_first_opportunity + opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0), logFileName = wfl_log_file)
+} else if (modelingMethod == "iAFM") {
+  model <- logWarningsMessages(glmer(response ~ is_first_opportunity + opportunity0 + actr + (opportunity0 + actr|KC) + (opportunity0 + actr|individual), data=df, family=binomial(), nAGQ = 0 ), logFileName = wfl_log_file)
 } else if (modelingMethod == "PFA") {
   #glmer(correct ~  cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)

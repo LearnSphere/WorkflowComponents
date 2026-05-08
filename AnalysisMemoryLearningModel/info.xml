@@ -33,7 +33,7 @@ DataShop@CMU
 
 <options>
 <b>Model</b>: the column containing the KCM data <br/>
-<b>Modeling Method</b>: choose from AFM and PFA<br/>
+<b>Modeling Method</b>: choose from AFM, iAFM and PFA<br/>
 <b>Parameters Output Format</b>: choose from XML or tab-delimited text  <br/>
 </options>
 
