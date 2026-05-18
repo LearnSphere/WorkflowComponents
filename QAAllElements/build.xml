@@ -93,7 +93,7 @@
     <target name="compile" depends="init" description="compile the source ">
         <!-- Compile the java code from ${source} into ${build} -->
     	<javac srcdir="${source}" destdir="${build}" debug="on"
-    	            target="1.7" source="1.7" >
+    	            target="23" source="23" >
     	            <classpath refid="lib.path" />
     	            <classpath refid="spring.lib.path" />
     	            <classpath refid="hibernate.lib.path" />

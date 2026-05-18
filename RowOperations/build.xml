@@ -15,8 +15,6 @@
 
     <property name="version" value="1.0" />
 
-    <property name="javac8" location="/usr/java/jdk1.8.0_131/bin/javac" />
-
     <property name="component.id" value="RowOperations" />
     <property name="component.version" value="v${version} 2015" />
 
@@ -85,7 +83,7 @@
         <javac includeantruntime="false" srcdir="${source}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
         </javac>
-        <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on" fork="yes" executable="${javac8}">
+        <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
         </javac>
     </target>

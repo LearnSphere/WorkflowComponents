@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.transform.MOOCdb;
 
 import java.io.File;
+import edu.cmu.pslc.learnsphere.analysis.moocdb.item.FeatureExtractionItem;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,7 +27,7 @@ import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.FeatureExtractionDao;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.MOOCdbDao;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.item.MOOCdbItem;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.DaoFactory;
-import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.hibernate.HibernateDaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.hibernate.CourseraDbsRestoreDaoHibernate;
 import edu.cmu.pslc.datashop.problemcontent.oli.CommonXml;
 
 public class CourseraTranslateMain extends AbstractComponent {
@@ -534,20 +535,20 @@ public class CourseraTranslateMain extends AbstractComponent {
 
     //check if a MOOCdb already exists
     private MOOCdbItem findMOOCdb(String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             MOOCdbItem item = dbDao.getMOOCdbByName(MOOCdbName);
             return item;
     }
 
     //save or update a MOOCdbITem and return the item
     private void saveOrUpdateMOOCdb(MOOCdbItem dbItem) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.saveOrUpdate(dbItem);
     }
 
     //delete MOOCdbItem
     private void deleteMOOCDbItem(MOOCdbItem dbItem) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.delete(dbItem);
     }
 
@@ -566,23 +567,23 @@ public class CourseraTranslateMain extends AbstractComponent {
     }
 
     private Date getEarliestSubmissionTime (String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.getEarliestSubmissionTime(MOOCdbName);
     }
 
     private void deleteCourseraDbs(String hashMappingDbName, String forumDbName, String generalDbName)
                     throws SQLException, Exception {
-            CourseraDbsRestoreDao restoreDao = DaoFactory.DEFAULT.getCourseraDbsRestoreDao();
+            CourseraDbsRestoreDao restoreDao = new CourseraDbsRestoreDaoHibernate();
             restoreDao.deleteCourseraDBs(hashMappingDbName, forumDbName, generalDbName);
     }
 
     private void deleteMOOCdb(String MOOCdbName) throws SQLException, Exception {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.deleteMOOCdb(MOOCdbName);
     }
 
     private String getAllFeatures (String MOOCdbName) {
-            FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
+            FeatureExtractionDao feDao = (FeatureExtractionDao) DaoFactory.HIBERNATE.getDao(FeatureExtractionItem.class);
             Map<Integer, String> featureMap = feDao.getAllFeatures(MOOCdbName);
             Iterator it = featureMap.entrySet().iterator();
             String features = "";
@@ -606,37 +607,37 @@ public class CourseraTranslateMain extends AbstractComponent {
     }
 
     private boolean databaseExist(String dbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.databaseExist(dbName);
     }
 
     private boolean isMOOCdb(String dbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.isMOOCdb(dbName);
     }
 
     private void createDBUser(String username, String passwrod) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.createDBUser(username, passwrod);
     }
 
     private void createDB(String dbName) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.createDB(dbName);
     }
 
     private boolean userExist(String username) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.userExist(username);
     }
 
     private void addUserToDB(String dbName, String username, String accessRights) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.addUserToDB(dbName, username, accessRights);
     }
 
     private void deleteUser(String username) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.deleteUser(username);
     }
 }

@@ -10,10 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.DaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.HibernateDaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliTransactionDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliResourceUseDTOInterface;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dto.OliUserTransactionDTO;
@@ -36,7 +38,7 @@ import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dataobject.XMLExtracted
  */
 public class OLIDataAggregator {
         /** Debug logging. */
-        private Logger logger = Logger.getLogger(getClass().getName());
+        private Logger logger = LogManager.getLogger(getClass());
 
         /** The name of this tool, used in displayUsage method. */
         private static final String TOOL_NAME = OLIDataAggregator.class.getSimpleName();
@@ -79,7 +81,7 @@ public class OLIDataAggregator {
 
     public String aggregateData() throws ResourceUseOliException {
             //get all data ordered by student and time
-            ResourceUseOliTransactionDao resourceUseOliTransactionDao = DaoFactory.DEFAULT.getResourceUseOliTransactionDao();
+            ResourceUseOliTransactionDao resourceUseOliTransactionDao = new HibernateDaoFactory().getResourceUseOliTransactionDao();
             List<OliUserTransactionDTO> studentTransactions = resourceUseOliTransactionDao.getAllTransactions(resourceUseOliUserSessFileId, resourceUseOliTransactionFileId);
             logger.info("All student transaction data: " + studentTransactions.size() + " rows.");
             

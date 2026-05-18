@@ -26,7 +26,6 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.DaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.FeatureExtractionDao;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.MOOCdbDao;
-import edu.cmu.pslc.learnsphere.analysis.moocdb.dao.hibernate.HibernateDaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.item.MOOCdbItem;
 import edu.cmu.pslc.learnsphere.analysis.moocdb.item.FeatureExtractionItem;
 import edu.cmu.pslc.statisticalCorrectnessModeling.utils.IOUtil;
@@ -258,7 +257,7 @@ public class FeatureExtractMain extends AbstractComponent {
             this.componentOptions.addContent(0, new Element("runExtraction").setText("true"));
         }
 
-        Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort();
+        // Map<String, String> dbConfig = HibernateDaoFactory.DEFAULT.getAnalysisDatabaseHostPort(); // class deleted in H6 migration; consumers already commented out
         this.componentOptions.addContent(0, new Element("MOOCdbName").setText(MOOCdbName));
         this.componentOptions.addContent(0, new Element("un").setText(username));
         this.componentOptions.addContent(0, new Element("p").setText(password));
@@ -311,26 +310,26 @@ public class FeatureExtractMain extends AbstractComponent {
 
     //check if a MOOCdb already exists
     private MOOCdbItem findMOOCdb(String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             MOOCdbItem item = dbDao.getMOOCdbByName(MOOCdbName);
             return item;
     }
 
     private Map<Integer, String> getAllFeatures (String MOOCdbName) {
-            FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
+            FeatureExtractionDao feDao = (FeatureExtractionDao) DaoFactory.HIBERNATE.getDao(FeatureExtractionItem.class);
             return feDao.getAllFeatures(MOOCdbName);
     }
 
     private FeatureExtractionItem findAFeatureExtraction(String MOOCdbName,  Date startDate,
                                     int numberWeeks, String featuresToExtract) {
-            FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
+            FeatureExtractionDao feDao = (FeatureExtractionDao) DaoFactory.HIBERNATE.getDao(FeatureExtractionItem.class);
             return feDao.findAFeatureExtraction(MOOCdbName, startDate, numberWeeks, featuresToExtract);
     }
 
     //save or update a featureExtractionItem
     private void saveOrUpdateFeatureExtractionItem(String MOOCdbName, FeatureExtractionItem featureExtractionItem)
                     throws Exception {
-            FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
+            FeatureExtractionDao feDao = (FeatureExtractionDao) DaoFactory.HIBERNATE.getDao(FeatureExtractionItem.class);
             feDao.saveOrUpdateFeatureExtractionItem(MOOCdbName, featureExtractionItem);
     }
 
@@ -348,7 +347,7 @@ public class FeatureExtractMain extends AbstractComponent {
     }
 
     private Date getEarliestSubmissionTime (String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.getEarliestSubmissionTime(MOOCdbName);
     }
 }

@@ -14,6 +14,7 @@ import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.util.FileUtils;
 import edu.cmu.pslc.datashop.util.SpringContext;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dao.CourseraDbDaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dao.hibernate.CourseraDbHibernateDaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dao.CourseraClickstreamDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.item.CourseraClickstreamItem;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.coursera.dto.CourseraVideoActionDataObject;
@@ -52,7 +53,7 @@ public class CourseraDataGenerator extends AbstractComponent {
         }
         logger.info("Coursera data generator started...");
         try {
-                CourseraClickstreamDao courseraClickstreamDao = CourseraDbDaoFactory.DEFAULT.getCourseraClickstreamDao();
+                CourseraClickstreamDao courseraClickstreamDao = new CourseraDbHibernateDaoFactory().getCourseraClickstreamDao();
                 List<CourseraClickstreamItem> courseraClickstreamItems = courseraClickstreamDao.getCourseraClickStream();
                 logger.info("Rows retrieved: " + courseraClickstreamItems.size());
                 if (courseraClickstreamItems.size() > 0) {
