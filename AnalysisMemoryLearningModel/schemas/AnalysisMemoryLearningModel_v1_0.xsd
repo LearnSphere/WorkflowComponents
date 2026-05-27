@@ -110,8 +110,10 @@
   
   <xs:simpleType name="modelingType" final="restriction">
     <xs:restriction base="xs:string">
-    <xs:enumeration value="AFM" />
-    <xs:enumeration value="iAFM" />
+    <xs:enumeration value="AFM with forgetting parameter" />
+    <xs:enumeration value="AFM without forgetting parameter" />
+    <xs:enumeration value="iAFM with forgetting parameter" />
+    <xs:enumeration value="iAFM without forgetting parameter" />
     <xs:enumeration value="PFA" />
     </xs:restriction>
   </xs:simpleType>
@@ -125,7 +127,7 @@
   <xs:complexType name="OptionsType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="FileInputHeader" name="kcmodel" id="Model" default="\s*KC\s*\((.*)\)\s*" />
-      <xs:element type="modelingType" name="modeling" id="Modeling_Method" default="AFM" />
+      <xs:element type="modelingType" name="modeling" id="Modeling_Method" default="AFM with forgetting parameter" />
       <xs:element type="paramOutputType" name="paramOutputFormat" id="Parameters_Output_Format" default="XML" />
     </xs:choice>
   </xs:complexType>

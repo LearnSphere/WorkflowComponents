@@ -149,12 +149,14 @@ workingDir = "."
 #df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file),eval(modelName),eval(problemName),eval(response),eval(opportunity),eval(individual),eval(firstTransactionTime),useReverseOpp) #i added eval() because we are passing the name of the columns to the preprocess function. this might not work depending on how the java is setup.
 df <- preprocess(logWarningsMessages(fread(file=stuStepFileName,verbose = F), logFileName = wfl_log_file), eval(modelName)) 
 #write.csv(df, "df_temp.csv", row.names=FALSE)
-if (modelingMethod == "AFM") {
-  #glmer(correct ~  opportunity + actr + (opportunity + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
-  #model <- logWarningsMessages(glmer(response ~ opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)
+if (modelingMethod == "AFM with forgetting parameter") {
   model <- logWarningsMessages(glmer(response ~ is_first_opportunity + opportunity0 + actr + (opportunity0 + actr|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0), logFileName = wfl_log_file)
-} else if (modelingMethod == "iAFM") {
+} else if (modelingMethod == "iAFM with forgetting parameter") {
   model <- logWarningsMessages(glmer(response ~ is_first_opportunity + opportunity0 + actr + (opportunity0 + actr|KC) + (opportunity0 + actr|individual), data=df, family=binomial(), nAGQ = 0 ), logFileName = wfl_log_file)
+} else if (modelingMethod == "AFM without forgetting parameter") {
+  model <- logWarningsMessages(glmer(response ~ opportunity0 + (opportunity0|KC) + (1|individual), data=df, family=binomial(), nAGQ = 0), logFileName = wfl_log_file)
+} else if (modelingMethod == "iAFM without forgetting parameter") {
+  model <- logWarningsMessages(glmer(response ~ opportunity0 + (opportunity0|KC) + (opportunity0|individual), data=df, family=binomial(), nAGQ = 0 ), logFileName = wfl_log_file)
 } else if (modelingMethod == "PFA") {
   #glmer(correct ~  cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=ds, family=binomial(), nAGQ = 0 )
   #model <- logWarningsMessages(glmer(response ~ cumulative.corrects + cumulative.incorrects + actr + (cumulative.corrects + cumulative.incorrects + actr|KC) + (1|individual), data=df, family=binomial(),control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,optCtrl = list(method = "nlminb", starttests = FALSE, kkt = FALSE))), logFileName = wfl_log_file)

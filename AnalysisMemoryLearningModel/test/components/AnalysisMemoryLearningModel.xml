@@ -180,7 +180,7 @@
   </inputs>
   <options>
     <kcmodel>KC (Circle-Collapse)</kcmodel>
-    <modeling>AFM</modeling>
+    <modeling>AFM with forgetting parameter</modeling>
     <paramOutputFormat>XML</paramOutputFormat>
     
   </options>
