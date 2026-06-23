@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import edu.cmu.pl2.item.MathiaGoalItem;
 import edu.cmu.pslc.datashop.servlet.workflows.WorkflowImportHelper;
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 

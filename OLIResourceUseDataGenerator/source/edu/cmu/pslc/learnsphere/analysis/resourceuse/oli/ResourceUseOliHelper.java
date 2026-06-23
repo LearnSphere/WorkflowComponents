@@ -15,7 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.cmu.pslc.datashop.dao.FileDao;
 import edu.cmu.pslc.datashop.item.FileItem;
@@ -23,6 +24,7 @@ import edu.cmu.pslc.datashop.item.UserItem;
 import edu.cmu.pslc.datashop.util.FileUtils;
 import edu.cmu.pslc.datashop.util.LogUtils;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.DaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.HibernateDaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliUserSessDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliUserSessFileDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.item.ResourceUseOliUserSessFileItem;
@@ -40,7 +42,7 @@ import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.item.ResourceUseOliUser
 public class ResourceUseOliHelper {
 
     /** Debug logging. */
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger logger = LogManager.getLogger(getClass());
     private static final String DEFAULT_DELIMITER = "\t";
     
    
@@ -73,7 +75,7 @@ public class ResourceUseOliHelper {
                 dsFileItem.setFileSize(file.length());
         else
                 dsFileItem.setFileSize(0L);
-        FileDao fileDao = edu.cmu.pslc.datashop.dao.DaoFactory.DEFAULT.getFileDao();
+        FileDao fileDao = edu.cmu.pslc.datashop.service.ServiceFactory.DEFAULT.getFileService().getDao();
         fileDao.saveOrUpdate(dsFileItem);
         return dsFileItem;
     }
@@ -83,7 +85,7 @@ public class ResourceUseOliHelper {
      * @param FileItem fileItem file item to be updated
      * */
     public void updateFileItem (FileItem fileItem) {
-            FileDao fileDao = edu.cmu.pslc.datashop.dao.DaoFactory.DEFAULT.getFileDao();
+            FileDao fileDao = edu.cmu.pslc.datashop.service.ServiceFactory.DEFAULT.getFileService().getDao();
             fileDao.saveOrUpdate(fileItem);
     }
     
@@ -92,7 +94,7 @@ public class ResourceUseOliHelper {
      * @param FileItem fileItem file item to be deleted
      * */
     public void deleteFileItem (FileItem fileItem) {
-            FileDao fileDao = edu.cmu.pslc.datashop.dao.DaoFactory.DEFAULT.getFileDao();
+            FileDao fileDao = edu.cmu.pslc.datashop.service.ServiceFactory.DEFAULT.getFileService().getDao();
             fileDao.delete(fileItem);
     }
     
@@ -103,7 +105,7 @@ public class ResourceUseOliHelper {
      * @return FileItem for this fileId
      */
     public FileItem getFile (int fileId) {
-        FileDao fileDao = edu.cmu.pslc.datashop.dao.DaoFactory.DEFAULT.getFileDao();
+        FileDao fileDao = edu.cmu.pslc.datashop.service.ServiceFactory.DEFAULT.getFileService().getDao();
         return fileDao.get(fileId);
     }
     
@@ -220,7 +222,7 @@ public class ResourceUseOliHelper {
      * @return ResourceUseOliUserSessFileItem
      */
     public ResourceUseOliUserSessFileItem getResourceUseOliUserSessFileItem(Integer resourceUseOliUserSessFileId) {
-            ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = DaoFactory.DEFAULT.getResourceUseOliUserSessFileDao();
+            ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = new HibernateDaoFactory().getResourceUseOliUserSessFileDao();
             return resourceUseOliUserSessFileDao.get(resourceUseOliUserSessFileId);
     }
 
@@ -230,7 +232,7 @@ public class ResourceUseOliHelper {
      * @return HashMap<String, String> anon_student_id as key and real student_id as values
      */
     public List<String> getUniqueStudents(Integer resourceUseOliUserSessFileId, Integer resourceUseOliTransactionFileId) {
-            ResourceUseOliUserSessDao resourceUseOliUserSessDao = DaoFactory.DEFAULT.getResourceUseOliUserSessDao();
+            ResourceUseOliUserSessDao resourceUseOliUserSessDao = new HibernateDaoFactory().getResourceUseOliUserSessDao();
             List<String> anonStudentIds = new ArrayList<String>();
             if (resourceUseOliUserSessFileId != null) {
                     ResourceUseOliUserSessFileItem resourceUseOliUserSessFileItem = getResourceUseOliUserSessFileItem(resourceUseOliUserSessFileId);

@@ -22,9 +22,10 @@ import java.util.Map;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartRenderingInfo;
-import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.TextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
@@ -39,10 +40,10 @@ import org.jfree.data.xy.YIntervalSeriesCollection;
 import org.jfree.data.Range;
 import org.jfree.data.RangeType;
 import org.jfree.data.xy.YIntervalSeries;
-import org.jfree.ui.HorizontalAlignment;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.VerticalAlignment;
+import org.jfree.chart.ui.HorizontalAlignment;
+import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.chart.ui.RectangleInsets;
+import org.jfree.chart.ui.VerticalAlignment;
 import org.jfree.util.ShapeUtilities;
 
 import edu.cmu.pslc.afm.dataObject.AFMDataObject;
@@ -73,7 +74,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
 
 
     /** universal logger for the system */
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger logger = LogManager.getLogger(getClass());
 
     /** Whether debug is enabled. */
     private static final Boolean DEBUG_ENABLED = false;
@@ -789,7 +790,7 @@ public class LearningCurveDatasetProducerStandalone implements Serializable {
             //  Write the chart image to the temporary directory
             ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
             File file = new File(filePath);
-            ChartUtilities.saveChartAsPNG(file, chart, width.intValue(), height.intValue());
+            ChartUtils.saveChartAsPNG(file, chart, width.intValue(), height.intValue());
             return file;
 
         } catch (Exception exception) {

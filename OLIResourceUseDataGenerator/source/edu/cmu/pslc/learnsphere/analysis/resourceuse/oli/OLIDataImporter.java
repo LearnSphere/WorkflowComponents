@@ -18,7 +18,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.cmu.pslc.datashop.extractors.AbstractExtractor;
 import edu.cmu.pslc.datashop.importdb.dao.ImportDbDaoFactory;
@@ -31,6 +32,7 @@ import edu.cmu.pslc.datashop.util.FileUtils;
 import edu.cmu.pslc.datashop.util.SpringContext;
 import edu.cmu.pslc.datashop.util.VersionInformation;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.DaoFactory;
+import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.hibernate.HibernateDaoFactory;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliImporterDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliTransactionDao;
 import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.dao.ResourceUseOliTransactionFileDao;
@@ -52,7 +54,7 @@ import edu.cmu.pslc.learnsphere.analysis.resourceuse.oli.item.ResourceUseOliUser
  */
 public class OLIDataImporter {
         /** Debug logging. */
-        private Logger logger = Logger.getLogger(getClass().getName());
+        private Logger logger = LogManager.getLogger(getClass());
 
         /** The name of this tool, used in displayUsage method. */
         private static final String TOOL_NAME = OLIDataImporter.class.getSimpleName();
@@ -182,7 +184,7 @@ public class OLIDataImporter {
          * @param args command line arguments
          */
         public static void main(String[] args) {          
-          Logger logger = Logger.getLogger("OLIDataImporter.main");
+          Logger logger = LogManager.getLogger("OLIDataImporter.main");
           String version = VersionInformation.getReleaseString();
           logger.info("OLIDataImporter starting (" + version + ")...");
           OLIDataImporter oliImporter = new OLIDataImporter();
@@ -285,7 +287,7 @@ public class OLIDataImporter {
                 logger.info("Loading data in file " + fileName);
                 File theOriginalFile = new File(fileName);
                 String lineTerminator = getLineTerminator(theOriginalFile);
-                ResourceUseOliImporterDao riDao = DaoFactory.DEFAULT.getResourceUseOliImporterDao();
+                ResourceUseOliImporterDao riDao = new HibernateDaoFactory().getResourceUseOliImporterDao();
                 int numRows = 0;
                 try {
                         if (importFileType.equals(IMPORT_FILE_TYPE_TRANSACTION))
@@ -307,7 +309,7 @@ public class OLIDataImporter {
                 //insert resource_use_oli_transaction_file
                 ResourceUseOliTransactionFileItem resourceUseOliTransactionFileItem = new ResourceUseOliTransactionFileItem();
                 resourceUseOliTransactionFileItem.setFileName(transactionFileName);
-                ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = DaoFactory.DEFAULT.getResourceUseOliTransactionFileDao();
+                ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = new HibernateDaoFactory().getResourceUseOliTransactionFileDao();
                 resourceUseOliTransactionFileDao.saveOrUpdate(resourceUseOliTransactionFileItem);
                 return resourceUseOliTransactionFileItem;
         }
@@ -316,7 +318,7 @@ public class OLIDataImporter {
         private ResourceUseOliUserSessFileItem saveUserSessFile() {
                 ResourceUseOliUserSessFileItem resourceUseOliUserSessFileItem = new ResourceUseOliUserSessFileItem();
                 resourceUseOliUserSessFileItem.setFileName(userSessFileName);
-                ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = DaoFactory.DEFAULT.getResourceUseOliUserSessFileDao();
+                ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = new HibernateDaoFactory().getResourceUseOliUserSessFileDao();
                 resourceUseOliUserSessFileDao.saveOrUpdate(resourceUseOliUserSessFileItem);
                 return resourceUseOliUserSessFileItem;
         }
@@ -328,9 +330,9 @@ public class OLIDataImporter {
         
         //delete all resource_use_oli_transaction and resource_use_oli_transaction_file with this resource_use_oli_transaction_file_id
         private void deleteTransactionAndTransactionFile(Integer resourceUseOliTransactionFileId) {
-                ResourceUseOliTransactionDao resourceUseOliTransactionDao = DaoFactory.DEFAULT.getResourceUseOliTransactionDao();
+                ResourceUseOliTransactionDao resourceUseOliTransactionDao = new HibernateDaoFactory().getResourceUseOliTransactionDao();
                 int deletedTxnRowCnt = resourceUseOliTransactionDao.clear(resourceUseOliTransactionFileId);
-                ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = DaoFactory.DEFAULT.getResourceUseOliTransactionFileDao();
+                ResourceUseOliTransactionFileDao resourceUseOliTransactionFileDao = new HibernateDaoFactory().getResourceUseOliTransactionFileDao();
                 int deletedTxnFileRowCnt = resourceUseOliTransactionFileDao.clear(resourceUseOliTransactionFileId);
                 helper.logInfo(WARN_PREFIX, deletedTxnRowCnt + " records are deleted from resource_use_oli_transaction; and " +
                                 deletedTxnFileRowCnt + " records are deleted from resource_use_oli_transaction_file for transactionFile: " + resourceUseOliTransactionFileId);
@@ -339,9 +341,9 @@ public class OLIDataImporter {
         
        //delete all resource_use_oli_user_sess and resource_use_oli_user_sess_file with this resource_use_oli_user_sess_file_id
         private void deleteUserSessAndUserSessFile(Integer resourceUseOliUserSessFileId) {
-                ResourceUseOliUserSessDao resourceUseOliUserSessDao = DaoFactory.DEFAULT.getResourceUseOliUserSessDao();
+                ResourceUseOliUserSessDao resourceUseOliUserSessDao = new HibernateDaoFactory().getResourceUseOliUserSessDao();
                 int deletedUserSessCnt = resourceUseOliUserSessDao.clear(resourceUseOliUserSessFileId);
-                ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = DaoFactory.DEFAULT.getResourceUseOliUserSessFileDao();
+                ResourceUseOliUserSessFileDao resourceUseOliUserSessFileDao = new HibernateDaoFactory().getResourceUseOliUserSessFileDao();
                 int deletedUserSessFileCnt = resourceUseOliUserSessFileDao.clear(resourceUseOliUserSessFileId);
                 helper.logInfo(WARN_PREFIX, deletedUserSessCnt + " records are deleted from resource_use_oli_user_sess; and " +
                                 deletedUserSessFileCnt + " records are deleted from resource_use_oli_user_sess_file for userSessFile: " + resourceUseOliUserSessFileId);

@@ -43,7 +43,7 @@ import org.jdom.input.SAXBuilder;
 
 import edu.cmu.pslc.datashop.dao.AuthorizationDao;
 import edu.cmu.pslc.datashop.dao.CustomFieldDao;
-import edu.cmu.pslc.datashop.dao.DaoFactory;
+import edu.cmu.pslc.datashop.service.ServiceFactory;
 import edu.cmu.pslc.datashop.dao.DatasetDao;
 import edu.cmu.pslc.datashop.dao.StepRollupDao;
 import edu.cmu.pslc.datashop.dao.UserDao;
@@ -94,7 +94,7 @@ public class OliToRISE extends AbstractComponent {
 
         // Confirm that user has access (at least 'view') to the specified dataset.
         UserItem user = getUser();
-        DatasetItem dataset = DaoFactory.DEFAULT.getDatasetDao().get(datasetId);
+        DatasetItem dataset = ServiceFactory.DEFAULT.getDatasetService().getDao().get(datasetId);
         if (dataset == null) {
             addErrorMessage("Please specify a valid datasetId.");
             System.out.println(this.getOutput());
@@ -160,7 +160,7 @@ public class OliToRISE extends AbstractComponent {
         String userId = this.getUserId();
         if (userId == null) { return null; }
 
-        UserDao userDao = DaoFactory.DEFAULT.getUserDao();
+        UserDao userDao = ServiceFactory.DEFAULT.getUserService().getDao();
         UserItem user = userDao.get(userId);
 
         return user;
@@ -181,7 +181,7 @@ public class OliToRISE extends AbstractComponent {
         // Dataset not found means no access.
         if (dataset == null) { return false; }
 
-        AuthorizationDao authorizationDao = DaoFactory.DEFAULT.getAuthorizationDao();
+        AuthorizationDao authorizationDao = ServiceFactory.DEFAULT.getAuthorizationService().getDao();
         String authLevel = authorizationDao.getAuthLevel(user, dataset);
 
         if (authLevel == null) { return false; }
@@ -201,7 +201,7 @@ public class OliToRISE extends AbstractComponent {
      */
     private Boolean getIsHighStakesAvailable(DatasetItem dataset) {
 
-        CustomFieldDao cfDao = DaoFactory.DEFAULT.getCustomFieldDao();
+        CustomFieldDao cfDao = ServiceFactory.DEFAULT.getCustomFieldService().getDao();
         List<CustomFieldItem> cfList =
             cfDao.findMatchingByName("highStakes", dataset, true);
         return (cfList.size() > 0);
@@ -218,14 +218,14 @@ public class OliToRISE extends AbstractComponent {
     private Map<String, Double[]> getSkillErrorMap(DatasetItem dataset, String kcModel) {
         Map<String, Double[]> result = new HashMap<String, Double[]>();
 
-        SampleItem sample = DaoFactory.DEFAULT.getSampleDao().findOrCreateDefaultSample(dataset);
-        SkillModelItem skillModel = DaoFactory.DEFAULT.getSkillModelDao().findByName(dataset, kcModel);
+        SampleItem sample = ServiceFactory.DEFAULT.getSampleService().getDao().findOrCreateDefaultSample(dataset);
+        SkillModelItem skillModel = ServiceFactory.DEFAULT.getSkillModelService().getDao().findByName(dataset, kcModel);
         if (skillModel == null) {
             addErrorMessage("Failed to find specified KC model: " + kcModel);
             return null;
         }
 
-        StepRollupDao stepRollupDao = DaoFactory.DEFAULT.getStepRollupDao();
+        StepRollupDao stepRollupDao = ServiceFactory.DEFAULT.getStepRollupService().getDao();
         Map<String, Double> hsErrorMap = stepRollupDao.getHighStakesError((Integer)sample.getId(), (Long)skillModel.getId());
         if (hsErrorMap == null) {
             addErrorMessage("Failed to get high-stakes error rates for KC model: " + kcModel);

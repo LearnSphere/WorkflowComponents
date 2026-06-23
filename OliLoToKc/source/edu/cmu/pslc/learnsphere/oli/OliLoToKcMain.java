@@ -51,7 +51,7 @@ import org.jdom.input.SAXBuilder;
 
 import edu.cmu.pslc.datashop.dao.AuthorizationDao;
 import edu.cmu.pslc.datashop.dao.DatasetDao;
-import edu.cmu.pslc.datashop.dao.DaoFactory;
+import edu.cmu.pslc.datashop.service.ServiceFactory;
 import edu.cmu.pslc.datashop.dao.UserDao;
 import edu.cmu.pslc.datashop.item.AuthorizationItem;
 import edu.cmu.pslc.datashop.item.DatasetItem;
@@ -250,7 +250,7 @@ public class OliLoToKcMain extends AbstractComponent {
         String userId = this.getUserId();
         if (userId == null) { return null; }
 
-        UserDao userDao = DaoFactory.DEFAULT.getUserDao();
+        UserDao userDao = ServiceFactory.DEFAULT.getUserService().getDao();
         UserItem user = userDao.get(userId);
 
         return user;
@@ -269,13 +269,13 @@ public class OliLoToKcMain extends AbstractComponent {
 
         if (user.getAdminFlag()) { return true; }
 
-        DatasetDao dsDao = DaoFactory.DEFAULT.getDatasetDao();
+        DatasetDao dsDao = ServiceFactory.DEFAULT.getDatasetService().getDao();
         DatasetItem dataset = dsDao.get(datasetId);
 
         // Dataset not found means no access.
         if (dataset == null) { return false; }
 
-        AuthorizationDao authorizationDao = DaoFactory.DEFAULT.getAuthorizationDao();
+        AuthorizationDao authorizationDao = ServiceFactory.DEFAULT.getAuthorizationService().getDao();
         String authLevel = authorizationDao.getAuthLevel(user, dataset);
 
         if (authLevel == null) { return false; }
@@ -392,7 +392,7 @@ public class OliLoToKcMain extends AbstractComponent {
             DatashopClient client = new DatashopClient(localUrl, apiToken, secret);
             if (client == null) { return; }
 
-            String contents = FileUtils.readFileToString(theFile, null);
+            String contents = FileUtils.readFileToString(theFile, (Charset) null);
             String resultXml = client.getPostService(path.toString(), contents, "text/plain");
             String message = getErrorMessage(resultXml);
             if (message != null) {

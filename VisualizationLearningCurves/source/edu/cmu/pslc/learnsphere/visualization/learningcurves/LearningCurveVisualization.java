@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.visualization.learningcurves;
 
 import java.io.BufferedReader;
+import java.nio.charset.Charset;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,7 +26,8 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -59,7 +61,7 @@ public class LearningCurveVisualization {
     WorkflowHelper workflowHelper = null;
 
     /** Debug logging. */
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger logger = LogManager.getLogger(getClass());
 
     public static final String[] resultHeaders = {
             "skillName",
@@ -880,7 +882,7 @@ public class LearningCurveVisualization {
         SAXBuilder builder = new SAXBuilder();
         builder.setReuseParser(false);
         try {
-            String xmlStr = FileUtils.readFileToString(parametersFile, null);
+            String xmlStr = FileUtils.readFileToString(parametersFile, (Charset) null);
             StringReader reader = new StringReader(xmlStr.replaceAll("[\r\n]+", ""));
             Document doc = builder.build(reader);
             List<Element> cList = doc.getRootElement().getChildren();

@@ -19,6 +19,11 @@ for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
     echo "Skipping Templates dir"
     continue
   fi
+  if [ "$cdir" == "$dir/StudentProgressClassification" ]
+  then
+    echo "Skipping StudentProgressClassification dir"
+    continue
+  fi
   cd $cdir
 
   if [ -f build.xml ] && [ "$cdir" != "$dir" ]; then
@@ -38,7 +43,7 @@ for cdir in `find $dir -maxdepth 1  -type d -name "[^.]*"`; do
   cd $dir
 done
 
-rm -Rf */test/ComponentTestOutput */WorkflowComponent.log */build
+rm -Rf */WorkflowComponent.log */build
 
 if [ ! -s ${dir}/build_errors.txt ]; then
    # the file is empty

@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import edu.cmu.pslc.datashop.workflows.AbstractComponent;
 import edu.cmu.pslc.datashop.dao.*;
+import edu.cmu.pslc.datashop.service.ServiceFactory;
 import edu.cmu.pslc.datashop.dao.hibernate.*;
 import edu.cmu.pslc.datashop.item.*;
 import edu.cmu.pslc.datashop.item.DataShopInstanceItem;
@@ -136,7 +137,7 @@ public class DetectorTesterMain extends AbstractComponent {
           SpringContext.getApplicationContext(appContextPath);
       }
 
-      UserDao userDao = DaoFactory.DEFAULT.getUserDao();
+      UserDao userDao = ServiceFactory.DEFAULT.getUserService().getDao();
 
       String userId = this.getUserId();
       if (userId == null) { //for use with ant runComponent
@@ -146,7 +147,7 @@ public class DetectorTesterMain extends AbstractComponent {
 
       UserItem userItem = userDao.get(userId);
 
-      ProjectDao projectDao = DaoFactory.DEFAULT.getProjectDao();
+      ProjectDao projectDao = ServiceFactory.DEFAULT.getProjectService().getDao();
 
       String accessProject = getAccessProjectName();
       if (accessProject == null) {
@@ -165,7 +166,7 @@ public class DetectorTesterMain extends AbstractComponent {
 
       ProjectItem detectorProject = projectsWithName.get(0);
 
-      AuthorizationDao authorizationDao = DaoFactory.DEFAULT.getAuthorizationDao();
+      AuthorizationDao authorizationDao = ServiceFactory.DEFAULT.getAuthorizationService().getDao();
 
       Integer projectId = (Integer)detectorProject.getId();
       logger.debug("Project ID : " + projectId);

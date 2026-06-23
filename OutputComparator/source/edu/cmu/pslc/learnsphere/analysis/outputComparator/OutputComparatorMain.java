@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.analysis.outputComparator;
 
 import java.io.BufferedWriter;
+import java.nio.charset.Charset;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -167,7 +168,7 @@ public class OutputComparatorMain extends AbstractComponent {
             // https://community.oracle.com/thread/2594170
             builder.setReuseParser(false);
             try {
-                    String xmlStr = FileUtils.readFileToString(new File(inputFilePathName), null);
+                    String xmlStr = FileUtils.readFileToString(new File(inputFilePathName), (Charset) null);
                     StringReader reader = new StringReader(xmlStr.replaceAll("[\r\n]+", ""));
                     Document doc = builder.build(reader);
                     logger.info("Input XML file is well-formed.");

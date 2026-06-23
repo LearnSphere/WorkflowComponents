@@ -334,7 +334,7 @@ public class DeidentifyMain extends AbstractComponent {
     private String getDSAnonStudentId(String studentActualId) {
         // Have to go to mapping_db for actual student info
          edu.cmu.pslc.datashop.mapping.dao.StudentDao mappedStudentDao =
-            edu.cmu.pslc.datashop.mapping.dao.DaoFactory.HIBERNATE.getStudentDao();
+            edu.cmu.pslc.datashop.mapping.service.ServiceFactory.DEFAULT.getStudentService().getDao();
                          
         Collection<edu.cmu.pslc.datashop.mapping.item.StudentItem> students = null;
         students = mappedStudentDao.find(studentActualId);

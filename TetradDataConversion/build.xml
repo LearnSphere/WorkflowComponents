@@ -13,8 +13,6 @@
     <property name="javadoc" location="${basedir}/javadoc" />
     <property name="tetrad.lib" location="../CustomLibraries/Tetrad" />
 
-    <property name="javac8" location="/usr/java/jdk1.8.0_131/bin/javac" />
-
     <property name="version" value="1.0" />
 
     <property name="component.id" value="TetradDataConversion" />
@@ -87,7 +85,7 @@
             <classpath refid="lib.path" />
 			<compilerarg line="-nowarn" />
         </javac>
-        <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on" fork="yes" executable="${javac8}">
+        <javac includeantruntime="false" srcdir="${program}" destdir="${build}" debug="on">
             <classpath refid="lib.path" />
         </javac>
     </target>

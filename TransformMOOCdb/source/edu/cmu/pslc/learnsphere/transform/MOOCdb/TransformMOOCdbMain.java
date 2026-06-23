@@ -1,6 +1,7 @@
 package edu.cmu.pslc.learnsphere.transform.MOOCdb;
 
 import java.io.File;
+import edu.cmu.pslc.learnsphere.analysis.moocdb.item.FeatureExtractionItem;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -251,7 +252,7 @@ public class TransformMOOCdbMain extends AbstractComponent {
 
 
     private String getAllFeatures (String MOOCdbName) {
-            FeatureExtractionDao feDao = DaoFactory.DEFAULT.getFeatureExtractionDao();
+            FeatureExtractionDao feDao = (FeatureExtractionDao) DaoFactory.HIBERNATE.getDao(FeatureExtractionItem.class);
             Map<Integer, String> featureMap = feDao.getAllFeatures(MOOCdbName);
             Iterator it = featureMap.entrySet().iterator();
             String features = "";
@@ -264,49 +265,49 @@ public class TransformMOOCdbMain extends AbstractComponent {
 
 
     private boolean isMOOCdb(String dbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.isMOOCdb(dbName);
     }
 
     private boolean userExist(String username) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.userExist(username);
     }
 
     private void deleteMOOCDbItem(MOOCdbItem dbItem) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.delete(dbItem);
     }
 
     private void deleteMOOCdb(String MOOCdbName) throws SQLException, Exception {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.deleteMOOCdb(MOOCdbName);
     }
 
     private void deleteUser(String username) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.deleteUser(username);
     }
 
     private void createDBUser(String username, String passwrod) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.createDBUser(username, passwrod);
     }
 
     private void createDB(String dbName) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.createDB(dbName);
     }
 
     private void addUserToDB(String dbName, String username, String accessRights) throws SQLException {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.addUserToDB(dbName, username, accessRights);
     }
 
     //restore MOOCdb
     private void restoreMOOCdb(String DbName, String MOOCdbFileName, String username, String password)
                     throws SQLException, Exception {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.restoreMOOCdb(DbName, MOOCdbFileName, username, password);
     }
 
@@ -324,13 +325,13 @@ public class TransformMOOCdbMain extends AbstractComponent {
     }
 
     private boolean databaseExist(String dbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.databaseExist(dbName);
     }
 
     //check if a MOOCdb already exists
     private MOOCdbItem findMOOCdb(String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             MOOCdbItem item = dbDao.getMOOCdbByName(MOOCdbName);
             return item;
     }
@@ -398,12 +399,12 @@ public class TransformMOOCdbMain extends AbstractComponent {
 
     //save or update a MOOCdbITem and return the item
     private void saveOrUpdateMOOCdb(MOOCdbItem dbItem) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             dbDao.saveOrUpdate(dbItem);
     }
 
     private Date getEarliestSubmissionTime (String MOOCdbName) {
-            MOOCdbDao dbDao = DaoFactory.DEFAULT.getMOOCdbDao();
+            MOOCdbDao dbDao = (MOOCdbDao) DaoFactory.HIBERNATE.getDao(MOOCdbItem.class);
             return dbDao.getEarliestSubmissionTime(MOOCdbName);
     }
 }

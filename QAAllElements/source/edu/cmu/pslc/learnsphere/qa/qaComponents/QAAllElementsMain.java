@@ -125,7 +125,7 @@ public class QAAllElementsMain extends AbstractComponent {
     private boolean canEstablishDb() {
             // Have to go to mapping_db for actual student info
              edu.cmu.pslc.datashop.mapping.dao.StudentDao mappedStudentDao =
-                edu.cmu.pslc.datashop.mapping.dao.DaoFactory.HIBERNATE.getStudentDao();
+                edu.cmu.pslc.datashop.mapping.service.ServiceFactory.DEFAULT.getStudentService().getDao();
             if (mappedStudentDao == null)
                     return false;
             Collection<edu.cmu.pslc.datashop.mapping.item.StudentItem> students = null;
