@@ -66,8 +66,8 @@ def prepare_data(data_file, working_dir, min_interactions_per_user, kc_col_name,
     
     # change to 1 and 0
     df['correct'] = df['correct'].astype(str).str.lower()
-    df.loc[df['correct'].isin(['correct','true','1']), 'correct'] = 1
-    df.loc[df['correct'] != 1, 'correct'] = 0
+    df.loc[df['correct'].isin(['correct','true','1']), 'correct'] = '1'
+    df.loc[df['correct'] != '1', 'correct'] = '0'
     df['correct'] = df['correct'].astype(np.int32)
     
     # Filter nan skills
