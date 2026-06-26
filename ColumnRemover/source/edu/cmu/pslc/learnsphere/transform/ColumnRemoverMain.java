@@ -237,32 +237,34 @@ public class ColumnRemoverMain extends AbstractComponent {
 
     //get all column labels
     List<Element> inputElements = this.inputXml.get(0);
-    for (Element inputElement : inputElements) {
-      if (inputElement.getChild("files") != null && inputElement.getChild("files").getChildren() != null) {
-        for (Element filesChild : (List<Element>) inputElement.getChild("files").getChildren()) {
-          if (filesChild.getChild("metadata") != null) {
-            Element inMetaElement = filesChild.getChild("metadata");
-            if (inMetaElement != null && !inMetaElement.getChildren().isEmpty()) {
-              for (Element child : (List<Element>) inMetaElement.getChildren()) {
-                if (child.getChild("name") != null
-                    && child.getChild("index") != null
-                    && child.getChild("id") != null) {
-                  String colLabel = child.getChildTextTrim("name");
-                  
-                  allColumns.add(colLabel);
-                }
-              }
-            }
-            break; // we only get metadata from one of the objects for now.. more code required to handle them separately
-          }
-        }
-      }
+    if (inputElements != null) {
+	    for (Element inputElement : inputElements) {
+	      if (inputElement.getChild("files") != null && inputElement.getChild("files").getChildren() != null) {
+	        for (Element filesChild : (List<Element>) inputElement.getChild("files").getChildren()) {
+	          if (filesChild.getChild("metadata") != null) {
+	            Element inMetaElement = filesChild.getChild("metadata");
+	            if (inMetaElement != null && !inMetaElement.getChildren().isEmpty()) {
+	              for (Element child : (List<Element>) inMetaElement.getChildren()) {
+	                if (child.getChild("name") != null
+	                    && child.getChild("index") != null
+	                    && child.getChild("id") != null) {
+	                  String colLabel = child.getChildTextTrim("name");
+	                  
+	                  allColumns.add(colLabel);
+	                }
+	              }
+	            }
+	            break; // we only get metadata from one of the objects for now.. more code required to handle them separately
+	          }
+	        }
+	      }
+	    }
     }
     logger.debug("got allColumns");
 
     String removeOrKeep = this.getOptionAsString("removeOrKeep");
     boolean remove = false;
-    if (removeOrKeep.equals("Remove_Selected_Columns")) {
+    if (removeOrKeep != null && removeOrKeep.equals("Remove_Selected_Columns")) {
       remove = true;
     }
 
