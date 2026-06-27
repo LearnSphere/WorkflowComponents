@@ -12,6 +12,7 @@ suppressWarnings(suppressMessages(library(rlang)))
 
 options(scipen = 999)
 options(warn = -1)
+options(tidyselect_verbosity = "quiet")
 
 # Function from pivot.R
 import.data <- function(filename){
