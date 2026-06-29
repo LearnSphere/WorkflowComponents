@@ -12,6 +12,7 @@ import argparse
 import re
 import copy
 import pytz
+from packaging import version
 
 
 # In[2]:
@@ -172,7 +173,11 @@ logFile.close();
 
 file_encoding = 'utf8'        # set file_encoding to the file encoding (utf8, latin1, etc.)
 input_fd = open(args.fileIndex[0][1], encoding=file_encoding, errors = 'backslashreplace')
-df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
+#df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
+if version.parse(pd.__version__) >= version.parse("1.3.0"):
+    df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", on_bad_lines='skip', low_memory=False)
+else:
+    df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
 
 originalAllColNames = df.columns
 
@@ -202,7 +207,11 @@ if False:
     #input_fd = open('ds76_tx_All_Data_74_2018_0912_070949_noPST_noPV.txt', encoding=file_encoding, errors = 'backslashreplace')
     input_fd = open('TXN_time_corrected_ds5221_tx_All_Data_7411_2023_0613_153700.txt', encoding=file_encoding, errors = 'backslashreplace')
     
-    df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
+    #df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
+    if version.parse(pd.__version__) >= version.parse("1.3.0"):
+        df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", on_bad_lines='skip', low_memory=False)
+    else:
+        df = pd.read_csv(input_fd, na_values=['null', 'na', 'n/a', 'nan'], sep="\t", error_bad_lines=False, low_memory=False)
     originalAllColNames = df.columns
     #print(df.dtypes)
     #fresh new log file
