@@ -195,12 +195,12 @@ myData = subset(myData, select=neededColList)
 #convert factor columns to character
 i <- sapply(myData, is.factor)
 myData[i] <- lapply(myData[i], as.character)
-m_myData <- melt(myData, measure.vars = measureColAsList)
+m_myData <- reshape2::melt(myData, measure.vars = measureColAsList)
 
 # if (aggMethod  %in% c("length", "min", "max")) {
-#  comd = paste("agg_data<-dcast(myData,", pivotRowName, "~", pivotColName, ", value.var=", "\"", meaColName, "\"", ", fun.aggregate = ", aggMethod, ")", sep="")
+#  comd = paste("agg_data<-reshape2::dcast(myData,", pivotRowName, "~", pivotColName, ", value.var=", "\"", meaColName, "\"", ", fun.aggregate = ", aggMethod, ")", sep="")
 # } else {
-#   comd = paste("agg_data<-dcast(myData,", pivotRowName, "~", pivotColName, ", value.var=", "\"", meaColName, "\"", ", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+#   comd = paste("agg_data<-reshape2::dcast(myData,", pivotRowName, "~", pivotColName, ", value.var=", "\"", meaColName, "\"", ", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
 # }
 #print(head(m_myData))
 
@@ -219,29 +219,29 @@ if (aggMethod == "median") {
 
 
 if (aggMethod  %in% c("length", "min", "max")) {
-  comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
   
   # if (hasColumns == "No") {
-  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  #   comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
   # } else {
-  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
+  #   comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ")", sep="")
   # } 
 } else {
-  comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
   # 
   # if (hasColumns == "No") {
-  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  #   comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~ . + variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
   # } else {
-  #   comd = paste("agg_data<-dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
+  #   comd = paste("agg_data<-reshape2::dcast(m_myData,", pivotRowName, "~", pivotColName, "+variable, value.var=\"value\", fun.aggregate = ", aggMethod, ", na.rm = TRUE)", sep="")
   # } 
   
 }
 
 #different formula examples
-#agg_data<-dcast(myData,Feature.Name+User.ID~Longitudinal.Feature.Week+Date.Of.Extraction, value.var="Longitudinal.Feature.Value", fun.aggregate = sum, na.rm = TRUE)
-#m_myData <- melt(myData, measure.vars = c("Longitudinal.Feature.Value", "Longitudinal.Feature.Week"))
-#agg_data<-dcast(m_myData, User.ID~Date.Of.Extraction+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
-#agg_data<-dcast(m_myData, User.ID~.+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
+#agg_data<-reshape2::dcast(myData,Feature.Name+User.ID~Longitudinal.Feature.Week+Date.Of.Extraction, value.var="Longitudinal.Feature.Value", fun.aggregate = sum, na.rm = TRUE)
+#m_myData <- reshape2::melt(myData, measure.vars = c("Longitudinal.Feature.Value", "Longitudinal.Feature.Week"))
+#agg_data<-reshape2::dcast(m_myData, User.ID~Date.Of.Extraction+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
+#agg_data<-reshape2::dcast(m_myData, User.ID~.+variable, value.var="value", fun.aggregate=sum, na.rm = TRUE)
 eval(parse(text=comd))
 
 
@@ -294,7 +294,7 @@ if (naValue == "blank") {
 }
 my.write(agg_data, outputFileName, sep="\t", row.names = F, col.names=T, quote = F, na = naValue)
 
-#dcast(myData, User.ID+Longitudinal.Feature.Week ~ Feature.Name, value.var="values", fun.aggregate = sum)
+#reshape2::dcast(myData, User.ID+Longitudinal.Feature.Week ~ Feature.Name, value.var="values", fun.aggregate = sum)
 
 
 #test command
