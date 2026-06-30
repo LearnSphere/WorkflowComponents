@@ -14,8 +14,11 @@ args <- commandArgs(trailingOnly = TRUE)
 options(dplyr.summarise.inform=F)
 
 #library
-suppressWarnings(suppressMessages(library(tidyverse)))
+#suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(ggplot2)))
 suppressWarnings(suppressMessages(library(lmerTest)))
+suppressWarnings(suppressMessages(library(readr)))
 
 #initializing
 discipline = "Mathematics"
@@ -129,7 +132,7 @@ transform.map <- function(dataset){
 
   #combine
   dataset <- data.frame(student, school, grade, gender, race,
-                        termname,rit,discipline)
+                        termname,rit,discipline, stringsAsFactors = TRUE)
 
   names(dataset) <- c("student", "school", "grade", "gender", "race",
                       "termname","rit","discipline")
@@ -205,7 +208,7 @@ prepare.map <- function(dataset1, dataset2){
                                         currLevel2[grepl("spring", tolower(currLevel2))]))
   }
 
-  dataset <- rbind(data1, data2)
+  dataset <- suppressWarnings(rbind(data1, data2))
   return(dataset)
 }
 
@@ -216,7 +219,7 @@ plot.iafm <- function(data, choice){
   data.all <- data
   #model year 1
   data <- data.all[data.all$term %in%c(1,2,3),]
-  model1 <- lmer(rit ~ term + (term|student), data= data)
+  model1 <- suppressWarnings(lmer(rit ~ term + (term|student), data= data))
 
   stud.params <- data.frame( cbind(row.names(ranef(model1)$student), ranef(model1)$student[,1], ranef(model1)$student[,2]) )
   colnames(stud.params) <- c("student", "Intercept", "Slope")
@@ -245,7 +248,7 @@ plot.iafm <- function(data, choice){
   data[data$term == 4,]$term <- 1
   data[data$term == 5,]$term <- 2
   data[data$term == 6,]$term <- 3
-  model2 <- lmer(rit ~ term + (term|student), data= data)
+  model2 <- suppressWarnings(lmer(rit ~ term + (term|student), data= data))
 
   stud.params <- data.frame( cbind(row.names(ranef(model2)$student), ranef(model2)$student[,1], ranef(model2)$student[,2]) )
   colnames(stud.params) <- c("student", "Intercept", "Slope")
@@ -274,13 +277,13 @@ plot.iafm <- function(data, choice){
   trial.data1$year <- 1
   trial.data2$year <- 2
 
-  trial.data <- rbind(trial.data1, trial.data2)
+  trial.data <- suppressWarnings(rbind(trial.data1, trial.data2))
 
   #trial.data <- trial.data[trial.data$is.intervention ==1,]
 
 
 
-  graph1 <- ggplot()+
+  graph1 <- suppressWarnings(ggplot()+
     geom_abline(data = trial.data1[trial.data1$is.intervention ==1,],
                 aes(intercept = (Intercept+overall.intercept1),
                     slope =(Slope+overall.slope1)),
@@ -301,7 +304,7 @@ plot.iafm <- function(data, choice){
                                intercept = avg.incpt.year2+overall.intercept2
     ), size = 2, color = "darkgreen",show.legend = TRUE )+
     scale_x_continuous(breaks= 1:3, labels = c("Fall" , "Winter ", "Spring"), limits = c(1,3) ) +labs(y = "MAP (RIT Score)", x = NULL)+
-    ggtitle("iAFM: Score trend for both the years for STUDENTS WITH INTERVENTION", subtitle = "Year1 = RED, Year 2 = GREEN" )+ theme(axis.text.x = element_text(size = 12))
+    ggtitle("iAFM: Score trend for both the years for STUDENTS WITH INTERVENTION", subtitle = "Year1 = RED, Year 2 = GREEN" )+ theme(axis.text.x = element_text(size = 12)))
 
   trial.data$newslope <-0
   trial.data[trial.data$year == 1,]$newslope <-
