@@ -32,7 +32,7 @@ suppressMessages(library(rlang))
 suppressMessages(library(lme4))
 suppressMessages(library(data.table))
 suppressMessages(library(optimx))
-suppressMessages(library(speedglm))
+#suppressMessages(library(speedglm))
 
 # initialize variables
 inputFile = NULL
@@ -442,12 +442,12 @@ if(modelingFunc == "glmer" || modelingFunc == "lmer"){
   modelingString = ""
   #print(format(Sys.time(), "%Y-%m-%d %H:%M:%OS3"))
   if (modelingFunc == "glm") {
-    #modelingString = paste("fittedModel <-glm(", formula, ", data=ds, family=", family, ")", sep="")
-	  modelingString = paste("fittedModel <-speedglm(", formula, ", data=ds, family=", family, ")", sep="")
+    modelingString = paste("fittedModel <-glm(", formula, ", data=ds, family=", family, ")", sep="")
+	#modelingString = paste("fittedModel <-speedglm(", formula, ", data=ds, family=", family, ")", sep="")
   } else {
     #modelingString = paste("fittedModel <-lm(", formula, ", data=ds, family=", family, ")", sep="")
-    #modelingString = paste("fittedModel <-lm(", formula, ", data=ds)", sep="")
-    modelingString = paste("fittedModel <-speedlm(", formula, ", data=ds)", sep="")
+    modelingString = paste("fittedModel <-lm(", formula, ", data=ds)", sep="")
+    #modelingString = paste("fittedModel <-speedlm(", formula, ", data=ds)", sep="")
   }
   #eval(parse(text=modelingString))
   logWarningsMessages(eval(parse(text=modelingString)), logFileName = "r_glm.wfl")
