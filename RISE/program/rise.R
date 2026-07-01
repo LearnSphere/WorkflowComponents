@@ -3,10 +3,10 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 
-suppressMessages(library(rise))
-suppressMessages(library(data.table))
-suppressMessages(library(dplyr))
-suppressMessages(library(ggplot2))
+suppressMessages(suppressWarnings(library(rise)))
+suppressMessages(suppressWarnings(library(data.table)))
+suppressMessages(suppressWarnings(library(dplyr)))
+suppressMessages(suppressWarnings(library(ggplot2)))
 
 workingDir = "."
 inputFile<-NULL
@@ -49,9 +49,9 @@ if (length(args) == 1) {
 df <- suppressWarnings(fread(file=inputFile, verbose=F, data.table=FALSE))
 
 # Call RISE library
-outputData <- rise(df)
+outputData <- suppressWarnings(rise(df))
 if (generatePlot) {
-   outputPlot <- rise(df, visual = TRUE)
+   outputPlot <- suppressWarnings(rise(df, visual = TRUE))
 }
 
 outputTxtFile <- paste(workingDir, "/rise.txt", sep="")
