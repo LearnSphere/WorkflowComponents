@@ -1,13 +1,14 @@
 # Run PFA models
 
-echo<-FALSE
+#echo<-FALSE
 # Read script parameters
 args <- commandArgs(trailingOnly = TRUE)
 
 #load libraries
-suppressMessages(library(lme4))
-suppressMessages(library(XML))
-suppressMessages(library(MuMIn))
+suppressMessages(suppressWarnings(library(logWarningsMessagesPkg)))
+suppressMessages(suppressWarnings(library(lme4)))
+suppressMessages(suppressWarnings(library(XML)))
+suppressMessages(suppressWarnings(library(MuMIn)))
 
 # initialize variables
 inputFile = NULL
@@ -100,7 +101,6 @@ clean <- file(paste(workingDirectory, "R_output_model_summary.txt", sep=""))
 sink(clean,append=TRUE)
 sink(clean,append=TRUE,type="message") # get error reports also
 options(width=120)
-
 #Run the model
 dat<-val[val$CF..ansbin.==0 | val$CF..ansbin.==1,]
 if(grepl("Full",flags)){
@@ -109,7 +109,7 @@ x<-glmer(as.formula(paste("CF..ansbin.~
             CF..incor.:",KCmodel,"+
             (1|",KCmodel,")+
             (1|Anon.Student.Id)")),
-            data=dat,family=binomial(logit))}
+            data=dat,family=binomial("logit"))}
 
 if(grepl("Simple",flags)){
 x<-glmer(as.formula(paste("CF..ansbin.~
@@ -117,11 +117,12 @@ x<-glmer(as.formula(paste("CF..ansbin.~
             CF..incor.+
             (1|",KCmodel,")+
             (1|Anon.Student.Id)"))
-            ,data=dat,family=binomial(logit))}
+            ,data=dat,family=binomial("logit"))}
 
 
 #Output text summary
 print(summary(x))
+
 
 randomEffectsDataFrame = as.data.frame(do.call(rbind, ranef(x)))
 write.table(randomEffectsDataFrame,file=outputFilePath2,sep="\t",quote=FALSE,na = "",col.names=FALSE,append=FALSE,row.names = TRUE)
@@ -138,8 +139,8 @@ newXMLNode("RMSE", round(sqrt(mean((pred-dat$CF..ansbin.)^2)),5), parent = top)
 newXMLNode("Accuracy", round(sum(dat$CF..ansbin.==(pred>.5))/Nres,5), parent = top)
 newXMLNode("glmmR2fixed", round(R2[1],5) , parent = top)
 newXMLNode("glmmR2random", round(R2[2]-R2[1],5), parent = top)
-newXMLNode("r2ML", round(r.squaredLR(x)[1],5) , parent = top)
-newXMLNode("r2CU", round(attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
+#newXMLNode("r2ML", round(MuMIn::r.squaredLR(x)[1],5) , parent = top)
+#newXMLNode("r2CU", round(MuMIn::attr(r.squaredLR(x),"adj.r.squared"),5) , parent = top)
 saveXML(top, file=outputFilePath3)
 
 # Save predictions in file

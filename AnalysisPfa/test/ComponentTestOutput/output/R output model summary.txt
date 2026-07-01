@@ -1,3 +1,0 @@
-Error in eval(predvars, data, env) : object 'CF..ansbin.' not found
-Calls: glmer ... eval -> <Anonymous> -> model.frame.default -> eval -> eval
-Execution halted
