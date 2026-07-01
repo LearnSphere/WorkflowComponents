@@ -13,6 +13,9 @@ from scipy.optimize import minimize
 
 from util import invlogit_vect
 
+import warnings
+from scipy.optimize import OptimizeWarning
+
 class BoundedLogistic(BaseEstimator):
 
     def __init__(self, fit_first_intercept=True, fit_second_intercept=True,
@@ -100,12 +103,20 @@ class BoundedLogistic(BaseEstimator):
             raise ValueError("L2 penalty must be the same length as coef, be sure the intercept is accounted for.")
 
         #start of modification and addition
-        w = minimize(_ll, w0, args=(X, X2, y, self.l2_),
-                               jac=_ll_grad, 
-                               method=self.method, bounds=self.bounds_,
-                               options={'maxiter': self.max_iter, 
+        #w = minimize(_ll, w0, args=(X, X2, y, self.l2_),
+        #                       jac=_ll_grad, 
+        #                       method=self.method, bounds=self.bounds_,
+        #                       options={'maxiter': self.max_iter, 
                                         #'disp': True
-                               })
+        #                       })
+                               
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=OptimizeWarning, message="Unknown solver options")
+            w = minimize(_ll, w0, args=(X, X2, y, self.l2_),
+                         jac=_ll_grad, 
+                         method=self.method, bounds=self.bounds_,
+                         options={'maxiter': self.max_iter})
+                 
         negOfLl = w.fun
         w = w['x']
         self.ll = (-1)*negOfLl

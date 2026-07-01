@@ -62,6 +62,13 @@ def read_datashop_student_step(step_file, kc_model, ft):
         item = data[header['Problem Name']] + "##" + data[header['Step Name']]
         item_label.append(item)
     return (kcs, opps, y, stu, student_label, item_label, original_headers, original_step_data)
+    
+# Helper to safely get feature names across different scikit-learn versions
+def get_features(vectorizer):
+    if hasattr(vectorizer, 'get_feature_names_out'):
+        return vectorizer.get_feature_names_out()
+    else:
+        return vectorizer.get_feature_names()
 
 if __name__ == "__main__":
 
@@ -187,10 +194,14 @@ if __name__ == "__main__":
     modelValuesOutfile.write("</model>\n")
     modelValuesOutfile.write("</model_values>\n")
 
-    featuresX = sv.get_feature_names() + qv.get_feature_names() + ov.get_feature_names()
-    featuresX2 = qv.get_feature_names()
-    numStudent = len(sv.get_feature_names())
-    numSkill = len(qv.get_feature_names())
+    #featuresX = sv.get_feature_names() + qv.get_feature_names() + ov.get_feature_names()
+    featuresX = list(get_features(sv)) + list(get_features(qv)) + list(get_features(ov))
+    #featuresX2 = qv.get_feature_names()
+    featuresX2 = list(get_features(qv))
+    #numStudent = len(sv.get_feature_names())
+    numStudent = len(get_features(sv))
+    #numSkill = len(qv.get_feature_names())
+    numSkill = len(get_features(qv))
     
     parameterEstimateOutfilePath = args.workingDir + "/Parameter-estimate-values.xml"
     parameterEstimateOutfile = open(parameterEstimateOutfilePath, 'w')
