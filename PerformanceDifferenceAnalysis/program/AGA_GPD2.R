@@ -179,7 +179,8 @@ for (colname in colnames(GPDdata)) {
 
 #if final grade is character, make sure they are only 'A', 'B', 'C', 'D', 'F', 'R', 'W'
 #and F, R and W are all treated as failed "F"
-if (lapply(GPDdata,class)["FINAL.GRADE"] != "numeric" && lapply(GPDdata,class)["FINAL.GRADE"] != "integer" ) {
+#if (lapply(GPDdata,class)["FINAL.GRADE"] != "numeric" && lapply(GPDdata,class)["FINAL.GRADE"] != "integer" ) {
+if (!is.numeric(GPDdata$FINAL.GRADE) && !is.integer(GPDdata$FINAL.GRADE)) {
   unique_vals = unique(GPDdata$FINAL.GRADE)
   for (unique_val in unique_vals) {
     if (!is.element(unique_val, c('A', 'B', 'C', 'D', 'F', 'R', 'W'))) {
@@ -190,9 +191,9 @@ if (lapply(GPDdata,class)["FINAL.GRADE"] != "numeric" && lapply(GPDdata,class)["
 
 #make sure the analysis.factor is factor field
 GPDdata$ANALYSIS.FACTOR = as.factor(GPDdata$ANALYSIS.FACTOR)
-
 #could add a test for whether FINAL.GRADE needs conversion before next step
 if (lapply(GPDdata,class)["FINAL.GRADE"] != "numeric" && lapply(GPDdata,class)["FINAL.GRADE"] != "integer") {
+	GPDdata$FINAL.GRADE <- factor(GPDdata$FINAL.GRADE, levels = c('A','B','C','D','F','R','W'))
   GPDdata$Grade <- 5 - as.integer(GPDdata$FINAL.GRADE)
 } else {
   GPDdata$Grade <- GPDdata$FINAL.GRADE
