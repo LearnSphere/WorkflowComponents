@@ -6,12 +6,12 @@ echo<-FALSE
 args <- commandArgs(trailingOnly = TRUE)
 
 #load libraries
-suppressMessages(library(caTools))
-suppressMessages(library(XML))
-suppressMessages(library(MuMIn))
-suppressMessages(library(TTR))
-suppressMessages(library(plyr))
-suppressMessages(library(pROC))
+suppressMessages(suppressWarnings(library(caTools)))
+suppressMessages(suppressWarnings(library(XML)))
+suppressMessages(suppressWarnings(library(MuMIn)))
+suppressMessages(suppressWarnings(library(TTR)))
+suppressMessages(suppressWarnings(library(plyr)))
+suppressMessages(suppressWarnings(library(pROC)))
 
 inputFile = NULL
 
