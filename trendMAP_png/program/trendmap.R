@@ -133,10 +133,16 @@ trend.map <- function(dataset1, dataset2){
   data2 <- transform.map(dataset2)
 
   #checking for the year data to prepare factor
-  orig.level1 <- levels(data1$termname)
-  orig.level2 <- levels(data2$termname)
-  year1 <- parse_number(orig.level1[1])
-  year2 <- parse_number(orig.level2[1])
+  #orig.level1 <- levels(data1$termname)
+  #orig.level2 <- levels(data2$termname)
+  #year1 <- parse_number(orig.level1[1])
+  #year2 <- parse_number(orig.level2[1])
+  orig.level1 <- unique(as.character(data1$termname))
+  orig.level2 <- unique(as.character(data2$termname))
+
+  year1 <- max(readr::parse_number(orig.level1), na.rm = TRUE)
+  year2 <- max(readr::parse_number(orig.level2), na.rm = TRUE)
+  
   data1$term <- 0
   data2$term <- 0
   currLevel1 <-  levels(data1$termname)
@@ -191,7 +197,12 @@ trend.map <- function(dataset1, dataset2){
 
   avg.race.maths <- dataset[dataset$discipline==subject,] %>%
     group_by(is.minoritized, term) %>%
-    summarise(avg.rit = mean(rit), count = n())
+    #summarise(avg.rit = mean(rit), count = n())
+	summarise(
+		avg.rit = mean(rit, na.rm = TRUE),
+		count = dplyr::n(),
+		.groups = "drop"
+	)
 
   table1 <- avg.race.maths
 
@@ -200,7 +211,7 @@ trend.map <- function(dataset1, dataset2){
     geom_line(aes(group = student), alpha = .1) +
     geom_line(data = avg.race.maths, aes(x = term, y = avg.rit,
                                          color = is.minoritized),
-              alpha = 1,size = 2)+
+              alpha = 1,linewidth = 2)+
     theme_bw()+
     theme(axis.text.x = element_text(angle = 60, hjust =1, vjust =1)) +
     ggtitle(sprintf("Growth %s : Minoritized", subject))
