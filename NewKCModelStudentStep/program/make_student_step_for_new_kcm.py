@@ -12,6 +12,9 @@ import os
 import sys
 import datetime as dt
 
+import warnings
+warnings.filterwarnings('ignore', category=pd.errors.PerformanceWarning)
+
 
 # In[9]:
 
