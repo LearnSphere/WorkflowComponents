@@ -2,7 +2,8 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime as dt, timedelta
-from pandas.errors import SettingWithCopyWarning, PerformanceWarning
+#from pandas.errors import SettingWithCopyWarning, PerformanceWarning
+from pandas.errors import PerformanceWarning
 import warnings
 import argparse
 import os
