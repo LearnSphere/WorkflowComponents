@@ -133,7 +133,8 @@ elif modification_method == 'Split to Multiple Rows':
             #process skills
             skills = row[kcm_to_split]
             if skills is None or pd.isna(skills):
-                split_df = split_df.append(row, ignore_index = True)
+                #split_df = split_df.append(row, ignore_index = True)
+                split_df = pd.concat([split_df, pd.DataFrame([row])], ignore_index=True)
                 continue
             skills = row[kcm_to_split].split('~~')
             for skill in skills:
@@ -153,7 +154,8 @@ elif modification_method == 'Split to Multiple Rows':
                             row_as_dict[column] = row[column]
                     else:
                         row_as_dict[column] = row[column]
-                split_df = split_df.append(row_as_dict, ignore_index = True)
+                #split_df = split_df.append(row_as_dict, ignore_index = True)
+                split_df = pd.concat([split_df, pd.DataFrame([row_as_dict])], ignore_index=True)
         #redo opportunity
         kcm_name = kcm_to_split
         if "KC (" in kcm_to_split and ")" in kcm_to_split:
