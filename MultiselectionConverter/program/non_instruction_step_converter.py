@@ -93,7 +93,8 @@ for i in range(len(df_map.index)):
         if df_map_new.empty:
             df_map_new = new_row
         else:
-            df_map_new = df_map_new.append(new_row)
+            #df_map_new = df_map_new.append(new_row)
+            df_map_new = pd.concat([df_map_new, new_row], ignore_index=True)
 
 
 # In[18]:
@@ -141,7 +142,9 @@ out_file.write(original_headers)
 out_file.close()
 #with open(out_file_name, 'a', newline='') as f:
 #    df_combined.to_csv(f, sep='\t', index=False, header=False)
-df_combined.to_csv(out_file_name, sep='\t', index=False, header=False, line_terminator='\n', mode='a')
+#df_combined.to_csv(out_file_name, sep='\t', index=False, header=False, line_terminator='\n', mode='a')
+#this only works for python 3.12 or 3.13. for python 3.6, revert back to the line above
+df_combined.to_csv(out_file_name, sep='\t', index=False, header=False, lineterminator='\n', mode='a')
 
 #if the file exists, delete it
 #if os.path.exists(out_file_name):
