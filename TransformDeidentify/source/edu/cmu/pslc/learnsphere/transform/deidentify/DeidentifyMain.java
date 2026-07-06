@@ -167,7 +167,6 @@ public class DeidentifyMain extends AbstractComponent {
             /** Initialize the Spring Framework application context. */
             SpringContext.getApplicationContext(appContextPath);
         }
-
         // Input files
         Map<Integer, List<File>> inFilesByNodeIndex = this.getAttachments();
         for (Integer nodeIndex : inFilesByNodeIndex.keySet()) {
