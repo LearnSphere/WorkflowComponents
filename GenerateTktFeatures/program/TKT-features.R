@@ -6,7 +6,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 
 #load library
-library(caTools)
+suppressWarnings(suppressMessages(library(caTools)))
 
 # initialize variables
 inputFile = NULL
