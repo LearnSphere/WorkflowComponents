@@ -27,7 +27,7 @@ problem_name_counts <- problem_name_counts[problem_name_counts$problem_count >= 
 df_session_gaming_info <- df_session_gaming_info[df_session_gaming_info$Problem.Name %in% unique(problem_name_counts$Problem.Name),]
 
 # df_session_gaming_info <- subset(df_session_gaming_info, Class %in% c("cls_0a534e", "cls_192013"))
-latent_gaming_estimate_model <- glmer(is_gaming ~ (1|Class/Anon.Student.Id) + (1|Level..Unit./Level..Section./Problem.Name), data=df_session_gaming_info, family = 'binomial')
+latent_gaming_estimate_model <- suppressWarnings(glmer(is_gaming ~ (1|Class/Anon.Student.Id) + (1|Level..Unit./Level..Section./Problem.Name), data=df_session_gaming_info, family = 'binomial'))
 # saveRDS(latent_gaming_estimate_model, "gaming_tendency.rds")
 # latent_gaming_estimate_model <- readRDS('gaming_tendency.rds')
 
