@@ -68,8 +68,13 @@ print("base name: " + basename)
 
 # SEMESTER = "f19"
 #oli_org = open(f'{SEMESTER}/organizations/default/organization.xml', "r").read()
-oli_org = open(basefile + '/' + basename + '/organizations/default/organization.xml', "r").read()
-oli_org_soup = BeautifulSoup(oli_org, "xml")
+#oli_org = open(basefile + '/' + basename + '/organizations/default/organization.xml', "r").read()
+#oli_org_soup = BeautifulSoup(oli_org, "xml")
+with open(
+    basefile + '/' + basename + '/organizations/default/organization.xml',
+    "rb"
+) as f:
+    oli_org_soup = BeautifulSoup(f.read(), "xml")
 
 
 # In[6]:
@@ -95,8 +100,13 @@ def is_header(p):
 #get problem content
 
 def get_file_content(filename):
-    with open(basefile + '/' + basename + '/content/x-oli-workbook_page/' + filename ) as file:
-        soup = BeautifulSoup(file.read(), 'xml')
+    #with open(basefile + '/' + basename + '/content/x-oli-workbook_page/' + filename ) as file:
+    #    soup = BeautifulSoup(file.read(), 'xml')
+    with open(
+        basefile + '/' + basename + '/content/x-oli-workbook_page/' + filename,
+        "rb"
+    ) as file:
+        soup = BeautifulSoup(file.read(), "xml")
     page_id = soup.find('workbook_page')['id']
     curr_module, curr_unit = get_module_unit_from_org(page_id)
     title = soup.find("title").get_text().strip()   
@@ -173,8 +183,13 @@ def get_problems(inline_id):
         if filename == (inline_id + '.xml'):
             file = filename
             break
-    with open(basefile + '/' + basename + '/content/x-oli-inline-assessment/' + file ) as file:
-        soup = BeautifulSoup(file.read(), 'xml')
+    #with open(basefile + '/' + basename + '/content/x-oli-inline-assessment/' + file ) as file:
+    #    soup = BeautifulSoup(file.read(), 'xml')
+    with open(
+        basefile + '/' + basename + '/content/x-oli-inline-assessment/' + file,
+        "rb"
+    ) as file:
+        soup = BeautifulSoup(file.read(), "xml")
     title = soup.find("title").get_text().strip()
     #feedback = soup.find("feedback").get_text().strip()
     question_all = soup.find("body").get_text().strip()
