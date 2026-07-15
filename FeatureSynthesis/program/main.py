@@ -9,6 +9,65 @@ import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 
+# --- pandas 3.x compatibility shims ------------------------------------------
+# pandas 3.0 removed caching from its accessor descriptor (pandas.core
+# .accessor.CachedAccessor was renamed to Accessor and no longer stores the
+# accessor instance on the DataFrame). Woodwork (used by featuretools) keeps
+# all of its schema state on that per-access accessor instance, so under
+# pandas 3.x every `df.ww` access silently creates a brand-new, uninitialized
+# accessor. This shows up in several different ways depending on what's being
+# done at the time -- e.g. `WoodworkNotInitError`, or (as with
+# ft.read_entityset here) `ValueError: Cannot add dataframe to EntitySet
+# without a name`, because the deserializer loses track of the dataframe's
+# name/schema between calls.
+# This restores the old caching behavior (identical to pandas <3's
+# CachedAccessor) so `.ww` keeps its state between accesses. It's a no-op on
+# pandas <3, which already caches accessors this way.
+try:
+    import pandas.core.accessor as _pd_accessor
+
+    if int(pd.__version__.split('.')[0]) >= 3 and hasattr(_pd_accessor, 'Accessor'):
+        def _cached_accessor_get(self, obj, cls):
+            if obj is None:
+                return self._accessor
+            accessor_obj = self._accessor(obj)
+            object.__setattr__(obj, self._name, accessor_obj)
+            return accessor_obj
+
+        _pd_accessor.Accessor.__get__ = _cached_accessor_get
+except Exception:
+    pass
+
+# featuretools' `approximate=` cutoff-time binning hardcodes the old pandas
+# minute-frequency alias "t" (e.g. `dt.dt.floor("2t")`). Pandas deprecated
+# "t"/"T" in favor of "min" and pandas 3.x removed it entirely. This script
+# doesn't pass `approximate=` today, but the patch is a harmless no-op if
+# unused and protects against it being added later.
+try:
+    import featuretools.computational_backends.utils as _ft_cb_utils
+
+    def _patched_datetime_round(dt, freq):
+        if not freq.is_absolute():
+            raise ValueError("Unit is relative")
+        all_units = list(freq.times.keys())
+        if len(all_units) == 1:
+            unit = all_units[0]
+            value = freq.times[unit]
+            if unit == "m":
+                unit = "min"  # pandas 3.x removed the "t"/"T" alias
+            if unit == "w":
+                unit = "d"
+                value = value * 7
+            freq_str = str(value) + unit
+            return dt.dt.floor(freq_str)
+        else:
+            assert "Frequency cannot have multiple temporal parameters"
+
+    _ft_cb_utils.datetime_round = _patched_datetime_round
+except Exception:
+    pass
+# -----------------------------------------------------------------------------
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Entity Set')
@@ -43,7 +102,8 @@ if __name__ == "__main__":
     if not aggPrimitives:
         sys.exit("Missing required argument: aggPrimitives")
 
-    aggPrimitives = aggPrimitives.split(',')
+    #aggPrimitives = aggPrimitives.split(',')
+    aggPrimitives = [x.lower() for x in args.aggPrimitives.split(',')]
 
     transPrimitives = args.transPrimitives
     if not transPrimitives:
@@ -70,18 +130,28 @@ if __name__ == "__main__":
     dir_name = workingDir + "output.pkl"
     shutil.unpack_archive(inFile.name, dir_name, 'zip')
 
-    es = ft.read_pickle(dir_name, load_data=True)
+    # NOTE: ft.read_pickle() was renamed to ft.read_entityset() in modern
+    # featuretools, and it no longer takes a load_data argument -- it always
+    # loads the dataframes back.
+    es = ft.read_entityset(dir_name)
 
     if not es:
         sys.exit("Missing required argument: entity set")
 
     # Adjust Entity Set
-    cutoff_times = es['transactions'].df[['Transaction Id', 'End Time', 'Outcome']]
+    # NOTE: entities are now plain dataframes, so indexing an EntitySet
+    # returns the dataframe directly (no more ".df" attribute).
+    # NOTE: featuretools now requires the cutoff-time column to be named
+    # either "time" or the exact same name as the target dataframe's
+    # time_index ("Time" here). Since we intentionally cut off on
+    # 'End Time' (to avoid label leakage), it must be renamed to "time".
+    cutoff_times = es['transactions'][['Transaction Id', 'End Time', 'Outcome']]
+    cutoff_times = cutoff_times.rename(columns={'End Time': 'time'})
 
     pd.options.display.max_columns = 500
 
     fm, features = ft.dfs(entityset=es,
-                          target_entity='transactions',
+                          target_dataframe_name='transactions',
                           agg_primitives=aggPrimitives,
                           trans_primitives=transPrimitives,
                           max_depth=maxDepth,

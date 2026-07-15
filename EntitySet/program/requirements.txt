@@ -1,0 +1,13 @@
+# Verified working together on Python 3.13 (and 3.12) as of July 2026.
+# Pin pandas below 3.0 — woodwork/featuretools don't yet fully support
+# pandas 3.x (Woodwork's dataframe accessor breaks under it).
+pandas>=2.2,<3
+featuretools>=1.31
+woodwork>=0.31
+scikit-learn>=1.5
+bokeh>=3.7
+
+# woodwork (a featuretools dependency) still imports pkg_resources, which
+# setuptools removed entirely in v82.0.0 (Feb 2026). Pin below that until
+# woodwork drops the dependency, or featuretools/woodwork ship a fix.
+setuptools<82
