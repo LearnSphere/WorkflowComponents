@@ -20,6 +20,11 @@ from Levenshtein import distance
 
 from cmd_parser import *
 
+import warnings
+from pandas.errors import PerformanceWarning
+
+warnings.filterwarnings("ignore", category=PerformanceWarning)
+
 if __name__ == '__main__':
 
     # Parse argumennts
@@ -64,7 +69,8 @@ if __name__ == '__main__':
     formatter = logging.Formatter('%(levelname)s\t%(name)s\t%(asctime)s\t: %(message)s')
 
     # Write log msgs to *.wfl file for user debugging
-    log_id = dt.now().isoformat()
+    #log_id = dt.now().isoformat()
+    log_id = dt.now().strftime("%Y-%m-%dT%H-%M-%S.%f")
     log_file = path.join(args.workingDir, 'log-%s.wfl' % log_id)
     ch = FileHandler(filename=log_file, encoding="UTF-16")
     ch.setLevel(log_level)
