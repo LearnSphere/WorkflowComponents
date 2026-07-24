@@ -13,6 +13,11 @@ import xml.etree.ElementTree as ET
 import os
 import math
 
+import warnings
+from pandas.errors import PerformanceWarning
+
+warnings.filterwarnings('ignore', category=PerformanceWarning)
+
 
 # In[2]:
 
